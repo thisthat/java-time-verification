@@ -4,9 +4,12 @@ import parser.Java2AST;
 import parser.visitors.SimpleVisitor;
 
 /**
+ * This is the main class of the program. It accepts as input a filepath and it produces a XAL file from it.
  *
- * @author
+ * @author      Giovanni Liva (@thisthatDC)
+ * @version     %I%, %G%
  */
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -24,7 +27,7 @@ public class Main {
         System.out.println(sv.getOutput());
     }
 
-    public static void usage(){
+    private static void usage(){
         System.out.println("Usage: {NAME} filename");
     }
 }

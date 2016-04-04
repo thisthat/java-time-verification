@@ -6,8 +6,12 @@ import parser.grammar.Java8CommentSupportedParser;
 
 
 /**
- * Created by giovanni (@thisthatDC) on 18/03/16.
+ * This class calculate the ms used to parse a Java file.
+ *
+ * @author      Giovanni Liva (@thisthatDC)
+ * @version     %I%, %G%
  */
+
 public class TimeParsing {
     public static void main(String[] args){
         CharStream in = null;

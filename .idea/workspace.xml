@@ -2,16 +2,597 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d757fc41-fdb0-4143-aa18-b91d6ca3fa2b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/java-parser" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALItem.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__java_parser_java_parser_0_1_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/SingleGrammar.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/target/classes/Main.class" afterPath="$PROJECT_DIR$/convert2xal/target/classes/Main.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/target/convert2xal-0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/convert2xal/target/convert2xal-0.1-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/target/original-convert2xal-0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/convert2xal/target/original-convert2xal-0.1-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/convert2xal.iml" afterPath="$PROJECT_DIR$/convert2xal/convert2xal.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XAL.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XAL.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/main.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/Java2AST.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/Java2AST.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/TimeParsing.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/TimeParsing.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/Main.html" afterPath="$PROJECT_DIR$/target/site/apidocs/Main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/XALEvents.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/XALEvents.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/class-use/XALEvents.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/class-use/XALEvents.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XAL.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XAL.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALAutomaton.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALAutomaton.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALMetrics.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALMetrics.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALState.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALState.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALTransition.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/XALTransition.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XAL.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XAL.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALAutomaton.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALAutomaton.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALMetrics.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALMetrics.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALState.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALState.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALTransition.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/class-use/XALTransition.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/items/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/CreateXALTree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/CreateXALTree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/class-use/CreateXALTree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/class-use/CreateXALTree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/XAL/visitors/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/allclasses-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/allclasses-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/allclasses-noframe.html" afterPath="$PROJECT_DIR$/target/site/apidocs/allclasses-noframe.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/class-use/Main.html" afterPath="$PROJECT_DIR$/target/site/apidocs/class-use/Main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/constant-values.html" afterPath="$PROJECT_DIR$/target/site/apidocs/constant-values.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/deprecated-list.html" afterPath="$PROJECT_DIR$/target/site/apidocs/deprecated-list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/help-doc.html" afterPath="$PROJECT_DIR$/target/site/apidocs/help-doc.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/index-all.html" afterPath="$PROJECT_DIR$/target/site/apidocs/index-all.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/index.html" afterPath="$PROJECT_DIR$/target/site/apidocs/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/overview-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/overview-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/overview-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/overview-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/overview-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/overview-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/Java2AST.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/Java2AST.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/SingleGrammar.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/SingleGrammar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/TimeParsing.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/TimeParsing.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/ViewGrammar.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/ViewGrammar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/Java2AST.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/Java2AST.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/SingleGrammar.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/SingleGrammar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/TimeParsing.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/TimeParsing.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/ViewGrammar.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/class-use/ViewGrammar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/exception/ParseErrorsException.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/exception/ParseErrorsException.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/exception/class-use/ParseErrorsException.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/exception/class-use/ParseErrorsException.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/exception/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedBaseListener.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedBaseListener.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedBaseVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedBaseVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedLexer.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedLexer.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedListener.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedListener.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AdditionalBoundContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AdditionalBoundContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AdditiveExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AdditiveExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AmbiguousNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AmbiguousNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AndExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AndExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeElementDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeElementDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeElementModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeElementModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeMemberDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AnnotationTypeMemberDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArgumentListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArgumentListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayCreationExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayCreationExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ArrayTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssertStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssertStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssignmentContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssignmentContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssignmentExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssignmentExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssignmentOperatorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.AssignmentOperatorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BasicForStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BasicForStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BasicForStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BasicForStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BlockContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BlockContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BlockStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BlockStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BlockStatementsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BlockStatementsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BreakStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.BreakStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CastExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CastExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchClauseContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchClauseContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchFormalParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchFormalParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchesContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CatchesContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassBodyDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassBodyDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassInstanceCreationExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassInstanceCreationExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassInstanceCreationExpression_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassInstanceCreationExpression_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassInstanceCreationExpression_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassInstanceCreationExpression_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassMemberDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassMemberDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassType_lf_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassType_lf_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassType_lfno_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ClassType_lfno_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CommentContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CommentContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CompilationUnitContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.CompilationUnitContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConditionalAndExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConditionalAndExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConditionalExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConditionalExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConditionalOrExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConditionalOrExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstantDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstantDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstantExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstantExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstantModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstantModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorDeclaratorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorDeclaratorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ConstructorModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ContinueStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ContinueStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DefaultValueContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DefaultValueContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DimExprContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DimExprContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DimExprsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DimExprsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DimsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DimsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DoStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.DoStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValueArrayInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValueArrayInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValueContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValueContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValueListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValueListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValuePairContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValuePairContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValuePairListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ElementValuePairListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EmptyStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EmptyStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnhancedForStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnhancedForStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnhancedForStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnhancedForStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumBodyDeclarationsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumBodyDeclarationsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumConstantNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EnumDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EqualityExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.EqualityExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExceptionTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExceptionTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExceptionTypeListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExceptionTypeListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExclusiveOrExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExclusiveOrExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExplicitConstructorInvocationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExplicitConstructorInvocationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExpressionNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExpressionNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExpressionStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExpressionStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExtendsInterfacesContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ExtendsInterfacesContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FieldModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.Finally_Context.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.Finally_Context.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FloatingPointTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FloatingPointTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForInitContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForInitContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForUpdateContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ForUpdateContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FormalParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FormalParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FormalParameterListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FormalParameterListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FormalParametersContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.FormalParametersContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IfThenElseStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IfThenElseStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IfThenElseStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IfThenElseStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IfThenStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IfThenStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ImportDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ImportDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InclusiveOrExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InclusiveOrExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InferredFormalParameterListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InferredFormalParameterListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InstanceInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InstanceInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IntegralTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.IntegralTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceMemberDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceMemberDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceMethodDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceMethodDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceMethodModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceMethodModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceTypeListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceTypeListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceType_lf_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceType_lf_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceType_lfno_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.InterfaceType_lfno_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LabeledStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LabeledStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LabeledStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LabeledStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LambdaBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LambdaBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LambdaExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LambdaExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LambdaParametersContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LambdaParametersContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LastFormalParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LastFormalParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LeftHandSideContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LeftHandSideContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LiteralContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LiteralContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LocalVariableDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LocalVariableDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LocalVariableDeclarationStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.LocalVariableDeclarationStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MarkerAnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MarkerAnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodDeclaratorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodDeclaratorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodHeaderContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodHeaderContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodInvocationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodInvocationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodInvocation_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodInvocation_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodInvocation_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodInvocation_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodReferenceContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodReferenceContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodReference_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodReference_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodReference_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MethodReference_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MultiplicativeExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.MultiplicativeExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NormalAnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NormalAnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NormalClassDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NormalClassDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NormalInterfaceDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NormalInterfaceDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NumericTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.NumericTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageOrTypeNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PackageOrTypeNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostDecrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostDecrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostDecrementExpression_lf_postfixExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostDecrementExpression_lf_postfixExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostIncrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostIncrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostIncrementExpression_lf_postfixExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostIncrementExpression_lf_postfixExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostfixExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PostfixExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PreDecrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PreDecrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PreIncrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PreIncrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArrayContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArrayContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_arrayAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_arrayAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_arrayAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_arrayAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimitiveTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.PrimitiveTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ReceiverParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ReceiverParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ReferenceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ReferenceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.RelationalExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.RelationalExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResourceContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResourceContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResourceListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResourceListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResourceSpecificationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResourceSpecificationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResultContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ResultContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ReturnStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ReturnStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ShiftExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ShiftExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SimpleTypeNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SimpleTypeNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SingleElementAnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SingleElementAnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SingleStaticImportDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SingleStaticImportDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SingleTypeImportDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SingleTypeImportDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementExpressionListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementExpressionListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementWithoutTrailingSubstatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StatementWithoutTrailingSubstatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StaticImportOnDemandDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StaticImportOnDemandDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StaticInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.StaticInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SuperclassContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SuperclassContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SuperinterfacesContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SuperinterfacesContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchBlockContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchBlockContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchBlockStatementGroupContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchBlockStatementGroupContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchLabelContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchLabelContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchLabelsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchLabelsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SwitchStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SynchronizedStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.SynchronizedStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ThrowStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.ThrowStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.Throws_Context.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.Throws_Context.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TryStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TryStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TryWithResourcesStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TryWithResourcesStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentsOrDiamondContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeArgumentsOrDiamondContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeBoundContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeBoundContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeImportOnDemandDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeImportOnDemandDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParameterListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParameterListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParameterModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParameterModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParametersContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeParametersContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeVariableContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.TypeVariableContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannArrayTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannArrayTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassType_lf_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassType_lf_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassType_lfno_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannClassType_lfno_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannInterfaceType_lf_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannInterfaceType_lf_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannPrimitiveTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannPrimitiveTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannReferenceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannReferenceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannTypeVariableContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnannTypeVariableContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnaryExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnaryExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnaryExpressionNotPlusMinusContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.UnaryExpressionNotPlusMinusContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableDeclaratorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableDeclaratorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableDeclaratorIdContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableDeclaratorIdContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableDeclaratorListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableDeclaratorListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableInitializerListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableInitializerListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.VariableModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WhileStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WhileStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WhileStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WhileStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WildcardBoundsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WildcardBoundsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WildcardContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.WildcardContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedParser.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/Java8CommentSupportedVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/ParseError.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/ParseError.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedBaseListener.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedBaseListener.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedBaseVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedBaseVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedLexer.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedLexer.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedListener.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedListener.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AdditionalBoundContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AdditionalBoundContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AdditiveExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AdditiveExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AmbiguousNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AmbiguousNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AndExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AndExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeElementDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeElementDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeElementModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeElementModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeMemberDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AnnotationTypeMemberDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArgumentListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArgumentListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayCreationExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayCreationExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ArrayTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssertStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssertStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssignmentContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssignmentContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssignmentExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssignmentExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssignmentOperatorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.AssignmentOperatorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BasicForStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BasicForStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BasicForStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BasicForStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BlockContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BlockContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BlockStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BlockStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BlockStatementsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BlockStatementsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BreakStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.BreakStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CastExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CastExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchClauseContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchClauseContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchFormalParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchFormalParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchesContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CatchesContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassBodyDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassBodyDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassInstanceCreationExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassInstanceCreationExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassInstanceCreationExpression_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassInstanceCreationExpression_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassInstanceCreationExpression_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassInstanceCreationExpression_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassMemberDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassMemberDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassType_lf_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassType_lf_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassType_lfno_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ClassType_lfno_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CommentContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CommentContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CompilationUnitContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.CompilationUnitContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConditionalAndExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConditionalAndExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConditionalExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConditionalExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConditionalOrExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConditionalOrExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstantDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstantDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstantExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstantExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstantModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstantModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorDeclaratorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorDeclaratorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ConstructorModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ContinueStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ContinueStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DefaultValueContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DefaultValueContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DimExprContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DimExprContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DimExprsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DimExprsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DimsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DimsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DoStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.DoStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValueArrayInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValueArrayInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValueContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValueContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValueListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValueListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValuePairContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValuePairContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValuePairListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ElementValuePairListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EmptyStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EmptyStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnhancedForStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnhancedForStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnhancedForStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnhancedForStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumBodyDeclarationsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumBodyDeclarationsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumConstantNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EnumDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EqualityExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.EqualityExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExceptionTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExceptionTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExceptionTypeListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExceptionTypeListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExclusiveOrExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExclusiveOrExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExplicitConstructorInvocationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExplicitConstructorInvocationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExpressionNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExpressionNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExpressionStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExpressionStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExtendsInterfacesContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ExtendsInterfacesContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FieldModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.Finally_Context.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.Finally_Context.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FloatingPointTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FloatingPointTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForInitContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForInitContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForUpdateContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ForUpdateContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FormalParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FormalParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FormalParameterListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FormalParameterListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FormalParametersContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.FormalParametersContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IfThenElseStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IfThenElseStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IfThenElseStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IfThenElseStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IfThenStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IfThenStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ImportDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ImportDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InclusiveOrExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InclusiveOrExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InferredFormalParameterListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InferredFormalParameterListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InstanceInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InstanceInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IntegralTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.IntegralTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceMemberDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceMemberDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceMethodDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceMethodDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceMethodModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceMethodModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceTypeListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceTypeListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceType_lf_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceType_lf_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceType_lfno_classOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.InterfaceType_lfno_classOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LabeledStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LabeledStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LabeledStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LabeledStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LambdaBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LambdaBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LambdaExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LambdaExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LambdaParametersContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LambdaParametersContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LastFormalParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LastFormalParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LeftHandSideContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LeftHandSideContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LiteralContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LiteralContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LocalVariableDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LocalVariableDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LocalVariableDeclarationStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.LocalVariableDeclarationStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MarkerAnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MarkerAnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodBodyContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodBodyContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodDeclaratorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodDeclaratorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodHeaderContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodHeaderContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodInvocationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodInvocationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodInvocation_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodInvocation_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodInvocation_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodInvocation_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodReferenceContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodReferenceContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodReference_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodReference_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodReference_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MethodReference_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MultiplicativeExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.MultiplicativeExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NormalAnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NormalAnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NormalClassDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NormalClassDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NormalInterfaceDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NormalInterfaceDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NumericTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.NumericTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageOrTypeNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PackageOrTypeNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostDecrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostDecrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostDecrementExpression_lf_postfixExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostDecrementExpression_lf_postfixExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostIncrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostIncrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostIncrementExpression_lf_postfixExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostIncrementExpression_lf_postfixExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostfixExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PostfixExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PreDecrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PreDecrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PreIncrementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PreIncrementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArrayContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArrayContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_arrayAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_arrayAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_arrayAccessContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_arrayAccessContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimitiveTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.PrimitiveTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ReceiverParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ReceiverParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ReferenceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ReferenceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.RelationalExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.RelationalExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResourceContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResourceContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResourceListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResourceListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResourceSpecificationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResourceSpecificationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResultContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ResultContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ReturnStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ReturnStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ShiftExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ShiftExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SimpleTypeNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SimpleTypeNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SingleElementAnnotationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SingleElementAnnotationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SingleStaticImportDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SingleStaticImportDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SingleTypeImportDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SingleTypeImportDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementExpressionListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementExpressionListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementWithoutTrailingSubstatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StatementWithoutTrailingSubstatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StaticImportOnDemandDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StaticImportOnDemandDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StaticInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.StaticInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SuperclassContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SuperclassContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SuperinterfacesContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SuperinterfacesContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchBlockContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchBlockContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchBlockStatementGroupContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchBlockStatementGroupContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchLabelContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchLabelContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchLabelsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchLabelsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SwitchStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SynchronizedStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.SynchronizedStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ThrowStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.ThrowStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.Throws_Context.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.Throws_Context.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TryStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TryStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TryWithResourcesStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TryWithResourcesStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentsOrDiamondContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeArgumentsOrDiamondContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeBoundContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeBoundContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeImportOnDemandDeclarationContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeImportOnDemandDeclarationContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeNameContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeNameContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParameterContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParameterContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParameterListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParameterListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParameterModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParameterModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParametersContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeParametersContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeVariableContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.TypeVariableContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannArrayTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannArrayTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassType_lf_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassType_lf_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassType_lfno_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannClassType_lfno_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannInterfaceType_lf_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannInterfaceType_lf_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannPrimitiveTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannPrimitiveTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannReferenceTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannReferenceTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannTypeContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannTypeContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannTypeVariableContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnannTypeVariableContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnaryExpressionContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnaryExpressionContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnaryExpressionNotPlusMinusContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.UnaryExpressionNotPlusMinusContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableDeclaratorContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableDeclaratorContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableDeclaratorIdContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableDeclaratorIdContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableDeclaratorListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableDeclaratorListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableInitializerContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableInitializerContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableInitializerListContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableInitializerListContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableModifierContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.VariableModifierContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WhileStatementContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WhileStatementContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WhileStatementNoShortIfContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WhileStatementNoShortIfContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WildcardBoundsContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WildcardBoundsContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WildcardContext.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.WildcardContext.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedParser.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/Java8CommentSupportedVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/ParseError.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/class-use/ParseError.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/grammar/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/RewriteFileVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/RewriteFileVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/SimpleVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/SimpleVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/class-use/RewriteFileVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/class-use/RewriteFileVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/class-use/SimpleVisitor.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/class-use/SimpleVisitor.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-frame.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-summary.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-tree.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-use.html" afterPath="$PROJECT_DIR$/target/site/apidocs/parser/visitors/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/site/apidocs/serialized-form.html" afterPath="$PROJECT_DIR$/target/site/apidocs/serialized-form.html" />
     </list>
-    <ignored path="parent.iws" />
-    <ignored path=".idea/workspace.xml" />
-    <ignored path="$PROJECT_DIR$/java-parser/target/" />
-    <ignored path="$PROJECT_DIR$/target/" />
-    <ignored path="$PROJECT_DIR$/convert2xal/target/" />
+    <ignored mask="*.iws" />
+    <ignored path="target/" />
+    <ignored path="java-parser/target/" />
+    <ignored path="convert2xal/target/" />
+    <manually-removed-from-ignored>
+      <directory path="$PROJECT_DIR$/target/" />
+      <directory path="$PROJECT_DIR$/java-parser/target/" />
+      <directory path="$PROJECT_DIR$/convert2xal/target/" />
+    </manually-removed-from-ignored>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,14 +610,56 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+            <state relative-caret-position="435">
+              <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XAL.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XAL.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XALAutomaton.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALAutomaton.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XALItem.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALItem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -65,8 +688,6 @@
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/main.java" />
         <option value="$PROJECT_DIR$/java-parser/src/main/java/testenvirorments/test_antrl/FromAST2Java.java" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java" />
         <option value="$PROJECT_DIR$/java-parser/src/main/java/visitors/RewriteFileVisitor.java" />
         <option value="$PROJECT_DIR$/java-parser/src/main/java/visitors/SimpleVisitor.java" />
         <option value="$PROJECT_DIR$/java-parser/src/main/java/grammar/ParseError.java" />
@@ -78,11 +699,18 @@
         <option value="$PROJECT_DIR$/java-parser/src/main/java/Java2AST.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammarComment.java" />
-        <option value="$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java" />
         <option value="$PROJECT_DIR$/convert2xal/pom.xml" />
         <option value="$PROJECT_DIR$/java-parser/pom.xml" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/java-parser/src/main/java/parser/Java2AST.java" />
+        <option value="$PROJECT_DIR$/java-parser/src/main/java/parser/SingleGrammar.java" />
+        <option value="$PROJECT_DIR$/java-parser/src/main/java/parser/TimeParsing.java" />
+        <option value="$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALItem.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XAL.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -166,8 +794,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -183,6 +809,60 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -269,10 +949,12 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/convert2xal/target" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="project.structure.last.edited" value="Project" />
@@ -599,32 +1281,32 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1413" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5015886" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5023828" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33717236" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39969718" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853898" sideWeight="0.49841145" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329296" sideWeight="0.49841145" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.49761716" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329296" sideWeight="0.49841145" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24980143" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24980143" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39969718" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39969718" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853898" sideWeight="0.49841145" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39969718" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -640,7 +1322,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -649,6 +1331,16 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -685,7 +1377,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
           <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -709,7 +1400,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
           <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -717,24 +1407,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL.java" />
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;MultiMarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor relative-caret-position="60">
             <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-            <folding />
           </first_editor>
           <second_editor />
         </state>
@@ -743,27 +1424,11 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/Traces2XAL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/Traces2XAL.java" />
     <entry file="file://$PROJECT_DIR$/java-parser/src/main/resources/HelloWorld.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -791,94 +1456,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XAL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/visitors/RewriteFileVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="8" column="50" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/visitors/VisitorTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/visitors/VisitorTest.java" />
     <entry file="file://$PROJECT_DIR$/java-parser/java-parser.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/visitors/SimpleVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="10" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/FromAST2Java.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/FromAST2Java.java" />
     <entry file="file://$PROJECT_DIR$/java-parser/src/test/java/TestCommentOnProject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/ParseError.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/exception/ParseErrorsException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="66" selection-start-line="25" selection-start-column="66" selection-end-line="25" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammarComment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammarComment.java" />
     <entry file="file://$PROJECT_DIR$/java-parser/src/test/java/TestFromAST2Java.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="900">
@@ -887,35 +1481,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALAutomaton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/TimeParsing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java-parser/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -923,7 +1492,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -931,14 +1499,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
           <caret line="71" column="21" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/SingleGrammar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -959,20 +1519,132 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/SingleGrammar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+        <state relative-caret-position="75">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/TimeParsing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/Java2AST.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1068">
-          <caret line="126" column="18" selection-start-line="126" selection-start-column="18" selection-end-line="126" selection-end-column="18" />
+        <state relative-caret-position="183">
+          <caret line="96" column="11" selection-start-line="81" selection-start-column="7" selection-end-line="96" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/exception/ParseErrorsException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="25" column="66" selection-start-line="25" selection-start-column="66" selection-end-line="25" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/ParseError.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/visitors/RewriteFileVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="8" column="50" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/visitors/SimpleVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="10" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALAutomaton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XAL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
           <folding />
         </state>
       </provider>

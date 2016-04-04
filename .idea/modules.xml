@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/convert2xal/convert2xal.iml" filepath="$PROJECT_DIR$/convert2xal/convert2xal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java-parser/java-parser.iml" filepath="$PROJECT_DIR$/java-parser/java-parser.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
     </modules>
   </component>

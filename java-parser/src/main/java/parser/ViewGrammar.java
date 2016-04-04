@@ -5,11 +5,14 @@ import parser.grammar.Java8CommentSupportedLexer;
 import parser.grammar.Java8CommentSupportedParser;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
- * Created by giovanni (@thisthatDC) on 18/03/16.
+ * Class to view in a GUI the parsed tree
+ *
+ * @author      Giovanni Liva (@thisthatDC)
+ * @version     %I%, %G%
  */
+
 public class ViewGrammar {
 
     public static void main(String[] args){

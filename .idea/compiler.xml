@@ -23,6 +23,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="convert2xal" />
+        <module name="java-parser" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -1,14 +1,21 @@
 package XAL.items;
 
+import XAL.*;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Giovanni Liva on 11.02.16.
+ * <b>Still in coding</b>
+ * Root element of a XAL document. It handles a whole XAL file.
+ * TODO: better separation of the task and enhance the possibilities of the class with more feature
+ *
+ * @author      Giovanni Liva (@thisthatDC)
+ * @version     %I%, %G%
  */
-public class XAL {
+
+public class XAL extends XALItem {
 
     private List<XALAutomaton> automatons = new ArrayList<XALAutomaton>();
 
@@ -28,13 +35,6 @@ public class XAL {
             System.err.println("Error in generating XAL file");
             return;
         }
-    }
-
-    public static String tab(int n){
-        if(n == 0)
-            return "";
-        else
-            return "\t" + tab(n-1);
     }
 
     @Override

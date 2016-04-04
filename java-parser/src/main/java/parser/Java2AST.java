@@ -124,7 +124,7 @@ public class Java2AST {
 
     /**
      * Local Main to test  the current implementation
-     * @param args
+     * @param args          Not used
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
