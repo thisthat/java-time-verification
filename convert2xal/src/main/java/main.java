@@ -4,7 +4,8 @@ import parser.Java2AST;
 import parser.visitors.SimpleVisitor;
 
 /**
- * Created by giovanni (@thisthatDC) on 04/04/16.
+ *
+ * @author
  */
 public class Main {
 
