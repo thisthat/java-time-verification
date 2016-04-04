@@ -1,7 +1,7 @@
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import grammar.Java8CommentSupportedBaseListener;
-import visitors.SimpleVisitor;
+import parser.Java2AST;
+import parser.visitors.SimpleVisitor;
 
 /**
  * Created by giovanni (@thisthatDC) on 04/04/16.

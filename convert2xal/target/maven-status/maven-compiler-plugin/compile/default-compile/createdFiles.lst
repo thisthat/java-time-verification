@@ -1,0 +1,8 @@
+Main.class
+XAL/XALEvents.class
+XAL/items/XALAutomaton.class
+XAL/items/XALMetrics.class
+XAL/visitors/CreateXALTree.class
+XAL/items/XALTransition.class
+XAL/items/XAL.class
+XAL/items/XALState.class

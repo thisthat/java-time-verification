@@ -18,8 +18,8 @@ public class XALAutomaton {
 
 
     public XALAutomaton(){
-        States = new ArrayList<>();
-        Transitions = new ArrayList<>();
+        States = new ArrayList<XALState>();
+        Transitions = new ArrayList<XALTransition>();
         ID = "SingleXAL_Automata";
     }
 
