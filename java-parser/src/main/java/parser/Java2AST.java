@@ -125,7 +125,7 @@ public class Java2AST {
     /**
      * Local Main to test  the current implementation
      * @param args          Not used
-     * @throws Exception
+     * @throws Exception    If something goes wrong...here it is the description why it goes bad (hopefully)
      */
     public static void main(String[] args) throws Exception {
         String base_path = System.getProperty("user.dir");

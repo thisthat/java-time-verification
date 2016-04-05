@@ -2,39 +2,51 @@ package XAL.items;
 
 import XAL.*;
 /**
- * Created by Giovanni Liva on 11.02.16.
+ * Class used to represent a metric.
+ * @TODO support the possibilities to use time constraint as well
+ *
+ * @author Giovanni Liva (@thisthatDC)
+ * @version %I%, %G%
  */
-public class XALTransition  extends XALItem {
+public class XALTransition extends XALItem {
 
-    private XALState from;
-    private XALState to;
+    private String from;
+    private String to;
+    private String metricValue;
 
-    public XALState getTo() {
+    public XALTransition(XALState from, XALState to, String metricValue) {
+        this.from = from.getId();
+        this.to = to.getId();
+        this.metricValue = metricValue;
+    }
+
+    public XALTransition(String from, String to, String metricValue) {
+        this.from = from;
+        this.to = to;
+        this.metricValue = metricValue;
+    }
+
+    public String getMetricValue() {
+        return metricValue;
+    }
+
+    public String getTo() {
         return to;
     }
-    public void setTo(XALState to) {
-        this.to = to;
-    }
-    public XALState getFrom() {
-        return from;
-    }
-    public void setFrom(XALState from) {
-        this.from = from;
-    }
 
-    public  XALTransition(){}
-    public  XALTransition(XALState from, XALState to){
-        this.from = from;
-        this.to = to;
+    public String getFrom() {
+        return from;
     }
 
     @Override
-    public String toString(int tab){
-        String out = "";
-        out += tab(tab) + "<Transition IdInputState=\"" + this.from.getID() + "\" IdOutputState=\"" + this.to.getID() + "\" MetricValue=\"failed\" />\n";
-        return out;
+    public String toString(int tab) {
+        return "";
     }
 
+    /**
+     * No constraint to check
+     * @return Always true
+     */
     @Override
     protected boolean checkConstriant() {
         return false;

@@ -27,7 +27,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="convert2xal" target="1.5" />
+      <module name="convert2xal" target="1.8" />
       <module name="java-parser" target="1.5" />
       <module name="parent" target="1.5" />
     </bytecodeTargetLevel>

@@ -2,44 +2,74 @@ package XAL.items;
 import XAL.*;
 
 /**
- * Created by Giovanni Liva on 11.02.16.
+ * Class used to represent a state.
+ *
+ * @author Giovanni Liva (@thisthatDC)
+ * @version %I%, %G%
  */
 
 public class XALState extends XALItem {
-    private static int __COUNTER = 0;
-    private String ID;
-    private String IDMetric;
 
-    public XALState(String name){
-        this.ID = name + __COUNTER++;
-        this.IDMetric = XALMetrics.stub_metric_name;
+    private String id;
+    private String idAction = null;
+    private String idMetric = null;
+    private String style;
+
+    public enum TypeProduction {
+        ACTION,
+        METRIC
     }
 
-    public String getID() {
-        return ID;
+    public XALState(String id) {
+        this.id = id;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public XALState(String id, String id_action_metric, TypeProduction production) {
+        this.id = id;
+        if(production == TypeProduction.ACTION)
+            this.idAction = id_action_metric;
+        else
+            this.idMetric = id_action_metric;
     }
 
-    public String getIDMetric() {
-        return IDMetric;
+    public XALState(String id, String idAction, String idMetric) {
+        this.id = id;
+        this.idAction = idAction;
+        this.idMetric = idMetric;
     }
 
-    public void setIDMetric(String IDMetric) {
-        this.IDMetric = IDMetric;
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getIdAction() {
+        return idAction;
+    }
+
+    public String getIdMetric() {
+        return idMetric;
     }
 
     @Override
-    public String toString(int tab){
-        String out = "";
-        out += tab(tab) + "<State Id=\"" + this.ID + "\" IdMetric=\"mCHECK\"  style=\"x:79; y:67; h:101; w:128\" />\n";
-        return out;
+    public String toString(int tab) {
+        return "";
     }
 
+    /**
+     * No constraint to check
+     * @return Always true
+     */
     @Override
     protected boolean checkConstriant() {
-        return false;
+        return true;
     }
+
 }
