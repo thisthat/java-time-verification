@@ -1,9 +1,10 @@
 package XAL.items;
 
+import XAL.*;
 /**
  * Created by Giovanni Liva on 11.02.16.
  */
-public class XALTransition {
+public class XALTransition  extends XALItem {
 
     private XALState from;
     private XALState to;
@@ -27,10 +28,15 @@ public class XALTransition {
         this.to = to;
     }
 
+    @Override
     public String toString(int tab){
         String out = "";
-        out += XAL.tab(tab) + "<Transition IdInputState=\"" + this.from.getID() + "\" IdOutputState=\"" + this.to.getID() + "\" MetricValue=\"failed\" />\n";
+        out += tab(tab) + "<Transition IdInputState=\"" + this.from.getID() + "\" IdOutputState=\"" + this.to.getID() + "\" MetricValue=\"failed\" />\n";
         return out;
     }
 
+    @Override
+    protected boolean checkConstriant() {
+        return false;
+    }
 }

@@ -1,9 +1,9 @@
 package XAL.items;
-
+import XAL.*;
 /**
  * Created by Giovanni Liva on 11.02.16.
  */
-public class XALMetrics {
+public class XALMetrics extends XALItem  {
     //Stub metric taken from infocamere_It_prot.xal
     public static final String stub_metric_name = "mCHECK";
     public static final String stub_metric = "<Metric Id=\"mCHECK\" Type=\"automaton\">\n" +
@@ -29,4 +29,13 @@ public class XALMetrics {
             "          <Const Value=\"noUpdate\"/>\n" +
             "        </Enumeration>\n" +
             "      </Metric>\n";
+
+    public String toString(int tab) {
+        return null;
+    }
+
+    @Override
+    protected boolean checkConstriant() {
+        return false;
+    }
 }

@@ -1,3 +1,4 @@
+import XAL.items.XALDocument;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;
@@ -25,6 +26,8 @@ public class Main {
         SimpleVisitor sv = new SimpleVisitor();
         walker.walk(sv, ast);
         System.out.println(sv.getOutput());
+        XALDocument d = new XALDocument();
+        d.toFile();
     }
 
     private static void usage(){

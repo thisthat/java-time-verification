@@ -6,6 +6,10 @@ package XAL;
  */
 public abstract class XALItem {
 
+    public abstract String toString(int tab);
+
+    protected abstract boolean checkConstriant();
+
     protected String tab(int n){
         if(n == 0)
             return "";

@@ -1,9 +1,11 @@
 package XAL.items;
+import XAL.*;
 
 /**
  * Created by Giovanni Liva on 11.02.16.
  */
-public class XALState {
+
+public class XALState extends XALItem {
     private static int __COUNTER = 0;
     private String ID;
     private String IDMetric;
@@ -29,9 +31,15 @@ public class XALState {
         this.IDMetric = IDMetric;
     }
 
+    @Override
     public String toString(int tab){
         String out = "";
-        out += XAL.tab(tab) + "<State Id=\"" + this.ID + "\" IdMetric=\"mCHECK\"  style=\"x:79; y:67; h:101; w:128\" />\n";
+        out += tab(tab) + "<State Id=\"" + this.ID + "\" IdMetric=\"mCHECK\"  style=\"x:79; y:67; h:101; w:128\" />\n";
         return out;
+    }
+
+    @Override
+    protected boolean checkConstriant() {
+        return false;
     }
 }

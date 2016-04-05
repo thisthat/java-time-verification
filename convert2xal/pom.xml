@@ -63,7 +63,7 @@
                 <configuration>
                     <tags>
                         <tag>
-                            <name>todo</name>
+                            <name>TODO</name>
                             <!-- todo tag for all places -->
                             <placement>a</placement>
                             <head>It has to be implemented yet:</head>
@@ -92,7 +92,7 @@
                 <configuration>
                     <tags>
                         <tag>
-                            <name>todo</name>
+                            <name>TODO</name>
                             <!-- todo tag for all places -->
                             <placement>a</placement>
                             <head>It has to be implemented yet:</head>
