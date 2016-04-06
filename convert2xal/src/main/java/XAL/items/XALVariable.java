@@ -55,9 +55,26 @@ public class XALVariable extends XALCLockVariable {
         return IO;
     }
 
+    public void setIO(XALIO IO) {
+        this.IO = IO;
+    }
+
+    @Override
+    public String toString(){
+        String out = String.format("<Variable Name=\"%s\" ", this.name);
+        if(this.type != null)
+            out += String.format("Type=\"%s\" ", this.type);
+        if(this.value != null)
+            out += String.format("Value=\"%s\" ", this.value);
+        if(this.IO != null)
+            out += String.format("IO=\"%s\" ", this.IO);
+        out += " />";
+        return out;
+    }
+
     @Override
     public String toString(int tab) {
-        return String.format("<Variable Name=\"%s\" Type=\"%s\" Value=\"%s\"/>", this.name, this.type, this.value);
+        return tab(tab) + this.toString();
     }
 
     /**

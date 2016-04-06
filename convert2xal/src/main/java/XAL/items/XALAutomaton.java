@@ -42,6 +42,7 @@ public class XALAutomaton extends XALItem {
         this.states = new ArrayList<XALState>();
         this.transitions = new ArrayList<XALTransition>();
         this.finalStates = new ArrayList<String>();
+        this.globalState = new XALGlobalState();
         this.id = __HIDDEN_AUTOMATA__ + __counter++;
     }
 
@@ -49,6 +50,7 @@ public class XALAutomaton extends XALItem {
         this.states = new ArrayList<XALState>();
         this.transitions = new ArrayList<XALTransition>();
         this.finalStates = new ArrayList<String>();
+        this.globalState = new XALGlobalState();
         this.id = id;
     }
 
@@ -181,11 +183,12 @@ public class XALAutomaton extends XALItem {
         this.transitions.add(t);
     }
 
-
-
     @Override
     public String toString(int tab) {
         String out = "";
+        out += "ID: " + this.id;
+        out += "\n";
+        out += this.globalState.toString(1);
         return out;
     }
 

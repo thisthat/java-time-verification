@@ -8,7 +8,7 @@ public class HelloWorld {
         int i = 0+4 << 2;
     }
     //single line
-    public static String test(int x){
+    public static String test(int x, int y, int w, int z){
         return "";
     }
 }
