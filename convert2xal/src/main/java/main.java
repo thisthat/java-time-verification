@@ -22,7 +22,6 @@ public class Main {
         Java2AST a = new Java2AST(args[0]);
         a.convertToAST();
         ParserRuleContext ast = a.getContext();
-        System.out.println(ast);
         ParseTreeWalker walker = new ParseTreeWalker();
         CreateXALTree sv = new CreateXALTree();
         walker.walk(sv, ast);
