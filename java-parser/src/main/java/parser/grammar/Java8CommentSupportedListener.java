@@ -867,6 +867,17 @@ public interface Java8CommentSupportedListener extends ParseTreeListener {
 	void exitTypeParameterList(@NotNull Java8CommentSupportedParser.TypeParameterListContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link Java8CommentSupportedParser#threeDotParameter}.
+	 * @param ctx the parse tree
+	 */
+	void enterThreeDotParameter(@NotNull Java8CommentSupportedParser.ThreeDotParameterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link Java8CommentSupportedParser#threeDotParameter}.
+	 * @param ctx the parse tree
+	 */
+	void exitThreeDotParameter(@NotNull Java8CommentSupportedParser.ThreeDotParameterContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link Java8CommentSupportedParser#normalClassDeclaration}.
 	 * @param ctx the parse tree
 	 */

@@ -1031,6 +1031,19 @@ public class Java8CommentSupportedBaseListener implements Java8CommentSupportedL
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterThreeDotParameter(@NotNull Java8CommentSupportedParser.ThreeDotParameterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitThreeDotParameter(@NotNull Java8CommentSupportedParser.ThreeDotParameterContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNormalClassDeclaration(@NotNull Java8CommentSupportedParser.NormalClassDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}

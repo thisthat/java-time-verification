@@ -226,7 +226,7 @@ public class XALAutomaton extends XALItem {
         }
         out += tab(tab) + "<FinalStates>\n";
         for (String v: this.finalStates ) {
-            out += tab(tab) + String.format("<FinalState IdState=\"%s\"/>\n", v);
+            out += tab(tab+1) + String.format("<FinalState IdState=\"%s\"/>\n", v);
         }
         out += tab(tab) + "</FinalStates>\n";
         return out;

@@ -558,6 +558,13 @@ public interface Java8CommentSupportedVisitor<T> extends ParseTreeVisitor<T> {
 	T visitTypeParameterList(@NotNull Java8CommentSupportedParser.TypeParameterListContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link Java8CommentSupportedParser#threeDotParameter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThreeDotParameter(@NotNull Java8CommentSupportedParser.ThreeDotParameterContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link Java8CommentSupportedParser#normalClassDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

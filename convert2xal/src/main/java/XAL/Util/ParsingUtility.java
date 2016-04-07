@@ -42,14 +42,25 @@ public class ParsingUtility {
     /**
      * Collect all the variables and their types from a method definition.
      * @param ctx The list of parameters
-     * @return A list of {@link Pair} contain \<Name, Type\>
+     * @return A list of {@link Pair} contain &lt;Name, Type&gt;
      */
     public static List<Pair<String,String>> getParameterList(FormalParameterListContext ctx){
         //FormalParameterContext c = (FormalParameterContext) ctx.getChild(0);
         List<Pair<String,String>> ret = new ArrayList<Pair<String,String>>();
         if(ctx.getChild(0) instanceof LastFormalParameterContext){
-            FormalParameterContext par = (FormalParameterContext) ctx.getChild(0).getChild(0);
-            ret.add(new Pair<String,String>(getParameterName(par), getParameterType(par)));
+            //handle the ... case
+            if(ctx.getChild(0).getChild(0) instanceof FormalParameterContext){
+                FormalParameterContext par = (FormalParameterContext) ctx.getChild(0).getChild(0);
+                ret.add(new Pair<String,String>(getParameterName(par), getParameterType(par)));
+            }
+            else if (ctx.getChild(0).getChild(0) instanceof ThreeDotParameterContext){
+                ThreeDotParameterContext tdp = (ThreeDotParameterContext) ctx.getChild(0).getChild(0);
+                ret.add(new Pair<String,String>(tdp.getChild(2).getText(), tdp.getChild(0).getText() + "..."));
+            }
+            else {
+                //for the later usage
+            }
+
         }
         else {
             FormalParametersContext listPars = (FormalParametersContext) ctx.getChild(0);
@@ -84,5 +95,79 @@ public class ParsingUtility {
      */
     public static String getParameterType(FormalParameterContext par){
         return par.getChild(0).getText();
+    }
+
+    public static boolean hasExpression(ParserRuleContext node){
+        boolean flag = false;
+        for (ParseTree elm: node.children ) {
+            if ( elm instanceof ExpressionContext ) {
+                return true;
+            }
+            else {
+                if(elm.getChildCount() > 0)
+                    flag = flag || hasExpression((ParserRuleContext) elm);
+            }
+        }
+        return flag;
+    }
+
+
+    public static ExpressionContext getExpression(ParserRuleContext node){
+        ExpressionContext expr = null;
+        for (ParseTree elm: node.children ) {
+            if ( elm instanceof ExpressionContext ) {
+                return (ExpressionContext)elm;
+            }
+            else {
+                if(elm.getChildCount() > 0) {
+                    ExpressionContext tmp = getExpression((ParserRuleContext) elm);
+                    if(tmp != null){
+                        expr = tmp;
+                    }
+                }
+            }
+        }
+        return expr;
+    }
+
+    public static String getExprType(ExpressionContext node){
+        boolean finish = false;
+        ParserRuleContext current = node;
+        while(!finish){
+            if(current.getChildCount() > 1){
+                return  current.getClass().toString();
+            }
+            current = (ParserRuleContext) current.getChild(0);
+        }
+        return "";
+    }
+
+    public static String getStmtType(ParserRuleContext stmts){
+        String type = null;
+        for (ParseTree stmt: stmts.children) {
+            if(stmt instanceof ReturnStatementContext){
+                type = ReturnStatementContext.class.toString();
+            }
+            else if(stmt instanceof MethodInvocationContext){
+                type = MethodInvocationContext.class.toString();
+            }
+            else if(stmt instanceof LocalVariableDeclarationContext){
+                type = LocalVariableDeclarationContext.class.toString();
+            }
+            else if(stmt instanceof TerminalNode){
+                continue;
+            }
+            if(type == null){
+                String tmp = getStmtType((ParserRuleContext) stmt);
+                if(tmp != null)
+                    type = tmp;
+            }
+        }
+        return type;
+    }
+
+    public static String prettyPrintClassName(String str){
+        str = str.substring(str.indexOf("$") + 1).replace("Context","");
+        return str;
     }
 }

@@ -2,7 +2,7 @@ package XAL.items;
 import XAL.*;
 
 /**
- * Class used to represent a state.
+ * Class used to represent a XAL state.
  *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -13,17 +13,30 @@ public class XALState extends XALItem {
     private String id;
     private String idAction = null;
     private String idMetric = null;
-    private String style;
+    private String style = "x:31; y:44; h:30; w:49";
 
+    /**
+     * Enumeration that allows the constructor to chose between action or metric
+     */
     public enum TypeProduction {
         ACTION,
         METRIC
     }
 
+    /**
+     * Construct a XALState object with only the ID
+     * @param id The id of the state
+     */
     public XALState(String id) {
         this.id = id;
     }
 
+    /**
+     * Construct a XALState object with an action or a metric. In order to decide which one use, the {@link TypeProduction} parameter is used.
+     * @param id                name of the state
+     * @param id_action_metric  name of the action/metric
+     * @param production        ACTION | METRIC
+     */
     public XALState(String id, String id_action_metric, TypeProduction production) {
         this.id = id;
         if(production == TypeProduction.ACTION)
@@ -32,6 +45,12 @@ public class XALState extends XALItem {
             this.idMetric = id_action_metric;
     }
 
+    /**
+     * Construct a XALState object with an action and a metric.
+     * @param id        name of the state
+     * @param idAction  name of the action
+     * @param idMetric  name of the metric
+     */
     public XALState(String id, String idAction, String idMetric) {
         this.id = id;
         this.idAction = idAction;
@@ -68,7 +87,7 @@ public class XALState extends XALItem {
             out += String.format("IdAction=\"%s\" ", this.idAction);
         if(style != null)
             out += String.format("style=\"%s\" ", this.style);
-        out += ">";
+        out += "/>";
         return out;
     }
 

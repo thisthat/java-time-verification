@@ -69,7 +69,7 @@ public class XALTransition extends XALItem {
 
     @Override
     public String toString(int tab) {
-        String out = String.format("<Transition IdInputState=\"%s\" IdOutputState=\"%d\" ",this.from, this.to);
+        String out = tab(tab) + String.format("<Transition IdInputState=\"%s\" IdOutputState=\"%s\" ",this.from, this.to);
         if(this.metricValue != null)
             out += String.format("MetricValue=\"%s\" ",this.metricValue);
         out += String.format("style=\"%s\" />", this.style );

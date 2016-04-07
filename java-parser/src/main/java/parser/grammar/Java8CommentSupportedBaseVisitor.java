@@ -642,6 +642,14 @@ public class Java8CommentSupportedBaseVisitor<T> extends AbstractParseTreeVisito
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitThreeDotParameter(@NotNull Java8CommentSupportedParser.ThreeDotParameterContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitNormalClassDeclaration(@NotNull Java8CommentSupportedParser.NormalClassDeclarationContext ctx) { return visitChildren(ctx); }
 
 	/**

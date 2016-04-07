@@ -2,14 +2,13 @@ package XAL.visitors;
 
 
 import XAL.exception.XALMalformedException;
-import XAL.items.XALState;
-import XAL.items.XALVariable;
+import XAL.items.*;
 import XAL.util.Pair;
 import XAL.util.ParsingUtility;
-import XAL.items.XALAutomaton;
-import XAL.items.XALDocument;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import parser.grammar.Java8CommentSupportedBaseListener;
+import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.List;
@@ -26,6 +25,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     XALDocument document;
     XALAutomaton current_automata;
+    static XALState lastState = null;
 
     public CreateXALTree() {
         document = new XALDocument();
@@ -37,17 +37,23 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
 
     public void enterMethodDeclarator(@NotNull MethodDeclaratorContext ctx) {
-        super.enterMethodDeclarator(ctx);
+        //super.enterMethodDeclarator(ctx);
         XALAutomaton newAutomata = new XALAutomaton(ctx.getChild(0).toString());
         document.addAutomaton(newAutomata);
         current_automata = newAutomata;
         XALState init = new XALState("init");
+        lastState = init;
         current_automata.addState(init);
         try {
             current_automata.setInitialState(init);
         } catch (XALMalformedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void exitMethodDeclaration(@NotNull MethodDeclarationContext ctx) {
+        current_automata.addFinalState(lastState);
     }
 
     @Override
@@ -64,17 +70,18 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         System.err.println("LF:" + ctx.getText());
     }
 
-
     @Override
     public void enterBlockStatement(@NotNull BlockStatementContext ctx) {
-        System.err.println(ctx.getText());
-
+        String type = ParsingUtility.getStmtType(ctx);
+        XALState state = new XALState( ParsingUtility.prettyPrintClassName(type) );
+        XALTransition transition = new XALTransition(lastState, state);
+        current_automata.addState(state);
+        current_automata.addTransition(transition);
+        lastState = state;
     }
 
     @Override
     public void enterMethodInvocation_lfno_primary(@NotNull MethodInvocation_lfno_primaryContext ctx) {
         //System.err.println(ctx.getText());
     }
-
-
 }

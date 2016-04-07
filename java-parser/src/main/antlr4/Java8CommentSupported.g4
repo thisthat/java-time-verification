@@ -52,7 +52,7 @@
 Total lexer+parser time 30844ms.
  */
 
-parser.grammar Java8CommentSupported;
+grammar Java8CommentSupported;
 
 /*
  * Productions from §3 (Lexical Structure)
@@ -476,9 +476,11 @@ variableModifier
 	;
 
 lastFormalParameter
-	:	comment* variableModifier* comment* unannType comment* annotation* '...' comment* variableDeclaratorId comment*
+	:	threeDotParameter
 	|	formalParameter
 	;
+
+threeDotParameter: comment* variableModifier* comment* unannType comment* annotation* '...' comment* variableDeclaratorId comment* ;
 
 receiverParameter
 	:	annotation* unannType (Identifier '.')? 'this'
