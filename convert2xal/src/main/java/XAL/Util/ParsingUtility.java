@@ -15,7 +15,6 @@ import java.util.*;
  */
 public class ParsingUtility {
 
-
     /**
      * Check if a method call has a method call inside
      * @param method The method call
@@ -60,7 +59,6 @@ public class ParsingUtility {
             else {
                 //for the later usage
             }
-
         }
         else {
             FormalParametersContext listPars = (FormalParametersContext) ctx.getChild(0);
@@ -166,8 +164,21 @@ public class ParsingUtility {
         return type;
     }
 
+    /**
+     * It is Idempotent as method.
+     * Remove all the <i>stupid</i> decoration of java to keep track of the type and presenting only a good representation to the user.
+     * @param str   The type of the object to make prettier
+     * @return      An hence visualization of the character that is faboulousssss
+     */
     public static String prettyPrintClassName(String str){
         str = str.substring(str.indexOf("$") + 1).replace("Context","");
         return str;
+    }
+
+    public static String additionalInformationToName(String type, BlockStatementContext ctx){
+        type = prettyPrintClassName(type);
+        switch(type){
+
+        }
     }
 }

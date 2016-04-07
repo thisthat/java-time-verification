@@ -3,18 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d757fc41-fdb0-4143-aa18-b91d6ca3fa2b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALAutomaton.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALAutomaton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALState.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALState.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALTransition.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALTransition.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/pom.xml" afterPath="$PROJECT_DIR$/java-parser/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4" afterPath="$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedBaseListener.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedBaseListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedBaseVisitor.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedBaseVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedLexer.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedLexer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedListener.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedParser.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedVisitor.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedVisitor.java" />
     </list>
     <ignored mask="*.iws" />
     <ignored path="target/" />
@@ -63,8 +52,8 @@
       <file leaf-file-name="CreateXALTree.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+            <state relative-caret-position="562">
+              <caret line="73" column="66" selection-start-line="73" selection-start-column="45" selection-end-line="73" selection-end-column="66" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -75,11 +64,11 @@
       <file leaf-file-name="ParsingUtility.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/util/ParsingUtility.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="56" column="101" selection-start-line="56" selection-start-column="101" selection-end-line="56" selection-end-column="101" />
+            <state relative-caret-position="637">
+              <caret line="172" column="58" selection-start-line="172" selection-start-column="58" selection-end-line="172" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1706#1727#0" expanded="true" />
+                <element signature="e#1705#1726#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -175,9 +164,9 @@
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALTransition.java" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALState.java" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/items/XALAutomaton.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" />
         <option value="$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4" />
         <option value="$PROJECT_DIR$/java-parser/pom.xml" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/util/ParsingUtility.java" />
       </list>
     </option>
@@ -1133,7 +1122,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1413" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853898" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1143,7 +1132,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3981832" sideWeight="0.5015886" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33995235" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.49761716" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.326268" sideWeight="0.49642575" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.326268" sideWeight="0.49642575" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853898" sideWeight="0.49841145" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1516,14 +1505,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java-parser/src/main/resources/Calculator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -1531,16 +1512,6 @@
           <folding>
             <element signature="e#216#217#0" expanded="false" />
             <element signature="e#257#258#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1577,13 +1548,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/util/ParsingUtility.java">
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="56" column="101" selection-start-line="56" selection-start-column="101" selection-end-line="56" selection-end-column="101" />
+        <state relative-caret-position="150">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/visitors/CreateXALTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="562">
+          <caret line="73" column="66" selection-start-line="73" selection-start-column="45" selection-end-line="73" selection-end-column="66" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1706#1727#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XAL/util/ParsingUtility.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="172" column="58" selection-start-line="172" selection-start-column="58" selection-end-line="172" selection-end-column="58" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1705#1726#0" expanded="true" />
           </folding>
         </state>
       </provider>
