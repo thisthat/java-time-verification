@@ -37,9 +37,22 @@ public class XALClock extends XALItem {
 
     @Override
     public String toString(int tab) {
-        return null;
+        String out = "";
+        if(this.variables.size() == 0){
+            return tab(tab) + "<Clocks/>\n";
+        }
+        out += tab(tab) + "<Clocks>\n";
+        for (XALCLockVariable v: this.variables ) {
+            out += v.toString(tab+1) + "\n";
+        }
+        out += tab(tab) + "</Clocks>\n";
+        return out;
     }
 
+    @Override
+    public String toString(){
+        return this.toString(0);
+    }
     /**
      * No constraint to check
      * @return Always true

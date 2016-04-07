@@ -1,18 +1,17 @@
 package XAL.visitors;
 
 
+import XAL.exception.XALMalformedException;
+import XAL.items.XALState;
 import XAL.items.XALVariable;
 import XAL.util.Pair;
 import XAL.util.ParsingUtility;
 import XAL.items.XALAutomaton;
 import XAL.items.XALDocument;
 import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.tree.ParseTree;
 import parser.grammar.Java8CommentSupportedBaseListener;
-import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -37,12 +36,18 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
 
-    @Override
     public void enterMethodDeclarator(@NotNull MethodDeclaratorContext ctx) {
         super.enterMethodDeclarator(ctx);
         XALAutomaton newAutomata = new XALAutomaton(ctx.getChild(0).toString());
         document.addAutomaton(newAutomata);
         current_automata = newAutomata;
+        XALState init = new XALState("init");
+        current_automata.addState(init);
+        try {
+            current_automata.setInitialState(init);
+        } catch (XALMalformedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -59,27 +64,11 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         System.err.println("LF:" + ctx.getText());
     }
 
-    @Override
-    public void enterMethodInvocation(@NotNull MethodInvocationContext ctx) {
-        boolean v = ParsingUtility.existsMethodInvocationInsideMethodCall(ctx);
-        if(v){
-            //it will be a metric the sub method since it must return a result for the next one
-            for(ParseTree elm : ctx.children){
-                //search for the child w/ argument
-                if(elm instanceof ArgumentListContext){
-                   //System.err.println(elm.getText());
-                }
-                else {
-                    continue;
-                }
-            }
-        }
-    }
-
 
     @Override
     public void enterBlockStatement(@NotNull BlockStatementContext ctx) {
         System.err.println(ctx.getText());
+
     }
 
     @Override

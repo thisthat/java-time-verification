@@ -29,8 +29,8 @@ public class XALAutomaton extends XALItem {
 
     private XALGlobalState globalState;
     private String id;
-    private String clocks;
-    private String actionPool;
+    private XALClock clocks;
+    private XALActionPool actionPool;
     private List<XALState> states;
     private String initialState;
     private List<String> finalStates;
@@ -39,18 +39,22 @@ public class XALAutomaton extends XALItem {
 
 
     public XALAutomaton() {
-        this.states = new ArrayList<XALState>();
+        this.states      = new ArrayList<XALState>();
         this.transitions = new ArrayList<XALTransition>();
         this.finalStates = new ArrayList<String>();
         this.globalState = new XALGlobalState();
+        this.clocks      = new XALClock();
+        this.actionPool  = new XALActionPool();
         this.id = __HIDDEN_AUTOMATA__ + __counter++;
     }
 
     public XALAutomaton(String id) {
-        this.states = new ArrayList<XALState>();
+        this.states      = new ArrayList<XALState>();
         this.transitions = new ArrayList<XALTransition>();
         this.finalStates = new ArrayList<String>();
         this.globalState = new XALGlobalState();
+        this.clocks      = new XALClock();
+        this.actionPool  = new XALActionPool();
         this.id = id;
     }
 
@@ -118,7 +122,7 @@ public class XALAutomaton extends XALItem {
      * @throws  XALMalformedException when the id passed as parameter does not exist in the list of state of the automaton
      */
     public void setInitialState(final String initialState) throws XALMalformedException {
-        if(this.states.stream().anyMatch( s -> (s.getId() == initialState) )  ){
+        if(!this.states.stream().anyMatch( s -> (s.getId() == initialState) )  ){
             throw new XALMalformedException("Initial state ID not found in the list of states");
         }
         this.initialState = initialState;
@@ -186,9 +190,58 @@ public class XALAutomaton extends XALItem {
     @Override
     public String toString(int tab) {
         String out = "";
-        out += "ID: " + this.id;
-        out += "\n";
-        out += this.globalState.toString(1);
+        out += tab(tab) + String.format("<Automaton Id=\"%s\">\n", this.id);
+        out += this.globalState.toString(tab+1);
+        out += this.clocks.toString(tab+1);
+        out += this.actionPool.toString(tab+1);
+        out += printStates(tab+1);
+        out += printInitState(tab+1);
+        out += printFinalStates(tab+1);
+        out += printTransition(tab+1);
+        out += tab(tab) + "</Automaton>\n";
+        return out;
+    }
+
+    private String printTransition(int tab) {
+        String out = "";
+        if(this.transitions.size() == 0){
+            return tab(tab) + "<Transitions/>\n";
+        }
+        out += tab(tab) + "<Transitions>\n";
+        for (XALTransition v: this.transitions ) {
+            out += v.toString(tab+1) + "\n";
+        }
+        out += tab(tab) + "</Transitions>\n";
+        return out;
+    }
+
+    private String printInitState(int tab) {
+        return tab(tab) + String.format("<InitialState IdState=\"%s\"/>\n", this.initialState);
+    }
+
+    private String printFinalStates(int tab) {
+        String out = "";
+        if(this.finalStates.size() == 0){
+            return tab(tab) + "<FinalStates/>\n";
+        }
+        out += tab(tab) + "<FinalStates>\n";
+        for (String v: this.finalStates ) {
+            out += tab(tab) + String.format("<FinalState IdState=\"%s\"/>\n", v);
+        }
+        out += tab(tab) + "</FinalStates>\n";
+        return out;
+    }
+
+    private String printStates(int tab) {
+        String out = "";
+        if(this.states.size() == 0){
+            return tab(tab) + "<States/>\n";
+        }
+        out += tab(tab) + "<States>\n";
+        for (XALState v: this.states ) {
+            out += v.toString(tab+1) + "\n";
+        }
+        out += tab(tab) + "</States>\n";
         return out;
     }
 

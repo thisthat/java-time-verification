@@ -60,7 +60,21 @@ public class XALState extends XALItem {
 
     @Override
     public String toString(int tab) {
-        return "";
+        String out = "";
+        out += tab(tab) + String.format("<State Id=\"%s\" ", this.id);
+        if(idMetric != null)
+            out += String.format("IdMetric=\"%s\" ", this.idMetric);
+        if(idAction != null)
+            out += String.format("IdAction=\"%s\" ", this.idAction);
+        if(style != null)
+            out += String.format("style=\"%s\" ", this.style);
+        out += ">";
+        return out;
+    }
+
+    @Override
+    public String toString(){
+        return this.toString(0);
     }
 
     /**

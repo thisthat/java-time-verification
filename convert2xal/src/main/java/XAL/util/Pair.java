@@ -1,6 +1,7 @@
 package XAL.util;
 
 /**
+ * A class that implements a pair couple.
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */

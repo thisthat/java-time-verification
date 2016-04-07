@@ -39,12 +39,20 @@ public class XALGlobalState extends XALItem {
     @Override
     public String toString(int tab) {
         String out = "";
-        out += tab(tab) + "Var: [\n";
-        for (XALVariable v: this.variables ) {
-            out += v.toString(2) + "\n";
+        if(this.variables.size() == 0){
+            return tab(tab) + "<GlobalState/>\n";
         }
-        out += "\n]\n";
+        out += tab(tab) + "<GlobalState>\n";
+        for (XALVariable v: this.variables ) {
+            out += v.toString(tab+1) + "\n";
+        }
+        out += tab(tab) + "</GlobalState>\n";
         return out;
+    }
+
+    @Override
+    public String toString(){
+        return this.toString(0);
     }
 
     /**

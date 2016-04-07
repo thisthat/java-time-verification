@@ -36,7 +36,21 @@ public class XALActionPool extends XALItem {
 
     @Override
     public String toString(int tab) {
-        return "";
+        String out = "";
+        if(this.action_metric.size() == 0){
+            return tab(tab) + "<ActionPool/>\n";
+        }
+        out += tab(tab) + "<ActionPool>\n";
+        for (XALProduction v: this.action_metric ) {
+            out += v.toString(tab+1) + "\n";
+        }
+        out += tab(tab) + "</ActionPool>\n";
+        return out;
+    }
+
+    @Override
+    public String toString(){
+        return this.toString(0);
     }
 
     /**

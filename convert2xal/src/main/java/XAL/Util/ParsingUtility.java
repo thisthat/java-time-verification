@@ -8,7 +8,7 @@ import parser.grammar.Java8CommentSupportedParser.*;
 import java.util.*;
 
 /**
- * The class exports method that help the parsing of a source file in order to create a XAL document
+ * The class exports method that help the parsing of a source file in order to create easily a XAL document
  *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -17,9 +17,9 @@ public class ParsingUtility {
 
 
     /**
-     *
-     * @param method
-     * @return
+     * Check if a method call has a method call inside
+     * @param method The method call
+     * @return true if it has a method call as parameter, false otherwise
      */
     public static boolean existsMethodInvocationInsideMethodCall(ParserRuleContext method){
         boolean flag = false;
@@ -40,9 +40,9 @@ public class ParsingUtility {
     }
 
     /**
-     *
-     * @param ctx
-     * @return
+     * Collect all the variables and their types from a method definition.
+     * @param ctx The list of parameters
+     * @return A list of {@link Pair} contain \<Name, Type\>
      */
     public static List<Pair<String,String>> getParameterList(FormalParameterListContext ctx){
         //FormalParameterContext c = (FormalParameterContext) ctx.getChild(0);
@@ -68,9 +68,9 @@ public class ParsingUtility {
     }
 
     /**
-     *
-     * @param par
-     * @return
+     * From a parameter, extract its name
+     * @param par the parameter in object
+     * @return its name
      */
     public static String getParameterName(FormalParameterContext par){
         //System.out.println(par.getChild(1).getText());
@@ -78,9 +78,9 @@ public class ParsingUtility {
     }
 
     /**
-     *
-     * @param par
-     * @return
+     * Extract the type of a parameter
+     * @param par the parameter in object
+     * @return its type
      */
     public static String getParameterType(FormalParameterContext par){
         return par.getChild(0).getText();
