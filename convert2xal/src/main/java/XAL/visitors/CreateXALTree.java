@@ -5,10 +5,8 @@ import XAL.exception.XALMalformedException;
 import XAL.items.*;
 import XAL.util.Pair;
 import XAL.util.ParsingUtility;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import parser.grammar.Java8CommentSupportedBaseListener;
-import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.List;
@@ -74,7 +72,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     public void enterBlockStatement(@NotNull BlockStatementContext ctx) {
         String type = ParsingUtility.getStmtType(ctx);
 
-        XALState state = new XALState( ParsingUtility.prettyPrintClassName(type) );
+        XALState state = new XALState( ParsingUtility.prettyPrintClassName(type, ctx) );
         XALTransition transition = new XALTransition(lastState, state);
         current_automata.addState(state);
         current_automata.addTransition(transition);

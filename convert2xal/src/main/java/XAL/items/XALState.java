@@ -69,6 +69,10 @@ public class XALState extends XALItem {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getIdAction() {
         return idAction;
     }

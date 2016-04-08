@@ -165,20 +165,23 @@ public class ParsingUtility {
     }
 
     /**
-     * It is Idempotent as method.
      * Remove all the <i>stupid</i> decoration of java to keep track of the type and presenting only a good representation to the user.
      * @param str   The type of the object to make prettier
      * @return      An hence visualization of the character that is faboulousssss
      */
-    public static String prettyPrintClassName(String str){
+    public static String prettyPrintClassName(String str, ParserRuleContext ctx){
         str = str.substring(str.indexOf("$") + 1).replace("Context","");
+        switch(str){
+            case "LocalVariableDeclaration":
+                System.out.print("");
+                break;
+            default: break;
+        }
         return str;
     }
 
-    public static String additionalInformationToName(String type, BlockStatementContext ctx){
-        type = prettyPrintClassName(type);
-        switch(type){
-
-        }
+    public static String prettyPrint(){
+        return "";
     }
+
 }

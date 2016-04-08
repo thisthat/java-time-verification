@@ -91,11 +91,25 @@ public class XALAutomaton extends XALItem {
     }
 
     /**
-     * Add a {@link XALState} to the list of states of the automata
+     * Add a {@link XALState} to the list of states of the automaton.
+     * If the name already exists in the list, it will use a numeric index to make it unique.
      * @param s {@link XALState} to add
      */
     public void addState(XALState s) {
+        int i  = 0;
+        String id = s.getId();
+        while(existState(s.getId())) {
+            s.setId(id + "_" + i++);
+        }
         this.states.add(s);
+    }
+
+    private boolean existState(XALState s){
+        return this.existState(s.getId());
+    }
+
+    private boolean existState(String s){
+        return this.states.stream().anyMatch( state -> (state.getId().equals(s)) );
     }
 
 
@@ -122,7 +136,7 @@ public class XALAutomaton extends XALItem {
      * @throws  XALMalformedException when the id passed as parameter does not exist in the list of state of the automaton
      */
     public void setInitialState(final String initialState) throws XALMalformedException {
-        if(!this.states.stream().anyMatch( s -> (s.getId() == initialState) )  ){
+        if(!this.states.stream().anyMatch( s -> (s.getId().equals(initialState)))){
             throw new XALMalformedException("Initial state ID not found in the list of states");
         }
         this.initialState = initialState;
