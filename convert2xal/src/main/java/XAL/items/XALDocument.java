@@ -17,13 +17,18 @@ import java.util.List;
 public class XALDocument extends XALItem {
 
     private List<XALAutomaton> automatons = new ArrayList<XALAutomaton>();
+    private String filename = "";
 
-    public XALDocument(){}
-    public XALDocument(List<XALAutomaton> l){
-        this.automatons = l;
+    public XALDocument(String filename){
+        this.filename = filename;
     }
-    public XALDocument(XALAutomaton a){
+    public XALDocument(String filename, List<XALAutomaton> l){
+        this.automatons = l;
+        this.filename = filename;
+    }
+    public XALDocument(String filename, XALAutomaton a){
         this.automatons.add(a);
+        this.filename = filename;
     }
 
     public void addAutomaton(XALAutomaton a){
@@ -33,12 +38,15 @@ public class XALDocument extends XALItem {
         return automatons;
     }
 
+    public String getFilename() {
+        return filename;
+    }
 
     /**
      * It generate the xal representation in a file, called <i>trace.xal</i>, on the current working path.
      */
     public void toFile() {
-        toFile("trace.xal");
+        toFile(this.filename);
     }
 
     /**
@@ -74,5 +82,13 @@ public class XALDocument extends XALItem {
     @Override
     protected boolean checkConstriant() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof XALDocument)) return false;
+        XALDocument that = (XALDocument) o;
+        return getFilename() != null ? getFilename().equals(that.getFilename()) : that.getFilename() == null;
     }
 }

@@ -81,7 +81,7 @@ public class ParsingUtility {
      * @param par the parameter in object
      * @return its name
      */
-    public static String getParameterName(FormalParameterContext par){
+    public static String getParameterName(FormalParameterContext par) {
         //System.out.println(par.getChild(1).getText());
         return par.getChild(1).getText();
     }
@@ -135,9 +135,37 @@ public class ParsingUtility {
             if(current.getChildCount() > 1){
                 return  current.getClass().toString();
             }
-            current = (ParserRuleContext) current.getChild(0);
+            else if(current instanceof ExpressionNameContext){
+                return current.getClass().toString();
+            }
+            else
+                current = (ParserRuleContext) current.getChild(0);
         }
         return "";
+    }
+
+    public static Pair<String,ParseTree> getExprTypeWithContext(ExpressionContext node){
+        boolean finish = false;
+        ParserRuleContext current = node;
+        while(!finish){
+            if(current.getChildCount() > 1){
+                return new Pair(current.getClass().toString(), current);
+            }
+            else if(current instanceof ExpressionNameContext){
+                return new Pair(current.getClass().toString(), current);
+            }
+            else if(current instanceof LiteralContext){
+                return new Pair(current.getClass().toString(), current);
+            }
+            else //here lays an error to check => TerminalNode casted to ParseRule
+                try {
+                    current = (ParserRuleContext) current.getChild(0);
+                } catch(Exception e){
+                    System.out.println(current.getText());
+                    throw e;
+                }
+        }
+        return new Pair(null,null);
     }
 
     public static String getStmtType(ParserRuleContext stmts){
@@ -149,8 +177,14 @@ public class ParsingUtility {
             else if(stmt instanceof MethodInvocationContext){
                 type = MethodInvocationContext.class.toString();
             }
+            else if(stmt instanceof AssignmentContext){
+                type = AssertStatementContext.class.toString();
+            }
             else if(stmt instanceof LocalVariableDeclarationContext){
                 type = LocalVariableDeclarationContext.class.toString();
+            }
+            else if(stmt instanceof ExpressionStatementContext){
+                type = ExpressionStatementContext.class.toString();
             }
             else if(stmt instanceof TerminalNode){
                 continue;
@@ -171,17 +205,90 @@ public class ParsingUtility {
      */
     public static String prettyPrintClassName(String str, ParserRuleContext ctx){
         str = str.substring(str.indexOf("$") + 1).replace("Context","");
+        String context = "";
         switch(str){
             case "LocalVariableDeclaration":
-                System.out.print("");
+                context = prettyPrintLocalVariableDeclaration(ctx);
+                break;
+            case "MethodInvocation":
+                context = prettyPrintMethodInvocation(ctx);
+                break;
+            case "ReturnStatement":
+                context = prettyPrintReturnStatement(ctx);
                 break;
             default: break;
+
         }
-        return str;
+        return str + "_" + context;
     }
 
-    public static String prettyPrint(){
-        return "";
+    public static String prettyPrintLocalVariableDeclaration(ParserRuleContext ctx){
+        String type = null;
+        if(ctx instanceof VariableDeclaratorIdContext){
+            type = ctx.getText();
+        } else {
+            for (ParseTree elm : ctx.children ) {
+                if(elm instanceof TerminalNode)
+                    continue;
+                String tmp = prettyPrintLocalVariableDeclaration((ParserRuleContext) elm);
+                if(type == null){
+                    type = tmp;
+                }
+            }
+        }
+        return type;
     }
 
+    public static String prettyPrintMethodInvocation(ParserRuleContext ctx){
+        String type = null;
+        if(ctx instanceof MethodInvocationContext){
+            type = ctx.getChild(2).getText();
+        } else {
+            for (ParseTree elm : ctx.children ) {
+                if(elm instanceof TerminalNode)
+                    continue;
+                String tmp = prettyPrintMethodInvocation((ParserRuleContext) elm);
+                if(type == null){
+                    type = tmp;
+                }
+            }
+        }
+        return type;
+    }
+
+    public static String prettyPrintReturnStatement(ParserRuleContext ctx){
+        return prettyPrintExpression(ctx);
+    }
+
+    public static String prettyPrintExpression(ParserRuleContext ctx){
+        String type = null;
+        if(ctx instanceof ExpressionContext){
+            type = prettyPrintExpression_helper((ExpressionContext)ctx);
+        } else {
+            for (ParseTree elm : ctx.children ) {
+                if(elm instanceof TerminalNode)
+                    continue;
+                String tmp = prettyPrintExpression((ParserRuleContext) elm);
+                if(type == null){
+                    type = tmp;
+                }
+            }
+        }
+        return type;
+    }
+
+    public static String prettyPrintExpression_helper(ExpressionContext expr){
+        String out = "nd";
+        Pair<String,ParseTree> e = getExprTypeWithContext(expr);
+        String expType = e.getFirst();
+        expType = expType.substring(expType.indexOf("$") + 1).replace("Context","");
+        switch (expType){
+            case "MethodInvocation_lfno_primary":
+                out = e.getSecond().getChild(2).getText();
+                break;
+            default:
+                break;
+        }
+        return out;
+    }
 }

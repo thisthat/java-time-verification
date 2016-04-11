@@ -75,6 +75,14 @@ public class XALAutomaton extends XALItem {
 
 
     /**
+     * If the automaton is created on method definition, it will return its name
+     * @return the id of the automaton
+     */
+    public String getId(){
+        return this.id;
+    }
+
+    /**
      * return the list of states inside the automata
      * @return The list of states in the automata
      */

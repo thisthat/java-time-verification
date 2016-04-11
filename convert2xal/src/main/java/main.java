@@ -5,6 +5,8 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;
 import parser.visitors.SimpleVisitor;
 
+import java.util.List;
+
 /**
  * This is the main class of the program. It accepts as input a filepath and it produces a XAL file from it.
  *
@@ -25,7 +27,12 @@ public class Main {
         ParseTreeWalker walker = new ParseTreeWalker();
         CreateXALTree sv = new CreateXALTree();
         walker.walk(sv, ast);
-        System.out.println(sv.getOutput());
+        List<XALDocument> out = sv.getOutput();
+        for(XALDocument d : out){
+            System.out.println( d.getFilename() );
+            System.out.println( d.toString() );
+            System.out.println(" ____ ");
+        }
     }
 
     private static void usage(){
