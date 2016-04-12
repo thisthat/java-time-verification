@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<XAL>
+	<Automaton Id="GenerateTopologyAsync">
+		<GlobalState>
+			<Variable Name="o" Type="Object" Value="" IO="I"  />
+		</GlobalState>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="Assignment" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates/>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="Assignment" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="run">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="MethodInvocation" style="x:31; y:44; h:30; w:49" />
+			<State Id="MethodInvocation_0" style="x:31; y:44; h:30; w:49" />
+			<State Id="MethodInvocation_1" style="x:31; y:44; h:30; w:49" />
+			<State Id="UnaryExpression" style="x:31; y:44; h:30; w:49" />
+			<State Id="MethodInvocation_2" style="x:31; y:44; h:30; w:49" />
+			<State Id="MethodInvocation_3" style="x:31; y:44; h:30; w:49" />
+			<State Id="MethodInvocation_4" style="x:31; y:44; h:30; w:49" />
+			<State Id="MethodInvocation_5" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="MethodInvocation_5"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="MethodInvocation" style="[]" />
+			<Transition IdInputState="MethodInvocation" IdOutputState="MethodInvocation_0" style="[]" />
+			<Transition IdInputState="MethodInvocation_0" IdOutputState="MethodInvocation_1" style="[]" />
+			<Transition IdInputState="MethodInvocation_1" IdOutputState="UnaryExpression" style="[]" />
+			<Transition IdInputState="UnaryExpression" IdOutputState="MethodInvocation_2" style="[]" />
+			<Transition IdInputState="MethodInvocation_2" IdOutputState="MethodInvocation_3" style="[]" />
+			<Transition IdInputState="MethodInvocation_3" IdOutputState="MethodInvocation_4" style="[]" />
+			<Transition IdInputState="MethodInvocation_4" IdOutputState="MethodInvocation_5" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="setRunning">
+		<GlobalState>
+			<Variable Name="v" Type="boolean" Value="" IO="I"  />
+		</GlobalState>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="Assignment" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="Assignment"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="Assignment" style="[]" />
+		</Transitions>
+	</Automaton>
+</XAL>

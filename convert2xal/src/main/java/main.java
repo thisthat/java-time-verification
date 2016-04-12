@@ -29,9 +29,7 @@ public class Main {
         walker.walk(sv, ast);
         List<XALDocument> out = sv.getOutput();
         for(XALDocument d : out){
-            System.out.println( d.getFilename() );
-            System.out.println( d.toString() );
-            System.out.println(" ____ ");
+            d.toFile();
         }
     }
 

@@ -116,10 +116,11 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterBlockStatement(@NotNull BlockStatementContext ctx) {
+
         String type = ParsingUtility.getStmtType(ctx);
         XALState state = new XALState( ParsingUtility.prettyPrintClassName(type, ctx) );
-        XALTransition transition = new XALTransition(lastState, state);
         current_automata.addState(state);
+        XALTransition transition = new XALTransition(lastState, state);
         current_automata.addTransition(transition);
         lastState = state;
     }

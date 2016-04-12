@@ -117,7 +117,7 @@ public class XALAutomaton extends XALItem {
     }
 
     private boolean existState(String s){
-        return this.states.stream().anyMatch( state -> (state.getId().equals(s)) );
+        return this.states.stream().anyMatch(state -> (state.getId().equals(s)));
     }
 
 

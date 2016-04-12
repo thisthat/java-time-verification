@@ -3,6 +3,7 @@ import XAL.items.XALDocument;
 import XAL.visitors.CreateXALTree;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
 
@@ -17,31 +18,37 @@ import static junit.framework.Assert.assertEquals;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class TestCorrectMethodAssociation {
+public class TestsOnPredictionModule {
 
-    @Test
-    public void TestOnPredictionModule() throws Exception {
+    List<XALDocument> xalFiles;
 
+    @Before
+    public void init() throws Exception {
         Java2AST a = new Java2AST( getClass().getResource("PredictionModule.java").getFile() );
         a.convertToAST();
         ParserRuleContext ast = a.getContext();
         ParseTreeWalker walker = new ParseTreeWalker();
         CreateXALTree sv = new CreateXALTree();
         walker.walk(sv, ast);
-        List<XALDocument> out = sv.getOutput();
-        //I expect 4 automata
-        assertEquals(out.size(),4);
+        xalFiles = sv.getOutput();
+    }
 
-        //check the output name
+    @Test
+    public void TestNumberOfAutomata() throws Exception {
+        assertEquals(xalFiles.size(),4);
+    }
+
+    @Test
+    public void TestNames() throws Exception {
         String[] filenameExpected = {"PredictionModule","SwitchNode","SwitchEdge", "GenerateTopologyAsync"};
-        for(int i = 0; i < out.size(); i++){
-            assertEquals(out.get(i).getFilename(), filenameExpected[i]);
+        for(int i = 0; i < xalFiles.size(); i++){
+            assertEquals(xalFiles.get(i).getFilename(), filenameExpected[i]);
         }
+    }
 
-        //check that each method belong to the correct automata
-
-        //PredictionModule
-        List<XALAutomaton> predictionModuleAutomaton = out.get(0).getAutomatons();
+    @Test
+    public void TestPredictionModule() throws Exception {
+        List<XALAutomaton> predictionModuleAutomaton = xalFiles.get(0).getAutomatons();
         String[] methodPredictionModuleExpected = {
                 "getName","isCallbackOrderingPrereq","isCallbackOrderingPostreq", "receive",
                 "getModuleServices", "getServiceImpls", "getModuleDependencies", "init",
@@ -53,9 +60,11 @@ public class TestCorrectMethodAssociation {
         for(int i = 0; i < methodPredictionModuleExpected.length; i++){
             assertEquals(predictionModuleAutomaton.get(i).getId(), methodPredictionModuleExpected[i]);
         }
+    }
 
-        //SwitchNode
-        List<XALAutomaton> switchNodeAutomaton = out.get(1).getAutomatons();
+    @Test
+    public void TestSwitchNode() throws Exception {
+        List<XALAutomaton> switchNodeAutomaton = xalFiles.get(1).getAutomatons();
         String[] switchNodeModuleExpected = {
                 "SwitchNode","getName","toString", "equals"
         };
@@ -63,10 +72,11 @@ public class TestCorrectMethodAssociation {
         for(int i = 0; i < switchNodeModuleExpected.length; i++){
             assertEquals(switchNodeAutomaton.get(i).getId(), switchNodeModuleExpected[i]);
         }
+    }
 
-
-        //SwitchEdge
-        List<XALAutomaton> switchEdgeAutomaton = out.get(2).getAutomatons();
+    @Test
+    public void TestSwitchEdge() throws Exception {
+        List<XALAutomaton> switchEdgeAutomaton = xalFiles.get(2).getAutomatons();
         String[] switchEdgeModuleExpected = {
                 "SwitchEdge", "getFrom", "getTo", "toString"
         };
@@ -74,9 +84,12 @@ public class TestCorrectMethodAssociation {
         for(int i = 0; i < switchEdgeModuleExpected.length; i++){
             assertEquals(switchEdgeAutomaton.get(i).getId(), switchEdgeModuleExpected[i]);
         }
+    }
 
+    @Test
+    public void TestGenerateTopologyAsync() throws Exception {
         //GenerateTopologyAsync
-        List<XALAutomaton> topologyAutomaton = out.get(3).getAutomatons();
+        List<XALAutomaton> topologyAutomaton = xalFiles.get(3).getAutomatons();
         String[] topologyExpected = {
                 "GenerateTopologyAsync", "run", "setRunning"
         };

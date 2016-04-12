@@ -54,6 +54,8 @@ public class XALDocument extends XALItem {
      * @param filename  The path of where store the XAL file.
      */
     public void toFile(String filename){
+        if(!filename.endsWith(".xal"))
+            filename += ".xal";
         try {
             PrintWriter out = new PrintWriter(filename);
             out.println(this.toString());

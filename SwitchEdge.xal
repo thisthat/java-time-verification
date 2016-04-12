@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<XAL>
+	<Automaton Id="SwitchEdge">
+		<GlobalState>
+			<Variable Name="_n1" Type="SwitchNode" Value="" IO="I"  />
+			<Variable Name="_n2" Type="SwitchNode" Value="" IO="I"  />
+		</GlobalState>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="Assignment" style="x:31; y:44; h:30; w:49" />
+			<State Id="Assignment_0" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates/>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="Assignment" style="[]" />
+			<Transition IdInputState="Assignment" IdOutputState="Assignment_0" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="getFrom">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="ReturnStatementnd" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="ReturnStatementnd"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="ReturnStatementnd" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="getTo">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="ReturnStatementnd" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="ReturnStatementnd"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="ReturnStatementnd" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="toString">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="ReturnStatementnd" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="ReturnStatementnd"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="ReturnStatementnd" style="[]" />
+		</Transitions>
+	</Automaton>
+</XAL>

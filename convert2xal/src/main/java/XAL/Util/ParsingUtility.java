@@ -128,7 +128,32 @@ public class ParsingUtility {
         return expr;
     }
 
-    public static String getExprType(ExpressionContext node){
+    public static String getTypeStmtExpression(ParserRuleContext node){
+        String type = null;
+        final Set<String> types = new HashSet<String>(Arrays.asList(
+                new String[] {
+                        "ReturnStatementContext", "MethodInvocationContext", "AssignmentContext", "UnaryExpressionContext",
+                        "LocalVariableDeclarationContext", "PostIncrementExpressionContext"
+                }
+        ));
+        for (ParseTree stmt: node.children) {
+            if(stmt instanceof TerminalNode){
+                continue;
+            }
+            else if( types.contains(stmt.getClass().getSimpleName())){
+                type = stmt.getClass().getSimpleName();
+                type = type.replace("Context", "");
+            }
+            if(type == null){
+                String tmp = getTypeStmtExpression((ParserRuleContext) stmt);
+                if(tmp != null)
+                    type = tmp;
+            }
+        }
+        return type;
+    }
+
+    public static String getExprType(ParserRuleContext node){
         boolean finish = false;
         ParserRuleContext current = node;
         while(!finish){
@@ -178,7 +203,7 @@ public class ParsingUtility {
                 type = MethodInvocationContext.class.toString();
             }
             else if(stmt instanceof AssignmentContext){
-                type = AssertStatementContext.class.toString();
+                type = AssignmentContext.class.toString();
             }
             else if(stmt instanceof LocalVariableDeclarationContext){
                 type = LocalVariableDeclarationContext.class.toString();
@@ -205,21 +230,24 @@ public class ParsingUtility {
      */
     public static String prettyPrintClassName(String str, ParserRuleContext ctx){
         str = str.substring(str.indexOf("$") + 1).replace("Context","");
-        String context = "";
+        String out = str;
         switch(str){
             case "LocalVariableDeclaration":
-                context = prettyPrintLocalVariableDeclaration(ctx);
+                out += prettyPrintLocalVariableDeclaration(ctx);
                 break;
             case "MethodInvocation":
-                context = prettyPrintMethodInvocation(ctx);
+                out += prettyPrintMethodInvocation(ctx);
                 break;
             case "ReturnStatement":
-                context = prettyPrintReturnStatement(ctx);
+                out += prettyPrintReturnStatement(ctx);
                 break;
+            case "ExpressionStatement":
+                str = getTypeStmtExpression(ctx);
+                out = str;
             default: break;
 
         }
-        return str + "_" + context;
+        return out;
     }
 
     public static String prettyPrintLocalVariableDeclaration(ParserRuleContext ctx){
