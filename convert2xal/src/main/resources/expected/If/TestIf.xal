@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<XAL>
+	<Automaton Id="singleNoBracket">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init"  />
+			<State Id="if"  />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="if"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="if"  />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="elseNoBracket">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init"  />
+			<State Id="if"  />
+			<State Id="endif"  />
+			<State Id="Assignment"  />
+			<State Id="Assignment_0"  />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="endif"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="if"  />
+			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="true"  />
+			<Transition IdInputState="if" IdOutputState="Assignment_0" MetricValue="false"  />
+			<Transition IdInputState="Assignment" IdOutputState="endif"  />
+			<Transition IdInputState="Assignment_0" IdOutputState="endif"  />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="singleBracket">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init"  />
+			<State Id="if"  />
+			<State Id="Assignment"  />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="if"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="if"  />
+			<Transition IdInputState="if" IdOutputState="Assignment"  />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="elseBracket">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init"  />
+			<State Id="if"  />
+			<State Id="endif"  />
+			<State Id="Assignment"  />
+			<State Id="Assignment_0"  />
+			<State Id="Assignment_1"  />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="endif"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="if"  />
+			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="true"  />
+			<Transition IdInputState="Assignment" IdOutputState="Assignment_0" MetricValue="true"  />
+			<Transition IdInputState="if" IdOutputState="Assignment_1" MetricValue="false"  />
+			<Transition IdInputState="Assignment_0" IdOutputState="endif"  />
+			<Transition IdInputState="Assignment_1" IdOutputState="endif"  />
+		</Transitions>
+	</Automaton>
+</XAL>

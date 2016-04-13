@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <XAL>
-	<Automaton Id="equalsElse">
+	<Automaton Id="equals">
 		<GlobalState>
 			<Variable Name="n" Type="Object" Value="" IO="I"  />
 		</GlobalState>
@@ -8,7 +8,7 @@
 		<ActionPool/>
 		<States>
 			<State Id="init" style="x:31; y:44; h:30; w:49" />
-			<State Id="LocalVariableDeclarationi" style="x:31; y:44; h:30; w:49" />
+			<State Id="nd" style="x:31; y:44; h:30; w:49" />
 			<State Id="if" style="x:31; y:44; h:30; w:49" />
 			<State Id="endif" style="x:31; y:44; h:30; w:49" />
 			<State Id="ReturnStatementnd" style="x:31; y:44; h:30; w:49" />
@@ -19,12 +19,39 @@
 			<FinalState IdState="ReturnStatementnd_0"/>
 		</FinalStates>
 		<Transitions>
-			<Transition IdInputState="init" IdOutputState="LocalVariableDeclarationi" style="[]" />
-			<Transition IdInputState="LocalVariableDeclarationi" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="ReturnStatementnd" MetricValue="true" style="[]" />
-			<Transition IdInputState="ReturnStatementnd" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
+			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
+			<Transition IdInputState="if" IdOutputState="ReturnStatementnd" style="[]" />
 			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="ReturnStatementnd" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="endif" IdOutputState="ReturnStatementnd_0" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="equalsElse">
+		<GlobalState>
+			<Variable Name="n" Type="Object" Value="" IO="I"  />
+		</GlobalState>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="nd" style="x:31; y:44; h:30; w:49" />
+			<State Id="if" style="x:31; y:44; h:30; w:49" />
+			<State Id="endif" style="x:31; y:44; h:30; w:49" />
+			<State Id="ReturnStatementnd" style="x:31; y:44; h:30; w:49" />
+			<State Id="ReturnStatementnd_0" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="endif"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
+			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
+			<Transition IdInputState="if" IdOutputState="ReturnStatementnd" style="[]" />
+			<Transition IdInputState="if" IdOutputState="ReturnStatementnd_0" style="[]" />
+			<Transition IdInputState="ReturnStatementnd" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="ReturnStatementnd_0" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
 </XAL>

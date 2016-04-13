@@ -134,32 +134,10 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterIfThenStatement(@NotNull IfThenStatementContext ctx) {
-        //child(2) -> expr
-        //child(4) -> if branch
-        walk(this,ctx.getChild(2));
-        XALState s = new XALState("if");
-        current_automata.addState(s);
-        XALTransition t = new XALTransition(lastState,s);
-        current_automata.addTransition(t);
-        lastState = s;
-        walk(this,ctx.getChild(4));
-        lastState = s;
-        //don't visit them anymore
-        ctx.children.remove(4);
-        ctx.children.remove(2);
-    }
+        //Expression before
+        generateStateExpression((ParserRuleContext) ctx.getChild(2));
 
-    @Override
-    public void enterIfThenElseStatement(@NotNull IfThenElseStatementContext ctx) {
-        //child(2) - expr
-        //child(4) - if branch
-        //child(6) - else branch
-
-        System.err.println("Before EXP");
-        walk(this,ctx.getChild(2));
-        System.err.println("After EXP");
-
-
+        //Create dummy nodes and connect the output of expr to the if dummy node
         XALState s = new XALState("if");
         XALState e = new XALState("endif");
         current_automata.addState(s);
@@ -168,24 +146,77 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         current_automata.addTransition(t);
         lastState = s;
 
-        System.err.println("Enter IF Branch");
-        metricValue = "true";
-        walk(this,ctx.getChild(4));
-        System.err.println("Exit IF Branch");
+        //IF BRANCH
+        ParseTree tmp;
+        tmp = ctx.getChild(4);
+        if(tmp instanceof StatementContext){
+            generateState((ParserRuleContext) tmp);
+        }
+        else {
+            walk(this,tmp);
+        }
         XALState lastIfBranch = lastState;
         lastState = s;
 
-        System.err.println("Enter Else Branch");
+        //since no else, linked if to endif
+        current_automata.addTransition(new XALTransition(s,e));
+
+        //Link the output of each branch to a dummy node
+        XALTransition tIf = new XALTransition(lastIfBranch,e);
+        current_automata.addTransition(tIf);
+        lastState = e;
+
+        //don't visit them anymore
+        ctx.children.remove(4);
+        ctx.children.remove(2);
+
+        metricValue = null;
+    }
+
+    @Override
+    public void enterIfThenElseStatement(@NotNull IfThenElseStatementContext ctx) {
+        //Expression before
+        generateStateExpression((ParserRuleContext) ctx.getChild(2));
+
+        //Create dummy nodes and connect the output of expr to the if dummy node
+        XALState s = new XALState("if");
+        XALState e = new XALState("endif");
+        current_automata.addState(s);
+        current_automata.addState(e);
+        XALTransition t = new XALTransition(lastState,s);
+        current_automata.addTransition(t);
+        lastState = s;
+
+        //IF BRANCH
+        metricValue = "true";
+        ParseTree tmp;
+        tmp = ctx.getChild(4);
+        if(tmp instanceof StatementContext){
+            generateState((ParserRuleContext) tmp);
+        }
+        else {
+            walk(this,tmp);
+        }
+        XALState lastIfBranch = lastState;
+        lastState = s;
+
+        //ELSE BRANCH
         metricValue = "false";
-        walk(this,ctx.getChild(6));
-        System.err.println("Exit Else Branch");
+        tmp = ctx.getChild(6);
+        //Check if single statement or complex structure
+        if(tmp instanceof StatementContext){
+            generateState((ParserRuleContext) tmp);
+        }
+        else {
+            walk(this,tmp);
+        }
         XALState lastElseBranch = lastState;
 
+        //Link the output of each branch to a dummy node
         XALTransition tIf = new XALTransition(lastIfBranch,e);
         current_automata.addTransition(tIf);
         XALTransition tElse = new XALTransition(lastElseBranch,e);
         current_automata.addTransition(tElse);
-
         lastState = e;
 
         //don't visit them anymore
@@ -195,7 +226,6 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
         metricValue = null;
 
-        System.err.println("EXIT IF");
     }
 
     @Override
@@ -242,17 +272,37 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     protected void generateState(ParserRuleContext ctx){
-        //skip if it is an if
+        //we have special rules for the if
         if(ParsingUtility.isIf(ctx)){
             return;
         }
         String type = ParsingUtility.getStmtType(ctx);
         XALState state = new XALState( ParsingUtility.prettyPrintClassName(type, ctx) );
         current_automata.addState(state);
-        System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
-        XALTransition transition = new XALTransition(lastState, state, metricValue);
+        XALTransition transition = new XALTransition(lastState, state);
         current_automata.addTransition(transition);
-        System.err.println("[DEBUG} Creating transition: (" + lastState.getId() + "," + state.getId() + ")");
+
+        if(__DEBUG__){
+            System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
+            System.err.println("[DEBUG} Creating transition: (" + lastState.getId() + "," + state.getId() + ")");
+        }
+
         lastState = state;
     }
+
+    protected void generateStateExpression(ParserRuleContext ctx){
+        XALState state = new XALState( ParsingUtility.prettyPrintExpression(ctx) );
+        current_automata.addState(state);
+        XALTransition transition = new XALTransition(lastState, state);
+        current_automata.addTransition(transition);
+
+        if(__DEBUG__){
+            System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
+            System.err.println("[DEBUG} Creating transition: (" + lastState.getId() + "," + state.getId() + ")");
+        }
+
+        lastState = state;
+    }
+
+
 }

@@ -8,12 +8,17 @@ public class SwitchNode {
     private String dpid;
 
     @Override
-    public boolean equalsElse(Object n){
-        int i = 0;
-        if(i > 0)
-            return true;
-        else
-            i = 10;
+    public boolean equals(Object n){
+        if(n.getClass().equals(this.getClass()))
+            return ((SwitchNode) n).getName().equals(this.dpid);
         return false;
+    }
+
+    @Override
+    public boolean equalsElse(Object n){
+        if(n.getClass().equals(this.getClass()))
+            return ((SwitchNode) n).getName().equals(this.dpid);
+        else
+            return false;
     }
 }

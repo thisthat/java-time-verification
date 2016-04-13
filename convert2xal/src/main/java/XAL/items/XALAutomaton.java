@@ -210,6 +210,11 @@ public class XALAutomaton extends XALItem {
     }
 
     @Override
+    public String toString() {
+        return toString(0);
+    }
+
+    @Override
     public String toString(int tab) {
         String out = "";
         out += tab(tab) + String.format("<Automaton Id=\"%s\">\n", this.id);
