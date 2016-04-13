@@ -7,6 +7,7 @@ import XAL.util.Pair;
 import XAL.util.ParsingUtility;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
 import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
@@ -24,13 +25,14 @@ import java.util.Stack;
  */
 public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
-    boolean __DEBUG__ = false;
+    boolean __DEBUG__ = true;
 
     List<XALDocument> documents;
     XALAutomaton current_automata;
     Stack<XALDocument> stackDocument = new Stack<XALDocument>();
     XALDocument current_document;
     static XALState lastState = null;
+    String metricValue = null;
 
     public CreateXALTree() {
         documents = new ArrayList<XALDocument>();
@@ -116,18 +118,84 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterBlockStatement(@NotNull BlockStatementContext ctx) {
+        generateState(ctx);
+    }
 
-        String type = ParsingUtility.getStmtType(ctx);
-        XALState state = new XALState( ParsingUtility.prettyPrintClassName(type, ctx) );
-        current_automata.addState(state);
-        XALTransition transition = new XALTransition(lastState, state);
-        current_automata.addTransition(transition);
-        lastState = state;
+
+    @Override
+    public void enterStatementNoShortIf(@NotNull StatementNoShortIfContext ctx) {
+        generateState(ctx);
     }
 
     @Override
     public void enterMethodInvocation_lfno_primary(@NotNull MethodInvocation_lfno_primaryContext ctx) {
         //System.err.println(ctx.getText());
+    }
+
+    @Override
+    public void enterIfThenStatement(@NotNull IfThenStatementContext ctx) {
+        //child(2) -> expr
+        //child(4) -> if branch
+        walk(this,ctx.getChild(2));
+        XALState s = new XALState("if");
+        current_automata.addState(s);
+        XALTransition t = new XALTransition(lastState,s);
+        current_automata.addTransition(t);
+        lastState = s;
+        walk(this,ctx.getChild(4));
+        lastState = s;
+        //don't visit them anymore
+        ctx.children.remove(4);
+        ctx.children.remove(2);
+    }
+
+    @Override
+    public void enterIfThenElseStatement(@NotNull IfThenElseStatementContext ctx) {
+        //child(2) - expr
+        //child(4) - if branch
+        //child(6) - else branch
+
+        System.err.println("Before EXP");
+        walk(this,ctx.getChild(2));
+        System.err.println("After EXP");
+
+
+        XALState s = new XALState("if");
+        XALState e = new XALState("endif");
+        current_automata.addState(s);
+        current_automata.addState(e);
+        XALTransition t = new XALTransition(lastState,s);
+        current_automata.addTransition(t);
+        lastState = s;
+
+        System.err.println("Enter IF Branch");
+        metricValue = "true";
+        walk(this,ctx.getChild(4));
+        System.err.println("Exit IF Branch");
+        XALState lastIfBranch = lastState;
+        lastState = s;
+
+        System.err.println("Enter Else Branch");
+        metricValue = "false";
+        walk(this,ctx.getChild(6));
+        System.err.println("Exit Else Branch");
+        XALState lastElseBranch = lastState;
+
+        XALTransition tIf = new XALTransition(lastIfBranch,e);
+        current_automata.addTransition(tIf);
+        XALTransition tElse = new XALTransition(lastElseBranch,e);
+        current_automata.addTransition(tElse);
+
+        lastState = e;
+
+        //don't visit them anymore
+        ctx.children.remove(6);
+        ctx.children.remove(4);
+        ctx.children.remove(2);
+
+        metricValue = null;
+
+        System.err.println("EXIT IF");
     }
 
     @Override
@@ -142,5 +210,49 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         if(__DEBUG__){
             System.err.println("{O} " + ctx.getClass().getCanonicalName());
         }
+    }
+
+    public void walk(ParseTreeListener listener, ParseTree t) {
+        if(t instanceof ErrorNode) {
+            listener.visitErrorNode((ErrorNode)t);
+        } else if(t instanceof TerminalNode) {
+            listener.visitTerminal((TerminalNode)t);
+        } else {
+            RuleNode r = (RuleNode)t;
+            this.enterRule(listener, r);
+            int n = r.getChildCount();
+            for(int i = 0; i < n; ++i) {
+                this.walk(listener, r.getChild(i));
+            }
+
+            this.exitRule(listener, r);
+        }
+    }
+
+    protected void enterRule(ParseTreeListener listener, RuleNode r) {
+        ParserRuleContext ctx = (ParserRuleContext)r.getRuleContext();
+        listener.enterEveryRule(ctx);
+        ctx.enterRule(listener);
+    }
+
+    protected void exitRule(ParseTreeListener listener, RuleNode r) {
+        ParserRuleContext ctx = (ParserRuleContext)r.getRuleContext();
+        ctx.exitRule(listener);
+        listener.exitEveryRule(ctx);
+    }
+
+    protected void generateState(ParserRuleContext ctx){
+        //skip if it is an if
+        if(ParsingUtility.isIf(ctx)){
+            return;
+        }
+        String type = ParsingUtility.getStmtType(ctx);
+        XALState state = new XALState( ParsingUtility.prettyPrintClassName(type, ctx) );
+        current_automata.addState(state);
+        System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
+        XALTransition transition = new XALTransition(lastState, state, metricValue);
+        current_automata.addTransition(transition);
+        System.err.println("[DEBUG} Creating transition: (" + lastState.getId() + "," + state.getId() + ")");
+        lastState = state;
     }
 }

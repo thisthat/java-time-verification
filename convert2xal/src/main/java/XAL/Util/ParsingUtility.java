@@ -3,6 +3,7 @@ package XAL.util;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.*;
@@ -318,5 +319,24 @@ public class ParsingUtility {
                 break;
         }
         return out;
+    }
+
+    public static boolean isIf(ParserRuleContext ctx) {
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (c instanceof IfThenElseStatementContext ||
+                c instanceof IfThenElseStatementNoShortIfContext ||
+                c instanceof IfThenStatementContext)
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                f = false;
+            }
+            else {
+                f = f | isIf((ParserRuleContext) c);
+            }
+        }
+        return f;
     }
 }

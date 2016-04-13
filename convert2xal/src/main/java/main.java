@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;
 import parser.visitors.SimpleVisitor;
+import sun.security.krb5.internal.PAEncTSEnc;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class Main {
         ParserRuleContext ast = a.getContext();
         ParseTreeWalker walker = new ParseTreeWalker();
         CreateXALTree sv = new CreateXALTree();
+
         walker.walk(sv, ast);
         List<XALDocument> out = sv.getOutput();
         for(XALDocument d : out){
