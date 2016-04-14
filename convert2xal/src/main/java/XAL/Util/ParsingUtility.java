@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * The class exports method that help the parsing of a source file in order to create easily a XAL document
@@ -175,14 +176,15 @@ public class ParsingUtility {
         ParserRuleContext current = node;
         while(!finish){
             if(current.getChildCount() > 1){
-                return new Pair(current.getClass().toString(), current);
+                return new Pair(current.getClass().getSimpleName(), current);
             }
             else if(current instanceof ExpressionNameContext){
-                return new Pair(current.getClass().toString(), current);
+                return new Pair(current.getClass().getSimpleName(), current);
             }
             else if(current instanceof LiteralContext){
-                return new Pair(current.getClass().toString(), current);
+                return new Pair(current.getClass().getSimpleName(), current);
             }
+
             else //here lays an error to check => TerminalNode casted to ParseRule
                 try {
                     current = (ParserRuleContext) current.getChild(0);
@@ -240,6 +242,7 @@ public class ParsingUtility {
                 out += prettyPrintMethodInvocation(ctx);
                 break;
             case "ReturnStatement":
+                out = "Return_";
                 out += prettyPrintReturnStatement(ctx);
                 break;
             case "ExpressionStatement":
@@ -313,12 +316,47 @@ public class ParsingUtility {
         expType = expType.substring(expType.indexOf("$") + 1).replace("Context","");
         switch (expType){
             case "MethodInvocation_lfno_primary":
-                out = e.getSecond().getChild(2).getText();
+                out = "call_" + e.getSecond().getChild(2).getText();
+                break;
+            case "Primary":
+                if(hasMethodCall((ParserRuleContext) e.getSecond())){
+                    out = "call_" + getLastMethodCall((ParserRuleContext) e.getSecond());
+                }
+                break;
+            case "Literal":
+                out = e.getSecond().getText();
                 break;
             default:
                 break;
         }
         return out;
+    }
+
+    private static String getLastMethodCall(ParserRuleContext ctx) {
+        String name = "ndm";
+        for(ParseTree c: ctx.children) {
+            if (c instanceof MethodInvocationContext ||
+                    c instanceof MethodInvocation_lfno_primaryContext ||
+                    c instanceof MethodInvocation_lf_primaryContext)
+            {
+                //search in the terminal node
+                String[] skips = { ".", ",", "(", ")"};
+                for(ParseTree t : ((ParserRuleContext) c).children){
+                    if( t instanceof TerminalNode){
+                        if(!Stream.of(skips).anyMatch( x -> x.equals(t.getText()))){
+                            name = t.getText();
+                        }
+                    }
+                }
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                name = getLastMethodCall((ParserRuleContext) c);
+            }
+        }
+        return name;
     }
 
     public static boolean isIf(ParserRuleContext ctx) {
@@ -335,6 +373,25 @@ public class ParsingUtility {
             }
             else {
                 f = f | isIf((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
+    public static boolean hasMethodCall(ParserRuleContext ctx){
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (c instanceof MethodInvocationContext ||
+                    c instanceof MethodInvocation_lfno_primaryContext ||
+                    c instanceof MethodInvocation_lf_primaryContext)
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                f = false;
+            }
+            else {
+                f = f | hasMethodCall((ParserRuleContext) c);
             }
         }
         return f;
