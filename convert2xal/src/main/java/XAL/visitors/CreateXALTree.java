@@ -25,7 +25,7 @@ import java.util.Stack;
  */
 public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
-    boolean __DEBUG__ = false;
+    boolean __DEBUG__ = true;
 
     List<XALDocument> documents;
     XALAutomaton current_automata;
@@ -194,6 +194,9 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         if(tmp instanceof StatementContext){
             generateState((ParserRuleContext) tmp);
         }
+        else if(tmp instanceof StatementNoShortIfContext && tmp.getText().startsWith("{")){
+            walk(this, tmp.getChild(0));
+        }
         else {
             walk(this,tmp);
         }
@@ -231,14 +234,14 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     @Override
     public void enterEveryRule(@NotNull ParserRuleContext ctx) {
         if(__DEBUG__){
-            System.err.println("{I} " + ctx.getClass().getCanonicalName());
+            //System.err.println("{I} " + ctx.getClass().getCanonicalName());
         }
     }
 
     @Override
     public void exitEveryRule(@NotNull ParserRuleContext ctx) {
         if(__DEBUG__){
-            System.err.println("{O} " + ctx.getClass().getCanonicalName());
+            //System.err.println("{O} " + ctx.getClass().getCanonicalName());
         }
     }
 
