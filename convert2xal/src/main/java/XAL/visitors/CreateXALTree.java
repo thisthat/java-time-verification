@@ -149,7 +149,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         //IF BRANCH
         ParseTree tmp;
         tmp = ctx.getChild(4);
-        if(tmp instanceof StatementContext){
+        if(tmp instanceof StatementContext && !tmp.getText().startsWith("{")){
             generateState((ParserRuleContext) tmp);
         }
         else {
@@ -207,7 +207,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         metricValue = "false";
         tmp = ctx.getChild(6);
         //Check if single statement or complex structure
-        if(tmp instanceof StatementContext){
+        if(tmp instanceof StatementContext && tmp.getText().startsWith("{")){
             generateState((ParserRuleContext) tmp);
         }
         else {

@@ -4,6 +4,7 @@
  */
 public class If {
 
+
     public void singleNoBracket(){
         if(x == 1)
             x = 1;
@@ -31,4 +32,42 @@ public class If {
         }
     }
 
+
+    public void ifInsideIf(){
+        if(y > 0) {
+            if(x > 1){
+                return 2;
+            }
+        }
+    }
+
+    public void ifInsideIfAndElse(){
+        if(y > 0) {
+            if(x > 1){
+                return 1;
+            }
+        }
+        else
+            if(x > 3){
+                return 2;
+            }
+    }
+
+    public void ifInsideIfAndElseWOutParentesis(){
+        if(y > 0)
+            if(x > 1)
+                return 1;
+        else
+            if(x > 3){
+                return 2;
+            }
+    }
+    public void ifInsideIfAndElseWOutParentesis(){
+        if(y > 0)
+            if(x > 1)
+                return 2;
+        else
+            if(x > 3)
+                return 4;
+    }
 }

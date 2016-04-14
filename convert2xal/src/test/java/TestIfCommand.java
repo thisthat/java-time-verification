@@ -82,6 +82,20 @@ public class TestIfCommand {
         assertEquals(out,expect);
     }
 
+    @Test
+    public void TestIfInsideIf() throws Exception {
+        String out = xal.getAutomatons().get(4).toString().replace("\t","    ");
+        out = out.replaceAll("style=\"(.*)\"", "");
+        String expect = IOUtils.toString(
+                this.getClass().getResourceAsStream("expected/If/TestIfInsideIf.xal"),
+                "UTF-8"
+        ).replaceAll("style=\"(.*)\"", "");;
+        assertEquals(out,expect);
+    }
+
+
+
+
     private void removeNamingIssue(XALDocument d){
         for(XALAutomaton a: d.getAutomatons()){
             removeNamingIssue(a);
