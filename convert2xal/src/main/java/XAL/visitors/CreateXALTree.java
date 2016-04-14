@@ -25,7 +25,7 @@ import java.util.Stack;
  */
 public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
-    boolean __DEBUG__ = true;
+    boolean __DEBUG__ = false;
 
     List<XALDocument> documents;
     XALAutomaton current_automata;

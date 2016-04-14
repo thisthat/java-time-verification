@@ -67,6 +67,14 @@ public class XALTransition extends XALItem {
         return from;
     }
 
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
     @Override
     public String toString(int tab) {
         String out = tab(tab) + String.format("<Transition IdInputState=\"%s\" IdOutputState=\"%s\" ",this.from, this.to);
