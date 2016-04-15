@@ -1,5 +1,6 @@
-package XAL.util;
+package XAL.util.parsing;
 
+import XAL.util.Pair;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -10,40 +11,17 @@ import java.util.*;
 import java.util.stream.Stream;
 
 /**
- * The class exports method that help the parsing of a source file in order to create easily a XAL document
  *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ParsingUtility {
-
-    /**
-     * Check if a method call has a method call inside
-     * @param method The method call
-     * @return true if it has a method call as parameter, false otherwise
-     */
-    public static boolean existsMethodInvocationInsideMethodCall(ParserRuleContext method){
-        boolean flag = false;
-        for (ParseTree elm: method.children ) {
-            if (
-                elm instanceof MethodInvocation_lf_primaryContext   ||
-                elm instanceof MethodInvocation_lfno_primaryContext ||
-                elm instanceof MethodInvocationContext
-            ) {
-                return true;
-            }
-            else {
-                if(elm.getChildCount() > 0)
-                    flag = flag || existsMethodInvocationInsideMethodCall((ParserRuleContext) elm);
-            }
-        }
-        return flag;
-    }
+public class GetObjects {
 
     /**
      * Collect all the variables and their types from a method definition.
-     * @param ctx The list of parameters
-     * @return A list of {@link Pair} contain &lt;Name, Type&gt;
+     *
+     * @param ctx   The list of parameters
+     * @return      A list of {@link Pair} contain &lt;Name, Type&gt;
      */
     public static List<Pair<String,String>> getParameterList(FormalParameterListContext ctx){
         //FormalParameterContext c = (FormalParameterContext) ctx.getChild(0);
@@ -80,8 +58,9 @@ public class ParsingUtility {
 
     /**
      * From a parameter, extract its name
-     * @param par the parameter in object
-     * @return its name
+     *
+     * @param par   The parameter in object
+     * @return      Its name
      */
     public static String getParameterName(FormalParameterContext par) {
         //System.out.println(par.getChild(1).getText());
@@ -90,32 +69,25 @@ public class ParsingUtility {
 
     /**
      * Extract the type of a parameter
-     * @param par the parameter in object
-     * @return its type
+     *
+     * @param par   The parameter in object
+     * @return      Its type
      */
     public static String getParameterType(FormalParameterContext par){
         return par.getChild(0).getText();
     }
 
-    public static boolean hasExpression(ParserRuleContext node){
-        boolean flag = false;
-        for (ParseTree elm: node.children ) {
-            if ( elm instanceof ExpressionContext ) {
-                return true;
-            }
-            else {
-                if(elm.getChildCount() > 0)
-                    flag = flag || hasExpression((ParserRuleContext) elm);
-            }
-        }
-        return flag;
-    }
 
-
+    /**
+     * Return the first expression in the tree passed as parameter.
+     *
+     * @param node  The node of the AST from where start to search for the expression.
+     * @return      The Expression || null.
+     */
     public static ExpressionContext getExpression(ParserRuleContext node){
         ExpressionContext expr = null;
         for (ParseTree elm: node.children ) {
-            if ( elm instanceof ExpressionContext ) {
+            if ( elm instanceof ExpressionContext) {
                 return (ExpressionContext)elm;
             }
             else {
@@ -130,6 +102,12 @@ public class ParsingUtility {
         return expr;
     }
 
+    /**
+     * Return the type of a Expression Statement. It assumes that the expression exists.
+     *
+     * @param node  The node from where start the search of the type.
+     * @return      The type.
+     */
     public static String getTypeStmtExpression(ParserRuleContext node){
         String type = null;
         final Set<String> types = new HashSet<String>(Arrays.asList(
@@ -155,6 +133,11 @@ public class ParsingUtility {
         return type;
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     public static String getExprType(ParserRuleContext node){
         boolean finish = false;
         ParserRuleContext current = node;
@@ -171,6 +154,12 @@ public class ParsingUtility {
         return "";
     }
 
+    /**
+     * Return the type of a Expression Statement. It assumes that the expression exists.
+     * @TODO REWRITE
+     * @param node  The node from where start the search of the type.
+     * @return      The type.
+     */
     public static Pair<String,ParseTree> getExprTypeWithContext(ExpressionContext node){
         boolean finish = false;
         ParserRuleContext current = node;
@@ -196,6 +185,11 @@ public class ParsingUtility {
         return new Pair(null,null);
     }
 
+    /**
+     *
+     * @param stmts
+     * @return
+     */
     public static String getStmtType(ParserRuleContext stmts){
         String type = null;
         for (ParseTree stmt: stmts.children) {
@@ -227,112 +221,11 @@ public class ParsingUtility {
     }
 
     /**
-     * Remove all the <i>stupid</i> decoration of java to keep track of the type and presenting only a good representation to the user.
-     * @param str   The type of the object to make prettier
-     * @return      An hence visualization of the character that is faboulousssss
+     *
+     * @param ctx
+     * @return
      */
-    public static String prettyPrintClassName(String str, ParserRuleContext ctx){
-        str = str.substring(str.indexOf("$") + 1).replace("Context","");
-        String out = str;
-        switch(str){
-            case "LocalVariableDeclaration":
-                out += prettyPrintLocalVariableDeclaration(ctx);
-                break;
-            case "MethodInvocation":
-                out += prettyPrintMethodInvocation(ctx);
-                break;
-            case "ReturnStatement":
-                out = "Return_";
-                out += prettyPrintReturnStatement(ctx);
-                break;
-            case "ExpressionStatement":
-                str = getTypeStmtExpression(ctx);
-                out = str;
-            default: break;
-
-        }
-        return out;
-    }
-
-    public static String prettyPrintLocalVariableDeclaration(ParserRuleContext ctx){
-        String type = null;
-        if(ctx instanceof VariableDeclaratorIdContext){
-            type = ctx.getText();
-        } else {
-            for (ParseTree elm : ctx.children ) {
-                if(elm instanceof TerminalNode)
-                    continue;
-                String tmp = prettyPrintLocalVariableDeclaration((ParserRuleContext) elm);
-                if(type == null){
-                    type = tmp;
-                }
-            }
-        }
-        return type;
-    }
-
-    public static String prettyPrintMethodInvocation(ParserRuleContext ctx){
-        String type = null;
-        if(ctx instanceof MethodInvocationContext){
-            type = ctx.getChild(2).getText();
-        } else {
-            for (ParseTree elm : ctx.children ) {
-                if(elm instanceof TerminalNode)
-                    continue;
-                String tmp = prettyPrintMethodInvocation((ParserRuleContext) elm);
-                if(type == null){
-                    type = tmp;
-                }
-            }
-        }
-        return type;
-    }
-
-    public static String prettyPrintReturnStatement(ParserRuleContext ctx){
-        return prettyPrintExpression(ctx);
-    }
-
-    public static String prettyPrintExpression(ParserRuleContext ctx){
-        String type = null;
-        if(ctx instanceof ExpressionContext){
-            type = prettyPrintExpression_helper((ExpressionContext)ctx);
-        } else {
-            for (ParseTree elm : ctx.children ) {
-                if(elm instanceof TerminalNode)
-                    continue;
-                String tmp = prettyPrintExpression((ParserRuleContext) elm);
-                if(type == null){
-                    type = tmp;
-                }
-            }
-        }
-        return type;
-    }
-
-    public static String prettyPrintExpression_helper(ExpressionContext expr){
-        String out = "nd";
-        Pair<String,ParseTree> e = getExprTypeWithContext(expr);
-        String expType = e.getFirst();
-        expType = expType.substring(expType.indexOf("$") + 1).replace("Context","");
-        switch (expType){
-            case "MethodInvocation_lfno_primary":
-                out = "call_" + e.getSecond().getChild(2).getText();
-                break;
-            case "Primary":
-                if(hasMethodCall((ParserRuleContext) e.getSecond())){
-                    out = "call_" + getLastMethodCall((ParserRuleContext) e.getSecond());
-                }
-                break;
-            case "Literal":
-                out = e.getSecond().getText();
-                break;
-            default:
-                break;
-        }
-        return out;
-    }
-
-    private static String getLastMethodCall(ParserRuleContext ctx) {
+    public static String getLastMethodCall(ParserRuleContext ctx) {
         String name = "ndm";
         for(ParseTree c: ctx.children) {
             if (c instanceof MethodInvocationContext ||
@@ -343,7 +236,7 @@ public class ParsingUtility {
                 String[] skips = { ".", ",", "(", ")"};
                 for(ParseTree t : ((ParserRuleContext) c).children){
                     if( t instanceof TerminalNode){
-                        if(!Stream.of(skips).anyMatch( x -> x.equals(t.getText()))){
+                        if(!Stream.of(skips).anyMatch(x -> x.equals(t.getText()))){
                             name = t.getText();
                         }
                     }
@@ -358,43 +251,4 @@ public class ParsingUtility {
         }
         return name;
     }
-
-    public static boolean isIf(ParserRuleContext ctx) {
-        boolean f = false;
-        for(ParseTree c: ctx.children) {
-            if (c instanceof IfThenElseStatementContext ||
-                c instanceof IfThenElseStatementNoShortIfContext ||
-                c instanceof IfThenStatementContext)
-            {
-                f = true;
-            }
-            else if(c instanceof TerminalNodeImpl){
-                f = false;
-            }
-            else {
-                f = f | isIf((ParserRuleContext) c);
-            }
-        }
-        return f;
-    }
-
-    public static boolean hasMethodCall(ParserRuleContext ctx){
-        boolean f = false;
-        for(ParseTree c: ctx.children) {
-            if (c instanceof MethodInvocationContext ||
-                    c instanceof MethodInvocation_lfno_primaryContext ||
-                    c instanceof MethodInvocation_lf_primaryContext)
-            {
-                f = true;
-            }
-            else if(c instanceof TerminalNodeImpl){
-                f = false;
-            }
-            else {
-                f = f | hasMethodCall((ParserRuleContext) c);
-            }
-        }
-        return f;
-    }
-
 }

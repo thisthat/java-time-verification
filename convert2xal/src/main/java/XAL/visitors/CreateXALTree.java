@@ -4,12 +4,11 @@ package XAL.visitors;
 import XAL.exception.XALMalformedException;
 import XAL.items.*;
 import XAL.util.Pair;
-import XAL.util.ParsingUtility;
+import XAL.util.parsing.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
-import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -105,7 +104,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     @Override
     public void enterFormalParameterList(@NotNull FormalParameterListContext ctx) {
         super.enterFormalParameterList(ctx);
-        List<Pair<String,String>> vars = ParsingUtility.getParameterList(ctx);
+        List<Pair<String,String>> vars = GetObjects.getParameterList(ctx);
         for(Pair<String,String> var : vars){
             current_automata.getGlobalState().addVariable( new XALVariable( var.getFirst(), var.getSecond(), "", XALVariable.XALIO.I) );
         }
@@ -214,7 +213,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         if(ctx instanceof StatementContext && !ctx.getText().startsWith("{")){
             //problem if we have inside another construct, like if/while/for/..
             //we have to check if there are inside such construct
-            if(ParsingUtility.isIf((ParserRuleContext) ctx)){
+            if(Exists.isIf((ParserRuleContext) ctx)){
                 walk(this, ctx);
             }
             else
@@ -231,16 +230,6 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         else {
             walk(this,ctx);
         }
-        // which one?
-        /*if(ctx instanceof StatementContext){
-            generateState((ParserRuleContext) ctx);
-        }
-        else if(ctx instanceof StatementNoShortIfContext && ctx.getText().startsWith("{")){
-
-        }
-        else {
-            walk(this,ctx);
-        }*/
     }
 
     @Override
@@ -288,11 +277,11 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     protected void generateState(ParserRuleContext ctx){
         //we have special rules for the if
-        if(ParsingUtility.isIf(ctx)){
+        if(Exists.isIf(ctx)){
             return;
         }
-        String type = ParsingUtility.getStmtType(ctx);
-        XALState state = new XALState( ParsingUtility.prettyPrintClassName(type, ctx) );
+        String type = GetObjects.getStmtType(ctx);
+        XALState state = new XALState( PrettyPrint.prettyPrintClassName(type, ctx) );
         current_automata.addState(state);
         XALTransition transition = new XALTransition(lastState, state);
         current_automata.addTransition(transition);
@@ -306,7 +295,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     protected void generateStateExpression(ParserRuleContext ctx){
-        XALState state = new XALState( ParsingUtility.prettyPrintExpression(ctx) );
+        XALState state = new XALState( PrettyPrint.prettyPrintExpression(ctx) );
         current_automata.addState(state);
         XALTransition transition = new XALTransition(lastState, state);
         current_automata.addTransition(transition);
