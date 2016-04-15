@@ -147,14 +147,9 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         lastState = s;
 
         //IF BRANCH
-        ParseTree tmp;
-        tmp = ctx.getChild(4);
-        if(tmp instanceof StatementContext && !tmp.getText().startsWith("{")){
-            generateState((ParserRuleContext) tmp);
-        }
-        else {
-            walk(this,tmp);
-        }
+        produceIfElseCode(ctx.getChild(4));
+
+
         XALState lastIfBranch = lastState;
         lastState = s;
 
@@ -189,30 +184,14 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
         //IF BRANCH
         metricValue = "true";
-        ParseTree tmp;
-        tmp = ctx.getChild(4);
-        if(tmp instanceof StatementContext){
-            generateState((ParserRuleContext) tmp);
-        }
-        else if(tmp instanceof StatementNoShortIfContext && tmp.getText().startsWith("{")){
-            walk(this, tmp.getChild(0));
-        }
-        else {
-            walk(this,tmp);
-        }
+        produceIfElseCode(ctx.getChild(4));
+
         XALState lastIfBranch = lastState;
         lastState = s;
 
         //ELSE BRANCH
         metricValue = "false";
-        tmp = ctx.getChild(6);
-        //Check if single statement or complex structure
-        if(tmp instanceof StatementContext && tmp.getText().startsWith("{")){
-            generateState((ParserRuleContext) tmp);
-        }
-        else {
-            walk(this,tmp);
-        }
+        produceIfElseCode(ctx.getChild(6));
         XALState lastElseBranch = lastState;
 
         //Link the output of each branch to a dummy node
@@ -229,6 +208,39 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
         metricValue = null;
 
+    }
+
+    private void produceIfElseCode(ParseTree ctx){
+        if(ctx instanceof StatementContext && !ctx.getText().startsWith("{")){
+            //problem if we have inside another construct, like if/while/for/..
+            //we have to check if there are inside such construct
+            if(ParsingUtility.isIf((ParserRuleContext) ctx)){
+                walk(this, ctx);
+            }
+            else
+                generateState((ParserRuleContext) ctx);
+        }
+        else if(ctx.getText().startsWith("{") &&
+                (
+                    ctx instanceof StatementContext ||
+                    ctx instanceof StatementNoShortIfContext
+                )
+                ){
+            walk(this, ctx.getChild(0));
+        }
+        else {
+            walk(this,ctx);
+        }
+        // which one?
+        /*if(ctx instanceof StatementContext){
+            generateState((ParserRuleContext) ctx);
+        }
+        else if(ctx instanceof StatementNoShortIfContext && ctx.getText().startsWith("{")){
+
+        }
+        else {
+            walk(this,ctx);
+        }*/
     }
 
     @Override

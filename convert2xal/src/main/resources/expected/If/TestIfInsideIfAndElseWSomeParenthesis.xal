@@ -1,0 +1,39 @@
+<Automaton Id="ifInsideIfAndElseWSomeParenthesis">
+    <GlobalState/>
+    <Clocks/>
+    <ActionPool/>
+    <States>
+        <State Id="state_0" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_1" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_2" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_3" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_4" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_5" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_6" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_7" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_8" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_9" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_10" style="x:31; y:44; h:30; w:49" />
+        <State Id="state_11" style="x:31; y:44; h:30; w:49" />
+    </States>
+    <InitialState IdState="state_0"/>
+    <FinalStates>
+        <FinalState IdState="state_3"/>
+    </FinalStates>
+    <Transitions>
+        <Transition IdInputState="state_0" IdOutputState="state_1" style="[]" />
+        <Transition IdInputState="state_1" IdOutputState="state_2" style="[]" />
+        <Transition IdInputState="state_2" IdOutputState="state_4" style="[]" />
+        <Transition IdInputState="state_4" IdOutputState="state_5" style="[]" />
+        <Transition IdInputState="state_5" IdOutputState="state_7" style="[]" />
+        <Transition IdInputState="state_5" IdOutputState="state_8" style="[]" />
+        <Transition IdInputState="state_8" IdOutputState="state_9" style="[]" />
+        <Transition IdInputState="state_9" IdOutputState="state_11" style="[]" />
+        <Transition IdInputState="state_9" IdOutputState="state_10" style="[]" />
+        <Transition IdInputState="state_11" IdOutputState="state_10" style="[]" />
+        <Transition IdInputState="state_7" IdOutputState="state_6" style="[]" />
+        <Transition IdInputState="state_10" IdOutputState="state_6" style="[]" />
+        <Transition IdInputState="state_2" IdOutputState="state_3" style="[]" />
+        <Transition IdInputState="state_6" IdOutputState="state_3" style="[]" />
+    </Transitions>
+</Automaton>

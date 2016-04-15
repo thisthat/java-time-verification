@@ -53,21 +53,24 @@ public class If {
             }
     }
 
-    public void ifInsideIfAndElseWOutParentesis(){
+    public void ifInsideIfAndElseWSomeParenthesis(){
         if(y > 0)
             if(x > 1)
                 return 1;
-        else
-            if(x > 3){
-                return 2;
-            }
+            else
+                if(x > 3){
+                    return 2;
+                }
     }
-    public void ifInsideIfAndElseWOutParentesis(){
+
+    public void ifInsideIfAndElseWOutParenthesis(){
         if(y > 0)
             if(x > 1)
                 return 2;
-        else
-            if(x > 3)
-                return 4;
+            else
+                if(x > 3)
+                    return 4;
     }
+
+
 }

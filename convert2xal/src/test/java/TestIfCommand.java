@@ -45,7 +45,7 @@ public class TestIfCommand {
         String expect = IOUtils.toString(
                 this.getClass().getResourceAsStream("expected/If/TestIf.xal"),
                 "UTF-8"
-        ).replaceAll("style=\"(.*)\"", "");;
+        ).replaceAll("style=\"(.*)\"", "");
         assertEquals(out,expect);
     }
 
@@ -56,7 +56,7 @@ public class TestIfCommand {
         String expect = IOUtils.toString(
                 this.getClass().getResourceAsStream("expected/If/TestIfElse.xal"),
                 "UTF-8"
-        ).replaceAll("style=\"(.*)\"", "");;
+        ).replaceAll("style=\"(.*)\"", "");
         assertEquals(out,expect);
     }
 
@@ -67,7 +67,7 @@ public class TestIfCommand {
         String expect = IOUtils.toString(
                 this.getClass().getResourceAsStream("expected/If/TestIfBracket.xal"),
                 "UTF-8"
-        ).replaceAll("style=\"(.*)\"", "");;
+        ).replaceAll("style=\"(.*)\"", "");
         assertEquals(out,expect);
     }
 
@@ -78,7 +78,7 @@ public class TestIfCommand {
         String expect = IOUtils.toString(
                 this.getClass().getResourceAsStream("expected/If/TestIfElseBracket.xal"),
                 "UTF-8"
-        ).replaceAll("style=\"(.*)\"", "");;
+        ).replaceAll("style=\"(.*)\"", "");
         assertEquals(out,expect);
     }
 
@@ -89,12 +89,42 @@ public class TestIfCommand {
         String expect = IOUtils.toString(
                 this.getClass().getResourceAsStream("expected/If/TestIfInsideIf.xal"),
                 "UTF-8"
-        ).replaceAll("style=\"(.*)\"", "");;
+        ).replaceAll("style=\"(.*)\"", "");
         assertEquals(out,expect);
     }
 
+    @Test
+    public void TestIfInsideIfAndElse() throws Exception {
+        String out = xal.getAutomatons().get(5).toString().replace("\t","    ");
+        out = out.replaceAll("style=\"(.*)\"", "");
+        String expect = IOUtils.toString(
+                this.getClass().getResourceAsStream("expected/If/TestIfInsideIfAndElse.xal"),
+                "UTF-8"
+        ).replaceAll("style=\"(.*)\"", "");
+        assertEquals(out,expect);
+    }
 
+    @Test
+    public void ifInsideIfAndElseWSomeParenthesis() throws Exception {
+        String out = xal.getAutomatons().get(6).toString().replace("\t","    ");
+        out = out.replaceAll("style=\"(.*)\"", "");
+        String expect = IOUtils.toString(
+                this.getClass().getResourceAsStream("expected/If/TestIfInsideIfAndElseWSomeParenthesis.xal"),
+                "UTF-8"
+        ).replaceAll("style=\"(.*)\"", "");
+        assertEquals(out,expect);
+    }
 
+    @Test
+    public void TestIfInsideIfAndElseWOutParenthesis() throws Exception {
+        String out = xal.getAutomatons().get(7).toString().replace("\t","    ");
+        out = out.replaceAll("style=\"(.*)\"", "");
+        String expect = IOUtils.toString(
+                this.getClass().getResourceAsStream("expected/If/TestIfInsideIfAndElseWOutParenthesis.xal"),
+                "UTF-8"
+        ).replaceAll("style=\"(.*)\"", "");
+        assertEquals(out,expect);
+    }
 
     private void removeNamingIssue(XALDocument d){
         for(XALAutomaton a: d.getAutomatons()){
