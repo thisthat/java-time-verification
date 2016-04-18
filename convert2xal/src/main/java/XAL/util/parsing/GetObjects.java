@@ -1,6 +1,7 @@
 package XAL.util.parsing;
 
 import XAL.util.Pair;
+import com.sun.xml.internal.xsom.impl.Ref;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -85,7 +86,8 @@ public class GetObjects {
      * @return      The Expression || null.
      */
     public static ExpressionContext getExpression(ParserRuleContext node){
-        ExpressionContext expr = null;
+        //if we pass at first call an expression
+        ExpressionContext expr = (node instanceof ExpressionContext) ? (ExpressionContext) node : null;
         for (ParseTree elm: node.children ) {
             if ( elm instanceof ExpressionContext) {
                 return (ExpressionContext)elm;
@@ -155,58 +157,63 @@ public class GetObjects {
     }
 
     /**
-     * Return the type of a Expression Statement. It assumes that the expression exists.
-     * @TODO REWRITE
+     * Return the type of a Expression Statement. It assumes that the expression exists since the type checking.
      * @param node  The node from where start the search of the type.
      * @return      The type.
      */
     public static Pair<String,ParseTree> getExprTypeWithContext(ExpressionContext node){
-        boolean finish = false;
-        ParserRuleContext current = node;
-        while(!finish){
-            if(current.getChildCount() > 1){
-                return new Pair(current.getClass().getSimpleName(), current);
-            }
-            else if(current instanceof ExpressionNameContext){
-                return new Pair(current.getClass().getSimpleName(), current);
-            }
-            else if(current instanceof LiteralContext){
-                return new Pair(current.getClass().getSimpleName(), current);
-            }
+        return getExprTypeWithContext_helper(node);
+    }
 
-            else //here lays an error to check => TerminalNode casted to ParseRule
-                try {
-                    current = (ParserRuleContext) current.getChild(0);
-                } catch(Exception e){
-                    System.out.println(current.getText());
-                    throw e;
+    private static Pair<String,ParseTree> getExprTypeWithContext_helper(ParserRuleContext ctx){
+        Pair<String,ParseTree> result = null;
+        for(ParseTree c: ctx.children) {
+            if(c.getChildCount() > 1){
+                result = new Pair(c.getClass().getSimpleName(), c);
+            }
+            else if(c instanceof ExpressionNameContext){
+                result = new Pair(c.getClass().getSimpleName(), c);
+            }
+            else if(c instanceof LiteralContext){
+                result = new Pair(c.getClass().getSimpleName(), c);
+            }
+            else if(c instanceof TerminalNode){
+                continue;
+            }
+            else { //here lays an error to check => TerminalNode casted to ParseRule
+                ParserRuleContext node = (ParserRuleContext) c;
+                Pair<String,ParseTree> r = getExprTypeWithContext_helper(node);
+                if(result == null){
+                    result = r;
                 }
+            }
         }
-        return new Pair(null,null);
+        return result;
     }
 
     /**
+     * Return the type of the statement
      *
-     * @param stmts
-     * @return
+     * @param stmts The node to parse to get the type of the Statement.
+     * @return      The class name simplified of the statement.
      */
     public static String getStmtType(ParserRuleContext stmts){
         String type = null;
         for (ParseTree stmt: stmts.children) {
             if(stmt instanceof ReturnStatementContext){
-                type = ReturnStatementContext.class.toString();
+                type = ReturnStatementContext.class.getSimpleName();
             }
             else if(stmt instanceof MethodInvocationContext){
-                type = MethodInvocationContext.class.toString();
+                type = MethodInvocationContext.class.getSimpleName();
             }
             else if(stmt instanceof AssignmentContext){
-                type = AssignmentContext.class.toString();
+                type = AssignmentContext.class.getSimpleName();
             }
             else if(stmt instanceof LocalVariableDeclarationContext){
-                type = LocalVariableDeclarationContext.class.toString();
+                type = LocalVariableDeclarationContext.class.getSimpleName();
             }
             else if(stmt instanceof ExpressionStatementContext){
-                type = ExpressionStatementContext.class.toString();
+                type = ExpressionStatementContext.class.getSimpleName();
             }
             else if(stmt instanceof TerminalNode){
                 continue;
@@ -221,9 +228,10 @@ public class GetObjects {
     }
 
     /**
+     * Return the name of the last method called in an expression.
      *
-     * @param ctx
-     * @return
+     * @param ctx   The node from where start the scan.
+     * @return      The name of the last method called in an expression.
      */
     public static String getLastMethodCall(ParserRuleContext ctx) {
         String name = "ndm";

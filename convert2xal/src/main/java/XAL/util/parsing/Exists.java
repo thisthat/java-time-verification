@@ -34,6 +34,13 @@ public class Exists {
         return flag;
     }
 
+
+    /**
+     * Check if there is if inside the node element
+     *
+     * @param ctx   The node element from where start the scan.
+     * @return      True if there is an if node inside.
+     */
     public static boolean isIf(ParserRuleContext ctx) {
         boolean f = false;
         for(ParseTree c: ctx.children) {
@@ -54,6 +61,12 @@ public class Exists {
         return f;
     }
 
+
+    /**
+     * Check if there is a method call inside the element.
+     * @param ctx   The node from where start to scan.
+     * @return      True if a method is called.
+     */
     public static boolean hasMethodCall(ParserRuleContext ctx){
         boolean f = false;
         for(ParseTree c: ctx.children) {
@@ -75,10 +88,9 @@ public class Exists {
     }
 
     /**
-     *
-     *
-     * @param node
-     * @return
+     * Check if there is an expression inside the node.
+     * @param node  The point from where start to scan.
+     * @return      True if an expression is founded.
      */
     public static boolean hasExpression(ParserRuleContext node){
         boolean flag = false;
