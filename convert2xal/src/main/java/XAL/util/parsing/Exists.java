@@ -78,10 +78,27 @@ public class Exists {
                 f = true;
             }
             else if(c instanceof TerminalNodeImpl){
-                f = false;
+                continue;
             }
             else {
                 f = f | hasMethodCall((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
+    public static boolean hasNewObject(ParserRuleContext ctx){
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (c instanceof ClassInstanceCreationExpression_lfno_primaryContext)
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                f = f | hasNewObject((ParserRuleContext) c);
             }
         }
         return f;

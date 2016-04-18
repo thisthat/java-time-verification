@@ -1,6 +1,8 @@
 package XAL.util.parsing;
 
 import XAL.util.Pair;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
+import com.sun.xml.internal.ws.api.wsdl.parser.XMLEntityResolver;
 import com.sun.xml.internal.xsom.impl.Ref;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -88,6 +90,9 @@ public class GetObjects {
     public static ExpressionContext getExpression(ParserRuleContext node){
         //if we pass at first call an expression
         ExpressionContext expr = (node instanceof ExpressionContext) ? (ExpressionContext) node : null;
+        if(expr != null){
+            return expr;
+        }
         for (ParseTree elm: node.children ) {
             if ( elm instanceof ExpressionContext) {
                 return (ExpressionContext)elm;
@@ -234,11 +239,12 @@ public class GetObjects {
      * @return      The name of the last method called in an expression.
      */
     public static String getLastMethodCall(ParserRuleContext ctx) {
-        String name = "ndm";
+        String name = "nd_getLastMethodCall";
         for(ParseTree c: ctx.children) {
             if (c instanceof MethodInvocationContext ||
                     c instanceof MethodInvocation_lfno_primaryContext ||
-                    c instanceof MethodInvocation_lf_primaryContext)
+                    c instanceof MethodInvocation_lf_primaryContext
+                )
             {
                 //search in the terminal node
                 String[] skips = { ".", ",", "(", ")"};
@@ -248,13 +254,40 @@ public class GetObjects {
                             name = t.getText();
                         }
                     }
+                    else if(t instanceof MethodNameContext){
+                        name = t.getText();
+                    }
                 }
+                return name;
             }
             else if(c instanceof TerminalNodeImpl){
                 continue;
             }
             else {
-                name = getLastMethodCall((ParserRuleContext) c);
+                String tmp = getLastMethodCall((ParserRuleContext) c);
+                if(!tmp.equals("nd_getLastMethodCall")){
+                    name = tmp;
+                }
+            }
+        }
+        return name;
+    }
+
+
+    public static String getNewType(ParserRuleContext ctx){
+        String name = "nd_getNewType";
+        for(ParseTree c: ctx.children) {
+            if(c instanceof ClassInstanceCreationExpression_lfno_primaryContext){
+                name = ((ParserRuleContext) c).getChild(1).getText();
+            }
+            else if(c instanceof TerminalNode){
+                continue;
+            }
+            else {
+                String tmp = getNewType((ParserRuleContext) c);
+                if(name.equals("nd_getNewType")){
+                    name = tmp;
+                }
             }
         }
         return name;

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<XAL>
+	<Automaton Id="init">
+		<GlobalState>
+			<Variable Name="context" Type="FloodlightModuleContext" Value="" IO="I"  />
+		</GlobalState>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="not_checkSwitchDuplicate" style="x:31; y:44; h:30; w:49" />
+			<State Id="if" style="x:31; y:44; h:30; w:49" />
+			<State Id="endif" style="x:31; y:44; h:30; w:49" />
+			<State Id="call_add" style="x:31; y:44; h:30; w:49" />
+			<State Id="1" style="x:31; y:44; h:30; w:49" />
+			<State Id="if_0" style="x:31; y:44; h:30; w:49" />
+			<State Id="endif_0" style="x:31; y:44; h:30; w:49" />
+			<State Id="call_add_0" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="endif_0"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="not_checkSwitchDuplicate" style="[]" />
+			<Transition IdInputState="not_checkSwitchDuplicate" IdOutputState="if" style="[]" />
+			<Transition IdInputState="if" IdOutputState="call_add" style="[]" />
+			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="call_add" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="endif" IdOutputState="1" style="[]" />
+			<Transition IdInputState="1" IdOutputState="if_0" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="call_add_0" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="endif_0" style="[]" />
+			<Transition IdInputState="call_add_0" IdOutputState="endif_0" style="[]" />
+		</Transitions>
+	</Automaton>
+</XAL>

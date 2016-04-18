@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <XAL>
+	<Automaton Id="SwitchNode">
+		<GlobalState>
+			<Variable Name="n" Type="String" Value="" IO="I"  />
+		</GlobalState>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="ExpressionStatementContext" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates/>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="ExpressionStatementContext" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="getName">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="Return_dpid" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="Return_dpid"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="Return_dpid" style="[]" />
+		</Transitions>
+	</Automaton>
+	<Automaton Id="toString">
+		<GlobalState/>
+		<Clocks/>
+		<ActionPool/>
+		<States>
+			<State Id="init" style="x:31; y:44; h:30; w:49" />
+			<State Id="Return_dpid" style="x:31; y:44; h:30; w:49" />
+		</States>
+		<InitialState IdState="init"/>
+		<FinalStates>
+			<FinalState IdState="Return_dpid"/>
+		</FinalStates>
+		<Transitions>
+			<Transition IdInputState="init" IdOutputState="Return_dpid" style="[]" />
+		</Transitions>
+	</Automaton>
 	<Automaton Id="equals">
 		<GlobalState>
 			<Variable Name="n" Type="Object" Value="" IO="I"  />
@@ -25,33 +73,6 @@
 			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="Return_call_equals" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="endif" IdOutputState="Return_false" style="[]" />
-		</Transitions>
-	</Automaton>
-	<Automaton Id="equalsElse">
-		<GlobalState>
-			<Variable Name="n" Type="Object" Value="" IO="I"  />
-		</GlobalState>
-		<Clocks/>
-		<ActionPool/>
-		<States>
-			<State Id="init" style="x:31; y:44; h:30; w:49" />
-			<State Id="call_equals" style="x:31; y:44; h:30; w:49" />
-			<State Id="if" style="x:31; y:44; h:30; w:49" />
-			<State Id="endif" style="x:31; y:44; h:30; w:49" />
-			<State Id="Return_call_equals" style="x:31; y:44; h:30; w:49" />
-			<State Id="Return_false" style="x:31; y:44; h:30; w:49" />
-		</States>
-		<InitialState IdState="init"/>
-		<FinalStates>
-			<FinalState IdState="endif"/>
-		</FinalStates>
-		<Transitions>
-			<Transition IdInputState="init" IdOutputState="call_equals" style="[]" />
-			<Transition IdInputState="call_equals" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Return_call_equals" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Return_false" style="[]" />
-			<Transition IdInputState="Return_call_equals" IdOutputState="endif" style="[]" />
-			<Transition IdInputState="Return_false" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
 </XAL>

@@ -22,7 +22,7 @@ import static XAL.util.parsing.GetObjects.*;
 public class PrettyPrint {
 
     /**
-     * Convert the ugly names of states wrt its type
+     * Convert ugly names of states wrt its type
      *
      * @param str   The type of the object to make prettier
      * @return      An hence visualization of the character that is faboulousssss
@@ -32,9 +32,9 @@ public class PrettyPrint {
         String out = str;
         switch(str){
             case "LocalVariableDeclaration":
-                out += prettyPrintLocalVariableDeclaration(ctx);
+                out = "DeclVar_" + prettyPrintLocalVariableDeclaration(ctx);
                 break;
-            case "MethodInvocation":
+            case "call_":
                 out += prettyPrintMethodInvocation(ctx);
                 break;
             case "ReturnStatement":
@@ -42,10 +42,25 @@ public class PrettyPrint {
                 out += prettyPrintReturnStatement(ctx);
                 break;
             case "ExpressionStatement":
-                str = getTypeStmtExpression(ctx);
-                out = str;
+                out = processPrettyPrintExpressionStatement(ctx);
             default: break;
 
+        }
+        return out;
+    }
+
+    private static String processPrettyPrintExpressionStatement(ParserRuleContext ctx){
+        String out = getStmtType(ctx);
+        switch(out){
+            case "ExpressionStatementContext":
+                if(Exists.hasMethodCall(ctx)){
+                    out = "call_" + getLastMethodCall( ctx );
+                }
+                else if(Exists.hasNewObject(ctx)){
+                    out = "new_" + getNewType(ctx);
+                }
+                break;
+            default: break;
         }
         return out;
     }
@@ -124,18 +139,37 @@ public class PrettyPrint {
             case "MethodInvocation_lfno_primary":
                 out = "call_" + e.getSecond().getChild(2).getText();
                 break;
+            case "PrimaryNoNewArray_lfno_primary":
             case "Primary":
                 if(hasMethodCall((ParserRuleContext) e.getSecond())){
                     out = "call_" + getLastMethodCall((ParserRuleContext) e.getSecond());
                 }
                 break;
             case "Literal":
-                out = e.getSecond().getText();
+                out = escapeChars(e.getSecond().getText());
                 break;
+            case "ExpressionName":
+                out = escapeChars(e.getSecond().getText());
+                break;
+            case "UnaryExpressionNotPlusMinus" :
+                out = "not_";
+                ParserRuleContext tmp = (ParserRuleContext)e.getSecond().getChild(1);
+                if(hasMethodCall(tmp)) {
+                    out += getLastMethodCall(tmp);
+                }
+                else {
+                    out += prettyPrintExpression(tmp);
+                }
             default:
                 break;
         }
         return out;
     }
 
+
+    protected static String escapeChars(String in){
+        String out;
+        out = in.replace("\"","").replace(" ","_").replace(".","_");
+        return out;
+    }
 }
