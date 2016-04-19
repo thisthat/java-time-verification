@@ -1,0 +1,10 @@
+before_script:
+  - mvn -v
+
+test:
+  script:
+    - mvn test
+
+compile:
+  script:
+    - mvn compile
