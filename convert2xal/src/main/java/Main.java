@@ -3,8 +3,6 @@ import XAL.visitors.CreateXALTree;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;
-import parser.visitors.SimpleVisitor;
-import sun.security.krb5.internal.PAEncTSEnc;
 
 import java.util.List;
 

@@ -1,9 +1,6 @@
 package XAL.util.parsing;
 
 import XAL.util.Pair;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParameterList;
-import com.sun.xml.internal.ws.api.wsdl.parser.XMLEntityResolver;
-import com.sun.xml.internal.xsom.impl.Ref;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
