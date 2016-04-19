@@ -61,7 +61,7 @@ public class TestCommentOnProject {
         }
     }
 
-    @Test
+    //@Test
     public void testAll() throws Exception {
 
         String lastOne = "/Users/giovanni/repository/java-parser/testProject/spark-1.6.1/unsafe/src/testenvirorments.test_antrl/java/org/apache/spark/unsafe/types/UTF8StringSuite.java";
