@@ -1,9 +1,9 @@
-import XAL.exception.XALMalformedException;
-import XAL.items.XALAutomaton;
-import XAL.items.XALDocument;
-import XAL.items.XALState;
-import XAL.items.XALTransition;
-import XAL.visitors.CreateXALTree;
+import XALStructure.exception.XALMalformedException;
+import XALStructure.items.XALAutomaton;
+import XALStructure.items.XALDocument;
+import XALStructure.items.XALState;
+import XALStructure.items.XALTransition;
+import XALConversion.visitors.CreateXALTree;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.io.IOUtils;

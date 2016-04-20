@@ -12,6 +12,7 @@
     <modules>
         <module>java-parser</module>
         <module>convert2xal</module>
+        <module>xal</module>
     </modules>
 
     <build>

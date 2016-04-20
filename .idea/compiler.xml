@@ -24,12 +24,16 @@
         <processorPath useClasspath="true" />
         <module name="convert2xal" />
         <module name="java-parser" />
+        <module name="XAL" />
+        <module name="xal" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="convert2xal" target="1.8" />
       <module name="java-parser" target="1.5" />
       <module name="parent" target="1.5" />
+      <module name="xal" target="1.5" />
+      <module name="XAL" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

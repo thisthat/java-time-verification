@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<XAL>
+<XALConversion>
 	<Automaton Id="singleNoBracket">
 		<GlobalState/>
 		<Clocks/>
@@ -243,4 +243,4 @@
 			<Transition IdInputState="endif_0" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
-</XAL>
+</XALConversion>

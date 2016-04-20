@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<XAL>
+<XALConversion>
 	<Automaton Id="init">
 		<GlobalState>
 			<Variable Name="context" Type="FloodlightModuleContext" Value="" IO="I"  />
@@ -34,4 +34,4 @@
 			<Transition IdInputState="call_add_0" IdOutputState="endif_0" style="[]" />
 		</Transitions>
 	</Automaton>
-</XAL>
+</XALConversion>

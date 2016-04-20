@@ -3,51 +3,101 @@
  * @version %I%, %G%
  */
 public class For {
+
+    //
     public void simpleFor(){
         for(int i = 0; i < 10; i++){
             System.out.print("asd");
         }
     }
 
-    public void ForNoInit(){
+    public void simpleForNoInit(){
         for(; i < 10; i++){
             System.out.print("asd");
         }
     }
 
-    public void ForNoInitNoCheck(){
+    public void simpleForNoInitNoCheck(){
         for(;; i++){
             System.out.print("asd");
         }
     }
 
-    public void ForNoInitNoCheckNoUp(){
+    public void simpleForNoInitNoCheckNoUp(){
         for(;;){
             System.out.print("asd");
         }
     }
 
-    public void ForNoCheck(){
+    public void simpleForNoCheck(){
         for(int i = 0;; i++){
             System.out.print("asd");
         }
     }
 
-    public void ForNoInitNoUp(){
+    public void simpleForNoInitNoUp(){
         for(; i<10; ){
             System.out.print("asd");
         }
     }
 
-    public void ForNoUp(){
+    public void simpleForNoUp(){
         for(int i = 0; i < 10; ){
             System.out.print("asd");
         }
     }
 
-    public void ForNoCheckNoUp(){
+    public void simpleForNoCheckNoUp(){
         for(int i=0;;){
             System.out.print("asd");
         }
+    }
+
+    public void complexFor(){
+        for(int i = 0; i < 10; i++)
+            System.out.print("asd");
+
+    }
+
+    public void complexForNoInit(){
+        for(; i < 10; i++)
+            System.out.print("asd");
+
+    }
+
+    public void complexForNoInitNoCheck(){
+        for(;; i++)
+            System.out.print("asd");
+
+    }
+
+    public void complexForNoInitNoCheckNoUp(){
+        for(;;)
+            System.out.print("asd");
+
+    }
+
+    public void complexForNoCheck(){
+        for(int i = 0;; i++)
+            System.out.print("asd");
+
+    }
+
+    public void complexForNoInitNoUp(){
+        for(; i<10; )
+            System.out.print("asd");
+
+    }
+
+    public void complexForNoUp(){
+        for(int i = 0; i < 10; )
+            System.out.print("asd");
+
+    }
+
+    public void complexForNoCheckNoUp(){
+        for(int i=0;;)
+            System.out.print("asd");
+
     }
 }

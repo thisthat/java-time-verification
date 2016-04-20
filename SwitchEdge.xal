@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<XAL>
+<XALConversion>
 	<Automaton Id="SwitchEdge">
 		<GlobalState>
 			<Variable Name="_n1" Type="SwitchNode" Value="" IO="I"  />
@@ -67,4 +67,4 @@
 			<Transition IdInputState="init" IdOutputState="Return_nd" style="[]" />
 		</Transitions>
 	</Automaton>
-</XAL>
+</XALConversion>
