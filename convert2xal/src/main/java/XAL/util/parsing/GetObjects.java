@@ -117,7 +117,7 @@ public class GetObjects {
         final Set<String> types = new HashSet<String>(Arrays.asList(
                 new String[] {
                         "ReturnStatementContext", "MethodInvocationContext", "AssignmentContext", "UnaryExpressionContext",
-                        "LocalVariableDeclarationContext", "PostIncrementExpressionContext"
+                        "LocalVariableDeclarationContext", "PostIncrementExpressionContext", "PreIncrementExpressionContext"
                 }
         ));
         for (ParseTree stmt: node.children) {
@@ -200,33 +200,7 @@ public class GetObjects {
      * @return      The class name simplified of the statement.
      */
     public static String getStmtType(ParserRuleContext stmts){
-        String type = null;
-        for (ParseTree stmt: stmts.children) {
-            if(stmt instanceof ReturnStatementContext){
-                type = ReturnStatementContext.class.getSimpleName();
-            }
-            else if(stmt instanceof MethodInvocationContext){
-                type = MethodInvocationContext.class.getSimpleName();
-            }
-            else if(stmt instanceof AssignmentContext){
-                type = AssignmentContext.class.getSimpleName();
-            }
-            else if(stmt instanceof LocalVariableDeclarationContext){
-                type = LocalVariableDeclarationContext.class.getSimpleName();
-            }
-            else if(stmt instanceof ExpressionStatementContext){
-                type = ExpressionStatementContext.class.getSimpleName();
-            }
-            else if(stmt instanceof TerminalNode){
-                continue;
-            }
-            if(type == null){
-                String tmp = getStmtType((ParserRuleContext) stmt);
-                if(tmp != null)
-                    type = tmp;
-            }
-        }
-        return type;
+        return getTypeStmtExpression(stmts);
     }
 
     /**

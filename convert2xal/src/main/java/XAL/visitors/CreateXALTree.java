@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
+import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -127,8 +128,63 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     @Override
-    public void enterMethodInvocation_lfno_primary(@NotNull MethodInvocation_lfno_primaryContext ctx) {
-        //System.err.println(ctx.getText());
+    public void enterBasicForStatement(@NotNull BasicForStatementContext ctx) {
+        System.err.println("ENTER FOR");
+
+        int indexInit = 2, indexCheck = 4, indexBody = 8, indexUpdate = 6;
+
+        //Init Expression
+        if(ctx.getChild(indexInit) instanceof ForInitContext){
+            generateState((ParserRuleContext) ctx.getChild(indexInit));
+        }
+        else {
+            indexInit = -1;
+            indexCheck--;
+            indexBody--;
+            indexUpdate--;
+        }
+
+        XALState initFor = new XALState("for");
+        XALState endFor = new XALState("endfor");
+        current_automata.addState(initFor);
+        current_automata.addState(endFor);
+        XALTransition t = new XALTransition(lastState,initFor);
+        current_automata.addTransition(t);
+        lastState = initFor;
+
+        //Checks
+        if(ctx.getChild(indexCheck) instanceof ExpressionContext) {
+            generateStateExpression((ParserRuleContext) ctx.getChild(indexCheck));
+            XALTransition toEnd = new XALTransition(lastState, endFor);
+            current_automata.addTransition(toEnd);
+        }
+        else {
+            indexCheck = -1;
+            indexBody--;
+            indexUpdate--;
+        }
+
+        if(!(ctx.getChild(indexUpdate) instanceof ForUpdateContext)){
+            indexBody--;
+            indexUpdate = -1;
+        }
+
+        //Body For
+        walk(this, ctx.getChild(indexBody));
+
+        //Update
+        if(indexUpdate > 0) {
+            generateState((ParserRuleContext) ctx.getChild(indexUpdate));
+        }
+        XALTransition toInit = new XALTransition(lastState, initFor);
+        current_automata.addTransition(toInit);
+        lastState = endFor;
+
+        if(indexBody > 0)ctx.children.remove(indexBody);
+        if(indexUpdate > 0) ctx.children.remove(indexUpdate);
+        if(indexCheck > 0)ctx.children.remove(indexCheck);
+        if(indexInit > 0)ctx.children.remove(indexInit);
+
     }
 
     @Override
@@ -213,11 +269,12 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         if(ctx instanceof StatementContext && !ctx.getText().startsWith("{")){
             //problem if we have inside another construct, like if/while/for/..
             //we have to check if there are inside such construct
-            if(Exists.isIf((ParserRuleContext) ctx)){
+            if(Exists.Has2Walk((ParserRuleContext) ctx)){
                 walk(this, ctx);
             }
-            else
+            else {
                 generateState((ParserRuleContext) ctx);
+            }
         }
         else if(ctx.getText().startsWith("{") &&
                 (
@@ -277,7 +334,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     protected void generateState(ParserRuleContext ctx){
         //we have special rules for the if
-        if(Exists.isIf(ctx)){
+        if(Exists.Has2Walk(ctx)){
             return;
         }
         String type = GetObjects.getStmtType(ctx);

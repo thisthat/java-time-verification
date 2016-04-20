@@ -41,26 +41,54 @@ public class Exists {
      * @param ctx   The node element from where start the scan.
      * @return      True if there is an if node inside.
      */
-    public static boolean isIf(ParserRuleContext ctx) {
+    public static boolean If(ParserRuleContext ctx) {
         boolean f = false;
         for(ParseTree c: ctx.children) {
             if (
                     c instanceof IfThenElseStatementContext ||
-                    c instanceof IfThenElseStatementNoShortIfContext ||
-                    c instanceof IfThenStatementContext)
+                            c instanceof IfThenElseStatementNoShortIfContext ||
+                            c instanceof IfThenStatementContext)
             {
                 f = true;
             }
             else if(c instanceof TerminalNodeImpl){
-                f = false;
+                continue;
             }
             else {
-                f = f | isIf((ParserRuleContext) c);
+                f = f | If((ParserRuleContext) c);
             }
         }
         return f;
     }
 
+    /**
+     * Check if there is if inside the node element
+     *
+     * @param ctx   The node element from where start the scan.
+     * @return      True if there is an if node inside.
+     */
+    public static boolean For(ParserRuleContext ctx) {
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (
+                    c instanceof BasicForStatementContext
+                )
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                f = f | For((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
+    public static boolean Has2Walk(ParserRuleContext ctx){
+        return If(ctx) || For(ctx);
+    }
 
     /**
      * Check if there is a method call inside the element.
