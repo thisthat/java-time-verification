@@ -50,10 +50,10 @@ public class PrettyPrint {
         String out = getStmtType(ctx);
         switch(out){
             case "ExpressionStatementContext":
-                if(Exists.hasMethodCall(ctx)){
+                if(Exists.MethodCall(ctx)){
                     out = "call_" + getLastMethodCall( ctx );
                 }
-                else if(Exists.hasNewObject(ctx)){
+                else if(Exists.NewObject(ctx)){
                     out = "new_" + getNewType(ctx);
                 }
                 break;
@@ -138,7 +138,7 @@ public class PrettyPrint {
                 break;
             case "PrimaryNoNewArray_lfno_primary":
             case "Primary":
-                if(hasMethodCall((ParserRuleContext) e.getSecond())){
+                if(MethodCall((ParserRuleContext) e.getSecond())){
                     out = "call_" + getLastMethodCall((ParserRuleContext) e.getSecond());
                 }
                 break;
@@ -151,7 +151,7 @@ public class PrettyPrint {
             case "UnaryExpressionNotPlusMinus" :
                 out = "not_";
                 ParserRuleContext tmp = (ParserRuleContext)e.getSecond().getChild(1);
-                if(hasMethodCall(tmp)) {
+                if(MethodCall(tmp)) {
                     out += getLastMethodCall(tmp);
                 }
                 else {

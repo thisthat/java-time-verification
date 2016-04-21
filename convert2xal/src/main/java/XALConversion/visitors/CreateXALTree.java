@@ -141,8 +141,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         current_automata.addTransition(tend);
 
         //Body
-        ParseTree tt = ctx.getChild(indexBody);
-        if(tt instanceof StatementContext) {
+        if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))) {
             walk(this, ctx.getChild(indexBody));
         } else {
             generateState((ParserRuleContext) ctx.getChild(indexBody));
@@ -201,7 +200,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         }
 
         //Body
-        if(ctx.getChild(indexBody) instanceof BlockStatementContext) {
+        if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))){
             walk(this, ctx.getChild(indexBody));
         } else {
             generateState((ParserRuleContext) ctx.getChild(indexBody));
@@ -403,7 +402,6 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
             System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
             System.err.println("[DEBUG} Creating transition: (" + lastState.getId() + "," + state.getId() + ")");
         }
-
         lastState = state;
     }
 

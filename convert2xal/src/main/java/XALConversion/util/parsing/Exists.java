@@ -11,31 +11,7 @@ import parser.grammar.Java8CommentSupportedParser.*;
  */
 public class Exists {
 
-    /**
-     * Check if a method call has a method call inside
-     * @param method The method call
-     * @return true if it has a method call as parameter, false otherwise
-     */
-    public static boolean existsMethodInvocationInsideMethodCall(ParserRuleContext method){
-        boolean flag = false;
-        for (ParseTree elm: method.children ) {
-            if (
-                    elm instanceof MethodInvocation_lf_primaryContext ||
-                    elm instanceof MethodInvocation_lfno_primaryContext ||
-                    elm instanceof MethodInvocationContext
-                ) {
-                return true;
-            }
-            else {
-                if(elm.getChildCount() > 0)
-                    flag = flag || existsMethodInvocationInsideMethodCall((ParserRuleContext) elm);
-            }
-        }
-        return flag;
-    }
-
-
-    /**
+     /**
      * Check if there is if inside the node element
      *
      * @param ctx   The node element from where start the scan.
@@ -121,13 +97,13 @@ public class Exists {
      * @param ctx   The node from where start to scan.
      * @return      True if a method is called.
      */
-    public static boolean hasMethodCall(ParserRuleContext ctx){
+    public static boolean MethodCall(ParserRuleContext ctx){
         boolean f = false;
         for(ParseTree c: ctx.children) {
             if (
                     c instanceof MethodInvocationContext ||
-                    c instanceof MethodInvocation_lfno_primaryContext ||
-                    c instanceof MethodInvocation_lf_primaryContext)
+                            c instanceof MethodInvocation_lfno_primaryContext ||
+                            c instanceof MethodInvocation_lf_primaryContext)
             {
                 f = true;
             }
@@ -135,13 +111,33 @@ public class Exists {
                 continue;
             }
             else {
-                f = f | hasMethodCall((ParserRuleContext) c);
+                f = f | MethodCall((ParserRuleContext) c);
             }
         }
         return f;
     }
 
-    public static boolean hasNewObject(ParserRuleContext ctx){
+    public static boolean Block(ParserRuleContext ctx){
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (
+                    c instanceof BlockStatementContext ||
+                    c instanceof BlockStatementsContext
+                )
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                f = f | Block((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
+    public static boolean NewObject(ParserRuleContext ctx){
         boolean f = false;
         for(ParseTree c: ctx.children) {
             if (c instanceof ClassInstanceCreationExpression_lfno_primaryContext)
@@ -152,7 +148,7 @@ public class Exists {
                 continue;
             }
             else {
-                f = f | hasNewObject((ParserRuleContext) c);
+                f = f | NewObject((ParserRuleContext) c);
             }
         }
         return f;
@@ -163,15 +159,18 @@ public class Exists {
      * @param node  The point from where start to scan.
      * @return      True if an expression is founded.
      */
-    public static boolean hasExpression(ParserRuleContext node){
+    public static boolean Expression(ParserRuleContext node){
         boolean flag = false;
         for (ParseTree elm: node.children ) {
             if ( elm instanceof ExpressionContext) {
                 return true;
             }
+            else if(elm instanceof TerminalNodeImpl){
+                continue;
+            }
             else {
                 if(elm.getChildCount() > 0)
-                    flag = flag || hasExpression((ParserRuleContext) elm);
+                    flag = flag || Expression((ParserRuleContext) elm);
             }
         }
         return flag;
