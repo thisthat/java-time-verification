@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<XALConversion>
+<XAL>
 	<Automaton Id="init">
 		<GlobalState>
 			<Variable Name="context" Type="FloodlightModuleContext" Value="" IO="I"  />
@@ -8,30 +8,30 @@
 		<ActionPool/>
 		<States>
 			<State Id="init" style="x:31; y:44; h:30; w:49" />
-			<State Id="not_checkSwitchDuplicate" style="x:31; y:44; h:30; w:49" />
-			<State Id="if" style="x:31; y:44; h:30; w:49" />
-			<State Id="endif" style="x:31; y:44; h:30; w:49" />
-			<State Id="call_add" style="x:31; y:44; h:30; w:49" />
-			<State Id="1" style="x:31; y:44; h:30; w:49" />
-			<State Id="if_0" style="x:31; y:44; h:30; w:49" />
-			<State Id="endif_0" style="x:31; y:44; h:30; w:49" />
-			<State Id="call_add_0" style="x:31; y:44; h:30; w:49" />
+			<State Id="floodlightProvider_takes_ExpressionContext" style="x:31; y:44; h:30; w:49" />
+			<State Id="restApi_takes_call_getServiceImpl" style="x:31; y:44; h:30; w:49" />
+			<State Id="topology_takes_call_getServiceImpl" style="x:31; y:44; h:30; w:49" />
+			<State Id="DeclVar_myRunnable" style="x:31; y:44; h:30; w:49" />
+			<State Id="createTopologyThread_takes_new_Thread" style="x:31; y:44; h:30; w:49" />
+			<State Id="call_createTopologyThread_start" style="x:31; y:44; h:30; w:49" />
+			<State Id="call_mongodb_connect" style="x:31; y:44; h:30; w:49" />
+			<State Id="predictionProvider_takes_new_PredictionHandler" style="x:31; y:44; h:30; w:49" />
+			<State Id="behaviourProvider_takes_new_BehaviourManager" style="x:31; y:44; h:30; w:49" />
 		</States>
 		<InitialState IdState="init"/>
 		<FinalStates>
-			<FinalState IdState="endif_0"/>
+			<FinalState IdState="behaviourProvider_takes_new_BehaviourManager"/>
 		</FinalStates>
 		<Transitions>
-			<Transition IdInputState="init" IdOutputState="not_checkSwitchDuplicate" style="[]" />
-			<Transition IdInputState="not_checkSwitchDuplicate" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="call_add" style="[]" />
-			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
-			<Transition IdInputState="call_add" IdOutputState="endif" style="[]" />
-			<Transition IdInputState="endif" IdOutputState="1" style="[]" />
-			<Transition IdInputState="1" IdOutputState="if_0" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="call_add_0" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="endif_0" style="[]" />
-			<Transition IdInputState="call_add_0" IdOutputState="endif_0" style="[]" />
+			<Transition IdInputState="init" IdOutputState="floodlightProvider_takes_ExpressionContext" style="[]" />
+			<Transition IdInputState="floodlightProvider_takes_ExpressionContext" IdOutputState="restApi_takes_call_getServiceImpl" style="[]" />
+			<Transition IdInputState="restApi_takes_call_getServiceImpl" IdOutputState="topology_takes_call_getServiceImpl" style="[]" />
+			<Transition IdInputState="topology_takes_call_getServiceImpl" IdOutputState="DeclVar_myRunnable" style="[]" />
+			<Transition IdInputState="DeclVar_myRunnable" IdOutputState="createTopologyThread_takes_new_Thread" style="[]" />
+			<Transition IdInputState="createTopologyThread_takes_new_Thread" IdOutputState="call_createTopologyThread_start" style="[]" />
+			<Transition IdInputState="call_createTopologyThread_start" IdOutputState="call_mongodb_connect" style="[]" />
+			<Transition IdInputState="call_mongodb_connect" IdOutputState="predictionProvider_takes_new_PredictionHandler" style="[]" />
+			<Transition IdInputState="predictionProvider_takes_new_PredictionHandler" IdOutputState="behaviourProvider_takes_new_BehaviourManager" style="[]" />
 		</Transitions>
 	</Automaton>
-</XALConversion>
+</XAL>

@@ -263,4 +263,23 @@ public class GetObjects {
         }
         return name;
     }
+
+    public static AssignmentContext Assignment(ParserRuleContext ctx){
+        AssignmentContext out = null;
+        for(ParseTree c: ctx.children) {
+            if(c instanceof AssignmentContext){
+                out = (AssignmentContext)c;
+            }
+            else if(c instanceof TerminalNode){
+                continue;
+            }
+            else {
+                AssignmentContext tmp = Assignment((ParserRuleContext) c);
+                if(tmp != null){
+                    out = tmp;
+                }
+            }
+        }
+        return out;
+    }
 }

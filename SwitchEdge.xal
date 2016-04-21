@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<XALConversion>
+<XAL>
 	<Automaton Id="SwitchEdge">
 		<GlobalState>
 			<Variable Name="_n1" Type="SwitchNode" Value="" IO="I"  />
@@ -9,14 +9,14 @@
 		<ActionPool/>
 		<States>
 			<State Id="init" style="x:31; y:44; h:30; w:49" />
-			<State Id="ExpressionStatementContext" style="x:31; y:44; h:30; w:49" />
-			<State Id="ExpressionStatementContext_0" style="x:31; y:44; h:30; w:49" />
+			<State Id="n1_takes__n1" style="x:31; y:44; h:30; w:49" />
+			<State Id="n2_takes__n2" style="x:31; y:44; h:30; w:49" />
 		</States>
 		<InitialState IdState="init"/>
 		<FinalStates/>
 		<Transitions>
-			<Transition IdInputState="init" IdOutputState="ExpressionStatementContext" style="[]" />
-			<Transition IdInputState="ExpressionStatementContext" IdOutputState="ExpressionStatementContext_0" style="[]" />
+			<Transition IdInputState="init" IdOutputState="n1_takes__n1" style="[]" />
+			<Transition IdInputState="n1_takes__n1" IdOutputState="n2_takes__n2" style="[]" />
 		</Transitions>
 	</Automaton>
 	<Automaton Id="getFrom">
@@ -57,14 +57,14 @@
 		<ActionPool/>
 		<States>
 			<State Id="init" style="x:31; y:44; h:30; w:49" />
-			<State Id="Return_nd" style="x:31; y:44; h:30; w:49" />
+			<State Id="Return_nd_expr" style="x:31; y:44; h:30; w:49" />
 		</States>
 		<InitialState IdState="init"/>
 		<FinalStates>
-			<FinalState IdState="Return_nd"/>
+			<FinalState IdState="Return_nd_expr"/>
 		</FinalStates>
 		<Transitions>
-			<Transition IdInputState="init" IdOutputState="Return_nd" style="[]" />
+			<Transition IdInputState="init" IdOutputState="Return_nd_expr" style="[]" />
 		</Transitions>
 	</Automaton>
-</XALConversion>
+</XAL>

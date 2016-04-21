@@ -4,12 +4,10 @@ import XALConversion.util.Pair;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.commons.lang3.StringEscapeUtils;
 import parser.grammar.Java8CommentSupportedParser.*;
 
-import static XALConversion.util.parsing.Exists.*;
-import static XALConversion.util.parsing.GetObjects.*;
-import org.apache.commons.lang3.StringEscapeUtils.*;
+import XALConversion.util.parsing.Exists.*;
+import XALConversion.util.parsing.GetObjects.*;
 
 import java.util.*;
 
@@ -38,31 +36,46 @@ public class PrettyPrint {
             case "call_":
                 out += MethodInvocation(ctx);
                 break;
+            case "MethodInvocation":
+                out = "call_" + MethodInvocation(ctx);
+                break;
             case "ReturnStatement":
                 out = "Return_";
                 out += ReturnStatement(ctx);
                 break;
+            case "Assignment":
             case "ExpressionStatement":
-                out = ExpressionStatement(ctx);
-            case "MethodInvocation":
-                out = "call_" + MethodInvocation(ctx);
+                out = ExpressionStatement(str,ctx);
+                break;
+
             default: break;
 
         }
         return out;
     }
 
-    private static String ExpressionStatement(ParserRuleContext ctx){
-        String out = getStmtType(ctx);
+    private static String ExpressionStatement(String str, ParserRuleContext ctx){
+        String out = str;
         switch(out){
-            case "ExpressionStatementContext":
+            case "ExpressionContext":
+            case "ExpressionStatement":
                 if(Exists.MethodCall(ctx)){
-                    out = "call_" + getLastMethodCall( ctx );
+                    out = "call_" + GetObjects.getLastMethodCall( ctx );
                 }
                 else if(Exists.NewObject(ctx)){
-                    out = "new_" + getNewType(ctx);
+                    out = "new_" + GetObjects.getNewType(ctx);
+                }
+                else {
+                    out = Expression(ctx);
                 }
                 break;
+            case "Assignment":
+                AssignmentContext asg = GetObjects.Assignment(ctx);
+                out =  asg.getChild(0).getText() + "_takes_" +
+                        ExpressionStatement(
+                                asg.getChild(2).getClass().getSimpleName(),
+                                (ParserRuleContext) asg.getChild(2)
+                        );
             default: break;
         }
         return out;
@@ -137,9 +150,9 @@ public class PrettyPrint {
      * @return      The type of the expression.
      */
     public static String Expression(ParserRuleContext ctx){
-        ExpressionContext expr = GetObjects.getExpression(ctx);
         String out = "nd_expr";
-        Pair<String,ParseTree> e = getExprTypeWithContext(expr);
+        ExpressionContext expr = GetObjects.getExpression(ctx);
+        Pair<String,ParseTree> e = GetObjects.getExprTypeWithContext(expr);
         String expType = e.getFirst();
         expType = expType.substring(expType.indexOf("$") + 1).replace("Context","");
         switch (expType){
@@ -148,22 +161,23 @@ public class PrettyPrint {
                 break;
             case "PrimaryNoNewArray_lfno_primary":
             case "Primary":
-                if(MethodCall((ParserRuleContext) e.getSecond())){
-                    out = "call_" + getLastMethodCall((ParserRuleContext) e.getSecond());
+                if(Exists.MethodCall((ParserRuleContext) e.getSecond())){
+                    out = "call_" + GetObjects.getLastMethodCall((ParserRuleContext) e.getSecond());
                 }
                 break;
             case "ExpressionName":
             case "Literal":
                 out = escapeChars(e.getSecond().getText());
                 break;
+            case "EqualityExpression":
             case "RelationalExpression":
                 out = escapeChars(e.getSecond().getChild(1).getText());
                 break;
             case "UnaryExpressionNotPlusMinus" :
                 out = "not_";
                 ParserRuleContext tmp = (ParserRuleContext)e.getSecond().getChild(1);
-                if(MethodCall(tmp)) {
-                    out += getLastMethodCall(tmp);
+                if(Exists.MethodCall(tmp)) {
+                    out += GetObjects.getLastMethodCall(tmp);
                 }
                 else {
                     out += Expression(tmp);
@@ -183,7 +197,11 @@ public class PrettyPrint {
                 new Pair<String,String>("\"",""),
                 new Pair<String,String>(" ","_"),
                 new Pair<String,String>(".","_"),
-                new Pair<String,String>("<","lt")
+                new Pair<String,String>("<","_ltExpr_"),
+                new Pair<String,String>("<=","_lteExpr_"),
+                new Pair<String,String>(">","_gtExpr_"),
+                new Pair<String,String>(">=","_gteExpr_"),
+                new Pair<String,String>("==","_eqExpr_")
         ));
         String out = in;
         for(Pair<String,String> p : filters){

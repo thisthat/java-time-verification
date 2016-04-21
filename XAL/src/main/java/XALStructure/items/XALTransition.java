@@ -11,6 +11,9 @@ import XALStructure.XALItem;
  */
 public class XALTransition extends XALItem {
 
+    public static final String METRIC_TRUE = "true";
+    public static final String METRIC_FALSE = "false";
+
     private String from;
     private String to;
     private String metricValue = null;

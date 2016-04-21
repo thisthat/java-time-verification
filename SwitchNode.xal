@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<XALConversion>
+<XAL>
 	<Automaton Id="SwitchNode">
 		<GlobalState>
 			<Variable Name="n" Type="String" Value="" IO="I"  />
@@ -8,12 +8,12 @@
 		<ActionPool/>
 		<States>
 			<State Id="init" style="x:31; y:44; h:30; w:49" />
-			<State Id="ExpressionStatementContext" style="x:31; y:44; h:30; w:49" />
+			<State Id="dpid_takes_n" style="x:31; y:44; h:30; w:49" />
 		</States>
 		<InitialState IdState="init"/>
 		<FinalStates/>
 		<Transitions>
-			<Transition IdInputState="init" IdOutputState="ExpressionStatementContext" style="[]" />
+			<Transition IdInputState="init" IdOutputState="dpid_takes_n" style="[]" />
 		</Transitions>
 	</Automaton>
 	<Automaton Id="getName">
@@ -69,10 +69,10 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="call_equals" style="[]" />
 			<Transition IdInputState="call_equals" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Return_call_equals" style="[]" />
-			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Return_call_equals" MetricValue="true" style="[]" />
+			<Transition IdInputState="if" IdOutputState="endif" MetricValue="false" style="[]" />
 			<Transition IdInputState="Return_call_equals" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="endif" IdOutputState="Return_false" style="[]" />
 		</Transitions>
 	</Automaton>
-</XALConversion>
+</XAL>

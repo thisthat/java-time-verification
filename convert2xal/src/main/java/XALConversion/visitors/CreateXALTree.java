@@ -5,6 +5,7 @@ import XALStructure.exception.XALMalformedException;
 import XALStructure.items.*;
 import XALConversion.util.Pair;
 import XALConversion.util.parsing.*;
+import jdk.nashorn.internal.runtime.regexp.joni.ast.ConsAltNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
@@ -132,15 +133,20 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         XALState endW = new XALState("endwhile");
         current_automata.addState(initW);
         current_automata.addState(endW);
-        XALTransition t = new XALTransition(lastState,initW);
+        XALTransition t = new XALTransition(lastState,initW, metricValue);
+        //reset metric
+        if(metricValue != null) {
+            metricValue = null;
+        }
         current_automata.addTransition(t);
         lastState = initW;
 
         generateStateExpression((ParserRuleContext) ctx.getChild(indexExp));
-        XALTransition tend = new XALTransition(lastState,endW);
+        XALTransition tend = new XALTransition(lastState, endW, XALTransition.METRIC_FALSE);
         current_automata.addTransition(tend);
 
         //Body
+        metricValue = XALTransition.METRIC_TRUE;
         if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))) {
             walk(this, ctx.getChild(indexBody));
         } else {
@@ -185,7 +191,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         //Checks
         if(ctx.getChild(indexCheck) instanceof ExpressionContext) {
             generateStateExpression((ParserRuleContext) ctx.getChild(indexCheck));
-            XALTransition toEnd = new XALTransition(lastState, endFor);
+            XALTransition toEnd = new XALTransition(lastState, endFor , XALTransition.METRIC_FALSE);
             current_automata.addTransition(toEnd);
         }
         else {
@@ -200,6 +206,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         }
 
         //Body
+        metricValue = XALTransition.METRIC_TRUE;
         if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))){
             walk(this, ctx.getChild(indexBody));
         } else {
@@ -235,7 +242,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         lastState = s;
 
         //IF BRANCH
-        metricValue = "true";
+        metricValue = XALTransition.METRIC_TRUE;
         produceIfElseCode(ctx.getChild(4));
 
 
@@ -243,7 +250,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         lastState = s;
 
         //since no else, linked if to endif
-        current_automata.addTransition(new XALTransition(s,e, "false"));
+        current_automata.addTransition(new XALTransition(s,e, XALTransition.METRIC_FALSE));
 
         //Link the output of each branch to a dummy node
         XALTransition tIf = new XALTransition(lastIfBranch,e);
@@ -272,14 +279,14 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         lastState = s;
 
         //IF BRANCH
-        metricValue = "true";
+        metricValue = XALTransition.METRIC_TRUE;
         produceIfElseCode(ctx.getChild(4));
 
         XALState lastIfBranch = lastState;
         lastState = s;
 
         //ELSE BRANCH
-        metricValue = "false";
+        metricValue = XALTransition.METRIC_FALSE;
         produceIfElseCode(ctx.getChild(6));
         XALState lastElseBranch = lastState;
 
