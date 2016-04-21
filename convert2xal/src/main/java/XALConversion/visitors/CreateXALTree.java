@@ -124,7 +124,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterWhileStatement(@NotNull WhileStatementContext ctx) {
-        System.err.print("While");
+
         int indexExp = 2, indexBody = 4;
 
 
@@ -373,7 +373,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
             return;
         }
         String type = GetObjects.getStmtType(ctx);
-        XALState state = new XALState( PrettyPrint.prettyPrintClassName(type, ctx) );
+        XALState state = new XALState( PrettyPrint.ClassName(type, ctx) );
         current_automata.addState(state);
         XALTransition transition = new XALTransition(this.lastState, state, this.metricValue );
         current_automata.addTransition(transition);
@@ -388,7 +388,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     protected void generateStateExpression(ParserRuleContext ctx){
-        XALState state = new XALState( PrettyPrint.prettyPrintExpression(ctx) );
+        XALState state = new XALState( PrettyPrint.Expression(ctx) );
         current_automata.addState(state);
         XALTransition transition = new XALTransition(this.lastState, state, this.metricValue);
         current_automata.addTransition(transition);

@@ -4,10 +4,14 @@ import XALConversion.util.Pair;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.commons.lang3.StringEscapeUtils;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import static XALConversion.util.parsing.Exists.*;
 import static XALConversion.util.parsing.GetObjects.*;
+import org.apache.commons.lang3.StringEscapeUtils.*;
+
+import java.util.*;
 
 /**
  * The class exports method that help to prettify the construction of XAL elements
@@ -24,29 +28,31 @@ public class PrettyPrint {
      * @param str   The type of the object to make prettier
      * @return      An hence visualization of the character that is faboulousssss
      */
-    public static String prettyPrintClassName(String str, ParserRuleContext ctx){
+    public static String ClassName(String str, ParserRuleContext ctx){
         str = str.substring(str.indexOf("$") + 1).replace("Context","");
         String out = str;
         switch(str){
             case "LocalVariableDeclaration":
-                out = "DeclVar_" + prettyPrintLocalVariableDeclaration(ctx);
+                out = "DeclVar_" + LocalVariableDeclaration(ctx);
                 break;
             case "call_":
-                out += prettyPrintMethodInvocation(ctx);
+                out += MethodInvocation(ctx);
                 break;
             case "ReturnStatement":
                 out = "Return_";
-                out += prettyPrintReturnStatement(ctx);
+                out += ReturnStatement(ctx);
                 break;
             case "ExpressionStatement":
-                out = processPrettyPrintExpressionStatement(ctx);
+                out = ExpressionStatement(ctx);
+            case "MethodInvocation":
+                out = "call_" + MethodInvocation(ctx);
             default: break;
 
         }
         return out;
     }
 
-    private static String processPrettyPrintExpressionStatement(ParserRuleContext ctx){
+    private static String ExpressionStatement(ParserRuleContext ctx){
         String out = getStmtType(ctx);
         switch(out){
             case "ExpressionStatementContext":
@@ -68,7 +74,7 @@ public class PrettyPrint {
      * @param ctx   The tree element in which search the variable identificator.
      * @return      The variable name.
      */
-    public static String prettyPrintLocalVariableDeclaration(ParserRuleContext ctx){
+    public static String LocalVariableDeclaration(ParserRuleContext ctx){
         String type = null;
         if(ctx instanceof VariableDeclaratorIdContext){
             type = ctx.getText();
@@ -76,7 +82,7 @@ public class PrettyPrint {
             for (ParseTree elm : ctx.children ) {
                 if(elm instanceof TerminalNode)
                     continue;
-                String tmp = prettyPrintLocalVariableDeclaration((ParserRuleContext) elm);
+                String tmp = LocalVariableDeclaration((ParserRuleContext) elm);
                 if(type == null){
                     type = tmp;
                 }
@@ -91,15 +97,19 @@ public class PrettyPrint {
      * @param ctx   The tree element to visit to get the method name.
      * @return      The method name.
      */
-    public static String prettyPrintMethodInvocation(ParserRuleContext ctx){
+    public static String MethodInvocation(ParserRuleContext ctx){
         String type = null;
         if(ctx instanceof MethodInvocationContext){
-            type = ctx.getChild(2).getText();
+            String prefix = "";
+            if(ctx.getChild(0) instanceof TypeNameContext){
+                prefix = TypeName((TypeNameContext) ctx.getChild(0));
+            }
+            type = prefix + ctx.getChild(2).getText();
         } else {
             for (ParseTree elm : ctx.children ) {
                 if(elm instanceof TerminalNode)
                     continue;
-                String tmp = prettyPrintMethodInvocation((ParserRuleContext) elm);
+                String tmp = MethodInvocation((ParserRuleContext) elm);
                 if(type == null){
                     type = tmp;
                 }
@@ -114,8 +124,8 @@ public class PrettyPrint {
      * @param ctx   The tree element to visit.
      * @return      The type of the return element.
      */
-    public static String prettyPrintReturnStatement(ParserRuleContext ctx){
-        return prettyPrintExpression(ctx);
+    public static String ReturnStatement(ParserRuleContext ctx){
+        return Expression(ctx);
     }
 
     /**
@@ -126,9 +136,9 @@ public class PrettyPrint {
      * @param ctx   The tree element that contains the expression.
      * @return      The type of the expression.
      */
-    public static String prettyPrintExpression(ParserRuleContext ctx){
+    public static String Expression(ParserRuleContext ctx){
         ExpressionContext expr = GetObjects.getExpression(ctx);
-        String out = "nd";
+        String out = "nd_expr";
         Pair<String,ParseTree> e = getExprTypeWithContext(expr);
         String expType = e.getFirst();
         expType = expType.substring(expType.indexOf("$") + 1).replace("Context","");
@@ -142,11 +152,12 @@ public class PrettyPrint {
                     out = "call_" + getLastMethodCall((ParserRuleContext) e.getSecond());
                 }
                 break;
+            case "ExpressionName":
             case "Literal":
                 out = escapeChars(e.getSecond().getText());
                 break;
-            case "ExpressionName":
-                out = escapeChars(e.getSecond().getText());
+            case "RelationalExpression":
+                out = escapeChars(e.getSecond().getChild(1).getText());
                 break;
             case "UnaryExpressionNotPlusMinus" :
                 out = "not_";
@@ -155,7 +166,7 @@ public class PrettyPrint {
                     out += getLastMethodCall(tmp);
                 }
                 else {
-                    out += prettyPrintExpression(tmp);
+                    out += Expression(tmp);
                 }
             default:
                 break;
@@ -163,10 +174,21 @@ public class PrettyPrint {
         return out;
     }
 
+    public static String TypeName(TypeNameContext tn){
+        return escapeChars(tn.getText() + ".");
+    }
 
     protected static String escapeChars(String in){
-        String out;
-        out = in.replace("\"","").replace(" ","_").replace(".","_");
+        final Set<Pair<String,String>> filters = new HashSet<Pair<String,String>>(Arrays.asList(
+                new Pair<String,String>("\"",""),
+                new Pair<String,String>(" ","_"),
+                new Pair<String,String>(".","_"),
+                new Pair<String,String>("<","lt")
+        ));
+        String out = in;
+        for(Pair<String,String> p : filters){
+            out = out.replace(p.getFirst() , p.getSecond());
+        }
         return out;
     }
 }
