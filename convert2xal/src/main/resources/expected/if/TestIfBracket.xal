@@ -16,8 +16,8 @@
     <Transitions>
         <Transition IdInputState="state_0" IdOutputState="state_1" style="[]" />
         <Transition IdInputState="state_1" IdOutputState="state_2" style="[]" />
-        <Transition IdInputState="state_2" IdOutputState="state_4" style="[]" />
-        <Transition IdInputState="state_2" IdOutputState="state_3" style="[]" />
+        <Transition IdInputState="state_2" IdOutputState="state_4" MetricValue="true" style="[]" />
+        <Transition IdInputState="state_2" IdOutputState="state_3" MetricValue="false" style="[]" />
         <Transition IdInputState="state_4" IdOutputState="state_3" style="[]" />
     </Transitions>
 </Automaton>

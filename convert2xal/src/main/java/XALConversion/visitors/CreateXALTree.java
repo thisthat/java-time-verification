@@ -25,7 +25,7 @@ import java.util.Stack;
  */
 public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
-    boolean __DEBUG__ = true;
+    boolean __DEBUG__ = false;
 
     List<XALDocument> documents;
     XALAutomaton current_automata;
@@ -235,6 +235,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         lastState = s;
 
         //IF BRANCH
+        metricValue = "true";
         produceIfElseCode(ctx.getChild(4));
 
 
@@ -242,7 +243,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         lastState = s;
 
         //since no else, linked if to endif
-        current_automata.addTransition(new XALTransition(s,e));
+        current_automata.addTransition(new XALTransition(s,e, "false"));
 
         //Link the output of each branch to a dummy node
         XALTransition tIf = new XALTransition(lastIfBranch,e);
@@ -367,10 +368,6 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
 
     protected void generateState(ParserRuleContext ctx){
-        generateState(ctx,null);
-    }
-
-    protected void generateState(ParserRuleContext ctx, String metricValue){
         //we have special rules for the if
         if(Exists.Has2Walk(ctx)){
             return;
@@ -378,31 +375,30 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         String type = GetObjects.getStmtType(ctx);
         XALState state = new XALState( PrettyPrint.prettyPrintClassName(type, ctx) );
         current_automata.addState(state);
-        XALTransition transition = new XALTransition(lastState, state, metricValue );
+        XALTransition transition = new XALTransition(this.lastState, state, this.metricValue );
         current_automata.addTransition(transition);
 
         if(__DEBUG__){
             System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
-            System.err.println("[DEBUG} Creating transition: (" + lastState.getId() + "," + state.getId() + ")");
+            System.err.println("[DEBUG} Creating transition: (" + this.lastState.getId() + "," + state.getId() + ")");
         }
 
-        lastState = state;
+        this.lastState = state;
+        this.metricValue = null;
     }
 
     protected void generateStateExpression(ParserRuleContext ctx){
-        generateStateExpression(ctx,null);
-    }
-    protected void generateStateExpression(ParserRuleContext ctx, String metricValue){
         XALState state = new XALState( PrettyPrint.prettyPrintExpression(ctx) );
         current_automata.addState(state);
-        XALTransition transition = new XALTransition(lastState, state, metricValue);
+        XALTransition transition = new XALTransition(this.lastState, state, this.metricValue);
         current_automata.addTransition(transition);
 
         if(__DEBUG__){
             System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
-            System.err.println("[DEBUG} Creating transition: (" + lastState.getId() + "," + state.getId() + ")");
+            System.err.println("[DEBUG} Creating transition: (" + this.lastState.getId() + "," + state.getId() + ")");
         }
-        lastState = state;
+        this.lastState = state;
+        this.metricValue = null;
     }
 
 

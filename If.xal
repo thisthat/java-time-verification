@@ -18,8 +18,8 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="True" style="[]" />
-			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="true" style="[]" />
+			<Transition IdInputState="if" IdOutputState="endif" MetricValue="false" style="[]" />
 			<Transition IdInputState="Assignment" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
@@ -42,8 +42,8 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment_0" MetricValue="False" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="true" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment_0" MetricValue="false" style="[]" />
 			<Transition IdInputState="Assignment" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="Assignment_0" IdOutputState="endif" style="[]" />
 		</Transitions>
@@ -66,8 +66,8 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment" style="[]" />
-			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="true" style="[]" />
+			<Transition IdInputState="if" IdOutputState="endif" MetricValue="false" style="[]" />
 			<Transition IdInputState="Assignment" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
@@ -90,8 +90,8 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment_0" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="true" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment_0" MetricValue="false" style="[]" />
 			<Transition IdInputState="Assignment" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="Assignment_0" IdOutputState="endif" style="[]" />
 		</Transitions>
@@ -117,12 +117,12 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="nd_0" style="[]" />
+			<Transition IdInputState="if" IdOutputState="nd_0" MetricValue="true" style="[]" />
 			<Transition IdInputState="nd_0" IdOutputState="if_0" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="Return_2" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="endif_0" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="Return_2" MetricValue="true" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="endif_0" MetricValue="false" style="[]" />
 			<Transition IdInputState="Return_2" IdOutputState="endif_0" style="[]" />
-			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="if" IdOutputState="endif" MetricValue="false" style="[]" />
 			<Transition IdInputState="endif_0" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
@@ -151,15 +151,15 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="nd_0" style="[]" />
+			<Transition IdInputState="if" IdOutputState="nd_0" MetricValue="true" style="[]" />
 			<Transition IdInputState="nd_0" IdOutputState="if_0" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="Return_1" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="endif_0" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="Return_1" MetricValue="true" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="endif_0" MetricValue="false" style="[]" />
 			<Transition IdInputState="Return_1" IdOutputState="endif_0" style="[]" />
-			<Transition IdInputState="if" IdOutputState="nd_1" style="[]" />
+			<Transition IdInputState="if" IdOutputState="nd_1" MetricValue="false" style="[]" />
 			<Transition IdInputState="nd_1" IdOutputState="if_1" style="[]" />
-			<Transition IdInputState="if_1" IdOutputState="Return_2" style="[]" />
-			<Transition IdInputState="if_1" IdOutputState="endif_1" style="[]" />
+			<Transition IdInputState="if_1" IdOutputState="Return_2" MetricValue="true" style="[]" />
+			<Transition IdInputState="if_1" IdOutputState="endif_1" MetricValue="false" style="[]" />
 			<Transition IdInputState="Return_2" IdOutputState="endif_1" style="[]" />
 			<Transition IdInputState="endif_0" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="endif_1" IdOutputState="endif" style="[]" />
@@ -190,17 +190,17 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="nd_0" style="[]" />
+			<Transition IdInputState="if" IdOutputState="nd_0" MetricValue="true" style="[]" />
 			<Transition IdInputState="nd_0" IdOutputState="if_0" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="Return_1" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="nd_1" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="Return_1" MetricValue="true" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="nd_1" MetricValue="false" style="[]" />
 			<Transition IdInputState="nd_1" IdOutputState="if_1" style="[]" />
-			<Transition IdInputState="if_1" IdOutputState="Return_2" style="[]" />
-			<Transition IdInputState="if_1" IdOutputState="endif_1" style="[]" />
+			<Transition IdInputState="if_1" IdOutputState="Return_2" MetricValue="true" style="[]" />
+			<Transition IdInputState="if_1" IdOutputState="endif_1" MetricValue="false" style="[]" />
 			<Transition IdInputState="Return_2" IdOutputState="endif_1" style="[]" />
 			<Transition IdInputState="Return_1" IdOutputState="endif_0" style="[]" />
 			<Transition IdInputState="endif_1" IdOutputState="endif_0" style="[]" />
-			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="if" IdOutputState="endif" MetricValue="false" style="[]" />
 			<Transition IdInputState="endif_0" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
@@ -229,17 +229,17 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="nd_0" style="[]" />
+			<Transition IdInputState="if" IdOutputState="nd_0" MetricValue="true" style="[]" />
 			<Transition IdInputState="nd_0" IdOutputState="if_0" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="Return_2" style="[]" />
-			<Transition IdInputState="if_0" IdOutputState="nd_1" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="Return_2" MetricValue="true" style="[]" />
+			<Transition IdInputState="if_0" IdOutputState="nd_1" MetricValue="false" style="[]" />
 			<Transition IdInputState="nd_1" IdOutputState="if_1" style="[]" />
-			<Transition IdInputState="if_1" IdOutputState="Return_4" MetricValue="True" style="[]" />
-			<Transition IdInputState="if_1" IdOutputState="endif_1" style="[]" />
+			<Transition IdInputState="if_1" IdOutputState="Return_4" MetricValue="true" style="[]" />
+			<Transition IdInputState="if_1" IdOutputState="endif_1" MetricValue="false" style="[]" />
 			<Transition IdInputState="Return_4" IdOutputState="endif_1" style="[]" />
 			<Transition IdInputState="Return_2" IdOutputState="endif_0" style="[]" />
 			<Transition IdInputState="endif_1" IdOutputState="endif_0" style="[]" />
-			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
+			<Transition IdInputState="if" IdOutputState="endif" MetricValue="false" style="[]" />
 			<Transition IdInputState="endif_0" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
