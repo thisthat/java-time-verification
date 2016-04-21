@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
+import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -111,11 +112,6 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     @Override
-    public void enterMethodInvocation_lf_primary(@NotNull MethodInvocation_lf_primaryContext ctx) {
-        //System.err.println("LF:" + ctx.getText());
-    }
-
-    @Override
     public void enterBlockStatement(@NotNull BlockStatementContext ctx) {
         generateState(ctx);
     }
@@ -127,8 +123,44 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     @Override
+    public void enterWhileStatement(@NotNull WhileStatementContext ctx) {
+        System.err.print("While");
+        int indexExp = 2, indexBody = 4;
+
+
+        XALState initW = new XALState("while");
+        XALState endW = new XALState("endwhile");
+        current_automata.addState(initW);
+        current_automata.addState(endW);
+        XALTransition t = new XALTransition(lastState,initW);
+        current_automata.addTransition(t);
+        lastState = initW;
+
+        generateStateExpression((ParserRuleContext) ctx.getChild(indexExp));
+        XALTransition tend = new XALTransition(lastState,endW);
+        current_automata.addTransition(tend);
+
+        //Body
+        ParseTree tt = ctx.getChild(indexBody);
+        if(tt instanceof StatementContext) {
+            walk(this, ctx.getChild(indexBody));
+        } else {
+            generateState((ParserRuleContext) ctx.getChild(indexBody));
+        }
+
+        XALTransition tInit = new XALTransition(lastState,initW);
+        current_automata.addTransition(tInit);
+        lastState = endW;
+
+        ctx.children.remove(indexBody);
+        ctx.children.remove(indexExp);
+
+
+    }
+
+    @Override
     public void enterBasicForStatement(@NotNull BasicForStatementContext ctx) {
-        System.err.println("ENTER FOR");
+
 
         int indexInit = 2, indexCheck = 4, indexBody = 8, indexUpdate = 6;
 
@@ -334,7 +366,12 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         listener.exitEveryRule(ctx);
     }
 
+
     protected void generateState(ParserRuleContext ctx){
+        generateState(ctx,null);
+    }
+
+    protected void generateState(ParserRuleContext ctx, String metricValue){
         //we have special rules for the if
         if(Exists.Has2Walk(ctx)){
             return;
@@ -342,7 +379,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         String type = GetObjects.getStmtType(ctx);
         XALState state = new XALState( PrettyPrint.prettyPrintClassName(type, ctx) );
         current_automata.addState(state);
-        XALTransition transition = new XALTransition(lastState, state);
+        XALTransition transition = new XALTransition(lastState, state, metricValue );
         current_automata.addTransition(transition);
 
         if(__DEBUG__){
@@ -354,9 +391,12 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     protected void generateStateExpression(ParserRuleContext ctx){
+        generateStateExpression(ctx,null);
+    }
+    protected void generateStateExpression(ParserRuleContext ctx, String metricValue){
         XALState state = new XALState( PrettyPrint.prettyPrintExpression(ctx) );
         current_automata.addState(state);
-        XALTransition transition = new XALTransition(lastState, state);
+        XALTransition transition = new XALTransition(lastState, state, metricValue);
         current_automata.addTransition(transition);
 
         if(__DEBUG__){

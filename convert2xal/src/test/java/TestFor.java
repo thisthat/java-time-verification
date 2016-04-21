@@ -38,19 +38,8 @@ public class TestFor {
         removeNamingIssue(xal);
     }
 
-    //@Test
-    public void TestIf() throws Exception {
-        String out = xal.getAutomatons().get(0).toString().replace("\t","    ");
-        out = out.replaceAll("style=\"(.*)\"", "");
-        String expect = IOUtils.toString(
-                this.getClass().getResourceAsStream("expected/If/TestIf.xal"),
-                "UTF-8"
-        ).replaceAll("style=\"(.*)\"", "");
-        assertEquals(out,expect);
-    }
-
     /**
-     * This test expected that the have the same name, but for simple/complex
+     * This test expected that all the automata have the same content, expect the automata id
      * @throws Exception
      */
     @Test

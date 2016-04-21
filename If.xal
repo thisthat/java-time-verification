@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<XALConversion>
+<XAL>
 	<Automaton Id="singleNoBracket">
 		<GlobalState/>
 		<Clocks/>
@@ -18,7 +18,7 @@
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment" MetricValue="True" style="[]" />
 			<Transition IdInputState="if" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="Assignment" IdOutputState="endif" style="[]" />
 		</Transitions>
@@ -43,7 +43,7 @@
 			<Transition IdInputState="init" IdOutputState="nd" style="[]" />
 			<Transition IdInputState="nd" IdOutputState="if" style="[]" />
 			<Transition IdInputState="if" IdOutputState="Assignment" style="[]" />
-			<Transition IdInputState="if" IdOutputState="Assignment_0" style="[]" />
+			<Transition IdInputState="if" IdOutputState="Assignment_0" MetricValue="False" style="[]" />
 			<Transition IdInputState="Assignment" IdOutputState="endif" style="[]" />
 			<Transition IdInputState="Assignment_0" IdOutputState="endif" style="[]" />
 		</Transitions>
@@ -234,7 +234,7 @@
 			<Transition IdInputState="if_0" IdOutputState="Return_2" style="[]" />
 			<Transition IdInputState="if_0" IdOutputState="nd_1" style="[]" />
 			<Transition IdInputState="nd_1" IdOutputState="if_1" style="[]" />
-			<Transition IdInputState="if_1" IdOutputState="Return_4" style="[]" />
+			<Transition IdInputState="if_1" IdOutputState="Return_4" MetricValue="True" style="[]" />
 			<Transition IdInputState="if_1" IdOutputState="endif_1" style="[]" />
 			<Transition IdInputState="Return_4" IdOutputState="endif_1" style="[]" />
 			<Transition IdInputState="Return_2" IdOutputState="endif_0" style="[]" />
@@ -243,4 +243,4 @@
 			<Transition IdInputState="endif_0" IdOutputState="endif" style="[]" />
 		</Transitions>
 	</Automaton>
-</XALConversion>
+</XAL>

@@ -62,7 +62,7 @@ public class Exists {
     }
 
     /**
-     * Check if there is if inside the node element
+     * Check if there is For inside the node element
      *
      * @param ctx   The node element from where start the scan.
      * @return      True if there is an if node inside.
@@ -72,7 +72,7 @@ public class Exists {
         for(ParseTree c: ctx.children) {
             if (
                     c instanceof BasicForStatementContext
-                )
+                    )
             {
                 f = true;
             }
@@ -86,8 +86,34 @@ public class Exists {
         return f;
     }
 
+    /**
+     * Check if there is While inside the node element
+     *
+     * @param ctx   The node element from where start the scan.
+     * @return      True if there is an if node inside.
+     */
+    public static boolean While(ParserRuleContext ctx) {
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (
+                    c instanceof WhileStatementContext ||
+                    c instanceof WhileStatementNoShortIfContext
+                    )
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                f = f | While((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
     public static boolean Has2Walk(ParserRuleContext ctx){
-        return If(ctx) || For(ctx);
+        return If(ctx) || For(ctx) || While(ctx);
     }
 
     /**
