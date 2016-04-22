@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d757fc41-fdb0-4143-aa18-b91d6ca3fa2b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_4.xml" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALSync.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GenerateTopologyAsync.xal" afterPath="$PROJECT_DIR$/GenerateTopologyAsync.xal" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PredictionModule.xal" afterPath="$PROJECT_DIR$/PredictionModule.xal" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SwitchEdge.xal" afterPath="$PROJECT_DIR$/SwitchEdge.xal" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SwitchNode.xal" afterPath="$PROJECT_DIR$/SwitchNode.xal" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test.xal" afterPath="$PROJECT_DIR$/Test.xal" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALTransition.java" afterPath="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALTransition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/convert2xal.iml" afterPath="$PROJECT_DIR$/convert2xal/convert2xal.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/pom.xml" afterPath="$PROJECT_DIR$/convert2xal/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java" afterPath="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/resources/PredictionModule.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/resources/PredictionModule.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/resources/Test.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/resources/Test.java" />
     </list>
     <ignored mask="*.iws" />
@@ -75,21 +74,16 @@
       <file leaf-file-name="CreateXALTree.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
-              <caret line="382" column="0" selection-start-line="382" selection-start-column="0" selection-end-line="382" selection-end-column="0" />
+            <state relative-caret-position="284">
+              <caret line="447" column="0" selection-start-line="447" selection-start-column="0" selection-end-line="447" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1129#1138#0" expanded="true" />
+                <element signature="method#enterWhileStatement#0;class#CreateXALTree#0" expanded="false" />
+                <element signature="method#enterIfThenStatement#0;class#CreateXALTree#0" expanded="false" />
+                <element signature="method#enterIfThenElseStatement#0;class#CreateXALTree#0" expanded="false" />
+                <element signature="method#produceIfElseCode#0;class#CreateXALTree#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewGrammar.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -97,33 +91,38 @@
       <file leaf-file-name="PrettyPrint.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="930">
-              <caret line="68" column="42" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="42" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#6691#6692#0" expanded="true" />
-                <element signature="e#6745#6746#0" expanded="true" />
-                <element signature="e#6860#6881#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/Test.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            <state relative-caret-position="604">
+              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestFor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/convert2xal/src/test/java/TestFor.java">
+      <file leaf-file-name="XALDocument.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALDocument.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+            <state relative-caret-position="180">
+              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/Test.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test.xal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Test.xal">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="19" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -132,18 +131,8 @@
       <file leaf-file-name="PredictionModule.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/PredictionModule.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="162" column="5" selection-start-line="151" selection-start-column="4" selection-end-line="162" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="XALTransition.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALTransition.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+            <state relative-caret-position="372">
+              <caret line="305" column="12" selection-start-line="305" selection-start-column="12" selection-end-line="305" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -152,12 +141,53 @@
       <file leaf-file-name="GetObjects.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="472">
-              <caret line="270" column="41" selection-start-line="270" selection-start-column="41" selection-end-line="270" selection-end-column="41" />
+            <state relative-caret-position="346">
+              <caret line="120" column="55" selection-start-line="120" selection-start-column="55" selection-end-line="120" selection-end-column="55" />
               <folding>
-                <element signature="e#7509#7510#0" expanded="true" />
-                <element signature="e#7560#7561#0" expanded="true" />
+                <element signature="e#7600#7601#0" expanded="true" />
+                <element signature="e#7651#7652#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XALSync.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALSync.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="564">
+              <caret line="69" column="16" selection-start-line="69" selection-start-column="16" selection-end-line="69" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#306#316#0" expanded="true" />
+                <element signature="e#454#455#0" expanded="true" />
+                <element signature="e#479#480#0" expanded="true" />
+                <element signature="e#1095#1096#0" expanded="true" />
+                <element signature="e#1138#1139#0" expanded="true" />
+                <element signature="e#1314#1315#0" expanded="true" />
+                <element signature="e#1347#1348#0" expanded="true" />
+                <element signature="e#1507#1508#0" expanded="true" />
+                <element signature="e#1536#1537#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XALState.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="524">
+              <caret line="94" column="20" selection-start-line="87" selection-start-column="8" selection-end-line="94" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Exists.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="750">
+              <caret line="116" column="68" selection-start-line="116" selection-start-column="68" selection-end-line="116" selection-end-column="68" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -186,9 +216,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple/simpleForNoInitNoCheckNoUp.xal" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple/simpleForNoCheck.xal" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple/simpleForNoInitNoUp.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple/simpleForNoUp.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple/simpleForNoCheckNoUp.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/complex/complexFor.xal" />
@@ -206,7 +233,6 @@
         <option value="$PROJECT_DIR$/XAL/src/main/java/items/XALSrc.java" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/items/XALState.java" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/XALItem.java" />
-        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALAutomaton.java" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALClock.java" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALDocument.java" />
@@ -216,7 +242,6 @@
         <option value="$PROJECT_DIR$/convert2xal/src/test/java/TestFor.java" />
         <option value="$PROJECT_DIR$/thread/TreeNode.java" />
         <option value="$PROJECT_DIR$/thread/Main.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" />
         <option value="$PROJECT_DIR$/XAL/pom.xml" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/while/singleWhile.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/test/java/TestWhile.java" />
@@ -233,10 +258,15 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/convert2xal/pom.xml" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALTransition.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/Test.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/PredictionModule.java" />
+        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/Test.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java" />
+        <option value="$PROJECT_DIR$/Test.xal" />
+        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALSync.java" />
       </list>
     </option>
   </component>
@@ -314,8 +344,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -331,6 +359,150 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XAL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XAL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XAL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XAL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XAL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XALStructure" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XAL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XALStructure" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="items" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -505,9 +677,15 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -521,9 +699,11 @@
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="" />
-      <recent name="XAL.items" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple" />
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources" />
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if" />
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
@@ -533,15 +713,14 @@
       <recent name="$PROJECT_DIR$/convert2xal" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="XALStructure.items" />
       <recent name="" />
       <recent name="items" />
       <recent name="XAL.items" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple" />
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources" />
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if" />
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="" />
+      <recent name="XAL.items" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -922,7 +1101,7 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="Main" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/convert2xal/src/main/resources/PredictionModule.java" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/convert2xal/src/main/resources/Test.java" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -994,18 +1173,18 @@
     <list size="9">
       <item index="0" class="java.lang.String" itemvalue="Application.Main" />
       <item index="1" class="java.lang.String" itemvalue="Application.Test" />
-      <item index="2" class="java.lang.String" itemvalue="Application.ViewGrammar" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.TestConvert2XAL" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.TestWhile.TestSimple" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.TestWhile" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.TestIfCommand" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.TestIfCommand.TestIfBracket" />
-      <item index="8" class="java.lang.String" itemvalue="JUnit Test Discovery.TestDiscovery" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.TestConvert2XAL" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit Test Discovery.TestDiscovery" />
+      <item index="4" class="java.lang.String" itemvalue="Application.ViewGrammar" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.TestWhile.TestSimple" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.TestWhile" />
+      <item index="7" class="java.lang.String" itemvalue="JUnit.TestIfCommand" />
+      <item index="8" class="java.lang.String" itemvalue="JUnit.TestIfCommand.TestIfBracket" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.TestIfCommand.TestIfBracket" />
-        <item index="1" class="java.lang.String" itemvalue="Application.ViewGrammar" />
+        <item index="0" class="java.lang.String" itemvalue="Application.ViewGrammar" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.TestIfCommand.TestIfBracket" />
         <item index="2" class="java.lang.String" itemvalue="JUnit.TestIfCommand" />
         <item index="3" class="java.lang.String" itemvalue="JUnit.TestWhile" />
         <item index="4" class="java.lang.String" itemvalue="JUnit.TestWhile.TestSimple" />
@@ -1075,22 +1254,22 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853898" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31443688" sideWeight="0.3395552" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31443688" sideWeight="0.31930104" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3235072" sideWeight="0.5047657" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34392375" sideWeight="0.49518073" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.49761716" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35600907" sideWeight="0.45552024" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32426304" sideWeight="0.46266878" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35600907" sideWeight="0.43010324" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27135298" sideWeight="0.45949167" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16441621" sideWeight="0.68815947" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35600907" sideWeight="0.5444797" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35600907" sideWeight="0.56989676" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24980143" sideWeight="0.886747" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39531368" sideWeight="0.52382845" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3643235" sideWeight="0.5099285" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1117,18 +1296,30 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java</url>
-          <line>152</line>
+          <line>159</line>
           <properties />
           <option name="timeStamp" value="197" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java</url>
-          <line>57</line>
+          <url>file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java</url>
+          <line>30</line>
           <properties />
-          <option name="timeStamp" value="201" />
+          <option name="timeStamp" value="206" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java</url>
+          <line>51</line>
+          <properties />
+          <option name="timeStamp" value="209" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java</url>
+          <line>447</line>
+          <properties />
+          <option name="timeStamp" value="211" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="203" />
+      <option name="time" value="212" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1137,41 +1328,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/complex/complexFor.xal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="12" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALEvents.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="65" selection-start-line="1" selection-start-column="65" selection-end-line="1" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/XAL.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/XALItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/exception/XALMalformedException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALAction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -1197,13 +1353,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -1242,25 +1391,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALDocument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALCLockVariable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALAutomaton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="26" column="37" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1271,49 +1405,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
-          <folding>
-            <element signature="e#990#991#0" expanded="false" />
-            <element signature="e#1050#1051#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/For.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="5" selection-start-line="7" selection-start-column="4" selection-end-line="11" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/thread/TreeNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="26" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/thread/TreeNode.java" />
     <entry file="file://$PROJECT_DIR$/thread/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
           <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="125" column="16" selection-start-line="125" selection-start-column="16" selection-end-line="125" selection-end-column="16" />
-          <folding>
-            <element signature="e#2623#2624#0" expanded="false" />
-            <element signature="e#2679#2680#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1337,7 +1440,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="22" column="77" selection-start-line="22" selection-start-column="77" selection-end-line="22" selection-end-column="77" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1345,7 +1447,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1353,7 +1454,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="57" column="79" selection-start-line="57" selection-start-column="79" selection-end-line="57" selection-end-column="79" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1361,7 +1461,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="88" selection-start-line="20" selection-start-column="69" selection-end-line="20" selection-end-column="88" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1369,7 +1468,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" column="85" selection-start-line="19" selection-start-column="85" selection-end-line="19" selection-end-column="85" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1377,7 +1475,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="85" selection-start-line="20" selection-start-column="85" selection-end-line="20" selection-end-column="85" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1385,7 +1482,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" column="85" selection-start-line="19" selection-start-column="85" selection-end-line="19" selection-end-column="85" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1393,7 +1489,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="85" selection-start-line="20" selection-start-column="85" selection-end-line="20" selection-end-column="85" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1401,7 +1496,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="26" column="85" selection-start-line="26" selection-start-column="85" selection-end-line="26" selection-end-column="85" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1409,7 +1503,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
           <caret line="33" column="86" selection-start-line="33" selection-start-column="86" selection-end-line="33" selection-end-column="86" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1417,7 +1510,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="36" selection-end-column="80" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1425,7 +1517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="36" selection-end-column="80" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1433,7 +1524,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1449,7 +1539,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1140">
           <caret line="76" column="22" selection-start-line="76" selection-start-column="22" selection-end-line="76" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1461,77 +1550,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALTransition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="270" column="41" selection-start-line="270" selection-start-column="41" selection-end-line="270" selection-end-column="41" />
-          <folding>
-            <element signature="e#7509#7510#0" expanded="true" />
-            <element signature="e#7560#7561#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/PredictionModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="162" column="5" selection-start-line="151" selection-start-column="4" selection-end-line="162" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="930">
-          <caret line="68" column="42" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6691#6692#0" expanded="true" />
-            <element signature="e#6745#6746#0" expanded="true" />
-            <element signature="e#6860#6881#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/convert2xal/src/test/java/TestIfCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="945">
           <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/test/java/TestFor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="382" column="0" selection-start-line="382" selection-start-column="0" selection-end-line="382" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1539,6 +1561,164 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="15047" column="0" selection-start-line="15047" selection-start-column="0" selection-end-line="15047" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.2/antlr4-runtime-4.2.jar!/org/antlr/v4/runtime/tree/ParseTreeWalker.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.2/antlr4-runtime-4.2.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/test/java/TestFor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2318#2333#0" expanded="false" />
+            <element signature="e#3017#3025#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALTransition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-417">
+          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALAutomaton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="269" column="9" selection-start-line="267" selection-start-column="8" selection-end-line="269" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="94" column="20" selection-start-line="87" selection-start-column="8" selection-end-line="94" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="116" column="68" selection-start-line="116" selection-start-column="68" selection-end-line="116" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/PredictionModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="305" column="12" selection-start-line="305" selection-start-column="12" selection-end-line="305" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALDocument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="604">
+          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="447" column="0" selection-start-line="447" selection-start-column="0" selection-end-line="447" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1129#1138#0" expanded="true" />
+            <element signature="method#enterWhileStatement#0;class#CreateXALTree#0" expanded="false" />
+            <element signature="method#enterIfThenStatement#0;class#CreateXALTree#0" expanded="false" />
+            <element signature="method#enterIfThenElseStatement#0;class#CreateXALTree#0" expanded="false" />
+            <element signature="method#produceIfElseCode#0;class#CreateXALTree#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="120" column="55" selection-start-line="120" selection-start-column="55" selection-end-line="120" selection-end-column="55" />
+          <folding>
+            <element signature="e#7600#7601#0" expanded="true" />
+            <element signature="e#7651#7652#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test.xal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="19" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALSync.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="564">
+          <caret line="69" column="16" selection-start-line="69" selection-start-column="16" selection-end-line="69" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#306#316#0" expanded="true" />
+            <element signature="e#454#455#0" expanded="true" />
+            <element signature="e#479#480#0" expanded="true" />
+            <element signature="e#1095#1096#0" expanded="true" />
+            <element signature="e#1138#1139#0" expanded="true" />
+            <element signature="e#1314#1315#0" expanded="true" />
+            <element signature="e#1347#1348#0" expanded="true" />
+            <element signature="e#1507#1508#0" expanded="true" />
+            <element signature="e#1536#1537#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
           <folding />
         </state>
       </provider>

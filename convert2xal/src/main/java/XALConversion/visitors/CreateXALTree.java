@@ -6,6 +6,7 @@ import XALStructure.items.*;
 import XALConversion.util.Pair;
 import XALConversion.util.parsing.*;
 import jdk.nashorn.internal.runtime.regexp.joni.ast.ConsAltNode;
+import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
@@ -26,14 +27,18 @@ import java.util.Stack;
  */
 public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
-    boolean __DEBUG__ = false;
+    boolean __DEBUG__ = true;
 
     List<XALDocument> documents;
     XALAutomaton current_automata;
     Stack<XALDocument> stackDocument = new Stack<XALDocument>();
     XALDocument current_document;
+    XALSync lastSyncBlock;
+    Stack<XALSync> stackSync = new Stack<XALSync>();
     static XALState lastState = null;
     String metricValue = null;
+
+    boolean insideSync = false;
 
     public CreateXALTree() {
         documents = new ArrayList<XALDocument>();
@@ -228,6 +233,42 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
     }
 
     @Override
+    public void enterEnhancedForStatement(@NotNull EnhancedForStatementContext ctx) {
+        int indexType = 2, indexVar = 3, indexExpr = 5, indexBody = 7;
+
+        if(!(ctx.getChild(indexType) instanceof UnannTypeContext)){
+            indexVar--;
+            indexExpr--;
+            indexBody--;
+            indexType = -1;
+        }
+
+        //Def of var
+        String varName = PrettyPrint.LocalVariableDeclaration( (ParserRuleContext) ctx.getChild(indexVar));
+        XALState ss = new XALState(varName);
+
+        XALState initFor = new XALState("forEach");
+        XALState endFor = new XALState("endforEach");
+        current_automata.addState(initFor);
+        current_automata.addState(endFor);
+        XALTransition t = new XALTransition(lastState,initFor);
+        current_automata.addTransition(t);
+        lastState = initFor;
+
+        //Expr
+
+        //body
+        if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))){
+            walk(this, ctx.getChild(indexBody));
+        } else {
+            generateState((ParserRuleContext) ctx.getChild(indexBody));
+        }
+        //return to the begining
+        current_automata.addTransition(new XALTransition(lastState,endFor));
+        lastState = endFor;
+    }
+
+    @Override
     public void enterIfThenStatement(@NotNull IfThenStatementContext ctx) {
         //Expression before
         generateStateExpression((ParserRuleContext) ctx.getChild(2));
@@ -330,6 +371,31 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         }
     }
 
+
+    @Override
+    public void enterSynchronizedStatement(@NotNull SynchronizedStatementContext ctx) {
+        super.enterSynchronizedStatement(ctx);
+        XALSync s = new XALSync(ctx.getChild(2).getText());
+        current_automata.addState(s);
+        stackSync.add(s);
+        insideSync = true;
+        lastSyncBlock = s;
+    }
+
+
+    @Override
+    public void exitSynchronizedStatement(@NotNull SynchronizedStatementContext ctx) {
+        stackSync.pop();
+        if(stackSync.size() > 0) {
+            lastSyncBlock = stackSync.peek();
+            insideSync = true;
+        }
+        else {
+            lastSyncBlock = null;
+            insideSync = false;
+        }
+    }
+
     @Override
     public void enterEveryRule(@NotNull ParserRuleContext ctx) {
         if(__DEBUG__){
@@ -381,7 +447,20 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         }
         String type = GetObjects.getStmtType(ctx);
         XALState state = new XALState( PrettyPrint.ClassName(type, ctx) );
-        current_automata.addState(state);
+        addState(state, ctx);
+    }
+
+    protected void generateStateExpression(ParserRuleContext ctx){
+        XALState state = new XALState( PrettyPrint.Expression(ctx) );
+        addState(state, ctx);
+    }
+
+    protected void addState(XALState state, ParserRuleContext ctx){
+        if(insideSync) {
+            lastSyncBlock.addState(state);
+        } else {
+            current_automata.addState(state);
+        }
         XALTransition transition = new XALTransition(this.lastState, state, this.metricValue );
         current_automata.addTransition(transition);
 
@@ -390,20 +469,6 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
             System.err.println("[DEBUG} Creating transition: (" + this.lastState.getId() + "," + state.getId() + ")");
         }
 
-        this.lastState = state;
-        this.metricValue = null;
-    }
-
-    protected void generateStateExpression(ParserRuleContext ctx){
-        XALState state = new XALState( PrettyPrint.Expression(ctx) );
-        current_automata.addState(state);
-        XALTransition transition = new XALTransition(this.lastState, state, this.metricValue);
-        current_automata.addTransition(transition);
-
-        if(__DEBUG__){
-            System.err.println("[DEBUG} Creating state: " + state.getId() + " :: " + ctx.getText());
-            System.err.println("[DEBUG} Creating transition: (" + this.lastState.getId() + "," + state.getId() + ")");
-        }
         this.lastState = state;
         this.metricValue = null;
     }

@@ -47,7 +47,8 @@ public class Exists {
         boolean f = false;
         for(ParseTree c: ctx.children) {
             if (
-                    c instanceof BasicForStatementContext
+                    c instanceof BasicForStatementContext ||
+                    c instanceof EnhancedForStatementContext
                     )
             {
                 f = true;
@@ -66,7 +67,7 @@ public class Exists {
      * Check if there is While inside the node element
      *
      * @param ctx   The node element from where start the scan.
-     * @return      True if there is an if node inside.
+     * @return      True if there is an while node inside.
      */
     public static boolean While(ParserRuleContext ctx) {
         boolean f = false;
@@ -88,8 +89,32 @@ public class Exists {
         return f;
     }
 
+    /**
+     * Check if there is Synchronized inside the node element
+     *
+     * @param ctx   The node element from where start the scan.
+     * @return      True if there is an synchronized node inside.
+     */
+    public static boolean Synchronized(ParserRuleContext ctx){
+
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (c instanceof SynchronizedStatementContext)
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                f = f | Synchronized((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
     public static boolean Has2Walk(ParserRuleContext ctx){
-        return If(ctx) || For(ctx) || While(ctx);
+        return If(ctx) || For(ctx) || While(ctx) || Synchronized(ctx);
     }
 
     /**

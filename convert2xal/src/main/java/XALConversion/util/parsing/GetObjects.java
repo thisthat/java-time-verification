@@ -117,7 +117,8 @@ public class GetObjects {
         final Set<String> types = new HashSet<String>(Arrays.asList(
                 new String[] {
                         "ReturnStatementContext", "MethodInvocationContext", "AssignmentContext", "UnaryExpressionContext",
-                        "LocalVariableDeclarationContext", "PostIncrementExpressionContext", "PreIncrementExpressionContext"
+                        "LocalVariableDeclarationContext", "PostIncrementExpressionContext", "PreIncrementExpressionContext",
+                        "PreDecrementExpressionContext", "PostDecrementExpressionContext"
                 }
         ));
         for (ParseTree stmt: node.children) {
@@ -275,6 +276,26 @@ public class GetObjects {
             }
             else {
                 AssignmentContext tmp = Assignment((ParserRuleContext) c);
+                if(tmp != null){
+                    out = tmp;
+                }
+            }
+        }
+        return out;
+    }
+
+    public static ParserRuleContext PrePostExpression(ParserRuleContext ctx) {
+        ParserRuleContext out = null;
+        for(ParseTree c: ctx.children) {
+            if(c instanceof PreDecrementExpressionContext || c instanceof PreIncrementExpressionContext ||
+                c instanceof PostDecrementExpressionContext || c instanceof PostIncrementExpressionContext){
+                out = (ParserRuleContext)c;
+            }
+            else if(c instanceof TerminalNode){
+                continue;
+            }
+            else {
+                ParserRuleContext tmp = PrePostExpression((ParserRuleContext) c);
                 if(tmp != null){
                     out = tmp;
                 }

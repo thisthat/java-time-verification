@@ -47,7 +47,14 @@ public class PrettyPrint {
             case "ExpressionStatement":
                 out = ExpressionStatement(str,ctx);
                 break;
-
+            case "PostIncrementExpression":
+            case "PreIncrementExpression":
+                out = "inc_" + PrePostExpression(ctx);
+                break;
+            case "PostDecrementExpression":
+            case "PreDecrementExpression":
+                out = "dec_" + PrePostExpression(ctx);
+                break;
             default: break;
 
         }
@@ -184,6 +191,18 @@ public class PrettyPrint {
                 }
             default:
                 break;
+        }
+        return out;
+    }
+
+    private static String PrePostExpression(ParserRuleContext ctx) {
+        String out = "nd_PrePostExpr";
+        ParserRuleContext exp = GetObjects.PrePostExpression(ctx);
+        if(exp instanceof PostIncrementExpressionContext || exp instanceof PostDecrementExpressionContext){
+            out = exp.getChild(0).getText();
+        }
+        else if(exp instanceof PreIncrementExpressionContext || exp instanceof PreDecrementExpressionContext){
+            out = exp.getChild(1).getText();
         }
         return out;
     }

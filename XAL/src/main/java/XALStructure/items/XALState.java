@@ -11,10 +11,10 @@ import XALStructure.XALItem;
 
 public class XALState extends XALItem {
 
-    private String id;
-    private String idAction = null;
-    private String idMetric = null;
-    private String style = "x:31; y:44; h:30; w:49";
+    protected String id;
+    protected String idAction = null;
+    protected String idMetric = null;
+    protected String style = "x:31; y:44; h:30; w:49";
 
     /**
      * Enumeration that allows the constructor to chose between action or metric

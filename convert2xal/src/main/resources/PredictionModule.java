@@ -302,8 +302,8 @@ public class PredictionModule implements IFloodlightModule, INetTopologyService,
 	public String getTopologyGraph(String format){
 		//createTopology();
 		switch(format){
-		case "dot": return dot();
-		case "json": return json();
+			case "dot": return dot();
+			case "json": return json();
 		}
 		return dot();
 	}

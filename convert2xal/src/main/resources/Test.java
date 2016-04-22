@@ -10,17 +10,21 @@ import java.util.Collection;
 public class Test {
 
     @Override
-    public void init(FloodlightModuleContext context)
-            throws FloodlightModuleException {
-        floodlightProvider = context.getServiceImpl(IFloodlightProviderService.class);
-        restApi = context.getServiceImpl(IRestApiService.class);
-        topology = context.getServiceImpl(ILinkDiscoveryService.class);
-        GenerateTopologyAsync myRunnable = new GenerateTopologyAsync(this);
-        createTopologyThread = new Thread(myRunnable);
-        createTopologyThread.start();
-        mongodb.connect();
-        predictionProvider = new PredictionHandler(mongodb);
-        behaviourProvider = new BehaviourManager(mongodb, predictionProvider);
+    public void testForEach(){
+
+        System.out.abc(p);
+
+        synchronized ( obj ){
+            System.out.println(p);
+            int i = 0;
+            i++;
+            ++i;
+            int j = 0;
+            j--;
+            --j;
+        }
+
+        System.out.print(p);
     }
 
 }
