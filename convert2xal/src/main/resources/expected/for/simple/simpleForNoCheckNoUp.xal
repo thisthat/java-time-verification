@@ -1,0 +1,22 @@
+<Automaton Id="simpleForNoCheckNoUp">
+	<GlobalState/>
+	<Clocks/>
+	<ActionPool/>
+	<States>
+		<State Id="init" style="x:31; y:44; h:30; w:49" />
+		<State Id="DeclVar_i" style="x:31; y:44; h:30; w:49" />
+		<State Id="for" style="x:31; y:44; h:30; w:49" />
+		<State Id="endfor" style="x:31; y:44; h:30; w:49" />
+		<State Id="MethodInvocation" style="x:31; y:44; h:30; w:49" />
+	</States>
+	<InitialState IdState="init"/>
+	<FinalStates>
+		<FinalState IdState="endfor"/>
+	</FinalStates>
+	<Transitions>
+		<Transition IdInputState="init" IdOutputState="DeclVar_i" style="[]" />
+		<Transition IdInputState="DeclVar_i" IdOutputState="for" style="[]" />
+		<Transition IdInputState="for" IdOutputState="MethodInvocation" style="[]" />
+		<Transition IdInputState="MethodInvocation" IdOutputState="for" style="[]" />
+	</Transitions>
+</Automaton>
