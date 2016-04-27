@@ -23,6 +23,7 @@ public class Main {
             }
         }
     }
+
     private static class ThreadDemo2 extends Thread {
         public void run() {
             synchronized (Lock2) {

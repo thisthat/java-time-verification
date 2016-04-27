@@ -47,10 +47,24 @@ public class XALSync extends XALState {
 
     /**
      * Add a state to the list of states inside a synchronized block
+     * If the name already exists in the list, it will use a numeric index to make it unique.
      * @param state The {@link XALState} to add
      */
     public void addState(XALState state){
-        states.add(state);
+        int i  = 0;
+        String id = state.getId();
+        while(existState(state.getId())) {
+            state.setId(id + "_" + i++);
+        }
+        this.states.add(state);
+    }
+
+    private boolean existState(XALState s){
+        return this.existState(s.getId());
+    }
+
+    private boolean existState(String s){
+        return this.states.stream().anyMatch(state -> (state.getId().equals(s)));
     }
 
     /**
@@ -64,14 +78,14 @@ public class XALSync extends XALState {
     @Override
     public String toString(int tab) {
         String out = "";
-        out += tab(tab) + String.format("<sync Id=\"%s\" ", this.id);
+        out += tab(tab) + String.format("<Sync Id=\"%s\" ", this.id);
         if(style != null)
             out += String.format("style=\"%s\" ", this.style);
         out += ">\n";
         for (XALState v: this.states ) {
             out += v.toString(tab+1) + "\n";
         }
-        out += tab(tab) + "</sync>";
+        out += tab(tab) + "</Sync>";
         return out;
     }
 

@@ -75,9 +75,26 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
         //super.enterMethodDeclarator(ctx);
         if(__DEBUG__)
             System.err.println("[" + ctx.getChild(0).getText() + "]");
+
         XALAutomaton newAutomata = new XALAutomaton(ctx.getChild(0).getText());
         current_document.addAutomaton(newAutomata);
         current_automata = newAutomata;
+
+        //check if is a synchronized method
+        ParserRuleContext tmp = (ParserRuleContext) ctx.parent.parent;
+        for(ParseTree c : tmp.children){
+            if(c instanceof MethodModifierContext &&
+                    c.getText().equals("synchronized")
+                    ){
+                //it is a synchronized method
+                XALSync s = new XALSync(ctx.getChild(0).getText());
+                current_automata.addState(s);
+                stackSync.push(s);
+                insideSync = true;
+                lastSyncBlock = s;
+            }
+        }
+
         XALState init = new XALState("init");
         lastState = init;
         current_automata.addState(init);
@@ -245,17 +262,23 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
         //Def of var
         String varName = PrettyPrint.LocalVariableDeclaration( (ParserRuleContext) ctx.getChild(indexVar));
-        XALState ss = new XALState(varName);
+        //Expr
+        String exp = PrettyPrint.Expression((ParserRuleContext) ctx.getChild(indexExpr));
+        XALState ss = new XALState(varName + "_takes_" + exp);
 
         XALState initFor = new XALState("forEach");
-        XALState endFor = new XALState("endforEach");
+        XALState hasNext = new XALState("hasNext");
         current_automata.addState(initFor);
-        current_automata.addState(endFor);
-        XALTransition t = new XALTransition(lastState,initFor);
-        current_automata.addTransition(t);
-        lastState = initFor;
+        current_automata.addState(hasNext);
+        current_automata.addState(ss);
+        current_automata.addTransition(new XALTransition(lastState,initFor));
+        current_automata.addTransition(new XALTransition(initFor,hasNext));
+        current_automata.addTransition(new XALTransition(hasNext,ss,XALTransition.METRIC_TRUE));
+        lastState = ss;
 
-        //Expr
+
+        //XALTransition toEnd = new XALTransition(lastState, endFor , XALTransition.METRIC_FALSE);
+        //current_automata.addTransition(toEnd);
 
         //body
         if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))){
@@ -264,8 +287,14 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
             generateState((ParserRuleContext) ctx.getChild(indexBody));
         }
         //return to the begining
-        current_automata.addTransition(new XALTransition(lastState,endFor));
-        lastState = endFor;
+        current_automata.addTransition(new XALTransition(lastState,hasNext));
+        metricValue = XALTransition.METRIC_FALSE;
+        lastState = hasNext;
+
+        //delete expressions
+        ctx.children.remove(indexBody);
+        ctx.children.remove(indexExpr);
+        ctx.children.remove(indexVar);
     }
 
     @Override
@@ -374,10 +403,9 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterSynchronizedStatement(@NotNull SynchronizedStatementContext ctx) {
-        super.enterSynchronizedStatement(ctx);
         XALSync s = new XALSync(ctx.getChild(2).getText());
         current_automata.addState(s);
-        stackSync.add(s);
+        stackSync.push(s);
         insideSync = true;
         lastSyncBlock = s;
     }
