@@ -1,5 +1,6 @@
 package XALStructure.items;
 
+import XALStructure.XALAddState;
 import XALStructure.XALItem;
 import XALStructure.exception.XALMalformedException;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 /**
  * Xal Automaton. This class represent the structure of a single automaton.
+ * It implements the interface {@link XALAddState}.
  * It stores information about
  * <ul>
  * <li>{@link XALGlobalState} :: List of variables</li>
@@ -23,7 +25,7 @@ import java.util.List;
  * @version %I%, %G%
  */
 
-public class XALAutomaton extends XALItem {
+public class XALAutomaton extends XALItem implements XALAddState {
     private static int __counter = 0;
     public static final String __HIDDEN_AUTOMATA__ = "NoName_";
 
@@ -103,6 +105,7 @@ public class XALAutomaton extends XALItem {
      * If the name already exists in the list, it will use a numeric index to make it unique.
      * @param s {@link XALState} to add
      */
+    @Override
     public void addState(XALState s) {
         int i  = 0;
         String id = s.getId();

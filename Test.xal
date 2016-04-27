@@ -7,10 +7,10 @@
 		<States>
 			<State Id="init" style="x:31; y:44; h:30; w:49" />
 			<State Id="forEach" style="x:31; y:44; h:30; w:49" />
-			<State Id="endforEach" style="x:31; y:44; h:30; w:49" />
-			<State Id="array" style="x:31; y:44; h:30; w:49" />
+			<State Id="hasNext" style="x:31; y:44; h:30; w:49" />
+			<State Id="i_takes_array" style="x:31; y:44; h:30; w:49" />
 			<State Id="call_System_out_forrrr" style="x:31; y:44; h:30; w:49" />
-			<State Id="call_System_out_forrrr_0" style="x:31; y:44; h:30; w:49" />
+			<State Id="call_System_out_due" style="x:31; y:44; h:30; w:49" />
 			<State Id="call_System_out_abc" style="x:31; y:44; h:30; w:49" />
 			<Sync Id="obj" style="x:31; y:44; h:30; w:49" >
 				<State Id="call_System_out_println" style="x:31; y:44; h:30; w:49" />
@@ -29,11 +29,12 @@
 		</FinalStates>
 		<Transitions>
 			<Transition IdInputState="init" IdOutputState="forEach" style="[]" />
-			<Transition IdInputState="forEach" IdOutputState="array" style="[]" />
-			<Transition IdInputState="array" IdOutputState="call_System_out_forrrr" style="[]" />
-			<Transition IdInputState="call_System_out_forrrr" IdOutputState="endforEach" style="[]" />
-			<Transition IdInputState="endforEach" IdOutputState="call_System_out_forrrr_0" style="[]" />
-			<Transition IdInputState="call_System_out_forrrr_0" IdOutputState="call_System_out_abc" style="[]" />
+			<Transition IdInputState="forEach" IdOutputState="hasNext" style="[]" />
+			<Transition IdInputState="hasNext" IdOutputState="i_takes_array" MetricValue="true" style="[]" />
+			<Transition IdInputState="i_takes_array" IdOutputState="call_System_out_forrrr" style="[]" />
+			<Transition IdInputState="call_System_out_forrrr" IdOutputState="call_System_out_due" style="[]" />
+			<Transition IdInputState="call_System_out_due" IdOutputState="hasNext" style="[]" />
+			<Transition IdInputState="hasNext" IdOutputState="call_System_out_abc" MetricValue="false" style="[]" />
 			<Transition IdInputState="call_System_out_abc" IdOutputState="call_System_out_println" style="[]" />
 			<Transition IdInputState="call_System_out_println" IdOutputState="DeclVar_i" style="[]" />
 			<Transition IdInputState="DeclVar_i" IdOutputState="inc_i" style="[]" />
@@ -51,20 +52,20 @@
 		<States>
 			<Sync Id="synchronizedMethod" style="x:31; y:44; h:30; w:49" >
 				<State Id="DeclVar_i" style="x:31; y:44; h:30; w:49" />
+				<State Id="for" style="x:31; y:44; h:30; w:49" />
+				<State Id="endfor" style="x:31; y:44; h:30; w:49" />
 				<State Id="_ltExpr_" style="x:31; y:44; h:30; w:49" />
+				<State Id="while" style="x:31; y:44; h:30; w:49" />
+				<State Id="endwhile" style="x:31; y:44; h:30; w:49" />
 				<State Id="true" style="x:31; y:44; h:30; w:49" />
 				<State Id="_gtExpr_" style="x:31; y:44; h:30; w:49" />
+				<State Id="if" style="x:31; y:44; h:30; w:49" />
+				<State Id="endif" style="x:31; y:44; h:30; w:49" />
 				<State Id="Return_10" style="x:31; y:44; h:30; w:49" />
 				<State Id="Return_4" style="x:31; y:44; h:30; w:49" />
 				<State Id="inc_i" style="x:31; y:44; h:30; w:49" />
 			</Sync>
 			<State Id="init" style="x:31; y:44; h:30; w:49" />
-			<State Id="for" style="x:31; y:44; h:30; w:49" />
-			<State Id="endfor" style="x:31; y:44; h:30; w:49" />
-			<State Id="while" style="x:31; y:44; h:30; w:49" />
-			<State Id="endwhile" style="x:31; y:44; h:30; w:49" />
-			<State Id="if" style="x:31; y:44; h:30; w:49" />
-			<State Id="endif" style="x:31; y:44; h:30; w:49" />
 		</States>
 		<InitialState IdState="init"/>
 		<FinalStates>

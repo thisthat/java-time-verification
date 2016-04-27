@@ -1,6 +1,7 @@
 package XALConversion.visitors;
 
 
+import XALStructure.XALAddState;
 import XALStructure.exception.XALMalformedException;
 import XALStructure.items.*;
 import XALConversion.util.Pair;
@@ -147,14 +148,14 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterWhileStatement(@NotNull WhileStatementContext ctx) {
-
+        XALAddState where2add = insideSync ? lastSyncBlock : current_automata;
         int indexExp = 2, indexBody = 4;
 
 
         XALState initW = new XALState("while");
         XALState endW = new XALState("endwhile");
-        current_automata.addState(initW);
-        current_automata.addState(endW);
+        where2add.addState(initW);
+        where2add.addState(endW);
         XALTransition t = new XALTransition(lastState,initW, metricValue);
         //reset metric
         if(metricValue != null) {
@@ -187,7 +188,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterBasicForStatement(@NotNull BasicForStatementContext ctx) {
-
+        XALAddState where2add = insideSync ? lastSyncBlock : current_automata;
 
         int indexInit = 2, indexCheck = 4, indexBody = 8, indexUpdate = 6;
 
@@ -204,8 +205,8 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
         XALState initFor = new XALState("for");
         XALState endFor = new XALState("endfor");
-        current_automata.addState(initFor);
-        current_automata.addState(endFor);
+        where2add.addState(initFor);
+        where2add.addState(endFor);
         XALTransition t = new XALTransition(lastState,initFor);
         current_automata.addTransition(t);
         lastState = initFor;
@@ -251,6 +252,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterEnhancedForStatement(@NotNull EnhancedForStatementContext ctx) {
+        XALAddState where2add = insideSync ? lastSyncBlock : current_automata;
         int indexType = 2, indexVar = 3, indexExpr = 5, indexBody = 7;
 
         if(!(ctx.getChild(indexType) instanceof UnannTypeContext)){
@@ -268,9 +270,9 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
         XALState initFor = new XALState("forEach");
         XALState hasNext = new XALState("hasNext");
-        current_automata.addState(initFor);
-        current_automata.addState(hasNext);
-        current_automata.addState(ss);
+        where2add.addState(initFor);
+        where2add.addState(hasNext);
+        where2add.addState(ss);
         current_automata.addTransition(new XALTransition(lastState,initFor));
         current_automata.addTransition(new XALTransition(initFor,hasNext));
         current_automata.addTransition(new XALTransition(hasNext,ss,XALTransition.METRIC_TRUE));
@@ -299,14 +301,15 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterIfThenStatement(@NotNull IfThenStatementContext ctx) {
+        XALAddState where2add = insideSync ? lastSyncBlock : current_automata;
         //Expression before
         generateStateExpression((ParserRuleContext) ctx.getChild(2));
 
         //Create dummy nodes and connect the output of expr to the if dummy node
         XALState s = new XALState("if");
         XALState e = new XALState("endif");
-        current_automata.addState(s);
-        current_automata.addState(e);
+        where2add.addState(s);
+        where2add.addState(e);
         XALTransition t = new XALTransition(lastState,s);
         current_automata.addTransition(t);
         lastState = s;
@@ -336,14 +339,15 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterIfThenElseStatement(@NotNull IfThenElseStatementContext ctx) {
+        XALAddState where2add = insideSync ? lastSyncBlock : current_automata;
         //Expression before
         generateStateExpression((ParserRuleContext) ctx.getChild(2));
 
         //Create dummy nodes and connect the output of expr to the if dummy node
         XALState s = new XALState("if");
         XALState e = new XALState("endif");
-        current_automata.addState(s);
-        current_automata.addState(e);
+        where2add.addState(s);
+        where2add.addState(e);
         XALTransition t = new XALTransition(lastState,s);
         current_automata.addTransition(t);
         lastState = s;

@@ -1,18 +1,20 @@
 package XALStructure.items;
 
+import XALStructure.XALAddState;
 import XALStructure.XALItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class used to represent a XAL state.
+ * Class used to represent a set of {@link XALState} that are in a synchronized block.
+ * It implements the interface {@link XALAddState}.
  *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
 
-public class XALSync extends XALState {
+public class XALSync extends XALState implements XALAddState {
 
 
     List<XALState> states = new ArrayList<XALState>();
@@ -50,6 +52,7 @@ public class XALSync extends XALState {
      * If the name already exists in the list, it will use a numeric index to make it unique.
      * @param state The {@link XALState} to add
      */
+    @Override
     public void addState(XALState state){
         int i  = 0;
         String id = state.getId();
