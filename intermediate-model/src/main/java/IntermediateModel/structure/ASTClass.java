@@ -20,16 +20,22 @@ public class ASTClass {
 	List<String> methods;
 	String name;
 	Visibility accessRight;
+	List<String> implmentsInterfaces;
+	String extendClass;
 
-	public ASTClass(String name, Visibility accessRight){
+	public ASTClass(String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		this.name = name;
 		this.accessRight = accessRight;
+		this.extendClass = extendClass == null ? "Object" : extendClass;
+		this.implmentsInterfaces = implmentsInterfaces;
 	}
 
-	public ASTClass(String name, Visibility accessRight, List<String> methods) {
+	public ASTClass(String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<String> methods) {
 		this.methods = methods;
 		this.name = name;
 		this.accessRight = accessRight;
+		this.extendClass = extendClass == null ? "Object" : extendClass;
+		this.implmentsInterfaces = implmentsInterfaces;
 	}
 
 	public List<String> getMethods() {
@@ -44,9 +50,16 @@ public class ASTClass {
 		return accessRight;
 	}
 
+	public List<String> getImplmentsInterfaces() {
+		return implmentsInterfaces;
+	}
+
+	public String getExtendClass() {
+		return extendClass;
+	}
+
 	public void addMethod(String method){
 		methods.add(method);
 	}
-
 
 }

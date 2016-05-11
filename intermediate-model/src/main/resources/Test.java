@@ -204,7 +204,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	
 	//Generate the topology async each SleepTimeout [ms]
 	//In a thread it fulfill the data structures
-	public class GenerateTopologyAsync implements Runnable {
+	private class GenerateTopologyAsync implements Runnable {
 
 	    private PredictionModule _class;
 		private boolean isRunning = true;

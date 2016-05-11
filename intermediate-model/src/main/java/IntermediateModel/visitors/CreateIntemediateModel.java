@@ -24,6 +24,10 @@ import java.util.Stack;
 public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 
+	public List<ASTClass> listOfClasses = new ArrayList<ASTClass>();
+
+
+
 	@Override
 	public void enterClassDeclaration(@NotNull ClassDeclarationContext ctx) {
 		int indexAccessRight, indexExtends, indexImplements;
@@ -48,7 +52,8 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			if(elm.getChild(indexImplements) instanceof SuperinterfacesContext){
 				_implments = Getter.listInterfaces( (ParserRuleContext) elm.getChild(indexImplements) );
 			}
-			System.out.print("");
+			ASTClass c = new ASTClass(name,vis,extendsName,_implments);
+			listOfClasses.add(c);
 		}
 	}
 
