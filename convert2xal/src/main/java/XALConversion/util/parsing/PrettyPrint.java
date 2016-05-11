@@ -78,7 +78,7 @@ public class PrettyPrint {
                 break;
             case "Assignment":
                 AssignmentContext asg = GetObjects.Assignment(ctx);
-                out =  asg.getChild(0).getText() + "_takes_" +
+                out =  escapeChars(asg.getChild(0).getText()) + "_takes_" +
                         ExpressionStatement(
                                 asg.getChild(2).getClass().getSimpleName(),
                                 (ParserRuleContext) asg.getChild(2)

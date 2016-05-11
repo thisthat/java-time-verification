@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/XAL/XAL.iml" filepath="$PROJECT_DIR$/XAL/XAL.iml" />
       <module fileurl="file://$PROJECT_DIR$/convert2xal/convert2xal.iml" filepath="$PROJECT_DIR$/convert2xal/convert2xal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/intermediate-model/intermediate-model.iml" filepath="$PROJECT_DIR$/intermediate-model/intermediate-model.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-parser/java-parser.iml" filepath="$PROJECT_DIR$/java-parser/java-parser.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
     </modules>

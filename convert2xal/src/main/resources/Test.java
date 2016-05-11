@@ -9,6 +9,13 @@ import java.util.Collection;
  */
 public class Test {
 
+
+    int i = 0;
+
+    public void abc(){
+        i = i + 1;
+    }
+
     @Override
     public void testForEach(){
 

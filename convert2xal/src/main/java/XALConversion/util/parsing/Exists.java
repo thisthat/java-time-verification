@@ -113,8 +113,28 @@ public class Exists {
         return f;
     }
 
+
+    public static boolean Try(ParserRuleContext ctx){
+
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (c instanceof TryStatementContext || c instanceof TryWithResourcesStatementContext)
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                f = f | Try((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
+
     public static boolean Has2Walk(ParserRuleContext ctx){
-        return If(ctx) || For(ctx) || While(ctx) || Synchronized(ctx);
+        return If(ctx) || For(ctx) || While(ctx) || Synchronized(ctx) || Try(ctx);
     }
 
     /**

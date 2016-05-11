@@ -23,6 +23,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="convert2xal" />
+        <module name="intermediate-model" />
         <module name="java-parser" />
         <module name="XAL" />
         <module name="xal" />
@@ -30,6 +31,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="convert2xal" target="1.8" />
+      <module name="intermediate-model" target="1.8" />
       <module name="java-parser" target="1.8" />
       <module name="parent" target="1.8" />
       <module name="XAL" target="1.8" />

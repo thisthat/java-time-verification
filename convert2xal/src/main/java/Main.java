@@ -15,6 +15,7 @@ import java.util.List;
 
 public class Main {
 
+    public static int i = 0;
     public static void main(String[] args) throws Exception {
         if(args.length < 1){
             usage();
