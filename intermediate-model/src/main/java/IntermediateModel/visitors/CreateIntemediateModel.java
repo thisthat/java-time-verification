@@ -3,11 +3,14 @@ package IntermediateModel.visitors;
 
 
 import IntermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTVariable;
 import IntermediateModel.visitors.utility.Getter;
+import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
+import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -57,4 +60,33 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		}
 	}
 
+	@Override
+	public void enterMethodDeclaration(@NotNull MethodDeclarationContext ctx) {
+		int indexAnnotation = 0, indexAccessRight = 0, indexHeader = 1;
+		int indexReturn = 0;
+		int indexPars = 1;
+		ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
+		String returnType = "void";
+		String methodName = "";
+		List<ASTVariable> pars = new ArrayList<ASTVariable>();
+		if(ctx.getChild(indexAnnotation) instanceof MethodModifierContext && ctx.getChild(indexAnnotation).getChild(0) instanceof AnnotationContext){
+			indexAccessRight++;
+			indexHeader++;
+		}
+		if(ctx.getChild(indexAccessRight) instanceof MethodModifierContext){
+			vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexAccessRight));
+		} else {
+			indexHeader--;
+			indexAccessRight = -1;
+		}
+		if(ctx.getChild(indexHeader) instanceof MethodHeaderContext) {
+			ParserRuleContext header = (ParserRuleContext) ctx.getChild(indexHeader);
+			returnType = header.getChild(indexReturn).getText();
+			methodName = header.getChild(indexPars).getChild(0).getText();
+			pars = Getter.parameterList((ParserRuleContext) header.getChild(indexPars));
+		}
+
+
+		super.enterMethodDeclaration(ctx);
+	}
 }
