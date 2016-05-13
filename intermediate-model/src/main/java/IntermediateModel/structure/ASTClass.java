@@ -1,5 +1,6 @@
 package IntermediateModel.structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class ASTClass {
 		STRICTFP
 	}
 
-	List<String> methods;
+	List<IASTMethod> methods = new ArrayList<>();
 	String name;
 	Visibility accessRight;
 	List<String> implmentsInterfaces;
@@ -30,7 +31,7 @@ public class ASTClass {
 		this.implmentsInterfaces = implmentsInterfaces;
 	}
 
-	public ASTClass(String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<String> methods) {
+	public ASTClass(String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
 		this.methods = methods;
 		this.name = name;
 		this.accessRight = accessRight;
@@ -38,7 +39,7 @@ public class ASTClass {
 		this.implmentsInterfaces = implmentsInterfaces;
 	}
 
-	public List<String> getMethods() {
+	public List<? extends IASTMethod> getMethods() {
 		return methods;
 	}
 
@@ -58,8 +59,17 @@ public class ASTClass {
 		return extendClass;
 	}
 
-	public void addMethod(String method){
+	public void addMethod(IASTMethod method){
 		methods.add(method);
+	}
+
+	public String toString(){
+		String out;
+		out = name + "\n";
+		for(IASTMethod m : methods){
+			out += m.toString();
+		}
+		return out;
 	}
 
 }

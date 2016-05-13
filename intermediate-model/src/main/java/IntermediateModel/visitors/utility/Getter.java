@@ -50,7 +50,29 @@ public class Getter {
 		for(ParseTree c : child.children){
 			if(c instanceof FormalParameterListContext){
 				for (ParseTree cc: ((FormalParameterListContext) c).children) {
-					pars.add(parameter((ParserRuleContext) cc));
+					if(cc instanceof TerminalNode){
+						continue;
+					} else {
+						pars.add(parameter((ParserRuleContext) cc));
+					}
+				}
+			}
+			else if(c instanceof FormalParametersContext){
+				for (ParseTree cc: ((FormalParametersContext) c).children) {
+					if(cc instanceof TerminalNode){
+						continue;
+					} else {
+						pars.add(parameter((ParserRuleContext) cc));
+					}
+				}
+			}
+			else if(c instanceof LastFormalParameterContext){
+				for (ParseTree cc: ((LastFormalParameterContext) c).children) {
+					if(cc instanceof TerminalNode){
+						continue;
+					} else {
+						pars.add(parameter((ParserRuleContext) cc));
+					}
 				}
 			}
 			else{

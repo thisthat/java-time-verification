@@ -6,14 +6,12 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTMethod implements IASTMethod {
+public class ASTConstructor implements IASTMethod {
 	String name;
-	String returnType;
 	List<ASTVariable> parameters;
 
-	public ASTMethod(String name, String returnType, List<ASTVariable> parameters) {
+	public ASTConstructor(String name, List<ASTVariable> parameters) {
 		this.name = name;
-		this.returnType = returnType;
 		this.parameters = parameters;
 	}
 
@@ -21,9 +19,6 @@ public class ASTMethod implements IASTMethod {
 		return name;
 	}
 
-	public String getReturnType() {
-		return returnType;
-	}
 
 	public List<ASTVariable> getParameters() {
 		return parameters;
@@ -32,11 +27,9 @@ public class ASTMethod implements IASTMethod {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof ASTMethod)) return false;
-		ASTMethod astMethod = (ASTMethod) o;
+		if (!(o instanceof ASTConstructor)) return false;
+		ASTConstructor astMethod = (ASTConstructor) o;
 		if (getName() != null ? !getName().equals(astMethod.getName()) : astMethod.getName() != null) return false;
-		if (getReturnType() != null ? !getReturnType().equals(astMethod.getReturnType()) : astMethod.getReturnType() != null)
-			return false;
 		if (getParameters() != null ? !getParameters().equals(astMethod.getParameters()) : astMethod.getParameters() != null)
 			return false;
 		return true;
@@ -51,7 +44,7 @@ public class ASTMethod implements IASTMethod {
 		if(parameters.size() > 0){
 			out = out.substring(0,out.length()-1);
 		}
-		out += ") : " + returnType + "\n";
+		out += ")\n";
 		return out;
 	}
 }

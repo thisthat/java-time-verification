@@ -3,6 +3,8 @@ package IntermediateModel.visitors;
 
 
 import IntermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTConstructor;
+import IntermediateModel.structure.ASTMethod;
 import IntermediateModel.structure.ASTVariable;
 import IntermediateModel.visitors.utility.Getter;
 import org.antlr.v4.runtime.Parser;
@@ -28,11 +30,12 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 
 	public List<ASTClass> listOfClasses = new ArrayList<ASTClass>();
-
-
+	private Stack<ASTClass> stckOfClasses = new Stack<>();
+	private ASTClass lastClass;
 
 	@Override
 	public void enterClassDeclaration(@NotNull ClassDeclarationContext ctx) {
+		System.err.print("ENTER CLASS:");
 		int indexAccessRight, indexExtends, indexImplements;
 		if(ctx.getChild(0) instanceof NormalClassDeclarationContext){
 			indexAccessRight = 0;
@@ -57,8 +60,26 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			}
 			ASTClass c = new ASTClass(name,vis,extendsName,_implments);
 			listOfClasses.add(c);
+			stckOfClasses.push(c);
+			lastClass = c;
+			System.err.print(name);
+		}
+		System.err.print("\n");
+	}
+
+	@Override
+	public void exitClassDeclaration(@NotNull ClassDeclarationContext ctx) {
+		System.err.println("Exit");
+		if(stckOfClasses.size() > 0){
+			ASTClass tmpClass = stckOfClasses.pop();
+			//problem with multiple subclasses
+			if(tmpClass.equals(lastClass) && stckOfClasses.size() > 0){
+				lastClass = stckOfClasses.peek();
+			}
 		}
 	}
+
+
 
 	@Override
 	public void enterMethodDeclaration(@NotNull MethodDeclarationContext ctx) {
@@ -85,8 +106,38 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			methodName = header.getChild(indexPars).getChild(0).getText();
 			pars = Getter.parameterList((ParserRuleContext) header.getChild(indexPars));
 		}
-
-
+		ASTMethod method = new ASTMethod(methodName, returnType, pars);
+		lastClass.addMethod(method);
 		super.enterMethodDeclaration(ctx);
+	}
+
+	@Override
+
+	public void enterConstructorDeclaration(@NotNull ConstructorDeclarationContext ctx) {
+
+		int indexAnnotation = 0, indexAccessRight = 0, indexHeader = 1;
+		int indexName = 0;
+		int indexPars = 2;
+		ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
+		String returnType = "void";
+		String methodName = "";
+		List<ASTVariable> pars = new ArrayList<ASTVariable>();
+		if(ctx.getChild(indexAnnotation) instanceof ConstructorModifierContext && ctx.getChild(indexAnnotation).getChild(0) instanceof AnnotationContext){
+			indexAccessRight++;
+			indexHeader++;
+		}
+		if(ctx.getChild(indexAccessRight) instanceof ConstructorModifierContext){
+			vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexAccessRight));
+		} else {
+			indexHeader--;
+			indexAccessRight = -1;
+		}
+		if(ctx.getChild(indexHeader) instanceof ConstructorDeclaratorContext) {
+			ParserRuleContext header = (ParserRuleContext) ctx.getChild(indexHeader);
+			methodName = header.getChild(indexName).getText();
+			pars = Getter.parameterList((ParserRuleContext) header.getChild(indexPars));
+		}
+		ASTConstructor method = new ASTConstructor(methodName, pars);
+		lastClass.addMethod(method);
 	}
 }

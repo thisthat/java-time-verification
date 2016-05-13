@@ -21,7 +21,10 @@ import java.util.*;
 
 // AllSwitchStatisticsResource
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
-	
+	@Deprecated
+	private Test(int i, int k){
+
+	}
 	protected IFloodlightProviderService floodlightProvider;
 	protected IRestApiService restApi;
 
@@ -107,6 +110,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
                                                                                                              
                                                                                                              
 	 */
+
 	
 	@Override
 	public String getName() {

@@ -20,4 +20,9 @@ public class ASTVariable {
 	public String getType() {
 		return type;
 	}
+
+	@Override
+	public String toString() {
+		return type;
+	}
 }
