@@ -1,5 +1,9 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import org.antlr.v4.runtime.Token;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +11,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTClass {
+public class ASTClass extends IASTStm {
 
 	public enum Visibility {
 		PUBLIC,
@@ -24,14 +28,16 @@ public class ASTClass {
 	List<String> implmentsInterfaces;
 	String extendClass;
 
-	public ASTClass(String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
+	public ASTClass(Token start, Token end, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
+		super(start,end);
 		this.name = name;
 		this.accessRight = accessRight;
 		this.extendClass = extendClass == null ? "Object" : extendClass;
 		this.implmentsInterfaces = implmentsInterfaces;
 	}
 
-	public ASTClass(String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
+	public ASTClass(Token start, Token end,String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
+		super(start,end);
 		this.methods = methods;
 		this.name = name;
 		this.accessRight = accessRight;

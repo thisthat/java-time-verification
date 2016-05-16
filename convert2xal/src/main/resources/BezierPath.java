@@ -86,6 +86,18 @@ public class BezierPath extends ArrayList<BezierPath.Node>
             throw error;
         }
     }
+
+    public Object cloneIf() {
+        int i = 0;
+        if(i == 1){
+            i = 2;
+			int j = 2;
+            if( i = 3){
+                i = 2;
+                i = 3;
+            }
+        }
+    }
     
 
     

@@ -1,13 +1,13 @@
 package IntermediateModel.visitors.utility;
 
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTVariable;
-import IntermediateModel.structure.LocalSearch;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.*;
 import com.sun.xml.internal.xsom.impl.Ref;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.grammar.Java8CommentSupportedParser.*;
+import sun.tools.tree.ReturnStatement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,5 +132,60 @@ public class Getter {
 			}
 		};
 		return t.get(child).getText();
+	}
+
+	public static ASTReturn returnStm(ParserRuleContext child){
+		LocalSearch t = new LocalSearch() {
+			public ReturnStatementContext get(ParserRuleContext elm){
+				ReturnStatementContext f = (elm instanceof ReturnStatementContext) ? (ReturnStatementContext) elm : null;
+				for(ParseTree c : elm.children){
+					if(c instanceof ReturnStatementContext){
+						f = (ReturnStatementContext) c;
+					}
+					else if(c instanceof TerminalNode){
+						continue;
+					}
+					else {
+						ReturnStatementContext tmp = get((ParserRuleContext) c);
+						if(tmp != null){
+							f = tmp;
+						}
+					}
+				}
+				return f;
+			}
+		};
+		ReturnStatementContext ret = t.get(child);
+		int indexRetExpr = 1;
+		return new ASTReturn(ret.start, ret.stop, rightExpression((ParserRuleContext) ret.getChild(indexRetExpr)));
+	}
+
+	public static ASTRE rightExpression(ParserRuleContext child){
+		return new ASTRE(child.start, child.stop);
+	}
+
+	public static IASTStm continueStm(ParserRuleContext ctx) {
+		LocalSearch t = new LocalSearch() {
+			public ContinueStatementContext get(ParserRuleContext elm){
+				ContinueStatementContext f = (elm instanceof ContinueStatementContext) ? (ContinueStatementContext) elm : null;
+				for(ParseTree c : elm.children){
+					if(c instanceof ReturnStatementContext){
+						f = (ContinueStatementContext) c;
+					}
+					else if(c instanceof TerminalNode){
+						continue;
+					}
+					else {
+						ContinueStatementContext tmp = get((ParserRuleContext) c);
+						if(tmp != null){
+							f = tmp;
+						}
+					}
+				}
+				return f;
+			}
+		};
+		ContinueStatementContext c = t.get(ctx);
+		return new ASTContinue(c.start, c.stop);
 	}
 }

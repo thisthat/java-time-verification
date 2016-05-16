@@ -23,6 +23,6 @@ public class ASTVariable {
 
 	@Override
 	public String toString() {
-		return type;
+		return type + " " + name;
 	}
 }

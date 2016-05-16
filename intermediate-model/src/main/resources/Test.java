@@ -40,7 +40,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	protected List<SwitchEdge> graph = new ArrayList<SwitchEdge>();
 	public class SwitchNode {
 		private String dpid;
-		public SwitchNode(String n){
+		public SwitchNode(String n){ continue;
 			dpid = n;
 		}
 		public String getName(){

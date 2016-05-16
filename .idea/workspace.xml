@@ -5,10 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d757fc41-fdb0-4143-aa18-b91d6ca3fa2b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/IASTMethod.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTMethod.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTBreak.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTFor.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTForEach.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTIf.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTRE.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSwitch.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/IASTMethod.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTContinue.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/resources/BezierPath.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/resources/BezierPath.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/intermediate-model.iml" afterPath="$PROJECT_DIR$/intermediate-model/intermediate-model.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/pom.xml" afterPath="$PROJECT_DIR$/intermediate-model/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
@@ -74,22 +88,27 @@
       <file leaf-file-name="CreateIntemediateModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
+            <state relative-caret-position="469">
+              <caret line="170" column="35" selection-start-line="170" selection-start-column="35" selection-end-line="170" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4259#4272#0" expanded="true" />
+                <element signature="e#5402#5403#0" expanded="true" />
+                <element signature="e#5427#5428#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IASTMethod.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/IASTMethod.java">
+      <file leaf-file-name="ASTReturn.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="285">
+              <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#388#389#0" expanded="true" />
+                <element signature="e#435#436#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -97,8 +116,18 @@
       <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+            <state relative-caret-position="375">
+              <caret line="42" column="46" selection-start-line="42" selection-start-column="46" selection-end-line="42" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Exists.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="619">
+              <caret line="243" column="56" selection-start-line="243" selection-start-column="56" selection-end-line="243" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -107,10 +136,12 @@
       <file leaf-file-name="Getter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="531">
-              <caret line="69" column="63" selection-start-line="69" selection-start-column="63" selection-end-line="69" selection-end-column="63" />
+            <state relative-caret-position="739">
+              <caret line="188" column="48" selection-start-line="188" selection-start-column="48" selection-end-line="188" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#4762#4763#0" expanded="true" />
+                <element signature="e#4810#4811#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -119,8 +150,8 @@
       <file leaf-file-name="ASTClass.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="20" column="10" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+            <state relative-caret-position="420">
+              <caret line="30" column="43" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -128,21 +159,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ASTMethod.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="44" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
+            <state relative-caret-position="604">
+              <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -151,26 +172,33 @@
       <file leaf-file-name="ASTConstructor.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="11" selection-end-column="0" />
+            <state relative-caret-position="225">
+              <caret line="20" column="25" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ASTVariable.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java">
+      <file leaf-file-name="ASTForEach.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTForEach.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="19" column="19" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="19" />
+            <state relative-caret-position="210">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding>
-                <element signature="e#279#280#0" expanded="true" />
-                <element signature="e#297#298#0" expanded="true" />
-                <element signature="e#325#326#0" expanded="true" />
-                <element signature="e#343#344#0" expanded="true" />
-                <element signature="e#383#384#0" expanded="true" />
-                <element signature="e#401#402#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#272#273#0" expanded="true" />
+                <element signature="e#296#297#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IASTMethod.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTMethod.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -183,8 +211,8 @@
         <option value="Singleton" />
         <option value="Concept" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -202,18 +230,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/XALItem.java" />
-        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALClock.java" />
-        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALDocument.java" />
-        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALVariable.java" />
-        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALSrc.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/test/java/TestFor.java" />
-        <option value="$PROJECT_DIR$/thread/TreeNode.java" />
-        <option value="$PROJECT_DIR$/XAL/pom.xml" />
-        <option value="$PROJECT_DIR$/convert2xal/src/test/java/TestWhile.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/While.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if/TestIf.xal" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if/TestIfElse.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if/TestIfBracket.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if/TestIfElseBracket.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if/TestIfInsideIf.xal" />
@@ -234,8 +250,6 @@
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/while/singleWhile.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/expected/while/simpleWhile.xal" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/BezierPath.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/PrettyPrint.java" />
         <option value="$PROJECT_DIR$/Test.xal" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/resources/Test.java" />
@@ -245,13 +259,27 @@
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/Visibility.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/LocalSearch.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/IASTMethod.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Exists.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/resources/BezierPath.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTMethod.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTRE.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTContinue.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTBreak.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTIf.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSwitch.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTFor.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTForEach.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" />
+        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java" />
       </list>
     </option>
@@ -281,7 +309,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="2560" />
-    <option name="height" value="1417" />
+    <option name="height" value="1413" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -348,9 +376,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -759,6 +786,40 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="intermediate-model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IntermediateModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="convert2xal" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -941,6 +1002,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -953,10 +1015,11 @@
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/convert2xal/src/main/java/XAL/XALEvents.java" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="IntermediateModel.structure" />
-      <recent name="" />
-      <recent name="XAL.items" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple" />
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources" />
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if" />
+      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
@@ -967,17 +1030,16 @@
       <recent name="$PROJECT_DIR$/convert2xal" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="IntermediateModel.visitors.utility" />
       <recent name="IntermediateModel.structure" />
       <recent name="IntermediateModel.visitors" />
       <recent name="XALStructure.items" />
       <recent name="" />
-      <recent name="items" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple" />
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources" />
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if" />
-      <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="IntermediateModel.structure" />
+      <recent name="" />
+      <recent name="XAL.items" />
     </key>
   </component>
   <component name="RunManager" selected="Application.MainIntermediateModel">
@@ -1515,28 +1577,28 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2560" height="1417" extended-state="6" />
+    <frame x="0" y="23" width="2560" height="1413" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853898" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31198192" sideWeight="0.2660842" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31141347" sideWeight="0.24861" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3235072" sideWeight="0.5047657" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34392375" sideWeight="0.49518073" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.49761716" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33685005" sideWeight="0.4217633" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25542784" sideWeight="0.58869815" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33635676" sideWeight="0.3991263" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25396827" sideWeight="0.58498806" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13701351" sideWeight="0.68815947" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32931423" sideWeight="0.49841145" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3639789" sideWeight="0.55281967" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32931423" sideWeight="0.49841145" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36356765" sideWeight="0.5655282" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24980143" sideWeight="0.886747" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3639789" sideWeight="0.4471803" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36356765" sideWeight="0.43447182" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1601,20 +1663,8 @@
           <properties />
           <option name="timeStamp" value="213" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java</url>
-          <line>48</line>
-          <properties />
-          <option name="timeStamp" value="242" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java</url>
-          <line>81</line>
-          <properties />
-          <option name="timeStamp" value="243" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="244" />
+      <option name="time" value="249" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1635,99 +1685,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/While.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="57" column="21" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/While.xal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="76" column="22" selection-start-line="76" selection-start-column="22" selection-end-line="76" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/ViewGrammar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALTransition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-417">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="94" column="20" selection-start-line="87" selection-start-column="8" selection-end-line="94" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1650">
-          <caret line="120" column="55" selection-start-line="120" selection-start-column="55" selection-end-line="120" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALDocument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/thread/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="4" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XALStructure/XALAddState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="28" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/test/java/TestFor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/test/java/TestIfCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/convert2xal/src/test/java/TestsOnPredictionModule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1760,13 +1717,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/BezierPath.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="858">
-          <caret line="87" column="5" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1863,13 +1813,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/Dummy.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/Visibility.java" />
     <entry file="file://$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4">
       <provider selected="true" editor-type-id="text-editor">
@@ -1892,44 +1835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-117">
-          <caret line="111" column="9" selection-start-line="100" selection-start-column="7" selection-end-line="111" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="68" column="13" selection-start-line="65" selection-start-column="12" selection-end-line="68" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="19" column="19" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="19" />
-          <folding>
-            <element signature="e#279#280#0" expanded="true" />
-            <element signature="e#297#298#0" expanded="true" />
-            <element signature="e#325#326#0" expanded="true" />
-            <element signature="e#343#344#0" expanded="true" />
-            <element signature="e#383#384#0" expanded="true" />
-            <element signature="e#401#402#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1948,73 +1853,270 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/IASTMethod.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.2/antlr4-runtime-4.2.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state relative-caret-position="286">
+          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java">
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="20" column="10" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+        <state relative-caret-position="330">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/Dummy.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Exists.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/BezierPath.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="93" column="22" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/resources/For.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/GetObjects.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="114" column="25" selection-start-line="114" selection-start-column="25" selection-end-line="114" selection-end-column="25" />
+          <folding>
+            <element signature="e#7600#7601#0" expanded="true" />
+            <element signature="e#7651#7652#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="479" column="38" selection-start-line="479" selection-start-column="38" selection-end-line="479" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="30" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java">
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTRE.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="44" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
+        <state relative-caret-position="240">
+          <caret line="16" column="5" selection-start-line="14" selection-start-column="16" selection-end-line="16" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#348#349#0" expanded="true" />
+            <element signature="e#372#373#0" expanded="true" />
+            <element signature="e#412#413#0" expanded="true" />
+            <element signature="e#439#440#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTContinue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#275#276#0" expanded="true" />
+            <element signature="e#299#300#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTBreak.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#269#270#0" expanded="true" />
+            <element signature="e#293#294#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#265#266#0" expanded="true" />
+            <element signature="e#289#290#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTIf.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#262#263#0" expanded="true" />
+            <element signature="e#286#287#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSwitch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#271#272#0" expanded="true" />
+            <element signature="e#295#296#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTFor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#449#450#0" expanded="true" />
+            <element signature="e#473#474#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTMethod.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTForEach.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#272#273#0" expanded="true" />
+            <element signature="e#296#297#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="30" column="43" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="225">
+          <caret line="20" column="25" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="604">
+          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+        <state relative-caret-position="375">
+          <caret line="42" column="46" selection-start-line="42" selection-start-column="46" selection-end-line="42" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.2/antlr4-runtime-4.2.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+        <state relative-caret-position="285">
+          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#388#389#0" expanded="true" />
+            <element signature="e#435#436#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/parsing/Exists.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="619">
+          <caret line="243" column="56" selection-start-line="243" selection-start-column="56" selection-end-line="243" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
+        <state relative-caret-position="469">
+          <caret line="170" column="35" selection-start-line="170" selection-start-column="35" selection-end-line="170" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4259#4272#0" expanded="true" />
+            <element signature="e#5402#5403#0" expanded="true" />
+            <element signature="e#5427#5428#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="69" column="63" selection-start-line="69" selection-start-column="63" selection-end-line="69" selection-end-column="63" />
+        <state relative-caret-position="739">
+          <caret line="188" column="48" selection-start-line="188" selection-start-column="48" selection-end-line="188" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4762#4763#0" expanded="true" />
+            <element signature="e#4810#4811#0" expanded="true" />
           </folding>
         </state>
       </provider>

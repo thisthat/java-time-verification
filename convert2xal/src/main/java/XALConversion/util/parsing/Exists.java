@@ -220,4 +220,38 @@ public class Exists {
         }
         return flag;
     }
+
+    public static boolean Return(ParserRuleContext ctx) {
+        boolean flag = false;
+        for (ParseTree elm: ctx.children ) {
+            if ( elm instanceof ReturnStatementContext) {
+                return true;
+            }
+            else if(elm instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                if(elm.getChildCount() > 0)
+                    flag = flag || Return((ParserRuleContext) elm);
+            }
+        }
+        return flag;
+    }
+
+	public static boolean Continue(ParserRuleContext ctx) {
+		boolean flag = false;
+		for (ParseTree elm: ctx.children ) {
+			if ( elm instanceof ContinueStatementContext) {
+				return true;
+			}
+			else if(elm instanceof TerminalNodeImpl){
+				continue;
+			}
+			else {
+				if(elm.getChildCount() > 0)
+					flag = flag || Continue((ParserRuleContext) elm);
+			}
+		}
+		return flag;
+	}
 }

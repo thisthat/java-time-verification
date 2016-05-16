@@ -1,16 +1,23 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import org.antlr.v4.runtime.Token;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTConstructor implements IASTMethod {
+public class ASTConstructor extends IASTStm implements IASTMethod {
 	String name;
 	List<ASTVariable> parameters;
+	List<IASTStm> stms = new ArrayList<>();
 
-	public ASTConstructor(String name, List<ASTVariable> parameters) {
+	public ASTConstructor(Token start, Token end, String name, List<ASTVariable> parameters) {
+		super(start,end);
 		this.name = name;
 		this.parameters = parameters;
 	}
@@ -46,5 +53,12 @@ public class ASTConstructor implements IASTMethod {
 		}
 		out += ")\n";
 		return out;
+	}
+
+	public void setStms(List<IASTStm> stms) {
+		this.stms = stms;
+	}
+	public void addStms(IASTStm stm) {
+		this.stms.add(stm);
 	}
 }
