@@ -358,6 +358,10 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		generateState(ctx);
 	}
 
+	public void enterWhileStatement(@NotNull WhileStatementContext ctx) {
+		int indexExp = 2, indexBody = 4;
+	}
+
 	protected void generateState(ParserRuleContext ctx){
 		//we have special rules for the if/while/...
 		IASTStm stm = getState(ctx);

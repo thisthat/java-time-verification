@@ -6,7 +6,6 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	private Test(int i, int k) {
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
 
-
 		for (int j = 0; j < 10; j++) {
 			j = i << 1 + (40 * 48 / 10);
 			l.add(INetTopologyService.class);
@@ -22,7 +21,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		}
 		else
 			j = 3+2;
-
+		System.out.print("str");
 		try {
 			System.out.print("str");System.out.print("str");
 		} catch(Exception e){

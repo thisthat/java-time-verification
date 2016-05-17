@@ -2,12 +2,10 @@ package IntermediateModel.visitors.utility;
 
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
-import com.sun.xml.internal.xsom.impl.Ref;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.grammar.Java8CommentSupportedParser.*;
-import sun.tools.tree.ReturnStatement;
 
 import java.util.ArrayList;
 import java.util.List;
