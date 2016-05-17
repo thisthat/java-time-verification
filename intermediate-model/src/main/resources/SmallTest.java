@@ -23,6 +23,16 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		else
 			j = 3+2;
 
+		try {
+			System.out.print("str");System.out.print("str");
+		} catch(Exception e){
+			throw new Exception("Exc");System.out.print("str");
+		} catch(IOException e){
+			throw new Exception("IO Exc");System.out.print("str");
+		} finally {
+			System.err.print("Eccezione lanciata");System.out.print("str");
+			System.err.print("Eccezione lanciata");System.out.print("str");
+		}
 
 	}
 }

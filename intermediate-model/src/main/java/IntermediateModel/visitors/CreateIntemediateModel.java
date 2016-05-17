@@ -292,6 +292,62 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		}
 	}
 
+
+	@Override
+	public void enterTryStatement(@NotNull TryStatementContext ctx) {
+		IASTHasStms bck = lastMethod;
+		int indexTry = 1, indexCatch = 2, indexFinally = 3;
+
+		ASTTry trystm = new ASTTry(ctx.start, ctx.stop);
+		lastMethod.addStms(trystm);
+
+		ASTTry.ASTTryBranch tryBranch = trystm.new ASTTryBranch(
+				((ParserRuleContext)ctx.getChild(indexTry)).start,
+				((ParserRuleContext)ctx.getChild(indexTry)).stop
+		);
+		trystm.setTryBranch(tryBranch);
+		lastMethod = tryBranch;
+		//body
+		walk((ParserRuleContext) ctx.getChild(indexTry));
+
+		//Catch Block
+		if(ctx.getChild(indexCatch) instanceof CatchesContext){
+			CatchesContext ctch = (CatchesContext) ctx.getChild(indexCatch);
+			int nCatches = ctch.children.size();
+			for(int i = 0; i < nCatches; i++){
+				ASTTry.ASTCatchBranch catchBranch = trystm.new ASTCatchBranch(
+						((ParserRuleContext)ctch.getChild(i)).start,
+						((ParserRuleContext)ctch.getChild(i)).stop,
+						Getter.catchClausole((ParserRuleContext)ctch.getChild(i))
+				);
+				trystm.addCatchBranch(catchBranch);
+				lastMethod = catchBranch;
+				walk((ParserRuleContext) ctch.getChild(i));
+			}
+		} else {
+			indexCatch = -1;
+			indexFinally--;
+		}
+
+		if(ctx.getChild(indexFinally) instanceof Finally_Context){
+			ASTTry.ASTFinallyBranch finallyBranch = trystm.new ASTFinallyBranch(
+					((ParserRuleContext) ctx.getChild(indexFinally)).start,
+					((ParserRuleContext) ctx.getChild(indexFinally)).stop
+			);
+			trystm.setFinallyBranch(finallyBranch);
+			lastMethod = finallyBranch;
+			walk((ParserRuleContext) ctx.getChild(indexFinally));
+		} else {
+			indexFinally = -1;
+		}
+
+		lastMethod = bck;
+		if(indexFinally > 0) ctx.children.remove(indexFinally);
+		if(indexCatch > 0) ctx.children.remove(indexCatch);
+		if(indexTry > 0) ctx.children.remove(indexTry);
+		super.enterTryStatement(ctx);
+	}
+
 	@Override
 	public void enterContinueStatement(@NotNull ContinueStatementContext ctx) {
 		generateState(ctx);
@@ -341,6 +397,13 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		addState(ctx,stm, lastMethod);
 	}*/
 
+	protected void walk(ParserRuleContext ctx){
+		if(Exists.Block(ctx)){
+			walk(this, ctx);
+		} else {
+			generateState((ParserRuleContext) ctx);
+		}
+	}
 	protected void walk(ParseTreeListener listener, ParseTree t) {
 		if(t instanceof ErrorNode) {
 			listener.visitErrorNode((ErrorNode)t);

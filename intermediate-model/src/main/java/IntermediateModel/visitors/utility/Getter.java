@@ -193,4 +193,30 @@ public class Getter {
 	public static ASTRE expressionStm(ParserRuleContext ctx){
 		return new ASTRE(ctx.start, ctx.stop);
 	}
+
+	public static ASTVariable catchClausole(ParserRuleContext child) {
+		LocalSearch t = new LocalSearch() {
+			public CatchFormalParameterContext get(ParserRuleContext elm){
+				CatchFormalParameterContext f = (elm instanceof CatchFormalParameterContext) ? (CatchFormalParameterContext) elm : null;
+				for(ParseTree c : elm.children){
+					if(c instanceof CatchFormalParameterContext){
+						f = (CatchFormalParameterContext) c;
+					}
+					else if(c instanceof TerminalNode){
+						continue;
+					}
+					else {
+						CatchFormalParameterContext tmp = get((ParserRuleContext) c);
+						if(tmp != null){
+							f = tmp;
+						}
+					}
+				}
+				return f;
+			}
+		};
+		CatchFormalParameterContext c = t.get(child);
+		int indexName = 1, indexType = 0;
+		return new ASTVariable(c.start, c.stop, c.getChild(indexName).getText(), c.getChild(indexType).getText());
+	}
 }
