@@ -8,7 +8,7 @@ import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.visitors.utility.Getter;
 import XALConversion.util.parsing.Exists;
-import XALStructure.items.XALTransition;
+import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
@@ -178,9 +178,41 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			generateState((ParserRuleContext) ctx.getChild(indexBody));
 		}
 		lastMethod = bck;
+		//don't do twice
+		if(indexBody > 0) ctx.children.remove(indexBody);
+		if(indexUpdate > 0) ctx.children.remove(indexUpdate);
+		if(indexCheck > 0) ctx.children.remove(indexCheck);
+		if(indexInit > 0) ctx.children.remove(indexInit);
 	}
 	@Override
 	public void enterEnhancedForStatement(@NotNull EnhancedForStatementContext ctx) {
+		int indexType = 2, indexVar = 3, indexExpr = 5, indexBody = 7;
+		IASTHasStms bck = lastMethod;
+
+		ASTVariable v = new ASTVariable(
+				((ParserRuleContext)ctx.getChild(indexType)).start,
+				((ParserRuleContext)ctx.getChild(indexVar)).stop,
+				ctx.getChild(indexVar).getText(),
+				ctx.getChild(indexType).getText()
+		);
+
+		ASTRE expr = getExprState((ParserRuleContext) ctx.getChild(indexExpr));
+
+		ASTForEach foreach = new ASTForEach(ctx.start, ctx.stop, v, expr);
+		lastMethod.addStms(foreach);
+		lastMethod = foreach;
+		//body
+		if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))){
+			walk(this, ctx.getChild(indexBody));
+		} else {
+			generateState((ParserRuleContext) ctx.getChild(indexBody));
+		}
+		//return to the begining
+		lastMethod = bck;
+		//delete expressions
+		ctx.children.remove(indexBody);
+		ctx.children.remove(indexExpr);
+		ctx.children.remove(indexVar);
 	}
 
 	@Override

@@ -54,8 +54,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms {
 		}
 		out += ")\n";
 		for(IASTStm e : stms){
-			if(e instanceof ASTFor)
-				out += e.toString() + "\n";
+			out += e.toString() + "\n";
 		}
 		return out;
 	}

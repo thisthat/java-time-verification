@@ -85,7 +85,7 @@ public class Getter {
 	public static ASTVariable parameter(ParserRuleContext child){
 		String type = variableType(child);
 		String name = variableName(child);
-		return new ASTVariable(name,type);
+		return new ASTVariable(child.start, child.stop, name,type);
 	}
 	public static String variableType(ParserRuleContext child){
 		LocalSearch t = new LocalSearch() {

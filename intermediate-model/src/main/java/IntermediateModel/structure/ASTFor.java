@@ -94,8 +94,7 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 		out += ";" + post.get(0).toString();
 		out += ")\n";
 		for(IASTStm e : stms){
-			if(e instanceof ASTRE)
-				out += e.toString() + "\n";
+			out += e.toString() + "\n";
 		}
 		out += "\nendFor";
 		return out;
