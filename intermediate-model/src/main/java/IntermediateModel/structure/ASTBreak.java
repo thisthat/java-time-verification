@@ -13,4 +13,8 @@ public class ASTBreak extends IASTStm {
 		super(start, end);
 	}
 
+	@Override
+	public String toString() {
+		return " ---> BREAK <---- ";
+	}
 }

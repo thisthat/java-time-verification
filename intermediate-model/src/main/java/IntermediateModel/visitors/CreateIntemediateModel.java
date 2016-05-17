@@ -374,6 +374,38 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 	}
 
+	@Override
+	public void enterSwitchStatement(@NotNull SwitchStatementContext ctx) {
+		IASTHasStms bck = lastMethod;
+		int indexExpr = 2, indexCases = 4;
+
+		//expr
+		ASTRE expr = getExprState((ParserRuleContext) ctx.getChild(indexExpr));
+		ASTSwitch switchstm = new ASTSwitch(ctx.start, ctx.stop, expr);
+		lastMethod.addStms(switchstm);
+
+		//cases
+		SwitchBlockContext cases = (SwitchBlockContext) ctx.getChild(indexCases);
+		int nCases = cases.children.size();
+		for(int i = 0; i < nCases; i++){
+			if(cases.getChild(i) instanceof TerminalNode){
+				continue;
+			}
+			ASTSwitch.ASTCase casestm = switchstm.new ASTCase(
+					((ParserRuleContext)cases.getChild(i)).start,
+					((ParserRuleContext)cases.getChild(i)).stop,
+					Getter.switchLabel((ParserRuleContext)cases.getChild(i))
+			);
+			switchstm.addCase(casestm);
+			lastMethod = casestm;
+			walk((ParserRuleContext)cases.getChild(i));
+		}
+
+		lastMethod = bck;
+		if(indexCases > 0) ctx.children.remove(indexCases);
+		if(indexExpr > 0) ctx.children.remove(indexExpr);
+	}
+
 	protected void generateState(ParserRuleContext ctx){
 		//we have special rules for the if/while/...
 		IASTStm stm = getState(ctx);
@@ -393,6 +425,9 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		}
 		else if(Exists.Continue(ctx)){
 			state = Getter.continueStm(ctx);
+		}
+		else if(Exists.Break(ctx)){
+			state = Getter.breakStm(ctx);
 		}
 		else {
 			state = new ASTRE(ctx.start, ctx.stop);

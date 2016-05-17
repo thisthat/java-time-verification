@@ -217,4 +217,60 @@ public class Getter {
 		int indexName = 1, indexType = 0;
 		return new ASTVariable(c.start, c.stop, c.getChild(indexName).getText(), c.getChild(indexType).getText());
 	}
+
+	public static List<String> switchLabel(ParserRuleContext child) {
+		LocalSearch t = new LocalSearch() {
+			public SwitchLabelsContext get(ParserRuleContext elm){
+				SwitchLabelsContext f = (elm instanceof SwitchLabelsContext) ? (SwitchLabelsContext) elm : null;
+				for(ParseTree c : elm.children){
+					if(c instanceof SwitchLabelsContext){
+						f = (SwitchLabelsContext) c;
+					}
+					else if(c instanceof TerminalNode){
+						continue;
+					}
+					else {
+						SwitchLabelsContext tmp = get((ParserRuleContext) c);
+						if(tmp != null){
+							f = tmp;
+						}
+					}
+				}
+				return f;
+			}
+		};
+		SwitchLabelsContext labels = t.get(child);
+		List<String> ret = new ArrayList<>();
+		int indexLabel = 1;
+		for(int i = 0; i < labels.children.size(); i++){
+			SwitchLabelContext label = (SwitchLabelContext) labels.getChild(i);
+			ret.add( label.getChild(indexLabel).getText() );
+		}
+		return ret;
+	}
+
+	public static ASTBreak breakStm(ParserRuleContext ctx) {
+		LocalSearch t = new LocalSearch() {
+			public BreakStatementContext get(ParserRuleContext elm){
+				BreakStatementContext f = (elm instanceof BreakStatementContext) ? (BreakStatementContext) elm : null;
+				for(ParseTree c : elm.children){
+					if(c instanceof BreakStatementContext){
+						f = (BreakStatementContext) c;
+					}
+					else if(c instanceof TerminalNode){
+						continue;
+					}
+					else {
+						BreakStatementContext tmp = get((ParserRuleContext) c);
+						if(tmp != null){
+							f = tmp;
+						}
+					}
+				}
+				return f;
+			}
+		};
+		BreakStatementContext brk = t.get(ctx);
+		return new ASTBreak(brk.start, brk.stop);
+	}
 }

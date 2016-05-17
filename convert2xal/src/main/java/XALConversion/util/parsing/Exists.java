@@ -132,9 +132,27 @@ public class Exists {
         return f;
     }
 
+    public static boolean Switch(ParserRuleContext ctx){
+
+        boolean f = false;
+        for(ParseTree c: ctx.children) {
+            if (c instanceof SwitchBlockContext || c instanceof SwitchStatementContext)
+            {
+                f = true;
+            }
+            else if(c instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                f = f | Switch((ParserRuleContext) c);
+            }
+        }
+        return f;
+    }
+
 
     public static boolean Has2Walk(ParserRuleContext ctx){
-        return If(ctx) || For(ctx) || While(ctx) || Synchronized(ctx) || Try(ctx);
+        return If(ctx) || For(ctx) || While(ctx) || Synchronized(ctx) || Try(ctx) || Switch(ctx);
     }
 
     /**
@@ -250,6 +268,23 @@ public class Exists {
 			else {
 				if(elm.getChildCount() > 0)
 					flag = flag || Continue((ParserRuleContext) elm);
+			}
+		}
+		return flag;
+	}
+
+	public static boolean Break(ParserRuleContext ctx) {
+		boolean flag = false;
+		for (ParseTree elm: ctx.children ) {
+			if ( elm instanceof BreakStatementContext) {
+				return true;
+			}
+			else if(elm instanceof TerminalNodeImpl){
+				continue;
+			}
+			else {
+				if(elm.getChildCount() > 0)
+					flag = flag || Break((ParserRuleContext) elm);
 			}
 		}
 		return flag;
