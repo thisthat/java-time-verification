@@ -216,6 +216,83 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	}
 
 	@Override
+	public void enterIfThenStatement(@NotNull IfThenStatementContext ctx) {
+		IASTHasStms bck = lastMethod;
+		int indexGuard = 2, indexIf = 4;
+
+		//Expression before
+		ASTRE guard = getExprState((ParserRuleContext) ctx.getChild(indexGuard));
+		ASTIf ifstm = new ASTIf(ctx.start, ctx.stop, guard);
+		lastMethod.addStms(ifstm);
+
+		//IF Branch
+		ASTIf.ASTIfStms ifBranch = ifstm.new ASTIfStms( ((ParserRuleContext)ctx.getChild(indexIf)).start, ((ParserRuleContext)ctx.getChild(indexIf)).stop);
+		ifstm.setIfBranch(ifBranch);
+		lastMethod = ifBranch;
+		produceIfElseCode(ctx.getChild(indexIf));
+
+
+		lastMethod = bck;
+		//don't visit them anymore
+		ctx.children.remove(indexIf);
+		ctx.children.remove(indexGuard);
+
+	}
+
+	@Override
+	public void enterIfThenElseStatement(@NotNull IfThenElseStatementContext ctx) {
+		IASTHasStms bck = lastMethod;
+		int indexGuard = 2, indexIf = 4, indexElse = 6;
+		//Expression before
+		ASTRE guard = getExprState((ParserRuleContext) ctx.getChild(indexGuard));
+		ASTIf ifstm = new ASTIf(ctx.start, ctx.stop, guard);
+		lastMethod.addStms(ifstm);
+
+		//IF BRANCH
+		ASTIf.ASTIfStms ifBranch = ifstm.new ASTIfStms( ((ParserRuleContext)ctx.getChild(indexIf)).start, ((ParserRuleContext)ctx.getChild(indexIf)).stop);
+		ifstm.setIfBranch(ifBranch);
+		lastMethod = ifBranch;
+		produceIfElseCode(ctx.getChild(indexIf));
+
+		//ELSE BRANCH
+		ASTIf.ASTElseStms elseBranch = ifstm.new ASTElseStms( ((ParserRuleContext)ctx.getChild(indexElse)).start, ((ParserRuleContext)ctx.getChild(indexElse)).stop);
+		ifstm.setElseBranch(elseBranch);
+		lastMethod = elseBranch;
+		produceIfElseCode(ctx.getChild(indexElse));
+
+		lastMethod = bck;
+		//don't visit them anymore
+		ctx.children.remove(indexElse);
+		ctx.children.remove(indexIf);
+		ctx.children.remove(indexGuard);
+
+	}
+
+	private void produceIfElseCode(ParseTree ctx){
+		if(ctx instanceof StatementContext && !ctx.getText().startsWith("{")){
+			//problem if we have inside another construct, like if/while/for/..
+			//we have to check if there are inside such construct
+			if(Exists.Has2Walk((ParserRuleContext) ctx)){
+				walk(this, ctx);
+			}
+			else {
+				generateState((ParserRuleContext) ctx);
+			}
+		}
+		else if(ctx.getText().startsWith("{") &&
+				(
+					ctx instanceof StatementContext ||
+					ctx instanceof StatementNoShortIfContext
+				)
+				){
+			walk(this, ctx.getChild(0));
+		}
+		else {
+			walk(this,ctx);
+		}
+	}
+
+	@Override
 	public void enterContinueStatement(@NotNull ContinueStatementContext ctx) {
 		generateState(ctx);
 	}

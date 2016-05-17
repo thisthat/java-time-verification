@@ -16,5 +16,13 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 			j = i >> 1;
 		}
 
+		if(i > 0){
+			Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
+			j = 1+2;
+		}
+		else
+			j = 3+2;
+
+
 	}
 }
