@@ -1,3 +1,5 @@
+import IntermediateModel.interfaces.IASTStm;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -31,6 +33,11 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		} finally {
 			System.err.print("Eccezione lanciata");System.out.print("str");
 			System.err.print("Eccezione lanciata");System.out.print("str");
+		}
+
+		while(true){
+			List<IASTStm> stmttt = new ArrayList<IASTStm>();
+			System.out.print(stmttt.toString());
 		}
 
 	}

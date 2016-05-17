@@ -345,7 +345,6 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		if(indexFinally > 0) ctx.children.remove(indexFinally);
 		if(indexCatch > 0) ctx.children.remove(indexCatch);
 		if(indexTry > 0) ctx.children.remove(indexTry);
-		super.enterTryStatement(ctx);
 	}
 
 	@Override
@@ -359,7 +358,20 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	}
 
 	public void enterWhileStatement(@NotNull WhileStatementContext ctx) {
+		IASTHasStms bck = lastMethod;
 		int indexExp = 2, indexBody = 4;
+
+		ASTRE expr = getExprState((ParserRuleContext) ctx.getChild(indexExp));
+		ASTWhile whilestm = new ASTWhile(ctx.start, ctx.stop, expr);
+		lastMethod.addStms(whilestm);
+		lastMethod = whilestm;
+
+		walk((ParserRuleContext) ctx.getChild(indexBody));
+
+		lastMethod = bck;
+		if(indexBody > 0) ctx.children.remove(indexBody);
+		if(indexExp > 0) ctx.children.remove(indexExp);
+
 	}
 
 	protected void generateState(ParserRuleContext ctx){
