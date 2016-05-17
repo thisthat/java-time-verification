@@ -23,7 +23,13 @@ import java.util.*;
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 	@Deprecated
 	private Test(int i, int k){
+		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
 
+
+		for(int j = 0; j < 10; j++){
+			j = i << 1 + (40 * 48 / 10);
+			l.add(INetTopologyService.class);
+		}
 	}
 	protected IFloodlightProviderService floodlightProvider;
 	protected IRestApiService restApi;

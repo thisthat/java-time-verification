@@ -188,4 +188,9 @@ public class Getter {
 		ContinueStatementContext c = t.get(ctx);
 		return new ASTContinue(c.start, c.stop);
 	}
+
+
+	public static ASTRE expressionStm(ParserRuleContext ctx){
+		return new ASTRE(ctx.start, ctx.stop);
+	}
 }

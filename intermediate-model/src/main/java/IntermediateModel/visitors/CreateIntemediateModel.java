@@ -2,11 +2,13 @@ package IntermediateModel.visitors;
 
 
 
+import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.visitors.utility.Getter;
 import XALConversion.util.parsing.Exists;
+import XALStructure.items.XALTransition;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
@@ -31,11 +33,10 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	public List<ASTClass> listOfClasses = new ArrayList<ASTClass>();
 	private Stack<ASTClass> stckOfClasses = new Stack<>();
 	private ASTClass lastClass;
-	private IASTMethod lastMethod;
+	private IASTHasStms lastMethod;
 
 	@Override
 	public void enterClassDeclaration(@NotNull ClassDeclarationContext ctx) {
-		System.err.print("ENTER CLASS:");
 		int indexAccessRight, indexExtends, indexImplements;
 		if(ctx.getChild(0) instanceof NormalClassDeclarationContext){
 			indexAccessRight = 0;
@@ -62,14 +63,11 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			listOfClasses.add(c);
 			stckOfClasses.push(c);
 			lastClass = c;
-			System.err.print(name);
 		}
-		System.err.print("\n");
 	}
 
 	@Override
 	public void exitClassDeclaration(@NotNull ClassDeclarationContext ctx) {
-		System.err.println("Exit");
 		if(stckOfClasses.size() > 0){
 			ASTClass tmpClass = stckOfClasses.pop();
 			//problem with multiple subclasses
@@ -141,6 +139,45 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 	@Override
 	public void enterBasicForStatement(@NotNull BasicForStatementContext ctx) {
+		IASTHasStms bck = lastMethod;
+		int indexInit = 2, indexCheck = 4, indexBody = 8, indexUpdate = 6;
+		ASTFor forstm = new ASTFor(ctx.start,ctx.stop);
+		lastMethod.addStms(forstm);
+		lastMethod = forstm;
+		//Init Expression
+		if(ctx.getChild(indexInit) instanceof ForInitContext){
+			ASTRE init = getExprState((ParserRuleContext) ctx.getChild(indexInit));
+			forstm.setInit(init);
+		} else {
+			indexInit = -1;
+			indexCheck--;
+			indexBody--;
+			indexUpdate--;
+		}
+		//Checks
+		if(ctx.getChild(indexCheck) instanceof ExpressionContext) {
+			ASTRE expr = getExprState((ParserRuleContext) ctx.getChild(indexCheck));
+			forstm.setExpr(expr);
+		} else {
+			indexCheck = -1;
+			indexBody--;
+			indexUpdate--;
+		}
+		//update
+		if(ctx.getChild(indexUpdate) instanceof ForUpdateContext){
+			ASTRE update = getExprState((ParserRuleContext) ctx.getChild(indexInit));
+			forstm.setPost(update);
+		} else {
+			indexBody--;
+			indexUpdate = -1;
+		}
+		//walk
+		if(Exists.Block((ParserRuleContext)ctx.getChild(indexBody))){
+			walk(this, ctx.getChild(indexBody));
+		} else {
+			generateState((ParserRuleContext) ctx.getChild(indexBody));
+		}
+		lastMethod = bck;
 	}
 	@Override
 	public void enterEnhancedForStatement(@NotNull EnhancedForStatementContext ctx) {
@@ -156,11 +193,17 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		generateState(ctx);
 	}
 
-
 	protected void generateState(ParserRuleContext ctx){
 		//we have special rules for the if/while/...
+		IASTStm stm = getState(ctx);
+		if(stm != null)
+			lastMethod.addStms(stm);
+	}
+
+	protected IASTStm getState(ParserRuleContext ctx){
+		//we have special rules for the if/while/...
 		if(Exists.Has2Walk(ctx)){
-			return;
+			return null;
 		}
 		IASTStm state = null;
 		//get the type
@@ -173,13 +216,21 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		else {
 			state = new ASTRE(ctx.start, ctx.stop);
 		}
-		addState(ctx, state);
+		return state;
+	}
+
+	protected ASTRE getExprState(ParserRuleContext ctx){
+		return new ASTRE(ctx.start, ctx.stop);
+	}
+
+
+	/*protected void addState(ParserRuleContext ctx, IASTStm stm, IASTHasStms who){
+		who.addStms(stm);
 	}
 
 	protected void addState(ParserRuleContext ctx, IASTStm stm){
-		lastMethod.addStms(stm);
-	}
-
+		addState(ctx,stm, lastMethod);
+	}*/
 
 	protected void walk(ParseTreeListener listener, ParseTree t) {
 		if(t instanceof ErrorNode) {

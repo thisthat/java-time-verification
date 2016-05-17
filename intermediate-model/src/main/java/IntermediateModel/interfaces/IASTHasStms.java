@@ -1,10 +1,9 @@
 package IntermediateModel.interfaces;
 
-
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public interface IASTMethod extends IASTHasStms{
-
+public interface IASTHasStms {
+	public void addStms(IASTStm stm);
 }
