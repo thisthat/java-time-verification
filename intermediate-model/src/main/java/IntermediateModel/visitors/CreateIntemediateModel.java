@@ -296,6 +296,11 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 	@Override
 	public void enterTryStatement(@NotNull TryStatementContext ctx) {
+		//skip the resource, we have a special rule for it
+		if(Exists.TryWithResource(ctx)){
+			return;
+		}
+
 		IASTHasStms bck = lastMethod;
 		int indexTry = 1, indexCatch = 2, indexFinally = 3;
 
@@ -329,7 +334,6 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			indexCatch = -1;
 			indexFinally--;
 		}
-
 		if(ctx.getChild(indexFinally) instanceof Finally_Context){
 			ASTTry.ASTFinallyBranch finallyBranch = trystm.new ASTFinallyBranch(
 					((ParserRuleContext) ctx.getChild(indexFinally)).start,
@@ -346,6 +350,61 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		if(indexFinally > 0) ctx.children.remove(indexFinally);
 		if(indexCatch > 0) ctx.children.remove(indexCatch);
 		if(indexTry > 0) ctx.children.remove(indexTry);
+	}
+
+	@Override
+	public void enterTryWithResourcesStatement(@NotNull TryWithResourcesStatementContext ctx) {
+		System.err.print("RESOURCEEES");
+		IASTHasStms bck = lastMethod;
+		int indexResources = 1, indexTry = 2, indexCatch = 3, indexFinally = 4;
+
+		ASTTryResources trystm = new ASTTryResources(ctx.start, ctx.stop, Getter.tryResources((ParserRuleContext) ctx.getChild(indexResources)));
+		lastMethod.addStms(trystm);
+
+		ASTTry.ASTTryBranch tryBranch = trystm.new ASTTryBranch(
+				((ParserRuleContext)ctx.getChild(indexTry)).start,
+				((ParserRuleContext)ctx.getChild(indexTry)).stop
+		);
+		trystm.setTryBranch(tryBranch);
+		lastMethod = tryBranch;
+		//body
+		walk((ParserRuleContext) ctx.getChild(indexTry));
+
+		//Catch Block
+		if(ctx.getChild(indexCatch) instanceof CatchesContext){
+			CatchesContext ctch = (CatchesContext) ctx.getChild(indexCatch);
+			int nCatches = ctch.children.size();
+			for(int i = 0; i < nCatches; i++){
+				ASTTry.ASTCatchBranch catchBranch = trystm.new ASTCatchBranch(
+						((ParserRuleContext)ctch.getChild(i)).start,
+						((ParserRuleContext)ctch.getChild(i)).stop,
+						Getter.catchClausole((ParserRuleContext)ctch.getChild(i))
+				);
+				trystm.addCatchBranch(catchBranch);
+				lastMethod = catchBranch;
+				walk((ParserRuleContext) ctch.getChild(i));
+			}
+		} else {
+			indexCatch = -1;
+			indexFinally--;
+		}
+		if(ctx.getChild(indexFinally) instanceof Finally_Context){
+			ASTTry.ASTFinallyBranch finallyBranch = trystm.new ASTFinallyBranch(
+					((ParserRuleContext) ctx.getChild(indexFinally)).start,
+					((ParserRuleContext) ctx.getChild(indexFinally)).stop
+			);
+			trystm.setFinallyBranch(finallyBranch);
+			lastMethod = finallyBranch;
+			walk((ParserRuleContext) ctx.getChild(indexFinally));
+		} else {
+			indexFinally = -1;
+		}
+
+		lastMethod = bck;
+		if(indexFinally > 0) ctx.children.remove(indexFinally);
+		if(indexCatch > 0) ctx.children.remove(indexCatch);
+		if(indexTry > 0) ctx.children.remove(indexTry);
+		if(indexResources > 0) ctx.children.remove(indexResources);
 	}
 
 	@Override

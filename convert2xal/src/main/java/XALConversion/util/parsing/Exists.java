@@ -3,6 +3,7 @@ package XALConversion.util.parsing;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
+import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 /**
@@ -289,4 +290,21 @@ public class Exists {
 		}
 		return flag;
 	}
+
+    public static boolean TryWithResource(ParserRuleContext ctx) {
+        boolean flag = false;
+        for (ParseTree elm: ctx.children ) {
+            if ( elm instanceof TryWithResourcesStatementContext) {
+                return true;
+            }
+            else if(elm instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                if(elm.getChildCount() > 0)
+                    flag = flag || TryWithResource((ParserRuleContext) elm);
+            }
+        }
+        return flag;
+    }
 }

@@ -3,6 +3,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class Main {
 		walker.walk(sv, ast);
 		String s = Arrays.toString( sv.listOfClasses.toArray() );
 		System.out.print(s);
+
+
 	}
 
 	private static void usage(){

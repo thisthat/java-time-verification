@@ -1,5 +1,7 @@
 import IntermediateModel.interfaces.IASTStm;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -80,6 +82,22 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		synchronized(monthString) {
 			//inside the
 			System.out.print(stmttt.toString());
+		}
+
+
+		try (
+				FileWriter fw = new FileWriter("");
+				BufferedWriter bw = new BufferedWriter(fw);
+				BufferedWriter aw = new BufferedWriter(fw);
+		) {
+			bw.write("");
+		} catch(Exception e){
+			throw new Exception("Exc");System.out.print("str");
+		} catch(IOException e){
+			throw new Exception("IO Exc");System.out.print("str");
+		} finally {
+			System.err.print("Eccezione lanciata");System.out.print("str");
+			System.err.print("Eccezione lanciata");System.out.print("str");
 		}
 
 	}

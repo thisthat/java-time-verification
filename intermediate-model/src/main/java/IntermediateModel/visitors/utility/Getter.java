@@ -6,6 +6,7 @@ import IntermediateModel.structure.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -273,5 +274,36 @@ public class Getter {
 		};
 		BreakStatementContext brk = t.get(ctx);
 		return new ASTBreak(brk.start, brk.stop);
+	}
+
+	public static List<ASTRE> tryResources(ParserRuleContext ctx) {
+		LocalSearch t = new LocalSearch() {
+			public ResourceListContext get(ParserRuleContext elm){
+				ResourceListContext f = (elm instanceof ResourceListContext) ? (ResourceListContext) elm : null;
+				for(ParseTree c : elm.children){
+					if(c instanceof ResourceListContext){
+						f = (ResourceListContext) c;
+					}
+					else if(c instanceof TerminalNode){
+						continue;
+					}
+					else {
+						ResourceListContext tmp = get((ParserRuleContext) c);
+						if(tmp != null){
+							f = tmp;
+						}
+					}
+				}
+				return f;
+			}
+		};
+		ResourceListContext res = t.get(ctx);
+		List<ASTRE> ret = new ArrayList<>();
+		for(int i = 0; i < res.children.size(); i++){
+			if(res.getChild(i) instanceof ResourceContext){
+				ret.add(new ASTRE(((ParserRuleContext)res.getChild(i)).start, ((ParserRuleContext)res.getChild(i)).stop));
+			}
+		}
+		return ret;
 	}
 }
