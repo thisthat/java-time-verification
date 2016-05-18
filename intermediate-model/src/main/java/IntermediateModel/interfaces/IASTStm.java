@@ -27,6 +27,9 @@ public class IASTStm {
 		if(start == null || end == null){
 			return;
 		}
+		if(start.getCharPositionInLine() < 0){
+			return;
+		}
 		code = start.getInputStream().getText(new Interval(start.getStartIndex(), end.getStopIndex()));
 	}
 

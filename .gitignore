@@ -1,4 +1,4 @@
 target
 /*.xal
 *.class
-.idea
+.idea/**

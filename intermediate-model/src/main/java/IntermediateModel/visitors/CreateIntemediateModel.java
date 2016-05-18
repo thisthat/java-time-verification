@@ -32,20 +32,22 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 
 	public List<ASTClass> listOfClasses = new ArrayList<ASTClass>();
-	private Stack<ASTClass> stckOfClasses = new Stack<>();
 	private ASTClass lastClass;
 	private IASTHasStms lastMethod;
 
 	@Override
 	public void enterClassDeclaration(@NotNull ClassDeclarationContext ctx) {
-		int indexAccessRight, indexExtends, indexImplements;
+		ASTClass bck = lastClass;
+		int indexAccessRight, indexName, indexExtends, indexImplements, indexBody;
 		if(ctx.getChild(0) instanceof NormalClassDeclarationContext){
 			indexAccessRight = 0;
+			indexName = 2;
 			indexExtends = 3;
 			indexImplements = 4;
+			indexBody = 5;
 			NormalClassDeclarationContext elm = (NormalClassDeclarationContext) ctx.getChild(0);
 			ASTClass.Visibility vis = Getter.accessRightClass((ParserRuleContext) elm.getChild(indexAccessRight));
-			String name = elm.getChild(2).getText();
+			String name = elm.getChild(indexName).getText();
 			String extendsName = null;
 			//extends
 			if(elm.getChild(indexExtends) instanceof SuperclassContext){
@@ -53,30 +55,26 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			}
 			else {
 				indexExtends = -1;
+				indexBody--;
 				indexImplements--;
 			}
 			//instance
 			List<String> _implments = new ArrayList<String>();
 			if(elm.getChild(indexImplements) instanceof SuperinterfacesContext){
 				_implments = Getter.listInterfaces( (ParserRuleContext) elm.getChild(indexImplements) );
+			} else {
+				indexImplements = -1;
+				indexBody--;
 			}
 			ASTClass c = new ASTClass(ctx.start, ctx.stop, name,vis,extendsName,_implments);
 			listOfClasses.add(c);
-			stckOfClasses.push(c);
 			lastClass = c;
+			walk((ParserRuleContext) elm.getChild(indexBody));
+			if(indexBody > 0) elm.children.remove(indexBody);
 		}
+		lastClass = bck;
 	}
 
-	@Override
-	public void exitClassDeclaration(@NotNull ClassDeclarationContext ctx) {
-		if(stckOfClasses.size() > 0){
-			ASTClass tmpClass = stckOfClasses.pop();
-			//problem with multiple subclasses
-			if(tmpClass.equals(lastClass) && stckOfClasses.size() > 0){
-				lastClass = stckOfClasses.peek();
-			}
-		}
-	}
 
 	@Override
 	public void enterMethodDeclaration(@NotNull MethodDeclarationContext ctx) {
@@ -166,7 +164,7 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		}
 		//update
 		if(ctx.getChild(indexUpdate) instanceof ForUpdateContext){
-			ASTRE update = getExprState((ParserRuleContext) ctx.getChild(indexInit));
+			ASTRE update = getExprState((ParserRuleContext) ctx.getChild(indexUpdate));
 			forstm.setPost(update);
 		} else {
 			indexBody--;

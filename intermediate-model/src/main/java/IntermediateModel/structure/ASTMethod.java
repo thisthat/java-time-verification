@@ -61,7 +61,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 		}
 		out += ") : " + returnType + "\n";
 		for(IASTStm e : stms){
-			out += e.toString() + "\n";
+			//out += e.toString() + "\n";
 		}
 		return out;
 	}
