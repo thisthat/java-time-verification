@@ -4,11 +4,13 @@ import IntermediateModel.interfaces.IASTExpression;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.ASTRE;
 import org.antlr.v4.runtime.Token;
+import com.google.common.annotations.Beta;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Beta
 public class ASTBinary extends IASTStm implements IASTExpression {
 
 	IASTExpression.Type operator;

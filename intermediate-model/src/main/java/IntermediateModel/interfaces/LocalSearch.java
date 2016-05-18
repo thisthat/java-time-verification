@@ -1,4 +1,4 @@
-package IntermediateModel.structure;
+package IntermediateModel.interfaces;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;

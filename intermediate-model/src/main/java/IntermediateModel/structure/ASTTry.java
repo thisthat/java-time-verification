@@ -95,8 +95,9 @@ public class ASTTry extends IASTStm {
 		String out = "try \n";
 		if(tryBranch != null)
 			out += tryBranch.toString();
-		if(catchBranch != null)
-			out += catchBranch.toString();
+		if(catchBranch.size() > 0)
+			for(ASTCatchBranch c : catchBranch)
+				out += c.toString();
 		if(finallyBranch != null)
 			out += finallyBranch.toString();
 		out += "endTry \n";

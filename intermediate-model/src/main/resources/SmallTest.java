@@ -6,7 +6,9 @@ import java.util.Collection;
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 	@Deprecated
 	private Test(int i, int k) {
+
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
+
 
 		for (int j = 0; j < 10; j++) {
 			j = i << 1 + (40 * 48 / 10);
@@ -38,6 +40,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		while(true){
 			List<IASTStm> stmttt = new ArrayList<IASTStm>();
 			System.out.print(stmttt.toString());
+			continue;
 		}
 
 
@@ -73,6 +76,11 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 				break;
 		}
 		System.out.println(monthString);
+
+		synchronized(monthString) {
+			//inside the
+			System.out.print(stmttt.toString());
+		}
 
 	}
 }

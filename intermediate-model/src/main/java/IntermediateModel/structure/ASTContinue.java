@@ -12,4 +12,9 @@ public class ASTContinue extends IASTStm {
 	public ASTContinue(Token start, Token end) {
 		super(start, end);
 	}
+
+	@Override
+	public String toString() {
+		return "---> CONTINUE <--- ";
+	}
 }

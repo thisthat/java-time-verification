@@ -1,6 +1,7 @@
 package IntermediateModel.visitors.utility;
 
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.LocalSearch;
 import IntermediateModel.structure.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;

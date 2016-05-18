@@ -8,6 +8,7 @@ import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.visitors.utility.Getter;
 import XALConversion.util.parsing.Exists;
+import XALStructure.items.XALSync;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -348,11 +349,6 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	}
 
 	@Override
-	public void enterContinueStatement(@NotNull ContinueStatementContext ctx) {
-		generateState(ctx);
-	}
-
-	@Override
 	public void enterBlockStatement(@NotNull BlockStatementContext ctx) {
 		generateState(ctx);
 	}
@@ -403,6 +399,21 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 		lastMethod = bck;
 		if(indexCases > 0) ctx.children.remove(indexCases);
+		if(indexExpr > 0) ctx.children.remove(indexExpr);
+	}
+
+
+	@Override
+	public void enterSynchronizedStatement(@NotNull SynchronizedStatementContext ctx) {
+		IASTHasStms bck = lastMethod;
+		int indexExpr = 2, indexBody = 4;
+		ASTRE expr = getExprState((ParserRuleContext) ctx.getChild(indexExpr));
+		ASTSynchronized sync = new ASTSynchronized(ctx.start, ctx.stop, expr);
+		lastMethod.addStms(sync);
+		lastMethod = sync;
+		walk((ParserRuleContext) ctx.getChild(indexBody));
+		lastMethod = bck;
+		if(indexBody > 0) ctx.children.remove(indexBody);
 		if(indexExpr > 0) ctx.children.remove(indexExpr);
 	}
 
