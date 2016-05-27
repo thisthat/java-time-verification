@@ -17,4 +17,9 @@ public class ASTContinue extends IASTStm {
 	public String toString() {
 		return "---> CONTINUE <--- ";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return true;
+	}
 }

@@ -3,23 +3,19 @@ package IntermediateModel.visitors;
 
 
 import IntermediateModel.interfaces.IASTHasStms;
-import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.visitors.utility.Getter;
 import XALConversion.util.parsing.Exists;
-import XALStructure.items.XALSync;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
-import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 
 /**
@@ -34,6 +30,16 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	public List<ASTClass> listOfClasses = new ArrayList<ASTClass>();
 	private ASTClass lastClass;
 	private IASTHasStms lastMethod;
+	private String packageName = "";
+
+	@Override
+	public void enterPackageDeclaration(@NotNull PackageDeclarationContext ctx) {
+		super.enterPackageDeclaration(ctx);
+		for(int i = 1; i < ctx.children.size() - 1; i++){
+			if(ctx.getChild(i) instanceof TerminalNode)
+				packageName += ctx.getChild(i).getText();
+		}
+	}
 
 	@Override
 	public void enterClassDeclaration(@NotNull ClassDeclarationContext ctx) {
@@ -66,11 +72,14 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 				indexImplements = -1;
 				indexBody--;
 			}
-			ASTClass c = new ASTClass(ctx.start, ctx.stop, name,vis,extendsName,_implments);
+			String bckPkgName = packageName;
+			ASTClass c = new ASTClass(ctx.start, ctx.stop, packageName, name, vis, extendsName, _implments);
+			packageName = packageName + "." + name;
 			listOfClasses.add(c);
 			lastClass = c;
 			walk((ParserRuleContext) elm.getChild(indexBody));
 			if(indexBody > 0) elm.children.remove(indexBody);
+			packageName = bckPkgName;
 		}
 		lastClass = bck;
 	}
@@ -79,12 +88,13 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	@Override
 	public void enterMethodDeclaration(@NotNull MethodDeclarationContext ctx) {
 		int indexAnnotation = 0, indexAccessRight = 0, indexHeader = 1;
-		int indexReturn = 0;
-		int indexPars = 1;
+		int indexReturn = 0, indexPars = 1, indexThrows = 2;
 		ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
 		String returnType = "void";
 		String methodName = "";
 		List<ASTVariable> pars = new ArrayList<ASTVariable>();
+		List<String> throwedException = new ArrayList<String>();
+
 		if(ctx.getChild(indexAnnotation) instanceof MethodModifierContext && ctx.getChild(indexAnnotation).getChild(0) instanceof AnnotationContext){
 			indexAccessRight++;
 			indexHeader++;
@@ -100,8 +110,16 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			returnType = header.getChild(indexReturn).getText();
 			methodName = header.getChild(indexPars).getChild(0).getText();
 			pars = Getter.parameterList((ParserRuleContext) header.getChild(indexPars));
+			if(header.children.size() > indexThrows && header.getChild(indexThrows) instanceof Throws_Context){
+				throwedException = Getter.listThrows((ParserRuleContext) header.getChild(indexThrows));
+			} else {
+			  	indexThrows = -1;
+			}
+		} else {
+			indexHeader = -1;
 		}
-		ASTMethod method = new ASTMethod(ctx.start, ctx.stop, methodName, returnType, pars);
+
+		ASTMethod method = new ASTMethod(ctx.start, ctx.stop, methodName, returnType, pars, throwedException);
 		lastClass.addMethod(method);
 		lastMethod = method;
 	}
@@ -109,29 +127,39 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	@Override
 	public void enterConstructorDeclaration(@NotNull ConstructorDeclarationContext ctx) {
 
-		int indexAnnotation = 0, indexAccessRight = 0, indexHeader = 1;
-		int indexName = 0;
-		int indexPars = 2;
+		int indexAnnotation = 0, indexAccessRight = 0, indexHeader = 1, indexThrows = 2;
+		int indexName = 0, indexPars = 2;
 		ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
 		String returnType = "void";
 		String methodName = "";
 		List<ASTVariable> pars = new ArrayList<ASTVariable>();
+		List<String> throwedException = new ArrayList<String>();
 		if(ctx.getChild(indexAnnotation) instanceof ConstructorModifierContext && ctx.getChild(indexAnnotation).getChild(0) instanceof AnnotationContext){
 			indexAccessRight++;
 			indexHeader++;
+			indexThrows++;
 		}
 		if(ctx.getChild(indexAccessRight) instanceof ConstructorModifierContext){
 			vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexAccessRight));
 		} else {
 			indexHeader--;
+			indexThrows--;
 			indexAccessRight = -1;
 		}
 		if(ctx.getChild(indexHeader) instanceof ConstructorDeclaratorContext) {
 			ParserRuleContext header = (ParserRuleContext) ctx.getChild(indexHeader);
 			methodName = header.getChild(indexName).getText();
 			pars = Getter.parameterList((ParserRuleContext) header.getChild(indexPars));
+		} else {
+			indexHeader = -1;
+			indexThrows--;
 		}
-		ASTConstructor method = new ASTConstructor(ctx.start, ctx.stop, methodName, pars);
+		if(ctx.getChild(indexThrows) instanceof Throws_Context){
+			throwedException = Getter.listThrows((ParserRuleContext) ctx.getChild(indexThrows));
+		} else {
+			indexThrows = -1;
+		}
+		ASTConstructor method = new ASTConstructor(ctx.start, ctx.stop, methodName, pars, throwedException);
 		lastClass.addMethod(method);
 		lastMethod = method;
 	}
@@ -497,6 +525,9 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		else if(Exists.Break(ctx)){
 			state = Getter.breakStm(ctx);
 		}
+		else if(Exists.Throws(ctx)){
+			state = Getter.throwsStm(ctx);
+		}
 		else {
 			state = new ASTRE(ctx.start, ctx.stop);
 		}
@@ -506,15 +537,6 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	protected ASTRE getExprState(ParserRuleContext ctx){
 		return new ASTRE(ctx.start, ctx.stop);
 	}
-
-
-	/*protected void addState(ParserRuleContext ctx, IASTStm stm, IASTHasStms who){
-		who.addStms(stm);
-	}
-
-	protected void addState(ParserRuleContext ctx, IASTStm stm){
-		addState(ctx,stm, lastMethod);
-	}*/
 
 	protected void walk(ParserRuleContext ctx){
 		if(Exists.Block(ctx)){

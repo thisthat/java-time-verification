@@ -20,4 +20,9 @@ public class ASTRE extends IASTStm {
 	public String toString() {
 		return "\t\t->" + code;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return true;
+	}
 }

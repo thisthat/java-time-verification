@@ -17,4 +17,9 @@ public class ASTBreak extends IASTStm {
 	public String toString() {
 		return " ---> BREAK <---- ";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return true;
+	}
 }

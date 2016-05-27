@@ -43,4 +43,5 @@ public class ASTVariable extends IASTStm {
 		return true;
 	}
 
+
 }

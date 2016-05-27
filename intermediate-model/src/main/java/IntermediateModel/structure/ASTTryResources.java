@@ -36,4 +36,17 @@ public class ASTTryResources extends ASTTry {
 		return out;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTTryResources)) return false;
+		if (!super.equals(o)) return false;
+
+		ASTTryResources that = (ASTTryResources) o;
+
+		if (resources != null ? !resources.equals(that.resources) : that.resources != null) return false;
+
+		return true;
+	}
+
 }

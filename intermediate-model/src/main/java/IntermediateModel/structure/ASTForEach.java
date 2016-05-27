@@ -48,6 +48,11 @@ public class ASTForEach  extends IASTStm implements IASTHasStms {
 	}
 
 	@Override
+	public List<IASTStm> getStms() {
+		return stms;
+	}
+
+	@Override
 	public String toString() {
 		String out = "foreach(";
 		out += var.toString() + " : ";
@@ -58,4 +63,19 @@ public class ASTForEach  extends IASTStm implements IASTHasStms {
 		out += "\nendForEach";
 		return out;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTForEach)) return false;
+
+		ASTForEach that = (ASTForEach) o;
+
+		if (getVar() != null ? !getVar().equals(that.getVar()) : that.getVar() != null) return false;
+		if (getExpr() != null ? !getExpr().equals(that.getExpr()) : that.getExpr() != null) return false;
+		if (getStms() != null ? !getStms().equals(that.getStms()) : that.getStms() != null) return false;
+
+		return true;
+	}
+
 }

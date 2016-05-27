@@ -3,6 +3,8 @@ package IntermediateModel.structure;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
 import org.antlr.v4.runtime.Token;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+
+@NodeEntity
 public class ASTClass extends IASTStm {
 
 	public enum Visibility {
@@ -22,22 +26,26 @@ public class ASTClass extends IASTStm {
 		STRICTFP
 	}
 	String packageName;
+	@Relationship(type = "METHODS")
 	List<IASTMethod> methods = new ArrayList<>();
 	String name;
 	Visibility accessRight;
+	@Relationship(type = "INTERFACES")
 	List<String> implmentsInterfaces;
 	String extendClass;
 
-	public ASTClass(Token start, Token end, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
+	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);
+		this.packageName = packageName;
 		this.name = name;
 		this.accessRight = accessRight;
 		this.extendClass = extendClass == null ? "Object" : extendClass;
 		this.implmentsInterfaces = implmentsInterfaces;
 	}
 
-	public ASTClass(Token start, Token end,String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
+	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
 		super(start,end);
+		this.packageName = packageName;
 		this.methods = methods;
 		this.name = name;
 		this.accessRight = accessRight;
@@ -99,7 +107,7 @@ public class ASTClass extends IASTStm {
 
 	public String toString(){
 		String out;
-		out = name + "\n";
+		out = packageName + "." + name + "\n";
 		for(IASTMethod m : methods){
 			out += m.toString();
 		}

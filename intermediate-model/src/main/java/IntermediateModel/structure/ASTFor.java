@@ -101,4 +101,20 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 		out += "\nendFor";
 		return out;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTFor)) return false;
+
+		ASTFor astFor = (ASTFor) o;
+
+		if (getStms() != null ? !getStms().equals(astFor.getStms()) : astFor.getStms() != null) return false;
+		if (getInit() != null ? !getInit().equals(astFor.getInit()) : astFor.getInit() != null) return false;
+		if (getExpr() != null ? !getExpr().equals(astFor.getExpr()) : astFor.getExpr() != null) return false;
+		if (getPost() != null ? !getPost().equals(astFor.getPost()) : astFor.getPost() != null) return false;
+
+		return true;
+	}
+
 }

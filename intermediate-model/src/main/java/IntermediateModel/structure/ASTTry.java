@@ -33,6 +33,24 @@ public class ASTTry extends IASTStm {
 			out += "enbTryBranch \n";
 			return out;
 		}
+
+		@Override
+		public List<IASTStm> getStms() {
+			return stms;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof ASTTryBranch)) return false;
+
+			ASTTryBranch tryBranch = (ASTTryBranch) o;
+
+			if (getStms() != null ? !getStms().equals(tryBranch.getStms()) : tryBranch.getStms() != null) return false;
+
+			return true;
+		}
+
 	}
 
 	public class ASTCatchBranch extends IASTStm implements IASTHasStms {
@@ -60,6 +78,25 @@ public class ASTTry extends IASTStm {
 			out += "enbCatchBranch \n";
 			return out;
 		}
+
+		@Override
+		public List<IASTStm> getStms() {
+			return stms;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof ASTCatchBranch)) return false;
+
+			ASTCatchBranch that = (ASTCatchBranch) o;
+
+			if (getStms() != null ? !getStms().equals(that.getStms()) : that.getStms() != null) return false;
+			if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+
+			return true;
+		}
+
 	}
 
 	public class ASTFinallyBranch extends IASTStm implements IASTHasStms {
@@ -80,6 +117,23 @@ public class ASTTry extends IASTStm {
 			}
 			out += "enbFinallyBranch \n";
 			return out;
+		}
+
+		@Override
+		public List<IASTStm> getStms() {
+			return stms;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof ASTFinallyBranch)) return false;
+
+			ASTFinallyBranch that = (ASTFinallyBranch) o;
+
+			if (getStms() != null ? !getStms().equals(that.getStms()) : that.getStms() != null) return false;
+
+			return true;
 		}
 	}
 
@@ -130,4 +184,22 @@ public class ASTTry extends IASTStm {
 	public void setFinallyBranch(ASTFinallyBranch finallyBranch) {
 		this.finallyBranch = finallyBranch;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTTry)) return false;
+
+		ASTTry astTry = (ASTTry) o;
+
+		if (getTryBranch() != null ? !getTryBranch().equals(astTry.getTryBranch()) : astTry.getTryBranch() != null)
+			return false;
+		if (getCatchBranch() != null ? !getCatchBranch().equals(astTry.getCatchBranch()) : astTry.getCatchBranch() != null)
+			return false;
+		if (getFinallyBranch() != null ? !getFinallyBranch().equals(astTry.getFinallyBranch()) : astTry.getFinallyBranch() != null)
+			return false;
+
+		return true;
+	}
+
 }

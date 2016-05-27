@@ -15,12 +15,26 @@ import java.util.List;
 public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms {
 	String name;
 	List<ASTVariable> parameters;
+	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
 
-	public ASTConstructor(Token start, Token end, String name, List<ASTVariable> parameters) {
+	public ASTConstructor(Token start, Token end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
 		this.name = name;
 		this.parameters = parameters;
+		this.exceptionsThrowed = exceptionsThrowed;
+	}
+
+	public List<String> getExceptionsThrowed() {
+		return exceptionsThrowed;
+	}
+
+	public void setExceptionsThrowed(List<String> exceptionsThrowed) {
+		this.exceptionsThrowed = exceptionsThrowed;
+	}
+
+	public void addThrows(String eType){
+		exceptionsThrowed.add(eType);
 	}
 
 	public String getName() {
@@ -52,7 +66,15 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms {
 		if(parameters.size() > 0){
 			out = out.substring(0,out.length()-1);
 		}
-		out += ")\n";
+		out += ")";
+		if(exceptionsThrowed.size() > 0){
+			out += " throws ";
+			for(String v: exceptionsThrowed){
+				out += v.toString() + ",";
+			}
+			out = out.substring(0,out.length()-1);
+		}
+		out += "\n";
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}
@@ -64,5 +86,9 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms {
 	}
 	public void addStms(IASTStm stm) {
 		this.stms.add(stm);
+	}
+
+	public List<IASTStm> getStms() {
+		return stms;
 	}
 }

@@ -307,4 +307,21 @@ public class Exists {
         }
         return flag;
     }
+
+    public static boolean Throws(ParserRuleContext ctx) {
+        boolean flag = false;
+        for (ParseTree elm: ctx.children ) {
+            if ( elm instanceof ThrowStatementContext) {
+                return true;
+            }
+            else if(elm instanceof TerminalNodeImpl){
+                continue;
+            }
+            else {
+                if(elm.getChildCount() > 0)
+                    flag = flag || Throws((ParserRuleContext) elm);
+            }
+        }
+        return flag;
+    }
 }

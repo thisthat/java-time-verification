@@ -1,3 +1,5 @@
+import IntermediateModel.interfaces.IASTHasStms;
+import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.structure.*;
 import IntermediateModel.visitors.CreateIntemediateModel;
 import org.antlr.v4.runtime.CommonToken;
@@ -9,11 +11,9 @@ import org.junit.Test;
 import parser.Java2AST;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -38,7 +38,7 @@ public class TestClass {
     @Before
     public void initModel(){
         Token t = new CommonToken(0);
-        ASTClass c = new ASTClass(t,t, "ExportChangesJob", ASTClass.Visibility.PUBLIC, "Thread", new ArrayList<>());
+        ASTClass c = new ASTClass(t,t, "at.aau.service.jobs", "ExportChangesJob", ASTClass.Visibility.PUBLIC, "Thread", new ArrayList<>());
         manuallyCreated.add(c);
         //contructor
         List<ASTVariable> pars = new ArrayList<>();
@@ -46,7 +46,8 @@ public class TestClass {
         pars.add(new ASTVariable(t,t,"jobId","Long"));
         pars.add(new ASTVariable(t,t,"projectService","ProjectService"));
         pars.add(new ASTVariable(t,t,"projectId","Long"));
-        ASTConstructor con = new ASTConstructor(t,t, "ExportChangesJob", pars);
+        List<String> exs = new ArrayList<String>();
+        ASTConstructor con = new ASTConstructor(t,t, "ExportChangesJob", pars,exs);
         //5 instruction for the constructor
         for(int i = 0; i < 5; i++){
             con.addStms(new ASTRE(t,t));
@@ -55,7 +56,7 @@ public class TestClass {
 
         //run method
         pars = new ArrayList<>();
-        ASTMethod run = new ASTMethod(t,t, "run", "void", pars);
+        ASTMethod run = new ASTMethod(t,t, "run", "void", pars, exs);
         c.addMethod(run);
 
         //first try
@@ -79,7 +80,8 @@ public class TestClass {
 
         //inner try
         ASTTry.ASTTryBranch innerTryBranch = secondTry.new ASTTryBranch(t,t);
-        //four instruction
+        secondTry.setTryBranch(innerTryBranch);
+		//four instruction
         for(int i = 0; i < 4; i++){
             innerTryBranch.addStms(new ASTRE(t,t));
         }
@@ -182,7 +184,7 @@ public class TestClass {
         //last two private methods
         pars = new ArrayList<>();
         pars.add(new ASTVariable(t,t,"changesPerCommit","Map<CommitPair, List<String>>"));
-        ASTMethod findMaxDistinctChanges = new ASTMethod(t,t,"findMaxDistinctChanges", "int", pars);
+        ASTMethod findMaxDistinctChanges = new ASTMethod(t,t,"findMaxDistinctChanges", "int", pars, exs);
         c.addMethod(findMaxDistinctChanges);
         findMaxDistinctChanges.addStms(new ASTRE(t,t));
         ASTForEach findForeach = new ASTForEach(t,t,
@@ -195,7 +197,7 @@ public class TestClass {
         //Last Method
         pars = new ArrayList<>();
         pars.add(new ASTVariable(t,t,"changesPerCommit","Map<CommitPair, List<String>>"));
-        ASTMethod findMaxChanges = new ASTMethod(t,t,"findMaxChanges", "int", pars);
+        ASTMethod findMaxChanges = new ASTMethod(t,t,"findMaxChanges", "int", pars, exs);
         c.addMethod(findMaxChanges);
         findMaxChanges.addStms(new ASTRE(t,t));
         ASTForEach findChangesForeach = new ASTForEach(t,t,
@@ -217,21 +219,53 @@ public class TestClass {
             assertEquals(c1.getAccessRight(), c2.getAccessRight());
             assertEquals(c1.getImplmentsInterfaces(), c2.getImplmentsInterfaces());
             assertEquals(c1.getExtendClass(), c2.getExtendClass());
+            assertEquals(c1.getMethods().size(), c2.getMethods().size());
         }
     }
 
     @Test
     public void TestConstructNameEqualClassName() {
-
+        for(ASTClass c : intemediateModel){
+            String classname = c.getName();
+			for(IASTMethod m : c.getMethods()){
+				if(m instanceof ASTConstructor){
+					assertEquals(((ASTConstructor) m).getName(), classname);
+				}
+			}
+        }
     }
 
     @Test
     public void TestParametersMethods(){
+		for(int i = 0; i < intemediateModel.size(); i++){
+			ASTClass c1 = intemediateModel.get(i);
+			ASTClass c2 = manuallyCreated.get(i);
+			for(int j = 0; j < c1.getMethods().size(); j++){
+				IASTMethod m1 = c1.getMethods().get(j);
+				IASTMethod m2 = c2.getMethods().get(j);
+				assertEquals(m1.getParameters(), m2.getParameters());
+				if(m1 instanceof ASTMethod){
+					assertEquals(((ASTMethod) m1).getReturnType(), ((ASTMethod)m2).getReturnType());
+				}
+				assertEquals(m1.getName(), m2.getName());
 
+			}
+		}
     }
 
+	/*
     @Test
     public void TestSameInstructions() throws Exception {
-
+		for(int i = 0; i < intemediateModel.size(); i++){
+			ASTClass c1 = intemediateModel.get(i);
+			ASTClass c2 = manuallyCreated.get(i);
+			for(int j = 0; j < c1.getMethods().size(); j++){
+				IASTMethod m1 = c1.getMethods().get(j);
+				IASTMethod m2 = c2.getMethods().get(j);
+				if(!m1.equals(m2))
+					throw new Exception("");
+			}
+		}
     }
+    */
 }

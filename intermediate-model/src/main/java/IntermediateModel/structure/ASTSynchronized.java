@@ -57,4 +57,18 @@ public class ASTSynchronized extends IASTStm implements IASTHasStms {
 		out += "\nendSynchronized";
 		return out;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTSynchronized)) return false;
+
+		ASTSynchronized that = (ASTSynchronized) o;
+
+		if (getStms() != null ? !getStms().equals(that.getStms()) : that.getStms() != null) return false;
+		if (getExpr() != null ? !getExpr().equals(that.getExpr()) : that.getExpr() != null) return false;
+
+		return true;
+	}
+
 }

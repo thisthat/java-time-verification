@@ -4,6 +4,7 @@ import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.LocalSearch;
 import IntermediateModel.structure.*;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.grammar.Java8CommentSupportedParser;
@@ -43,6 +44,16 @@ public class Getter {
 			}
 		}
 		return interfaces;
+	}
+
+	public static List<String> listThrows(ParserRuleContext child) {
+		List<String> exceptions = new ArrayList<String>();
+		for (ParseTree elm: ((ParserRuleContext) child.getChild(1)).children) {
+			if(elm instanceof ExceptionTypeContext){
+				exceptions.add(elm.getText());
+			}
+		}
+		return exceptions;
 	}
 
 	public static List<ASTVariable> parameterList(ParserRuleContext child) {
@@ -88,74 +99,15 @@ public class Getter {
 		return new ASTVariable(child.start, child.stop, name,type);
 	}
 	public static String variableType(ParserRuleContext child){
-		LocalSearch t = new LocalSearch() {
-			public UnannTypeContext get(ParserRuleContext elm){
-				UnannTypeContext f = null;
-				for(ParseTree c : elm.children){
-					if(c instanceof UnannTypeContext){
-						f = (UnannTypeContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						UnannTypeContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		return t.get(child).getText();
+		UnannTypeContext var = LocalSearch.get(child, UnannTypeContext.class);
+		return child.start.getInputStream().getText(new Interval(var.start.getStartIndex(), var.stop.getStopIndex()));
 	}
 	public static String variableName(ParserRuleContext child){
-		LocalSearch t = new LocalSearch() {
-			public VariableDeclaratorIdContext get(ParserRuleContext elm){
-				VariableDeclaratorIdContext f = null;
-				for(ParseTree c : elm.children){
-					if(c instanceof VariableDeclaratorIdContext){
-						f = (VariableDeclaratorIdContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						VariableDeclaratorIdContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		return t.get(child).getText();
+		return LocalSearch.get(child, VariableDeclaratorIdContext.class).getText();
 	}
 
 	public static ASTReturn returnStm(ParserRuleContext child){
-		LocalSearch t = new LocalSearch() {
-			public ReturnStatementContext get(ParserRuleContext elm){
-				ReturnStatementContext f = (elm instanceof ReturnStatementContext) ? (ReturnStatementContext) elm : null;
-				for(ParseTree c : elm.children){
-					if(c instanceof ReturnStatementContext){
-						f = (ReturnStatementContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						ReturnStatementContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		ReturnStatementContext ret = t.get(child);
+		ReturnStatementContext ret = LocalSearch.get(child,ReturnStatementContext.class);
 		int indexRetExpr = 1;
 		return new ASTReturn(ret.start, ret.stop, rightExpression((ParserRuleContext) ret.getChild(indexRetExpr)));
 	}
@@ -165,27 +117,7 @@ public class Getter {
 	}
 
 	public static IASTStm continueStm(ParserRuleContext ctx) {
-		LocalSearch t = new LocalSearch() {
-			public ContinueStatementContext get(ParserRuleContext elm){
-				ContinueStatementContext f = (elm instanceof ContinueStatementContext) ? (ContinueStatementContext) elm : null;
-				for(ParseTree c : elm.children){
-					if(c instanceof ReturnStatementContext){
-						f = (ContinueStatementContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						ContinueStatementContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		ContinueStatementContext c = t.get(ctx);
+		ContinueStatementContext c = LocalSearch.get(ctx,ContinueStatementContext.class);
 		return new ASTContinue(c.start, c.stop);
 	}
 
@@ -195,53 +127,13 @@ public class Getter {
 	}
 
 	public static ASTVariable catchClausole(ParserRuleContext child) {
-		LocalSearch t = new LocalSearch() {
-			public CatchFormalParameterContext get(ParserRuleContext elm){
-				CatchFormalParameterContext f = (elm instanceof CatchFormalParameterContext) ? (CatchFormalParameterContext) elm : null;
-				for(ParseTree c : elm.children){
-					if(c instanceof CatchFormalParameterContext){
-						f = (CatchFormalParameterContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						CatchFormalParameterContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		CatchFormalParameterContext c = t.get(child);
+		CatchFormalParameterContext c = LocalSearch.get(child, CatchFormalParameterContext.class);
 		int indexName = 1, indexType = 0;
 		return new ASTVariable(c.start, c.stop, c.getChild(indexName).getText(), c.getChild(indexType).getText());
 	}
 
 	public static List<String> switchLabel(ParserRuleContext child) {
-		LocalSearch t = new LocalSearch() {
-			public SwitchLabelsContext get(ParserRuleContext elm){
-				SwitchLabelsContext f = (elm instanceof SwitchLabelsContext) ? (SwitchLabelsContext) elm : null;
-				for(ParseTree c : elm.children){
-					if(c instanceof SwitchLabelsContext){
-						f = (SwitchLabelsContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						SwitchLabelsContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		SwitchLabelsContext labels = t.get(child);
+		SwitchLabelsContext labels = LocalSearch.get(child, SwitchLabelsContext.class);
 		List<String> ret = new ArrayList<>();
 		int indexLabel = 1;
 		for(int i = 0; i < labels.children.size(); i++){
@@ -252,52 +144,12 @@ public class Getter {
 	}
 
 	public static ASTBreak breakStm(ParserRuleContext ctx) {
-		LocalSearch t = new LocalSearch() {
-			public BreakStatementContext get(ParserRuleContext elm){
-				BreakStatementContext f = (elm instanceof BreakStatementContext) ? (BreakStatementContext) elm : null;
-				for(ParseTree c : elm.children){
-					if(c instanceof BreakStatementContext){
-						f = (BreakStatementContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						BreakStatementContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		BreakStatementContext brk = t.get(ctx);
+		BreakStatementContext brk = LocalSearch.get(ctx, BreakStatementContext.class);
 		return new ASTBreak(brk.start, brk.stop);
 	}
 
 	public static List<ASTRE> tryResources(ParserRuleContext ctx) {
-		LocalSearch t = new LocalSearch() {
-			public ResourceListContext get(ParserRuleContext elm){
-				ResourceListContext f = (elm instanceof ResourceListContext) ? (ResourceListContext) elm : null;
-				for(ParseTree c : elm.children){
-					if(c instanceof ResourceListContext){
-						f = (ResourceListContext) c;
-					}
-					else if(c instanceof TerminalNode){
-						continue;
-					}
-					else {
-						ResourceListContext tmp = get((ParserRuleContext) c);
-						if(tmp != null){
-							f = tmp;
-						}
-					}
-				}
-				return f;
-			}
-		};
-		ResourceListContext res = t.get(ctx);
+		ResourceListContext res = LocalSearch.get(ctx, ResourceListContext.class);
 		List<ASTRE> ret = new ArrayList<>();
 		for(int i = 0; i < res.children.size(); i++){
 			if(res.getChild(i) instanceof ResourceContext){
@@ -306,4 +158,13 @@ public class Getter {
 		}
 		return ret;
 	}
+
+	public static IASTStm throwsStm(ParserRuleContext ctx) {
+		ThrowStatementContext th = LocalSearch.get(ctx, ThrowStatementContext.class);
+		ExpressionContext exc = LocalSearch.get(th, ExpressionContext.class);
+		ASTRE e = new ASTRE(exc.start, exc.stop);
+		return new ASTThrow(th.start, th.stop, e);
+	}
+
+
 }

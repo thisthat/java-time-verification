@@ -37,6 +37,11 @@ public class ASTSwitch extends IASTStm {
 		}
 
 		@Override
+		public List<IASTStm> getStms() {
+			return stms;
+		}
+
+		@Override
 		public String toString() {
 			String out = "";
 			for(String label : labels)
@@ -48,6 +53,25 @@ public class ASTSwitch extends IASTStm {
 			return out;
 		}
 
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof ASTCase)) return false;
+
+			ASTCase astCase = (ASTCase) o;
+
+			if (labels != null ? !labels.equals(astCase.labels) : astCase.labels != null) return false;
+			if (getStms() != null ? !getStms().equals(astCase.getStms()) : astCase.getStms() != null) return false;
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = labels != null ? labels.hashCode() : 0;
+			result = 31 * result + (getStms() != null ? getStms().hashCode() : 0);
+			return result;
+		}
 	}
 
 
@@ -81,4 +105,18 @@ public class ASTSwitch extends IASTStm {
 		out += "\nendSwitch\n";
 		return out;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTSwitch)) return false;
+
+		ASTSwitch astSwitch = (ASTSwitch) o;
+
+		if (getExpr() != null ? !getExpr().equals(astSwitch.getExpr()) : astSwitch.getExpr() != null) return false;
+		if (this.cases != null ? !this.cases.equals(astSwitch.cases) : astSwitch.cases != null) return false;
+
+		return true;
+	}
+
 }

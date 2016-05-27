@@ -33,6 +33,11 @@ public class ASTIf extends IASTStm {
 			out += "enbIfBranch \n";
 			return out;
 		}
+
+		@Override
+		public List<IASTStm> getStms() {
+			return stms;
+		}
 	}
 
 	public class ASTElseStms extends IASTStm implements IASTHasStms {
@@ -54,6 +59,11 @@ public class ASTIf extends IASTStm {
 			}
 			out += "enbElseBranch \n";
 			return out;
+		}
+
+		@Override
+		public List<IASTStm> getStms() {
+			return stms;
 		}
 	}
 
@@ -92,5 +102,29 @@ public class ASTIf extends IASTStm {
 
 	public void setElseBranch(ASTElseStms elseBranch) {
 		this.elseBranch = elseBranch;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTIf)) return false;
+
+		ASTIf astIf = (ASTIf) o;
+
+		if (getIfBranch() != null ? !getIfBranch().equals(astIf.getIfBranch()) : astIf.getIfBranch() != null)
+			return false;
+		if (getElseBranch() != null ? !getElseBranch().equals(astIf.getElseBranch()) : astIf.getElseBranch() != null)
+			return false;
+		if (guard != null ? !guard.equals(astIf.guard) : astIf.guard != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getIfBranch() != null ? getIfBranch().hashCode() : 0;
+		result = 31 * result + (getElseBranch() != null ? getElseBranch().hashCode() : 0);
+		result = 31 * result + (guard != null ? guard.hashCode() : 0);
+		return result;
 	}
 }

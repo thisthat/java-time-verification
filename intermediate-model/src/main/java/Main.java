@@ -1,5 +1,6 @@
 import IntermediateModel.visitors.CreateIntemediateModel;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
+
 		if(args.length < 1){
 			usage();
 			return;
@@ -29,6 +31,11 @@ public class Main {
 		String s = Arrays.toString( sv.listOfClasses.toArray() );
 		System.out.print(s);
 
+
+
+	}
+
+	public static void get(ParserRuleContext elm, Class<?> type){
 
 	}
 

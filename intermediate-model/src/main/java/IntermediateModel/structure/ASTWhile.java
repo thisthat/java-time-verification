@@ -57,4 +57,17 @@ public class ASTWhile extends IASTStm implements IASTHasStms {
 		out += "\nendWhile";
 		return out;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTWhile)) return false;
+
+		ASTWhile astWhile = (ASTWhile) o;
+
+		if (getStms() != null ? !getStms().equals(astWhile.getStms()) : astWhile.getStms() != null) return false;
+		if (getExpr() != null ? !getExpr().equals(astWhile.getExpr()) : astWhile.getExpr() != null) return false;
+
+		return true;
+	}
 }
