@@ -11,6 +11,11 @@ public class ASTThrow extends IASTStm {
 
 	private ASTRE expr;
 	public ASTThrow(Token start, Token end, ASTRE expr) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.expr = expr;
+	}
+
+	public ASTThrow(int start, int end, ASTRE expr) {
 		super(start, end);
 		this.expr = expr;
 	}

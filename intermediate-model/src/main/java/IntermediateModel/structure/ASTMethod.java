@@ -4,6 +4,7 @@ import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
 import org.antlr.v4.runtime.Token;
+import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.io.IOError;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+
 public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 	String name;
 	String returnType;
@@ -23,6 +25,14 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 
 
 	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
+		super(start.getStartIndex(),end.getStopIndex());
+		this.name = name;
+		this.returnType = returnType;
+		this.parameters = parameters;
+		this.exceptionsThrowed = exceptionsThrowed;
+	}
+
+	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;

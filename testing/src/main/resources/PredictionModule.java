@@ -17,25 +17,11 @@ import org.projectfloodlight.openflow.protocol.OFMessage;
 import org.projectfloodlight.openflow.protocol.OFType;
 import org.projectfloodlight.openflow.types.DatapathId;
 
-import java.io.IOException;
 import java.util.*;
 
-import static junit.framework.Assert.*;
-
-
 // AllSwitchStatisticsResource
-public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
-	@Deprecated
-	private Test(int i, int k) throws RuntimeException, IOException {
-		throw new Exception("asd");
-		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
-		for(int j = 0; j < 10; j++){
-			j = i << 1 + (40 * 48 / 10);
-			l.add(INetTopologyService.class);
-		}
-
-
-	}
+public class PredictionModule implements IFloodlightModule, INetTopologyService, IOFMessageListener {
+	
 	protected IFloodlightProviderService floodlightProvider;
 	protected IRestApiService restApi;
 
@@ -51,10 +37,10 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	protected List<SwitchEdge> graph = new ArrayList<SwitchEdge>();
 	public class SwitchNode {
 		private String dpid;
-		public SwitchNode(String n){ continue;
+		public SwitchNode(String n){
 			dpid = n;
 		}
-		public String getName() throws RuntimeException, IOException {
+		public String getName(){
 			return dpid;
 		}
 		@Override
@@ -121,7 +107,6 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
                                                                                                              
                                                                                                              
 	 */
-
 	
 	@Override
 	public String getName() {
@@ -219,7 +204,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	
 	//Generate the topology async each SleepTimeout [ms]
 	//In a thread it fulfill the data structures
-	private class GenerateTopologyAsync implements Runnable {
+	public class GenerateTopologyAsync implements Runnable {
 
 	    private PredictionModule _class;
 		private boolean isRunning = true;
@@ -250,7 +235,6 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 
 		public void setRunning(boolean v){
 			isRunning = v;
-			throw new Exception("asd");
 		}
 	}
 	
@@ -318,8 +302,8 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	public String getTopologyGraph(String format){
 		//createTopology();
 		switch(format){
-			case "dot": return dot();
-			case "json": return json();
+		case "dot": return dot();
+		case "json": return json();
 		}
 		return dot();
 	}

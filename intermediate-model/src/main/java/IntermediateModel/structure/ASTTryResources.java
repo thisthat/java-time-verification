@@ -15,6 +15,10 @@ public class ASTTryResources extends ASTTry {
 
 	List<ASTRE> resources;
 	public ASTTryResources(Token start, Token end, List<ASTRE> resources) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.resources = resources;
+	}
+	public ASTTryResources(int start, int end, List<ASTRE> resources) {
 		super(start, end);
 		this.resources = resources;
 	}

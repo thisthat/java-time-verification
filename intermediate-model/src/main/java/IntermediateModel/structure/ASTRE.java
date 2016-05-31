@@ -1,10 +1,7 @@
 package IntermediateModel.structure;
 
-import IntermediateModel.interfaces.IASTExpression;
 import IntermediateModel.interfaces.IASTStm;
-import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Interval;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -13,6 +10,9 @@ import org.antlr.v4.runtime.misc.Interval;
 public class ASTRE extends IASTStm {
 
 	public ASTRE(Token start, Token end) {
+		super(start.getStartIndex(), end.getStopIndex());
+	}
+	public ASTRE(int start, int end) {
 		super(start, end);
 	}
 

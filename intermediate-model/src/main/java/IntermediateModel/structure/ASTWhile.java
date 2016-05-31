@@ -16,10 +16,19 @@ public class ASTWhile extends IASTStm implements IASTHasStms {
 	ASTRE expr;
 
 	public ASTWhile(Token start, Token end) {
-		super(start, end);
+		super(start.getStartIndex(), end.getStopIndex());
 	}
 
 	public ASTWhile(Token start, Token end, ASTRE expr) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.expr = expr;
+	}
+
+	public ASTWhile(int start, int end) {
+		super(start, end);
+	}
+
+	public ASTWhile(int start, int end, ASTRE expr) {
 		super(start, end);
 		this.expr = expr;
 	}

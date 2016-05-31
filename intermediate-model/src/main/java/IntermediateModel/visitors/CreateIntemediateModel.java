@@ -2,6 +2,7 @@ package IntermediateModel.visitors;
 
 
 
+import IntermediateModel.interfaces.ASTSrc;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
@@ -9,9 +10,11 @@ import IntermediateModel.visitors.utility.Getter;
 import XALConversion.util.parsing.Exists;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
+import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -31,6 +34,15 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	private ASTClass lastClass;
 	private IASTHasStms lastMethod;
 	private String packageName = "";
+	private List<ASTImport> listOfImports = new ArrayList<>();
+
+	@Override
+	public void enterCompilationUnit(@NotNull CompilationUnitContext ctx) {
+		//Set the source
+		ASTSrc.getInstance().setSource(ctx.start.getInputStream().getText(
+				new Interval(ctx.start.getStartIndex(), ctx.stop.getStopIndex())
+		).toCharArray());
+	}
 
 	@Override
 	public void enterPackageDeclaration(@NotNull PackageDeclarationContext ctx) {
@@ -39,6 +51,20 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			if(ctx.getChild(i) instanceof TerminalNode)
 				packageName += ctx.getChild(i).getText();
 		}
+	}
+
+	@Override
+	public void enterImportDeclaration(@NotNull ImportDeclarationContext ctx) {
+		boolean isStatic = false;
+		int indexStatic = 0;
+		String packagename = "";
+		if(ctx.getChild(indexStatic) instanceof StaticImportOnDemandDeclarationContext){
+			isStatic = true;
+			packagename = Getter.staticImport((ParserRuleContext) ctx.getChild(indexStatic));
+		} else {
+			packagename = Getter.normalImport((ParserRuleContext) ctx.getChild(0));
+		}
+		listOfImports.add(new ASTImport(ctx.start, ctx.stop, isStatic, packagename));
 	}
 
 	@Override
@@ -74,6 +100,7 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			}
 			String bckPkgName = packageName;
 			ASTClass c = new ASTClass(ctx.start, ctx.stop, packageName, name, vis, extendsName, _implments);
+			c.setImports(listOfImports);
 			packageName = packageName + "." + name;
 			listOfClasses.add(c);
 			lastClass = c;

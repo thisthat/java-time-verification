@@ -3,7 +3,6 @@ package IntermediateModel.interfaces;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import parser.grammar.Java8CommentSupportedParser;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

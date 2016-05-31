@@ -12,6 +12,11 @@ public class ASTVariable extends IASTStm {
 	String type;
 
 	public ASTVariable(Token start, Token end, String name, String type) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.name = name;
+		this.type = type;
+	}
+	public ASTVariable(int start, int end, String name, String type) {
 		super(start, end);
 		this.name = name;
 		this.type = type;

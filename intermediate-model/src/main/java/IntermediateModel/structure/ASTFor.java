@@ -18,14 +18,14 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 	List<ASTRE> post;
 
 	public ASTFor(Token start, Token end) {
-		super(start, end);
+		super(start.getStartIndex(), end.getStopIndex());
 		this.init = new ArrayList<ASTRE>();
 		this.post = new ArrayList<ASTRE>();
 		this.stms = new ArrayList<IASTStm>();
 	}
 
 	public ASTFor(Token start, Token end, List<ASTRE> init, ASTRE expr, List<ASTRE> post) {
-		super(start, end);
+		super(start.getStartIndex(), end.getStopIndex());
 		this.init = init;
 		this.expr = expr;
 		this.post = post;
@@ -33,6 +33,32 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 	}
 
 	public ASTFor(Token start, Token end, ASTRE init, ASTRE expr, ASTRE post) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.init = new ArrayList<ASTRE>();
+		this.post = new ArrayList<ASTRE>();
+		this.stms = new ArrayList<IASTStm>();
+		this.init.add(init);
+		this.expr = expr;
+		this.post.add(post);
+	}
+
+
+	public ASTFor(int start, int end) {
+		super(start, end);
+		this.init = new ArrayList<ASTRE>();
+		this.post = new ArrayList<ASTRE>();
+		this.stms = new ArrayList<IASTStm>();
+	}
+
+	public ASTFor(int start, int end, List<ASTRE> init, ASTRE expr, List<ASTRE> post) {
+		super(start, end);
+		this.init = init;
+		this.expr = expr;
+		this.post = post;
+		this.stms = new ArrayList<IASTStm>();
+	}
+
+	public ASTFor(int start, int end, ASTRE init, ASTRE expr, ASTRE post) {
 		super(start, end);
 		this.init = new ArrayList<ASTRE>();
 		this.post = new ArrayList<ASTRE>();

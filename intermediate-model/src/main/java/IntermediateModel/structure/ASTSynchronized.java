@@ -16,10 +16,19 @@ public class ASTSynchronized extends IASTStm implements IASTHasStms {
 	ASTRE expr;
 
 	public ASTSynchronized(Token start, Token end) {
-		super(start, end);
+		super(start.getStartIndex(), end.getStopIndex());
 	}
 
 	public ASTSynchronized(Token start, Token end, ASTRE expr) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.expr = expr;
+	}
+
+		public ASTSynchronized(int start, int end) {
+		super(start, end);
+	}
+
+	public ASTSynchronized(int start, int end, ASTRE expr) {
 		super(start, end);
 		this.expr = expr;
 	}

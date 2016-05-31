@@ -7,7 +7,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -167,4 +166,16 @@ public class Getter {
 	}
 
 
+	public static String staticImport(ParserRuleContext child) {
+		int max = child.children.size() - 1; //skip the ;
+		String name = "";
+		for(int i = 2; i < max; i++){
+				name += child.getChild(i).getText();
+		}
+		return name;
+	}
+
+	public static String normalImport(ParserRuleContext child) {
+		return child.getChild(1).getText();
+	}
 }

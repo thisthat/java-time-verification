@@ -11,6 +11,11 @@ public class ASTReturn extends IASTStm {
 
 	private ASTRE expr;
 	public ASTReturn(Token start, Token end, ASTRE expr) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.expr = expr;
+	}
+
+	public ASTReturn(int start, int end, ASTRE expr) {
 		super(start, end);
 		this.expr = expr;
 	}

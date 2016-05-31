@@ -4,6 +4,7 @@ import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
 import org.antlr.v4.runtime.Token;
+import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+
 public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms {
 	String name;
 	List<ASTVariable> parameters;
@@ -19,6 +21,12 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms {
 	List<IASTStm> stms = new ArrayList<>();
 
 	public ASTConstructor(Token start, Token end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
+		super(start.getStartIndex(),end.getStopIndex());
+		this.name = name;
+		this.parameters = parameters;
+		this.exceptionsThrowed = exceptionsThrowed;
+	}
+	public ASTConstructor(int start, int end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
 		this.name = name;
 		this.parameters = parameters;

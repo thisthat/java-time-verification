@@ -1,7 +1,6 @@
 package IntermediateModel.interfaces;
 
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Interval;
+import java.util.Arrays;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -19,21 +18,28 @@ public class IASTStm {
 		Switch,
 		Try
 	}
-	public Token start;
-	public Token end;
-	public String code;
+	public int start;
+	public int end;
+	public String code = "";
 
-	protected void calculateSourceCode(){
-		if(start == null || end == null){
-			return;
-		}
-		if(start.getCharPositionInLine() < 0){
-			return;
-		}
-		code = start.getInputStream().getText(new Interval(start.getStartIndex(), end.getStopIndex()));
+	protected void calculateSourceCode(char[] source){
+		code = Arrays.copyOfRange(source, start, end).toString();
 	}
 
-	protected IASTStm(Token start, Token end){
+	protected void calculateSourceCode(){
+		char[] source = ASTSrc.getInstance().source;
+		code = new String(Arrays.copyOfRange(source, start, end+1));
+	}
+
+	protected String getCode(char[] source){
+		if(code == null || code.equals("")){
+			calculateSourceCode(source);
+		}
+		return code;
+	}
+
+
+	protected IASTStm(int start, int end){
 		this.start = start;
 		this.end = end;
 		calculateSourceCode();

@@ -14,7 +14,6 @@ import java.util.List;
  * @version %I%, %G%
  */
 
-@NodeEntity
 public class ASTClass extends IASTStm {
 
 	public enum Visibility {
@@ -26,16 +25,15 @@ public class ASTClass extends IASTStm {
 		STRICTFP
 	}
 	String packageName;
-	@Relationship(type = "METHODS")
 	List<IASTMethod> methods = new ArrayList<>();
 	String name;
 	Visibility accessRight;
-	@Relationship(type = "INTERFACES")
 	List<String> implmentsInterfaces;
 	String extendClass;
+	List<ASTImport> imports = new ArrayList<>();
 
 	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
-		super(start,end);
+		super(start.getStartIndex(),end.getStopIndex());
 		this.packageName = packageName;
 		this.name = name;
 		this.accessRight = accessRight;
@@ -44,6 +42,25 @@ public class ASTClass extends IASTStm {
 	}
 
 	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
+		super(start.getStartIndex(),end.getStopIndex());
+		this.packageName = packageName;
+		this.methods = methods;
+		this.name = name;
+		this.accessRight = accessRight;
+		this.extendClass = extendClass == null ? "Object" : extendClass;
+		this.implmentsInterfaces = implmentsInterfaces;
+	}
+
+	public ASTClass(int start, int end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
+		super(start,end);
+		this.packageName = packageName;
+		this.name = name;
+		this.accessRight = accessRight;
+		this.extendClass = extendClass == null ? "Object" : extendClass;
+		this.implmentsInterfaces = implmentsInterfaces;
+	}
+
+	public ASTClass(int start, int end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
 		super(start,end);
 		this.packageName = packageName;
 		this.methods = methods;
@@ -51,6 +68,14 @@ public class ASTClass extends IASTStm {
 		this.accessRight = accessRight;
 		this.extendClass = extendClass == null ? "Object" : extendClass;
 		this.implmentsInterfaces = implmentsInterfaces;
+	}
+
+	public List<ASTImport> getImports() {
+		return imports;
+	}
+
+	public void setImports(List<ASTImport> imports) {
+		this.imports = imports;
 	}
 
 	public List<? extends IASTMethod> getMethods() {
@@ -108,6 +133,9 @@ public class ASTClass extends IASTStm {
 	public String toString(){
 		String out;
 		out = packageName + "." + name + "\n";
+		for(ASTImport imp : imports){
+			out += imp.toString();
+		}
 		for(IASTMethod m : methods){
 			out += m.toString();
 		}

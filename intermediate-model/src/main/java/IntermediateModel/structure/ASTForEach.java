@@ -17,10 +17,20 @@ public class ASTForEach  extends IASTStm implements IASTHasStms {
 	ASTRE expr;
 	List<IASTStm> stms = new ArrayList<IASTStm>();
 	public ASTForEach(Token start, Token end) {
-		super(start, end);
+		super(start.getStartIndex(), end.getStopIndex());
 	}
 
 	public ASTForEach(Token start, Token end, ASTVariable var, ASTRE expr) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.var = var;
+		this.expr = expr;
+	}
+
+	public ASTForEach(int start, int end) {
+		super(start, end);
+	}
+
+	public ASTForEach(int start, int end, ASTVariable var, ASTRE expr) {
 		super(start, end);
 		this.var = var;
 		this.expr = expr;

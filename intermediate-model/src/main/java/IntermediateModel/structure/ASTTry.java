@@ -16,6 +16,10 @@ public class ASTTry extends IASTStm {
 	public class ASTTryBranch extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		public ASTTryBranch(Token start, Token end) {
+			super(start.getStartIndex(), end.getStopIndex());
+		}
+
+		public ASTTryBranch(int start, int end) {
 			super(start, end);
 		}
 
@@ -57,6 +61,11 @@ public class ASTTry extends IASTStm {
 		List<IASTStm> stms = new ArrayList<>();
 		ASTVariable expr = null;
 		public ASTCatchBranch(Token start, Token end, ASTVariable expr) {
+			super(start.getStartIndex(), end.getStopIndex());
+			this.expr = expr;
+		}
+
+		public ASTCatchBranch(int start, int end, ASTVariable expr) {
 			super(start, end);
 			this.expr = expr;
 		}
@@ -101,8 +110,12 @@ public class ASTTry extends IASTStm {
 
 	public class ASTFinallyBranch extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
-		public ASTFinallyBranch(Token start, Token end) {
+		public ASTFinallyBranch(int start, int end) {
 			super(start, end);
+		}
+
+		public ASTFinallyBranch(Token start, Token end) {
+			super(start.getStartIndex(), end.getStopIndex());
 		}
 
 		@Override
@@ -141,6 +154,10 @@ public class ASTTry extends IASTStm {
 	List<ASTCatchBranch> catchBranch = new ArrayList<>();
 	ASTFinallyBranch finallyBranch = null;
 	public ASTTry(Token start, Token end) {
+		super(start.getStartIndex(), end.getStopIndex());
+	}
+
+	public ASTTry(int start, int end) {
 		super(start, end);
 	}
 

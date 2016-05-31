@@ -16,6 +16,9 @@ public class ASTIf extends IASTStm {
 	public class ASTIfStms extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		public ASTIfStms(Token start, Token end) {
+			super(start.getStartIndex(), end.getStopIndex());
+		}
+		public ASTIfStms(int start, int end) {
 			super(start, end);
 		}
 
@@ -43,6 +46,9 @@ public class ASTIf extends IASTStm {
 	public class ASTElseStms extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		public ASTElseStms(Token start, Token end) {
+			super(start.getStartIndex(), end.getStopIndex());
+		}
+		public ASTElseStms(int start, int end) {
 			super(start, end);
 		}
 
@@ -72,6 +78,10 @@ public class ASTIf extends IASTStm {
 	protected ASTRE guard = null;
 
 	public ASTIf(Token start, Token end, ASTRE guard) {
+		super(start.getStartIndex(), end.getStopIndex());
+		this.guard = guard;
+	}
+	public ASTIf(int start, int end, ASTRE guard) {
 		super(start, end);
 		this.guard = guard;
 	}
