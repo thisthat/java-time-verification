@@ -27,7 +27,7 @@ import static junit.framework.Assert.*;
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 	@Deprecated
 	private Test(int i, int k) throws RuntimeException, IOException {
-		throw new Exception("asd","asd1");
+		throw new Exception(INetTopologyService.class,"asd1");
 		l.add("par1", "par2");
 		l.getElm("1").getE(1,3).add("asd");
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();

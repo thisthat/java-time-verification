@@ -39,6 +39,10 @@ public class IASTStm {
 		//code = new String(Arrays.copyOfRange(source, start, end));
 	}
 
+	public static String getSrcFromToken(Token start, Token end){
+		return start.getInputStream().getText(new Interval(start.getStartIndex(), end.getStopIndex()));
+	}
+
 	protected String getCode(char[] source){
 		if(code == null || code.equals("")){
 			calculateSourceCode(source);

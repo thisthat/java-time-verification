@@ -31,6 +31,8 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 
 	@Override
 	public String toString() {
-		return value;
+		return "ASTLiteral{" +
+				"value='" + value + '\'' +
+				'}';
 	}
 }

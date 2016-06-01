@@ -1,6 +1,7 @@
 package IntermediateModel.visitors.utility;
 
 import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.LocalSearch;
 import IntermediateModel.structure.expression.*;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -21,13 +22,21 @@ public class REParser {
 		ParserRuleContext elm = getExpressionNode(ctx);
 		if(elm instanceof ClassInstanceCreationExpression_lfno_primaryContext){
 			return getNewObject(elm);
-		} else if (elm instanceof LiteralContext || elm instanceof TypeNameContext) {
+		} else if (elm instanceof LiteralContext ||
+				elm instanceof TypeNameContext ||
+				elm instanceof VariableDeclaratorIdContext) {
 			return getLiteral(elm);
 		} else if(elm instanceof MethodInvocationContext){
 			return getMethodCall(elm);
+		} else if(elm instanceof PrimaryNoNewArray_lfno_primaryContext){
+			//attribute access
+			return getAttributeAccess(elm);
+		} else if(elm instanceof LocalVariableDeclarationContext){
+			return getVariableDeclaration(elm);
 		}
 		return new NotYetImplemented(ctx.start, ctx.stop, ctx.getClass().getTypeName());
 	}
+
 
 	public static ParserRuleContext getExpressionNode(ParserRuleContext ctx){
 		ParserRuleContext ret = null;
@@ -44,7 +53,7 @@ public class REParser {
 			if(c instanceof TerminalNode)
 				continue;
 			if( ((ParserRuleContext)c).children.size() > 1 &&
-					!(c.getChild(0) instanceof StatementExpressionContext) //avoid "expr ;"
+				!c.getText().endsWith(";") //avoid "expr ;"
 				) {
 				ret = (ParserRuleContext) c;
 			} else if (c instanceof LiteralContext || c instanceof TypeNameContext){
@@ -70,14 +79,21 @@ public class REParser {
 				}
 			}
 			//type
-			newObj = new ASTNewObject(ctx.start, ctx.stop, ctx.getChild(indexType).getText(), pars);
+			String type = ctx.getChild(indexType).getText();
+			if(ctx.getChild(2) instanceof TypeArgumentsOrDiamondContext){
+				type += IASTStm.getSrcFromToken(
+						((ParserRuleContext)ctx.getChild(2)).start,
+						((ParserRuleContext)ctx.getChild(2)).stop
+				);
+			}
+			newObj = new ASTNewObject(ctx.start, ctx.stop, type, pars);
 		}
 		return newObj;
 	}
 
 
 	private static IASTRE getLiteral(ParserRuleContext elm) {
-		if(elm instanceof LiteralContext || elm instanceof TypeNameContext){
+		if(elm instanceof LiteralContext || elm instanceof TypeNameContext || elm instanceof VariableDeclaratorIdContext){
 			return new ASTLiteral(elm.start, elm.stop, elm.getText());
 		}
 		//special case for this.
@@ -146,5 +162,27 @@ public class REParser {
 			}
 		}
 		return list;
+	}
+
+	private static IASTRE getAttributeAccess(ParserRuleContext elm) {
+		if(elm instanceof PrimaryNoNewArray_lfno_primaryContext){
+			return new ASTAttributeAccess(elm.start, elm.stop, elm.getChild(0).getText(),elm.getChild(2).getText());
+		}
+		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
+	}
+
+	private static IASTRE getVariableDeclaration(ParserRuleContext elm) {
+		if(elm instanceof LocalVariableDeclarationContext){
+			String type = IASTStm.getSrcFromToken( ((ParserRuleContext)elm.getChild(0)).start, ((ParserRuleContext)elm.getChild(0)).stop);
+			ParserRuleContext child = getExpressionNode(elm);
+			if(child == null){
+				return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
+			} else {
+				IASTRE name = getLiteral((ParserRuleContext) child.getChild(0));
+				IASTRE expr = getExpr((ParserRuleContext) child.getChild(2));
+				return new ASTVariableDeclaration(elm.start, elm.stop, type, name, expr);
+			}
+		}
+		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
 }
