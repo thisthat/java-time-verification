@@ -23,7 +23,7 @@ public class ASTRE extends IASTStm {
 
 	@Override
 	public String toString() {
-		return "\t\t->" + expression.toString();
+		return "\t\t" + expression.toString();
 	}
 
 	@Override

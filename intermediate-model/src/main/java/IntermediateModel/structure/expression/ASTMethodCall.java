@@ -1,7 +1,7 @@
 package IntermediateModel.structure.expression;
 
 import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.structure.ASTRE;
+import IntermediateModel.interfaces.IASTStm;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
@@ -10,35 +10,68 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTMethodCall extends ASTNewObject implements IASTRE {
+public class ASTMethodCall extends IASTStm implements IASTRE {
 
-	private String varName;
+	private String methodName;
+	private IASTRE exprCallee;
+	List<IASTRE> parameters;
 
-	protected ASTMethodCall(Token start, Token end, String typeName, String varName) {
-		super(start, end, typeName);
-		this.varName = varName;
+	public ASTMethodCall(Token start, Token end, String methodName, IASTRE exprCallee) {
+		super(start, end);
+		this.methodName = methodName;
+		this.exprCallee = exprCallee;
 	}
 
-	protected ASTMethodCall(int start, int end, String typeName, String varName) {
-		super(start, end, typeName);
-		this.varName = varName;
+	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
+		super(start, end);
+		this.methodName = methodName;
+		this.exprCallee = exprCallee;
 	}
 
-	protected ASTMethodCall(Token start, Token end, String typeName, String varName, List<ASTRE> parameters) {
-		super(start, end, typeName, parameters);
-		this.varName = varName;
+	public ASTMethodCall(Token start, Token end, String methodName, IASTRE exprCallee, List<IASTRE> parameters) {
+		super(start, end);
+		this.methodName = methodName;
+		this.exprCallee = exprCallee;
+		this.parameters = parameters;
 	}
 
-	protected ASTMethodCall(int start, int end, String typeName, String varName, List<ASTRE> parameters) {
-		super(start, end, typeName, parameters);
-		this.varName = varName;
+	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee, List<IASTRE> parameters) {
+		super(start, end);
+		this.methodName = methodName;
+		this.exprCallee = exprCallee;
+		this.parameters = parameters;
 	}
 
-	public String getVarName() {
-		return varName;
+	public IASTRE getExprCallee() {
+		return exprCallee;
 	}
 
-	public void setVarName(String varName) {
-		this.varName = varName;
+	public void setExprCallee(IASTRE exprCallee) {
+		this.exprCallee = exprCallee;
+	}
+
+	public List<IASTRE> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<IASTRE> parameters) {
+		this.parameters = parameters;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+
+	@Override
+	public String toString() {
+		return "ASTMethodCall{" +
+				"methodName='" + methodName + '\'' +
+				", exprCallee=" + exprCallee +
+				", parameters=" + parameters +
+				'}';
 	}
 }

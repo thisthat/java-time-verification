@@ -27,7 +27,9 @@ import static junit.framework.Assert.*;
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 	@Deprecated
 	private Test(int i, int k) throws RuntimeException, IOException {
-		throw new Exception("asd");
+		throw new Exception("asd","asd1");
+		l.add("par1", "par2");
+		l.getElm("1").getE(1,3).add("asd");
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
 		for(int j = 0; j < 10; j++){
 			j = i << 1 + (40 * 48 / 10);

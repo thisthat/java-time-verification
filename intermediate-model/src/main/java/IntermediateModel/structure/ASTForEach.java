@@ -2,7 +2,6 @@ package IntermediateModel.structure;
 
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.expression.ASTVar;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;

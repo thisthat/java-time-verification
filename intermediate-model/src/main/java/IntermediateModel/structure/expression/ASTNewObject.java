@@ -13,36 +13,36 @@ import java.util.List;
  */
 public class ASTNewObject extends IASTStm implements IASTRE {
 
-	List<ASTRE> parameters;
+	List<IASTRE> parameters;
 	String typeName;
 
-	protected ASTNewObject(Token start, Token end, String typeName) {
+	public ASTNewObject(Token start, Token end, String typeName) {
 		super(start, end);
 		this.typeName = typeName;
 	}
 
-	protected ASTNewObject(int start, int end, String typeName) {
+	public ASTNewObject(int start, int end, String typeName) {
 		super(start, end);
 		this.typeName = typeName;
 	}
 
-	protected ASTNewObject(Token start, Token end, String typeName, List<ASTRE> parameters) {
-		super(start, end);
-		this.typeName = typeName;
-		this.parameters = parameters;
-	}
-
-	protected ASTNewObject(int start, int end, String typeName, List<ASTRE> parameters) {
+	public ASTNewObject(Token start, Token end, String typeName, List<IASTRE> parameters) {
 		super(start, end);
 		this.typeName = typeName;
 		this.parameters = parameters;
 	}
 
-	public List<ASTRE> getParameters() {
+	public ASTNewObject(int start, int end, String typeName, List<IASTRE> parameters) {
+		super(start, end);
+		this.typeName = typeName;
+		this.parameters = parameters;
+	}
+
+	public List<IASTRE> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(List<ASTRE> parameters) {
+	public void setParameters(List<IASTRE> parameters) {
 		this.parameters = parameters;
 	}
 
@@ -52,6 +52,14 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
+	}
+
+	@Override
+	public String toString() {
+		return "ASTNewObject{" +
+				"parameters=" + parameters +
+				", typeName='" + typeName + '\'' +
+				'}';
 	}
 }
 
