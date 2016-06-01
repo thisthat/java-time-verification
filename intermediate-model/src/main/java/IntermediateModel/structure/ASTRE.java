@@ -1,5 +1,6 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import org.antlr.v4.runtime.Token;
 
@@ -9,16 +10,20 @@ import org.antlr.v4.runtime.Token;
  */
 public class ASTRE extends IASTStm {
 
-	public ASTRE(Token start, Token end) {
-		super(start.getStartIndex(), end.getStopIndex());
-	}
-	public ASTRE(int start, int end) {
+	IASTRE expression;
+
+	public ASTRE(Token start, Token end, IASTRE expression) {
 		super(start, end);
+		this.expression = expression;
+	}
+	public ASTRE(int start, int end, IASTRE expression) {
+		super(start, end);
+		this.expression = expression;
 	}
 
 	@Override
 	public String toString() {
-		return "\t\t->" + code;
+		return "\t\t->" + expression.toString();
 	}
 
 	@Override

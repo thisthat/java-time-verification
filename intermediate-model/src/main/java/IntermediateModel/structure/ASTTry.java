@@ -16,7 +16,7 @@ public class ASTTry extends IASTStm {
 	public class ASTTryBranch extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		public ASTTryBranch(Token start, Token end) {
-			super(start.getStartIndex(), end.getStopIndex());
+			super(start, end);
 		}
 
 		public ASTTryBranch(int start, int end) {
@@ -30,11 +30,11 @@ public class ASTTry extends IASTStm {
 
 		@Override
 		public String toString() {
-			String out = "tryBranch \n";
+			String out = "";
 			for(IASTStm e : stms){
 				out += e.toString() + "\n";
 			}
-			out += "enbTryBranch \n";
+			out += "";
 			return out;
 		}
 
@@ -61,7 +61,7 @@ public class ASTTry extends IASTStm {
 		List<IASTStm> stms = new ArrayList<>();
 		ASTVariable expr = null;
 		public ASTCatchBranch(Token start, Token end, ASTVariable expr) {
-			super(start.getStartIndex(), end.getStopIndex());
+			super(start, end);
 			this.expr = expr;
 		}
 
@@ -77,14 +77,14 @@ public class ASTTry extends IASTStm {
 
 		@Override
 		public String toString() {
-			String out = "catchBranch (";
+			String out = "";
 			if(expr != null)
 				out += expr.toString();
-			out += ")\n";
+			out += "\n";
 			for(IASTStm e : stms){
 				out += e.toString() + "\n";
 			}
-			out += "enbCatchBranch \n";
+			out += "";
 			return out;
 		}
 
@@ -115,7 +115,7 @@ public class ASTTry extends IASTStm {
 		}
 
 		public ASTFinallyBranch(Token start, Token end) {
-			super(start.getStartIndex(), end.getStopIndex());
+			super(start, end);
 		}
 
 		@Override
@@ -124,11 +124,11 @@ public class ASTTry extends IASTStm {
 		}
 		@Override
 		public String toString() {
-			String out = "finallyBranch \n";
+			String out = "";
 			for(IASTStm e : stms){
 				out += e.toString() + "\n";
 			}
-			out += "enbFinallyBranch \n";
+			out += "";
 			return out;
 		}
 
@@ -154,7 +154,7 @@ public class ASTTry extends IASTStm {
 	List<ASTCatchBranch> catchBranch = new ArrayList<>();
 	ASTFinallyBranch finallyBranch = null;
 	public ASTTry(Token start, Token end) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 	}
 
 	public ASTTry(int start, int end) {
@@ -163,7 +163,7 @@ public class ASTTry extends IASTStm {
 
 	@Override
 	public String toString() {
-		String out = "try \n";
+		String out = "";
 		if(tryBranch != null)
 			out += tryBranch.toString();
 		if(catchBranch.size() > 0)
@@ -171,7 +171,7 @@ public class ASTTry extends IASTStm {
 				out += c.toString();
 		if(finallyBranch != null)
 			out += finallyBranch.toString();
-		out += "endTry \n";
+		out += "";
 		return out;
 	}
 

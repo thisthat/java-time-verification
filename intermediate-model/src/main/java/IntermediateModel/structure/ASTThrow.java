@@ -11,7 +11,7 @@ public class ASTThrow extends IASTStm {
 
 	private ASTRE expr;
 	public ASTThrow(Token start, Token end, ASTRE expr) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.expr = expr;
 	}
 
@@ -22,7 +22,7 @@ public class ASTThrow extends IASTStm {
 
 	@Override
 	public String toString() {
-		return "\t\t\tthrow " + expr.toString();
+		return expr.toString();
 	}
 
 	@Override

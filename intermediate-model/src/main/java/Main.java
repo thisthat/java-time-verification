@@ -30,13 +30,6 @@ public class Main {
 		walker.walk(sv, ast);
 		String s = Arrays.toString( sv.listOfClasses.toArray() );
 		System.out.print(s);
-
-
-
-	}
-
-	public static void get(ParserRuleContext elm, Class<?> type){
-
 	}
 
 	private static void usage(){

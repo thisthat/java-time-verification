@@ -7,6 +7,7 @@ import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.visitors.utility.Getter;
+import IntermediateModel.visitors.utility.REParser;
 import XALConversion.util.parsing.Exists;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -556,13 +557,13 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			state = Getter.throwsStm(ctx);
 		}
 		else {
-			state = new ASTRE(ctx.start, ctx.stop);
+			state = new ASTRE(ctx.start, ctx.stop, REParser.getExpr(ctx));
 		}
 		return state;
 	}
 
 	protected ASTRE getExprState(ParserRuleContext ctx){
-		return new ASTRE(ctx.start, ctx.stop);
+		return new ASTRE(ctx.start, ctx.stop, REParser.getExpr(ctx));
 	}
 
 	protected void walk(ParserRuleContext ctx){

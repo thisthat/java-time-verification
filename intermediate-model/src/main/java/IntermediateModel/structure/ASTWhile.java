@@ -16,11 +16,11 @@ public class ASTWhile extends IASTStm implements IASTHasStms {
 	ASTRE expr;
 
 	public ASTWhile(Token start, Token end) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 	}
 
 	public ASTWhile(Token start, Token end, ASTRE expr) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.expr = expr;
 	}
 
@@ -57,13 +57,13 @@ public class ASTWhile extends IASTStm implements IASTHasStms {
 
 	@Override
 	public String toString() {
-		String out = "while(";
+		String out = "";
 		out += expr.toString();
-		out += ")\n";
+		out += "\n";
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}
-		out += "\nendWhile";
+		out += "";
 		return out;
 	}
 

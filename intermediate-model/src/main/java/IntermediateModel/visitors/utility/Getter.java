@@ -112,17 +112,12 @@ public class Getter {
 	}
 
 	public static ASTRE rightExpression(ParserRuleContext child){
-		return new ASTRE(child.start, child.stop);
+		return new ASTRE(child.start, child.stop, REParser.getExpr(child));
 	}
 
 	public static IASTStm continueStm(ParserRuleContext ctx) {
 		ContinueStatementContext c = LocalSearch.get(ctx,ContinueStatementContext.class);
 		return new ASTContinue(c.start, c.stop);
-	}
-
-
-	public static ASTRE expressionStm(ParserRuleContext ctx){
-		return new ASTRE(ctx.start, ctx.stop);
 	}
 
 	public static ASTVariable catchClausole(ParserRuleContext child) {
@@ -152,7 +147,9 @@ public class Getter {
 		List<ASTRE> ret = new ArrayList<>();
 		for(int i = 0; i < res.children.size(); i++){
 			if(res.getChild(i) instanceof ResourceContext){
-				ret.add(new ASTRE(((ParserRuleContext)res.getChild(i)).start, ((ParserRuleContext)res.getChild(i)).stop));
+				ret.add(
+						rightExpression((ParserRuleContext) res.getChild(i))
+				);
 			}
 		}
 		return ret;
@@ -161,7 +158,7 @@ public class Getter {
 	public static IASTStm throwsStm(ParserRuleContext ctx) {
 		ThrowStatementContext th = LocalSearch.get(ctx, ThrowStatementContext.class);
 		ExpressionContext exc = LocalSearch.get(th, ExpressionContext.class);
-		ASTRE e = new ASTRE(exc.start, exc.stop);
+		ASTRE e = new ASTRE(exc.start, exc.stop, REParser.getExpr(exc));
 		return new ASTThrow(th.start, th.stop, e);
 	}
 

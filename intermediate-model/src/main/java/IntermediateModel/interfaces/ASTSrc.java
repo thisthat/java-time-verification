@@ -6,7 +6,7 @@ package IntermediateModel.interfaces;
  */
 public class ASTSrc {
 	private static ASTSrc instance = null;
-	public char[] source;
+	public char[] source = {};
 
 	protected ASTSrc() {
 		// Exists only to defeat instantiation.

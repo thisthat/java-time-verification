@@ -16,7 +16,7 @@ public class ASTIf extends IASTStm {
 	public class ASTIfStms extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		public ASTIfStms(Token start, Token end) {
-			super(start.getStartIndex(), end.getStopIndex());
+			super(start, end);
 		}
 		public ASTIfStms(int start, int end) {
 			super(start, end);
@@ -29,11 +29,11 @@ public class ASTIf extends IASTStm {
 
 		@Override
 		public String toString() {
-			String out = "ifBranch \n";
+			String out = "";
 			for(IASTStm e : stms){
 				out += e.toString() + "\n";
 			}
-			out += "enbIfBranch \n";
+			out += "";
 			return out;
 		}
 
@@ -46,7 +46,7 @@ public class ASTIf extends IASTStm {
 	public class ASTElseStms extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		public ASTElseStms(Token start, Token end) {
-			super(start.getStartIndex(), end.getStopIndex());
+			super(start, end);
 		}
 		public ASTElseStms(int start, int end) {
 			super(start, end);
@@ -59,11 +59,11 @@ public class ASTIf extends IASTStm {
 
 		@Override
 		public String toString() {
-			String out = "elseBranch \n";
+			String out = "";
 			for(IASTStm e : stms){
 				out += e.toString() + "\n";
 			}
-			out += "enbElseBranch \n";
+			out += "";
 			return out;
 		}
 
@@ -78,7 +78,7 @@ public class ASTIf extends IASTStm {
 	protected ASTRE guard = null;
 
 	public ASTIf(Token start, Token end, ASTRE guard) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.guard = guard;
 	}
 	public ASTIf(int start, int end, ASTRE guard) {
@@ -88,13 +88,13 @@ public class ASTIf extends IASTStm {
 
 	@Override
 	public String toString() {
-		String out = "if( ";
+		String out = "";
 		out += guard.toString() + " )\n";
 		if(ifBranch != null)
 			out += ifBranch.toString();
 		if(elseBranch != null)
 			out += elseBranch.toString();
-		out += "endIf \n";
+		out += "";
 		return out;
 	}
 

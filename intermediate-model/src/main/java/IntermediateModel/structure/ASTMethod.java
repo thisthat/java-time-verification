@@ -25,7 +25,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 
 
 	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
-		super(start.getStartIndex(),end.getStopIndex());
+		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;

@@ -16,11 +16,11 @@ public class ASTSynchronized extends IASTStm implements IASTHasStms {
 	ASTRE expr;
 
 	public ASTSynchronized(Token start, Token end) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 	}
 
 	public ASTSynchronized(Token start, Token end, ASTRE expr) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.expr = expr;
 	}
 
@@ -57,13 +57,10 @@ public class ASTSynchronized extends IASTStm implements IASTHasStms {
 
 	@Override
 	public String toString() {
-		String out = "synchronized(";
-		out += expr.toString();
-		out += ")\n";
+		String out = "";
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}
-		out += "\nendSynchronized";
 		return out;
 	}
 

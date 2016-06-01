@@ -18,14 +18,14 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 	List<ASTRE> post;
 
 	public ASTFor(Token start, Token end) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.init = new ArrayList<ASTRE>();
 		this.post = new ArrayList<ASTRE>();
 		this.stms = new ArrayList<IASTStm>();
 	}
 
 	public ASTFor(Token start, Token end, List<ASTRE> init, ASTRE expr, List<ASTRE> post) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.init = init;
 		this.expr = expr;
 		this.post = post;
@@ -33,7 +33,7 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 	}
 
 	public ASTFor(Token start, Token end, ASTRE init, ASTRE expr, ASTRE post) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.init = new ArrayList<ASTRE>();
 		this.post = new ArrayList<ASTRE>();
 		this.stms = new ArrayList<IASTStm>();
@@ -113,7 +113,8 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 
 	@Override
 	public String toString() {
-		String out = "for(";
+		String out = "";
+		/*
 		if(init.size() > 0)
 			out += init.get(0).toString();
 		if(expr != null)
@@ -121,10 +122,11 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 		if(post.size() > 0)
 			out += ";" + post.get(0).toString();
 		out += ")\n";
+		*/
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}
-		out += "\nendFor";
+		out += "\n";
 		return out;
 	}
 

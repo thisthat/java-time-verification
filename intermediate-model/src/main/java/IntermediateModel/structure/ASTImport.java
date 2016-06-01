@@ -12,7 +12,7 @@ public class ASTImport extends IASTStm {
 	String packagename = "";
 
 	public ASTImport(Token start, Token end, boolean isStatic, String packagename) {
-		super(start.getStartIndex(),end.getStopIndex());
+		super(start,end);
 		this.isStatic = isStatic;
 		this.packagename = packagename;
 	}

@@ -33,7 +33,7 @@ public class ASTClass extends IASTStm {
 	List<ASTImport> imports = new ArrayList<>();
 
 	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
-		super(start.getStartIndex(),end.getStopIndex());
+		super(start,end);
 		this.packageName = packageName;
 		this.name = name;
 		this.accessRight = accessRight;
@@ -42,7 +42,7 @@ public class ASTClass extends IASTStm {
 	}
 
 	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
-		super(start.getStartIndex(),end.getStopIndex());
+		super(start,end);
 		this.packageName = packageName;
 		this.methods = methods;
 		this.name = name;
@@ -131,11 +131,11 @@ public class ASTClass extends IASTStm {
 	}
 
 	public String toString(){
-		String out;
+		String out = "";
 		out = packageName + "." + name + "\n";
-		for(ASTImport imp : imports){
-			out += imp.toString();
-		}
+		//for(ASTImport imp : imports){
+		//	out += imp.toString();
+		//}
 		for(IASTMethod m : methods){
 			out += m.toString();
 		}

@@ -21,7 +21,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms {
 	List<IASTStm> stms = new ArrayList<>();
 
 	public ASTConstructor(Token start, Token end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
-		super(start.getStartIndex(),end.getStopIndex());
+		super(start,end);
 		this.name = name;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;

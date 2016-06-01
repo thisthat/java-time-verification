@@ -10,13 +10,13 @@ import org.antlr.v4.runtime.Token;
 public class ASTBreak extends IASTStm {
 
 	public ASTBreak(Token start, Token end) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 	}
 	public ASTBreak(int start, int end){ super(start,end);}
 
 	@Override
 	public String toString() {
-		return " ---> BREAK <---- ";
+		return "";
 	}
 
 	@Override

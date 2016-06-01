@@ -18,12 +18,12 @@ public class ASTSwitch extends IASTStm {
 		List<IASTStm> stms = new ArrayList<>();
 
 		public ASTCase(Token start, Token end, String label) {
-			super(start.getStartIndex(), end.getStopIndex());
+			super(start, end);
 			this.labels.add(label);
 		}
 
 		public ASTCase(Token start, Token end, List<String> labels) {
-			super(start.getStartIndex(), end.getStopIndex());
+			super(start, end);
 			this.labels = labels;
 		}
 
@@ -54,12 +54,14 @@ public class ASTSwitch extends IASTStm {
 		@Override
 		public String toString() {
 			String out = "";
+			/*
 			for(String label : labels)
 				out += "case " + label + ": \n";
+			*/
 			for(IASTStm e : stms){
 				out += e.toString() + "\n";
 			}
-			out += "\nendCase\n";
+			out += "";
 			return out;
 		}
 
@@ -88,7 +90,7 @@ public class ASTSwitch extends IASTStm {
 	ASTRE expr;
 	List<ASTCase> cases = new ArrayList<>();
 	public ASTSwitch(Token start, Token end, ASTRE expr) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.expr = expr;
 	}
 

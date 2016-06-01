@@ -15,7 +15,7 @@ public class ASTTryResources extends ASTTry {
 
 	List<ASTRE> resources;
 	public ASTTryResources(Token start, Token end, List<ASTRE> resources) {
-		super(start.getStartIndex(), end.getStopIndex());
+		super(start, end);
 		this.resources = resources;
 	}
 	public ASTTryResources(int start, int end, List<ASTRE> resources) {
@@ -25,10 +25,10 @@ public class ASTTryResources extends ASTTry {
 
 	@Override
 	public String toString() {
-		String out = "try(";
+		String out = "";
 		for(ASTRE r : resources)
 			out += r.toString();
-		out += ")\n";
+		out += "\n";
 		if(tryBranch != null)
 			out += tryBranch.toString();
 		if(catchBranch.size() > 0)
@@ -36,7 +36,7 @@ public class ASTTryResources extends ASTTry {
 				out += c.toString();
 		if(finallyBranch != null)
 			out += finallyBranch.toString();
-		out += "endTry \n";
+		out += "";
 		return out;
 	}
 
