@@ -1,12 +1,19 @@
 package testing;
 
 
-import org.eclipse.jdt.core.dom.*;
-
 import java.io.File;
 import java.io.IOException;
+import com.ibm.wala.classLoader.IClass;
+import com.ibm.wala.classLoader.IMethod;
+import com.ibm.wala.ipa.callgraph.*;
+import com.ibm.wala.ipa.callgraph.impl.Util;
+import com.ibm.wala.ipa.cha.ClassHierarchy;
+import com.ibm.wala.ipa.cha.ClassHierarchyException;
+import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.ssa.SSAOptions;
+import com.ibm.wala.util.config.AnalysisScopeReader;
+import com.ibm.wala.util.io.FileProvider;
 
-import static org.apache.commons.io.FileUtils.readFileToString;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -14,15 +21,34 @@ import static org.apache.commons.io.FileUtils.readFileToString;
  */
 public class Main {
 
-	public static void main(String[] args) throws IOException {
-		File file1 = new File(args[0]);
-		String source = readFileToString(file1, "utf-8");
-		ASTParser parser = ASTParser.newParser(AST.JLS8);
-		parser.setKind(ASTParser.K_COMPILATION_UNIT);
-		parser.setSource(source.toCharArray());
-		parser.setResolveBindings(true);
-		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-		cu.accept(new Visitor());
+	public static void main(String[] args) throws IOException, ClassHierarchyException {
+
+		File exFile=new FileProvider().getFile("Java60RegressionExclusions.txt");
+		System.out.println(exFile.getAbsolutePath());
+		AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope("test1.jar", exFile);
+
+		IClassHierarchy cha = ClassHierarchy.make(scope);
+		Iterable<Entrypoint> entryPoints = Util.makeMainEntrypoints(scope,cha); //get method that have main
+
+
+		AnalysisOptions options = new AnalysisOptions();
+		options.getSSAOptions().setPiNodePolicy(SSAOptions.getAllBuiltInPiNodes());
+
+		// Create an object which caches IRs and related information, reconstructing them lazily on demand.
+		AnalysisCache cache = new AnalysisCache();
+
+		for (IClass c : cha) {
+			if (!scope.isApplicationLoader(c.getClassLoader())) continue;
+
+			String cname = c.getName().toString();
+			System.out.println("Class:" + cname);
+			for (IMethod m : c.getAllMethods()) {
+				String mname = m.getName().toString();
+				System.out.println("  method:" + mname);
+			}
+
+			System.out.println();
+		}
 	}
 
 

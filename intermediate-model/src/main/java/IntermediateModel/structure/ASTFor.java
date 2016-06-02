@@ -114,7 +114,7 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 	@Override
 	public String toString() {
 		String out = "";
-		/*
+
 		if(init.size() > 0)
 			out += init.get(0).toString();
 		if(expr != null)
@@ -122,7 +122,7 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 		if(post.size() > 0)
 			out += ";" + post.get(0).toString();
 		out += ")\n";
-		*/
+
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}
