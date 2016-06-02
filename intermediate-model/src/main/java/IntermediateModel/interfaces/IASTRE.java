@@ -5,4 +5,19 @@ package IntermediateModel.interfaces;
  * @version %I%, %G%
  */
 public interface IASTRE {
+	public enum OPERATOR {
+		less,
+		lessEqual,
+		equal,
+		equality,
+		greater,
+		greaterEqual,
+		shiftLeft,
+		shiftRight,
+		plus,
+		minus,
+		mul,
+		div,
+		not
+	}
 }

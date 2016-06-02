@@ -8,24 +8,20 @@ import org.antlr.v4.runtime.Token;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTLess extends IASTStm implements IASTRE {
-	private IASTRE left;
-	private IASTRE right;
-	private OPERATOR op;
+public class ASTBinary extends IASTStm implements IASTRE {
 
-	public enum OPERATOR {
-		less,
-		lessEqual
-	}
+	protected IASTRE left;
+	protected IASTRE right;
+	protected OPERATOR op;
 
-	public ASTLess(Token start, Token end, IASTRE left, IASTRE right, OPERATOR op) {
+	public ASTBinary(Token start, Token end, IASTRE left, IASTRE right, OPERATOR op) {
 		super(start, end);
 		this.left = left;
 		this.right = right;
 		this.op = op;
 	}
 
-	public ASTLess(int start, int end, IASTRE left, IASTRE right, OPERATOR op) {
+	public ASTBinary(int start, int end, IASTRE left, IASTRE right, OPERATOR op) {
 		super(start, end);
 		this.left = left;
 		this.right = right;
@@ -58,7 +54,7 @@ public class ASTLess extends IASTStm implements IASTRE {
 
 	@Override
 	public String toString() {
-		return "ASTLess{" +
+		return "ASTBinary{" +
 				"left=" + left +
 				", right=" + right +
 				", op=" + op +

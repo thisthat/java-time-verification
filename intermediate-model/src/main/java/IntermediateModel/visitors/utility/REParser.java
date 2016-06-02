@@ -25,25 +25,60 @@ public class REParser {
 		} else if (elm instanceof LiteralContext ||
 				elm instanceof TypeNameContext ||
 				elm instanceof VariableDeclaratorIdContext ||
-				elm instanceof ExpressionNameContext) {
+				elm instanceof ExpressionNameContext ||
+				elm instanceof TerminalNode) {
 			return getLiteral(elm);
-		} else if(elm instanceof MethodInvocationContext){
+		} else if(elm instanceof MethodInvocationContext ||
+				elm instanceof MethodInvocation_lfno_primaryContext ||
+				elm instanceof  MethodInvocation_lf_primaryContext){
 			return getMethodCall(elm);
-		} else if(elm instanceof PrimaryNoNewArray_lfno_primaryContext){
+		} else if(elm instanceof PrimaryNoNewArray_lfno_primaryContext ||
+				elm instanceof FieldAccessContext){
 			//attribute access
 			return getAttributeAccess(elm);
 		} else if(elm instanceof LocalVariableDeclarationContext){
 			return getVariableDeclaration(elm);
-		} else if(elm instanceof RelationalExpressionContext){
-			return getRelationalExpression(elm);
+		} else if(elm instanceof RelationalExpressionContext ||
+				elm instanceof ShiftExpressionContext ||
+				elm instanceof AdditiveExpressionContext ||
+				elm instanceof EqualityExpressionContext){
+			return getMathExpression(elm);
+		} else if(elm instanceof AssignmentContext){
+			return getAssignment(elm);
 		} else if(elm instanceof PostIncrementExpressionContext){
 			return getPostIncremental(elm);
+		} else if(elm instanceof CastExpressionContext){
+			return getCast(elm);
+		} else if(elm instanceof UnaryExpressionNotPlusMinusContext ||
+				elm instanceof UnaryExpressionContext){
+			return getUnary(elm);
+		}
+		else if(elm instanceof PrimaryContext){
+			//not well define yet
+			return getMethodCallee(elm);
+		}
+		if(elm == null){
+			if(ctx.getText().equals("this")){
+				return getLiteral(ctx);
+			}
 		}
 		return new NotYetImplemented(ctx.start, ctx.stop, ctx.getClass().getCanonicalName());
 	}
 
+
+
 	public static ParserRuleContext getExpressionNode(ParserRuleContext ctx){
 		ParserRuleContext ret = null;
+		//special case support
+		if(ctx.children.size() == 2 &&
+				(ctx.getChild(0) instanceof CommentContext || ctx.getChild(1) instanceof CommentContext)
+				){
+			if(ctx.getChild(0) instanceof CommentContext){
+				return getExpressionNode((ParserRuleContext) ctx.getChild(1));
+			} else {
+				return getExpressionNode((ParserRuleContext) ctx.getChild(0));
+			}
+		}
 		//init ret var
 		if(ctx.children.size() > 1) {
 			ret = ctx;
@@ -53,12 +88,23 @@ public class REParser {
 				ret = ctx;
 			}
 		}
+
 		for(ParseTree c : ctx.children){
 			if(c instanceof TerminalNode)
 				continue;
-			if( ((ParserRuleContext)c).children.size() > 1 &&
+			if(((ParserRuleContext)c).children.size() == 2 &&
+				(c.getChild(0) instanceof CommentContext || c.getChild(1) instanceof CommentContext)
+			) {
+				if(c.getChild(0) instanceof CommentContext){
+					return getExpressionNode((ParserRuleContext) c.getChild(1));
+				} else {
+					return getExpressionNode((ParserRuleContext) c.getChild(0));
+				}
+			}
+			else if( ((ParserRuleContext)c).children.size() > 1 &&
 				!c.getText().endsWith(";") //avoid "expr ;"
-				) {
+				)
+			{
 				ret = (ParserRuleContext) c;
 			} else if (c instanceof LiteralContext || c instanceof TypeNameContext || c instanceof ExpressionNameContext){
 				ret = (ParserRuleContext) c;
@@ -102,7 +148,7 @@ public class REParser {
 			return new ASTLiteral(elm.start, elm.stop, elm.getText());
 		}
 		//special case for this.
-		else if(elm.getText().startsWith("this.")){
+		else if(elm.getText().startsWith("this")){
 			return new ASTLiteral(elm.start, elm.stop, elm.getText());
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getTypeName());
@@ -112,18 +158,33 @@ public class REParser {
 		if( elm instanceof MethodInvocationContext ||
 			elm instanceof MethodInvocation_lfno_primaryContext
 			){
-			int indexVar = 0, indexMethodName = 2, indexPars = 4;
-			List<IASTRE> pars = new ArrayList<>();
-			if(!(elm.getChild(indexPars) instanceof TerminalNode)){
-				for(ParseTree c : ((ParserRuleContext)elm.getChild(indexPars)).children){
-					if(c instanceof TerminalNode)
-						continue;
-					pars.add( getExpr((ParserRuleContext) c) );
+			if(elm.getChild(0) instanceof MethodNameContext){
+				int indexMethodName = 0, indexPars = 2;
+				List<IASTRE> pars = new ArrayList<>();
+				if (!(elm.getChild(indexPars) instanceof TerminalNode)) {
+					for (ParseTree c : ((ParserRuleContext) elm.getChild(indexPars)).children) {
+						if (c instanceof TerminalNode)
+							continue;
+						pars.add(getExpr((ParserRuleContext) c));
+					}
 				}
+				//type
+				IASTRE exprCallee = null;
+				return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), exprCallee, pars);
+			} else {
+				int indexVar = 0, indexMethodName = 2, indexPars = 4;
+				List<IASTRE> pars = new ArrayList<>();
+				if (!(elm.getChild(indexPars) instanceof TerminalNode)) {
+					for (ParseTree c : ((ParserRuleContext) elm.getChild(indexPars)).children) {
+						if (c instanceof TerminalNode)
+							continue;
+						pars.add(getExpr((ParserRuleContext) c));
+					}
+				}
+				//type
+				IASTRE exprCallee = getMethodCallee((ParserRuleContext) elm.getChild(indexVar));
+				return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), exprCallee, pars);
 			}
-			//type
-			IASTRE exprCallee = getMethodCallee( (ParserRuleContext) elm.getChild(indexVar) );
-			return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), exprCallee, pars);
 		} else if (elm instanceof MethodInvocation_lf_primaryContext) {
 			int indexMethodName = 1, indexPars = 3;
 			List<IASTRE> pars = new ArrayList<>();
@@ -170,7 +231,11 @@ public class REParser {
 	}
 
 	private static IASTRE getAttributeAccess(ParserRuleContext elm) {
-		if(elm instanceof PrimaryNoNewArray_lfno_primaryContext){
+		if(elm.getText().equals("this")){
+			return new ASTLiteral(elm.start, elm.stop, "this");
+		}
+		if(elm instanceof PrimaryNoNewArray_lfno_primaryContext ||
+			elm instanceof FieldAccessContext){
 			return new ASTAttributeAccess(elm.start, elm.stop, elm.getChild(0).getText(),elm.getChild(2).getText());
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
@@ -191,15 +256,12 @@ public class REParser {
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
 
-	private static IASTRE getRelationalExpression(ParserRuleContext elm) {
-		if(elm instanceof RelationalExpressionContext){
+	private static IASTRE getAssignment(ParserRuleContext elm) {
+		if(elm instanceof AssignmentContext){
 			IASTRE l = getExpr((ParserRuleContext) elm.getChild(0));
 			IASTRE r = getExpr((ParserRuleContext) elm.getChild(2));
-			ASTLess.OPERATOR op = ASTLess.OPERATOR.lessEqual;
-			if(elm.getChild(1).getText().equals("<")){
-				op = ASTLess.OPERATOR.less;
-			}
-			return new ASTLess(elm.start, elm.stop, l, r, op);
+			IASTRE.OPERATOR op = IASTRE.OPERATOR.equal;
+			return new ASTAssignment(elm.start, elm.stop, l, r, op);
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
@@ -210,5 +272,65 @@ public class REParser {
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
+
+	private static IASTRE getMathExpression(ParserRuleContext elm) {
+		if(elm instanceof RelationalExpressionContext){
+			IASTRE l = getExpr((ParserRuleContext) elm.getChild(0));
+			IASTRE r = getExpr((ParserRuleContext) elm.getChild(2));
+			IASTRE.OPERATOR op = IASTRE.OPERATOR.lessEqual;
+			if(elm.getChild(1).getText().equals("<")){
+				op = IASTRE.OPERATOR.less;
+			}
+			return new ASTBinary(elm.start, elm.stop, l, r, op);
+		}
+		if(elm instanceof ShiftExpressionContext){
+			IASTRE l = getExpr((ParserRuleContext) elm.getChild(0));
+			IASTRE r = getExpr((ParserRuleContext) elm.getChild(3));
+			IASTRE.OPERATOR op = IASTRE.OPERATOR.lessEqual;
+			if(elm.getChild(1).getText().equals("<")){
+				op = IASTRE.OPERATOR.shiftLeft;
+			}
+			return new ASTBinary(elm.start, elm.stop, l, r, op);
+		}
+		if(elm instanceof AdditiveExpressionContext){
+			IASTRE l = getExpr((ParserRuleContext) elm.getChild(0));
+			IASTRE r = getExpr((ParserRuleContext) elm.getChild(2));
+			IASTRE.OPERATOR op = IASTRE.OPERATOR.plus;
+			return new ASTBinary(elm.start, elm.stop, l, r, op);
+		}
+		if(elm instanceof EqualityExpressionContext){
+			IASTRE l = getExpr((ParserRuleContext) elm.getChild(0));
+			IASTRE r = getExpr((ParserRuleContext) elm.getChild(2));
+			IASTRE.OPERATOR op = IASTRE.OPERATOR.equality;
+			return new ASTBinary(elm.start, elm.stop, l, r, op);
+		}
+		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
+	}
+
+	private static IASTRE getCast(ParserRuleContext elm) {
+		if(elm instanceof CastExpressionContext){
+			String type = elm.getChild(1).getText();
+			IASTRE expr = getExpr((ParserRuleContext) elm.getChild(3));
+			return new ASTCast(elm.start, elm.stop, type, expr);
+		}
+		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
+	}
+
+	private static IASTRE getUnary(ParserRuleContext elm) {
+		if(elm instanceof UnaryExpressionNotPlusMinusContext){
+			return new ASTUnary(elm.start, elm.stop, IASTRE.OPERATOR.not, getExpr((ParserRuleContext) elm.getChild(1)));
+		}
+		if(elm instanceof UnaryExpressionContext){
+			IASTRE.OPERATOR op = IASTRE.OPERATOR.minus;
+			if(elm.getChild(0).getText().equals("+")){
+				op = IASTRE.OPERATOR.plus;
+			}
+			IASTRE expr = getExpr((ParserRuleContext) elm.getChild(1));
+			return new ASTUnary(elm.start, elm.stop, op, expr);
+		}
+		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
+	}
+
+
 
 }

@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/intermediate-model/intermediate-model.iml" filepath="$PROJECT_DIR$/intermediate-model/intermediate-model.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-parser/java-parser.iml" filepath="$PROJECT_DIR$/java-parser/java-parser.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/testing/testing.iml" filepath="$PROJECT_DIR$/testing/testing.iml" />
     </modules>
   </component>
 </project>
