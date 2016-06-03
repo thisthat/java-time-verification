@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class IASTStm {
+public abstract class IASTStm {
 	public enum Type {
 		Break,
 		Continue,
@@ -34,6 +34,16 @@ public class IASTStm {
 	public Token startToken = null;
 	public Token endToken = null;
 	public String code = "";
+
+	private boolean isTimeCritical = false;
+
+	public boolean isTimeCritical(){
+		return this.isTimeCritical;
+	}
+
+	public void setTimeCritical(boolean timeCritical) {
+		isTimeCritical = timeCritical;
+	}
 
 	protected void calculateSourceCode(char[] source){
 		code = Arrays.copyOfRange(source, start, end).toString();

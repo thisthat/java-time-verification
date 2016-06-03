@@ -14,7 +14,7 @@
         <module>convert2xal</module>
         <module>xal</module>
         <module>intermediate-model</module>
-        <!-- <module>testing</module> -->
+        <module>testing</module>
     </modules>
 
     <build>

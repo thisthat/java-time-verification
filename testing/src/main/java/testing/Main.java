@@ -1,8 +1,7 @@
 package testing;
 
 
-import java.io.File;
-import java.io.IOException;
+/* WALA
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.*;
@@ -13,14 +12,36 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.ssa.SSAOptions;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.io.FileProvider;
+*/
 
-
+import org.neo4j.driver.v1.*;
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
 public class Main {
 
+	public static void main(String[] args) {
+
+		Driver driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic( "neo4j", "xal" ) );
+		Session session = driver.session();
+
+		session.run( "CREATE (a:ASTClass {name:'Arthur', title:'King'})" );
+
+		StatementResult result = session.run( "MATCH (a:Person) WHERE a.name = 'Arthur' RETURN a.name AS name, a.title AS title" );
+		while ( result.hasNext() )
+		{
+			Record record = result.next();
+			System.out.println( record.get( "title" ).asString() + " " + record.get("name").asString() );
+		}
+
+		session.close();
+		driver.close();
+
+	}
+
+
+	/*
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
 		File exFile=new FileProvider().getFile("Java60RegressionExclusions.txt");
@@ -50,6 +71,6 @@ public class Main {
 			System.out.println();
 		}
 	}
-
+	*/
 
 }

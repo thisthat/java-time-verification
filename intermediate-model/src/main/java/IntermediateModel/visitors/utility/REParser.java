@@ -41,10 +41,12 @@ public class REParser {
 			return getAttributeAccess(elm);
 		} else if(elm instanceof LocalVariableDeclarationContext){
 			return getVariableDeclaration(elm);
-		} else if(elm instanceof RelationalExpressionContext ||
+		} //math expr
+		else if(elm instanceof RelationalExpressionContext ||
 				elm instanceof ShiftExpressionContext ||
 				elm instanceof AdditiveExpressionContext ||
-				elm instanceof EqualityExpressionContext){
+				elm instanceof EqualityExpressionContext ||
+				elm instanceof MultiplicativeExpressionContext ){
 			return getMathExpression(elm);
 		} else if(elm instanceof AssignmentContext){
 			return getAssignment(elm);
@@ -87,8 +89,13 @@ public class REParser {
 				return getExpressionNode((ParserRuleContext) ctx.getChild(0));
 			}
 		}
+		//math expr
+		if(ctx.children.size() > 2){
+			if(ctx instanceof MultiplicativeExpressionContext)
+				return ctx;
+		}
 		//init ret var
-		if(ctx.children.size() > 1) {
+		if(ctx.children.size() > 1 && !ctx.getText().endsWith(";") ) {
 			ret = ctx;
 		} else {
 			//special cases
@@ -335,6 +342,12 @@ public class REParser {
 			IASTRE.OPERATOR op = IASTRE.OPERATOR.equality;
 			return new ASTBinary(elm.start, elm.stop, l, r, op);
 		}
+		if(elm instanceof MultiplicativeExpressionContext){
+			IASTRE l = getExpr((ParserRuleContext) elm.getChild(0));
+			IASTRE r = getExpr((ParserRuleContext) elm.getChild(2));
+			IASTRE.OPERATOR op = IASTRE.OPERATOR.mul;
+			return new ASTBinary(elm.start, elm.stop, l, r, op);
+		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
 
@@ -361,7 +374,5 @@ public class REParser {
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
-
-
 
 }

@@ -25,6 +25,7 @@
         <module name="convert2xal" />
         <module name="intermediate-model" />
         <module name="java-parser" />
+        <module name="testing" />
         <module name="xal" />
         <module name="XAL" />
       </profile>
