@@ -1,7 +1,9 @@
 package IntermediateModel.structure;
 
 import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.expression.ASTVariableDeclaration;
 import org.antlr.v4.runtime.Token;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -16,14 +18,7 @@ import java.util.List;
 
 public class ASTClass extends IASTStm {
 
-	public enum Visibility {
-		PUBLIC,
-		PROTECT,
-		ABSTRACT,
-		FINAL,
-		PRIVATE,
-		STRICTFP
-	}
+
 	String packageName;
 	List<IASTMethod> methods = new ArrayList<>();
 	String name;
@@ -31,6 +26,7 @@ public class ASTClass extends IASTStm {
 	List<String> implmentsInterfaces;
 	String extendClass;
 	List<ASTImport> imports = new ArrayList<>();
+	List<ASTAttribute> attributes = new ArrayList<>();
 
 	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);
@@ -130,12 +126,19 @@ public class ASTClass extends IASTStm {
 		this.methods = methods;
 	}
 
+	public void addAttribute(ASTAttribute attribute) {
+		this.attributes.add(attribute);
+	}
+
 	public String toString(){
 		String out = "";
 		out = packageName + "." + name + "\n";
 		//for(ASTImport imp : imports){
 		//	out += imp.toString();
 		//}
+		for(ASTAttribute a : attributes){
+			out += a.toString();
+		}
 		for(IASTMethod m : methods){
 			out += m.toString();
 		}

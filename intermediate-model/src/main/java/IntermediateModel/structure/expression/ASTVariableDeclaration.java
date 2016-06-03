@@ -58,6 +58,6 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 				"type='" + type + '\'' +
 				", name='" + name + '\'' +
 				", expr=" + expr +
-				'}';
+				"}\n";
 	}
 }

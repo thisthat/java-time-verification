@@ -21,6 +21,14 @@ public class IASTStm {
 		Switch,
 		Try
 	}
+	public enum Visibility {
+		PUBLIC,
+		PROTECT,
+		ABSTRACT,
+		FINAL,
+		PRIVATE,
+		STRICTFP
+	}
 	public int start;
 	public int end;
 	public Token startToken = null;

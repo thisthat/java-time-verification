@@ -112,6 +112,25 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		lastClass = bck;
 	}
 
+	@Override
+	public void enterFieldDeclaration(@NotNull FieldDeclarationContext ctx) {
+		super.enterFieldDeclaration(ctx);
+		int indexModifier = 0, indexType = 1, indexName = 2, indexExpr = 2;
+		ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
+		if(ctx.getChild(indexModifier) instanceof FieldModifierContext){
+			vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexModifier));
+		} else {
+			indexType--;
+			indexName--;
+			indexExpr--;
+			indexModifier = -1;
+		}
+		String type = Getter.variableType((ParserRuleContext) ctx.getChild(indexType));
+		String name = Getter.variableName((ParserRuleContext) ctx.getChild(indexName));
+		ASTRE expr = Getter.attributeExpression((ParserRuleContext) ctx.getChild(indexName));
+		ASTAttribute attribute = new ASTAttribute(ctx.start, ctx.stop, vis, type, name, expr);
+		lastClass.addAttribute(attribute);
+	}
 
 	@Override
 	public void enterMethodDeclaration(@NotNull MethodDeclarationContext ctx) {
@@ -408,7 +427,6 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 	@Override
 	public void enterTryWithResourcesStatement(@NotNull TryWithResourcesStatementContext ctx) {
-		System.err.print("RESOURCEEES");
 		IASTHasStms bck = lastMethod;
 		int indexResources = 1, indexTry = 2, indexCatch = 3, indexFinally = 4;
 

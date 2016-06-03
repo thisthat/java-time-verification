@@ -83,6 +83,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 	public String toString(){
 		String out;
 		out = "\t" + name + "(";
+
 		for(ASTVariable v: parameters){
 			out += v.toString() + ",";
 		}
@@ -98,9 +99,11 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 			out = out.substring(0,out.length()-1);
 		}
 		out += "\n";
+		/*
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}
+		*/
 		return out;
 	}
 

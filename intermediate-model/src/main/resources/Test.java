@@ -36,8 +36,8 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 			l.add(INetTopologyService.class);
 		}
 	}
-	protected IFloodlightProviderService floodlightProvider;
-	protected IRestApiService restApi;
+	IFloodlightProviderService floodlightProvider;
+	protected IRestApiService restApi = null;
 
 	//Contains all the info and logic of prediction the load of a node
 	protected PredictionHandler predictionProvider;
@@ -86,7 +86,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 			return "\"" + n1 + "\" -> \"" + n2 + "\"";
 		}
 	}
-	
+
 	//Thread To handle the reconfiguration of the network
 	protected int SleepTimeout = 5 * 60 * 1000; // 5min in ms
 	protected Thread createTopologyThread;

@@ -180,4 +180,10 @@ public class Getter {
 	public static String normalImport(ParserRuleContext child) {
 		return child.getChild(1).getText();
 	}
+
+	public static ASTRE attributeExpression(ParserRuleContext child) {
+		ParserRuleContext expr = LocalSearch.get(child, VariableInitializerContext.class);
+		if(expr == null) return null;
+		return rightExpression(expr);
+	}
 }
