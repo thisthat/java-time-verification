@@ -36,4 +36,13 @@ public class TestClass {
     }
 
 
+    @Test
+    public void name() throws Exception {
+        assertEquals(true, false);
+    }
+
+    @Test
+    public void a2() throws Exception {
+        assertEquals(true, !false);
+    }
 }
