@@ -64,8 +64,8 @@ public class ASTForEach  extends IASTStm implements IASTHasStms {
 	@Override
 	public String toString() {
 		String out = "";
-		//out += var.toString() + " : ";
-		//out += expr.toString() + " )\n";
+		out += var.toString() + " : ";
+		out += expr.toString() + " )\n";
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}

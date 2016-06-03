@@ -20,4 +20,9 @@ public interface IASTRE {
 		div,
 		not
 	}
+
+	public enum ADDDEC {
+		increment,
+		decrement
+	}
 }

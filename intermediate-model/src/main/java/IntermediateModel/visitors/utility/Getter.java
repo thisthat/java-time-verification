@@ -15,6 +15,11 @@ import java.util.List;
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
+ *
+ *
+ * This class helps to extract the pieces of the intermediate model from the ANTLR4 AST.
+ * Each method search for a particular piece and translate it in the IM representation.
+ *
  */
 public class Getter {
 	public static ASTClass.Visibility accessRightClass(ParserRuleContext elm){

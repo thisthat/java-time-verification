@@ -8,28 +8,28 @@ import org.antlr.v4.runtime.Token;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTCast extends IASTStm implements IASTRE {
+public class ASTPostOp extends IASTStm implements IASTRE {
 
-	private String type;
-	private IASTRE expr;
+	private IASTRE var;
+	private ADDDEC type;
 
-	public ASTCast(Token start, Token end, String type, IASTRE expr) {
+	public ASTPostOp(Token start, Token end, IASTRE var, ADDDEC type) {
 		super(start, end);
+		this.var = var;
 		this.type = type;
-		this.expr = expr;
 	}
 
-	public ASTCast(int start, int end, String type, IASTRE expr) {
+	public ASTPostOp(int start, int end, IASTRE var, ADDDEC type) {
 		super(start, end);
+		this.var = var;
 		this.type = type;
-		this.expr = expr;
 	}
 
 	@Override
 	public String toString() {
-		return "ASTCast{" +
-				"type='" + type + '\'' +
-				", expr=" + expr +
+		return "ASTPostOp{" +
+				"var=" + var +
+				", type=" + type +
 				'}';
 	}
 }

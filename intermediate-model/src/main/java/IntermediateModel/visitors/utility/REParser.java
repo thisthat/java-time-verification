@@ -15,6 +15,10 @@ import java.util.List;
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
+ *
+ * The class handle the conversion from ANTLR4 AST to Intemediate Model (IM) representation of Right Expressions (RE).
+ * We export only two methods that either gives the IM or the first node that contain an expression.
+ *
  */
 public class REParser {
 
@@ -34,7 +38,6 @@ public class REParser {
 			return getMethodCall(elm);
 		} else if(elm instanceof PrimaryNoNewArray_lfno_primaryContext ||
 				elm instanceof FieldAccessContext){
-			//attribute access
 			return getAttributeAccess(elm);
 		} else if(elm instanceof LocalVariableDeclarationContext){
 			return getVariableDeclaration(elm);
@@ -45,8 +48,13 @@ public class REParser {
 			return getMathExpression(elm);
 		} else if(elm instanceof AssignmentContext){
 			return getAssignment(elm);
-		} else if(elm instanceof PostIncrementExpressionContext){
-			return getPostIncremental(elm);
+		} else if(elm instanceof PostIncrementExpressionContext ||
+				elm instanceof PostDecrementExpressionContext){
+			return getPostOp(elm);
+		}
+		else if(elm instanceof PreIncrementExpressionContext ||
+				elm instanceof PreDecrementExpressionContext){
+			return getPreOp(elm);
 		} else if(elm instanceof CastExpressionContext){
 			return getCast(elm);
 		} else if(elm instanceof UnaryExpressionNotPlusMinusContext ||
@@ -106,7 +114,7 @@ public class REParser {
 				)
 			{
 				ret = (ParserRuleContext) c;
-			} else if (c instanceof LiteralContext || c instanceof TypeNameContext || c instanceof ExpressionNameContext){
+			} else if (c instanceof LiteralContext || c instanceof TypeNameContext || c instanceof ExpressionNameContext ){
 				ret = (ParserRuleContext) c;
 			} else {
 				ret = getExpressionNode((ParserRuleContext) c);
@@ -168,7 +176,7 @@ public class REParser {
 						pars.add(getExpr((ParserRuleContext) c));
 					}
 				}
-				//type
+				//call of method without variable (e.g. print() )
 				IASTRE exprCallee = null;
 				return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), exprCallee, pars);
 			} else {
@@ -181,7 +189,7 @@ public class REParser {
 						pars.add(getExpr((ParserRuleContext) c));
 					}
 				}
-				//type
+				//call of method with variable (e.g. buf.print() )
 				IASTRE exprCallee = getMethodCallee((ParserRuleContext) elm.getChild(indexVar));
 				return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), exprCallee, pars);
 			}
@@ -195,7 +203,7 @@ public class REParser {
 					pars.add( getExpr((ParserRuleContext) c) );
 				}
 			}
-			//var not exists
+			//call of method without variable (e.g. print() )
 			return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), null , pars);
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getTypeName());
@@ -206,7 +214,10 @@ public class REParser {
 			return getLiteral(elm);
 		} else if (elm instanceof PrimaryContext){
 			//multiple call to methods
-			TypeNameContext variable = LocalSearch.get((ParserRuleContext) elm.getChild(0), TypeNameContext.class);
+			ParserRuleContext variable = LocalSearch.get((ParserRuleContext) elm.getChild(0), TypeNameContext.class);
+			if(variable == null){
+				variable = LocalSearch.get((ParserRuleContext) elm.getChild(0), ExpressionNameContext.class);
+			}
 			IASTRE varName = getLiteral(variable == null ? elm : variable);
 			List<IASTRE> methods = getAllMethodCall(elm);
 			return new ASTMultipleMethodCall(elm.start, elm.stop, methods);
@@ -246,8 +257,13 @@ public class REParser {
 			String type = IASTStm.getSrcFromToken( ((ParserRuleContext)elm.getChild(0)).start, ((ParserRuleContext)elm.getChild(0)).stop);
 			ParserRuleContext child = getExpressionNode(elm);
 			if(child == null){
-				return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
+				//var name : type;
+				IASTRE name = getLiteral(LocalSearch.get((ParserRuleContext) elm.getChild(1), VariableDeclaratorIdContext.class));
+				IASTRE expr = null;
+				return new ASTVariableDeclaration(elm.start, elm.stop, type, name, expr);
+				//return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 			} else {
+				//var name : type = expr;
 				IASTRE name = getLiteral((ParserRuleContext) child.getChild(0));
 				IASTRE expr = getExpr((ParserRuleContext) child.getChild(2));
 				return new ASTVariableDeclaration(elm.start, elm.stop, type, name, expr);
@@ -266,9 +282,22 @@ public class REParser {
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
 
-	private static IASTRE getPostIncremental(ParserRuleContext elm) {
+	private static IASTRE getPostOp(ParserRuleContext elm) {
 		if(elm instanceof PostIncrementExpressionContext){
-			return new ASTPostInc(elm.start, elm.stop, getExpr((ParserRuleContext) elm.getChild(0)));
+			return new ASTPostOp(elm.start, elm.stop, getExpr((ParserRuleContext) elm.getChild(0)), IASTRE.ADDDEC.increment);
+		}
+		if(elm instanceof PostDecrementExpressionContext){
+			return new ASTPostOp(elm.start, elm.stop, getExpr((ParserRuleContext) elm.getChild(0)), IASTRE.ADDDEC.decrement);
+		}
+		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
+	}
+
+	private static IASTRE getPreOp(ParserRuleContext elm) {
+		if(elm instanceof PreIncrementExpressionContext){
+			return new ASTPreOp(elm.start, elm.stop, getExpr((ParserRuleContext) elm.getChild(1)), IASTRE.ADDDEC.increment);
+		}
+		if(elm instanceof PreDecrementExpressionContext){
+			return new ASTPreOp(elm.start, elm.stop, getExpr((ParserRuleContext) elm.getChild(1)), IASTRE.ADDDEC.decrement);
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}
@@ -278,8 +307,10 @@ public class REParser {
 			IASTRE l = getExpr((ParserRuleContext) elm.getChild(0));
 			IASTRE r = getExpr((ParserRuleContext) elm.getChild(2));
 			IASTRE.OPERATOR op = IASTRE.OPERATOR.lessEqual;
-			if(elm.getChild(1).getText().equals("<")){
-				op = IASTRE.OPERATOR.less;
+			switch(elm.getChild(1).getText()){
+				case "<": op = IASTRE.OPERATOR.less; break;
+				case ">": op = IASTRE.OPERATOR.greater; break;
+				case ">=": op = IASTRE.OPERATOR.greaterEqual; break;
 			}
 			return new ASTBinary(elm.start, elm.stop, l, r, op);
 		}
