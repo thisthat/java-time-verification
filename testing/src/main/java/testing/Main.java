@@ -21,6 +21,21 @@ import org.neo4j.driver.v1.*;
  */
 public class Main {
 
+
+	public static void main(String[] args) {
+		int k = 0;
+		System.out.println("k=" + k);
+		if(1==1){
+			k = 5;
+			int j = 5;
+			System.out.println("k=" + k);
+			System.out.println("j=" + j);
+		}
+		System.out.println("k=" + k);
+		//System.out.println("j=" + j); //error, I cannot access J
+	}
+
+	/*
 	public static void main(String[] args) {
 
 		Driver driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic( "neo4j", "xal" ) );
@@ -41,7 +56,7 @@ public class Main {
 	}
 
 
-	/*
+
 	public static void main(String[] args) throws IOException, ClassHierarchyException {
 
 		File exFile=new FileProvider().getFile("Java60RegressionExclusions.txt");

@@ -130,6 +130,10 @@ public class ASTClass extends IASTStm {
 		this.attributes.add(attribute);
 	}
 
+	public List<ASTAttribute> getAttributes() {
+		return attributes;
+	}
+
 	public String toString(){
 		String out = "";
 		out = packageName + "." + name + "\n";

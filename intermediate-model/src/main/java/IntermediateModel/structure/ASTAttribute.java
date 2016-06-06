@@ -1,6 +1,7 @@
 package IntermediateModel.structure;
 
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVar;
 import IntermediateModel.structure.expression.ASTVariableDeclaration;
 import org.antlr.v4.runtime.Token;
 
@@ -8,7 +9,7 @@ import org.antlr.v4.runtime.Token;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTAttribute extends IASTStm {
+public class ASTAttribute extends IASTStm implements IASTVar {
 	private Visibility accessRight;
 	private String type;
 	private String name;
@@ -27,6 +28,38 @@ public class ASTAttribute extends IASTStm {
 		this.accessRight = accessRight;
 		this.type = type;
 		this.name = name;
+		this.expr = expr;
+	}
+
+	public Visibility getAccessRight() {
+		return accessRight;
+	}
+
+	public void setAccessRight(Visibility accessRight) {
+		this.accessRight = accessRight;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ASTRE getExpr() {
+		return expr;
+	}
+
+	public void setExpr(ASTRE expr) {
 		this.expr = expr;
 	}
 

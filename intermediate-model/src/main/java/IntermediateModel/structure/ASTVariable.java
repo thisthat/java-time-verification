@@ -1,13 +1,14 @@
 package IntermediateModel.structure;
 
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVar;
 import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTVariable extends IASTStm {
+public class ASTVariable extends IASTStm implements IASTVar {
 	String name;
 	String type;
 

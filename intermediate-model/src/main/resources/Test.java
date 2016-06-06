@@ -26,7 +26,7 @@ import static junit.framework.Assert.*;
 // AllSwitchStatisticsResource
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 	@Deprecated
-	private Test(int i, int k) throws RuntimeException, IOException {
+	private Test(int i, int k, Timer t) throws RuntimeException, IOException {
 		throw new Exception(INetTopologyService.class,"asd1");
 		l.add("par1", "par2");
 		l.getElm("1").getE(1,3).add("asd");
@@ -44,6 +44,8 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 
 	//Contains all the info and logic to handle the rules
 	protected BehaviourManager behaviourProvider;
+
+	protected Timer abc;
 	
 	//Data Structure to Build the network topology
 	protected ILinkDiscoveryService topology;

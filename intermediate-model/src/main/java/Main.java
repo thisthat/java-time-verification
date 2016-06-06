@@ -1,4 +1,6 @@
+import IntermediateModel.structure.ASTClass;
 import IntermediateModel.visitors.CreateIntemediateModel;
+import IntermediateModel.visitors.SearchTimeConstraint;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -28,6 +30,14 @@ public class Main {
 		CreateIntemediateModel sv = new CreateIntemediateModel();
 
 		walker.walk(sv, ast);
+
+		SearchTimeConstraint stc = new SearchTimeConstraint();
+
+		for(ASTClass c : sv.listOfClasses){
+			stc.annotateClass(c);
+			System.out.println(c.toString());
+			System.out.println("__________");
+		}
 		String s = Arrays.toString( sv.listOfClasses.toArray() );
 		System.out.print(s);
 	}
