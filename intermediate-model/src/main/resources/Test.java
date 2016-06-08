@@ -28,6 +28,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	@Deprecated
 	private Test(int i, int k, Timer t) throws RuntimeException, IOException {
 		throw new Exception(INetTopologyService.class,"asd1");
+		Timer j = 1;
 		l.add("par1", "par2");
 		l.getElm("1").getE(1,3).add("asd");
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
@@ -231,6 +232,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	    }
 
 	    public void run() {
+			Thread.sleep(5000);
 	    	//Delay of 5s
 	    	try {
 				Thread.sleep(5000);

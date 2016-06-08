@@ -2,6 +2,7 @@ package IntermediateModel.structure.expression;
 
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.ASTREVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
@@ -44,5 +45,16 @@ public class ASTMultipleMethodCall extends IASTStm implements IASTRE {
 				"methods=" + methods +
 				", variable=" + variable +
 				'}';
+	}
+
+
+	@Override
+	public void visit(ASTREVisitor visitor) {
+		visitor.enterASTMultipleMethodCall(this);
+		if(variable != null)
+			variable.visit(visitor);
+		for(IASTRE m : methods){
+			m.visit(visitor);
+		}
 	}
 }

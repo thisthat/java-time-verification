@@ -35,14 +35,4 @@ public class TestClass {
         intemediateModel = sv.listOfClasses;
     }
 
-
-    @Test
-    public void name() throws Exception {
-        assertEquals(true, false);
-    }
-
-    @Test
-    public void a2() throws Exception {
-        assertEquals(true, !false);
-    }
 }

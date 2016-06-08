@@ -2,6 +2,7 @@ package IntermediateModel.structure.expression;
 
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.ASTREVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -33,5 +34,11 @@ public class NotYetImplemented extends IASTStm implements IASTRE {
 
 	public String toString(){
 		return "Not Yet Implemented :: " + code + " @ " + cause[2] + ((typeElm != null) ? "--" + typeElm : "");
+	}
+
+
+	@Override
+	public void visit(ASTREVisitor visitor) {
+		visitor.enterElse(this);
 	}
 }

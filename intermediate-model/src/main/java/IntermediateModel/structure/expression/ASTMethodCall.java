@@ -2,6 +2,7 @@ package IntermediateModel.structure.expression;
 
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.ASTREVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
@@ -73,5 +74,15 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 				", exprCallee=" + exprCallee +
 				", parameters=" + parameters +
 				'}';
+	}
+
+	@Override
+	public void visit(ASTREVisitor visitor) {
+		visitor.enterASTMethodCall(this);
+		if(exprCallee != null)
+			exprCallee.visit(visitor);
+		for(IASTRE p : parameters){
+			p.visit(visitor);
+		}
 	}
 }

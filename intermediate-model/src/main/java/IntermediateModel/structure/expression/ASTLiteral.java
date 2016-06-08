@@ -2,6 +2,7 @@ package IntermediateModel.structure.expression;
 
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.ASTREVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -9,7 +10,7 @@ import org.antlr.v4.runtime.Token;
  * @version %I%, %G%
  */
 public class ASTLiteral extends IASTStm implements IASTRE {
-	public String value;
+	private String value;
 
 	public ASTLiteral(Token start, Token end, String value) {
 		super(start, end);
@@ -34,5 +35,10 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 		return "ASTLiteral{" +
 				"value='" + value + '\'' +
 				'}';
+	}
+
+	@Override
+	public void visit(ASTREVisitor visitor) {
+		visitor.enterASTLiteral(this);
 	}
 }

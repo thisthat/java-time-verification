@@ -2,7 +2,7 @@ package IntermediateModel.structure.expression;
 
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.ASTRE;
+import IntermediateModel.interfaces.ASTREVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
@@ -60,6 +60,15 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 				"parameters=" + parameters +
 				", typeName='" + typeName + '\'' +
 				'}';
+	}
+
+
+	@Override
+	public void visit(ASTREVisitor visitor) {
+		visitor.enterASTNewObject(this);
+		for(IASTRE p : parameters){
+			p.visit(visitor);
+		}
 	}
 }
 

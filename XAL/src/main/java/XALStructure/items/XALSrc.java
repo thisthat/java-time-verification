@@ -25,7 +25,7 @@ public class XALSrc extends XALItem {
 
     /**
      * Set the start Token
-     * @param start
+     * @param start start token
      */
     public void setStart(CommonToken start) {
         this.start = start;
@@ -41,7 +41,7 @@ public class XALSrc extends XALItem {
 
     /**
      * Set the stop Token
-     * @param stop
+     * @param stop end token
      */
     public void setStop(CommonToken stop) {
         this.stop = stop;
@@ -49,8 +49,8 @@ public class XALSrc extends XALItem {
 
     /**
      * Constructor of the class. The two parameters are, respectively, the start and stop tokens.
-     * @param start
-     * @param stop
+     * @param start start token
+     * @param stop end token
      */
     public XALSrc(CommonToken start, CommonToken stop) {
         this.start = start;

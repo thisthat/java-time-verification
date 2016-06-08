@@ -68,6 +68,10 @@ public abstract class IASTStm {
 		return code;
 	}
 
+	public int getLine(){
+		return startToken.getLine();
+	}
+
 	protected IASTStm(Token start, Token end){
 		this.start = start.getStartIndex();
 		this.end = end.getStopIndex();

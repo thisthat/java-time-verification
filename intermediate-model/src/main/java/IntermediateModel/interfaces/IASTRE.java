@@ -25,4 +25,6 @@ public interface IASTRE {
 		increment,
 		decrement
 	}
+
+	public void visit(ASTREVisitor visitor);
 }

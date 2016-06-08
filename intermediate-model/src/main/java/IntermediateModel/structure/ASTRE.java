@@ -23,11 +23,15 @@ public class ASTRE extends IASTStm {
 
 	@Override
 	public String toString() {
-		return "\t\t" + expression.toString();
+		return "::::REXP:::" + expression.toString();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		return true;
+	}
+
+	public IASTRE getExpression() {
+		return expression;
 	}
 }

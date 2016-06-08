@@ -2,7 +2,7 @@ package XALConversion.util;
 
 /**
  * A class that implements a pair couple.
- * @author Giovanni Liva (@thisthatDC)
+ * @author arturh : http://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-c-pairl-r-in-java/677248#677248
  * @version %I%, %G%
  */
 public class Pair<A, B> {

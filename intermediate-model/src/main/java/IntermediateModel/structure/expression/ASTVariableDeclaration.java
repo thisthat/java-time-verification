@@ -2,6 +2,7 @@ package IntermediateModel.structure.expression;
 
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.ASTREVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -59,5 +60,19 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 				", name='" + name + '\'' +
 				", expr=" + expr +
 				"}\n";
+	}
+
+
+	@Override
+	public void visit(ASTREVisitor visitor) {
+		visitor.enterASTVariableDeclaration(this);
+		if(expr != null)
+			expr.visit(visitor);
+	}
+
+	public String getNameString() {
+		if(name instanceof ASTLiteral)
+			return ((ASTLiteral) name).getValue();
+		return "--not yet define--";
 	}
 }

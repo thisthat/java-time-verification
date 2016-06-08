@@ -1,15 +1,11 @@
 import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.ApplyHeuristics;
 import IntermediateModel.visitors.CreateIntemediateModel;
-import IntermediateModel.visitors.SearchTimeConstraint;
+import heuristic.ThreadTime;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -30,16 +26,15 @@ public class Main {
 		CreateIntemediateModel sv = new CreateIntemediateModel();
 
 		walker.walk(sv, ast);
-
-		SearchTimeConstraint stc = new SearchTimeConstraint();
-
+		ThreadTime tt = new ThreadTime();
 		for(ASTClass c : sv.listOfClasses){
-			stc.annotateClass(c);
-			System.out.println(c.toString());
-			System.out.println("__________");
+			ApplyHeuristics ah = new ApplyHeuristics();
+			ah.subscribe(tt);
+			ah.analyze(c);
+			System.err.println("__________");
 		}
-		String s = Arrays.toString( sv.listOfClasses.toArray() );
-		System.out.print(s);
+		//String s = Arrays.toString( sv.listOfClasses.toArray() );
+		//System.out.print(s);
 	}
 
 	private static void usage(){

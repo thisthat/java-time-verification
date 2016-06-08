@@ -1,102 +1,78 @@
 package IntermediateModel.visitors;
 
+
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.IASTVar;
-import IntermediateModel.structure.ASTAttribute;
 import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTMethod;
-import IntermediateModel.structure.ASTVariable;
+import IntermediateModel.structure.ASTRE;
+import envirorment.BuildEnvirormentClass;
 import envirorment.Env;
+import heuristic.SearchTimeConstraint;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  *
- * The following Class operate over the intermediate model annotating the terms that are time relevant.
- * It expones just one method to the outter world. This method return the IM of a Class annotate with the
- * parts of it that are considered interesting in terms of time constraints.
- *
+ * This class is the manager that apply all the heuristics we created.
+ * It goes through all {@link IASTMethod} definition of a {@link ASTClass}.
+ * For each statement it extends the envirorment and apply all the subscribed strategies.
  */
 public class ApplyHeuristics {
 
 	private boolean isThread;
 	public final String _THREAD_CLASS_ = "Thread";
 	public final String _THREAD_INTERFACE_ = "Runnable";
-	private List<String> typeTimeRelevant;// = new ArrayList<>();
-	private Env env;
-	{
-		String f = getClass().getClassLoader().getResource("TypeTimeRelevant.txt").getFile();
-		try {
-			typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
-		} catch (IOException e) {
-			typeTimeRelevant = new ArrayList<>();
+	private BuildEnvirormentClass build_base_env = null;
+	private List<SearchTimeConstraint> strategies = new ArrayList<>();
+
+	public ApplyHeuristics(){
+		build_base_env = new BuildEnvirormentClass();
+	}
+	public ApplyHeuristics(BuildEnvirormentClass env) {
+		this.build_base_env = env;
+	}
+
+	public void subscribe(SearchTimeConstraint strategy){
+		strategies.add(strategy);
+	}
+
+	public void analyze(ASTClass c){
+		build_base_env.buildEnvClass(c);
+		for(IASTMethod m : c.getMethods()){
+			analyze(m, new Env(build_base_env.getEnv()));
 		}
 	}
 
-	/**
-	 * In the future we should pass the types of the project that are annotated manually
-	 */
-	public ApplyHeuristics() {
-		env = new Env();
-	}
-
-	public ApplyHeuristics(Env env) {
-		this.env = env;
-	}
-
-
-	/**
-	 * This method add to the envirorment:
-	 * <ul>
-	 *     <li>Attributes that have a time relevant type</li>
-	 *     <li>TODO: check imports to collect the time information of that classes</li>
-	 * </ul>
-	 * @param _class The class to analyze
-	 * @return The {@link Env} fulfill with the Info for parsing
-	 */
-
-	private void buildEnvClass(ASTClass _class, Env env){
-		//check over attributes
-		for(ASTAttribute a : _class.getAttributes()){
-			a.setTimeCritical(
-					typeTimeRelevant.stream().anyMatch( type -> ( type.equals(a.getType()) ) )
-			);
-			if(a.isTimeCritical()){
-				env.addVar(a);
-			}
-		}
-		//check over methods
-		for(IASTMethod m : _class.getMethods()){
-			buildEnvMethod(m);
+	private void analyze(IASTMethod m, Env env){
+		for(IASTStm stm : m.getStms()){
+			if(stm instanceof ASTRE)
+				analyze((ASTRE)stm, env);
+			else
+				analyze(stm, env);
 		}
 	}
 
-	/**
-	 * This method checks for all the stms in a method:
-	 * <ul>
-	 *     <li>Return of time relevant type</li>
-	 *     <li>Return of time relevant type</li>
-	 * </ul>
-	 * @param m Method to annotate
-	 */
-	private void buildEnvMethod(IASTMethod mm){
-		//return type is one of the interesting one - only methods
-		if(mm instanceof ASTMethod){
-			ASTMethod m = (ASTMethod) mm;
-			String retType = m.getReturnType();
-			m.setTimeCritical(
-					typeTimeRelevant.stream().anyMatch( type -> ( type.equals(retType) ) )
-			);
-			if(m.isTimeCritical()){
-				env.addMethod( m , new Env());
-			}
+	private void analyze(ASTRE r, Env env){
+		//build env
+		//System.err.println("Not Implemented Yet :: " + r.toString());
+		env = build_base_env.checkRE(r, env);
+		//call the strategies
+		applyStep(r, env);
+	}
+
+	private void analyze(IASTStm r, Env env){
+		//System.err.println("Not Implemented Yet :: " + r.getClass().getSimpleName());
+	}
+
+	private void applyStep(IASTStm stm, Env env){
+		for(SearchTimeConstraint s : strategies){
+			s.next(stm, env);
 		}
 	}
+
 
 }
