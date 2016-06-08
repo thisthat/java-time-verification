@@ -172,8 +172,8 @@ public class REParser {
 	private static IASTRE getMethodCall(ParserRuleContext elm) {
 		if( elm instanceof MethodInvocationContext ||
 			elm instanceof MethodInvocation_lfno_primaryContext
-			){
-			if(elm.getChild(0) instanceof MethodNameContext){
+			) {
+			if (elm.getChild(0) instanceof MethodNameContext) {
 				int indexMethodName = 0, indexPars = 2;
 				List<IASTRE> pars = new ArrayList<>();
 				if (!(elm.getChild(indexPars) instanceof TerminalNode)) {
@@ -185,6 +185,18 @@ public class REParser {
 				}
 				//call of method without variable (e.g. print() )
 				IASTRE exprCallee = null;
+				return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), exprCallee, pars);
+			} else if(elm.getChild(0).getText().startsWith("this")){
+				int indexMethodName = 2, indexPars = 4;
+				List<IASTRE> pars = new ArrayList<>();
+				if (!(elm.getChild(indexPars) instanceof TerminalNode)) {
+					for (ParseTree c : ((ParserRuleContext) elm.getChild(indexPars)).children) {
+						if (c instanceof TerminalNode)
+							continue;
+						pars.add(getExpr((ParserRuleContext) c));
+					}
+				}
+				IASTRE exprCallee = getMethodCallee((ParserRuleContext) elm.getChild(0));
 				return new ASTMethodCall(elm.start, elm.stop, elm.getChild(indexMethodName).getText(), exprCallee, pars);
 			} else {
 				int indexVar = 0, indexMethodName = 2, indexPars = 4;
@@ -220,14 +232,23 @@ public class REParser {
 		if(elm instanceof TypeNameContext) {
 			return getLiteral(elm);
 		} else if (elm instanceof PrimaryContext){
-			//multiple call to methods
-			ParserRuleContext variable = LocalSearch.get((ParserRuleContext) elm.getChild(0), TypeNameContext.class);
-			if(variable == null){
-				variable = LocalSearch.get((ParserRuleContext) elm.getChild(0), ExpressionNameContext.class);
+			if(elm.getChild(0).getText().equals("this")){
+				if(elm.children.size() == 1)
+					return getLiteral((ParserRuleContext) elm.getChild(0));
+				else {
+					return getLiteral((ParserRuleContext) elm);
+				}
+			} else {
+				ParserRuleContext variable = LocalSearch.get((ParserRuleContext) elm.getChild(0), TypeNameContext.class);
+				if(variable == null){
+					variable = LocalSearch.get((ParserRuleContext) elm.getChild(0), ExpressionNameContext.class);
+				}
+				IASTRE varName = getLiteral(variable == null ? elm : variable);
+				List<IASTRE> methods = getAllMethodCall(elm);
+				return new ASTMultipleMethodCall(elm.start, elm.stop, methods);
 			}
-			IASTRE varName = getLiteral(variable == null ? elm : variable);
-			List<IASTRE> methods = getAllMethodCall(elm);
-			return new ASTMultipleMethodCall(elm.start, elm.stop, methods);
+			//multiple call to methods
+
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}

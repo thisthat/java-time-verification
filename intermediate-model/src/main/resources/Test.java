@@ -27,6 +27,8 @@ import static junit.framework.Assert.*;
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 	@Deprecated
 	private Test(int i, int k, Timer t) throws RuntimeException, IOException {
+		this.equals();
+		this.mongodb.setIp("a");
 		throw new Exception(INetTopologyService.class,"asd1");
 		Timer j = 1;
 		l.add("par1", "par2");

@@ -1,9 +1,6 @@
 package IntermediateModel.interfaces;
 
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.structure.ASTAttribute;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTVariable;
+
 import IntermediateModel.structure.expression.*;
 
 /**
