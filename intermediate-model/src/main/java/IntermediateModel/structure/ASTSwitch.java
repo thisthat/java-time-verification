@@ -111,6 +111,10 @@ public class ASTSwitch extends IASTStm {
 		this.expr = expr;
 	}
 
+	public List<ASTCase> getCases() {
+		return cases;
+	}
+
 	@Override
 	public String toString() {
 		String out = "switch(";

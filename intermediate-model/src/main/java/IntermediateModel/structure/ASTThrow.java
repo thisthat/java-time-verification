@@ -20,6 +20,10 @@ public class ASTThrow extends IASTStm {
 		this.expr = expr;
 	}
 
+	public ASTRE getExpr() {
+		return expr;
+	}
+
 	@Override
 	public String toString() {
 		return expr.toString();

@@ -86,6 +86,10 @@ public class ASTIf extends IASTStm {
 		this.guard = guard;
 	}
 
+	public ASTRE getGuard() {
+		return guard;
+	}
+
 	@Override
 	public String toString() {
 		String out = "";

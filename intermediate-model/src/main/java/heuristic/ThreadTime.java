@@ -27,7 +27,7 @@ public class ThreadTime extends SearchTimeConstraint {
 		ASTMethodCall mc = (ASTMethodCall) expr;
 		if(mc.getMethodName().equals("sleep")){
 			if(mc.getExprCallee() instanceof ASTLiteral && ((ASTLiteral) mc.getExprCallee()).getValue().equals("Thread")){
-				System.err.println("Found @" + stm.getLine());
+				System.err.println("Found @" + stm.getLine() + " :: " + mc.getParameters().get(0));
 			}
 		}
 

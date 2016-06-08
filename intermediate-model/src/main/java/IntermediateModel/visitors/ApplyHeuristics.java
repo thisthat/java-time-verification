@@ -3,8 +3,7 @@ package IntermediateModel.visitors;
 
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTRE;
+import IntermediateModel.structure.*;
 import envirorment.BuildEnvirormentClass;
 import envirorment.Env;
 import heuristic.SearchTimeConstraint;
@@ -43,29 +42,167 @@ public class ApplyHeuristics {
 	public void analyze(ASTClass c){
 		build_base_env.buildEnvClass(c);
 		for(IASTMethod m : c.getMethods()){
-			analyze(m, new Env(build_base_env.getEnv()));
+			analyze(m.getStms(), new Env(build_base_env.getEnv()));
 		}
 	}
 
-	private void analyze(IASTMethod m, Env env){
-		for(IASTStm stm : m.getStms()){
-			if(stm instanceof ASTRE)
-				analyze((ASTRE)stm, env);
-			else
+	/**
+	 * The Method go through the list of {@link IASTStm} and
+	 * @param stms
+	 * @param env
+	 */
+	private void analyze(List<IASTStm> stms, Env env){
+		for(IASTStm stm : stms) {
+			if (stm instanceof ASTRE){
+				analyze((ASTRE) stm, env);
+			}
+			else if(stm	instanceof ASTBreak){
+				continue; //nothing to check
+			}
+			else if(stm	instanceof ASTContinue){
+				continue; //nothing to check
+			}
+			else if(stm	instanceof ASTFor){
+				analyze((ASTFor)stm, env);
+			}
+			else if(stm	instanceof ASTForEach){
+				analyze((ASTForEach)stm, env);
+			}
+			else if(stm	instanceof ASTIf){
+				analyze((ASTIf)stm, env);
+			}
+			else if(stm	instanceof ASTReturn){
+				analyze((ASTReturn)stm, env);
+			}
+			else if(stm	instanceof ASTSwitch){
+				analyze((ASTSwitch)stm, env);
+			}
+			else if(stm	instanceof ASTSynchronized){
+				analyze((ASTSynchronized)stm, env);
+			}
+			else if(stm	instanceof ASTThrow){
+				analyze((ASTThrow)stm, env);
+			}
+			else if(stm	instanceof ASTTry){
+				analyze((ASTTry)stm, env);
+			}
+			else if(stm	instanceof ASTTryResources){
+				analyze((ASTTryResources)stm, env);
+			}
+			else if(stm	instanceof ASTWhile){
+				analyze((ASTWhile)stm, env);
+			}
+			else {
 				analyze(stm, env);
+			}
 		}
 	}
 
 	private void analyze(ASTRE r, Env env){
 		//build env
-		//System.err.println("Not Implemented Yet :: " + r.toString());
-		env = build_base_env.checkRE(r, env);
+		build_base_env.checkRE(r, env);
 		//call the strategies
 		applyStep(r, env);
 	}
 
+	private void analyze(ASTFor elm, Env env) {
+		Env new_env = new Env(env);
+		for(ASTRE exp : elm.getInit()) {
+			this.analyze(exp, new_env);
+		}
+		this.analyze(elm.getExpr(), new_env);
+		for(ASTRE exp : elm.getPost()){
+			this.analyze(exp, new_env);
+		}
+		this.analyze(elm.getExpr(), new_env);
+		applyStep(elm, new_env);
+	}
+
+	private void analyze(ASTForEach elm, Env env) {
+		Env new_env = new Env(env);
+		build_base_env.setVariableInEnv(elm.getVar(), new_env);
+		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
+		applyStep(elm, new_env);
+	}
+
+	private void analyze(ASTIf elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getGuard(), new Env(new_env));
+		this.analyze(elm.getIfBranch().getStms(), new Env(new_env));
+		if(elm.getElseBranch() != null)
+			this.analyze(elm.getElseBranch().getStms(), new_env);
+		applyStep(elm, new_env);
+	}
+
+	private void analyze(ASTReturn elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new Env(new_env));
+		applyStep(elm, new_env);
+	}
+
+	private void analyze(ASTSwitch elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		for (ASTSwitch.ASTCase c : elm.getCases()) {
+			this.analyze( c.getStms(), new Env(new_env));
+		}
+		applyStep(elm, new_env);
+	}
+
+	private void analyze(ASTSynchronized elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(),new_env);
+		applyStep(elm, new_env);
+	}
+
+	private void analyze(ASTThrow elm, Env env) {
+		build_base_env.checkRE(elm.getExpr(), env);
+		this.analyze(elm.getExpr(), env);
+		applyStep(elm, env);
+	}
+
+	private void analyze(ASTTry elm, Env env) {
+		Env new_env_try = new Env(env);
+		Env new_env_finally = new Env(env);
+
+		analyze(elm.getTryBranch().getStms(), new_env_try);
+		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
+			Env new_env_catch = new Env(env);
+			analyze( catchBranch.getStms(), new_env_catch );
+		}
+		if(elm.getFinallyBranch() != null)
+			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
+		applyStep(elm, env);
+	}
+
+	private void analyze(ASTTryResources elm, Env env) {
+		Env env_resource = new Env(env);
+		for(ASTRE r : elm.getResources()){
+			this.analyze(r, env_resource);
+		}
+		Env new_env_try = new Env(env_resource);
+		Env new_env_finally = new Env(env_resource);
+		analyze(elm.getTryBranch().getStms(), new_env_try);
+		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
+			Env new_env_catch = new Env(env_resource);
+			analyze( catchBranch.getStms(), new_env_catch );
+		}
+		if(elm.getFinallyBranch() != null)
+			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
+		applyStep(elm, env_resource);
+	}
+
+	private void analyze(ASTWhile elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
+		applyStep(elm, new_env);
+	}
+
 	private void analyze(IASTStm r, Env env){
-		//System.err.println("Not Implemented Yet :: " + r.getClass().getSimpleName());
+		System.err.println("Not Implemented Yet :: " + r.getClass().getSimpleName());
 	}
 
 	private void applyStep(IASTStm stm, Env env){

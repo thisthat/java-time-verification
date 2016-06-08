@@ -23,6 +23,10 @@ public class ASTTryResources extends ASTTry {
 		this.resources = resources;
 	}
 
+	public List<ASTRE> getResources() {
+		return resources;
+	}
+
 	@Override
 	public String toString() {
 		String out = "";

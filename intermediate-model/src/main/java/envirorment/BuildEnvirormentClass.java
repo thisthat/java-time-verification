@@ -116,17 +116,16 @@ public class BuildEnvirormentClass {
 	 * @param env {@link Env} class where to add the new definition
 	 * @return The envirorment (maybe) enriched.
 	 */
-	public Env checkRE(ASTRE rexp, Env env){
+	public void checkRE(ASTRE rexp, Env env){
 		rexp.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 				setVariableInEnv(elm, env);
 			}
 		});
-		return env;
 	}
 
-	private void setVariableInEnv(ASTVariable v, Env where){
+	public void setVariableInEnv(ASTVariable v, Env where){
 		v.setTimeCritical(
 				typeTimeRelevant.stream().anyMatch(type -> (type.equals(v.getType())))
 		);
@@ -134,7 +133,7 @@ public class BuildEnvirormentClass {
 			where.addVar(v);
 		}
 	}
-	private void setVariableInEnv(ASTVariableDeclaration v, Env where){
+	public void setVariableInEnv(ASTVariableDeclaration v, Env where){
 		setVariableInEnv(new ASTVariable(v.startToken,v.endToken, v.getNameString(), v.getType()), where);
 	}
 

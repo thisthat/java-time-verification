@@ -78,4 +78,26 @@ public class Env {
 	public void addMethod(ASTMethod v, Env e){
 		methodList.put(v, e);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Env)) return false;
+
+		Env env = (Env) o;
+
+		if (prev != null ? !prev.equals(env.prev) : env.prev != null) return false;
+		if (varList != null ? !varList.equals(env.varList) : env.varList != null) return false;
+		if (methodList != null ? !methodList.equals(env.methodList) : env.methodList != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = prev != null ? prev.hashCode() : 0;
+		result = 31 * result + (varList != null ? varList.hashCode() : 0);
+		result = 31 * result + (methodList != null ? methodList.hashCode() : 0);
+		return result;
+	}
 }
