@@ -33,7 +33,7 @@ public class ThreadTime extends SearchTimeConstraint {
 			if(mc.getExprCallee() instanceof ASTLiteral && ((ASTLiteral) mc.getExprCallee()).getValue().equals("Thread")){
 				found = true;
 			}
-			else { //Search if is it in the form var.sleep/var.join
+			else { //Search if is it in the form var.sleep
 				if(mc.getExprCallee() instanceof ASTLiteral){
 					String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
 					if( env.existVarName(var_name) || //is a var of the env

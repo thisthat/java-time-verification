@@ -3,6 +3,7 @@ package envirorment;
 
 import IntermediateModel.interfaces.IASTVar;
 import IntermediateModel.structure.ASTMethod;
+import IntermediateModel.structure.expression.ASTMethodCall;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class Env {
 	private Env prev;
 	private List<IASTVar> varList;
-	private Map<ASTMethod, Env> methodList;
+	private Map<String, Env> methodList;
 
 	{
 		varList = new ArrayList<>();
@@ -58,9 +59,49 @@ public class Env {
 		}
 	}
 
+	public IASTVar getLastVarByTime(String v){
+		for(IASTVar vEnv : varList){
+			if(vEnv.getType().equals(v))
+				return vEnv;
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.getLastVarByTime(v);
+		} else {
+			return null;
+		}
+	}
+
+	public List<IASTVar> getVarsByType(String type){
+		List<IASTVar> out = new ArrayList<>();
+		for(IASTVar vEnv : varList){
+			if(vEnv.getType().equals(type))
+				out.add(vEnv);
+		}
+		if(prev != null){
+			out.addAll(prev.getVarsByType(type));
+		}
+		return out;
+	}
+
 	public boolean existMethod(ASTMethod m){
 		if(methodList.containsKey(m)){
 			return true;
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.existMethod(m);
+		} else {
+			return false;
+		}
+	}
+
+	public boolean existMethod(ASTMethodCall m){
+		for(Map.Entry<String,Env> mm : methodList.entrySet()){
+			String method = mm.getKey();
+			if(method.equals(m.getMethodName())) {
+				return true;
+			}
 		}
 		//is not here, search in the previous ones
 		if(prev != null){
@@ -75,7 +116,7 @@ public class Env {
 		varList.add(v);
 	}
 
-	public void addMethod(ASTMethod v, Env e){
+	public void addMethod(String v, Env e){
 		methodList.put(v, e);
 	}
 

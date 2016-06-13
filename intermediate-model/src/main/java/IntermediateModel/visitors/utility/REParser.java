@@ -91,7 +91,8 @@ public class REParser {
 		}
 		//math expr
 		if(ctx.children.size() > 2){
-			if(ctx instanceof MultiplicativeExpressionContext)
+			if(ctx instanceof MultiplicativeExpressionContext ||
+				ctx instanceof AdditiveExpressionContext )
 				return ctx;
 		}
 		//init ret var

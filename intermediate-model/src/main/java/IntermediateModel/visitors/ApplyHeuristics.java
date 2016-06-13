@@ -6,10 +6,12 @@ import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.structure.expression.ASTNewObject;
+import XALConversion.util.Pair;
 import envirorment.BuildEnvirormentClass;
 import envirorment.Env;
 import heuristic.SearchTimeConstraint;
 
+import java.awt.dnd.DragGestureEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class ApplyHeuristics {
 	public final String _THREAD_INTERFACE_ = "Runnable";
 	private BuildEnvirormentClass build_base_env = null;
 	private List<SearchTimeConstraint> strategies = new ArrayList<>();
+	private List<Class<? extends SearchTimeConstraint>> strategiesTypes = new ArrayList<>();
 
 	public ApplyHeuristics(){
 		build_base_env = new BuildEnvirormentClass();
@@ -37,11 +40,24 @@ public class ApplyHeuristics {
 		this.build_base_env = env;
 	}
 
-	public void subscribe(SearchTimeConstraint strategy){
-		strategies.add(strategy);
+	public void subscribe(Class<? extends SearchTimeConstraint> strategy){
+		strategiesTypes.add(strategy);
 	}
 
 	public void analyze(ASTClass c){
+		//instantiate the strategies
+		strategies.clear();
+		for(Class<? extends SearchTimeConstraint> type : strategiesTypes){
+			SearchTimeConstraint a = null;
+			try {
+				a = type.newInstance();
+				strategies.add(a);
+			} catch (InstantiationException e) {
+				//e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				//e.printStackTrace();
+			}
+		}
 		build_base_env.buildEnvClass(c);
 		for(IASTMethod m : c.getMethods()){
 			analyze(m.getStms(), new Env(build_base_env.getEnv()));
@@ -230,4 +246,11 @@ public class ApplyHeuristics {
 	}
 
 
+	public List<Pair<Integer, String>> getTimeConstraint() {
+		List<Pair<Integer, String>> out = new ArrayList<>();
+		for(SearchTimeConstraint s : strategies){
+			out.addAll(s.getTimeConstraint());
+		}
+		return out;
+	}
 }

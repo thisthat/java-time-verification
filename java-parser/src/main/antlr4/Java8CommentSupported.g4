@@ -1772,9 +1772,9 @@ WS  :  [ \t\r\n\u000C]+ -> skip
 comment : MULTICOMMENT | LINECOMMENT ;
 
 MULTICOMMENT
-    :   '/*' .*? '*/'
+    :   '/*' .*? '*/' -> skip
     ;
 
 LINECOMMENT
-    :   '//' ~[\r\n]*
+    :   '//' ~[\r\n]* -> skip
     ;

@@ -39,6 +39,14 @@ public class ASTMultipleMethodCall extends IASTStm implements IASTRE {
 		}
 	}
 
+	public List<IASTRE> getMethods() {
+		return methods;
+	}
+
+	public IASTRE getVariable() {
+		return variable;
+	}
+
 	@Override
 	public String toString() {
 		return "ASTMultipleMethodCall{" +

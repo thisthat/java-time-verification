@@ -26,7 +26,9 @@ public class ASTReturn extends IASTStm {
 
 	@Override
 	public String toString() {
-		return expr.toString();
+		if(expr != null)
+			return expr.toString();
+		return "return;";
 	}
 
 	@Override

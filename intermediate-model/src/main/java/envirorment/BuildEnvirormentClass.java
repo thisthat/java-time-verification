@@ -23,13 +23,20 @@ public class BuildEnvirormentClass {
 	private Env env;
 
 	public static List<String> typeTimeRelevant;// = new ArrayList<>();
+	public static List<String> methodTimeRelevant;// = new ArrayList<>();
 
 	{
-		String f = getClass().getClassLoader().getResource("TypeTimeRelevant.txt").getFile();
+		String f = getClass().getClassLoader().getResource("descriptorTimeRelevant/TypeTimeRelevant.txt").getFile();
 		try {
 			typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
 		} catch (IOException e) {
 			typeTimeRelevant = new ArrayList<>();
+		}
+		f = getClass().getClassLoader().getResource("descriptorTimeRelevant/MethodTimeRelevant.txt").getFile();
+		try {
+			methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
+		} catch (IOException e) {
+			methodTimeRelevant = new ArrayList<>();
 		}
 	}
 
@@ -80,6 +87,10 @@ public class BuildEnvirormentClass {
 	 * @param m Method to annotate
 	 */
 	private void buildEnvMethod(IASTMethod mm) {
+		//put the default method
+		for(String m : methodTimeRelevant){
+			env.addMethod(m, new Env());
+		}
 		//return type is one of the interesting one - only methods
 		if (mm instanceof ASTMethod) {
 			ASTMethod m = (ASTMethod) mm;
@@ -88,7 +99,7 @@ public class BuildEnvirormentClass {
 					typeTimeRelevant.stream().anyMatch(type -> (type.equals(retType)))
 			);
 			if (m.isTimeCritical()) {
-				env.addMethod(m, new Env());
+				env.addMethod(m.getName(), new Env());
 			}
 		}
 	}

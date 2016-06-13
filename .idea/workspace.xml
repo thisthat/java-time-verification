@@ -5,23 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d757fc41-fdb0-4143-aa18-b91d6ca3fa2b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SocketTimeout.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/FailoverTimeoutTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/TimerEvent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/TimeoutResources.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/TimerType.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/MCGroupImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/MethodTimeRelevant.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/intermediate-model/src/main/resources/TypeTimeRelevant.txt" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/TypeTimeRelevant.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParser.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParser.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SearchTimeConstraint.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SearchTimeConstraint.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/Env.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/Env.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SocketTimeout.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SocketTimeout.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/ThreadTime.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/ThreadTime.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/resources/TypeTimeRelevant.txt" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/TypeTimeRelevant.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4" afterPath="$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedLexer.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedLexer.java" />
     </list>
     <ignored mask="*.iws" />
     <ignored path="target/" />
@@ -85,88 +90,95 @@
       <file leaf-file-name="ThreadTime.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/ThreadTime.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="32" column="55" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="55" />
+            <state relative-caret-position="360">
+              <caret line="34" column="13" selection-start-line="32" selection-start-column="12" selection-end-line="34" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SearchTimeConstraint.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SearchTimeConstraint.java">
+      <file leaf-file-name="TimerType.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/TimerType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+            <state relative-caret-position="465">
+              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Env.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/Env.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="900">
+              <caret line="78" column="30" selection-start-line="78" selection-start-column="30" selection-end-line="78" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SocketTimeout.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BuildEnvirormentClass.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="551">
+              <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
+              <folding>
+                <element signature="e#3953#3954#0" expanded="true" />
+                <element signature="e#3990#3991#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SocketTimeout.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SocketTimeout.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="62" column="9" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
+            <state relative-caret-position="30">
+              <caret line="2" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
               <folding>
-                <element signature="e#1118#1119#0" expanded="true" />
-                <element signature="e#1147#1148#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UPnPImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java">
+      <file leaf-file-name="Getter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-771">
-              <caret line="779" column="62" selection-start-line="779" selection-start-column="47" selection-end-line="779" selection-end-column="62" />
+            <state relative-caret-position="45">
+              <caret line="3" column="37" selection-start-line="3" selection-start-column="37" selection-end-line="3" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ApplyHeuristics.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java">
+      <file leaf-file-name="Java8CommentSupported.g4" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="221" column="0" selection-start-line="221" selection-start-column="0" selection-end-line="221" selection-end-column="0" />
+            <state relative-caret-position="672">
+              <caret line="1778" column="29" selection-start-line="1778" selection-start-column="29" selection-end-line="1778" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ASTTry.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java">
+      <file leaf-file-name="CreateIntemediateModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-              <folding>
-                <element signature="e#1011#1012#0" expanded="true" />
-                <element signature="e#3798#3799#0" expanded="true" />
-                <element signature="e#3821#3822#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="540">
+              <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ASTNewObject.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTNewObject.java">
+      <file leaf-file-name="TypeTimeRelevant.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/TypeTimeRelevant.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="15" column="15" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="15" />
-              <folding>
-                <element signature="e#1035#1036#0" expanded="true" />
-                <element signature="e#1059#1060#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+            <state relative-caret-position="15">
+              <caret line="1" column="9" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -199,16 +211,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/SearchTimeConstraint.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/BuildClassEnvirorment.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/ISearchTimeConstraint.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/Thread.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTRE.java" />
-        <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/Pair.java" />
-        <option value="$PROJECT_DIR$/XAL/src/main/java/XALStructure/items/XALSrc.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/intermediate-model/src/test/java/TestClass.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTRE.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ASTREVisitor.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTAttributeAccess.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/NotYetImplemented.java" />
@@ -223,33 +227,41 @@
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTUnary.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/DefualtASTREVisitor.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMethodCall.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTVariableDeclaration.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTThis.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTThis.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/ASTREVisitor.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/Env.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/TestEnvirorment.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/test/java/TestEnvirorment.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTThrow.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTIf.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSwitch.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTryResources.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/TypeTimeRelevant.txt" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SearchTimeConstraint.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParser.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTRE.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/MethodTimeRelevant.txt" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/ThreadTime.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SearchTimeConstraint.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/TimeoutResources.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/TypeTimeRelevant.txt" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/TimerExample.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/Env.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
+        <option value="$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SocketTimeout.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/TimerType.java" />
       </list>
     </option>
   </component>
@@ -372,6 +384,86 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="java-parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="antlr4" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="intermediate-model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -425,6 +517,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intermediate-model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="descriptorTimeRelevant" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -737,6 +859,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant" />
       <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/for/simple" />
       <recent name="$PROJECT_DIR$/convert2xal/src/main/resources" />
       <recent name="$PROJECT_DIR$/convert2xal/src/main/resources/expected/if" />
@@ -770,7 +893,7 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="Main" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1311,27 +1434,27 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1413" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32804233" sideWeight="0.4952343" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26152682" sideWeight="0.30976966" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26152682" sideWeight="0.27918983" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19954649" sideWeight="0.49722" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27588814" sideWeight="0.47815728" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34948373" sideWeight="0.49518073" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879817" sideWeight="0.48967436" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27588814" sideWeight="0.57704526" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19954649" sideWeight="0.49642575" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27588814" sideWeight="0.5218427" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19954649" sideWeight="0.49483716" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19459888" sideWeight="0.43243244" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879817" sideWeight="0.4952343" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19954649" sideWeight="0.50357425" order="13" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27588814" sideWeight="0.46227163" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19459888" sideWeight="0.5675676" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35978836" sideWeight="0.63820493" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35978836" sideWeight="0.6163622" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1395,25 +1518,37 @@
           <option name="timeStamp" value="375" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java</url>
-          <line>120</line>
-          <properties />
-          <option name="timeStamp" value="399" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java</url>
-          <line>106</line>
+          <line>122</line>
           <properties />
           <option name="timeStamp" value="400" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java</url>
-          <line>181</line>
+          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java</url>
+          <line>298</line>
           <properties />
-          <option name="timeStamp" value="407" />
+          <option name="timeStamp" value="411" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java</url>
+          <line>302</line>
+          <properties />
+          <option name="timeStamp" value="412" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java</url>
+          <line>133</line>
+          <properties />
+          <option name="timeStamp" value="414" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java</url>
+          <line>136</line>
+          <properties />
+          <option name="timeStamp" value="415" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="408" />
+      <option name="time" value="416" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1434,98 +1569,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTUnary.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/NotYetImplemented.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTBinary.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="66" column="37" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="54" column="12" selection-start-line="54" selection-start-column="12" selection-end-line="54" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/IMWalker.java" />
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTRE.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="11706" column="0" selection-start-line="11706" selection-start-column="0" selection-end-line="11706" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/DefualtASTREVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTVariableDeclaration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-          <folding>
-            <element signature="e#791#792#0" expanded="false" />
-            <element signature="e#809#810#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.2/antlr4-runtime-4.2-sources.jar!/org/antlr/v4/runtime/ParserRuleContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="176" column="0" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.2/antlr4-runtime-4.2-sources.jar!/org/antlr/v4/runtime/tree/TerminalNodeImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="73" column="29" selection-start-line="73" selection-start-column="29" selection-end-line="73" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTThis.java" />
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTThis.java" />
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/ASTREVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/src/main/java/testing/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="34" column="66" selection-start-line="34" selection-start-column="66" selection-end-line="34" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java-parser/src/test/java/TestFromAST2Java.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1610,13 +1653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSwitch.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
@@ -1635,13 +1671,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="310">
           <caret line="652" column="0" selection-start-line="652" selection-start-column="0" selection-end-line="652" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/Env.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="82" column="37" selection-start-line="82" selection-start-column="37" selection-end-line="82" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1674,65 +1704,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/TypeTimeRelevant.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="593" column="0" selection-start-line="593" selection-start-column="0" selection-end-line="593" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTRE.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
           <folding>
-            <element signature="e#706#707#0" expanded="true" />
-            <element signature="e#730#731#0" expanded="true" />
+            <element signature="e#706#707#0" expanded="false" />
+            <element signature="e#730#731#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2349">
-          <caret line="285" column="69" selection-start-line="285" selection-start-column="69" selection-end-line="285" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTNewObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="15" column="15" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="15" />
-          <folding>
-            <element signature="e#1035#1036#0" expanded="true" />
-            <element signature="e#1059#1060#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="118" column="16" selection-start-line="118" selection-start-column="16" selection-end-line="118" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1740,14 +1719,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-90">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-771">
-          <caret line="779" column="62" selection-start-line="779" selection-start-column="47" selection-end-line="779" selection-end-column="62" />
           <folding />
         </state>
       </provider>
@@ -1764,45 +1735,260 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java">
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTNewObject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="221" column="0" selection-start-line="221" selection-start-column="0" selection-end-line="221" selection-end-column="0" />
+        <state relative-caret-position="75">
+          <caret line="15" column="15" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="15" />
+          <folding>
+            <element signature="e#1035#1036#0" expanded="false" />
+            <element signature="e#1059#1060#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.2/antlr4-runtime-4.2-sources.jar!/org/antlr/v4/runtime/ParserRuleContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="176" column="0" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
+          <folding>
+            <element signature="e#6675#6676#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/java/parser/grammar/Java8CommentSupportedParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1817">
+          <caret line="23557" column="24" selection-start-line="23557" selection-start-column="24" selection-end-line="23557" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+        <state relative-caret-position="405">
+          <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1155">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/LocalSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="13" column="39" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SearchTimeConstraint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+        <state relative-caret-position="375">
+          <caret line="33" column="11" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTRE.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_74.jdk/Contents/Home/src.zip!/java/util/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="164" column="12" selection-start-line="164" selection-start-column="12" selection-end-line="164" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="41" column="38" selection-start-line="41" selection-start-column="38" selection-end-line="41" selection-end-column="38" />
+          <folding>
+            <element signature="e#1079#1080#0" expanded="true" />
+            <element signature="e#1111#1112#0" expanded="true" />
+            <element signature="e#1133#1134#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/MethodTimeRelevant.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="54" column="18" selection-start-line="54" selection-start-column="18" selection-end-line="54" selection-end-column="18" />
+          <folding>
+            <element signature="e#1525#1526#0" expanded="true" />
+            <element signature="e#1543#1544#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/TimeoutResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="17" column="79" selection-start-line="17" selection-start-column="79" selection-end-line="17" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/UPnPImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="709" column="55" selection-start-line="709" selection-start-column="55" selection-end-line="709" selection-end-column="55" />
+          <folding>
+            <element signature="e#3727#3728#0" expanded="true" />
+            <element signature="e#3757#3758#0" expanded="true" />
+            <element signature="e#9155#9156#0" expanded="true" />
+            <element signature="e#9178#9179#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="360" column="0" selection-start-line="360" selection-start-column="0" selection-end-line="360" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="197" column="0" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/MCGroupImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="246" column="35" selection-start-line="246" selection-start-column="35" selection-end-line="246" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="33" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="19" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/TypeTimeRelevant.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="9" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/ThreadTime.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="32" column="55" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="55" />
+        <state relative-caret-position="360">
+          <caret line="34" column="13" selection-start-line="32" selection-start-column="12" selection-end-line="34" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/Env.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="78" column="30" selection-start-line="78" selection-start-column="30" selection-end-line="78" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java-parser/src/main/antlr4/Java8CommentSupported.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="1778" column="29" selection-start-line="1778" selection-start-column="29" selection-end-line="1778" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/SocketTimeout.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="62" column="9" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
+        <state relative-caret-position="30">
+          <caret line="2" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding>
-            <element signature="e#1118#1119#0" expanded="true" />
-            <element signature="e#1147#1148#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="37" selection-start-line="3" selection-start-column="37" selection-end-line="3" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/envirorment/BuildEnvirormentClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
+          <folding>
+            <element signature="e#3953#3954#0" expanded="true" />
+            <element signature="e#3990#3991#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_74.jdk/Contents/Home/src.zip!/java/util/function/Predicate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/heuristic/TimerType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

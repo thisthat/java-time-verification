@@ -551,7 +551,7 @@ UPnPImpl
 			throws UPnPException {
 		try {
 			// some devices have borked relative urls, work around
-							
+
 			device.restoreRelativeBaseURL();
 
 			return (downloadXMLSupport(device.getFriendlyName(), url));

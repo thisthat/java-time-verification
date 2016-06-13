@@ -99,11 +99,9 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 			out = out.substring(0,out.length()-1);
 		}
 		out += "\n";
-		/*
 		for(IASTStm e : stms){
 			out += e.toString() + "\n";
 		}
-		*/
 		return out;
 	}
 

@@ -43,6 +43,17 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 		ASTSrc.getInstance().setSource(ctx.start.getInputStream().getText(
 				new Interval(ctx.start.getStartIndex(), ctx.stop.getStopIndex())
 		).toCharArray());
+		//remove all the comments
+		walk(new Java8CommentSupportedBaseListener(){
+			@Override
+			public void enterComment(@NotNull CommentContext ctx) {
+				for(int i = 0; i < ctx.parent.getChildCount(); i++){
+					if(ctx.getChild(i) instanceof CommentContext){
+						ctx.children.remove(i);
+					}
+				}
+			}
+		}, ctx);
 	}
 
 	@Override
@@ -150,9 +161,10 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 	@Override
 	public void enterMethodDeclaration(@NotNull MethodDeclarationContext ctx) {
-		int indexAnnotation = 0, indexAccessRight = 0, indexHeader = 1;
+		int indexAnnotation = 0, indexAccessRight = 0, indexStatic = 1, indexHeader = 2;
 		int indexReturn = 0, indexPars = 1, indexThrows = 2;
 		ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
+		ASTClass.Visibility _static = ASTClass.Visibility.PRIVATE;
 		String returnType = "void";
 		String methodName = "";
 		List<ASTVariable> pars = new ArrayList<ASTVariable>();
@@ -160,13 +172,21 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 		if(ctx.getChild(indexAnnotation) instanceof MethodModifierContext && ctx.getChild(indexAnnotation).getChild(0) instanceof AnnotationContext){
 			indexAccessRight++;
+			indexStatic++;
 			indexHeader++;
 		}
 		if(ctx.getChild(indexAccessRight) instanceof MethodModifierContext){
 			vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexAccessRight));
 		} else {
 			indexHeader--;
+			indexStatic--;
 			indexAccessRight = -1;
+		}
+		if(ctx.getChild(indexStatic) instanceof MethodModifierContext){
+			_static = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexStatic));
+		} else {
+			indexHeader--;
+			indexStatic = -1;
 		}
 		if(ctx.getChild(indexHeader) instanceof MethodHeaderContext) {
 			ParserRuleContext header = (ParserRuleContext) ctx.getChild(indexHeader);
@@ -278,6 +298,13 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	public void enterEnhancedForStatement(@NotNull EnhancedForStatementContext ctx) {
 		int indexType = 2, indexVar = 3, indexExpr = 5, indexBody = 7;
 		IASTHasStms bck = lastMethod;
+
+		if(ctx.getChild(indexType) instanceof VariableModifierContext){
+			indexType++;
+			indexVar++;
+			indexExpr++;
+			indexBody++;
+		}
 
 		ASTVariable v = new ASTVariable(
 				((ParserRuleContext)ctx.getChild(indexType)).start,

@@ -1,15 +1,13 @@
 package heuristic;
 
-import IntermediateModel.interfaces.ASTREVisitor;
+
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.ASTRE;
 import IntermediateModel.structure.expression.ASTLiteral;
 import IntermediateModel.structure.expression.ASTMethodCall;
 import IntermediateModel.visitors.DefualtASTREVisitor;
-import envirorment.BuildEnvirormentClass;
 import envirorment.Env;
-import sun.jvm.hotspot.utilities.soql.MethodCallable;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
