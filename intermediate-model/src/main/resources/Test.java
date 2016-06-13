@@ -151,6 +151,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	public Collection<Class<? extends IFloodlightService>> getModuleServices() {
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
 	    l.add(INetTopologyService.class);
+		wait();
 	    return l;
 	}
 	@Override
@@ -177,6 +178,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		GenerateTopologyAsync myRunnable = new GenerateTopologyAsync(this);
 		createTopologyThread = new Thread(myRunnable);
 		createTopologyThread.start();
+		createTopologyThread.sleep(1000);
 		mongodb.connect();
 		predictionProvider = new PredictionHandler(mongodb);
 		behaviourProvider = new BehaviourManager(mongodb, predictionProvider);
@@ -252,6 +254,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 					e.printStackTrace();
 				}
 	    	}
+			Thread.join();
 	    }
 
 		public void setRunning(boolean v){

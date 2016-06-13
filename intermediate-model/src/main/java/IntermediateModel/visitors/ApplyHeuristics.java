@@ -2,8 +2,10 @@ package IntermediateModel.visitors;
 
 
 import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.ASTNewObject;
 import envirorment.BuildEnvirormentClass;
 import envirorment.Env;
 import heuristic.SearchTimeConstraint;
@@ -92,9 +94,18 @@ public class ApplyHeuristics {
 			else if(stm	instanceof ASTWhile){
 				analyze((ASTWhile)stm, env);
 			}
+			else if(stm instanceof ASTNewObject){
+				analyze((ASTNewObject) stm, env);
+			}
 			else {
 				analyze(stm, env);
 			}
+		}
+	}
+
+	private void analyze(ASTNewObject stm, Env env) {
+		for(IASTRE r : stm.getParameters()){
+			applyStep(r, env);
 		}
 	}
 
@@ -137,7 +148,8 @@ public class ApplyHeuristics {
 
 	private void analyze(ASTReturn elm, Env env) {
 		Env new_env = new Env(env);
-		this.analyze(elm.getExpr(), new Env(new_env));
+		if(elm.getExpr() != null)
+			this.analyze(elm.getExpr(), new Env(new_env));
 		applyStep(elm, new_env);
 	}
 
@@ -206,6 +218,12 @@ public class ApplyHeuristics {
 	}
 
 	private void applyStep(IASTStm stm, Env env){
+		for(SearchTimeConstraint s : strategies){
+			s.next(stm, env);
+		}
+	}
+
+	private void applyStep(IASTRE stm, Env env){
 		for(SearchTimeConstraint s : strategies){
 			s.next(stm, env);
 		}

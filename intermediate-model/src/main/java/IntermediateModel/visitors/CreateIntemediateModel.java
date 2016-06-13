@@ -115,7 +115,7 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 	@Override
 	public void enterFieldDeclaration(@NotNull FieldDeclarationContext ctx) {
 		super.enterFieldDeclaration(ctx);
-		int indexModifier = 0, indexType = 1, indexName = 2, indexExpr = 2;
+		int indexModifier = 0, indexStatic = 1, indexFinal = 2, indexType = 3, indexName = 4, indexExpr = 5;
 		ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
 		if(ctx.getChild(indexModifier) instanceof FieldModifierContext){
 			vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexModifier));
@@ -124,6 +124,22 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			indexName--;
 			indexExpr--;
 			indexModifier = -1;
+		}
+		if(ctx.getChild(indexStatic) instanceof FieldModifierContext){
+			//vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexModifier));
+		} else {
+			indexType--;
+			indexName--;
+			indexExpr--;
+			indexStatic = -1;
+		}
+		if(ctx.getChild(indexFinal) instanceof FieldModifierContext){
+			//vis = Getter.accessRightClass((ParserRuleContext) ctx.getChild(indexModifier));
+		} else {
+			indexType--;
+			indexName--;
+			indexExpr--;
+			indexFinal = -1;
 		}
 		String type = Getter.variableType((ParserRuleContext) ctx.getChild(indexType));
 		String name = Getter.variableName((ParserRuleContext) ctx.getChild(indexName));

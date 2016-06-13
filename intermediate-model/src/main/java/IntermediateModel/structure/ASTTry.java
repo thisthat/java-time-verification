@@ -13,6 +13,10 @@ import java.util.List;
  */
 public class ASTTry extends IASTStm {
 
+	ASTTryBranch tryBranch = null;
+	List<ASTCatchBranch> catchBranch = new ArrayList<>();
+	ASTFinallyBranch finallyBranch = null;
+
 	public class ASTTryBranch extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		public ASTTryBranch(Token start, Token end) {
@@ -150,9 +154,7 @@ public class ASTTry extends IASTStm {
 		}
 	}
 
-	ASTTryBranch tryBranch = null;
-	List<ASTCatchBranch> catchBranch = new ArrayList<>();
-	ASTFinallyBranch finallyBranch = null;
+
 	public ASTTry(Token start, Token end) {
 		super(start, end);
 	}

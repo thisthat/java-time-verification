@@ -3,6 +3,7 @@ package IntermediateModel.visitors.utility;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.LocalSearch;
 import IntermediateModel.structure.*;
+import com.sun.xml.internal.xsom.impl.Ref;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -113,6 +114,9 @@ public class Getter {
 	public static ASTReturn returnStm(ParserRuleContext child){
 		ReturnStatementContext ret = LocalSearch.get(child,ReturnStatementContext.class);
 		int indexRetExpr = 1;
+		if(ret.getChild(indexRetExpr) instanceof TerminalNode){
+			return new ASTReturn(ret.start, ret.stop, null);
+		}
 		return new ASTReturn(ret.start, ret.stop, rightExpression((ParserRuleContext) ret.getChild(indexRetExpr)));
 	}
 

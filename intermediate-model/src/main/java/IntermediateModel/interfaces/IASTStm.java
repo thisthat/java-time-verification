@@ -67,6 +67,12 @@ public abstract class IASTStm {
 		}
 		return code;
 	}
+	public String getCode(){
+		if(code == null || code.equals("")){
+			calculateSourceCode();
+		}
+		return code;
+	}
 
 	public int getLine(){
 		return startToken.getLine();

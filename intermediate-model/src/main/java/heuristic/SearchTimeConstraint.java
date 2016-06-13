@@ -1,5 +1,6 @@
 package heuristic;
 
+import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import XALConversion.util.Pair;
 import envirorment.Env;
@@ -21,12 +22,18 @@ public abstract class SearchTimeConstraint {
 	protected List<Pair<Integer,String>> timeConstraint = new ArrayList<>();
 
 	public abstract void next(IASTStm stm, Env env);
+	public abstract void next(IASTRE expr, Env env);
 
+	protected void addConstraint(IASTStm stm){
+		timeConstraint.add( new Pair<Integer, String>(stm.getLine(), stm.getCode()) );
+	}
 	protected void addConstraint(int line, String src){
 		timeConstraint.add( new Pair<Integer, String>(line, src) );
 	}
 
-	protected List<Pair<Integer, String>> getTimeConstraint() {
+	public List<Pair<Integer, String>> getTimeConstraint() {
 		return timeConstraint;
 	}
+
+
 }

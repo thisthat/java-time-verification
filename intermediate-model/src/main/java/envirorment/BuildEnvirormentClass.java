@@ -22,7 +22,7 @@ import java.util.List;
 public class BuildEnvirormentClass {
 	private Env env;
 
-	private List<String> typeTimeRelevant;// = new ArrayList<>();
+	public static List<String> typeTimeRelevant;// = new ArrayList<>();
 
 	{
 		String f = getClass().getClassLoader().getResource("TypeTimeRelevant.txt").getFile();
@@ -117,6 +117,9 @@ public class BuildEnvirormentClass {
 	 * @return The envirorment (maybe) enriched.
 	 */
 	public void checkRE(ASTRE rexp, Env env){
+		if(rexp == null){
+			return;
+		}
 		rexp.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {

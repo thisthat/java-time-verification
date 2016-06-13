@@ -282,11 +282,16 @@ public class REParser {
 
 	private static IASTRE getVariableDeclaration(ParserRuleContext elm) {
 		if(elm instanceof LocalVariableDeclarationContext){
-			String type = IASTStm.getSrcFromToken( ((ParserRuleContext)elm.getChild(0)).start, ((ParserRuleContext)elm.getChild(0)).stop);
+			int indexVarType = 1, indexVarName = 2;
+			if(!(elm.getChild(0) instanceof VariableModifierContext)) {
+				indexVarName--;
+				indexVarType--;
+			}
+			String type = IASTStm.getSrcFromToken( ((ParserRuleContext)elm.getChild(indexVarType)).start, ((ParserRuleContext)elm.getChild(indexVarType)).stop);
 			ParserRuleContext child = getExpressionNode(elm);
 			if(child == null){
 				//var name : type;
-				IASTRE name = getLiteral(LocalSearch.get((ParserRuleContext) elm.getChild(1), VariableDeclaratorIdContext.class));
+				IASTRE name = getLiteral(LocalSearch.get((ParserRuleContext) elm.getChild(indexVarName), VariableDeclaratorIdContext.class));
 				IASTRE expr = null;
 				return new ASTVariableDeclaration(elm.start, elm.stop, type, name, expr);
 				//return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
