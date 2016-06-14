@@ -28,6 +28,7 @@ public class JavaTimerExampleTask extends TimerTask {
 
 		// true means : associated thread should run as a daemon
 		Timer timer = new Timer(true);
+		timer.getClass().getSimpleName().equals("test");
 
 		// Subsequent executions take place at approximately regular intervals,
 		// separated by the specified period.

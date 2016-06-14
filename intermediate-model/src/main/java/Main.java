@@ -35,6 +35,7 @@ public class Main {
 		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
 
 		for(ASTClass c : sv.listOfClasses){
 

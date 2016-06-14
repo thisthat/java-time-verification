@@ -111,6 +111,21 @@ public class Env {
 		}
 	}
 
+	public boolean existMethod(String m){
+		for(Map.Entry<String,Env> mm : methodList.entrySet()){
+			String method = mm.getKey();
+			if(method.equals(m)) {
+				return true;
+			}
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.existMethod(m);
+		} else {
+			return false;
+		}
+	}
+
 
 	public void addVar(IASTVar v){
 		varList.add(v);
