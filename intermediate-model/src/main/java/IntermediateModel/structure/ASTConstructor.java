@@ -4,7 +4,6 @@ import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
 import org.antlr.v4.runtime.Token;
-import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.ArrayList;
 import java.util.List;

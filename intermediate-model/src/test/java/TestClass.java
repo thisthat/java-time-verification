@@ -27,7 +27,7 @@ public class TestClass {
     @Before
     public void init() throws Exception {
         Java2AST a = new Java2AST( getClass().getResource(filename).getFile() );
-        a.convertToAST();
+        a.convertToAST(Java2AST.VERSION.Java_8);
         ParserRuleContext ast = a.getContext();
         ParseTreeWalker walker = new ParseTreeWalker();
         CreateIntemediateModel sv = new CreateIntemediateModel();

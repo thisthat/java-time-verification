@@ -42,7 +42,7 @@ public class TestFromAST2Java {
         base_path += "/src/main/resources/OnlyMethod.java";
         System.out.println(base_path);
         Java2AST f2j = new Java2AST(base_path);
-        f2j.convertToAST();
+        f2j.convertToAST(Java2AST.VERSION.Java_8);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class TestFromAST2Java {
         base_path += "/src/main/resources/HelloWorld.java";
         System.out.println(base_path);
         Java2AST f2j = new Java2AST(base_path);
-        f2j.convertToAST();
+        f2j.convertToAST(Java2AST.VERSION.Java_8);
     }
 
     //@Test
@@ -65,8 +65,7 @@ public class TestFromAST2Java {
         }
         for(String file : test){
             System.out.println(file);
-            Java2AST f2j = new Java2AST(file);
-            f2j.convertToAST();
+            Java2AST f2j = new Java2AST(file, Java2AST.VERSION.Java_8, true);
             File file1 = new File(file);
             //File file2 = f2j.convert2Java();
             /* TODO : Remove comments from both files to correctly check when they are equal

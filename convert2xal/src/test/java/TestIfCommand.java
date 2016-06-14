@@ -29,7 +29,7 @@ public class TestIfCommand {
     @Before
     public void init() throws Exception {
         Java2AST a = new Java2AST( getClass().getResource("If.java").getFile() );
-        a.convertToAST();
+        a.convertToAST(Java2AST.VERSION.Java_8);
         ParserRuleContext ast = a.getContext();
         ParseTreeWalker walker = new ParseTreeWalker();
         CreateXALTree sv = new CreateXALTree();

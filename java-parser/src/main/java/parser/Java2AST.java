@@ -1,13 +1,19 @@
 package parser;
 
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
 import parser.exception.ParseErrorsException;
 import org.antlr.v4.runtime.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import parser.grammar.*;
+
+import static org.apache.commons.io.FileUtils.readFileToString;
 
 
 /**
@@ -25,6 +31,15 @@ public class Java2AST {
     //lexer&parser
     private Java8CommentSupportedLexer lexer;
     private Java8CommentSupportedParser parser;
+	private Java7Lexer  lexer7;
+    private Java7Parser parser7;
+	private ASTParser parserJDT;
+
+	public enum VERSION {
+		Java_7,
+		Java_8,
+		JDT
+	}
 
     /**
      * Getter of the AST
@@ -34,7 +49,16 @@ public class Java2AST {
         return context;
     }
 
-    private ParserRuleContext context;
+	/**
+	 * Getter of the AST
+	 * @return the AST of the source file
+	 */
+	public ASTNode getContextJDT() {
+		return contextJDT;
+	}
+
+	private ParserRuleContext context;
+    private ASTNode contextJDT;
 
     //Error list
     private List<ParseError> errorList = new ArrayList<ParseError>();
@@ -62,11 +86,11 @@ public class Java2AST {
      * @throws IOException  Exception in the case some filesystem problems will arise
      * @throws ParseErrorsException Exception that contains all the parsing errors
      */
-    public Java2AST(String filename, boolean parse) throws IOException, ParseErrorsException {
+    public Java2AST(String filename, VERSION v, boolean parse) throws IOException, ParseErrorsException {
         this.filename = filename;
         initParser();
         if(parse){
-            convertToAST();
+            convertToAST(v);
         }
     }
 
@@ -85,16 +109,36 @@ public class Java2AST {
         } catch (IOException e) {
             throw e;
         }
-        lexer = new Java8CommentSupportedLexer(in);
-        parser = new Java8CommentSupportedParser(new CommonTokenStream(lexer));
-        parser.addErrorListener(new BaseErrorListener() {
-            @Override
-            public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-                ParseError err = new ParseError(line, charPositionInLine, msg);
-                errorList.add(err);
-                //throw new IllegalStateException("failed to parse at line " + line + " due to " + msg, e);
-            }
-        });
+
+		lexer7 = new Java7Lexer(in);
+		parser7 = new Java7Parser(new CommonTokenStream(lexer7));
+		parser7.addErrorListener(new BaseErrorListener() {
+			@Override
+			public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+				ParseError err = new ParseError(line, charPositionInLine, msg);
+				errorList.add(err);
+				//throw new IllegalStateException("failed to parse at line " + line + " due to " + msg, e);
+			}
+		});
+
+		lexer = new Java8CommentSupportedLexer(in);
+		parser = new Java8CommentSupportedParser(new CommonTokenStream(lexer));
+		parser.addErrorListener(new BaseErrorListener() {
+			@Override
+			public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+				ParseError err = new ParseError(line, charPositionInLine, msg);
+				errorList.add(err);
+				//throw new IllegalStateException("failed to parse at line " + line + " due to " + msg, e);
+			}
+		});
+
+		File file1 = new File(this.filename);
+		String source = readFileToString(file1, "utf-8");
+		parserJDT = ASTParser.newParser(AST.JLS8);  // handles JDK 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7
+		parserJDT.setKind(ASTParser.K_COMPILATION_UNIT);
+		parserJDT.setSource(source.toCharArray());
+		parserJDT.setResolveBindings(true);
+
     }
 
 
@@ -111,9 +155,14 @@ public class Java2AST {
      *
      * @throws ParseErrorsException Exception that contains all the parsing errors
      */
-    public void convertToAST() throws ParseErrorsException {
+    public void convertToAST(VERSION v) throws ParseErrorsException {
         errorList.clear();
-        context = parser.compilationUnit();
+		if(v == VERSION.Java_7)
+        	context = parser7.compilationUnit();
+		else if(v == VERSION.Java_8)
+			context = parser.compilationUnit();
+		else
+			contextJDT = parserJDT.createAST(null);
         isParsed = true;
         if(errorList.size() > 0){
             throw new ParseErrorsException("Parse error in " + filename, errorList);
@@ -130,6 +179,6 @@ public class Java2AST {
     public static void main(String[] args) throws Exception {
         String base_path = System.getProperty("user.dir");
         base_path += "/src/main/resources/HelloWorld.java";
-        Java2AST tmp = new Java2AST(base_path, true);
+        Java2AST tmp = new Java2AST(base_path, VERSION.Java_7, true);
     }
 }

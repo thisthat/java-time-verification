@@ -1,12 +1,8 @@
 package IntermediateModel.structure;
 
 import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.expression.ASTVariableDeclaration;
 import org.antlr.v4.runtime.Token;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
