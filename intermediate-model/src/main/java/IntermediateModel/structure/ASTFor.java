@@ -113,7 +113,7 @@ public class ASTFor extends IASTStm implements IASTHasStms {
 
 	@Override
 	public String toString() {
-		String out = "";
+		String out = "for";
 
 		if(init.size() > 0)
 			out += init.get(0).toString();

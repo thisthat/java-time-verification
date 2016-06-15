@@ -37,8 +37,43 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		for(int j = 0; j >= 10; ++j){
 			j = i << 1 + (40 * 48 / 10);
 			l.add(INetTopologyService.class);
+			for(SwitchEdge e: graph){
+				SwitchNode n1 = e.getFrom();
+				SwitchNode n2 = e.getTo();
+				if(i == graph.size() - 1){
+					for(SwitchEdge e: graph){
+
+					}
+					out += "\t\t{ \"source\" : "+ getSwitchPosition(n1) + ", \"target\" : " + getSwitchPosition(n2) +  "}\n";
+				}
+				else {
+					out += "\t\t{ \"source\" : "+ getSwitchPosition(n1) + ", \"target\" : " + getSwitchPosition(n2) +  "},\n";
+				}
+				i++;
+			}
+		}
+		l.add(INetTopologyService.class);
+		l.add("par1", "par2");
+		for(SwitchEdge e: graph){
+			SwitchNode n1 = e.getFrom();
+			SwitchNode n2 = e.getTo();
+			if(i == graph.size() - 1){
+				out += "\t\t{ \"source\" : "+ getSwitchPosition(n1) + ", \"target\" : " + getSwitchPosition(n2) +  "}\n";
+			}
+			else {
+				out += "\t\t{ \"source\" : "+ getSwitchPosition(n1) + ", \"target\" : " + getSwitchPosition(n2) +  "},\n";
+			}
+			i++;
+		}
+
+		try (Object a = new Object() ) {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
+
 	IFloodlightProviderService floodlightProvider;
 	protected IRestApiService restApi = null;
 

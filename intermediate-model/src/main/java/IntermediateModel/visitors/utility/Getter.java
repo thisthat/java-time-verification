@@ -1,5 +1,7 @@
 package IntermediateModel.visitors.utility;
 
+import IntermediateModel.interfaces.ASTREVisitor;
+import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.LocalSearch;
 import IntermediateModel.structure.*;
@@ -7,6 +9,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.jdt.core.dom.Expression;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;
@@ -23,7 +26,10 @@ import java.util.List;
  */
 public class Getter {
 	public static ASTClass.Visibility accessRightClass(ParserRuleContext elm){
-		String access = elm.getText();
+		return visibility(elm.getText());
+	}
+
+	public static ASTClass.Visibility visibility(String access){
 		ASTClass.Visibility visibility = ASTClass.Visibility.PRIVATE;
 		switch(access){
 			case "public": 		visibility = ASTClass.Visibility.PUBLIC; break;
@@ -188,5 +194,16 @@ public class Getter {
 		ParserRuleContext expr = LocalSearch.get(child, VariableInitializerContext.class);
 		if(expr == null) return null;
 		return rightExpression(expr);
+	}
+
+	//TODO
+	public static ASTRE JDTExpression(Expression initializer) {
+		return null;
+		/*return new ASTRE(initializer.getStartPosition(), initializer.getStartPosition() + initializer.getLength(), new IASTRE() {
+			@Override
+			public void visit(ASTREVisitor visitor) {
+
+			}
+		});*/
 	}
 }

@@ -52,6 +52,7 @@ public abstract class IASTStm {
 	protected void calculateSourceCode(){
 		if(startToken == null || endToken == null){
 			char[] source = ASTSrc.getInstance().source;
+			return;
 		}
 		code = startToken.getInputStream().getText(new Interval(startToken.getStartIndex(), endToken.getStopIndex()));
 		//code = new String(Arrays.copyOfRange(source, start, end));

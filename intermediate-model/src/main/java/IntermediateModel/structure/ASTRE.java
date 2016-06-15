@@ -23,6 +23,8 @@ public class ASTRE extends IASTStm {
 
 	@Override
 	public String toString() {
+		if(expression == null)
+			return "::RE NULL::";
 		return "::::REXP:::" + expression.toString();
 	}
 

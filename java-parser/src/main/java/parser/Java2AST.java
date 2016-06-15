@@ -3,6 +3,7 @@ package parser;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.exception.ParseErrorsException;
 import org.antlr.v4.runtime.*;
 
@@ -53,12 +54,12 @@ public class Java2AST {
 	 * Getter of the AST
 	 * @return the AST of the source file
 	 */
-	public ASTNode getContextJDT() {
+	public CompilationUnit getContextJDT() {
 		return contextJDT;
 	}
 
 	private ParserRuleContext context;
-    private ASTNode contextJDT;
+    private CompilationUnit contextJDT;
 
     //Error list
     private List<ParseError> errorList = new ArrayList<ParseError>();
@@ -162,7 +163,7 @@ public class Java2AST {
 		else if(v == VERSION.Java_8)
 			context = parser.compilationUnit();
 		else
-			contextJDT = parserJDT.createAST(null);
+			contextJDT = (CompilationUnit) parserJDT.createAST(null);
         isParsed = true;
         if(errorList.size() > 0){
             throw new ParseErrorsException("Parse error in " + filename, errorList);
