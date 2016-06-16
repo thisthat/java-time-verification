@@ -71,14 +71,13 @@ public class Main {
 		ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 
-		/*
-		for(ASTClass c : sv.listOfClasses){
+		for(ASTClass c : v.listOfClasses){
 
-			ah.analyze(c);
-			String s = Arrays.toString( ah.getTimeConstraint().toArray() );
-			System.err.println(s);
+			//ah.analyze(c);
+			//String s = Arrays.toString( ah.getTimeConstraint().toArray() );
+			System.err.println(c.toString());
 			System.err.println("__________");
-		} */
+		}
 
 
 	}

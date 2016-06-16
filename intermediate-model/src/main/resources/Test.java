@@ -25,7 +25,7 @@ import static junit.framework.Assert.*;
 
 // AllSwitchStatisticsResource
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
-	/*
+
 	@Deprecated
 	private Test(int i, int k, Timer t) throws RuntimeException, IOException {
 		do {
@@ -132,7 +132,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	}
 
 	//Thread To handle the reconfiguration of the network
-	protected int SleepTimeout = 5 * 60 * 1000; // 5min in ms
+	protected int SleepTimeout = 5 * 60 * 1000 * 500 * 5 * 1 +2; // 5min in ms
 	protected Thread createTopologyThread;
 
 	//MongoDB resource
@@ -164,7 +164,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
                                                                                                              
                                                                                                              
                                                                                                              
-	 *
+	 */
 
 	
 	@Override
@@ -254,7 +254,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
                                                                                              
                                                                                              
                                                                                              
-	 *
+	 */
 	
 	
 	//Return the internal object that contains all the information of the network
@@ -364,7 +364,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	//Return the topology according to the format chosen
 	@Override
 	public synchronized String getTopologyGraph(String format){
-		//createTopology();
+		createTopology();
 		switch(format){
 			case "dot": i++; return dot();
 			case "json": return json();
@@ -388,7 +388,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		return dot();
 	}
 
-	/*
+
 	private String dot() {
 		String out = "digraph networkGraph {\n";
 		out += "rankdir=LR;\n";
@@ -457,5 +457,5 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	public BehaviourManager getBehaviourStructure(){
 		return behaviourProvider;
 	}
-*/
+
 }

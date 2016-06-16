@@ -54,10 +54,8 @@ public class ASTSwitch extends IASTStm {
 		@Override
 		public String toString() {
 			String out = "";
-			/*
 			for(String label : labels)
 				out += "case " + label + ": \n";
-			*/
 			for(IASTStm e : stms){
 				out += e.toString() + "\n";
 			}

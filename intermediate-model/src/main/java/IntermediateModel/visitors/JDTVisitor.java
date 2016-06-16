@@ -5,6 +5,7 @@ import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.structure.*;
 import IntermediateModel.structure.expression.NotYetImplemented;
 import IntermediateModel.visitors.utility.Getter;
+import IntermediateModel.visitors.utility.REParserJDT;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
@@ -463,7 +464,7 @@ public class JDTVisitor extends ASTVisitor {
 			return null;
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
-		return new ASTRE(start, stop, new NotYetImplemented(start,stop));
+		return new ASTRE(start, stop, REParserJDT.getExpr(ctx));
 	}
 
 	//Helper to nullify objects

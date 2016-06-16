@@ -18,6 +18,8 @@ import java.util.List;
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
+ *
+ * This class create the a small symble table to keep track of the state with a sort of symbolic execution
  */
 public class BuildEnvirormentClass {
 	private Env env;
@@ -57,7 +59,7 @@ public class BuildEnvirormentClass {
 	 * </ul>
 	 *
 	 * @param _class The class to analyze
-	 * @return The {@link Env} fulfill with the Info for parsing
+	 *
 	 */
 
 	public void buildEnvClass(ASTClass _class) {
@@ -84,7 +86,6 @@ public class BuildEnvirormentClass {
 	 * 	<li>Parameters with Time type</li>
 	 * </ul>
 	 *
-	 * @param m Method to annotate
 	 */
 	private void buildEnvMethod(IASTMethod mm) {
 		//put the default method
@@ -125,7 +126,7 @@ public class BuildEnvirormentClass {
 	 * If something is time related, it will be added to the Env that is returned.
 	 * @param rexp {@link ASTRE} to check
 	 * @param env {@link Env} class where to add the new definition
-	 * @return The envirorment (maybe) enriched.
+	 *
 	 */
 	public void checkRE(ASTRE rexp, Env env){
 		if(rexp == null){
