@@ -19,22 +19,33 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 	List<ASTVariable> parameters;
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
+	boolean isSyncronized = false;
 
 
-	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
+	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
+		this.isSyncronized = isSyncronized;
 	}
 
-	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
+	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
+		this.isSyncronized = isSyncronized;
+	}
+
+	public boolean isSyncronized() {
+		return isSyncronized;
+	}
+
+	public void setSyncronized(boolean syncronized) {
+		isSyncronized = syncronized;
 	}
 
 	public List<String> getExceptionsThrowed() {

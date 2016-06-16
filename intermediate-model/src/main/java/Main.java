@@ -1,3 +1,4 @@
+import IntermediateModel.interfaces.ASTSrc;
 import IntermediateModel.structure.ASTClass;
 import IntermediateModel.visitors.ApplyHeuristics;
 import IntermediateModel.visitors.CreateIntemediateModel;
@@ -58,6 +59,7 @@ public class Main {
 		}
 		Java2AST a = new Java2AST(args[0], Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
+		ASTSrc.getInstance().setSource(a.getSource());
 		JDTVisitor v = new JDTVisitor(ast);
 		ast.accept(v);
 

@@ -1,24 +1,12 @@
 package IntermediateModel.visitors;
 
-import IntermediateModel.interfaces.ASTSrc;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.NotYetImplemented;
 import IntermediateModel.visitors.utility.Getter;
-import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
 import org.eclipse.jdt.core.dom.*;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.Block;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ForStatement;
-import org.eclipse.jdt.core.dom.IfStatement;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.Statement;
-import org.eclipse.jdt.core.dom.TryStatement;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.WhileStatement;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.internal.compiler.ast.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +27,12 @@ public class JDTVisitor extends ASTVisitor {
 
 	private Stack<ASTClass> stackClasses = new Stack<>();
 	private Stack<String> stackPackage = new Stack<>();
+	private Stack<IASTHasStms> stackSwitch = new Stack<>();
+	private Stack<ASTSwitch> casewitch = new Stack<>();
 
 
 	public JDTVisitor(CompilationUnit cu) {
 		this.cu = cu;
-		ASTSrc.getInstance().setSource(cu.toString().toCharArray());
 	}
 
 	@Override
@@ -149,13 +138,23 @@ public class JDTVisitor extends ASTVisitor {
 			ASTVariable par = new ASTVariable(ss, st, p.getName().getFullyQualifiedName(), p.getType().toString());
 			pars.add(par);
 		}
+		//is syncronized
+		boolean isSync = false;
+		for(Object m : node.modifiers()){
+			if(m instanceof Modifier){
+				Modifier modifier = (Modifier)m;
+				if(modifier.isSynchronized()){
+					isSync = true;
+				}
+			}
+		}
 
 		IASTMethod method = null;
 		if(returnType == null){
 			//constructor
 			method = new ASTConstructor(start, stop, methodName, pars, throwedException);
 		} else {
-			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException);
+			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync);
 		}
 
 		lastClass.addMethod(method);
@@ -248,7 +247,7 @@ public class JDTVisitor extends ASTVisitor {
 
 		if(node.getElseStatement() != null){
 			int startElse = node.getElseStatement().getStartPosition();
-			int stopElse = startThen + node.getElseStatement().getLength();
+			int stopElse = startElse + node.getElseStatement().getLength();
 			ASTIf.ASTElseStms elseBranch = ifstm.new ASTElseStms( startElse, stopElse);
 			ifstm.setElseBranch(elseBranch);
 			lastMethod = elseBranch;
@@ -307,7 +306,7 @@ public class JDTVisitor extends ASTVisitor {
 			elm.addCatchBranch(catchBranch);
 			lastMethod = catchBranch;
 			c.getBody().accept(this);
-			c.setBody((Block) createEmpty());
+			c.setBody(createEmptyBlock());
 		}
 
 		//finally
@@ -322,8 +321,8 @@ public class JDTVisitor extends ASTVisitor {
 			endly.accept(this);
 		}
 
-		node.setBody((Block) createEmpty());
-		node.setFinally((Block) createEmpty());
+		node.setBody(createEmptyBlock());
+		node.setFinally(createEmptyBlock());
 
 		lastMethod = bck;
 		return true;
@@ -340,15 +339,109 @@ public class JDTVisitor extends ASTVisitor {
 		lastMethod.addStms(whilestm);
 		lastMethod = whilestm;
 
+		node.getBody().accept(this);
+
 		node.setBody(createEmpty());
 		lastMethod = bck;
 		return true;
 	}
 
 	//do while
+
+	@Override
+	public boolean visit(DoStatement node) {
+		IASTHasStms bck = lastMethod;
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+
+		ASTRE expr = getExprState(node.getExpression());
+		ASTDoWhile whilestm = new ASTDoWhile(start, stop, expr);
+		lastMethod.addStms(whilestm);
+		lastMethod = whilestm;
+
+		node.getBody().accept(this);
+
+		node.setBody(createEmpty());
+		lastMethod = bck;
+		return true;
+	}
+
 	//swhitch
+
+	@Override
+	public boolean visit(SwitchStatement node) {
+		IASTHasStms bck = lastMethod;
+		stackSwitch.push(bck);
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+
+		ASTRE expr = getExprState(node.getExpression());
+		ASTSwitch switchstm = new ASTSwitch(start, stop, expr);
+		lastMethod.addStms(switchstm);
+		casewitch.push(switchstm);
+
+		return true;
+	}
+
+	@Override
+	public boolean visit(SwitchCase node) {
+		IASTHasStms bck = lastMethod;
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		//i am sure it exists otherwise is not a compilable file
+		ASTSwitch top = casewitch.peek();
+		List<String> listLabels = new ArrayList<>();
+		listLabels.add(
+				node.getExpression() == null ? "default" : node.getExpression().toString()
+		);
+		ASTSwitch.ASTCase casestm = top.new ASTCase( start, stop, listLabels );
+		top.addCase(casestm);
+		lastMethod = casestm;
+		return true;
+	}
+
+	@Override
+	public void endVisit(SwitchStatement node) {
+		lastMethod = stackSwitch.pop();
+		casewitch.pop();
+	}
+
 	//sync
 
+
+	@Override
+	public boolean visit(SynchronizedStatement node) {
+		IASTHasStms bck = lastMethod;
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+
+		ASTRE expr = getExprState(node.getExpression());
+		ASTSynchronized sync = new ASTSynchronized(start, stop, expr);
+		lastMethod.addStms(sync);
+		lastMethod = sync;
+		node.getBody().accept(this);
+		node.setBody(createEmptyBlock());
+
+		lastMethod = bck;
+		return true;
+	}
+
+
+	//special RE
+	@Override
+	public boolean visit(BreakStatement node) {
+		return super.visit(node);
+	}
+	@Override
+	public boolean visit(ContinueStatement node) {
+		return  super.visit(node);
+	}
+	@Override
+	public boolean visit(ReturnStatement node) {
+		return super.visit(node);
+	}
+
+	//RE expr
 	@Override
 	public boolean visit(ExpressionStatement node) {
 		ASTRE re = getExprState(node);
@@ -356,23 +449,28 @@ public class JDTVisitor extends ASTVisitor {
 		return true;
 	}
 
-	@Override
-	public boolean visit(ClassInstanceCreation node) {
-		//new Obj
-		//System.out.println( node.toString() );
-		return super.visit(node);
-	}
-
 	protected ASTRE getExprState(ASTNode ctx){
 		if(ctx == null)
 			return null;
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
-		return new ASTRE(start, stop, null);
+		return new ASTRE(start, stop, new NotYetImplemented(start,stop));
 	}
 
+	//Helper to nullify objects
 	private Statement createEmpty(){
 		ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
 		return (Statement) rewriter.createStringPlaceholder("", ASTNode.EMPTY_STATEMENT);
 	}
+	private Block createEmptyBlock(){
+		ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+		return (Block) rewriter.createStringPlaceholder("", ASTNode.BLOCK);
+	}
+
+	private void createEmptyExpr(ASTNode node){
+		ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+		rewriter.replace(node, null, null);
+	}
+
+
 }

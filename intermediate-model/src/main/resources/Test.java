@@ -25,8 +25,12 @@ import static junit.framework.Assert.*;
 
 // AllSwitchStatisticsResource
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
+	/*
 	@Deprecated
 	private Test(int i, int k, Timer t) throws RuntimeException, IOException {
+		do {
+			i++;
+		} while (i < 10);
 		this.equals();
 		this.mongodb.setIp("a");
 		throw new Exception(INetTopologyService.class,"asd1");
@@ -160,7 +164,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
                                                                                                              
                                                                                                              
                                                                                                              
-	 */
+	 *
 
 	
 	@Override
@@ -250,7 +254,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
                                                                                              
                                                                                              
                                                                                              
-	 */
+	 *
 	
 	
 	//Return the internal object that contains all the information of the network
@@ -359,15 +363,32 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	
 	//Return the topology according to the format chosen
 	@Override
-	public String getTopologyGraph(String format){
+	public synchronized String getTopologyGraph(String format){
 		//createTopology();
 		switch(format){
-			case "dot": return dot();
+			case "dot": i++; return dot();
 			case "json": return json();
+			case "json": json();
+						dot();
+						break;
+			case "1":
+
+			default:
+				switch(format){
+					case 1: k++;
+						break;
+					case 2:
+					case 3:
+					case 4: out = "string"; break;
+					default: no = true;
+				}
+			case "2": j++; k++; return "num";
 		}
+		k++;
 		return dot();
 	}
-	
+
+	/*
 	private String dot() {
 		String out = "digraph networkGraph {\n";
 		out += "rankdir=LR;\n";
@@ -436,5 +457,5 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	public BehaviourManager getBehaviourStructure(){
 		return behaviourProvider;
 	}
-
+*/
 }

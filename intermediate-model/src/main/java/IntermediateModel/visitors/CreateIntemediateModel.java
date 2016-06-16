@@ -202,7 +202,7 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			indexHeader = -1;
 		}
 
-		ASTMethod method = new ASTMethod(ctx.start, ctx.stop, methodName, returnType, pars, throwedException);
+		ASTMethod method = new ASTMethod(ctx.start, ctx.stop, methodName, returnType, pars, throwedException, false);
 		lastClass.addMethod(method);
 		lastMethod = method;
 	}

@@ -35,6 +35,7 @@ public class Java2AST {
 	private Java7Lexer  lexer7;
     private Java7Parser parser7;
 	private ASTParser parserJDT;
+	private char[] source;
 
 	public enum VERSION {
 		Java_7,
@@ -140,6 +141,8 @@ public class Java2AST {
 		parserJDT.setSource(source.toCharArray());
 		parserJDT.setResolveBindings(true);
 
+		this.source = source.toCharArray();
+
     }
 
 
@@ -171,8 +174,11 @@ public class Java2AST {
         }
     }
 
+	public char[] getSource() {
+		return source;
+	}
 
-    /**
+	/**
      * Local Main to test  the current implementation
      * @param args          Not used
      * @throws Exception    If something goes wrong...here it is the description why it goes bad (hopefully)
