@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d757fc41-fdb0-4143-aa18-b91d6ca3fa2b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTDoWhile.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/NotYetImplemented.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/NotYetImplemented.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/JDTVisitor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/JDTVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/src/main/java/parser/Java2AST.java" afterPath="$PROJECT_DIR$/java-parser/src/main/java/parser/Java2AST.java" />
     </list>
     <ignored mask="*.iws" />
     <ignored path="target/" />
@@ -81,18 +73,12 @@
           <file leaf-file-name="JDTVisitor.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/JDTVisitor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="538">
-                  <caret line="449" column="5" selection-start-line="449" selection-start-column="5" selection-end-line="449" selection-end-column="5" />
+                <state relative-caret-position="690">
+                  <caret line="448" column="86" selection-start-line="448" selection-start-column="86" selection-end-line="448" selection-end-column="86" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#1076#1077#0" expanded="true" />
                     <element signature="e#1095#1096#0" expanded="true" />
-                    <element signature="e#12472#12473#0" expanded="true" />
-                    <element signature="e#12503#12504#0" expanded="true" />
-                    <element signature="e#12562#12563#0" expanded="true" />
-                    <element signature="e#12594#12595#0" expanded="true" />
-                    <element signature="e#12651#12652#0" expanded="true" />
-                    <element signature="e#12682#12683#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -186,11 +172,21 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="CreateIntemediateModel.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="CreateIntemediateModel.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="328">
-                  <caret line="584" column="8" selection-start-line="584" selection-start-column="8" selection-end-line="586" selection-end-column="26" />
+                <state relative-caret-position="688">
+                  <caret line="608" column="31" selection-start-line="608" selection-start-column="31" selection-end-line="608" selection-end-column="31" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Getter.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="344">
+                  <caret line="118" column="28" selection-start-line="118" selection-start-column="28" selection-end-line="118" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
@@ -1397,17 +1393,17 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34948373" sideWeight="0.49518073" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879817" sideWeight="0.48967436" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27513227" sideWeight="0.64217633" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1981914" sideWeight="0.48848292" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19803476" sideWeight="0.48689437" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19459888" sideWeight="0.43243244" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879817" sideWeight="0.4952343" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32804233" sideWeight="0.49046862" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35827664" sideWeight="0.48649722" order="15" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19803476" sideWeight="0.51310563" order="15" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19459888" sideWeight="0.5675676" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35827664" sideWeight="0.5135028" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35827664" sideWeight="0.5135028" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Tool Output" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32931423" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1753,14 +1749,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="142" column="31" selection-start-line="142" selection-start-column="31" selection-end-line="142" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTDoWhile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -1951,26 +1939,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="584" column="8" selection-start-line="584" selection-start-column="8" selection-end-line="586" selection-end-column="26" />
+        <state relative-caret-position="688">
+          <caret line="608" column="31" selection-start-line="608" selection-start-column="31" selection-end-line="608" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="118" column="28" selection-start-line="118" selection-start-column="28" selection-end-line="118" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/JDTVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="449" column="5" selection-start-line="449" selection-start-column="5" selection-end-line="449" selection-end-column="5" />
+        <state relative-caret-position="690">
+          <caret line="448" column="86" selection-start-line="448" selection-start-column="86" selection-end-line="448" selection-end-column="86" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1076#1077#0" expanded="true" />
             <element signature="e#1095#1096#0" expanded="true" />
-            <element signature="e#12472#12473#0" expanded="true" />
-            <element signature="e#12503#12504#0" expanded="true" />
-            <element signature="e#12562#12563#0" expanded="true" />
-            <element signature="e#12594#12595#0" expanded="true" />
-            <element signature="e#12651#12652#0" expanded="true" />
-            <element signature="e#12682#12683#0" expanded="true" />
           </folding>
         </state>
       </provider>

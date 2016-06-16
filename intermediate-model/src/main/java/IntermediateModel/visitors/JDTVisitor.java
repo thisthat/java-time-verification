@@ -430,15 +430,24 @@ public class JDTVisitor extends ASTVisitor {
 	//special RE
 	@Override
 	public boolean visit(BreakStatement node) {
-		return super.visit(node);
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		lastMethod.addStms(new ASTBreak(start,stop));
+		return true;
 	}
 	@Override
 	public boolean visit(ContinueStatement node) {
-		return  super.visit(node);
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		lastMethod.addStms(new ASTContinue(start,stop));
+		return true;
 	}
 	@Override
 	public boolean visit(ReturnStatement node) {
-		return super.visit(node);
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		lastMethod.addStms(new ASTReturn(start,stop, getExprState(node.getExpression())));
+		return true;
 	}
 
 	//RE expr
