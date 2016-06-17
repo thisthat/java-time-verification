@@ -153,7 +153,8 @@ public class ASTFor extends IASTStm implements IASTHasStms, IASTVisitor {
 		for(ASTRE e : init){
 			e.visit(visitor);
 		}
-		expr.visit(visitor);
+		if(expr != null)
+			expr.visit(visitor);
 		for(ASTRE e : post){
 			e.visit(visitor);
 		}

@@ -19,6 +19,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	String packageName;
 	List<IASTMethod> methods = new ArrayList<>();
+	List<ASTStatic> staticInit = new ArrayList<>();
 	String name;
 	Visibility accessRight;
 	List<String> implmentsInterfaces;
@@ -130,6 +131,22 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public List<ASTAttribute> getAttributes() {
 		return attributes;
+	}
+
+	public List<ASTStatic> getStaticInit() {
+		return staticInit;
+	}
+
+	public void addStaticInit(ASTStatic s){
+		this.staticInit.add(s);
+	}
+
+	public void setStaticInit(List<ASTStatic> staticInit) {
+		this.staticInit = staticInit;
+	}
+
+	public void setAttributes(List<ASTAttribute> attributes) {
+		this.attributes = attributes;
 	}
 
 	public String toString(){

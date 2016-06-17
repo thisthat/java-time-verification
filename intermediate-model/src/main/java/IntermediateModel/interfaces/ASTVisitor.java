@@ -22,6 +22,7 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void enterASTMethod(ASTMethod elm);
 	void enterASTRE(ASTRE elm);
 	void enterASTReturn(ASTReturn elm);
+	void enterASTStatic(ASTStatic elm);
 	void enterASTSwitch(ASTSwitch elm);
 	void enterASTSynchronized(ASTSynchronized elm);
 	void enterASTThrow(ASTThrow elm);

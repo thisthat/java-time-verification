@@ -3,3 +3,5 @@
 
 This project uses the ANTLRv4 parser to convert Java source code to XAL files.
 
+Vuze classes with time:
+* vuze/com/aelitis/azureus/activities/VuzeActivitiesManager.java

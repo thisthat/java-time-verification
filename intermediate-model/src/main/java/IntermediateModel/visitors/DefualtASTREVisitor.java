@@ -1,6 +1,7 @@
 package IntermediateModel.visitors;
 
 import IntermediateModel.interfaces.ASTREVisitor;
+import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.structure.expression.*;
 
 /**
@@ -75,7 +76,12 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 	}
 
 	@Override
-	public void enterElse(NotYetImplemented elm) {
+	public void enterNotYetImplemented(NotYetImplemented elm) {
+
+	}
+
+	@Override
+	public void enterAll(IASTRE elm) {
 
 	}
 }

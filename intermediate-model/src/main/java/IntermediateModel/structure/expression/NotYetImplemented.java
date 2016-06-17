@@ -40,6 +40,7 @@ public class NotYetImplemented extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterNotYetImplemented(this);
 	}
 

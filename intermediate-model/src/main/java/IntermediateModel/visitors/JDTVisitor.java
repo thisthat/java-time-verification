@@ -6,6 +6,7 @@ import IntermediateModel.structure.*;
 import IntermediateModel.structure.expression.NotYetImplemented;
 import IntermediateModel.visitors.utility.Getter;
 import IntermediateModel.visitors.utility.REParserJDT;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
@@ -57,14 +58,24 @@ public class JDTVisitor extends ASTVisitor {
 		String className = node.getName().getFullyQualifiedName();
 		ASTClass.Visibility visibility = ASTClass.Visibility.PRIVATE;
 		if(node.modifiers().size() > 0){
-			Modifier m = (Modifier) node.modifiers().get(0);
+			int i = 0;
+			while(!(node.modifiers().get(i) instanceof Modifier)){
+				i++;
+			}
+			Modifier m = (Modifier) node.modifiers().get(i);
 			visibility = Getter.visibility(m.toString());
 		}
 		String superClass = node.getSuperclassType() == null ? "Object" : node.getSuperclassType().toString();
 		List<String> superInterfaces = new ArrayList<>();
 		for(Object ost : node.superInterfaceTypes()){
-			SimpleType st = (SimpleType) ost;
-			superInterfaces.add(st.getName().getFullyQualifiedName());
+			if(ost instanceof SimpleType) {
+				SimpleType st = (SimpleType) ost;
+				superInterfaces.add(st.getName().getFullyQualifiedName());
+			}
+			else {
+				ParameterizedType pt = (ParameterizedType) ost;
+				superInterfaces.add(pt.getType().toString());
+			}
 		}
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
@@ -74,7 +85,11 @@ public class JDTVisitor extends ASTVisitor {
 		for(FieldDeclaration f : node.getFields()){
 			ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
 			if(f.modifiers().size() > 0){
-				Modifier m = (Modifier) f.modifiers().get(0);
+				int i = 0;
+				while(i < f.modifiers().size() && !(f.modifiers().get(i) instanceof Modifier)){
+					i++;
+				}
+				Modifier m = (Modifier) f.modifiers().get(i);
 				vis = Getter.visibility(m.toString());
 			}
 			String type = f.getType().toString();
@@ -115,6 +130,15 @@ public class JDTVisitor extends ASTVisitor {
 			}
 
 		}
+	}
+
+	@Override
+	public boolean visit(Initializer node) {
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		ASTStatic s = new ASTStatic(start, stop);
+		lastMethod = s;
+		return true;
 	}
 
 	@Override

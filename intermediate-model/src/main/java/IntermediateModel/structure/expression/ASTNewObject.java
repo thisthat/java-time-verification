@@ -66,6 +66,7 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTNewObject(this);
 		for(IASTRE p : parameters){
 			p.visit(visitor);

@@ -246,11 +246,12 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTTry(this);
-		getTryBranch().visit(visitor);
+		tryBranch.visit(visitor);
 		for(ASTCatchBranch c : getCatchBranch()){
 			c.visit(visitor);
 		}
-		getFinallyBranch().visit(visitor);
+		if(finallyBranch != null)
+			finallyBranch.visit(visitor);
 	}
 
 }

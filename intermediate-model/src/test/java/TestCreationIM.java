@@ -1,16 +1,17 @@
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.structure.ASTClass;
 import IntermediateModel.structure.ASTRE;
 import IntermediateModel.structure.expression.NotYetImplemented;
 import IntermediateModel.visitors.CreateIntemediateModel;
+import IntermediateModel.visitors.DefaultASTVisitor;
 import IntermediateModel.visitors.DefualtASTREVisitor;
+import IntermediateModel.visitors.JDTVisitor;
 import XALConversion.util.Pair;
 import com.google.common.collect.Iterators;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.*;
 import org.junit.Test;
 import parser.Java2AST;
@@ -33,6 +34,7 @@ public class TestCreationIM {
 	List<Pair<String,String>> fileNotParsed = new ArrayList<>();
 	List<Pair<String,NotYetImplemented>>  reNotParsed   = new ArrayList<>();
 	List<String> fileToSkip = new ArrayList<>();
+	private long totalREXP = 0;
 
 
 	private static int countLines(String filename) throws IOException {
@@ -93,23 +95,6 @@ public class TestCreationIM {
 			} catch(Exception e){
 				fileNotParsed.add(new Pair(filename,e));
 			}
-			//check RE
-			for(ASTClass c : sv.listOfClasses){
-				System.out.println(c);
-				for(IASTMethod m : c.getMethods()){
-					for(IASTStm stm : m.getStms()){
-						if(stm instanceof ASTRE){
-							String finalFilename = filename;
-							((ASTRE) stm).getExpression().visit(new DefualtASTREVisitor(){
-								@Override
-								public void enterElse(NotYetImplemented elm) {
-									reNotParsed.add(new Pair(finalFilename,elm));
-								}
-							});
-						}
-					}
-				}
-			}
 			filename = null;
 			//a = null;
 			ast = null;
@@ -141,7 +126,29 @@ public class TestCreationIM {
 				fileToSkip.add(filename);
 				continue;
 			}
-			ASTNode result = a.getContextJDT();
+			CompilationUnit result = a.getContextJDT();
+			JDTVisitor v = new JDTVisitor(result);
+			//System.err.println("Processing: " + filename);
+			result.accept(v);
+			for(ASTClass c : v.listOfClasses){
+				c.visit(new DefaultASTVisitor(){
+					@Override
+					public void enterASTRE(ASTRE elm) {
+						elm.getExpression().visit(new DefualtASTREVisitor(){
+							@Override
+							public void enterAll(IASTRE elm) {
+								totalREXP++;
+							}
+
+							@Override
+							public void enterNotYetImplemented(NotYetImplemented elm) {
+								reNotParsed.add(new Pair(filename,elm));
+							}
+						});
+					}
+
+				});
+			}
 		}
 	}
 
@@ -160,14 +167,15 @@ public class TestCreationIM {
 				System.err.println("[" + re.getFirst() + "]");
 				System.err.println(re.getSecond());
 			}
+			System.err.println("Total REXP in the project: " + totalREXP);
 		}
 		System.err.println("-- List of Files Skiped --");
 		for(String f : fileToSkip){
 			System.err.println(f);
 		}
 		System.err.println("-- End List of Files Skiped --");
-		assertEquals(fileNotParsed.size(),0);
-		assertEquals(reNotParsed.size(),0);
+		assertEquals(0,fileNotParsed.size());
+		assertEquals(0,reNotParsed.size());
 
 	}
 

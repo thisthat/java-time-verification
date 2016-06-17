@@ -64,8 +64,15 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 	}
 
 
+	public String getNameString() {
+		if(name instanceof ASTLiteral)
+			return ((ASTLiteral) name).getValue();
+		return "--not yet define--";
+	}
+
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTVariableDeclaration(this);
 		if(expr != null)
 			expr.visit(visitor);

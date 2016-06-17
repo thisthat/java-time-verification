@@ -22,4 +22,5 @@ public interface ASTREVisitor<T> {
 	void enterASTVariableDeclaration(ASTVariableDeclaration elm);
 	void enterASTVariableMultipleDeclaration(ASTVariableMultipleDeclaration elm);
 	void enterNotYetImplemented(NotYetImplemented elm);
+	void enterAll(IASTRE elm);
 }

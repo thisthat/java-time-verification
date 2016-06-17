@@ -65,6 +65,7 @@ public class ASTAssignment extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTAssignment(this);
 		left.visit(visitor);
 		right.visit(visitor);

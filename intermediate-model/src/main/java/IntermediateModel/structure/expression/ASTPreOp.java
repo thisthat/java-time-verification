@@ -38,6 +38,7 @@ public class ASTPreOp extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTPreOp(this);
 		var.visit(visitor);
 	}
