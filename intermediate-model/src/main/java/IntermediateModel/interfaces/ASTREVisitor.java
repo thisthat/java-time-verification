@@ -20,5 +20,6 @@ public interface ASTREVisitor<T> {
 	void enterASTPreOp(ASTPreOp elm);
 	void enterASTUnary(ASTUnary elm);
 	void enterASTVariableDeclaration(ASTVariableDeclaration elm);
-	void enterElse(NotYetImplemented elm);
+	void enterASTVariableMultipleDeclaration(ASTVariableMultipleDeclaration elm);
+	void enterNotYetImplemented(NotYetImplemented elm);
 }

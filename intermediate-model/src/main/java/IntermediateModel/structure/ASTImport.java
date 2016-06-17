@@ -1,13 +1,15 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTImport extends IASTStm {
+public class ASTImport extends IASTStm implements IASTVisitor {
 	private boolean isStatic = false;
 	String packagename = "";
 
@@ -41,5 +43,10 @@ public class ASTImport extends IASTStm {
 	@Override
 	public String toString() {
 		return "import " + (isStatic ? "static " : "") + packagename + ";\n";
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTImport(this);
 	}
 }

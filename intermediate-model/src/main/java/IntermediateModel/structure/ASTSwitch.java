@@ -1,7 +1,9 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
  */
 public class ASTSwitch extends IASTStm {
 
-	public class ASTCase extends IASTStm implements IASTHasStms{
+	public class ASTCase extends IASTStm implements IASTHasStms, IASTVisitor {
 		List<String> labels = new ArrayList<>();
 		List<IASTStm> stms = new ArrayList<>();
 
@@ -82,6 +84,13 @@ public class ASTSwitch extends IASTStm {
 			result = 31 * result + (getStms() != null ? getStms().hashCode() : 0);
 			return result;
 		}
+
+		@Override
+		public void visit(ASTVisitor visitor) {
+			for(IASTStm s : stms){
+				s.visit(visitor);
+			}
+		}
 	}
 
 
@@ -138,4 +147,12 @@ public class ASTSwitch extends IASTStm {
 		return true;
 	}
 
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTSwitch(this);
+		expr.visit(visitor);
+		for(ASTCase c : cases){
+			c.visit(visitor);
+		}
+	}
 }

@@ -142,7 +142,7 @@ public class Java2AST {
 		parserJDT.setResolveBindings(true);
 
 		this.source = source.toCharArray();
-
+		ASTSrc.getInstance().setSource(this.source);
     }
 
 
@@ -172,6 +172,8 @@ public class Java2AST {
             throw new ParseErrorsException("Parse error in " + filename, errorList);
             //throw new Exception("Parsing errors :" + Arrays.toString(errorList.toArray()));
         }
+
+		ASTSrc.getInstance().setJDT(contextJDT);
     }
 
 	public char[] getSource() {

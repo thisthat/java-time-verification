@@ -276,7 +276,7 @@ public class REParser {
 		}
 		if(elm instanceof PrimaryNoNewArray_lfno_primaryContext ||
 			elm instanceof FieldAccessContext){
-			return new ASTAttributeAccess(elm.start, elm.stop, elm.getChild(0).getText(),elm.getChild(2).getText());
+			return new ASTAttributeAccess(elm.start, elm.stop, getExpr((ParserRuleContext) elm.getChild(0)),elm.getChild(2).getText());
 		}
 		return new NotYetImplemented(elm.start, elm.stop, elm.getClass().getCanonicalName());
 	}

@@ -1,8 +1,6 @@
 package IntermediateModel.structure.expression;
 
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.ASTREVisitor;
+import IntermediateModel.interfaces.*;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -12,15 +10,15 @@ import org.antlr.v4.runtime.Token;
 public class ASTAttributeAccess extends IASTStm implements IASTRE {
 
 	private String attributeName;
-	private String variableName;
+	private IASTRE variableName;
 
-	public ASTAttributeAccess(Token start, Token end, String variableName, String attributeName) {
+	public ASTAttributeAccess(Token start, Token end, IASTRE variableName, String attributeName) {
 		super(start, end);
 		this.variableName = variableName;
 		this.attributeName = attributeName;
 	}
 
-	public ASTAttributeAccess(int start, int end, String variableName, String attributeName) {
+	public ASTAttributeAccess(int start, int end, IASTRE variableName, String attributeName) {
 		super(start, end);
 		this.variableName = variableName;
 		this.attributeName = attributeName;
@@ -36,6 +34,11 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterASTAttributeAccess(this);
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
 		visitor.enterASTAttributeAccess(this);
 	}
 }

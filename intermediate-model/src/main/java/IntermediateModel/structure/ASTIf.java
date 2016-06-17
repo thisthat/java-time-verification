@@ -1,7 +1,9 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTIf extends IASTStm {
+public class ASTIf extends IASTStm implements IASTVisitor {
 
 	public class ASTIfStms extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
@@ -40,6 +42,13 @@ public class ASTIf extends IASTStm {
 		@Override
 		public List<IASTStm> getStms() {
 			return stms;
+		}
+
+		@Override
+		public void visit(ASTVisitor visitor) {
+			for(IASTStm s : stms){
+				s.visit(visitor);
+			}
 		}
 	}
 
@@ -70,6 +79,13 @@ public class ASTIf extends IASTStm {
 		@Override
 		public List<IASTStm> getStms() {
 			return stms;
+		}
+
+		@Override
+		public void visit(ASTVisitor visitor) {
+			for(IASTStm s : stms){
+				s.visit(visitor);
+			}
 		}
 	}
 
@@ -140,5 +156,13 @@ public class ASTIf extends IASTStm {
 		result = 31 * result + (getElseBranch() != null ? getElseBranch().hashCode() : 0);
 		result = 31 * result + (guard != null ? guard.hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTIf(this);
+		guard.visit(visitor);
+		ifBranch.visit(visitor);
+		elseBranch.visit(visitor);
 	}
 }

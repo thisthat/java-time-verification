@@ -2,20 +2,18 @@ package IntermediateModel.visitors;
 
 
 
-import IntermediateModel.interfaces.ASTSrc;
+import parser.ASTSrc;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.visitors.utility.Getter;
 import IntermediateModel.visitors.utility.REParser;
 import XALConversion.util.parsing.Exists;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
-import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;

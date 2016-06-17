@@ -1,14 +1,16 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTRE extends IASTStm {
+public class ASTRE extends IASTStm implements IASTVisitor {
 
 	IASTRE expression;
 
@@ -35,5 +37,10 @@ public class ASTRE extends IASTStm {
 
 	public IASTRE getExpression() {
 		return expression;
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTRE(this);
 	}
 }

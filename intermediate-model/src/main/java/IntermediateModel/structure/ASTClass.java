@@ -1,7 +1,9 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.List;
  * @version %I%, %G%
  */
 
-public class ASTClass extends IASTStm {
+public class ASTClass extends IASTStm implements IASTVisitor {
 
 
 	String packageName;
@@ -175,5 +177,19 @@ public class ASTClass extends IASTStm {
 		result = 31 * result + (getImplmentsInterfaces() != null ? getImplmentsInterfaces().hashCode() : 0);
 		result = 31 * result + (getExtendClass() != null ? getExtendClass().hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTClass(this);
+		for(IASTMethod m : methods){
+			m.visit(visitor);
+		}
+		for(ASTImport i : imports){
+			i.visit(visitor);
+		}
+		for(ASTAttribute a : attributes){
+			a.visit(visitor);
+		}
 	}
 }

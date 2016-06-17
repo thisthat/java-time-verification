@@ -2,6 +2,7 @@ package IntermediateModel.interfaces;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
+import parser.ASTSrc;
 
 import java.util.Arrays;
 
@@ -9,7 +10,7 @@ import java.util.Arrays;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public abstract class IASTStm {
+public abstract class IASTStm implements IASTVisitor{
 	public enum Type {
 		Break,
 		Continue,
@@ -34,6 +35,7 @@ public abstract class IASTStm {
 	public Token startToken = null;
 	public Token endToken = null;
 	public String code = "";
+	public int line;
 
 	private boolean isTimeCritical = false;
 
@@ -51,11 +53,14 @@ public abstract class IASTStm {
 
 	protected void calculateSourceCode(){
 		if(startToken == null || endToken == null){
-			char[] source = ASTSrc.getInstance().source;
+			ASTSrc instance = ASTSrc.getInstance();
+			char[] source = instance.source;
+			line = instance.getLine(start);
 			code = new String(Arrays.copyOfRange(source, start, end));
 			return;
 		}
 		code = startToken.getInputStream().getText(new Interval(startToken.getStartIndex(), endToken.getStopIndex()));
+		line = startToken.getLine();
 		//code = new String(Arrays.copyOfRange(source, start, end));
 	}
 
@@ -77,7 +82,7 @@ public abstract class IASTStm {
 	}
 
 	public int getLine(){
-		return startToken.getLine();
+		return line;
 	}
 
 	protected IASTStm(Token start, Token end){

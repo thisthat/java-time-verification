@@ -70,6 +70,11 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 	}
 
 	@Override
+	public void enterASTVariableMultipleDeclaration(ASTVariableMultipleDeclaration elm) {
+
+	}
+
+	@Override
 	public void enterElse(NotYetImplemented elm) {
 
 	}

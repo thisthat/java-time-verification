@@ -287,6 +287,7 @@ public class JDTVisitor extends ASTVisitor {
 		tStart = node.getBody().getStartPosition();
 		tStop = tStart + node.getBody().getLength();
 		ASTTry.ASTTryBranch tryBranch = elm.new ASTTryBranch(tStart, tStop);
+		elm.setTryBranch(tryBranch);
 		lastMethod = tryBranch;
 		node.getBody().accept(this);
 

@@ -1,5 +1,6 @@
 package IntermediateModel.structure.expression;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.ASTREVisitor;
@@ -58,6 +59,16 @@ public class ASTMultipleMethodCall extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterASTMultipleMethodCall(this);
+		if(variable != null)
+			variable.visit(visitor);
+		for(IASTRE m : methods){
+			m.visit(visitor);
+		}
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
 		visitor.enterASTMultipleMethodCall(this);
 		if(variable != null)
 			variable.visit(visitor);

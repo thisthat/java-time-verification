@@ -1,14 +1,16 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.IASTVar;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTVariable extends IASTStm implements IASTVar {
+public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
 
@@ -49,5 +51,8 @@ public class ASTVariable extends IASTStm implements IASTVar {
 		return true;
 	}
 
-
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTVariable(this);
+	}
 }

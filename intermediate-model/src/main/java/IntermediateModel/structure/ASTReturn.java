@@ -1,13 +1,15 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTReturn extends IASTStm {
+public class ASTReturn extends IASTStm implements IASTVisitor {
 
 	private ASTRE expr;
 	public ASTReturn(Token start, Token end, ASTRE expr) {
@@ -43,4 +45,9 @@ public class ASTReturn extends IASTStm {
 		return true;
 	}
 
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTReturn(this);
+		expr.visit(visitor);
+	}
 }

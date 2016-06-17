@@ -1,17 +1,16 @@
 package IntermediateModel.structure;
 
-import IntermediateModel.interfaces.IASTHasStms;
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTDoWhile extends ASTWhile {
+public class ASTDoWhile extends ASTWhile implements IASTVisitor {
 
 
 	public ASTDoWhile(Token start, Token end) {
@@ -42,4 +41,10 @@ public class ASTDoWhile extends ASTWhile {
 		return out;
 	}
 
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTDoWhile(this);
+		super.visit(visitor);
+	}
 }

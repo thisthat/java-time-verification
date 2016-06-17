@@ -1,5 +1,6 @@
 package IntermediateModel.structure.expression;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.ASTREVisitor;
@@ -39,4 +40,12 @@ public class ASTCast extends IASTStm implements IASTRE {
 		visitor.enterASTCast(this);
 		expr.visit(visitor);
 	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTCast(this);
+		expr.visit(visitor);
+	}
+
+
 }

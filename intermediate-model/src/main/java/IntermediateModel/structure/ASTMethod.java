@@ -1,8 +1,6 @@
 package IntermediateModel.structure;
 
-import IntermediateModel.interfaces.IASTHasStms;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.*;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.List;
  * @version %I%, %G%
  */
 
-public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
+public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTVisitor {
 	String name;
 	String returnType;
 	List<ASTVariable> parameters;
@@ -122,5 +120,17 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms {
 	@Override
 	public List<IASTStm> getStms() {
 		return stms;
+	}
+
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTMethod(this);
+		for(ASTVariable p : parameters){
+			p.visit(visitor);
+		}
+		for(IASTStm s : stms){
+			s.visit(visitor);
+		}
 	}
 }

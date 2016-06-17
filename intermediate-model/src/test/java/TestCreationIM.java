@@ -1,7 +1,6 @@
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTMethod;
 import IntermediateModel.structure.ASTRE;
 import IntermediateModel.structure.expression.NotYetImplemented;
 import IntermediateModel.visitors.CreateIntemediateModel;
@@ -9,7 +8,6 @@ import IntermediateModel.visitors.DefualtASTREVisitor;
 import XALConversion.util.Pair;
 import com.google.common.collect.Iterators;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -78,7 +76,7 @@ public class TestCreationIM {
 
 			Java2AST a;
 			try {
-				a = new Java2AST(filename, Java2AST.VERSION.Java_7, true);
+				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
 			}
 			catch (Exception e){
 				fileToSkip.add(filename);
@@ -121,7 +119,7 @@ public class TestCreationIM {
 	}
 
 
-	//@Before
+	@Before
 	public void setUpJDT() throws Exception {
 		String base_path = getClass().getResource("vuze").getPath();
 		File dir = new File(base_path);
@@ -132,9 +130,6 @@ public class TestCreationIM {
 				true
 		);
 		Iterator i = files.iterator();
-		int tot = Iterators.size(i);
-		i = files.iterator();
-		int n = 0;
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
 
@@ -147,14 +142,10 @@ public class TestCreationIM {
 				continue;
 			}
 			ASTNode result = a.getContextJDT();
-			n++;
-			double perc = Math.floor(1000 * ( (double)n/ (double)tot)) / 1000;
-			System.out.println("[" + perc  +"] File parsed: " + filename);
-
 		}
 	}
 
-	@org.junit.Test
+	@Test
 	public void TestAllFilesParsedCorrectly() throws Exception {
 		if(fileNotParsed.size() > 0){
 			System.err.println("-- List file not correctly parsed --");
@@ -180,10 +171,4 @@ public class TestCreationIM {
 
 	}
 
-	@Test
-	public void TestLambdas() throws Exception {
-		String filename = getClass().getResource("testLambdas.java").getPath();
-		Java2AST a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
-		ASTNode result = a.getContextJDT();
-	}
 }

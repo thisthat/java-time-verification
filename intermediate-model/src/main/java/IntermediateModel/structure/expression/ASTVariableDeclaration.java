@@ -1,5 +1,6 @@
 package IntermediateModel.structure.expression;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.interfaces.ASTREVisitor;
@@ -70,9 +71,11 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 			expr.visit(visitor);
 	}
 
-	public String getNameString() {
-		if(name instanceof ASTLiteral)
-			return ((ASTLiteral) name).getValue();
-		return "--not yet define--";
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTVariableDeclaration(this);
+		if(expr != null)
+			expr.visit(visitor);
 	}
+
 }

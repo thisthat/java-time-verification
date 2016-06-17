@@ -149,7 +149,7 @@ public class BuildEnvirormentClass {
 		}
 	}
 	public void setVariableInEnv(ASTVariableDeclaration v, Env where){
-		setVariableInEnv(new ASTVariable(v.startToken,v.endToken, v.getNameString(), v.getType()), where);
+		setVariableInEnv(new ASTVariable(v.start,v.end, v.getNameString(), v.getType()), where);
 	}
 
 	/**

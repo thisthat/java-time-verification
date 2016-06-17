@@ -1,7 +1,9 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTTry extends IASTStm {
+public class ASTTry extends IASTStm implements IASTVisitor {
 
 	ASTTryBranch tryBranch = null;
 	List<ASTCatchBranch> catchBranch = new ArrayList<>();
@@ -59,6 +61,12 @@ public class ASTTry extends IASTStm {
 			return true;
 		}
 
+		@Override
+		public void visit(ASTVisitor visitor) {
+			for(IASTStm s : stms){
+				s.visit(visitor);
+			}
+		}
 	}
 
 	public class ASTCatchBranch extends IASTStm implements IASTHasStms {
@@ -110,6 +118,13 @@ public class ASTTry extends IASTStm {
 			return true;
 		}
 
+		@Override
+		public void visit(ASTVisitor visitor) {
+			expr.visit(visitor);
+			for(IASTStm s : stms){
+				s.visit(visitor);
+			}
+		}
 	}
 
 	public class ASTFinallyBranch extends IASTStm implements IASTHasStms {
@@ -151,6 +166,13 @@ public class ASTTry extends IASTStm {
 			if (getStms() != null ? !getStms().equals(that.getStms()) : that.getStms() != null) return false;
 
 			return true;
+		}
+
+		@Override
+		public void visit(ASTVisitor visitor) {
+			for(IASTStm s : stms){
+				s.visit(visitor);
+			}
 		}
 	}
 
@@ -219,6 +241,16 @@ public class ASTTry extends IASTStm {
 			return false;
 
 		return true;
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTTry(this);
+		getTryBranch().visit(visitor);
+		for(ASTCatchBranch c : getCatchBranch()){
+			c.visit(visitor);
+		}
+		getFinallyBranch().visit(visitor);
 	}
 
 }

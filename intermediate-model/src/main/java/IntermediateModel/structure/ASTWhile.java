@@ -1,7 +1,9 @@
 package IntermediateModel.structure;
 
+import IntermediateModel.interfaces.ASTVisitor;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTWhile extends IASTStm implements IASTHasStms {
+public class ASTWhile extends IASTStm implements IASTHasStms, IASTVisitor {
 	List<IASTStm> stms = new ArrayList<IASTStm>();;
 	ASTRE expr;
 
@@ -78,5 +80,14 @@ public class ASTWhile extends IASTStm implements IASTHasStms {
 		if (getExpr() != null ? !getExpr().equals(astWhile.getExpr()) : astWhile.getExpr() != null) return false;
 
 		return true;
+	}
+
+	@Override
+	public void visit(ASTVisitor visitor) {
+		visitor.enterASTWhile(this);
+		expr.visit(visitor);
+		for(IASTStm s : stms){
+			s.visit(visitor);
+		}
 	}
 }
