@@ -20,6 +20,8 @@ public class REParserJDT {
 		}
 		if(node instanceof ExpressionStatement){
 			return handleExpressionStatement((ExpressionStatement)node);
+		} else if(node instanceof VariableDeclarationExpression){
+			return variableDeclaration((VariableDeclarationExpression) node);
 		} else {
 			return handleExpression((Expression) node);
 		}
@@ -53,6 +55,8 @@ public class REParserJDT {
 			return literal((NullLiteral) expr );
 		} else if(expr instanceof TypeLiteral){
 			return literal((TypeLiteral) expr );
+		} else if(expr instanceof CharacterLiteral){
+			return literal((CharacterLiteral) expr );
 		} else if(expr instanceof ClassInstanceCreation){
 			return newObject((ClassInstanceCreation)expr);
 		} else if(expr instanceof InfixExpression){
@@ -67,12 +71,81 @@ public class REParserJDT {
 			return getExpr(((ParenthesizedExpression) expr).getExpression());
 		} else if(expr instanceof CastExpression){
 			return cast((CastExpression) expr);
+		} else if(expr instanceof ConditionalExpression){
+			return conditional((ConditionalExpression) expr);
+		} else if(expr instanceof ArrayCreation){
+			return arrayCreation((ArrayCreation) expr);
+		} else if(expr instanceof ArrayAccess){
+			return literal((ArrayAccess) expr);
+		} else if(expr instanceof ArrayInitializer){
+			return arrayInitializer((ArrayInitializer) expr);
+		} else if(expr instanceof SuperMethodInvocation){
+			return superInvocation( (SuperMethodInvocation) expr );
+		} else if(expr instanceof InstanceofExpression){
+			return instanceOfExpression( (InstanceofExpression) expr );
 		}
 
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		return new NotYetImplemented(start,stop);
+	}
+
+	private static IASTRE superInvocation(SuperMethodInvocation expr) {
+		int start, stop;
+		start = expr.getStartPosition();
+		stop = start + expr.getLength();
+		String name = expr.getName().getFullyQualifiedName();
+		IASTRE exprCallee = new ASTLiteral(start, start+5, "super");
+		List<IASTRE> pars = new ArrayList<>();
+		for(Object p : expr.arguments()){
+			pars.add(
+					getExpr( (ASTNode) p )
+			);
+		}
+		return new ASTMethodCall(start,stop, name, exprCallee, pars );
+	}
+
+	private static IASTRE arrayInitializer(ArrayInitializer expr) {
+		int start, stop;
+		start = expr.getStartPosition();
+		stop = start + expr.getLength();
+		List<IASTRE> elms = new ArrayList<>();
+		for(Object o : expr.expressions()){
+			if(o instanceof ASTNode){
+				elms.add( getExpr((ASTNode)o));
+			}
+		}
+		return new ASTArrayInitializer(start,stop, elms);
+	}
+
+	private static IASTRE arrayCreation(ArrayCreation expr) {
+		int start, stop;
+		start = expr.getStartPosition();
+		stop = start + expr.getLength();
+
+		String type = expr.getType().getElementType().toString();
+		List<IASTRE> pars = new ArrayList<>();
+
+		for(Object o : expr.dimensions()){
+			if(o instanceof Expression){
+				pars.add( getExpr((Expression)o) );
+			}
+		}
+
+		return new ASTNewObject(start,stop, type, true, pars);
+	}
+
+	private static IASTRE conditional(ConditionalExpression expr) {
+		int start, stop;
+		start = expr.getStartPosition();
+		stop = start + expr.getLength();
+
+		IASTRE e = getExpr(expr.getExpression());
+		IASTRE ethen = getExpr(expr.getThenExpression());
+		IASTRE eelse = getExpr(expr.getElseExpression());
+
+		return new ASTConditional(start,stop, e, ethen, eelse);
 	}
 
 	private static IASTRE cast(CastExpression expr) {
@@ -143,7 +216,16 @@ public class REParserJDT {
 		return new ASTAttributeAccess(start,stop, where, who);
 	}
 
-
+	private static IASTRE instanceOfExpression(InstanceofExpression expr) {
+		int start, stop;
+		start = expr.getStartPosition();
+		stop = start + expr.getLength();
+		IASTRE.OPERATOR op = IASTRE.OPERATOR.instanceOf;
+		IASTRE l = getExpr(expr.getLeftOperand());
+		Type t = expr.getRightOperand();
+		IASTRE r = new ASTLiteral(t.getStartPosition(), t.getStartPosition()+t.getLength(), t.toString());
+		return new ASTBinary(start,stop, l, r, op);
+	}
 
 	private static IASTRE mathExpression(InfixExpression expr) {
 		int start, stop;
@@ -177,7 +259,7 @@ public class REParserJDT {
 					getExpr((ASTNode) p)
 			);
 		}
-		return new ASTNewObject(start,stop, type, pars);
+		return new ASTNewObject(start,stop, type, false, pars);
 	}
 
 	private static IASTRE literal(NullLiteral expr) {
@@ -185,6 +267,21 @@ public class REParserJDT {
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		return new ASTLiteral(start, stop, expr.toString());
+	}
+
+
+	private static IASTRE literal(CharacterLiteral expr) {
+		int start, stop;
+		start = expr.getStartPosition();
+		stop = start + expr.getLength();
+		return new ASTLiteral(start, stop, expr.toString());
+	}
+
+	private static IASTRE literal(ArrayAccess expr) {
+		int start, stop;
+		start = expr.getStartPosition();
+		stop = start + expr.getLength();
+		return new ASTLiteral(start, stop, expr.getArray().toString());
 	}
 
 	private static IASTRE literal(TypeLiteral expr) {
@@ -247,11 +344,20 @@ public class REParserJDT {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
+		IASTRE e = getExpr(expr.getOperand());
+		//unary expr not
+		if(expr.getOperator().equals("!")){
+			return new ASTUnary(start,stop, IASTRE.OPERATOR.not, e);
+		}
+		//unary -num
+		if(expr.getOperator().equals("-")){
+			return new ASTUnary(start,stop, IASTRE.OPERATOR.minus, e);
+		}
+		//normal pre inc/dec
 		IASTRE.ADDDEC op = IASTRE.ADDDEC.increment;
 		if(expr.getOperator().equals("--")){
 			op = IASTRE.ADDDEC.decrement;
 		}
-		IASTRE e = getExpr(expr.getOperand());
 		return new ASTPreOp(start, stop, e, op);
 	}
 
@@ -289,6 +395,8 @@ public class REParserJDT {
 			case "<": return IASTRE.OPERATOR.less;
 			case "<=": return IASTRE.OPERATOR.lessEqual;
 			case "==": return IASTRE.OPERATOR.equality;
+			case "||": return IASTRE.OPERATOR.or;
+			case "&&": return IASTRE.OPERATOR.and;
 		}
 		return IASTRE.OPERATOR.equal;
 	}

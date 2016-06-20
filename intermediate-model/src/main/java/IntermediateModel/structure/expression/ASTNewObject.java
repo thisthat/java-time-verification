@@ -16,27 +16,41 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 
 	List<IASTRE> parameters;
 	String typeName;
+	boolean isArray = false;
 
-	public ASTNewObject(Token start, Token end, String typeName) {
+	public ASTNewObject(Token start, Token end, String typeName, boolean isArray) {
 		super(start, end);
 		this.typeName = typeName;
+		this.isArray = isArray;
 	}
 
-	public ASTNewObject(int start, int end, String typeName) {
+	public ASTNewObject(int start, int end, String typeName, boolean isArray) {
 		super(start, end);
 		this.typeName = typeName;
+		this.isArray = isArray;
 	}
 
-	public ASTNewObject(Token start, Token end, String typeName, List<IASTRE> parameters) {
+	public ASTNewObject(Token start, Token end, String typeName, boolean isArray, List<IASTRE> parameters) {
 		super(start, end);
 		this.typeName = typeName;
+		this.isArray = isArray;
+		this.parameters = parameters;
+
+	}
+
+	public ASTNewObject(int start, int end, String typeName, boolean isArray, List<IASTRE> parameters) {
+		super(start, end);
+		this.typeName = typeName;
+		this.isArray = isArray;
 		this.parameters = parameters;
 	}
 
-	public ASTNewObject(int start, int end, String typeName, List<IASTRE> parameters) {
-		super(start, end);
-		this.typeName = typeName;
-		this.parameters = parameters;
+	public boolean isArray() {
+		return isArray;
+	}
+
+	public void setArray(boolean array) {
+		isArray = array;
 	}
 
 	public List<IASTRE> getParameters() {

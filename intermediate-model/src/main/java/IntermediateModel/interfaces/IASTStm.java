@@ -55,7 +55,7 @@ public abstract class IASTStm implements IASTVisitor{
 		if(startToken == null || endToken == null){
 			ASTSrc instance = ASTSrc.getInstance();
 			char[] source = instance.source;
-			line = instance.getLine(start);
+			line = instance.getLine(start) +1;
 			code = new String(Arrays.copyOfRange(source, start, end));
 			return;
 		}

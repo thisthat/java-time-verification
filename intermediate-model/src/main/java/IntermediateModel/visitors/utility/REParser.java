@@ -152,7 +152,7 @@ public class REParser {
 						((ParserRuleContext)ctx.getChild(2)).stop
 				);
 			}
-			newObj = new ASTNewObject(ctx.start, ctx.stop, type, pars);
+			newObj = new ASTNewObject(ctx.start, ctx.stop, type, false, pars);
 		}
 		return newObj;
 	}

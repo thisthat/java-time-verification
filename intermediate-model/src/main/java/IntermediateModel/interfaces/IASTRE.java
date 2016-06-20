@@ -18,7 +18,10 @@ public interface IASTRE extends IASTVisitor {
 		minus,
 		mul,
 		div,
-		not
+		not,
+		and,
+		or,
+		instanceOf
 	}
 
 	public enum ADDDEC {

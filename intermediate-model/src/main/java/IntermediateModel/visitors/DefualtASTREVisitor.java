@@ -11,6 +11,11 @@ import IntermediateModel.structure.expression.*;
 public class DefualtASTREVisitor implements ASTREVisitor {
 
 	@Override
+	public void enterASTArrayInitializer(ASTArrayInitializer elm) {
+
+	}
+
+	@Override
 	public void enterASTAssignment(ASTAssignment elm) {
 
 	}
@@ -27,6 +32,11 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 
 	@Override
 	public void enterASTCast(ASTCast elm) {
+
+	}
+
+	@Override
+	public void enterASTConditional(ASTConditional elm) {
 
 	}
 

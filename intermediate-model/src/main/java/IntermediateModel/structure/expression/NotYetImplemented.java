@@ -34,7 +34,7 @@ public class NotYetImplemented extends IASTStm implements IASTRE {
 	}
 
 	public String toString(){
-		return "Not Yet Implemented :: [" + start +"]" + code + " @ " + cause[2] + ((typeElm != null) ? "--" + typeElm : "");
+		return "Not Yet Implemented :: [" + start +"]" + code + " @ " + getLine() + "--" + cause[2] + ((typeElm != null) ? "--" + typeElm : "");
 	}
 
 

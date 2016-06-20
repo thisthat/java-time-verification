@@ -9,6 +9,39 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	@Deprecated
 	private Test(int i, int k) {
 
+		sb.append((flag & FLAG_MUSTREFRESH) > 0 ? 'M' : onlySet ? ' ' : 'm');
+
+		k.getElm().toString();
+
+		if(token.value instanceof String){
+			String key=(String)token.value;
+			valueStack.push(key);
+			status=S_PASSED_PAIR_KEY;
+			statusStack.push(new Integer(status));
+		}
+		else{
+			status=S_IN_ERROR;
+		}
+
+		int y = 10;
+		return (String[])list.toArray( new String[list.size()] ) ;
+		int x = 1==2 ? 10 : 20;
+
+		String[] resultArray = { text } ;
+		if(-1 > 2){
+			return strings[i];
+
+			return super.toString() ;
+		}
+
+		if(1 && 1 < 2 || 3 >= 7){
+			return 0;
+		}
+
+		if(!(0 < 2)){
+			return 1;
+		}
+
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
 
 

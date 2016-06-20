@@ -168,6 +168,8 @@ public class TestCreationIM {
 				System.err.println(re.getSecond());
 			}
 			System.err.println("Total REXP in the project: " + totalREXP);
+			System.err.println("Total REXP not parsed the project: " + reNotParsed.size());
+			System.err.println("% " + 100*((double)reNotParsed.size() / (double)totalREXP));
 		}
 		System.err.println("-- List of Files Skiped --");
 		for(String f : fileToSkip){

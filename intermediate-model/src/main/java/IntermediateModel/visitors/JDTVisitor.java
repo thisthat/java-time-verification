@@ -3,6 +3,7 @@ package IntermediateModel.visitors;
 import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.ASTVariableDeclaration;
 import IntermediateModel.structure.expression.NotYetImplemented;
 import IntermediateModel.visitors.utility.Getter;
 import IntermediateModel.visitors.utility.REParserJDT;
@@ -477,6 +478,24 @@ public class JDTVisitor extends ASTVisitor {
 	}
 
 	//RE expr
+	@Override
+	public boolean visit(VariableDeclarationStatement node) {
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		String type = node.getType().toString();
+		for(Object o : node.fragments()){
+			if(o instanceof VariableDeclarationFragment){
+				VariableDeclarationFragment v = (VariableDeclarationFragment)o;
+				ASTRE re = new ASTRE(start, stop,
+						new ASTVariableDeclaration(start, stop, type,
+								REParserJDT.getExpr(v.getName()), REParserJDT.getExpr(v.getInitializer()))
+						);
+				lastMethod.addStms(re);
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public boolean visit(ExpressionStatement node) {
 		ASTRE re = getExprState(node);

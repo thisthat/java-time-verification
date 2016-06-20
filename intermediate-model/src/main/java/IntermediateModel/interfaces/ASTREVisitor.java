@@ -8,10 +8,12 @@ import IntermediateModel.structure.expression.*;
  * @version %I%, %G%
  */
 public interface ASTREVisitor<T> {
+	void enterASTArrayInitializer(ASTArrayInitializer elm);
 	void enterASTAssignment(ASTAssignment elm);
 	void enterASTAttributeAccess(ASTAttributeAccess elm);
 	void enterASTbinary(ASTBinary elm);
 	void enterASTCast(ASTCast elm);
+	void enterASTConditional(ASTConditional elm);
 	void enterASTLiteral(ASTLiteral elm);
 	void enterASTMethodCall(ASTMethodCall elm);
 	void enterASTMultipleMethodCall(ASTMultipleMethodCall elm);
