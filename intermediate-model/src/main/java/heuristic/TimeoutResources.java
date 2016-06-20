@@ -36,7 +36,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case lessEqual:
 					case greater:
 					case greaterEqual:
-						if(checkIt(elm, env)){
+						if(BuildEnvirormentClass.checkIt(elm, env)){
 							stm.setTimeCritical(true);
 							found[0] = true;
 						}
@@ -50,6 +50,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 
 	}
 
+	/*
 	private boolean checkIt(ASTBinary expr, Env env){
 		final boolean[] r = {false};
 		expr.visit(new DefualtASTREVisitor(){
@@ -77,6 +78,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 		});
 		return r[0];
 	}
+	*/
 
 	@Override
 	public void next(IASTRE expr, Env env) {

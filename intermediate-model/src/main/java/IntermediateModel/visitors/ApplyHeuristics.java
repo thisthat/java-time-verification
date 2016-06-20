@@ -60,7 +60,9 @@ public class ApplyHeuristics {
 		}
 		build_base_env.buildEnvClass(c);
 		for(IASTMethod m : c.getMethods()){
-			analyze(m.getStms(), new Env(build_base_env.getEnv()));
+			Env eMethod = new Env(build_base_env.getEnv());
+			eMethod = build_base_env.checkPars(m.getParameters(), eMethod);
+			analyze(m.getStms(), eMethod );
 		}
 	}
 

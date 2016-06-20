@@ -4,10 +4,7 @@ import IntermediateModel.interfaces.ASTREVisitor;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.structure.*;
-import IntermediateModel.structure.expression.ASTAssignment;
-import IntermediateModel.structure.expression.ASTAttributeAccess;
-import IntermediateModel.structure.expression.ASTLiteral;
-import IntermediateModel.structure.expression.ASTVariableDeclaration;
+import IntermediateModel.structure.expression.*;
 import IntermediateModel.visitors.DefualtASTREVisitor;
 
 import java.io.IOException;
@@ -149,7 +146,69 @@ public class BuildEnvirormentClass {
 		}
 	}
 	public void setVariableInEnv(ASTVariableDeclaration v, Env where){
+		//check the type
 		setVariableInEnv(new ASTVariable(v.start,v.end, v.getNameString(), v.getType()), where);
+		//check the expr
+		if(v.getExpr() != null) {
+			v.getExpr().visit(new DefualtASTREVisitor() {
+				//method call
+
+				@Override
+				public void enterASTMethodCall(ASTMethodCall elm) {
+					if(where.existMethod( elm )){
+						ASTVariable vv = new ASTVariable(v.start,v.end, v.getNameString(), v.getType());
+						where.addVar(vv);
+						v.setTimeCritical(true);
+						vv.setTimeCritical(true);
+					}
+				}
+
+				//math op between time
+				@Override
+				public void enterASTbinary(ASTBinary elm) {
+					switch (elm.getOp()){
+						case minus:
+						case plus:
+						case mul:
+						case div:
+							if(checkIt(elm, where)){
+								v.setTimeCritical(true);
+								ASTVariable vv = new ASTVariable(v.start,v.end, v.getNameString(), v.getType());
+								vv.setTimeCritical(true);
+								where.addVar(vv);
+							}
+					}
+				}
+			});
+		}
+	}
+
+	public static boolean checkIt(ASTBinary elm, Env where) {
+		final boolean[] r = {false};
+		elm.visit(new DefualtASTREVisitor(){
+			@Override
+			public void enterASTLiteral(ASTLiteral elm) {
+				if(where.existVarName(elm.getValue()))
+					r[0] = true;
+			}
+
+			@Override
+			public void enterASTMethodCall(ASTMethodCall elm) {
+				if(where.existMethod(elm)){
+					r[0] = true;
+				}
+			}
+
+			@Override
+			public void enterASTMultipleMethodCall(ASTMultipleMethodCall elm) {
+				if(elm.getVariable() != null && elm.getVariable() instanceof ASTLiteral){
+					if( where.existVarName(((ASTLiteral) elm.getVariable()).getValue()) ){
+						r[0] = true;
+					}
+				}
+			}
+		});
+		return r[0];
 	}
 
 	/**

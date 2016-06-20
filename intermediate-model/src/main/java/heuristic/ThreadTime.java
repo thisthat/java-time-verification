@@ -3,6 +3,7 @@ package heuristic;
 import IntermediateModel.interfaces.IASTRE;
 import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.ASTRE;
+import IntermediateModel.structure.expression.ASTAttributeAccess;
 import IntermediateModel.structure.expression.ASTLiteral;
 import IntermediateModel.structure.expression.ASTMethodCall;
 import envirorment.BuildEnvirormentClass;
@@ -34,11 +35,18 @@ public class ThreadTime extends SearchTimeConstraint {
 				found = true;
 			}
 			else { //Search if is it in the form var.sleep
-				if(mc.getExprCallee() instanceof ASTLiteral){
+				IASTRE calee = mc.getExprCallee();
+				if( calee instanceof ASTLiteral){
 					String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
 					if( env.existVarName(var_name) || //is a var of the env
 						BuildEnvirormentClass.typeTimeRelevant.stream().anyMatch(type -> (var_name.equals(type))) //static var
 					){
+						found = true;
+					}
+				} else if(calee instanceof ASTAttributeAccess){
+					String callReconstructed = ((ASTAttributeAccess) calee).getCode();
+					if( BuildEnvirormentClass.typeTimeRelevant.stream().anyMatch(type -> (callReconstructed.equals(type))) //static var
+							){
 						found = true;
 					}
 				}
