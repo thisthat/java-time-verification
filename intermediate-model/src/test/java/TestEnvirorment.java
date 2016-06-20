@@ -1,12 +1,7 @@
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTRE;
-import IntermediateModel.visitors.ApplyHeuristics;
 import IntermediateModel.visitors.CreateIntemediateModel;
-import envirorment.BuildEnvirormentClass;
-import envirorment.Env;
-import heuristic.ThreadTime;
+import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
+import IntermediateModelHelper.heuristic.ThreadTime;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Before;
@@ -40,7 +35,7 @@ public class TestEnvirorment {
     }
 
 	/**
-	 * TODO: Test that for each instructions the rule of visibility of envirorment is respected.
+	 * TODO: Test that for each instructions the rule of visibility of IntermediateModelHelper.envirorment is respected.
 	 */
     @Test
 	public void TestEnvirormentNested() {

@@ -1,9 +1,9 @@
 package XALConversion.visitors;
 
 
-import XALStructure.XALAddState;
-import XALStructure.exception.XALMalformedException;
-import XALStructure.items.*;
+import XAL.XALStructure.XALAddState;
+import XAL.XALStructure.exception.XALMalformedException;
+import XAL.XALStructure.items.*;
 import XALConversion.util.Pair;
 import XALConversion.util.parsing.*;
 import jdk.nashorn.internal.runtime.regexp.joni.ast.ConsAltNode;

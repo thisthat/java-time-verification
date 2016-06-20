@@ -1,5 +1,7 @@
+package XALConversion;
+
 import XALConversion.visitors.CreateXALTree;
-import XALStructure.items.XALDocument;
+import XAL.XALStructure.items.XALDocument;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.Java2AST;

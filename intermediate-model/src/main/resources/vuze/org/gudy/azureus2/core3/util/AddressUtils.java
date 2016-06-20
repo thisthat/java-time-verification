@@ -369,7 +369,7 @@ AddressUtils
 	}
 	
 	/**
-	 * picks 1 global-scoped address out of a list based on the heuristic
+	 * picks 1 global-scoped address out of a list based on the IntermediateModelHelper.heuristic
 	 * "true" ipv6/tunnel broker > 6to4 > teredo
 	 * 
 	 * @return null if no proper v6 address is found, best one otherwise

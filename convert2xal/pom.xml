@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>convert2xal</artifactId>
+    <name>convert2xal</name>
     <dependencies>
         <dependency>
             <groupId>java-parser</groupId>

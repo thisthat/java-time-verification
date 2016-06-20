@@ -6,6 +6,7 @@
     <groupId>java-parser</groupId>
     <artifactId>java-parser</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <name>Java-Parser</name>
     <parent>
         <groupId>java-xal</groupId>
         <artifactId>java-xal</artifactId>

@@ -1,9 +1,10 @@
-import parser.ASTSrc;
+package IntermediateModel;
+
 import IntermediateModel.structure.ASTClass;
 import IntermediateModel.visitors.ApplyHeuristics;
 import IntermediateModel.visitors.CreateIntemediateModel;
 import IntermediateModel.visitors.JDTVisitor;
-import heuristic.*;
+import IntermediateModelHelper.heuristic.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jdt.core.dom.CompilationUnit;

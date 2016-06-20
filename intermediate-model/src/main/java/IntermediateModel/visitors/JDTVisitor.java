@@ -4,10 +4,8 @@ import IntermediateModel.interfaces.IASTHasStms;
 import IntermediateModel.interfaces.IASTMethod;
 import IntermediateModel.structure.*;
 import IntermediateModel.structure.expression.ASTVariableDeclaration;
-import IntermediateModel.structure.expression.NotYetImplemented;
 import IntermediateModel.visitors.utility.Getter;
 import IntermediateModel.visitors.utility.REParserJDT;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 

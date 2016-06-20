@@ -24,6 +24,7 @@ public class PrettyPrint {
      * Convert ugly names of states wrt its type
      *
      * @param str   The type of the object to make prettier
+     * @param ctx   The node to process
      * @return      An hence visualization of the character that is faboulousssss
      */
     public static String ClassName(String str, ParserRuleContext ctx){

@@ -104,9 +104,9 @@ public class TestCreationIM {
 	}
 
 
-	@Before
-	public void setUpJDT() throws Exception {
-		String base_path = getClass().getResource("vuze").getPath();
+
+	public void setUpJDT(String folder) throws Exception {
+		String base_path = getClass().getResource(folder).getPath();
 		File dir = new File(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
@@ -153,7 +153,38 @@ public class TestCreationIM {
 	}
 
 	@Test
+	public void TestVuze() throws Exception {
+		setUpJDT("vuze");
+		if(fileNotParsed.size() > 0){
+			System.err.println("-- List file not correctly parsed --");
+			for(Pair<String,String> f : fileNotParsed){
+				System.err.println("[" + f.getFirst() + "]");
+				System.err.println(f.getSecond());
+			}
+		}
+		if(reNotParsed.size() > 0){
+			System.err.println("-- List RE not correctly parsed --");
+			for(Pair<String,NotYetImplemented> re : reNotParsed){
+				System.err.println("[" + re.getFirst() + "]");
+				System.err.println(re.getSecond());
+			}
+			System.err.println("Total REXP in the project: " + totalREXP);
+			System.err.println("Total REXP not parsed the project: " + reNotParsed.size());
+			System.err.println("% " + 100*((double)reNotParsed.size() / (double)totalREXP));
+		}
+		System.err.println("-- List of Files Skiped --");
+		for(String f : fileToSkip){
+			System.err.println(f);
+		}
+		System.err.println("-- End List of Files Skiped --");
+		assertEquals(0,fileNotParsed.size());
+		assertEquals(0,reNotParsed.size());
+
+	}
+
+	@Test
 	public void TestAllFilesParsedCorrectly() throws Exception {
+		setUpJDT("changevis");
 		if(fileNotParsed.size() > 0){
 			System.err.println("-- List file not correctly parsed --");
 			for(Pair<String,String> f : fileNotParsed){

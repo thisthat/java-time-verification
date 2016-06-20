@@ -139,9 +139,9 @@ public class GetObjects {
     }
 
     /**
-     *
-     * @param node
-     * @return
+     * Return the type of a node.
+     * @param node   Get expression type of a node
+     * @return       The type of expression
      */
     public static String getExprType(ParserRuleContext node){
         boolean finish = false;

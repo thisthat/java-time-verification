@@ -268,7 +268,7 @@ public class Antlr4Mojo extends AbstractMojo {
 				// Create an instance of the ANTLR 4 build tool
 				tool = new CustomTool(args.toArray(new String[args.size()]));
 			} catch (Exception e) {
-				log.error("The attempt to create the ANTLR 4 build tool failed, see parser.XALStructure.exception report for details", e);
+				log.error("The attempt to create the ANTLR 4 build tool failed, see parser.XAL.XALStructure.exception report for details", e);
 				throw new MojoFailureException("Error creating an instanceof the ANTLR tool.", e);
 			}
 

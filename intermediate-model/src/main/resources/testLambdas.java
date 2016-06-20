@@ -1,7 +1,7 @@
-import XALStructure.XALAddState;
-import XALStructure.XALItem;
-import XALStructure.exception.XALMalformedException;
-import XALStructure.items.*;
+import XAL.XALStructure.XALAddState;
+import XAL.XALStructure.XALItem;
+import XAL.XALStructure.exception.XALMalformedException;
+import XAL.XALStructure.items.*;
 
 import java.util.ArrayList;
 import java.util.List;

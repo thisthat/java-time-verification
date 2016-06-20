@@ -84,6 +84,7 @@ public class Java2AST {
      * It does <b>not</b> handle any IO Error
      *
      * @param filename      Path of the file to parse
+	 * @param v				Version of parser to use
      * @param parse         Boolean value to decide if the file has to be parsed directly
      * @throws IOException  Exception in the case some filesystem problems will arise
      * @throws ParseErrorsException Exception that contains all the parsing errors
@@ -156,7 +157,9 @@ public class Java2AST {
     /**
      * It converts the java source file into the AST representation.
      * If there are parsing errors, it will throw an Exception.
+	 *
      *
+	 * @param v				Version of parser to use
      * @throws ParseErrorsException Exception that contains all the parsing errors
      */
     public void convertToAST(VERSION v) throws ParseErrorsException {

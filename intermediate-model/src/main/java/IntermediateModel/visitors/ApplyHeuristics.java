@@ -7,11 +7,10 @@ import IntermediateModel.interfaces.IASTStm;
 import IntermediateModel.structure.*;
 import IntermediateModel.structure.expression.ASTNewObject;
 import XALConversion.util.Pair;
-import envirorment.BuildEnvirormentClass;
-import envirorment.Env;
-import heuristic.SearchTimeConstraint;
+import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
+import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.heuristic.SearchTimeConstraint;
 
-import java.awt.dnd.DragGestureEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
  *
  * This class is the manager that apply all the heuristics we created.
  * It goes through all {@link IASTMethod} definition of a {@link ASTClass}.
- * For each statement it extends the envirorment and apply all the subscribed strategies.
+ * For each statement it extends the IntermediateModelHelper.envirorment and apply all the subscribed strategies.
  */
 public class ApplyHeuristics {
 

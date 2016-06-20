@@ -1,5 +1,5 @@
-import XALStructure.items.XALAutomaton;
-import XALStructure.items.XALDocument;
+import XAL.XALStructure.items.XALAutomaton;
+import XAL.XALStructure.items.XALDocument;
 import XALConversion.visitors.CreateXALTree;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;

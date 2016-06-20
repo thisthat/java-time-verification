@@ -6,6 +6,7 @@
     <groupId>java-xal</groupId>
     <artifactId>java-xal</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <name></name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -19,37 +20,6 @@
 
     <build>
         <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-                <configuration>
-                    <!--<aggregate>true</aggregate -->
-                    <tags>
-                        <tag>
-                            <name>todo</name>
-                            <!-- todo tag for all places -->
-                            <placement>a</placement>
-                            <head>It has to be implemented yet:</head>
-                        </tag>
-                        <tag>
-                            <name>TODO</name>
-                            <!-- todo tag for all places -->
-                            <placement>a</placement>
-                            <head>MUST BE IMPLEMENTED</head>
-                        </tag>
-                    </tags>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>aggregate-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -59,16 +29,10 @@
                 </configuration>
                 <version>3.5.1</version>
             </plugin>
-        </plugins>
-    </build>
-
-
-    <reporting>
-        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
+                <version>2.10.4</version>
                 <configuration>
                     <tags>
                         <tag>
@@ -84,9 +48,35 @@
                             <head>It has to be implemented yet:</head>
                         </tag>
                     </tags>
+                    <version>true</version>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javadoc</goal>
+                            <goal>test-javadoc</goal>
+                        </goals>
+                        <phase>site</phase>
+                        <configuration>
+                            <tags>
+                                <tag>
+                                    <name>todo</name>
+                                    <!-- todo tag for all places -->
+                                    <placement>a</placement>
+                                    <head>It has to be implemented yet:</head>
+                                </tag>
+                                <tag>
+                                    <name>TODO</name>
+                                    <!-- todo tag for all places -->
+                                    <placement>a</placement>
+                                    <head>It has to be implemented yet:</head>
+                                </tag>
+                            </tags>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
-    </reporting>
+    </build>
 
 </project>
