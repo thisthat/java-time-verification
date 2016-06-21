@@ -1,6 +1,6 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModel.interfaces.*;
+import intermediateModel.interfaces.*;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;

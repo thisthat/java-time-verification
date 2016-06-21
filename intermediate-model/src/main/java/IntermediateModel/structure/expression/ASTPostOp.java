@@ -1,9 +1,9 @@
-package IntermediateModel.structure.expression;
+package intermediateModel.structure.expression;
 
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.ASTREVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.ASTREVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**

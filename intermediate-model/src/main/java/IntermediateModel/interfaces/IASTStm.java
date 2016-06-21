@@ -1,4 +1,4 @@
-package IntermediateModel.interfaces;
+package intermediateModel.interfaces;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;

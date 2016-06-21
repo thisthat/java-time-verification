@@ -1,10 +1,10 @@
 package IntermediateModelHelper.envirorment;
 
 
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.structure.*;
-import IntermediateModel.structure.expression.*;
-import IntermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.*;
+import intermediateModel.visitors.DefualtASTREVisitor;
 
 import java.io.IOException;
 import java.nio.file.Paths;

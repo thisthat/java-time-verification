@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>convert2xal</artifactId>
     <name>convert2xal</name>
+    <description>This module shows how is possible to generate automatically XAL diagram from code</description>
     <dependencies>
         <dependency>
             <groupId>java-parser</groupId>

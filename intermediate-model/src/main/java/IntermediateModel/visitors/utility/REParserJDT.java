@@ -1,8 +1,7 @@
-package IntermediateModel.visitors.utility;
+package intermediateModel.visitors.utility;
 
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.structure.ASTVariable;
-import IntermediateModel.structure.expression.*;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.expression.*;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;

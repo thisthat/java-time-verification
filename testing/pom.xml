@@ -9,6 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>Testing</name>
+    <description>
+        Module reserved for testing of libraries and so on.
+    </description>
     <properties>
         <neo4j.version>3.0.0</neo4j.version>
     </properties>
@@ -21,6 +24,12 @@
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
             <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.6.3</version>
         </dependency>
 
 

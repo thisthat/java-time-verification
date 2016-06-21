@@ -1,10 +1,9 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.IASTVar;
-import IntermediateModel.interfaces.IASTVisitor;
-import IntermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**

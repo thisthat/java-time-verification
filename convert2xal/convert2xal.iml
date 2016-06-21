@@ -9,7 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="java-parser" />
     <orderEntry type="library" name="Maven: org.antlr:antlr4-runtime:4.2" level="project" />
@@ -28,8 +28,10 @@
     <orderEntry type="library" name="Maven: org.eclipse.core:resources:3.3.0-v20070604" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.core:expressions:3.3.0-v20070606-0010" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.core:filesystem:1.1.0-v20070606" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse:text:3.3.0-v20070606-0010" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.core:commands:3.3.0-I20070605-0010" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
-    <orderEntry type="module" module-name="XAL" />
+    <orderEntry type="module" module-name="xal" />
   </component>
 </module>

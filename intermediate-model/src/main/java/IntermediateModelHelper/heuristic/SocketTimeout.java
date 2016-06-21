@@ -1,12 +1,12 @@
 package IntermediateModelHelper.heuristic;
 
 
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.ASTRE;
-import IntermediateModel.structure.expression.ASTLiteral;
-import IntermediateModel.structure.expression.ASTMethodCall;
-import IntermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import IntermediateModelHelper.envirorment.Env;
 
 /**

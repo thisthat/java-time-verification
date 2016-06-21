@@ -1,11 +1,11 @@
-package IntermediateModel.visitors;
+package intermediateModel.visitors;
 
 
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.*;
-import IntermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTNewObject;
 import XALConversion.util.Pair;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;

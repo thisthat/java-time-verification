@@ -1,7 +1,7 @@
 package IntermediateModelHelper.heuristic;
 
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 import IntermediateModelHelper.envirorment.Env;
 import XALConversion.util.Pair;
 

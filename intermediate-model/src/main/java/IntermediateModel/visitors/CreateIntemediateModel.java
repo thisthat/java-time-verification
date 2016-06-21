@@ -1,13 +1,13 @@
-package IntermediateModel.visitors;
+package intermediateModel.visitors;
 
 
 
 import parser.ASTSrc;
-import IntermediateModel.interfaces.IASTHasStms;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.*;
-import IntermediateModel.visitors.utility.Getter;
-import IntermediateModel.visitors.utility.REParser;
+import intermediateModel.interfaces.IASTHasStms;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.*;
+import intermediateModel.visitors.utility.Getter;
+import intermediateModel.visitors.utility.REParser;
 import XALConversion.util.parsing.Exists;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;

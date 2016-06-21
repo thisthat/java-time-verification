@@ -1,6 +1,6 @@
-package IntermediateModel.structure.expression;
+package intermediateModel.structure.expression;
 
-import IntermediateModel.interfaces.*;
+import intermediateModel.interfaces.*;
 import org.antlr.v4.runtime.Token;
 
 /**

@@ -1,9 +1,9 @@
-package IntermediateModel.visitors.utility;
+package intermediateModel.visitors.utility;
 
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.LocalSearch;
-import IntermediateModel.structure.expression.*;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.LocalSearch;
+import intermediateModel.structure.expression.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;

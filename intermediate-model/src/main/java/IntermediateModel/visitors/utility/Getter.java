@@ -1,10 +1,8 @@
-package IntermediateModel.visitors.utility;
+package intermediateModel.visitors.utility;
 
-import IntermediateModel.interfaces.ASTREVisitor;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.LocalSearch;
-import IntermediateModel.structure.*;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.LocalSearch;
+import intermediateModel.structure.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;

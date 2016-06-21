@@ -1,9 +1,7 @@
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.CreateIntemediateModel;
+import intermediateModel.structure.*;
+import intermediateModel.visitors.JDTVisitor;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
-import IntermediateModelHelper.heuristic.ThreadTime;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
@@ -11,7 +9,6 @@ import parser.Java2AST;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -20,28 +17,25 @@ import static junit.framework.Assert.assertEquals;
 public class TestEnvirorment {
     String filename = "Test.java";
     List<ASTClass> intemediateModel;
-    List<ASTClass> manuallyCreated = new ArrayList<>();
+    List<ASTClass> manuallyCreated = new ArrayList<ASTClass>();
 	BuildEnvirormentClass build_base_env = new BuildEnvirormentClass();
 
     @Before
     public void init() throws Exception {
         Java2AST a = new Java2AST( getClass().getClassLoader().getResource(filename).getFile() );
-        a.convertToAST(Java2AST.VERSION.Java_8);
-        ParserRuleContext ast = a.getContext();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        CreateIntemediateModel sv = new CreateIntemediateModel();
-        walker.walk(sv, ast);
-        intemediateModel = sv.listOfClasses;
+        a.convertToAST(Java2AST.VERSION.JDT);
+        CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast);
+		ast.accept(v);
+		intemediateModel = v.listOfClasses;
     }
 
 	/**
-	 * TODO: Test that for each instructions the rule of visibility of IntermediateModelHelper.envirorment is respected.
+	 * TODO: Test that for each instructions the rule of visibility of envirorment is respected.
 	 */
     @Test
 	public void TestEnvirormentNested() {
-		ThreadTime tt = new ThreadTime();
-		for(ASTClass c : intemediateModel){
-		}
+
 	}
 
 

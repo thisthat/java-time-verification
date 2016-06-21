@@ -1,11 +1,11 @@
-package IntermediateModel.visitors;
+package intermediateModel.visitors;
 
-import IntermediateModel.interfaces.IASTHasStms;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.structure.*;
-import IntermediateModel.structure.expression.ASTVariableDeclaration;
-import IntermediateModel.visitors.utility.Getter;
-import IntermediateModel.visitors.utility.REParserJDT;
+import intermediateModel.interfaces.IASTHasStms;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.visitors.utility.Getter;
+import intermediateModel.visitors.utility.REParserJDT;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 

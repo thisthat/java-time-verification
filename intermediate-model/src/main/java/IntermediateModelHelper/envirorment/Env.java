@@ -1,9 +1,9 @@
 package IntermediateModelHelper.envirorment;
 
 
-import IntermediateModel.interfaces.IASTVar;
-import IntermediateModel.structure.ASTMethod;
-import IntermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTMethod;
+import intermediateModel.structure.expression.ASTMethodCall;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,9 +1,9 @@
-package IntermediateModel;
+package intermediateModel;
 
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.ApplyHeuristics;
-import IntermediateModel.visitors.CreateIntemediateModel;
-import IntermediateModel.visitors.JDTVisitor;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.CreateIntemediateModel;
+import intermediateModel.visitors.JDTVisitor;
 import IntermediateModelHelper.heuristic.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
