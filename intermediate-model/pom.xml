@@ -27,7 +27,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.10</version>
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>
@@ -37,7 +37,6 @@
 
 
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -45,11 +44,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-                    <excludes>
-                        <exclude>**/TestCreationIM.java</exclude>
-                    </excludes>
+
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -57,10 +55,8 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-                <version>3.3</version>
+                <version>3.5.1</version>
             </plugin>
-
         </plugins>
     </build>
-
 </project>

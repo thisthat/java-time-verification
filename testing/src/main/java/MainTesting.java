@@ -1,6 +1,3 @@
-package testing;
-
-
 /* WALA
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IMethod;
@@ -12,18 +9,77 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.ssa.SSAOptions;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.io.FileProvider;
-*/
+
 
 import org.neo4j.driver.v1.*;
+*/
+
+
+import IntermediateModelHelper.heuristic.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.JDTVisitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import parser.Java2AST;
+import parser.exception.ParseErrorsException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class Main {
+public class MainTesting {
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ParseErrorsException {
+		new MainTesting().run();
+	}
 
+	public void run() throws IOException, ParseErrorsException {
+		List<String> files = new ArrayList<>();
+		files.add( MainTesting.class.getResource("JavaTimerExampleTask.java").getFile() );
+		//files.add( Main.class.getResource("FailoverTimeoutTest.java").getFile() );
+		//files.add( Main.class.getResource("MCGroupImpl.java").getFile() );
+		//files.add( Main.class.getResource("UpnPImpl.java").getFile() );
+
+		for(int i = 0; i < files.size(); i ++){
+
+			String f = files.get(i);
+			Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+			CompilationUnit ast = a.getContextJDT();
+			JDTVisitor v = new JDTVisitor(ast);
+			ast.accept(v);
+
+
+			ApplyHeuristics ah = new ApplyHeuristics();
+			ah.subscribe(ThreadTime.class);
+			ah.subscribe(SocketTimeout.class);
+			ah.subscribe(TimeoutResources.class);
+			ah.subscribe(TimerType.class);
+			ah.subscribe(AnnotatedTypes.class);
+
+			for(ASTClass c : v.listOfClasses){
+
+				ObjectMapper mapper = new ObjectMapper();
+				// Convert object to JSON string
+				String jsonInString = mapper.writeValueAsString(c);
+				System.out.println(jsonInString);
+
+				mapper.writerWithDefaultPrettyPrinter().writeValue(new File("test.json"), c);
+
+				ah.analyze(c);
+				String s = Arrays.toString( ah.getTimeConstraint().toArray() );
+				System.err.println("[" + f + "]");
+				System.err.println(s);
+				System.err.println("__________");
+			}
+		}
 	}
 
 	/*
