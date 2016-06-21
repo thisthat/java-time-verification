@@ -2,89 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3ddf8a66-9957-4c23-8dd3-33e75b5ddb61" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/java-xal.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/intermediate-model/src/test/java/TestClass.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/convert2xal.iml" afterPath="$PROJECT_DIR$/convert2xal/convert2xal.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/pom.xml" afterPath="$PROJECT_DIR$/convert2xal/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java" afterPath="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/intermediate-model.iml" afterPath="$PROJECT_DIR$/intermediate-model/intermediate-model.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/pom.xml" afterPath="$PROJECT_DIR$/intermediate-model/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/ASTREVisitor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/ASTREVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/ASTVisitor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/ASTVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTExpression.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTExpression.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTHasStms.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTHasStms.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTMethod.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTMethod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTRE.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTRE.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTStm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTVar.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTVar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTVisitor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/IASTVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/LocalSearch.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/interfaces/LocalSearch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTAttribute.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTAttribute.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTBreak.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTBreak.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTConstructor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTContinue.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTContinue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTDoWhile.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTDoWhile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTFor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTFor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTForEach.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTForEach.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTIf.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTIf.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTImport.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTImport.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTMethod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTRE.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTRE.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTReturn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTStatic.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTStatic.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSwitch.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSwitch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSynchronized.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTSynchronized.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTThrow.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTThrow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTryResources.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTTryResources.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTVariable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTWhile.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/ASTWhile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTArrayInitializer.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTArrayInitializer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTAssignment.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTAssignment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTAttributeAccess.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTAttributeAccess.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTBinary.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTBinary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTCast.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTCast.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTConditional.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTConditional.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTLiteral.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTLiteral.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMethodCall.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMethodCall.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTMultipleMethodCall.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTNewObject.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTNewObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTPostOp.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTPostOp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTPreOp.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTPreOp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTUnary.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTUnary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTVariableDeclaration.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTVariableDeclaration.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTVariableMultipleDeclaration.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/ASTVariableMultipleDeclaration.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/NotYetImplemented.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/structure/expression/NotYetImplemented.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/ApplyHeuristics.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/CreateIntemediateModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/DefaultASTVisitor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/DefaultASTVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/DefualtASTREVisitor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/DefualtASTREVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/JDTVisitor.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/JDTVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/Getter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParser.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParserJDT.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModel/visitors/utility/REParserJDT.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SearchTimeConstraint.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SearchTimeConstraint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/ThreadTime.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/ThreadTime.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimerType.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimerType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/resources/SmallTest.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/SmallTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/test/java/TestCreationIM.java" afterPath="$PROJECT_DIR$/intermediate-model/src/test/java/TestCreationIM.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/test/java/TestEnvirorment.java" afterPath="$PROJECT_DIR$/intermediate-model/src/test/java/TestEnvirorment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/java-parser.iml" afterPath="$PROJECT_DIR$/java-parser/java-parser.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-parser/pom.xml" afterPath="$PROJECT_DIR$/java-parser/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testing/pom.xml" afterPath="$PROJECT_DIR$/testing/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testing/src/main/java/testing/Main.java" afterPath="$PROJECT_DIR$/testing/src/main/java/testing/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testing/testing.iml" afterPath="$PROJECT_DIR$/testing/testing.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xal/pom.xml" afterPath="$PROJECT_DIR$/xal/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xal/xal.iml" afterPath="$PROJECT_DIR$/xal/xal.iml" />
     </list>
     <ignored path="java-xal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -124,18 +48,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ASTAttribute.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/structure/ASTAttribute.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ASTRE.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/structure/ASTRE.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -149,38 +61,38 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="29" column="28" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
+            <state relative-caret-position="90">
+              <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/intermediate-model/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="46" column="36" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="55" />
+            <state relative-caret-position="294">
+              <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="35" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="intermediate-model-effective-pom.xml" pinned="false" current-in-tab="true">
-        <entry file="mock:///intermediate-model-effective-pom.xml">
+      <file leaf-file-name="ApplyHeuristics.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/visitors/ApplyHeuristics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="250" column="19" selection-start-line="250" selection-start-column="19" selection-end-line="250" selection-end-column="19" />
+            <state relative-caret-position="120">
+              <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java-parser/pom.xml">
+      <file leaf-file-name="Pair.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/Pair.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="60" column="19" selection-start-line="45" selection-start-column="8" selection-end-line="60" selection-end-column="19" />
+            <state relative-caret-position="105">
+              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -189,28 +101,8 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/convert2xal/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="34" column="12" selection-start-line="34" selection-start-column="12" selection-end-line="64" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="org.eclipse.jdt.core-3.12.0.v20160516-2131.pom" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/3rdPartyLibraries/org.eclipse.jdt.core-3.12.0.v20160516-2131.pom">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="26" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="installLocalMaven.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/3rdPartyLibraries/installLocalMaven.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="89" selection-start-line="3" selection-start-column="89" selection-end-line="3" selection-end-column="89" />
+            <state relative-caret-position="240">
+              <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -229,8 +121,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/convert2xal/pom.xml" />
-        <option value="$PROJECT_DIR$/XAL/pom.xml" />
         <option value="$PROJECT_DIR$/intermediate-model/src/test/java/TestCreationIM.java" />
         <option value="$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/visitors/CreateXALTree.java" />
         <option value="$PROJECT_DIR$/testing/pom.xml" />
@@ -240,6 +130,8 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/intermediate-model/src/test/java/TestEnvirorment.java" />
         <option value="$PROJECT_DIR$/java-parser/pom.xml" />
+        <option value="$PROJECT_DIR$/convert2xal/pom.xml" />
+        <option value="$PROJECT_DIR$/XAL/pom.xml" />
         <option value="$PROJECT_DIR$/intermediate-model/pom.xml" />
       </list>
     </option>
@@ -341,6 +233,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XAL" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -561,14 +467,6 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IntermediateModelHelper" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="heuristic" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -596,11 +494,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="IntermediateModelHelper" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="envirorment" />
+              <option name="myItemId" value="intermediateModel" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -633,6 +527,154 @@
               <option name="myItemId" value="intermediateModel" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="visitors" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="convert2xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="convert2xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="convert2xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="convert2xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="convert2xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XALConversion" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java-xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="convert2xal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="XALConversion" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -644,7 +686,7 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.TestCreationIM">
     <configuration default="false" name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -663,6 +705,27 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="intermediate-model" />
       <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestCreationIM" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="intermediate-model" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestCreationIM" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
       <method />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -955,12 +1018,14 @@
       <setting name="rowsRange" value="" />
       <method />
     </configuration>
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.TestCreationIM" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="JUnit.TestCreationIM" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -992,23 +1057,28 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="TestCreationIM - 2016.06.21 at 11h 06m 16s.xml">
+      <configuration name="TestCreationIM" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1413" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.49841145" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329296" sideWeight="0.33717236" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32962668" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.49841145" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329296" sideWeight="0.6628277" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24980143" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24980143" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1055,16 +1125,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XAL/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="41" column="10" selection-start-line="41" selection-start-column="10" selection-end-line="41" selection-end-column="10" />
-          <folding>
-            <marker date="1466494375000" expanded="true" signature="89:1269" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1097,16 +1157,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/structure/ASTConstructor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1120,7 +1170,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="9" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1130,7 +1180,7 @@
         <state relative-caret-position="195">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1154,14 +1204,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="29" column="28" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/3rdPartyLibraries/installLocalMaven.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -1178,36 +1220,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestCreationIM.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/java-parser/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="60" column="19" selection-start-line="45" selection-start-column="8" selection-end-line="60" selection-end-column="19" />
+        <state relative-caret-position="-645">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/convert2xal/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="34" column="12" selection-start-line="34" selection-start-column="12" selection-end-line="64" selection-end-column="21" />
+        <state relative-caret-position="240">
+          <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestCreationIM.java">
+    <entry file="file://$PROJECT_DIR$/XAL/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="60" column="29" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="165">
+          <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/util/Pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/visitors/ApplyHeuristics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="46" column="36" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="55" />
+        <state relative-caret-position="294">
+          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="35" selection-end-column="21" />
           <folding />
         </state>
       </provider>
