@@ -6,6 +6,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
+
+
+	public void dowhileexample(){
+		int count = 1;
+		do {
+			System.out.println("Count is: " + count);
+			count++;
+		} while (count < 11);
+	}
+
 	@Deprecated
 	private Test(int i, int k) {
 

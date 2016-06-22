@@ -1,3 +1,5 @@
+import IntermediateModelHelper.converter.GenerateXAL;
+import XAL.XALStructure.items.XALDocument;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.CreateIntemediateModel;
@@ -54,18 +56,16 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		if(args.length < 1){
-			usage();
-			return;
-		}
+
 
 		List<String> files = new ArrayList<>();
-		files.add( Main.class.getResource("JavaTimerExampleTask.java").getFile() );
-		files.add( Main.class.getResource("FailoverTimeoutTest.java").getFile() );
-		files.add( Main.class.getResource("MCGroupImpl.java").getFile() );
-		files.add( Main.class.getResource("UpnPImpl.java").getFile() );
+		files.add( Main.class.getResource("SmallTest.java").getFile() );
+		//files.add( Main.class.getResource("JavaTimerExampleTask.java").getFile() );
+		//files.add( Main.class.getResource("FailoverTimeoutTest.java").getFile() );
+		//files.add( Main.class.getResource("MCGroupImpl.java").getFile() );
+		//files.add( Main.class.getResource("UpnPImpl.java").getFile() );
 
-		files.add(args[0]);
+		//files.add(args[0]);
 		for(int i = 0; i < files.size(); i ++){
 
 			String f = files.get(i);
@@ -89,6 +89,11 @@ public class Main {
 				System.err.println("[" + f + "]");
 				System.err.println(s);
 				System.err.println("__________");
+
+				//Create XAL
+				GenerateXAL g = new GenerateXAL();
+				c.visit(g);
+				g.getXalDocument().toFile("GenerateXALCFG");
 			}
 		}
 

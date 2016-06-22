@@ -7,7 +7,7 @@ import java.util.TimerTask;
 public class JavaTimerExampleTask extends TimerTask {
 
 	@Override
-	public void run() {
+	public synchronized void run() {
 		System.out.println("The execution of task started at: " + new Date());
 		// put task implementation here
 

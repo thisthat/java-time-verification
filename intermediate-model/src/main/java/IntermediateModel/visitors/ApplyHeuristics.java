@@ -58,8 +58,14 @@ public class ApplyHeuristics {
 			}
 		}
 		build_base_env.buildEnvClass(c);
+		Env e = build_base_env.getEnv();
+		//check static
+		for(ASTStatic s : c.getStaticInit()){
+			analyze(s.getStms(), e);
+		}
+		//check method
 		for(IASTMethod m : c.getMethods()){
-			Env eMethod = new Env(build_base_env.getEnv());
+			Env eMethod = new Env(e);
 			eMethod = build_base_env.checkPars(m.getParameters(), eMethod);
 			analyze(m.getStms(), eMethod );
 		}
@@ -80,6 +86,9 @@ public class ApplyHeuristics {
 			}
 			else if(stm	instanceof ASTContinue){
 				continue; //nothing to check
+			}
+			else if(stm	instanceof ASTDoWhile){
+				analyze((ASTDoWhile)stm, env);
 			}
 			else if(stm	instanceof ASTFor){
 				analyze((ASTFor)stm, env);
@@ -102,12 +111,14 @@ public class ApplyHeuristics {
 			else if(stm	instanceof ASTThrow){
 				analyze((ASTThrow)stm, env);
 			}
-			else if(stm	instanceof ASTTry){
-				analyze((ASTTry)stm, env);
-			}
+			//the order is important because ASTTry is extended by ASTTryResources
 			else if(stm	instanceof ASTTryResources){
 				analyze((ASTTryResources)stm, env);
 			}
+			else if(stm	instanceof ASTTry){
+				analyze((ASTTry)stm, env);
+			}
+
 			else if(stm	instanceof ASTWhile){
 				analyze((ASTWhile)stm, env);
 			}
@@ -131,6 +142,12 @@ public class ApplyHeuristics {
 		build_base_env.checkRE(r, env);
 		//call the strategies
 		applyStep(r, env);
+	}
+
+	private void analyze(ASTDoWhile elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		applyStep(elm, new_env);
 	}
 
 	private void analyze(ASTFor elm, Env env) {

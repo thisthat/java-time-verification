@@ -23,6 +23,10 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		this.expression = expression;
 	}
 
+	public String getExpressionName(){
+		return expression.getClass().getSimpleName();
+	}
+
 	@Override
 	public String toString() {
 		if(expression == null)

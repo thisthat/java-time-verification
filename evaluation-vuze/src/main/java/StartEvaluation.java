@@ -43,7 +43,8 @@ public class StartEvaluation {
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
-
+		int n = 0;
+		int n_h = 0;
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
 
@@ -55,6 +56,8 @@ public class StartEvaluation {
 
 				ah.analyze(c);
 				if(ah.getTimeConstraint().size() > 0) {
+					n++;
+					n_h += ah.getTimeConstraint().size();
 					String s = Arrays.toString(ah.getTimeConstraint().toArray());
 					System.out.println("[" + filename + "]");
 					System.out.println(s);
@@ -62,5 +65,6 @@ public class StartEvaluation {
 				}
 			}
 		}
+		System.out.println("Found " + n_h + " in " + n + "files");
 	}
 }
