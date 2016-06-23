@@ -115,12 +115,30 @@ public class XALAutomaton extends XALItem implements XALAddState {
         this.states.add(s);
     }
 
-    private boolean existState(XALState s){
+    public boolean existState(XALState s){
         return this.existState(s.getId());
     }
 
-    private boolean existState(String s){
-        return this.states.stream().anyMatch(state -> (state.getId().equals(s)));
+    public boolean existState(String s){
+        //return this.states.stream().anyMatch(state -> (state.getId().equals(s)));
+        return existState(this.getStates(), s);
+    }
+
+    private boolean existState(List<XALState> states, String id){
+        boolean find = false;
+        for(XALState state : states){
+            if(state instanceof XALAddState){
+                boolean t = existState(((XALAddState) state).getStates(), id);
+				if(!find){
+					find = t;
+				}
+            } else {
+                if(state.getId().equals(id)){
+                   find = true;
+                }
+            }
+        }
+        return find;
     }
 
 

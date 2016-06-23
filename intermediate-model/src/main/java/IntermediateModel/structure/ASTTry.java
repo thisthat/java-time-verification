@@ -82,6 +82,10 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 			this.expr = expr;
 		}
 
+		public ASTVariable getExpr() {
+			return expr;
+		}
+
 		@Override
 		public void addStms(IASTStm stm) {
 			this.stms.add(stm);

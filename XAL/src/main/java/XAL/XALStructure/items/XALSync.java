@@ -18,13 +18,15 @@ public class XALSync extends XALState implements XALAddState {
 
 
     List<XALState> states = new ArrayList<XALState>();
+    XALAddState parent;
 
     /**
      * Check the super method in {@link XALState}
      * @param id The id of the state
      */
-    public XALSync(String id) {
+    public XALSync(String id, XALAddState parent) {
         super(id);
+        this.parent = parent;
     }
 
     /**
@@ -62,12 +64,12 @@ public class XALSync extends XALState implements XALAddState {
         this.states.add(state);
     }
 
-    private boolean existState(XALState s){
-        return this.existState(s.getId());
+    public boolean existState(XALState s){
+        return parent.existState(s.getId());
     }
 
-    private boolean existState(String s){
-        return this.states.stream().anyMatch(state -> (state.getId().equals(s)));
+	public boolean existState(String s){
+        return parent.existState(s);
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.Collection;
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 
 
-	public void dowhileexample(){
+	public synchronized void dowhileexample(){
 		int count = 1;
 		do {
 			System.out.println("Count is: " + count);
@@ -18,6 +18,15 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 			System.out.print();
 		}
 		end();
+	}
+
+	public void whileExample(){
+		int count = 0;
+		while (count < 100) {  // test: boolean test within (..)
+			System.out.println("count:" + count);  // body: statements within {..}
+			count = count + 1;
+		}
+		System.out.println("all done!");
 	}
 
 	@Deprecated
@@ -125,14 +134,19 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		synchronized(monthString) {
 			//inside the
 			System.out.print(stmttt.toString());
+			int i;
 		}
 
+		System.out.println(monthString);
 
-		try (
+		try
+			/*	(
+
 				FileWriter fw = new FileWriter("");
 				BufferedWriter bw = new BufferedWriter(fw);
 				BufferedWriter aw = new BufferedWriter(fw);
-		) {
+		) */ {
+
 			bw.write("");
 		} catch(Exception e){
 			throw new Exception("Exc");System.out.print("str");

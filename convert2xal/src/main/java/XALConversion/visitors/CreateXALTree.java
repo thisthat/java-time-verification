@@ -88,7 +88,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
                     c.getText().equals("synchronized")
                     ){
                 //it is a synchronized method
-                XALSync s = new XALSync(ctx.getChild(0).getText());
+                XALSync s = new XALSync(ctx.getChild(0).getText(), current_automata);
                 current_automata.addState(s);
                 stackSync.push(s);
                 insideSync = true;
@@ -407,7 +407,7 @@ public class CreateXALTree extends Java8CommentSupportedBaseListener {
 
     @Override
     public void enterSynchronizedStatement(@NotNull SynchronizedStatementContext ctx) {
-        XALSync s = new XALSync(ctx.getChild(2).getText());
+        XALSync s = new XALSync(ctx.getChild(2).getText(), current_automata);
         current_automata.addState(s);
         stackSync.push(s);
         insideSync = true;

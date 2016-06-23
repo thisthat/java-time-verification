@@ -69,7 +69,7 @@ public class GenerateXAL {
 		}
 		lastAutomatonWhereAdd = xalAutomaton;
 		if(elm.isSyncronized()){
-			XALSync sync = new XALSync(elm.getName());
+			XALSync sync = new XALSync(elm.getName(), lastAutomatonWhereAdd);
 			xalAutomaton.addState(sync);
 			lastAutomatonWhereAdd = sync;
 		}
@@ -120,6 +120,14 @@ public class GenerateXAL {
 	private void convertReturn(ASTReturn elm) {
 		XALState s = new XALState("return" + elm.getExpr().getExpressionName());
 		addState(s);
+		lastAutomaton.addFinalState(s);
+	}
+
+
+	private void convertThrow(ASTThrow elm){
+		XALState s = new XALState("throw" + elm.getExpr().getExpressionName());
+		addState(s);
+		lastAutomaton.addFinalState(s);
 	}
 
 	private void convertIf(ASTIf elm) {
@@ -154,8 +162,8 @@ public class GenerateXAL {
 		XALState _do = new XALState("do");
 		XALState _enddo = new XALState("enddo");
 		XALState _checkExpr = new XALState("check");
-		lastAutomaton.addState(_do);
-		lastAutomaton.addState(_enddo);
+		lastAutomatonWhereAdd.addState(_do);
+		lastAutomatonWhereAdd.addState(_enddo);
 		XALTransition tinit = new XALTransition(lastState,_do);
 		lastAutomaton.addTransition(tinit);
 		lastState = _do;
@@ -296,6 +304,145 @@ public class GenerateXAL {
 		lastState = _exit;
 	}
 
+	private void convertSyncronized(ASTSynchronized elm){
+		XALAddState bck = lastAutomatonWhereAdd;
+		XALSync s = new XALSync(elm.getExpr().getExpressionName(), bck);
+		lastAutomatonWhereAdd.addState(s);
+		lastAutomatonWhereAdd = s;
+
+		for(IASTStm stm : elm.getStms()){
+			dispachStm(stm);
+		}
+
+		lastAutomatonWhereAdd = bck;
+	}
+
+	private void convertTryResource(ASTTryResources elm){
+		XALState _enter = new XALState("try");
+		XALState _finally = new XALState("finally");
+		XALState _exit = new XALState("endtry");
+
+		lastAutomatonWhereAdd.addState(_enter);
+		lastAutomatonWhereAdd.addState(_finally);
+		lastAutomatonWhereAdd.addState(_exit);
+
+		XALTransition tInit = new XALTransition(lastState, _enter);
+		lastAutomaton.addTransition(tInit);
+		lastState = _enter;
+		for(IASTStm stm :elm.getTryBranch().getStms()){
+			dispachStm(stm);
+		}
+
+		XALTransition tFinally = new XALTransition(lastState, _finally);
+		lastAutomaton.addTransition(tFinally);
+		lastState = _finally;
+		for(IASTStm stm : elm.getFinallyBranch().getStms()){
+			dispachStm(stm);
+		}
+		//release of resources
+		for(ASTRE r : elm.getResources()){
+			XALState s = new XALState("close_" + r.getExpressionName());
+			addState(s);
+		}
+		XALTransition tEnd = new XALTransition(lastState, _exit);
+		lastAutomaton.addTransition(tEnd);
+
+		//catch?
+		if(elm.getCatchBranch().size() > 0){
+			XALState _catch = new XALState("catch");
+			XALTransition tCatch = new XALTransition(_enter, _catch);
+			lastAutomatonWhereAdd.addState(_catch);
+			lastAutomaton.addTransition(tCatch);
+			for(ASTTry.ASTCatchBranch c : elm.getCatchBranch()){
+				lastState = _catch;
+				XALState s = new XALState(c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType());
+				addState(s);
+				lastState = s;
+				metricValue = XALTransition.METRIC_TRUE;
+				for(IASTStm stm : c.getStms()){
+					dispachStm(stm);
+				}
+				XALTransition tClose = new XALTransition(lastState, _exit);
+				lastAutomaton.addTransition(tClose);
+			}
+		}
+	}
+
+	private void convertTry(ASTTry elm){
+		XALState _enter = new XALState("try");
+		XALState _finally = new XALState("finally");
+		XALState _exit = new XALState("endtry");
+
+		lastAutomatonWhereAdd.addState(_enter);
+		lastAutomatonWhereAdd.addState(_finally);
+		lastAutomatonWhereAdd.addState(_exit);
+
+		XALTransition tInit = new XALTransition(lastState, _enter);
+		lastAutomaton.addTransition(tInit);
+		lastState = _enter;
+		for(IASTStm stm :elm.getTryBranch().getStms()){
+			dispachStm(stm);
+		}
+
+		XALTransition tFinally = new XALTransition(lastState, _finally);
+		lastAutomaton.addTransition(tFinally);
+		lastState = _finally;
+		for(IASTStm stm : elm.getFinallyBranch().getStms()){
+			dispachStm(stm);
+		}
+
+		XALTransition tEnd = new XALTransition(lastState, _exit);
+		lastAutomaton.addTransition(tEnd);
+
+		//catch?
+		if(elm.getCatchBranch().size() > 0){
+			XALState _catch = new XALState("catch");
+			XALTransition tCatch = new XALTransition(_enter, _catch);
+			lastAutomatonWhereAdd.addState(_catch);
+			lastAutomaton.addTransition(tCatch);
+			for(ASTTry.ASTCatchBranch c : elm.getCatchBranch()){
+				lastState = _catch;
+				XALState s = new XALState(c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType());
+				addState(s);
+				lastState = s;
+				metricValue = XALTransition.METRIC_TRUE;
+				for(IASTStm stm : c.getStms()){
+					dispachStm(stm);
+				}
+				XALTransition tClose = new XALTransition(lastState, _exit);
+				lastAutomaton.addTransition(tClose);
+			}
+		}
+	}
+
+	private void convertWhile(ASTWhile elm){
+		XALState _enter = new XALState("while");
+		XALState _exit = new XALState("endWhile");
+		lastAutomatonWhereAdd.addState(_enter);
+		lastAutomatonWhereAdd.addState(_exit);
+
+
+		XALTransition tInit = new XALTransition(lastState, _enter);
+		lastAutomaton.addTransition(tInit);
+
+		lastState = _enter;
+		//check
+		convertRE(elm.getExpr());
+		XALState guard = lastState;
+		//go to end
+		XALTransition tClose = new XALTransition(lastState, _exit, XALTransition.METRIC_FALSE);
+		lastAutomaton.addTransition(tClose);
+
+		metricValue = XALTransition.METRIC_TRUE;
+		for(IASTStm stm : elm.getStms()){
+			dispachStm(stm);
+		}
+
+		XALTransition tGuard = new XALTransition(lastState, guard);
+		lastAutomaton.addTransition(tGuard);
+		lastState = _exit;
+	}
+
 
 	private void dispachStm(IASTStm stm){
 		if (stm instanceof ASTRE){
@@ -324,23 +471,23 @@ public class GenerateXAL {
 		}
 		else if(stm	instanceof ASTSwitch){
 			convertASTSwitch((ASTSwitch)stm);
-		}/*
+		}
 		else if(stm	instanceof ASTSynchronized){
-			dispachStm((ASTSynchronized)stm);
+			convertSyncronized((ASTSynchronized)stm);
 		}
 		else if(stm	instanceof ASTThrow){
-			dispachStm((ASTThrow)stm);
+			convertThrow((ASTThrow)stm);
 		}
 		//the order is important because ASTTry is extended by ASTTryResources
 		else if(stm	instanceof ASTTryResources){
-			dispachStm((ASTTryResources)stm);
+			convertTryResource((ASTTryResources)stm);
 		}
 		else if(stm	instanceof ASTTry){
-			dispachStm((ASTTry)stm);
+			convertTry((ASTTry)stm);
 		}
 		else if(stm	instanceof ASTWhile){
-			dispachStm((ASTWhile)stm);
-		}*/
+			convertWhile((ASTWhile)stm);
+		}
 	}
 
 	public void addState(XALState state){

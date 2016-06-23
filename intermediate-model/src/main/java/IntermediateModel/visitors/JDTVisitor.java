@@ -501,6 +501,15 @@ public class JDTVisitor extends ASTVisitor {
 		return true;
 	}
 
+	@Override
+	public boolean visit(ThrowStatement node) {
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		ASTThrow _throw = new ASTThrow(start, stop, getExprState(node.getExpression()) );
+		lastMethod.addStms(_throw);
+		return true;
+	}
+
 	protected ASTRE getExprState(ASTNode ctx){
 		if(ctx == null)
 			return null;
