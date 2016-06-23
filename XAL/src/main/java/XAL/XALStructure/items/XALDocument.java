@@ -62,7 +62,7 @@ public class XALDocument extends XALItem {
             out.close();
         } catch (Exception e) {
             //If a system IO error occurs, it is not a problem. Just report that it happened.
-            System.err.println("Error in generating XAL file");
+            System.err.println("Error in generating XAL file : " + e.getMessage());
         }
     }
 

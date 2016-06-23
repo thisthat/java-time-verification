@@ -15,6 +15,7 @@ public class XALState extends XALItem {
     protected String idAction = null;
     protected String idMetric = null;
     protected String style = "x:31; y:44; h:30; w:49";
+    protected String timeConstraint = "";
 
     /**
      * Enumeration that allows the constructor to chose between action or metric
@@ -80,6 +81,14 @@ public class XALState extends XALItem {
 
     public String getIdMetric() {
         return idMetric;
+    }
+
+    public String getTimeConstraint() {
+        return timeConstraint;
+    }
+
+    public void setTimeConstraint(String timeConstraint) {
+        this.timeConstraint = timeConstraint;
     }
 
     @Override

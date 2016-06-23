@@ -59,8 +59,8 @@ public class Main {
 
 
 		List<String> files = new ArrayList<>();
-		files.add( Main.class.getResource("SmallTest.java").getFile() );
-		//files.add( Main.class.getResource("JavaTimerExampleTask.java").getFile() );
+		//files.add( Main.class.getResource("SmallTest.java").getFile() );
+		files.add( Main.class.getResource("JavaTimerExampleTask.java").getFile() );
 		//files.add( Main.class.getResource("FailoverTimeoutTest.java").getFile() );
 		//files.add( Main.class.getResource("MCGroupImpl.java").getFile() );
 		//files.add( Main.class.getResource("UpnPImpl.java").getFile() );

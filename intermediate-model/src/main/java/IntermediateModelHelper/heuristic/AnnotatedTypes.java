@@ -63,11 +63,9 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 				}
 			}
 		}
-
 		if(found){
 			this.addConstraint(stm);
 		}
-
 	}
 
 	@Override

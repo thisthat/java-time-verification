@@ -27,6 +27,7 @@ public class GenerateXAL {
 	String metricValue = "";
 	boolean isSwitch = false;
 	List<XALState> switchLabels = new ArrayList<>();
+	IASTStm lastStm = null;
 
 	public XALDocument getXalDocument() {
 		return xalDocument;
@@ -106,27 +107,27 @@ public class GenerateXAL {
 
 	private void convertRE(ASTRE elm) {
 		XALState s = new XALState(elm.getExpressionName());
-		addState(s);
+		addState(s, elm);
 	}
 	private void convertBreak(ASTBreak elm) {
 		XALState s = new XALState("break");
-		addState(s);
+		addState(s, elm);
 	}
 	private void convertContinue(ASTContinue elm) {
 		XALState s = new XALState("continue");
-		addState(s);
+		addState(s, elm);
 	}
 
 	private void convertReturn(ASTReturn elm) {
 		XALState s = new XALState("return" + elm.getExpr().getExpressionName());
-		addState(s);
+		addState(s, elm);
 		lastAutomaton.addFinalState(s);
 	}
 
 
 	private void convertThrow(ASTThrow elm){
 		XALState s = new XALState("throw" + elm.getExpr().getExpressionName());
-		addState(s);
+		addState(s, elm);
 		lastAutomaton.addFinalState(s);
 	}
 
@@ -336,13 +337,15 @@ public class GenerateXAL {
 		XALTransition tFinally = new XALTransition(lastState, _finally);
 		lastAutomaton.addTransition(tFinally);
 		lastState = _finally;
-		for(IASTStm stm : elm.getFinallyBranch().getStms()){
-			dispachStm(stm);
+		if(elm.getFinallyBranch() != null) {
+			for (IASTStm stm : elm.getFinallyBranch().getStms()) {
+				dispachStm(stm);
+			}
 		}
 		//release of resources
 		for(ASTRE r : elm.getResources()){
 			XALState s = new XALState("close_" + r.getExpressionName());
-			addState(s);
+			addState(s, r);
 		}
 		XALTransition tEnd = new XALTransition(lastState, _exit);
 		lastAutomaton.addTransition(tEnd);
@@ -356,7 +359,7 @@ public class GenerateXAL {
 			for(ASTTry.ASTCatchBranch c : elm.getCatchBranch()){
 				lastState = _catch;
 				XALState s = new XALState(c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType());
-				addState(s);
+				addState(s, c);
 				lastState = s;
 				metricValue = XALTransition.METRIC_TRUE;
 				for(IASTStm stm : c.getStms()){
@@ -366,6 +369,7 @@ public class GenerateXAL {
 				lastAutomaton.addTransition(tClose);
 			}
 		}
+		lastState = _exit;
 	}
 
 	private void convertTry(ASTTry elm){
@@ -387,8 +391,10 @@ public class GenerateXAL {
 		XALTransition tFinally = new XALTransition(lastState, _finally);
 		lastAutomaton.addTransition(tFinally);
 		lastState = _finally;
-		for(IASTStm stm : elm.getFinallyBranch().getStms()){
-			dispachStm(stm);
+		if(elm.getFinallyBranch() != null) {
+			for (IASTStm stm : elm.getFinallyBranch().getStms()) {
+				dispachStm(stm);
+			}
 		}
 
 		XALTransition tEnd = new XALTransition(lastState, _exit);
@@ -403,7 +409,7 @@ public class GenerateXAL {
 			for(ASTTry.ASTCatchBranch c : elm.getCatchBranch()){
 				lastState = _catch;
 				XALState s = new XALState(c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType());
-				addState(s);
+				addState(s, c);
 				lastState = s;
 				metricValue = XALTransition.METRIC_TRUE;
 				for(IASTStm stm : c.getStms()){
@@ -413,6 +419,7 @@ public class GenerateXAL {
 				lastAutomaton.addTransition(tClose);
 			}
 		}
+		lastState = _exit;
 	}
 
 	private void convertWhile(ASTWhile elm){
@@ -490,17 +497,23 @@ public class GenerateXAL {
 		}
 	}
 
-	public void addState(XALState state){
+	public void addState(XALState state, IASTStm stm){
+
 		lastAutomatonWhereAdd.addState(state);
+		XALTransition transition = null;
 		if(isSwitch){
 			isSwitch = false;
 			for(XALState last : switchLabels){
-				XALTransition transition = new XALTransition(last, state);
+				transition = new XALTransition(last, state);
 				lastAutomaton.addTransition(transition);
 			}
 		} else {
-			XALTransition transition = new XALTransition(this.lastState, state, this.metricValue);
+			transition = new XALTransition(this.lastState, state, this.metricValue);
 			lastAutomaton.addTransition(transition);
+		}
+		if(stm.isTimeCritical() && stm.getConstraint() != null){
+			String constraint = "<ClockConstraint ClockExp=\"" + stm.getConstraint().getSecond() +"\"/>";
+			state.setTimeConstraint(constraint);
 		}
 		this.lastState = state;
 		this.metricValue = "";

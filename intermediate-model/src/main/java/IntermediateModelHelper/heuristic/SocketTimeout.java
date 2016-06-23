@@ -74,6 +74,7 @@ public class SocketTimeout extends SearchTimeConstraint {
 		}
 		if(found){
 			this.addConstraint(stm.getLine(), stm.getCode());
+			stm.addConstraint(stm.getLine(), value_timeout);
 			found = false;
 		}
 

@@ -40,6 +40,8 @@ public class ThreadTime extends SearchTimeConstraint {
 
 		boolean found = false;
 
+		String time = "wait";
+
 		//Search if is in the form Thread.sleep
 		ASTMethodCall mc = (ASTMethodCall) expr;
 		if(mc.getMethodName().equals("sleep")){
@@ -60,6 +62,14 @@ public class ThreadTime extends SearchTimeConstraint {
 					if( BuildEnvirormentClass.typeTimeRelevant.stream().anyMatch(type -> (callReconstructed.equals(type))) //static var
 							){
 						found = true;
+					}
+				}
+			}
+
+			if(found){
+				if(mc.getParameters().size() > 0){
+					if(mc.getParameters().get(0) instanceof ASTLiteral){
+						time = ((ASTLiteral) mc.getParameters().get(0)).getValue();
 					}
 				}
 			}
@@ -87,6 +97,7 @@ public class ThreadTime extends SearchTimeConstraint {
 		}
 		if(found){
 			this.addConstraint(stm);
+			stm.addConstraint(stm.getLine(), time);
 		}
 
 	}

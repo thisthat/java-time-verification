@@ -2,6 +2,9 @@ package XAL.XALStructure.items;
 
 import XAL.XALStructure.XALItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class used to represent a metric.
  * @TODO support the possibilities to use time constraint as well
@@ -16,50 +19,31 @@ public class XALTransition extends XALItem {
 
     private String from;
     private String to;
+	private XALState fromState;
+	private XALState toState;
     private String metricValue = null;
     private String style;
 
     public XALTransition(XALState from, XALState to) {
         this.from = from.getId();
         this.to = to.getId();
+		this.fromState = from;
+		this.toState = to;
         this.style = "[]";
     }
 
-    public XALTransition(String from, String to) {
-        this.from = from;
-        this.to = to;
-        this.style = "[]";
-    }
 
     public XALTransition(XALState from, XALState to, String metricValue) {
         this.from = from.getId();
         this.to = to.getId();
+		this.fromState = from;
+		this.toState = to;
         this.metricValue = metricValue;
         this.style = "[]";
     }
 
-    public XALTransition(String from, String to, String metricValue) {
-        this.from = from;
-        this.to = to;
-        this.metricValue = metricValue;
-        this.style = "[]";
-    }
 
-    public XALTransition(XALState from, XALState to, String metricValue, String style) {
-        this.from = from.getId();
-        this.to = to.getId();
-        this.metricValue = metricValue;
-        this.style = style;
-    }
-
-    public XALTransition(String from, String to, String metricValue, String style) {
-        this.from = from;
-        this.to = to;
-        this.metricValue = metricValue;
-        this.style = style;
-    }
-
-    public String getMetricValue() {
+	public String getMetricValue() {
         return metricValue;
     }
 
@@ -84,7 +68,14 @@ public class XALTransition extends XALItem {
         String out = tab(tab) + String.format("<Transition IdInputState=\"%s\" IdOutputState=\"%s\" ",this.from, this.to);
         if(this.metricValue != null)
             out += String.format("MetricValue=\"%s\" ",this.metricValue);
-        out += String.format("style=\"%s\" />", this.style );
+        out += String.format("style=\"%s\"", this.style );
+		if(!fromState.getTimeConstraint().equals("")){
+			out += ">\n";
+			out += tab(tab+1) + fromState.getTimeConstraint();
+			out += tab(tab) + "</Transition>";
+		} else {
+			out += " />";
+		}
         return out;
     }
 
