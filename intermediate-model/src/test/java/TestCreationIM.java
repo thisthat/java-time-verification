@@ -105,29 +105,4 @@ public class TestCreationIM {
 
 	}
 
-	@Test
-	public void TestAllFilesParsedCorrectly() throws Exception {
-		setUpJDT("changevis");
-		if(__report && fileNotParsed.size() > 0){
-			System.err.println("-- List file not correctly parsed --");
-			for(Pair<String,String> f : fileNotParsed){
-				System.err.println("[" + f.getFirst() + "]");
-				System.err.println(f.getSecond());
-			}
-		}
-		if(__report && reNotParsed.size() > 0){
-			System.err.println("-- List RE not correctly parsed --");
-			for(Pair<String,NotYetImplemented> re : reNotParsed){
-				System.err.println("[" + re.getFirst() + "]");
-				System.err.println(re.getSecond());
-			}
-			System.err.println("Total REXP in the project: " + totalREXP);
-			System.err.println("Total REXP not parsed the project: " + reNotParsed.size());
-			System.err.println("% " + 100*((double)reNotParsed.size() / (double)totalREXP));
-		}
-		assertEquals(0,fileNotParsed.size());
-		assertEquals(0,reNotParsed.size());
-
-	}
-
 }
