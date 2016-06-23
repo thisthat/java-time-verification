@@ -53,6 +53,10 @@ public class ASTSwitch extends IASTStm {
 			return stms;
 		}
 
+		public List<String> getLabels() {
+			return labels;
+		}
+
 		@Override
 		public String toString() {
 			String out = "";

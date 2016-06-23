@@ -14,11 +14,15 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 			System.out.println("Count is: " + count);
 			count++;
 		} while (count < 11);
+		if( 1 < 0){
+			System.out.print();
+		}
+		end();
 	}
 
 	@Deprecated
 	private Test(int i, int k) {
-
+/*
 		sb.append((flag & FLAG_MUSTREFRESH) > 0 ? 'M' : onlySet ? ' ' : 'm');
 
 		k.getElm().toString();
@@ -87,7 +91,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 			System.out.print(stmttt.toString());
 			continue;
 		}
-
+*/
 
 		int month = 8;
 		String monthString;
@@ -103,13 +107,9 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 				break;
 			case 5:  monthString = "May";
 				break;
-			case 6:  monthString = "June";
-				break;
-			case 7:  monthString = "July";
-				break;
-			case 8:  monthString = "August";
-				break;
-			case 9:  monthString = "September";
+			case 6:
+			case 7:
+			case 8: monthString = "June";
 				break;
 			case 10: monthString = "October";
 				break;

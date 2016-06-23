@@ -91,8 +91,7 @@ public class Main {
 				System.err.println("__________");
 
 				//Create XAL
-				GenerateXAL g = new GenerateXAL();
-				c.visit(g);
+				GenerateXAL g = new GenerateXAL(c);
 				g.getXalDocument().toFile("GenerateXALCFG");
 			}
 		}
