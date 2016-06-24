@@ -56,9 +56,9 @@ public class TimerType extends SearchTimeConstraint {
 					if(mc.getParameters().size() > 1){
 						IASTRE r = mc.getParameters().get(1);
 						if(r instanceof ASTLiteral){
-							stm.addConstraint(stm.getLine(), ((ASTLiteral) r).getValue());
+							stm.addConstraint(stm.getLine(), ((ASTLiteral) r).getValue(), TimerType.class);
 						} else {
-							stm.addConstraint(stm.getLine(), r.toString());
+							stm.addConstraint(stm.getLine(), r.toString(), TimerType.class);
 						}
 					}
 				}

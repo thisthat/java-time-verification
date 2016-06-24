@@ -97,7 +97,7 @@ public class ThreadTime extends SearchTimeConstraint {
 		}
 		if(found){
 			this.addConstraint(stm);
-			stm.addConstraint(stm.getLine(), time);
+			stm.addConstraint(stm.getLine(), time, ThreadTime.class);
 		}
 
 	}

@@ -3,12 +3,15 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.WriterOutputStream;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.javatuples.Triplet;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -45,13 +48,19 @@ public class StartEvaluation {
 		ah.subscribe(AnnotatedTypes.class);
 		int n = 0;
 		int n_h = 0;
+
+		//Storage file
+		PrintWriter writer = new PrintWriter("vuze.csv", "UTF-8");
+		writer.println("package;file;line;code;type;correct");
+
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
-
 			Java2AST a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
 			CompilationUnit result = a.getContextJDT();
 			JDTVisitor v = new JDTVisitor(result);
 			result.accept(v);
+			//pp filename
+			filename = filename.substring( filename.indexOf("/vuze") );
 			for(ASTClass c : v.listOfClasses){
 
 				ah.analyze(c);
@@ -59,12 +68,25 @@ public class StartEvaluation {
 					n++;
 					n_h += ah.getTimeConstraint().size();
 					String s = Arrays.toString(ah.getTimeConstraint().toArray());
-					System.out.println("[" + filename + "]");
-					System.out.println(s);
-					System.out.println("__________");
+					//System.out.println("[" + filename + "]");
+					//System.out.println(s);
+					//System.out.println("__________");
+					for(Triplet<Integer,String,Class> t : ah.getTimeConstraint()){
+						//pp code
+						String code = t.getValue1();
+						code = code.replace("\n", "");
+						code = code.replace("\r", "");
+						code = code.replace("\t", " ");
+						code = code.replace(";", "");
+						writer.println(String.format("%s;%s;%s;%s;%s", c.getPackageName(), filename, t.getValue0(), code, t.getValue2().getSimpleName() ));
+					}
+
 				}
+
 			}
+
 		}
-		System.out.println("Found " + n_h + " in " + n + "files");
+
+		writer.close();
 	}
 }

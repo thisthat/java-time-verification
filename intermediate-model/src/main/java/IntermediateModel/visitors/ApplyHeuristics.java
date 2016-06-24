@@ -6,10 +6,10 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
-import XALConversion.util.Pair;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.heuristic.SearchTimeConstraint;
+import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +25,6 @@ import java.util.List;
  */
 public class ApplyHeuristics {
 
-	private boolean isThread;
-	public final String _THREAD_CLASS_ = "Thread";
-	public final String _THREAD_INTERFACE_ = "Runnable";
 	private BuildEnvirormentClass build_base_env = null;
 	private List<SearchTimeConstraint> strategies = new ArrayList<>();
 	private List<Class<? extends SearchTimeConstraint>> strategiesTypes = new ArrayList<>();
@@ -264,8 +261,8 @@ public class ApplyHeuristics {
 	}
 
 
-	public List<Pair<Integer, String>> getTimeConstraint() {
-		List<Pair<Integer, String>> out = new ArrayList<>();
+	public List<Triplet<Integer, String, Class>> getTimeConstraint() {
+		List<Triplet<Integer, String, Class>> out = new ArrayList<>();
 		for(SearchTimeConstraint s : strategies){
 			out.addAll(s.getTimeConstraint());
 		}

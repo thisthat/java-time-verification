@@ -19,6 +19,7 @@ import java.util.Map;
 public class Env {
 	private Env prev;
 	private List<IASTVar> varList;
+	private Map<String, ArrayList<Integer>> flags = new HashMap<>();
 	private Map<String, Env> methodList;
 
 	{
@@ -59,6 +60,23 @@ public class Env {
 		} else {
 			return null;
 		}
+	}
+
+	public void addFlag(String v, Integer flag){
+		ArrayList<Integer> fv = new ArrayList<>();
+		if(flags.containsKey(v)){
+			fv = flags.get(v);
+		}
+		fv.add(flag);
+		flags.put(v, fv);
+	}
+
+	public boolean existFlag(String v, Integer flag){
+		ArrayList<Integer> fv = new ArrayList<>();
+		if(flags.containsKey(v)){
+			fv = flags.get(v);
+		}
+		return fv.contains(flag) || this.prev.existFlag(v,flag);
 	}
 
 	public IASTVar getLastVarByTime(String v){

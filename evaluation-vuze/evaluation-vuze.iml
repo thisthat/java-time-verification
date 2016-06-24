@@ -35,5 +35,6 @@
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="module" module-name="convert2xal" />
     <orderEntry type="module" module-name="xal" />
+    <orderEntry type="library" name="Maven: org.javatuples:javatuples:1.2" level="project" />
   </component>
 </module>

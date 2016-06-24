@@ -1,13 +1,13 @@
 package intermediateModel.interfaces;
 
-import XALConversion.util.Pair;
+
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
+import org.javatuples.Triplet;
 import parser.ASTSrc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -39,15 +39,15 @@ public abstract class IASTStm implements IASTVisitor{
 	public Token endToken = null;
 	public String code = "";
 	public int line;
-	protected Pair<Integer,String> constraint = null;
+	protected Triplet<Integer,String, Class> constraint = null;
 
-	public Pair<Integer,String> getConstraint(){
+	public Triplet<Integer,String, Class> getConstraint(){
 		return constraint;
 	}
 
-	public void addConstraint(Integer line, String msg){
+	public void addConstraint(Integer line, String msg, Class heuristic){
 		isTimeCritical = true;
-		constraint = new Pair(line,msg);
+		constraint = new Triplet<>(line,msg, heuristic);
 	}
 
 	private boolean isTimeCritical = false;

@@ -24,6 +24,7 @@ public class SocketTimeout extends SearchTimeConstraint {
 
 	private String value_timeout = "";
 	boolean found = false;
+	private Integer __SOCKET_SOTIMEOUT = 0;
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
@@ -57,6 +58,7 @@ public class SocketTimeout extends SearchTimeConstraint {
 			if(mc.getExprCallee() instanceof ASTLiteral){
 				String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
 				if(!env.existVarName(var_name)) return;
+				env.addFlag(var_name, __SOCKET_SOTIMEOUT);
 				IASTRE par = mc.getParameters().get(0);
 				if(par instanceof ASTLiteral){
 					value_timeout = ((ASTLiteral) par).getValue();
@@ -67,14 +69,16 @@ public class SocketTimeout extends SearchTimeConstraint {
 		if(methodName.equals("receive") || methodName.equals("getOutputStream")){
 			if(mc.getExprCallee() instanceof ASTLiteral){
 				String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
-				if(!env.existVarName(var_name)) return;
+				if(env.existVarName(var_name) && env.existFlag(var_name, __SOCKET_SOTIMEOUT)) {
+					found = true;
+					stm.setTimeCritical(true);
+				}
 			}
-			found = true;
-			stm.setTimeCritical(true);
+
 		}
-		if(found){
+		if(found && !value_timeout.equals("")){
 			this.addConstraint(stm.getLine(), stm.getCode());
-			stm.addConstraint(stm.getLine(), value_timeout);
+			stm.addConstraint(stm.getLine(), value_timeout, SocketTimeout.class);
 			found = false;
 		}
 

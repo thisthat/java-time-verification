@@ -3,7 +3,7 @@ package IntermediateModelHelper.heuristic;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import IntermediateModelHelper.envirorment.Env;
-import XALConversion.util.Pair;
+import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import java.util.List;
 public abstract class SearchTimeConstraint {
 
 	/**
-	 * Stores the list of {@link Pair} of time instruction the heurisitc found.
+	 * Stores the list of {@link Triplet} of time instruction the heurisitc found.
 	 * It saves line and code of the time constraint.
 	 */
-	protected List<Pair<Integer,String>> timeConstraint = new ArrayList<>();
+	protected List<Triplet<Integer,String,Class>> timeConstraint = new ArrayList<>();
 
 	/**
 	 * It used to accept a Statement
@@ -43,7 +43,7 @@ public abstract class SearchTimeConstraint {
 	 * @param stm	The instruction to add to the list
 	 */
 	protected void addConstraint(IASTStm stm){
-		timeConstraint.add( new Pair<Integer, String>(stm.getLine(), stm.getCode()) );
+		timeConstraint.add( new Triplet<>(stm.getLine(), stm.getCode(), getClass()) );
 	}
 
 	/**
@@ -52,14 +52,14 @@ public abstract class SearchTimeConstraint {
 	 * @param src  	The source code
 	 */
 	protected void addConstraint(int line, String src){
-		timeConstraint.add( new Pair<Integer, String>(line, src) );
+		timeConstraint.add( new Triplet<>(line, src, getClass()) );
 	}
 
 	/**
 	 * Getter.
 	 * @return The list of constraint.
 	 */
-	public List<Pair<Integer, String>> getTimeConstraint() {
+	public List<Triplet<Integer, String, Class>> getTimeConstraint() {
 		return timeConstraint;
 	}
 

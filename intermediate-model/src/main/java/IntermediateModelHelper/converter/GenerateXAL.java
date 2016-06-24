@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  *
- *
+ * The class is responsible to convert the IM to the XAL representation.
  *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -27,8 +27,11 @@ public class GenerateXAL {
 	String metricValue = "";
 	boolean isSwitch = false;
 	List<XALState> switchLabels = new ArrayList<>();
-	IASTStm lastStm = null;
 
+	/**
+	 * Method used to get back the {@link XALDocument}
+	 * @return Document that represent the IM in the XAL format
+	 */
 	public XALDocument getXalDocument() {
 		return xalDocument;
 	}
@@ -512,7 +515,7 @@ public class GenerateXAL {
 			lastAutomaton.addTransition(transition);
 		}
 		if(stm.isTimeCritical() && stm.getConstraint() != null){
-			String constraint = "<ClockConstraint ClockExp=\"" + stm.getConstraint().getSecond() +"\"/>";
+			String constraint = "<ClockConstraint ClockExp=\"" + stm.getConstraint().getValue1() +"\"/>";
 			state.setTimeConstraint(constraint);
 		}
 		this.lastState = state;

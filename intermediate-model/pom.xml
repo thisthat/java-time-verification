@@ -30,6 +30,17 @@
             <version>4.10</version>
         </dependency>
         <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>xal</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>java-xal</groupId>
             <artifactId>convert2xal</artifactId>
             <version>0.1-SNAPSHOT</version>
