@@ -49,6 +49,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 
 		if(found[0]){
 			this.addConstraint(stm);
+			stm.addConstraint(stm.getLine(), stm.getCode());
 		}
 
 	}

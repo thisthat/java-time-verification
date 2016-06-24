@@ -3,16 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3ddf8a66-9957-4c23-8dd3-33e75b5ddb61" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALDocument.java" afterPath="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALDocument.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALState.java" afterPath="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALState.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALTransition.java" afterPath="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALTransition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/converter/GenerateXAL.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/converter/GenerateXAL.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/ThreadTime.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/ThreadTime.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xal/pom.xml" afterPath="$PROJECT_DIR$/xal/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimerType.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimerType.java" />
     </list>
     <ignored path="java-xal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,10 +36,11 @@
       <file leaf-file-name="GenerateXAL.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/converter/GenerateXAL.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="832">
+            <state relative-caret-position="7560">
               <caret line="514" column="33" selection-start-line="514" selection-start-column="33" selection-end-line="514" selection-end-column="61" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#760#761#0" expanded="false" />
+                <element signature="e#785#786#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -56,34 +49,28 @@
       <file leaf-file-name="XALState.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1230">
+            <state relative-caret-position="1170">
               <caret line="96" column="68" selection-start-line="96" selection-start-column="68" selection-end-line="96" selection-end-column="68" />
               <folding>
-                <element signature="e#2132#2133#0" expanded="true" />
-                <element signature="e#2169#2170#0" expanded="true" />
-                <element signature="e#2229#2230#0" expanded="true" />
-                <element signature="e#2281#2282#0" expanded="true" />
+                <element signature="e#723#724#0" expanded="false" />
+                <element signature="e#751#752#0" expanded="false" />
+                <element signature="e#1737#1738#0" expanded="false" />
+                <element signature="e#1765#1766#0" expanded="false" />
+                <element signature="e#1807#1808#0" expanded="false" />
+                <element signature="e#1841#1842#0" expanded="false" />
+                <element signature="e#1870#1871#0" expanded="false" />
+                <element signature="e#1895#1896#0" expanded="false" />
+                <element signature="e#1931#1932#0" expanded="false" />
+                <element signature="e#1959#1960#0" expanded="false" />
+                <element signature="e#1994#1995#0" expanded="false" />
+                <element signature="e#2025#2026#0" expanded="false" />
+                <element signature="e#2060#2061#0" expanded="false" />
+                <element signature="e#2091#2092#0" expanded="false" />
+                <element signature="e#2807#2808#0" expanded="false" />
+                <element signature="e#2846#2847#0" expanded="false" />
+                <element signature="e#2976#2977#0" expanded="false" />
+                <element signature="e#3003#3004#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="infocamere_lt_prot.xal" pinned="false" current-in-tab="false">
-        <entry file="file:///Library/WebServer/Documents/automata_crif/bin/infocamere_lt_prot.xal">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="136" column="54" selection-start-line="136" selection-start-column="7" selection-end-line="136" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GenerateXALCFG.xal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GenerateXALCFG.xal">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="42" column="16" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -91,10 +78,23 @@
       <file leaf-file-name="XALTransition.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALTransition.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
+            <state relative-caret-position="900">
               <caret line="73" column="61" selection-start-line="73" selection-start-column="61" selection-end-line="73" selection-end-column="61" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#1110#1111#0" expanded="false" />
+                <element signature="e#1144#1145#0" expanded="false" />
+                <element signature="e#1173#1174#0" expanded="false" />
+                <element signature="e#1198#1199#0" expanded="false" />
+                <element signature="e#1229#1230#0" expanded="false" />
+                <element signature="e#1256#1257#0" expanded="false" />
+                <element signature="e#1296#1297#0" expanded="false" />
+                <element signature="e#1328#1329#0" expanded="false" />
+                <element signature="e#1364#1365#0" expanded="false" />
+                <element signature="e#1392#1393#0" expanded="false" />
+                <element signature="e#2000#2001#0" expanded="false" />
+                <element signature="e#2039#2040#0" expanded="false" />
+                <element signature="e#2168#2169#0" expanded="false" />
+                <element signature="e#2196#2197#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -103,18 +103,58 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
+            <state relative-caret-position="742">
               <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JavaTimerExampleTask.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="JavaTimerExampleTask.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="37" column="12" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
+            <state relative-caret-position="660">
+              <caret line="46" column="5" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SocketTimeout.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="577">
+              <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="60" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TimeoutResources.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="585">
+              <caret line="51" column="58" selection-start-line="51" selection-start-column="58" selection-end-line="51" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TimerType.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimerType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="742">
+              <caret line="64" column="13" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ThreadTime.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/ThreadTime.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="727">
+              <caret line="99" column="13" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -188,6 +228,8 @@
         <option value="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALState.java" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALTransition.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimerType.java" />
       </list>
     </option>
   </component>
@@ -236,9 +278,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -869,6 +910,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1352,33 +1394,33 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1413" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299363" sideWeight="0.49713877" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32426304" sideWeight="0.32644957" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32426304" sideWeight="0.3228753" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2483019" sideWeight="0.4753773" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962668" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.49841145" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24792139" sideWeight="0.44400316" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24792139" sideWeight="0.61993647" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24792139" sideWeight="0.43923748" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24792139" sideWeight="0.61596507" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21247022" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.49841145" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24792139" sideWeight="0.55599684" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24792139" sideWeight="0.5607625" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39833713" sideWeight="0.47498015" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39833713" sideWeight="0.4733916" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955405" sideWeight="0.49841145" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1423,20 +1465,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/java-parser/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1365">
-          <caret line="91" column="21" selection-start-line="81" selection-start-column="11" selection-end-line="91" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testing/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
@@ -1486,7 +1514,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
           <caret line="79" column="49" selection-start-line="75" selection-start-column="16" selection-end-line="79" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1494,9 +1521,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="427">
           <caret line="44" column="43" selection-start-line="44" selection-start-column="43" selection-end-line="44" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1504,7 +1528,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="302">
           <caret line="36" column="59" selection-start-line="36" selection-start-column="59" selection-end-line="36" selection-end-column="59" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1519,7 +1542,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="556">
           <caret line="128" column="0" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1527,10 +1549,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-          <folding>
-            <element signature="e#367#368#0" expanded="false" />
-            <element signature="e#427#428#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1538,7 +1556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1546,10 +1563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="26" column="52" selection-start-line="26" selection-start-column="52" selection-end-line="26" selection-end-column="52" />
-          <folding>
-            <element signature="e#671#672#0" expanded="false" />
-            <element signature="e#722#723#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1564,7 +1577,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1572,7 +1584,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="23" column="18" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1580,7 +1591,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1588,10 +1598,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="269">
           <caret line="80" column="21" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="21" />
-          <folding>
-            <element signature="e#2031#2032#0" expanded="false" />
-            <element signature="e#2049#2050#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1599,23 +1605,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="55" column="28" selection-start-line="55" selection-start-column="28" selection-end-line="55" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1082#1083#0" expanded="false" />
-            <element signature="e#1109#1110#0" expanded="false" />
-            <element signature="e#1148#1149#0" expanded="false" />
-            <element signature="e#1179#1180#0" expanded="false" />
-            <element signature="e#1227#1228#0" expanded="false" />
-            <element signature="e#1247#1248#0" expanded="false" />
-            <element signature="e#2513#2514#0" expanded="false" />
-            <element signature="e#2539#2540#0" expanded="false" />
-            <element signature="e#2566#2567#0" expanded="false" />
-            <element signature="e#2584#2585#0" expanded="false" />
-            <element signature="e#2620#2621#0" expanded="false" />
-            <element signature="e#2643#2644#0" expanded="false" />
-            <element signature="e#2679#2680#0" expanded="false" />
-            <element signature="e#2698#2699#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1631,7 +1620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1639,9 +1627,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1649,9 +1634,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-          <folding>
-            <element signature="e#2027#2028#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1659,7 +1641,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-608">
           <caret line="409" column="75" selection-start-line="409" selection-start-column="75" selection-end-line="409" selection-end-column="75" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1667,10 +1648,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="157">
           <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
-          <folding>
-            <element signature="e#1958#1959#0" expanded="false" />
-            <element signature="e#1978#1979#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1678,7 +1655,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1694,28 +1670,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1466673323000" expanded="false" signature="1424:1461" ph="&lt;~&gt;" />
-            <marker date="1466673323000" expanded="false" signature="1702:1739" ph="&lt;~&gt;" />
-            <marker date="1466673323000" expanded="false" signature="2235:2244" ph="&lt;~&gt;" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/resources/changevis/changevis/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/resources/changevis/changevis/.gitignore" />
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestCreationIM.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="412">
           <caret line="77" column="19" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1723,7 +1685,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1731,22 +1692,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/ThreadTime.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1772,7 +1717,7 @@
         <state relative-caret-position="513">
           <caret line="291" column="0" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1801,17 +1746,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="543">
-          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Library/WebServer/Documents/automata_crif/bin/infocamere_lt_prot.xal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
+        <state relative-caret-position="2040">
           <caret line="136" column="54" selection-start-line="136" selection-start-column="7" selection-end-line="136" selection-end-column="54" />
           <folding />
         </state>
@@ -1819,49 +1756,117 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GenerateXALCFG.xal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="42" column="16" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
+        <state relative-caret-position="585">
+          <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/converter/GenerateXAL.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="832">
+        <state relative-caret-position="7560">
           <caret line="514" column="33" selection-start-line="514" selection-start-column="33" selection-end-line="514" selection-end-column="61" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#760#761#0" expanded="false" />
+            <element signature="e#785#786#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1230">
+        <state relative-caret-position="1170">
           <caret line="96" column="68" selection-start-line="96" selection-start-column="68" selection-end-line="96" selection-end-column="68" />
           <folding>
-            <element signature="e#2132#2133#0" expanded="true" />
-            <element signature="e#2169#2170#0" expanded="true" />
-            <element signature="e#2229#2230#0" expanded="true" />
-            <element signature="e#2281#2282#0" expanded="true" />
+            <element signature="e#723#724#0" expanded="false" />
+            <element signature="e#751#752#0" expanded="false" />
+            <element signature="e#1737#1738#0" expanded="false" />
+            <element signature="e#1765#1766#0" expanded="false" />
+            <element signature="e#1807#1808#0" expanded="false" />
+            <element signature="e#1841#1842#0" expanded="false" />
+            <element signature="e#1870#1871#0" expanded="false" />
+            <element signature="e#1895#1896#0" expanded="false" />
+            <element signature="e#1931#1932#0" expanded="false" />
+            <element signature="e#1959#1960#0" expanded="false" />
+            <element signature="e#1994#1995#0" expanded="false" />
+            <element signature="e#2025#2026#0" expanded="false" />
+            <element signature="e#2060#2061#0" expanded="false" />
+            <element signature="e#2091#2092#0" expanded="false" />
+            <element signature="e#2807#2808#0" expanded="false" />
+            <element signature="e#2846#2847#0" expanded="false" />
+            <element signature="e#2976#2977#0" expanded="false" />
+            <element signature="e#3003#3004#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALTransition.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
+        <state relative-caret-position="900">
           <caret line="73" column="61" selection-start-line="73" selection-start-column="61" selection-end-line="73" selection-end-column="61" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#1110#1111#0" expanded="false" />
+            <element signature="e#1144#1145#0" expanded="false" />
+            <element signature="e#1173#1174#0" expanded="false" />
+            <element signature="e#1198#1199#0" expanded="false" />
+            <element signature="e#1229#1230#0" expanded="false" />
+            <element signature="e#1256#1257#0" expanded="false" />
+            <element signature="e#1296#1297#0" expanded="false" />
+            <element signature="e#1328#1329#0" expanded="false" />
+            <element signature="e#1364#1365#0" expanded="false" />
+            <element signature="e#1392#1393#0" expanded="false" />
+            <element signature="e#2000#2001#0" expanded="false" />
+            <element signature="e#2039#2040#0" expanded="false" />
+            <element signature="e#2168#2169#0" expanded="false" />
+            <element signature="e#2196#2197#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/ThreadTime.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="727">
+          <caret line="99" column="13" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="577">
+          <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="742">
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="37" column="12" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
+        <state relative-caret-position="660">
+          <caret line="46" column="5" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="51" column="58" selection-start-line="51" selection-start-column="58" selection-end-line="51" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimerType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="742">
+          <caret line="64" column="13" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="13" />
           <folding />
         </state>
       </provider>

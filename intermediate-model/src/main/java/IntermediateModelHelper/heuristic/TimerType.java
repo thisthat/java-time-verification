@@ -52,9 +52,17 @@ public class TimerType extends SearchTimeConstraint {
 				if(var_list.stream().anyMatch( name -> name.getName().equals(vName))){ //that is in the env with type Timer
 					stm.setTimeCritical(true);
 					this.addConstraint(stm);
+					//get value of delay
+					if(mc.getParameters().size() > 1){
+						IASTRE r = mc.getParameters().get(1);
+						if(r instanceof ASTLiteral){
+							stm.addConstraint(stm.getLine(), ((ASTLiteral) r).getValue());
+						} else {
+							stm.addConstraint(stm.getLine(), r.toString());
+						}
+					}
 				}
 			}
-
 		}
 	}
 
