@@ -76,7 +76,11 @@ public class Env {
 		if(flags.containsKey(v)){
 			fv = flags.get(v);
 		}
-		return fv.contains(flag) || this.prev.existFlag(v,flag);
+		if(fv.contains(flag)){
+			return true;
+		} else {
+			return prev != null && this.prev.existFlag(v, flag);
+		}
 	}
 
 	public IASTVar getLastVarByTime(String v){

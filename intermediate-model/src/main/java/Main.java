@@ -60,10 +60,10 @@ public class Main {
 
 		List<String> files = new ArrayList<>();
 		//files.add( Main.class.getResource("SmallTest.java").getFile() );
-		files.add( Main.class.getResource("JavaTimerExampleTask.java").getFile() );
+		//files.add( Main.class.getResource("JavaTimerExampleTask.java").getFile() );
 		//files.add( Main.class.getResource("FailoverTimeoutTest.java").getFile() );
 		//files.add( Main.class.getResource("MCGroupImpl.java").getFile() );
-		//files.add( Main.class.getResource("UpnPImpl.java").getFile() );
+		files.add( Main.class.getResource("socketTest.java").getFile() );
 
 		//files.add(args[0]);
 		for(int i = 0; i < files.size(); i ++){
@@ -91,8 +91,8 @@ public class Main {
 				System.err.println("__________");
 
 				//Create XAL
-				GenerateXAL g = new GenerateXAL(c);
-				g.getXalDocument().toFile("GenerateXALCFG");
+				//GenerateXAL g = new GenerateXAL(c);
+				//g.getXalDocument().toFile("GenerateXALCFG");
 			}
 		}
 

@@ -22,7 +22,7 @@
                 </transformer>
                 <transformer />
                 <transformer>
-                  <mainClass>StartEvaluation</mainClass>
+                  <mainClass>firsteval.StartEvaluation</mainClass>
                 </transformer>
               </transformers>
             </configuration>
