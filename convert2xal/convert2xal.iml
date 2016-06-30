@@ -32,6 +32,6 @@
     <orderEntry type="library" name="Maven: org.eclipse.core:commands:3.3.0-I20070605-0010" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
-    <orderEntry type="module" module-name="xal" />
+    <orderEntry type="library" name="Maven: java-xal:xal:0.1-SNAPSHOT" level="project" />
   </component>
 </module>
