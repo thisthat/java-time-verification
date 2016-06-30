@@ -44,7 +44,6 @@ public class Main {
 		ah.subscribe(AnnotatedTypes.class);
 
 		for(ASTClass c : sv.listOfClasses){
-
 			ah.analyze(c);
 			String s = Arrays.toString( ah.getTimeConstraint().toArray() );
 			System.err.println(s);

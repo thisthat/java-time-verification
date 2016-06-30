@@ -97,4 +97,29 @@ public class SocketTest {
 		}
 	}
 
+	protected long
+	getEstimatedTargetSize()
+	{
+		// TODO: we need access to max bitrate info... and then use duration and increase by, say, 5%
+
+		try{
+			long	duration_secs = getDurationMillis()/1000;
+
+			if ( duration_secs == 0 ){
+
+				long length = file.getSourceFile().getLength();
+
+				return( length * 10 );
+
+			}else{
+				long mb_per_sec = 3;	// upper limit of 3 MB a sec assumed
+
+				return( duration_secs * mb_per_sec*1024*1024L );
+			}
+		}catch( Throwable e ){
+		}
+
+		return( 0 );
+	}
+
 }

@@ -6,13 +6,10 @@ import XAL.XALStructure.exception.XALMalformedException;
 import XAL.XALStructure.items.*;
 import XALConversion.util.Pair;
 import XALConversion.util.parsing.*;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.ConsAltNode;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.*;
 import parser.grammar.Java8CommentSupportedBaseListener;
-import parser.grammar.Java8CommentSupportedParser;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;

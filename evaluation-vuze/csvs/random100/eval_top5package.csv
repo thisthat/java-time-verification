@@ -26,6 +26,7 @@ com.aelitis.azureus.core.networkmanager.impl.tcp;/top5package/com/aelitis/azureu
 com.aelitis.azureus.core.networkmanager.impl.tcp;/top5package/com/aelitis/azureus/core/networkmanager/impl/tcp/VirtualChannelSelectorImpl.java;752;now - last_select_debug > 5000;TimeoutResources
 org.gudy.azureus2.core3.util;/top5package/org/gudy/azureus2/core3/util/AEMonSem.java;78;Thread.sleep(DEBUG_TIMER);ThreadTime
 com.aelitis.azureus.core.devices.impl;/top5package/com/aelitis/azureus/core/devices/impl/DeviceiTunes.java;359;now - last_update_fail > 60*1000 && consec_fails >= 3;TimeoutResources
+com.aelitis.azureus.core.devices.impl;/top5package/com/aelitis/azureus/core/devices/impl/DeviceTivo.java;235;DataOutputStream dos = new DataOutputStream( socket.getOutputStream());SocketTimeout
 com.aelitis.azureus.core.pairing.impl;/top5package/com/aelitis/azureus/core/pairing/impl/PairingManagerImpl.java;1099;boolean run_check = check == null || now - ((Long)check[0]) > CONNECT_TEST_PERIOD_MILLIS;TimeoutResources
 com.aelitis.azureus.core.pairing.impl;/top5package/com/aelitis/azureus/core/pairing/impl/PairingManagerImpl.java;1295;last_update_time > 0 &&  time_since_last_update < min_update_period;TimeoutResources
 com.aelitis.azureus.core.pairing.impl.PairingManagerImpl;/top5package/com/aelitis/azureus/core/pairing/impl/PairingManagerImpl.java;2023;Thread.sleep( 500 );ThreadTime
