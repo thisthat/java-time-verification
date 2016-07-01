@@ -26,7 +26,6 @@ public class ThreadTime extends SearchTimeConstraint {
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
 	 * The search is focused in find the {@code Thread.sleep()}, {@code Thread.join()} and {@code object.wait()} calls.
 	 *
-	 *
 	 * @param stm	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */

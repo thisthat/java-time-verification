@@ -4,6 +4,7 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
@@ -28,6 +29,15 @@ public class TimeoutResources extends SearchTimeConstraint {
 		if(!(stm instanceof ASTRE)) return;
 		//works only on ASTRE
 		IASTRE expr = ((ASTRE) stm).getExpression();
+
+		//debug
+		if(expr instanceof ASTVariableDeclaration && ((ASTVariableDeclaration) expr).getName().equals("accept_idle")){
+			if(1 == 0){
+				int i;
+				i = 3;
+				int j = i + 2;
+			}
+		}
 
 		final boolean[] found = {false};
 		//search for A {<,<=,>,>=} C

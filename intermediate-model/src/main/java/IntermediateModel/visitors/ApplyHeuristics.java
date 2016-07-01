@@ -21,7 +21,7 @@ import java.util.List;
  *
  * This class is the manager that apply all the heuristics we created.
  * It goes through all {@link IASTMethod} definition of a {@link ASTClass}.
- * For each statement it extends the IntermediateModelHelper.envirorment and apply all the subscribed strategies.
+ * For each statement it extends the {@link Env} and apply all the subscribed strategies.
  */
 public class ApplyHeuristics {
 
@@ -69,9 +69,14 @@ public class ApplyHeuristics {
 	}
 
 	/**
-	 * The Method go through the list of {@link IASTStm} and
-	 * @param stms
-	 * @param env
+	 * This method is a dispatcher.
+	 * It goes through the list of {@link IASTStm} and dispatch to the method that can handle that
+	 * particular type of statement.
+	 * <b>Particular Note:</b> from the fact that {@link ASTTryResources} extends {@link ASTTry}, the order
+	 * in the if is <u><b>REALLY IMPORTANT</b></u>. The first type must be checked before otherwise it will
+	 * be dispatched always to the latter type.
+	 * @param stms	List of statements to analyze
+	 * @param env	Environment that is visible to that list of statements
 	 */
 	private void analyze(List<IASTStm> stms, Env env){
 		for(IASTStm stm : stms) {
@@ -115,7 +120,6 @@ public class ApplyHeuristics {
 			else if(stm	instanceof ASTTry){
 				analyze((ASTTry)stm, env);
 			}
-
 			else if(stm	instanceof ASTWhile){
 				analyze((ASTWhile)stm, env);
 			}
@@ -128,12 +132,23 @@ public class ApplyHeuristics {
 		}
 	}
 
+	/**
+	 * ATM. there are no inner classes/method in the initialization of a new object.
+	 * Therefore just check the parameters.
+	 * @param stm	{@link ASTNewObject} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTNewObject stm, Env env) {
 		for(IASTRE r : stm.getParameters()){
 			applyStep(r, env);
 		}
 	}
 
+	/**
+	 * Right Expression to check. Ez.
+	 * @param r		{@link ASTRE} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTRE r, Env env){
 		//build env
 		build_base_env.checkRE(r, env);
@@ -141,12 +156,24 @@ public class ApplyHeuristics {
 		applyStep(r, env);
 	}
 
+	/**
+	 * In the Do-While the expression is not visible by the stms and the environment and the stms environment is not
+	 * visible by the expression.
+	 * @param elm	{@link ASTDoWhile} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTDoWhile elm, Env env) {
-		Env new_env = new Env(env);
-		this.analyze(elm.getExpr(), new_env);
-		applyStep(elm, new_env);
+		this.analyze(elm.getStms(), new Env(env));
+		this.analyze(elm.getExpr(), new Env(env));
+		applyStep(elm, env);
 	}
 
+	/**
+	 * The for statements can see the variables in all the three right expressions.
+	 *
+	 * @param elm	{@link ASTFor} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTFor elm, Env env) {
 		Env new_env = new Env(env);
 		for(ASTRE exp : elm.getInit()) {
@@ -156,10 +183,15 @@ public class ApplyHeuristics {
 		for(ASTRE exp : elm.getPost()){
 			this.analyze(exp, new_env);
 		}
-		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
 		applyStep(elm, new_env);
 	}
 
+	/**
+	 * We extend the environment with the expression in the foreach and then check in the stms.
+	 * @param elm	{@link ASTForEach} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTForEach elm, Env env) {
 		Env new_env = new Env(env);
 		build_base_env.setVariableInEnv(elm.getVar(), new_env);
@@ -168,22 +200,38 @@ public class ApplyHeuristics {
 		applyStep(elm, new_env);
 	}
 
+	/**
+	 * The if share the guard visibility with both <b>then</b> and <b>else</b> branches.
+	 * But, the <b>then</b> and <b>else</b> have a different environment.
+	 * @param elm	{@link ASTIf} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTIf elm, Env env) {
 		Env new_env = new Env(env);
-		this.analyze(elm.getGuard(), new Env(new_env));
+		this.analyze(elm.getGuard(), new_env);
 		this.analyze(elm.getIfBranch().getStms(), new Env(new_env));
 		if(elm.getElseBranch() != null)
-			this.analyze(elm.getElseBranch().getStms(), new_env);
+			this.analyze(elm.getElseBranch().getStms(), new Env(new_env));
 		applyStep(elm, new_env);
 	}
 
+	/**
+	 * The return extends the environment with the expression (if it is present).
+	 * @param elm	{@link ASTReturn} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTReturn elm, Env env) {
-		Env new_env = new Env(env);
 		if(elm.getExpr() != null)
-			this.analyze(elm.getExpr(), new Env(new_env));
-		applyStep(elm, new_env);
+			this.analyze(elm.getExpr(), env);
+		applyStep(elm, env);
 	}
 
+	/**
+	 * The switch shares the visibility of the expression with each case block.
+	 * However, each case block has its own environment.
+	 * @param elm	{@link ASTSwitch} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTSwitch elm, Env env) {
 		Env new_env = new Env(env);
 		this.analyze(elm.getExpr(), new_env);
@@ -193,19 +241,35 @@ public class ApplyHeuristics {
 		applyStep(elm, new_env);
 	}
 
+	/**
+	 * In a synchronized block the statements can see the expression on which we lock on the object.
+	 * @param elm	{@link ASTSynchronized} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTSynchronized elm, Env env) {
 		Env new_env = new Env(env);
 		this.analyze(elm.getExpr(), new_env);
-		this.analyze(elm.getStms(),new_env);
+		this.analyze(elm.getStms(), new_env);
 		applyStep(elm, new_env);
 	}
 
+	/**
+	 * Throw statement extends the environment with the right expression that it carries.
+	 * @param elm	{@link ASTThrow} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTThrow elm, Env env) {
 		build_base_env.checkRE(elm.getExpr(), env);
 		this.analyze(elm.getExpr(), env);
 		applyStep(elm, env);
 	}
 
+	/**
+	 * The try/catch/finally branches have a separate environment.
+	 * Moreover, each catch block has its own environment.
+	 * @param elm	{@link ASTTry} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTTry elm, Env env) {
 		Env new_env_try = new Env(env);
 		Env new_env_finally = new Env(env);
@@ -220,6 +284,13 @@ public class ApplyHeuristics {
 		applyStep(elm, env);
 	}
 
+	/**
+	 * The try/catch/finally branches have a separate environment.
+	 * Moreover, each catch block has its own environment.
+	 * All the blocks share the environment with the resources.
+	 * @param elm	{@link ASTTryResources} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTTryResources elm, Env env) {
 		Env env_resource = new Env(env);
 		for(ASTRE r : elm.getResources()){
@@ -237,6 +308,11 @@ public class ApplyHeuristics {
 		applyStep(elm, env_resource);
 	}
 
+	/**
+	 * The statement in the while can access to the guard.
+	 * @param elm	{@link ASTWhile} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(ASTWhile elm, Env env) {
 		Env new_env = new Env(env);
 		this.analyze(elm.getExpr(), new_env);
@@ -244,6 +320,11 @@ public class ApplyHeuristics {
 		applyStep(elm, new_env);
 	}
 
+	/**
+	 * Fall over method. If we forgot something, we will know ;)
+	 * @param r	{@link IASTStm} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
 	private void analyze(IASTStm r, Env env){
 		System.err.println("Not Implemented Yet :: " + r.getClass().getSimpleName());
 	}
@@ -254,12 +335,11 @@ public class ApplyHeuristics {
 		}
 	}
 
-	private void applyStep(IASTRE stm, Env env){
+	private void applyStep(IASTRE re, Env env){
 		for(SearchTimeConstraint s : strategies){
-			s.next(stm, env);
+			s.next(re, env);
 		}
 	}
-
 
 	public List<Triplet<Integer, String, Class>> getTimeConstraint() {
 		List<Triplet<Integer, String, Class>> out = new ArrayList<>();
