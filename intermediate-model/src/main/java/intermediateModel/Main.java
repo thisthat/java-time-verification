@@ -1,5 +1,5 @@
-import IntermediateModelHelper.converter.GenerateXAL;
-import XAL.XALStructure.items.XALDocument;
+package intermediateModel;
+
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.CreateIntemediateModel;
