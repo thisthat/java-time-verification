@@ -122,7 +122,9 @@ public class GenerateXAL {
 	}
 
 	private void convertReturn(ASTReturn elm) {
-		XALState s = new XALState("return" + elm.getExpr().getExpressionName());
+		XALState s = new XALState("return" +
+				(elm.getExpr() != null ?  elm.getExpr().getExpressionName() : "")
+		);
 		addState(s, elm);
 		lastAutomaton.addFinalState(s);
 	}

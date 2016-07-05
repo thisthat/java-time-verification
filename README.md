@@ -1,18 +1,21 @@
 # JAVA-XAL 
 ![Build](https://rtse-isys.aau.at/giovanni.liva/java-xal/badges/master/build.svg)
 
-In order to package the project first call 
+In order to package the project call 
 ```bash
-mvn compile
+mvn clean package
 ```
 
-Then call 
+If you'd like to skip the test packege it with:
 ```bash
-mvn package
+mvn clean package -DskipTests
 ```
 
-This project uses the ANTLRv4 parser to convert Java source code to XAL files.
+To run it, go into the intermediate-model/target subfolder and run the java -jar command passing the file on which operate.
+```bash
+java -jar intermediate-model-0.1-SNAPSHOT.jar ../src/test/resources/vuze/com/aelitis/net/udp/mc/impl/MCGroupImpl.java
+```
 
-Vuze classes with time:
-* vuze/com/aelitis/azureus/activities/VuzeActivitiesManager.java
+This project uses the ANTLRv4/JDT parser to convert Java source code to XAL files.
+
 
