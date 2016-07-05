@@ -1,4 +1,7 @@
 target
 /*.xal
 *.class
-.idea/**
+/*.csv
+/*.json
+/*.log
+.idea
