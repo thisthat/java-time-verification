@@ -5,6 +5,7 @@ package intermediateModel.interfaces;
  * @version %I%, %G%
  */
 public interface IASTVar {
-	public String getType();
-	public String getName();
+	String getType();
+	String getName();
+	boolean isTimeCritical();
 }

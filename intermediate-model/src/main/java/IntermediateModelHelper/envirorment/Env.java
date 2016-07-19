@@ -152,6 +152,9 @@ public class Env {
 
 
 	public void addVar(IASTVar v){
+		if(varList.contains(v)){
+			varList.remove(v);
+		}
 		varList.add(v);
 	}
 

@@ -2,6 +2,8 @@ package IntermediateModelHelper.envirorment;
 
 
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
@@ -74,9 +76,9 @@ public class BuildEnvirormentClass {
 			a.setTimeCritical(
 					typeTimeRelevant.stream().anyMatch(type -> (type.equals(a.getType())))
 			);
-			if (a.isTimeCritical()) {
+			//if (a.isTimeCritical()) {
 				env.addVar(a);
-			}
+			//}
 
 		}
 		//check over methods
@@ -105,9 +107,9 @@ public class BuildEnvirormentClass {
 			m.setTimeCritical(
 					typeTimeRelevant.stream().anyMatch(type -> (type.equals(retType)))
 			);
-			if (m.isTimeCritical()) {
+			//if (m.isTimeCritical()) {
 				env.addMethod(m.getName(), new Env());
-			}
+			//}
 		}
 	}
 
@@ -156,9 +158,9 @@ public class BuildEnvirormentClass {
 		v.setTimeCritical(
 				typeTimeRelevant.stream().anyMatch(type -> (type.equals(v.getType())))
 		);
-		if(v.isTimeCritical()){
+		//if(v.isTimeCritical()){
 			where.addVar(v);
-		}
+		//}
 	}
 
 	/**
@@ -175,7 +177,9 @@ public class BuildEnvirormentClass {
 	 */
 	public void setVariableInEnv(ASTVariableDeclaration v, Env where){
 		//check the type
-		setVariableInEnv(new ASTVariable(v.start,v.end, v.getNameString(), v.getType()), where);
+		ASTVariable var = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
+		var.setTimeCritical(v.isTimeCritical());
+		setVariableInEnv(var, where);
 		//check the expr
 		if(v.getExpr() != null) {
 			v.getExpr().visit(new DefualtASTREVisitor() {
@@ -184,10 +188,10 @@ public class BuildEnvirormentClass {
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
 					if(where.existMethod( elm )){
-						ASTVariable vv = new ASTVariable(v.start,v.end, v.getNameString(), v.getType());
-						where.addVar(vv);
+						ASTVariable vv = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
 						v.setTimeCritical(true);
 						vv.setTimeCritical(true);
+						where.addVar(vv);
 					}
 				}
 
@@ -202,7 +206,7 @@ public class BuildEnvirormentClass {
 						case mod:
 							if(checkIt(elm, where)){
 								v.setTimeCritical(true);
-								ASTVariable vv = new ASTVariable(v.start,v.end, v.getNameString(), v.getType());
+								ASTVariable vv = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
 								vv.setTimeCritical(true);
 								where.addVar(vv);
 							}
@@ -228,8 +232,8 @@ public class BuildEnvirormentClass {
 		final boolean[] r = {false};
 		elm.visit(new DefualtASTREVisitor(){
 			@Override
-			public void enterASTLiteral(ASTLiteral elm) {
-				if(where.existVarName(elm.getValue()))
+			public void enterASTLiteral(ASTLiteral literal) {
+				if(where.existVarName(literal.getValue()) && where.getVar(literal.getValue()).isTimeCritical() )
 					r[0] = true;
 			}
 
@@ -240,20 +244,12 @@ public class BuildEnvirormentClass {
 				}
 			}
 
-			@Override
-			public void enterASTMultipleMethodCall(ASTMultipleMethodCall elm) {
-				if(elm.getVariable() != null && elm.getVariable() instanceof ASTLiteral){
-					if( where.existVarName(((ASTLiteral) elm.getVariable()).getValue()) ){
-						r[0] = true;
-					}
-				}
-			}
 		});
 		return r[0];
 	}
 
 	/**
-	 * Return the IntermediateModelHelper.envirorment
+	 * Return the envirorment
 	 * @return {@link Env} structure
 	 */
 	public Env getEnv() {

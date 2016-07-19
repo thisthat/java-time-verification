@@ -221,5 +221,19 @@ public abstract class IASTStm implements IASTVisitor{
 		calculateSourceCode();
 	}
 
+	/**
+	 * Get the start index
+	 * @return start position
+	 */
+	public int getStart() {
+		return start;
+	}
 
+	/**
+	 * Get the end index
+	 * @return end position
+	 */
+	public int getEnd() {
+		return end;
+	}
 }
