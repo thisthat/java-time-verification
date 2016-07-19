@@ -199,6 +199,7 @@ public class BuildEnvirormentClass {
 						case plus:
 						case mul:
 						case div:
+						case mod:
 							if(checkIt(elm, where)){
 								v.setTimeCritical(true);
 								ASTVariable vv = new ASTVariable(v.start,v.end, v.getNameString(), v.getType());

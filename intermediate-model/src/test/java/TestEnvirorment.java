@@ -1,4 +1,6 @@
+import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.structure.*;
+import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -15,10 +17,8 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class TestEnvirorment {
-    String filename = "Test.java";
+    String filename = "env/AttributeTimeRelated.java";
     List<ASTClass> intemediateModel;
-    List<ASTClass> manuallyCreated = new ArrayList<ASTClass>();
-	BuildEnvirormentClass build_base_env = new BuildEnvirormentClass();
 
     @Before
     public void init() throws Exception {
@@ -29,13 +29,20 @@ public class TestEnvirorment {
 		ast.accept(v);
 		intemediateModel = v.listOfClasses;
     }
+	public class ApplyHeuristicsTest extends ApplyHeuristics {
+		@Override
+		public Env indexing(ASTClass c) {
+			return super.indexing(c);
+		}
+	}
 
-	/**
-	 * TODO: Test that for each instructions the rule of visibility of envirorment is respected.
-	 */
     @Test
-	public void TestEnvirormentNested() {
-
+	public void TestEnvirorment() {
+		ApplyHeuristicsTest ah = new ApplyHeuristicsTest();
+		//we know there is only one class
+		Env e = ah.indexing(intemediateModel.get(0));
+		int j = 2 + 3;
+		int i = j + 3;
 	}
 
 

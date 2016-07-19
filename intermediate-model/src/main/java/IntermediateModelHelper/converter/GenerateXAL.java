@@ -455,6 +455,10 @@ public class GenerateXAL {
 	}
 
 
+	/**
+	 * Ugly workaround to have pattern matching in haskel fashion on java
+	 * @param stm
+	 */
 	private void dispachStm(IASTStm stm){
 		if (stm instanceof ASTRE){
 			convertRE((ASTRE) stm);

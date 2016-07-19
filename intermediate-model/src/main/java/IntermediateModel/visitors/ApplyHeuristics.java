@@ -5,6 +5,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTCast;
 import intermediateModel.structure.expression.ASTNewObject;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
@@ -25,9 +26,9 @@ import java.util.List;
  */
 public class ApplyHeuristics {
 
-	private BuildEnvirormentClass build_base_env = null;
-	private List<SearchTimeConstraint> strategies = new ArrayList<>();
-	private List<Class<? extends SearchTimeConstraint>> strategiesTypes = new ArrayList<>();
+	protected BuildEnvirormentClass build_base_env = null;
+	protected List<SearchTimeConstraint> strategies = new ArrayList<>();
+	protected List<Class<? extends SearchTimeConstraint>> strategiesTypes = new ArrayList<>();
 
 	public ApplyHeuristics(){
 		build_base_env = new BuildEnvirormentClass();
@@ -40,6 +41,10 @@ public class ApplyHeuristics {
 		strategiesTypes.add(strategy);
 	}
 
+	/**
+	 * This method trigger the application of the heuristic and analysis of the code.
+	 * @param c Class to analyze.
+	 */
 	public void analyze(ASTClass c){
 		//instantiate the strategies
 		strategies.clear();
@@ -51,7 +56,7 @@ public class ApplyHeuristics {
 			} catch (InstantiationException e) {
 				//e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 		build_base_env.buildEnvClass(c);
@@ -69,7 +74,28 @@ public class ApplyHeuristics {
 	}
 
 	/**
-	 * This method is a dispatcher.
+	 * The following method is used to index a class and calculate which are the attributes that are time relevant.
+	 * @param c
+	 * @return
+	 */
+	protected Env indexing(ASTClass c){
+		BuildEnvirormentClass be = new BuildEnvirormentClass();
+		be.buildEnvClass(c);
+		Env e = be.getEnv();
+		//check static
+		for(ASTStatic s : c.getStaticInit()){
+			analyze(s.getStms(), e);
+		}
+		//check method
+		for(IASTMethod m : c.getMethods()){
+			e = be.checkPars(m.getParameters(), e);
+			analyze(m.getStms(), e );
+		}
+		return e;
+	}
+
+	/**
+	 * This method is a dispatcher. It is ugly, but it is the only way to implement a pattern matching.
 	 * It goes through the list of {@link IASTStm} and dispatch to the method that can handle that
 	 * particular type of statement.
 	 * <b>Particular Note:</b> from the fact that {@link ASTTryResources} extends {@link ASTTry}, the order

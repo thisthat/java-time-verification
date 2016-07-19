@@ -35,3 +35,19 @@ The next features to implement are:
     * Parse and create the heuristic automatically
 * Introduce the annotations
 * Rewrite the source code with the annotations
+
+# Known Issues
+new Object does not take in account that an hidden class can be created in the initialization.
+At the moment, the method of the hidden class are put as method of the last visited class.
+
+# Current Branch
+The current branch aim to introduce the rewriting logic to apply heuristics.
+In order to do that, we have to:
+* introduce the possibilities to add annotation to the elements of the IM
+* create an interface for the heuristics that has the following elements
+    * **let** it creates a set of annotations
+    * **where** it restricts the space of search, when it matches we can apply the heuristic
+    * **rewrite** it express how to rewrite the node of the IM
+
+Questions:
+* the IM has to keep with it for each node the Env that it can see?
