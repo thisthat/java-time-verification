@@ -167,7 +167,6 @@ public class GenerateXAL {
 	private void convertDoWhile(ASTDoWhile elm){
 		XALState _do = new XALState("do");
 		XALState _enddo = new XALState("enddo");
-		XALState _checkExpr = new XALState("check");
 		lastAutomatonWhereAdd.addState(_do);
 		lastAutomatonWhereAdd.addState(_enddo);
 		XALTransition tinit = new XALTransition(lastState,_do);
@@ -456,6 +455,10 @@ public class GenerateXAL {
 	}
 
 
+	/**
+	 * Ugly workaround to have pattern matching in haskel fashion on java
+	 * @param stm
+	 */
 	private void dispachStm(IASTStm stm){
 		if (stm instanceof ASTRE){
 			convertRE((ASTRE) stm);

@@ -396,6 +396,7 @@ public class REParserJDT {
 			case "==": return IASTRE.OPERATOR.equality;
 			case "||": return IASTRE.OPERATOR.or;
 			case "&&": return IASTRE.OPERATOR.and;
+			case "%": return IASTRE.OPERATOR.mod;
 		}
 		return IASTRE.OPERATOR.equal;
 	}

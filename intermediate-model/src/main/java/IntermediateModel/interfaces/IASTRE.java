@@ -5,29 +5,30 @@ package intermediateModel.interfaces;
  * @version %I%, %G%
  */
 public interface IASTRE extends IASTVisitor {
-	public enum OPERATOR {
-		less,
-		lessEqual,
-		equal,
-		equality,
-		greater,
-		greaterEqual,
-		shiftLeft,
-		shiftRight,
-		plus,
-		minus,
-		mul,
-		div,
-		not,
-		and,
-		or,
-		instanceOf
+	enum OPERATOR {
+		less,			// <
+		lessEqual,		// <=
+		equal,			// =
+		equality,		// ==
+		greater,		// >
+		greaterEqual,	// >=
+		shiftLeft,		// <<
+		shiftRight,		// >>
+		plus,			// +
+		minus,			// -
+		mul,			// *
+		div,			// /
+		not,			// !
+		mod,			// %
+		and,			// &&
+		or,				// ||
+		instanceOf		// instanceOf
 	}
 
-	public enum ADDDEC {
+	enum ADDDEC {
 		increment,
 		decrement
 	}
 
-	public void visit(ASTREVisitor visitor);
+	void visit(ASTREVisitor visitor);
 }

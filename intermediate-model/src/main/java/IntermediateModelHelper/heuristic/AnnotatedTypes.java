@@ -45,7 +45,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 			ASTLiteral literalName = (ASTLiteral) calee;
 			String varName = literalName.getValue();
 			//check in the env
-			if(env.existVarName(varName) && env.existMethod(methodName)){
+			if(env.existVarNameTimeRelevant(varName) && env.existMethodTimeRelevant(methodName)){
 				stm.setTimeCritical(true);
 				found = true;
 			}
@@ -57,7 +57,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 			for(IASTRE e : mCalee.getMethods()){
 				ASTMethodCall m = (ASTMethodCall) e;
 				String mName = m.getMethodName();
-				if(env.existVarName(varName) && env.existMethod(mName)){
+				if(env.existVarNameTimeRelevant(varName) && env.existMethodTimeRelevant(mName)){
 					stm.setTimeCritical(true);
 					found = true;
 				}
