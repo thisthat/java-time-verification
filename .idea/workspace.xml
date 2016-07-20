@@ -2,24 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3ddf8a66-9957-4c23-8dd3-33e75b5ddb61" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/beta/HeuristicRule.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/ExportChangesJob.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/FailoverTimeoutTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/JavaTimerExampleTask.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/MCGroupImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/ProjectServiceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/SmallTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/Test.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/TimerEvent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/UPnPImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/socketTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intermediate-model/src/test/resources/examples/testLambdas.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/Main.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" afterPath="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java" afterPath="$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java" />
     </list>
     <ignored path="java-xal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,44 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="61" column="76" selection-start-line="61" selection-start-column="76" selection-end-line="61" selection-end-column="76" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Env.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="537">
-              <caret line="212" column="5" selection-start-line="212" selection-start-column="5" selection-end-line="212" selection-end-column="5" />
-              <folding>
-                <element signature="e#577#578#0" expanded="true" />
-                <element signature="e#602#603#0" expanded="true" />
-                <element signature="e#631#632#0" expanded="true" />
-                <element signature="e#651#652#0" expanded="true" />
-                <element signature="e#688#689#0" expanded="true" />
-                <element signature="e#718#719#0" expanded="true" />
-                <element signature="e#777#778#0" expanded="true" />
-                <element signature="e#822#823#0" expanded="true" />
-                <element signature="e#1135#1136#0" expanded="true" />
-                <element signature="e#1195#1196#0" expanded="true" />
-                <element signature="e#5358#5359#0" expanded="true" />
-                <element signature="e#5398#5399#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="TestHeuristics.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="33" column="83" selection-start-line="33" selection-start-column="67" selection-end-line="33" selection-end-column="83" />
+            <state relative-caret-position="576">
+              <caret line="132" column="0" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -92,72 +45,79 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BuildEnvirormentClass.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java">
+      <file leaf-file-name="Env.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="189" column="50" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
+            <state relative-caret-position="328">
+              <caret line="119" column="33" selection-start-line="119" selection-start-column="33" selection-end-line="119" selection-end-column="33" />
               <folding>
-                <element signature="e#3890#4043#0" expanded="true" />
-                <element signature="e#4042#4043#0" expanded="true" />
+                <element signature="e#6175#6176#0" expanded="true" />
+                <element signature="e#6194#6195#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExportChangesJob.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/ExportChangesJob.java">
+      <file leaf-file-name="AnnotatedTypes.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="59" column="47" selection-start-line="59" selection-start-column="47" selection-end-line="59" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SocketTimeout.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="463">
+              <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ApplyHeuristics.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/visitors/ApplyHeuristics.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="487">
+              <caret line="360" column="0" selection-start-line="360" selection-start-column="0" selection-end-line="360" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MCGroupImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/MCGroupImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="741">
+              <caret line="816" column="16" selection-start-line="816" selection-start-column="16" selection-end-line="816" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#20124#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TypeTimeRelevant.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/TypeTimeRelevant.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JavaTimerExampleTask.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="600">
+              <caret line="42" column="32" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="false" />
-                <element signature="e#2163#2171#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FailoverTimeoutTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/resources/examples/FailoverTimeoutTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="194" column="93" selection-start-line="194" selection-start-column="24" selection-end-line="194" selection-end-column="93" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#2558#2559#0" expanded="false" />
-                <element signature="e#2600#2601#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimeoutResources.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="42" column="53" selection-start-line="42" selection-start-column="53" selection-end-line="42" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ASTLiteral.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/structure/expression/ASTLiteral.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ASTBinary.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/structure/expression/ASTBinary.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="592">
-              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -190,7 +150,6 @@
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/visitors/JDTVisitor.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/resources/SmallTest.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/test/java/TestCreationIM.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALDocument.java" />
         <option value="$PROJECT_DIR$/XAL/pom.xml" />
         <option value="$PROJECT_DIR$/XAL/src/main/java/XAL/XALStructure/items/XALState.java" />
@@ -234,9 +193,10 @@
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/interfaces/IASTVar.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/beta/HeuristicRule.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/TimeoutResources.java" />
-        <option value="$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/Main.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java" />
+        <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java" />
         <option value="$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java" />
       </list>
     </option>
@@ -748,7 +708,7 @@
       <recent name="$PROJECT_DIR$/im/src/test/java" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.TestHeuristics.TestMCGroupImpl">
     <configuration default="false" name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="intermediateModel.Main" />
@@ -762,48 +722,6 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="intermediate-model" />
       <envs />
-      <method />
-    </configuration>
-    <configuration default="false" name="TestCreationIM.TestVuze" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="intermediate-model" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestCreationIM" />
-      <option name="METHOD_NAME" value="TestVuze" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="TestHeuristics.name" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="intermediate-model" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestHeuristics" />
-      <option name="METHOD_NAME" value="name" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
       <method />
     </configuration>
     <configuration default="false" name="TestHeuristics.TestFailoverTimeoutTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
@@ -827,14 +745,56 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="false" name="TestHeuristics.TestExportChangesJob" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="TestHeuristics" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="intermediate-model" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="TestHeuristics" />
-      <option name="METHOD_NAME" value="TestExportChangesJob" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestHeuristics.TestJavaTimerExampleTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="intermediate-model" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestHeuristics" />
+      <option name="METHOD_NAME" value="TestJavaTimerExampleTask" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestHeuristics.TestMCGroupImpl" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="intermediate-model" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestHeuristics" />
+      <option name="METHOD_NAME" value="TestMCGroupImpl" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -1156,18 +1116,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Application.Main" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.TestCreationIM.TestVuze" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.TestHeuristics.name" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestFailoverTimeoutTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestExportChangesJob" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestFailoverTimeoutTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.TestHeuristics" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestJavaTimerExampleTask" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestMCGroupImpl" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestExportChangesJob" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestMCGroupImpl" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestJavaTimerExampleTask" />
         <item index="2" class="java.lang.String" itemvalue="JUnit.TestHeuristics.TestFailoverTimeoutTest" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.TestHeuristics.name" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.TestCreationIM.TestVuze" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.TestHeuristics" />
+        <item index="4" class="java.lang.String" itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -1203,35 +1163,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TestCreationIM_TestVuze - 2016.07.20 at 08h 12m 56s.xml">
-      <configuration name="TestCreationIM.TestVuze" configurationId="JUnit" />
+    <history-entry file="TestHeuristics - 2016.07.20 at 09h 42m 13s.xml">
+      <configuration name="TestHeuristics" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestEnvirorment_TestEnvirorment - 2016.07.05 at 16h 38m 51s.xml">
-      <configuration name="TestEnvirorment.TestEnvirorment" configurationId="JUnit" />
+    <history-entry file="TestHeuristics - 2016.07.20 at 09h 44m 20s.xml">
+      <configuration name="TestHeuristics" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestEnvirorment_TestEnvirorment - 2016.07.05 at 16h 39m 21s.xml">
-      <configuration name="TestEnvirorment.TestEnvirorment" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestFor - 2016.06.21 at 16h 05m 22s.xml">
-      <configuration name="TestFor" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestHeuristics_TestExportChangesJob - 2016.07.20 at 08h 31m 45s.xml">
-      <configuration name="TestHeuristics.TestExportChangesJob" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestHeuristics_TestExportChangesJob - 2016.07.20 at 08h 32m 54s.xml">
-      <configuration name="TestHeuristics.TestExportChangesJob" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TestHeuristics_TestFailoverTimeoutTest - 2016.07.20 at 08h 30m 24s.xml">
+    <history-entry file="TestHeuristics_TestFailoverTimeoutTest - 2016.07.20 at 09h 44m 24s.xml">
       <configuration name="TestHeuristics.TestFailoverTimeoutTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestHeuristics_name - 2016.07.20 at 08h 18m 17s.xml">
-      <configuration name="TestHeuristics.name" configurationId="JUnit" />
+    <history-entry file="TestHeuristics_TestJavaTimerExampleTask - 2016.07.20 at 09h 44m 28s.xml">
+      <configuration name="TestHeuristics.TestJavaTimerExampleTask" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestHeuristics_name - 2016.07.20 at 08h 19m 09s.xml">
-      <configuration name="TestHeuristics.name" configurationId="JUnit" />
+    <history-entry file="TestHeuristics_TestMCGroupImpl - 2016.07.20 at 09h 45m 23s.xml">
+      <configuration name="TestHeuristics.TestMCGroupImpl" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TestHeuristics_name - 2016.07.20 at 08h 22m 44s.xml">
-      <configuration name="TestHeuristics.name" configurationId="JUnit" />
+    <history-entry file="TestHeuristics_TestMCGroupImpl - 2016.07.20 at 09h 49m 07s.xml">
+      <configuration name="TestHeuristics.TestMCGroupImpl" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestHeuristics_TestMCGroupImpl - 2016.07.20 at 09h 49m 18s.xml">
+      <configuration name="TestHeuristics.TestMCGroupImpl" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestHeuristics_TestMCGroupImpl - 2016.07.20 at 09h 51m 40s.xml">
+      <configuration name="TestHeuristics.TestMCGroupImpl" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestHeuristics_TestMCGroupImpl - 2016.07.20 at 09h 54m 20s.xml">
+      <configuration name="TestHeuristics.TestMCGroupImpl" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestHeuristics_TestMCGroupImpl - 2016.07.20 at 10h 02m 16s.xml">
+      <configuration name="TestHeuristics.TestMCGroupImpl" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -1245,26 +1205,26 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1413" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299363" sideWeight="0.49713877" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32123962" sideWeight="0.63105637" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32123962" sideWeight="0.61318505" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32123962" sideWeight="0.6783161" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962668" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879817" sideWeight="0.49841145" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35147393" sideWeight="0.420969" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17913832" sideWeight="0.6008737" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35147393" sideWeight="0.40786338" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17913832" sideWeight="0.598888" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12986498" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35147393" sideWeight="0.579031" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3499622" sideWeight="0.55043685" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3499622" sideWeight="0.4559174" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3499622" sideWeight="0.44956315" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1295,43 +1255,25 @@
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java</url>
+          <line>132</line>
+          <properties />
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java</url>
+          <line>58</line>
+          <properties />
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java</url>
           <line>69</line>
           <properties />
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java</url>
-          <line>57</line>
-          <properties />
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java</url>
-          <line>236</line>
-          <properties />
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java</url>
-          <line>179</line>
-          <properties />
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java</url>
-          <line>189</line>
-          <properties />
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java</url>
-          <line>199</line>
-          <properties method="enterASTbinary" />
-          <option name="timeStamp" value="61" />
+          <option name="timeStamp" value="69" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="62" />
+      <option name="time" value="70" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -1344,34 +1286,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/evaluation-vuze/src/main/resources/top5package/org/pf/text/StringPattern.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="467" column="2" selection-start-line="467" selection-start-column="2" selection-end-line="467" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PredictionModule.xal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java-parser/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="63" column="17" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/convert2xal/src/main/java/XALConversion/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/3rdPartyLibraries/installLocalMaven.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -1541,16 +1455,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="34" column="38" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_74.jdk/Contents/Home/src.zip!/java/util/concurrent/ExecutorService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
@@ -1618,14 +1522,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/visitors/ApplyHeuristics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="622">
-          <caret line="369" column="49" selection-start-line="369" selection-start-column="49" selection-end-line="369" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestEnvirorment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -1653,28 +1549,6 @@
           <caret line="102" column="20" selection-start-line="102" selection-start-column="8" selection-end-line="102" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/resources/examples/FailoverTimeoutTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="194" column="93" selection-start-line="194" selection-start-column="24" selection-end-line="194" selection-end-column="93" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2558#2559#0" expanded="false" />
-            <element signature="e#2600#2601#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="33" column="83" selection-start-line="33" selection-start-column="67" selection-end-line="33" selection-end-column="83" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1732,32 +1606,91 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/BuildEnvirormentClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="189" column="50" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
+        <state relative-caret-position="388">
+          <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/resources/examples/FailoverTimeoutTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1249">
+          <caret line="102" column="36" selection-start-line="102" selection-start-column="8" selection-end-line="102" selection-end-column="36" />
           <folding>
-            <element signature="e#3890#4043#0" expanded="true" />
-            <element signature="e#4042#4043#0" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/JavaTimerExampleTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="42" column="32" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/descriptorTimeRelevant/TypeTimeRelevant.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/AnnotatedTypes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="59" column="47" selection-start-line="59" selection-start-column="47" selection-end-line="59" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/test/java/TestHeuristics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="132" column="0" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/resources/MCGroupImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="816" column="16" selection-start-line="816" selection-start-column="16" selection-end-line="816" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#20124#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/intermediateModel/visitors/ApplyHeuristics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="360" column="0" selection-start-line="360" selection-start-column="0" selection-end-line="360" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/heuristic/SocketTimeout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/intermediate-model/src/main/java/IntermediateModelHelper/envirorment/Env.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="537">
-          <caret line="212" column="5" selection-start-line="212" selection-start-column="5" selection-end-line="212" selection-end-column="5" />
+        <state relative-caret-position="328">
+          <caret line="119" column="33" selection-start-line="119" selection-start-column="33" selection-end-line="119" selection-end-column="33" />
           <folding>
-            <element signature="e#577#578#0" expanded="true" />
-            <element signature="e#602#603#0" expanded="true" />
-            <element signature="e#631#632#0" expanded="true" />
-            <element signature="e#651#652#0" expanded="true" />
-            <element signature="e#688#689#0" expanded="true" />
-            <element signature="e#718#719#0" expanded="true" />
-            <element signature="e#777#778#0" expanded="true" />
-            <element signature="e#822#823#0" expanded="true" />
-            <element signature="e#1135#1136#0" expanded="true" />
-            <element signature="e#1195#1196#0" expanded="true" />
-            <element signature="e#5358#5359#0" expanded="true" />
-            <element signature="e#5398#5399#0" expanded="true" />
+            <element signature="e#6175#6176#0" expanded="true" />
+            <element signature="e#6194#6195#0" expanded="true" />
           </folding>
         </state>
       </provider>

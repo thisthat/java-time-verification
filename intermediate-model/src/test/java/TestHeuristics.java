@@ -58,12 +58,15 @@ public class TestHeuristics {
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
 		assertEquals(constraints.size(), 2);
 
 		assertTrue(constraints.contains(new Triplet<>(
 				103,
-				"duration > 3000",
+				"assertTrue(duration > 3000);",
 				TimeoutResources.class
 		)));
 		assertTrue(constraints.contains(new Triplet<>(
@@ -71,6 +74,70 @@ public class TestHeuristics {
 				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)));",
 				ThreadTime.class
 		)));
+
+	}
+
+	@Test
+	public void TestJavaTimerExampleTask() throws Exception {
+		String filename = getClass().getClassLoader().getResource("JavaTimerExampleTask.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 4);
+
+		assertTrue(constraints.contains(new Triplet<>(
+				16,
+				"Thread.sleep(4000);",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				35,
+				"timer.schedule(task, 0, 5000);",
+				TimerType.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				38,
+				"task.wait();",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				43,
+				"Thread.sleep(10000);",
+				ThreadTime.class
+		)));
+
+	}
+
+	@Test
+	public void TestMCGroupImpl() throws Exception {
+		String filename = getClass().getClassLoader().getResource("MCGroupImpl.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 1);
+
+		assertTrue(constraints.contains(new Triplet<>(
+				817,
+				"socket.receive( packet );",
+				SocketTimeout.class
+		)));
+
 
 	}
 

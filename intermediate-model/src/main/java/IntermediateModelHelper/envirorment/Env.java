@@ -87,6 +87,19 @@ public class Env {
 		}
 	}
 
+	public boolean existVarNameTimeRelevant(String v){
+		for(IASTVar vEnv : varList){
+			if(vEnv.getName().equals(v))
+				return vEnv.isTimeCritical();
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.existVarName(v);
+		} else {
+			return false;
+		}
+	}
+
 	public IASTVar getVar(String v){
 		for(IASTVar vEnv : varList){
 			if(vEnv.getName().equals(v))
@@ -101,13 +114,25 @@ public class Env {
 	}
 
 	public void addFlag(String v, Integer flag){
+		Env correct_env = getCorrectEnv(v);
+
 		ArrayList<Integer> fv = new ArrayList<>();
-		if(flags.containsKey(v)){
-			fv = flags.get(v);
+		if(correct_env.getFlags().containsKey(v)){
+			fv = correct_env.getFlags().get(v);
 		}
 		fv.add(flag);
-		flags.put(v, fv);
+		correct_env.getFlags().put(v, fv);
 	}
+
+	private Env getCorrectEnv(String v) {
+		for(IASTVar vEnv : varList){
+			if(vEnv.getName().equals(v))
+				return this;
+		}
+		//is not here, search in the previous ones
+		return prev.getCorrectEnv(v);
+	}
+
 
 	public boolean existFlag(String v, Integer flag){
 		ArrayList<Integer> fv = new ArrayList<>();
@@ -261,6 +286,10 @@ public class Env {
 		EnvMethod m = new EnvMethod(v);
 		m.setIstimeRelevant(true);
 		methodList.add( m );
+	}
+
+	public Map<String, ArrayList<Integer>> getFlags() {
+		return flags;
 	}
 
 	@Override
