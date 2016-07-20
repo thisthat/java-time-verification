@@ -30,15 +30,6 @@ public class TimeoutResources extends SearchTimeConstraint {
 		//works only on ASTRE
 		IASTRE expr = ((ASTRE) stm).getExpression();
 
-		//debug
-		if(expr instanceof ASTVariableDeclaration && ((ASTVariableDeclaration) expr).getName().equals("accept_idle")){
-			if(1 == 0){
-				int i;
-				i = 3;
-				int j = i + 2;
-			}
-		}
-
 		final boolean[] found = {false};
 		//search for A {<,<=,>,>=} C
 		expr.visit(new DefualtASTREVisitor(){

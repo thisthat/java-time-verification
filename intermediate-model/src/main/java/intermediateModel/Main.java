@@ -59,9 +59,10 @@ public class Main {
 
 
 		List<String> files = new ArrayList<>();
+		files.add( Main.class.getClassLoader().getResource("ExportChangesJob.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("SmallTest.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("JavaTimerExampleTask.java").getFile() );
-		files.add( Main.class.getClassLoader().getResource("FailoverTimeoutTest.java").getFile() );
+		//files.add( Main.class.getClassLoader().getResource("FailoverTimeoutTest.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("MCGroupImpl.java").getFile() );
 		//files.add( "/Users/giovanni/repository/java-xal/evaluation-vuze/src/main/resources/top5package/com/aelitis/azureus/core/networkmanager/impl/tcp/SelectorGuard.java" );
 

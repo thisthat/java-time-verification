@@ -17,14 +17,52 @@ import java.util.Map;
  * @version %I%, %G%
  */
 public class Env {
+
+	protected class EnvMethod {
+		private String name;
+		private boolean istimeRelevant;
+
+		public EnvMethod(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public boolean istimeRelevant() {
+			return istimeRelevant;
+		}
+
+		public void setIstimeRelevant(boolean istimeRelevant) {
+			this.istimeRelevant = istimeRelevant;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof EnvMethod)) return false;
+
+			EnvMethod envMethod = (EnvMethod) o;
+
+			return getName() != null ? getName().equals(envMethod.getName()) : envMethod.getName() == null;
+
+		}
+
+		@Override
+		public int hashCode() {
+			return getName() != null ? getName().hashCode() : 0;
+		}
+	}
+
 	private Env prev;
 	private List<IASTVar> varList;
 	private Map<String, ArrayList<Integer>> flags = new HashMap<>();
-	private Map<String, Env> methodList;
+	private List<EnvMethod> methodList;
 
 	{
 		varList = new ArrayList<>();
-		methodList = new HashMap<>();
+		methodList = new ArrayList<>();
 	}
 
 	public Env() {
@@ -109,7 +147,8 @@ public class Env {
 	}
 
 	public boolean existMethod(ASTMethod m){
-		if(methodList.containsKey(m)){
+		EnvMethod mEnv = new EnvMethod(m.getName());
+		if(methodList.contains(mEnv)){
 			return true;
 		}
 		//is not here, search in the previous ones
@@ -120,9 +159,28 @@ public class Env {
 		}
 	}
 
+	public boolean existMethodTimeRelevant(ASTMethod m){
+		EnvMethod mEnv = new EnvMethod(m.getName());
+		if(methodList.contains(mEnv)){
+			boolean flag = false;
+			for(EnvMethod mm : methodList){
+				if(mm.getName().equals(m.getName())){
+					flag = mm.istimeRelevant();
+				}
+			}
+			return flag;
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.existMethodTimeRelevant(m);
+		} else {
+			return false;
+		}
+	}
+
 	public boolean existMethod(ASTMethodCall m){
-		for(Map.Entry<String,Env> mm : methodList.entrySet()){
-			String method = mm.getKey();
+		for(EnvMethod mm : methodList){
+			String method = mm.getName();
 			if(method.equals(m.getMethodName())) {
 				return true;
 			}
@@ -135,9 +193,28 @@ public class Env {
 		}
 	}
 
+	public boolean existMethodTimeRelevant(ASTMethodCall m){
+		EnvMethod mEnv = new EnvMethod(m.getMethodName());
+		if(methodList.contains(mEnv)){
+			boolean flag = false;
+			for(EnvMethod mm : methodList){
+				if(mm.getName().equals(m.getMethodName())){
+					flag = mm.istimeRelevant();
+				}
+			}
+			return flag;
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.existMethodTimeRelevant(m);
+		} else {
+			return false;
+		}
+	}
+
 	public boolean existMethod(String m){
-		for(Map.Entry<String,Env> mm : methodList.entrySet()){
-			String method = mm.getKey();
+		for(EnvMethod mm : methodList){
+			String method = mm.getName();
 			if(method.equals(m)) {
 				return true;
 			}
@@ -145,6 +222,25 @@ public class Env {
 		//is not here, search in the previous ones
 		if(prev != null){
 			return prev.existMethod(m);
+		} else {
+			return false;
+		}
+	}
+
+	public boolean existMethodTimeRelevant(String m){
+		EnvMethod mEnv = new EnvMethod(m);
+		if(methodList.contains(mEnv)){
+			boolean flag = false;
+			for(EnvMethod mm : methodList){
+				if(mm.getName().equals(m)){
+					flag = mm.istimeRelevant();
+				}
+			}
+			return flag;
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.existMethodTimeRelevant(m);
 		} else {
 			return false;
 		}
@@ -159,7 +255,12 @@ public class Env {
 	}
 
 	public void addMethod(String v, Env e){
-		methodList.put(v, e);
+		methodList.add( new EnvMethod(v));
+	}
+	public void addMethodTimeRelevant(String v, Env e){
+		EnvMethod m = new EnvMethod(v);
+		m.setIstimeRelevant(true);
+		methodList.add( m );
 	}
 
 	@Override

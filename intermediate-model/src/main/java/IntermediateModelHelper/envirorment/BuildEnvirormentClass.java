@@ -44,7 +44,7 @@ public class BuildEnvirormentClass {
 	}
 
 	/**
-	 * It creates the object with a new empty envirorment;
+	 * It creates the object with a new empty environment;
 	 */
 	public BuildEnvirormentClass() {
 		env = new Env();
@@ -60,7 +60,7 @@ public class BuildEnvirormentClass {
 
 
 	/**
-	 * This method add to the IntermediateModelHelper.envirorment:
+	 * This method add to the environment:
 	 * <ul>
 	 * <li>Attributes that have a time relevant type</li>
 	 * <li>@TODO check imports to collect the time information of that classes</li>
@@ -98,7 +98,7 @@ public class BuildEnvirormentClass {
 	private void buildEnvMethod(IASTMethod mm) {
 		//put the default method from list
 		for(String m : methodTimeRelevant){
-			env.addMethod(m, new Env());
+			env.addMethodTimeRelevant(m, new Env());
 		}
 		//return type is one of the interesting one - only methods
 		if (mm instanceof ASTMethod) {
@@ -187,7 +187,7 @@ public class BuildEnvirormentClass {
 
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(where.existMethod( elm )){
+					if(where.existMethodTimeRelevant( elm )){
 						ASTVariable vv = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
 						v.setTimeCritical(true);
 						vv.setTimeCritical(true);
@@ -231,9 +231,11 @@ public class BuildEnvirormentClass {
 	public static boolean checkIt(ASTBinary elm, Env where) {
 		final boolean[] r = {false};
 		elm.visit(new DefualtASTREVisitor(){
+			ASTBinary tmp = elm;
 			@Override
 			public void enterASTLiteral(ASTLiteral literal) {
-				if(where.existVarName(literal.getValue()) && where.getVar(literal.getValue()).isTimeCritical() )
+				if(where.existVarName(literal.getValue()) //must be visible
+						&& where.getVar(literal.getValue()).isTimeCritical() ) //and time critical
 					r[0] = true;
 			}
 
@@ -249,7 +251,7 @@ public class BuildEnvirormentClass {
 	}
 
 	/**
-	 * Return the envirorment
+	 * Return the environment
 	 * @return {@link Env} structure
 	 */
 	public Env getEnv() {
