@@ -141,4 +141,208 @@ public class TestHeuristics {
 
 	}
 
+	@Test
+	public void TestProjectServiceImpl() throws Exception {
+		String filename = getClass().getClassLoader().getResource("ProjectServiceImpl.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 1);
+
+		assertTrue(constraints.contains(new Triplet<>(
+				349,
+				"Thread.sleep(500+((int)Math.random()*1000));",
+				ThreadTime.class
+		)));
+
+
+	}
+
+	@Test
+	public void TestSmallTest() throws Exception {
+		String filename = getClass().getClassLoader().getResource("SmallTest.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 0);
+	}
+
+	@Test
+	public void TestsocketTest() throws Exception {
+		String filename = getClass().getClassLoader().getResource("socketTest.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 1);
+
+		assertTrue(constraints.contains(new Triplet<>(
+				39,
+				"DataOutputStream dos = new DataOutputStream( socket.getOutputStream());",
+				SocketTimeout.class
+		)));
+
+
+	}
+
+	@Test
+	public void TestTest() throws Exception {
+		String filename = getClass().getClassLoader().getResource("Test.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		List<Triplet<Integer,String,Class>> constraints;
+
+		//First class
+		ah.analyze(cs.get(0));
+		constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 3);
+		assertTrue(constraints.contains(new Triplet<>(
+				74,
+				"Thread.sleep(5000);",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				193,
+				"wait();",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				220,
+				"createTopologyThread.sleep(1000);",
+				ThreadTime.class
+		)));
+
+		//Second class
+		ah.analyze(cs.get(1));
+		constraints = ah.getTimeConstraint();
+		assertEquals(constraints.size(), 0);
+
+		//Third class
+		ah.analyze(cs.get(2));
+		constraints = ah.getTimeConstraint();
+		assertEquals(constraints.size(), 0);
+
+		//Fourth class
+		ah.analyze(cs.get(3));
+		constraints = ah.getTimeConstraint();
+		assertTrue(constraints.contains(new Triplet<>(
+				278,
+				"Thread.sleep(5000);",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				281,
+				"Thread.sleep(5000);",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				290,
+				"Thread.sleep(_class.SleepTimeout);",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				296,
+				"Thread.join();",
+				ThreadTime.class
+		)));
+
+
+	}
+
+	@Test
+	public void TesttestLambdas() throws Exception {
+		String filename = getClass().getClassLoader().getResource("testLambdas.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 0);
+
+	}
+
+	@Test
+	public void TestTimerEvent() throws Exception {
+		String filename = getClass().getClassLoader().getResource("TimerEvent.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 0);
+
+	}
+
+	@Test
+	public void TestUPnPImpl() throws Exception {
+		String filename = getClass().getClassLoader().getResource("UPnPImpl.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+
+		assertEquals(constraints.size(), 2);
+
+		assertTrue(constraints.contains(new Triplet<>(
+				612,
+				"SystemTime.getMonotonousTime() - last_fail < period",
+				TimeoutResources.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				864,
+				"PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), \"UTF8\"));",
+				SocketTimeout.class
+		)));
+
+
+	}
+
+
 }
