@@ -8,4 +8,5 @@ public interface IASTVar {
 	String getType();
 	String getName();
 	boolean isTimeCritical();
+	void setTimeCritical(boolean timeCritical);
 }

@@ -1,6 +1,7 @@
 package intermediateModel;
 
 import IntermediateModelHelper.converter.GenerateXAL;
+import IntermediateModelHelper.indexing.Indexing;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.CreateIntemediateModel;
@@ -59,7 +60,8 @@ public class Main {
 
 
 		List<String> files = new ArrayList<>();
-		files.add( Main.class.getClassLoader().getResource("ExportChangesJob.java").getFile() );
+		files.add( Main.class.getClassLoader().getResource("AttributeTimeRelated.java").getFile() );
+		//files.add( Main.class.getClassLoader().getResource("ExportChangesJob.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("SmallTest.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("JavaTimerExampleTask.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("FailoverTimeoutTest.java").getFile() );
@@ -84,6 +86,8 @@ public class Main {
 			ah.subscribe(AnnotatedTypes.class);
 
 			for(ASTClass c : v.listOfClasses){
+
+				Indexing index = new Indexing(c);
 
 				ah.analyze(c);
 				String s = Arrays.toString( ah.getTimeConstraint().toArray() );
