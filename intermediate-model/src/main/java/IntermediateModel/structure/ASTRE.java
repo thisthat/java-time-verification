@@ -46,5 +46,6 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTRE(this);
+		expression.visit(visitor);
 	}
 }

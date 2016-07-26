@@ -41,8 +41,6 @@ public class TestEnvirorment {
 		ApplyHeuristicsTest ah = new ApplyHeuristicsTest();
 		//we know there is only one class
 		Env e = ah.indexing(intemediateModel.get(0));
-		int j = 2 + 3;
-		int i = j + 3;
 	}
 
 

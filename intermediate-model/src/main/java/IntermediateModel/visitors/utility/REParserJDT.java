@@ -1,6 +1,7 @@
 package intermediateModel.visitors.utility;
 
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.expression.*;
 import org.eclipse.jdt.core.dom.*;
 
@@ -258,7 +259,16 @@ public class REParserJDT {
 					getExpr((ASTNode) p)
 			);
 		}
-		return new ASTNewObject(start,stop, type, false, pars);
+		ASTNewObject obj = new ASTNewObject(start,stop, type, false, pars);
+		if(expr.getAnonymousClassDeclaration() != null){
+			AnonymousClassDeclaration hc = expr.getAnonymousClassDeclaration();
+			int st, sp;
+			st = hc.getStartPosition();
+			sp = st + hc.getLength();
+			ASTHiddenClass c = new ASTHiddenClass(st, sp);
+			obj.setHiddenClass(c);
+		}
+		return obj;
 	}
 
 	private static IASTRE literal(NullLiteral expr) {

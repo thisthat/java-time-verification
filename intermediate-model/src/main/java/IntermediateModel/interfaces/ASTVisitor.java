@@ -29,4 +29,5 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void enterASTTryResources(ASTTryResources elm);
 	void enterASTVariable(ASTVariable elm);
 	void enterASTWhile(ASTWhile elm);
+	void enterASTHiddenClass(ASTHiddenClass astHiddenClass);
 }

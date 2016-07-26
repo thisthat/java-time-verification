@@ -50,7 +50,8 @@ public abstract class IASTStm implements IASTVisitor{
 		ABSTRACT,
 		FINAL,
 		PRIVATE,
-		STRICTFP
+		STRICTFP,
+		HIDDEN //hidden classes
 	}
 
 	protected int start;

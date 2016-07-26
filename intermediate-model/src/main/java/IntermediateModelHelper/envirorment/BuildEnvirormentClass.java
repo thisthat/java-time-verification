@@ -236,7 +236,8 @@ public class BuildEnvirormentClass {
 		if(left instanceof ASTLiteral){
 			String name = ((ASTLiteral) left).getValue();
 			IASTVar var = where.getVar(name);
-			if(checkIt(v.getRight(), where)){ //if exists something time related
+			if(var != null //should be never the case if code compiles
+				&& checkIt(v.getRight(), where)){ //if exists something time related
 				var.setTimeCritical(true); //the assigned var is time relevant
 				v.getRight().visit(new DefualtASTREVisitor() { //and also all the var used inside the expr
 					@Override

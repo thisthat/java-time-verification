@@ -18,7 +18,7 @@ public class Indexing extends ParseIM {
 	List<String> listOfMethods = new ArrayList<>();
 	List<String> listOfTimedMethods = new ArrayList<>();
 	List<String> listOfSyncMethods = new ArrayList<>();
-	List<IASTStm> listOfSyncBlocs = new ArrayList<>();
+	List<ASTSynchronized> listOfSyncBlocks = new ArrayList<>();
 	Env base_env = new Env();
 	BuildEnvirormentClass build_base_env;
 	{
@@ -38,6 +38,22 @@ public class Indexing extends ParseIM {
 			}
 		}
 		createBaseEnv(c);
+	}
+
+	public List<String> getListOfMethods() {
+		return listOfMethods;
+	}
+
+	public List<String> getListOfTimedMethods() {
+		return listOfTimedMethods;
+	}
+
+	public List<String> getListOfSyncMethods() {
+		return listOfSyncMethods;
+	}
+
+	public List<ASTSynchronized> getListOfSyncBlocks() {
+		return listOfSyncBlocks;
 	}
 
 	/**
@@ -71,7 +87,7 @@ public class Indexing extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
-		listOfSyncBlocs.add(elm);
+		listOfSyncBlocks.add(elm);
 	}
 
 	@Override

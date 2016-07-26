@@ -4,6 +4,7 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.ASTREVisitor;
+import intermediateModel.structure.ASTHiddenClass;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 	List<IASTRE> parameters;
 	String typeName;
 	boolean isArray = false;
+	ASTHiddenClass hiddenClass = null;
 
 	public ASTNewObject(Token start, Token end, String typeName, boolean isArray) {
 		super(start, end);
@@ -43,6 +45,14 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		this.typeName = typeName;
 		this.isArray = isArray;
 		this.parameters = parameters;
+	}
+
+	public void setHiddenClass(ASTHiddenClass hiddenClass) {
+		this.hiddenClass = hiddenClass;
+	}
+
+	public ASTHiddenClass getHiddenClass() {
+		return hiddenClass;
 	}
 
 	public boolean isArray() {
