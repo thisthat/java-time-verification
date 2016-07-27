@@ -1,10 +1,13 @@
 package IntermediateModelHelper.indexing;
 
+import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.List;
 
@@ -30,10 +33,10 @@ public abstract class ParseIM {
 				analyze((ASTRE) stm, env);
 			}
 			else if(stm	instanceof ASTBreak){
-				continue; //nothing to check
+				analyze((ASTBreak)stm, env);
 			}
 			else if(stm	instanceof ASTContinue){
-				continue; //nothing to check
+				analyze((ASTContinue)stm, env);
 			}
 			else if(stm	instanceof ASTDoWhile){
 				analyze((ASTDoWhile)stm, env);
@@ -72,6 +75,9 @@ public abstract class ParseIM {
 			else if(stm instanceof ASTNewObject){
 				analyze((ASTNewObject) stm, env);
 			}
+			else if(stm instanceof ASTHiddenClass){
+				analyze((ASTHiddenClass)stm, env);
+			}
 			else {
 				analyze(stm, env);
 			}
@@ -79,23 +85,54 @@ public abstract class ParseIM {
 	}
 
 	/**
-	 * ATM. there are no inner classes/method in the initialization of a new object.
-	 * Therefore just check the parameters.
+	 * Break stm
+	 * @param elm	{@link ASTBreak} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTBreak elm, Env env) {
+		analyzeASTBreak(elm,env);
+	}
+
+
+	/**
+	 * Continue stm
+	 * @param elm	{@link ASTContinue} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTContinue elm, Env env) {
+		analyzeASTContinue(elm,env);
+	}
+
+
+	/**
+	 * TODO: Rewrite this looking inside the inner class
+	 *
 	 * @param stm	{@link ASTNewObject} instruction to check.
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTNewObject stm, Env env) {
 		analyzeASTNewObject(stm,env);
+		ASTHiddenClass hc = stm.getHiddenClass();
+		if(hc != null){
+			this.analyze(hc, new Env(env));
+		}
 	}
 
 
 
 	/**
-	 * Right Expression to check. Ez.
+	 * Right Expression to check.
+	 * If it contains a new object, we must iterate over it as well!
 	 * @param r		{@link ASTRE} instruction to check.
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTRE r, Env env){
+		r.getExpression().visit(new DefaultASTVisitor(){
+			@Override
+			public void enterASTNewObject(ASTNewObject elm) {
+				analyze(elm, new Env(env));
+			}
+		});
 		analyzeASTRE(r,env);
 	}
 
@@ -263,6 +300,29 @@ public abstract class ParseIM {
 	}
 
 	/**
+	 * We have a hidden class, thus we iterate over its methods with a new env.
+	 * We extend the environment with the base attributes and methods of the hidden class.
+	 * @param elm	{@link ASTHiddenClass} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTHiddenClass elm, Env env) {
+		BuildEnvirormentClass hidden_env = new BuildEnvirormentClass(new Env(env));
+		hidden_env.buildEnvClass(elm);
+		Env new_env = hidden_env.getEnv();
+		//check static
+		for (ASTStatic s : elm.getStaticInit()) {
+			this.analyze(s.getStms(), new_env);
+		}
+		//check method
+		for (IASTMethod m : elm.getMethods()) {
+			Env eMethod = new Env(new_env);
+			eMethod = hidden_env.checkPars(m.getParameters(), eMethod);
+			this.analyze(m.getStms(), eMethod);
+		}
+		analyzeASTHiddenClass(elm, env);
+	}
+
+	/**
 	 * Fall over method. If we forgot something, we will know ;)
 	 * @param r	{@link IASTStm} instruction to check.
 	 * @param env	{@link Env} visible by the instruction.
@@ -348,4 +408,22 @@ public abstract class ParseIM {
 	 * @param env   Environment
 	 */
 	protected void analyzeASTWhile(ASTWhile elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTBreak(ASTBreak elm, Env env){};
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTContinue(ASTContinue elm, Env env){};
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTHiddenClass(ASTHiddenClass elm, Env env){};
 }

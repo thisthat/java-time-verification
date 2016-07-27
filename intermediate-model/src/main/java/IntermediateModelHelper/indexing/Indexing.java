@@ -2,6 +2,8 @@ package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.indexing.reducedstructure.IndexMethod;
+import com.google.common.annotations.Beta;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
@@ -15,9 +17,10 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class Indexing extends ParseIM {
-	List<String> listOfMethods = new ArrayList<>();
+	List<IndexMethod> listOfMethods = new ArrayList<>();
+	@Beta
 	List<String> listOfTimedMethods = new ArrayList<>();
-	List<String> listOfSyncMethods = new ArrayList<>();
+	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
 	List<ASTSynchronized> listOfSyncBlocks = new ArrayList<>();
 	Env base_env = new Env();
 	BuildEnvirormentClass build_base_env;
@@ -26,29 +29,46 @@ public class Indexing extends ParseIM {
 	}
 
 	String lastMethodName = "";
+	String classPackage = "";
 
 	public Indexing(ASTClass c) {
+		classPackage = c.getPackageName();
 		//collecting the names of methods and sync method
 		for(IASTMethod m : c.getMethods()){
-			listOfMethods.add(m.getName());
+			listOfMethods.add(prepareOutput(m));
 			if(m instanceof ASTMethod){
 				if(((ASTMethod) m).isSyncronized()){
-					listOfSyncMethods.add(m.getName());
+					listOfSyncMethods.add(prepareOutput(m));
 				}
 			}
 		}
 		createBaseEnv(c);
 	}
 
-	public List<String> getListOfMethods() {
+	private IndexMethod prepareOutput(IASTMethod m) {
+		IndexMethod im = new IndexMethod();
+		im.setName(m.getName());
+		im.setPackageName(classPackage);
+		im.setParameters(m.getParameters());
+		im.setExceptionsThrowed(m.getExceptionsThrowed());
+		im.setStart(((IASTStm)m).getStart());
+		im.setEnd(((IASTStm)m).getEnd());
+		im.setLine(((IASTStm)m).getLine());
+		im.setConstructor( m instanceof ASTConstructor );
+		im.setSync( !im.isConstructor() && ((ASTMethod) m).isSyncronized() );
+		return im;
+	}
+
+	public List<IndexMethod> getListOfMethods() {
 		return listOfMethods;
 	}
 
+	@Beta
 	public List<String> getListOfTimedMethods() {
 		return listOfTimedMethods;
 	}
 
-	public List<String> getListOfSyncMethods() {
+	public List<IndexMethod> getListOfSyncMethods() {
 		return listOfSyncMethods;
 	}
 
