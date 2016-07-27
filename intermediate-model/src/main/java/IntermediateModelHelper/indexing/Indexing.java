@@ -3,11 +3,11 @@ package IntermediateModelHelper.indexing;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.reducedstructure.IndexMethod;
+import IntermediateModelHelper.indexing.reducedstructure.IndexSyncBlock;
 import com.google.common.annotations.Beta;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTNewObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class Indexing extends ParseIM {
 	@Beta
 	List<String> listOfTimedMethods = new ArrayList<>();
 	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
-	List<ASTSynchronized> listOfSyncBlocks = new ArrayList<>();
+	List<IndexSyncBlock> listOfSyncBlocks = new ArrayList<>();
 	Env base_env = new Env();
 	BuildEnvirormentClass build_base_env;
 	{
@@ -30,9 +30,11 @@ public class Indexing extends ParseIM {
 
 	String lastMethodName = "";
 	String classPackage = "";
+	String className = "";
 
 	public Indexing(ASTClass c) {
 		classPackage = c.getPackageName();
+		className = c.getName();
 		//collecting the names of methods and sync method
 		for(IASTMethod m : c.getMethods()){
 			listOfMethods.add(prepareOutput(m));
@@ -59,6 +61,18 @@ public class Indexing extends ParseIM {
 		return im;
 	}
 
+	private IndexSyncBlock prepareOutput(ASTSynchronized m) {
+		IndexSyncBlock is = new IndexSyncBlock();
+		is.setPackageName(classPackage);
+		is.setClassName(className);
+		is.setMethodName(lastMethodName);
+		is.setExpr(m.getExpr());
+		is.setStart(m.getStart());
+		is.setEnd(m.getEnd());
+		is.setLine(m.getLine());
+		return is;
+	}
+
 	public List<IndexMethod> getListOfMethods() {
 		return listOfMethods;
 	}
@@ -72,8 +86,16 @@ public class Indexing extends ParseIM {
 		return listOfSyncMethods;
 	}
 
-	public List<ASTSynchronized> getListOfSyncBlocks() {
+	public List<IndexSyncBlock> getListOfSyncBlocks() {
 		return listOfSyncBlocks;
+	}
+
+	public String getClassPackage() {
+		return classPackage;
+	}
+
+	public String getClassName() {
+		return className;
 	}
 
 	/**
@@ -107,7 +129,7 @@ public class Indexing extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
-		listOfSyncBlocks.add(elm);
+		listOfSyncBlocks.add(prepareOutput(elm));
 	}
 
 	@Override

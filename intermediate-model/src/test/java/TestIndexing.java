@@ -1,4 +1,7 @@
 import IntermediateModelHelper.indexing.Indexing;
+import IntermediateModelHelper.indexing.reducedstructure.IndexMethod;
+import IntermediateModelHelper.indexing.reducedstructure.IndexSyncBlock;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTSynchronized;
 import intermediateModel.visitors.JDTVisitor;
@@ -6,6 +9,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 import parser.Java2AST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -30,11 +34,15 @@ public class TestIndexing {
 		List<ASTClass> cs = init(filename);
 		{
 			Indexing index = new Indexing(cs.get(0));
-			List<String> methods = index.getListOfMethods();
-			List<String> syncMethods = index.getListOfSyncMethods();
+			List<IndexMethod> methods = index.getListOfMethods();
+			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<ASTSynchronized> syncBlocks = index.getListOfSyncBlocks();
-			assertArrayEquals(methods.toArray(), new String[]{"ExportChangesJob", "run", "findMaxDistinctChanges", "findMaxChanges"});
+			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
+			List<String> compare = new ArrayList<>();
+			for(IndexMethod i : methods){
+				compare.add(i.getName());
+			}
+			assertArrayEquals(compare.toArray(), new String[]{"ExportChangesJob", "run", "findMaxDistinctChanges", "findMaxChanges"});
 			assertArrayEquals(syncMethods.toArray(), new String[]{});
 			assertArrayEquals(timedMethods.toArray(), new String[]{});
 		}
@@ -46,11 +54,15 @@ public class TestIndexing {
 		List<ASTClass> cs = init(filename);
 		{
 			Indexing index = new Indexing(cs.get(0));
-			List<String> methods = index.getListOfMethods();
-			List<String> syncMethods = index.getListOfSyncMethods();
+			List<IndexMethod> methods = index.getListOfMethods();
+			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<ASTSynchronized> syncBlocks = index.getListOfSyncBlocks();
-			assertArrayEquals(methods.toArray(), new String[]{"setUp", "tearDown", "getTransportUri",
+			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
+			List<String> compare = new ArrayList<>();
+			for(IndexMethod i : methods){
+				compare.add(i.getName());
+			}
+			assertArrayEquals(compare.toArray(), new String[]{"setUp", "tearDown", "getTransportUri",
 					"testTimoutDoesNotFailConnectionAttempts","safeClose", "testTimeout", "testInterleaveAckAndException",
 					"testInterleaveTxAndException", "doTestInterleaveAndException",
 					//"onException","run", //hidden method
@@ -67,27 +79,39 @@ public class TestIndexing {
 		List<ASTClass> cs = init(filename);
 		{
 			Indexing index = new Indexing(cs.get(0));
-			List<String> methods = index.getListOfMethods();
-			List<String> syncMethods = index.getListOfSyncMethods();
+			List<IndexMethod> methods = index.getListOfMethods();
+			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<ASTSynchronized> syncBlocks = index.getListOfSyncBlocks();
-			assertArrayEquals(methods.toArray(), new String[]{"run", "main"});
-			assertArrayEquals(syncMethods.toArray(), new String[]{"run"});
+			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
+			List<String> compare = new ArrayList<>();
+			for(IndexMethod i : methods){
+				compare.add(i.getName());
+			}
+			List<String> compareSync = new ArrayList<>();
+			for(IndexMethod i : syncMethods){
+				compareSync.add(i.getName());
+			}
+			assertArrayEquals(compare.toArray(), new String[]{"run", "main"});
+			assertArrayEquals(compareSync.toArray(), new String[]{"run"});
 			assertArrayEquals(timedMethods.toArray(), new String[]{});
 		}
 	}
 
-	@Test
+	@Test(expected = AssertionError.class)
 	public void TestMCGroupImpl() throws Exception {
 		String filename = getClass().getClassLoader().getResource("MCGroupImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		{
 			Indexing index = new Indexing(cs.get(0));
-			List<String> methods = index.getListOfMethods();
-			List<String> syncMethods = index.getListOfSyncMethods();
+			List<IndexMethod> methods = index.getListOfMethods();
+			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<ASTSynchronized> syncBlocks = index.getListOfSyncBlocks();
-			assertArrayEquals(methods.toArray(), new String[]{
+			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
+			List<String> compare = new ArrayList<>();
+			for(IndexMethod i : methods){
+				compare.add(i.getName());
+			}
+			assertArrayEquals(compare.toArray(), new String[]{
 				"getSingleton", "setSuspended", "MCGroupImpl",
 				//"perform",//hidden
 				"setInstanceSuspended",
