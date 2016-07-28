@@ -3,15 +3,20 @@ package intermediateModel.visitors;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
-import intermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.List;
 
 /**
+ * The following class parse the Java code of the IM creating the Env structure that contains all the variables that
+ * a particular instruction can see.
+ * It abstract because the purpose it to allow other classes to easilly go through the IM without reimplementing the Env
+ * construction or the traveller of the IM.
+ * The class that extends the following one has to call the {@link #analyze(List, Env)} method to start the traveling.
+ * Then, it can override various hook up to do whatever it likes to.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */

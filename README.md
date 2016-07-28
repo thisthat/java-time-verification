@@ -38,7 +38,7 @@ The next features to implement are:
 
 # Known Issues
 new Object does not take in account that an hidden class can be created in the initialization.
-At the moment, the method of the hidden class are put as method of the last visited class.
+At the moment, the method of the hidden class are put as method of the last visited class. *(SOLVED)*
 
 # Current Branch
 In the current branch we try to create the index structure of the project in order to create the PCFG.
