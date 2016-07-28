@@ -11,11 +11,14 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.MapperOptions;
 import org.mongodb.morphia.query.Query;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
+ * The following class implements a connection to MongoDB.
+ * It allows to store and retrieve {@link IndexData} objects.
+ * TODO: extend the possibility to specify where MongoDB is.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
@@ -27,7 +30,10 @@ public class MongoConnector {
 	final Morphia morphia = new Morphia();
 	Datastore datastore;
 
-
+	/**
+	 * Protected constructor. We want to give a database as singleton.
+	 * @param db_name Name of the DB to use
+	 */
 	protected MongoConnector(String db_name) {
 		MongoClient mongoClient = new MongoClient();
 		db = mongoClient.getDatabase(db_name);
@@ -41,6 +47,11 @@ public class MongoConnector {
 		datastore.ensureIndexes();
 	}
 
+	/**
+	 * Get the instance of the DB with lazy initialization.
+	 * @param db_name Name of the database to use
+	 * @return The singleton of the selected DB.
+	 */
 	public static synchronized MongoConnector getInstance(String db_name) {
 		if(instances.containsKey(db_name)){
 			return instances.get(db_name);
@@ -50,18 +61,38 @@ public class MongoConnector {
 		return m;
 	}
 
+	/**
+	 * Check if a class is already in the DB.
+	 * @param name			Name to search
+	 * @param packageName	PackageName to search
+	 * @return				True if it is already in the DB.
+	 */
 	public boolean existClassIndex(String name, String packageName){
 		return getIndex(name,packageName).size() > 0;
 	}
 
+	/**
+	 * Check if a class is already in the DB.
+	 * @param c	{@link ASTClass} to search
+	 * @return 	True if it is already in the DB.
+	 */
 	public boolean existClassIndex(ASTClass c){
 		return existClassIndex(c.getName(), c.getPackageName());
 	}
 
+	/**
+	 * Check if a class is already in the DB.
+	 * @param i	{@link IndexData} to search
+	 * @return	True if it is already in the DB.
+	 */
 	public boolean existClassIndex(IndexData i){
 		return existClassIndex(i.getClassName(), i.getClassPackage());
 	}
 
+	/**
+	 *
+	 * @param indexStructureClass
+	 */
 	public void add(IndexData indexStructureClass){
 		if(existClassIndex(indexStructureClass)){
 			return;
@@ -69,16 +100,32 @@ public class MongoConnector {
 		datastore.save(indexStructureClass);
 	}
 
+	/**
+	 * Retrieve the list of classes from the database.
+	 * @param name			Name of the class to get
+	 * @param packageName	PackageName of the class to get
+	 * @return				List of {@link IndexData} documents
+	 */
 	public List<IndexData> getIndex(String name, String packageName){
 		return  datastore.createQuery(IndexData.class)
 				.field("className").equal(name)
 				.field("classPackage").equal(packageName)
 				.asList();
 	}
+
+	/**
+	 * Retrieve the list of classes from the database.
+	 * @param c	{@link ASTClass} to get
+	 * @return	List of {@link IndexData} documents
+	 */
 	public List<IndexData> getIndex(ASTClass c){
 		return  getIndex(c.getName(), c.getPackageName());
 	}
 
+	/**
+	 * It queries the database to retrieve all the classes that are Threads.
+	 * @return list of {@link IndexData} objects.
+	 */
 	public List<IndexData> getThreads(){
 		Query<IndexData> q = datastore.createQuery(IndexData.class);
 		q.or(
@@ -88,6 +135,10 @@ public class MongoConnector {
 		return q.asList();
 	}
 
+	/**
+	 * Getter of the DB structure.
+	 * @return the database structure.
+	 */
 	public MongoDatabase getDb() {
 		return db;
 	}

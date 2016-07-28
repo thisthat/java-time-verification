@@ -1,23 +1,25 @@
 package IntermediateModelHelper.indexing.structure;
 
 import intermediateModel.structure.ASTVariable;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Field;
-import org.mongodb.morphia.annotations.Index;
-import org.mongodb.morphia.annotations.Indexes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The following class is used to save some data in a MongoDB.
+ * The data stored consists in:
+ * <ul>
+ *     <li>Name of the method</li>
+ *     <li>List of {@link IndexParameter} parameters</li>
+ *     <li>List of exceptions thrown</li>
+ *     <li>Position in the source code</li>
+ *     <li>it it is a constructor or a sync method</li>
+ * </ul>
+ * The class is just a <i>Struct</i> that serves the purpose of storing information only.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-@Entity("IndexMethod")
-@Indexes({
-		@Index(value = "name", fields = @Field("name")),
-		@Index(value = "packageName", fields = @Field("packageName"))
-})
 public class IndexMethod {
 	String packageName = "";
 	String name = "";

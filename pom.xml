@@ -16,7 +16,9 @@
         <module>xal</module>
         <module>intermediate-model</module>
         <module>testing</module>
+        <module>PCFG</module>
     </modules>
+
 
     <build>
         <plugins>

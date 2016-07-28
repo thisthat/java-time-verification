@@ -8,9 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The following class is used to save some data in a MongoDB.
+ * The data stored for a class consists in:
+ * <ul>
+ *     <li>List of methods {@link IndexMethod}</li>
+ *     <li>List of synchronized methods {@link IndexMethod}</li>
+ *     <li>List of synchronized blocks {@link IndexSyncBlock}</li>
+ *     <li><b>BETA</b> List of timed related methods</li>
+ *     <li>Package of the class</li>
+ *     <li>Class Name</li>
+ *     <li>Extended Class</li>
+ *     <li>List of implemented interfaces</li>
+ * </ul>
+ * We ensure that the object stored in MongoDB has two indexes on (i) Class Name and (ii) Package Name of each class.
+ * The class is just a <i>Struct</i> that serves the purpose of storing information only.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+
 @Entity("IndexData")
 @Indexes({
 		@Index(value = "className", fields = @Field("className")),
@@ -19,13 +35,10 @@ import java.util.List;
 public class IndexData {
 	@Id
 	private ObjectId id;
-	//@Reference
 	List<IndexMethod> listOfMethods = new ArrayList<>();
 	@Beta
 	List<String> listOfTimedMethods = new ArrayList<>();
-	//@Reference
 	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
-	//@Reference
 	List<IndexSyncBlock> listOfSyncBlocks = new ArrayList<>();
 
 	String classPackage = "";

@@ -11,11 +11,12 @@ import intermediateModel.structure.*;
 import intermediateModel.visitors.ParseIM;
 
 /**
+ *
+ * This class created the {@link IndexData} for a given {@link ASTClass}.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-
-
 public class IndexingFile extends ParseIM {
 
 	Env base_env = new Env();
@@ -26,6 +27,12 @@ public class IndexingFile extends ParseIM {
 	String lastMethodName = "";
 	IndexData data;
 
+	/**
+	 * Start the indexing of a {@link ASTClass}.
+	 * It goes through the methods of it and then through their statements.
+	 * @param c	Class to analyze
+	 * @return	The index data structure of the class.
+	 */
 	public IndexData index(ASTClass c) {
 		data = new IndexData();
 		data.setClassName(c.getName());

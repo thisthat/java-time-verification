@@ -2,6 +2,17 @@ package IntermediateModelHelper.indexing.structure;
 
 
 /**
+ * The following class is used to save some data in a MongoDB.
+ * The data stored consists in:
+ * <ul>
+ *     <li>Package name where it belongs to</li>
+ *     <li>Class Name where it belongs to</li>
+ *     <li>Method where it belongs to</li>
+ *     <li>Expression where it synchronized to</li>
+ *     <li>Position in the code</li>
+ * </ul>
+ * The class is just a <i>Struct</i> that serves the purpose of storing information only.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */

@@ -2,11 +2,9 @@ package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
 import org.apache.commons.io.FileUtils;
-import org.bson.Document;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
@@ -21,6 +19,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
+ * The following class analyze a project and stores in MongoDB the indexing of it.
+ * It creates a database per project. If a class name already exists in the database is not added.
+ * Two classes are equals if they share the same name and packaging.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
@@ -28,6 +30,10 @@ public class IndexingProject {
 	MongoConnector db;
 	String projectName;
 
+	/**
+	 * Construct the db given the project name.
+	 * @param name	Project Name
+	 */
 	public IndexingProject(String name) {
 		this.db = MongoConnector.getInstance(name);
 		this.projectName = name;
@@ -37,10 +43,23 @@ public class IndexingProject {
 		return projectName;
 	}
 
+	/**
+	 * Start the indexing from the <b>base_path</b> passed as parameter.
+	 * It iterates on the directory and sub-directories searching for Java files.
+	 * @param base_path	Path from where start to search for Java files.
+	 * @return The number of file parsed. <u>IT IS NOT THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
+	 */
 	public int indexProject(String base_path) {
 		return indexProject(base_path, false);
 	}
 
+	/**
+	 * Start the indexing from the <b>base_path</b> passed as parameter.
+	 * It iterates on the directory and sub-directories searching for Java files.
+	 * @param base_path	Path from where start to search for Java files.
+	 * @param deleteOld	If true delete the database so we have fresh data.
+	 * @return	The number of file parsed. <u>IT IS NOT THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
+	 */
 	public int indexProject(String base_path, boolean deleteOld){
 		//remove old data
 		if(deleteOld) delete();
@@ -80,11 +99,24 @@ public class IndexingProject {
 		return n_file;
 	}
 
+	/**
+	 * Start the indexing from the <b>base_path</b> passed as parameter.
+	 * It iterates on the directory and sub-directories searching for Java files.
+	 * @param base_path	Path from where start to search for Java files.
+	 * @param delete	If true delete the database so we have fresh data.
+	 * @return			A {@link Future} that will contain soon or late the number of file parsed. <u>IT WILL NOT RETURN THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
+	 */
 	public Future<Integer> asyncIndexProject(String base_path, boolean delete){
 		ExecutorService executor = Executors.newFixedThreadPool(1);
 		Callable<Integer> task = () -> indexProject(base_path, delete);
 		return executor.submit(task);
 	}
+	/**
+	 * Start the indexing from the <b>base_path</b> passed as parameter.
+	 * It iterates on the directory and sub-directories searching for Java files.
+	 * @param base_path	Path from where start to search for Java files.
+	 * @return			A {@link Future} that will contain soon or late the number of file parsed. <u>IT WILL NOT RETURN THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
+	 */
 	public Future<Integer> asyncIndexProject(String base_path){
 		return asyncIndexProject(base_path, false);
 	}
