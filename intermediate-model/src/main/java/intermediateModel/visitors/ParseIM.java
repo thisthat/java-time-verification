@@ -1,4 +1,4 @@
-package IntermediateModelHelper.indexing;
+package intermediateModel.visitors;
 
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
@@ -127,12 +127,14 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTRE r, Env env){
-		r.getExpression().visit(new DefaultASTVisitor(){
-			@Override
-			public void enterASTNewObject(ASTNewObject elm) {
-				analyze(elm, new Env(env));
-			}
-		});
+		if(r != null && r.getExpression() != null) {
+			r.getExpression().visit(new DefaultASTVisitor() {
+				@Override
+				public void enterASTNewObject(ASTNewObject elm) {
+					analyze(elm, new Env(env));
+				}
+			});
+		}
 		analyzeASTRE(r,env);
 	}
 

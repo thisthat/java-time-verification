@@ -2,56 +2,54 @@ package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.indexing.reducedstructure.IndexMethod;
-import IntermediateModelHelper.indexing.reducedstructure.IndexSyncBlock;
-import com.google.common.annotations.Beta;
+import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexMethod;
+import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import intermediateModel.visitors.ParseIM;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class Indexing extends ParseIM {
-	List<IndexMethod> listOfMethods = new ArrayList<>();
-	@Beta
-	List<String> listOfTimedMethods = new ArrayList<>();
-	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
-	List<IndexSyncBlock> listOfSyncBlocks = new ArrayList<>();
+
+
+public class IndexingFile extends ParseIM {
+
 	Env base_env = new Env();
 	BuildEnvirormentClass build_base_env;
 	{
 		build_base_env = new BuildEnvirormentClass(base_env);
 	}
-
 	String lastMethodName = "";
-	String classPackage = "";
-	String className = "";
+	IndexData data;
 
-	public Indexing(ASTClass c) {
-		classPackage = c.getPackageName();
-		className = c.getName();
+	public IndexData index(ASTClass c) {
+		data = new IndexData();
+		data.setClassName(c.getName());
+		data.setClassPackage(c.getPackageName());
+		data.setExtendedType(c.getExtendClass());
+		data.setInterfacesImplemented(c.getImplmentsInterfaces());
 		//collecting the names of methods and sync method
 		for(IASTMethod m : c.getMethods()){
-			listOfMethods.add(prepareOutput(m));
+			data.addMethod(prepareOutput(m));
 			if(m instanceof ASTMethod){
 				if(((ASTMethod) m).isSyncronized()){
-					listOfSyncMethods.add(prepareOutput(m));
+					data.addSyncMethod(prepareOutput(m));
 				}
 			}
 		}
 		createBaseEnv(c);
+		return data;
 	}
 
 	private IndexMethod prepareOutput(IASTMethod m) {
 		IndexMethod im = new IndexMethod();
 		im.setName(m.getName());
-		im.setPackageName(classPackage);
-		im.setParameters(m.getParameters());
+		im.setPackageName(data.getClassPackage());
+		im.setParameters(IndexMethod.convertPars(m.getParameters()));
 		im.setExceptionsThrowed(m.getExceptionsThrowed());
 		im.setStart(((IASTStm)m).getStart());
 		im.setEnd(((IASTStm)m).getEnd());
@@ -63,39 +61,14 @@ public class Indexing extends ParseIM {
 
 	private IndexSyncBlock prepareOutput(ASTSynchronized m) {
 		IndexSyncBlock is = new IndexSyncBlock();
-		is.setPackageName(classPackage);
-		is.setClassName(className);
+		is.setPackageName(data.getClassPackage());
+		is.setClassName(data.getClassName());
 		is.setMethodName(lastMethodName);
-		is.setExpr(m.getExpr());
+		is.setExpr(m.getExpr().getCode());
 		is.setStart(m.getStart());
 		is.setEnd(m.getEnd());
 		is.setLine(m.getLine());
 		return is;
-	}
-
-	public List<IndexMethod> getListOfMethods() {
-		return listOfMethods;
-	}
-
-	@Beta
-	public List<String> getListOfTimedMethods() {
-		return listOfTimedMethods;
-	}
-
-	public List<IndexMethod> getListOfSyncMethods() {
-		return listOfSyncMethods;
-	}
-
-	public List<IndexSyncBlock> getListOfSyncBlocks() {
-		return listOfSyncBlocks;
-	}
-
-	public String getClassPackage() {
-		return classPackage;
-	}
-
-	public String getClassName() {
-		return className;
 	}
 
 	/**
@@ -129,15 +102,17 @@ public class Indexing extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
-		listOfSyncBlocks.add(prepareOutput(elm));
+		data.addSyncBlock(prepareOutput(elm));
 	}
 
 	@Override
 	protected void analyzeASTReturn(ASTReturn elm, Env env) {
+		/*
 		ASTRE re = elm.getExpr();
 		if(re != null && re.getExpression() != null && //sanity checks
 				BuildEnvirormentClass.checkIt(re.getExpression(), env)){
 			listOfTimedMethods.add(lastMethodName);
 		}
+		*/
 	}
 }

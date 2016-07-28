@@ -1,7 +1,5 @@
-package IntermediateModelHelper.indexing.reducedstructure;
+package IntermediateModelHelper.indexing.structure;
 
-
-import intermediateModel.structure.ASTRE;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -11,7 +9,7 @@ public class IndexSyncBlock {
 	String packageName = "";
 	String className = "";
 	String methodName = "";
-	ASTRE expr = null;
+	String expr = null;
 	int start = 0;
 	int end = 0;
 	int line = 0;
@@ -19,7 +17,7 @@ public class IndexSyncBlock {
 	public IndexSyncBlock() {
 	}
 
-	public IndexSyncBlock(String packageName, String className, String methodName, ASTRE expr, int start, int end, int line) {
+	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line) {
 		this.packageName = packageName;
 		this.className = className;
 		this.methodName = methodName;
@@ -53,11 +51,11 @@ public class IndexSyncBlock {
 		this.methodName = methodName;
 	}
 
-	public ASTRE getExpr() {
+	public String getExpr() {
 		return expr;
 	}
 
-	public void setExpr(ASTRE expr) {
+	public void setExpr(String expr) {
 		this.expr = expr;
 	}
 

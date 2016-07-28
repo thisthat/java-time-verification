@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <name>Intermediate-Model</name>
     <packaging>jar</packaging>
-    <groupId>java-xal</groupId>
     <artifactId>intermediate-model</artifactId>
     <version>0.1-SNAPSHOT</version>
     <description>
@@ -55,9 +54,9 @@
             <version>3.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.6.3</version>
+            <groupId>org.mongodb.morphia</groupId>
+            <artifactId>morphia</artifactId>
+            <version>RELEASE</version>
         </dependency>
     </dependencies>
     <build>
@@ -67,7 +66,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-
+                    <excludes>
+                        <exclude>**/TestHeuristics.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 

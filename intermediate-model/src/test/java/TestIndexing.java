@@ -1,14 +1,12 @@
-import IntermediateModelHelper.indexing.Indexing;
-import IntermediateModelHelper.indexing.reducedstructure.IndexMethod;
-import IntermediateModelHelper.indexing.reducedstructure.IndexSyncBlock;
-import intermediateModel.interfaces.IASTMethod;
+import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexMethod;
+import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTSynchronized;
 import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.junit.Test;
 import parser.Java2AST;
-
+import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +16,7 @@ import static org.junit.Assert.assertArrayEquals;
  * @version %I%, %G%
  */
 public class TestIndexing {
+
 
 	public List<ASTClass> init(String filename) throws Exception {
 		Java2AST a = new Java2AST( filename );
@@ -33,7 +32,8 @@ public class TestIndexing {
 		String filename = getClass().getClassLoader().getResource("ExportChangesJob.java").getFile();
 		List<ASTClass> cs = init(filename);
 		{
-			Indexing index = new Indexing(cs.get(0));
+			IndexingFile ii = new IndexingFile();
+			IndexData index = ii.index(cs.get(0));
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
@@ -53,7 +53,8 @@ public class TestIndexing {
 		String filename = getClass().getClassLoader().getResource("FailoverTimeoutTest.java").getFile();
 		List<ASTClass> cs = init(filename);
 		{
-			Indexing index = new Indexing(cs.get(0));
+			IndexingFile ii = new IndexingFile();
+			IndexData index = ii.index(cs.get(0));
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
@@ -78,7 +79,8 @@ public class TestIndexing {
 		String filename = getClass().getClassLoader().getResource("JavaTimerExampleTask.java").getFile();
 		List<ASTClass> cs = init(filename);
 		{
-			Indexing index = new Indexing(cs.get(0));
+			IndexingFile ii = new IndexingFile();
+			IndexData index = ii.index(cs.get(0));
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
@@ -97,12 +99,13 @@ public class TestIndexing {
 		}
 	}
 
-	@Test(expected = AssertionError.class)
+	@Test //(expected = AssertionError.class)
 	public void TestMCGroupImpl() throws Exception {
 		String filename = getClass().getClassLoader().getResource("MCGroupImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		{
-			Indexing index = new Indexing(cs.get(0));
+			IndexingFile ii = new IndexingFile();
+			IndexData index = ii.index(cs.get(0));
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();

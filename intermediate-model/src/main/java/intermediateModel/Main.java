@@ -1,7 +1,7 @@
 package intermediateModel;
 
 import IntermediateModelHelper.converter.GenerateXAL;
-import IntermediateModelHelper.indexing.Indexing;
+import IntermediateModelHelper.indexing.IndexingFile;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.CreateIntemediateModel;
@@ -88,7 +88,8 @@ public class Main {
 
 			for(ASTClass c : v.listOfClasses){
 
-				Indexing index = new Indexing(c);
+				IndexingFile index = new IndexingFile();
+				index.index(c);
 
 				ah.analyze(c);
 				String s = Arrays.toString( ah.getTimeConstraint().toArray() );

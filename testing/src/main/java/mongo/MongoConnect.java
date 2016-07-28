@@ -1,5 +1,7 @@
 package mongo;
-import IntermediateModelHelper.heuristic.*;
+
+import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.structure.IndexData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
@@ -8,18 +10,19 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.bson.Document;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.javatuples.Triplet;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.MapperOptions;
+import org.mongodb.morphia.query.Query;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -35,6 +38,14 @@ public class MongoConnect {
 	// db.testCollection.drop() -> delete collection
 	public static void main(String[] args) throws IOException, ParseErrorsException {
 
+		final Morphia morphia = new Morphia();
+		MapperOptions options = new MapperOptions();
+		options.setStoreEmpties(true);
+		options.setStoreNulls(true);
+		morphia.getMapper().setOptions(options);
+		morphia.mapPackage("intermediateModel.structure");
+		final Datastore datastore = morphia.createDatastore(new MongoClient(), "morphia_example");
+		datastore.ensureIndexes();
 
 		List<String> files = new ArrayList<>();
 		files.add( MongoConnect.class.getClassLoader().getResource("JavaTimerExampleTask.java").getFile() );
@@ -51,12 +62,14 @@ public class MongoConnect {
 			ast.accept(v);
 
 			for(ASTClass c : v.listOfClasses){
-
-
-
-
+				IndexingFile ii = new IndexingFile();
+				datastore.save(ii.index(c));
 			}
 		}
+
+		final Query<IndexData> query = datastore.createQuery(IndexData.class);
+		final List<IndexData> employees = query.asList();
+		System.out.println(Arrays.toString(employees.toArray()));
 	}
 
 

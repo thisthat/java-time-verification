@@ -1,6 +1,10 @@
-package IntermediateModelHelper.indexing.reducedstructure;
+package IntermediateModelHelper.indexing.structure;
 
 import intermediateModel.structure.ASTVariable;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +13,15 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Entity("IndexMethod")
+@Indexes({
+		@Index(value = "name", fields = @Field("name")),
+		@Index(value = "packageName", fields = @Field("packageName"))
+})
 public class IndexMethod {
 	String packageName = "";
 	String name = "";
-	List<ASTVariable> parameters = new ArrayList<>();
+	List<IndexParameter> parameters = new ArrayList<>();
 	List<String> exceptionsThrowed = new ArrayList<>();
 	int start = 0;
 	int end = 0;
@@ -23,13 +32,21 @@ public class IndexMethod {
 	public IndexMethod(String packageName, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
 		this.packageName = packageName;
 		this.name = name;
-		this.parameters = parameters;
+		this.parameters = convertPars(parameters);
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.start = start;
 		this.end = end;
 		this.line = line;
 		this.isConstructor = isConstructor;
 		this.isSync = isSync;
+	}
+
+	public static List<IndexParameter> convertPars(List<ASTVariable> parameters) {
+		List<IndexParameter> l = new ArrayList<>();
+		for(ASTVariable v : parameters){
+			l.add(new IndexParameter(v.getType(), v.getName()));
+		}
+		return l;
 	}
 
 	public IndexMethod() {
@@ -43,11 +60,11 @@ public class IndexMethod {
 		this.name = name;
 	}
 
-	public List<ASTVariable> getParameters() {
+	public List<IndexParameter> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(List<ASTVariable> parameters) {
+	public void setParameters(List<IndexParameter> parameters) {
 		this.parameters = parameters;
 	}
 
