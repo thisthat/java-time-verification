@@ -19,11 +19,6 @@ import intermediateModel.visitors.ParseIM;
  */
 public class IndexingFile extends ParseIM {
 
-	Env base_env = new Env();
-	BuildEnvirormentClass build_base_env;
-	{
-		build_base_env = new BuildEnvirormentClass(base_env);
-	}
 	String lastMethodName = "";
 	IndexData data;
 
@@ -86,12 +81,9 @@ public class IndexingFile extends ParseIM {
 	 * <b>Efficency Tips</b>: Since we parse the IM we also collect the sync block and time related methods here.
 	 * @param c Class to analyze
 	 */
-	private void createBaseEnv(ASTClass c){
-		build_base_env.buildEnvClass(c);
-		//check static
-		for (ASTStatic s : c.getStaticInit()) {
-			analyze(s.getStms(), base_env);
-		}
+	@Override
+	protected void createBaseEnv(ASTClass c){
+		super.createBaseEnv(c);
 		//check method
 		for (IASTMethod m : c.getMethods()) {
 			lastMethodName = m.getName();

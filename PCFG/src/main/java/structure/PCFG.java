@@ -8,13 +8,14 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class PCFG {
-	List<INode> V = new ArrayList<>();
+	List<Node> V = new ArrayList<>();
+	List<SyncNode> syncNodes = new ArrayList<>();
 	List<IEdge> E = new ArrayList<>();
 
 	public PCFG() {
 	}
 
-	public List<INode> getV() {
+	public List<Node> getV() {
 		return V;
 	}
 
@@ -22,7 +23,7 @@ public class PCFG {
 		return E;
 	}
 
-	public void addNode(INode node){
+	public void addNode(Node node){
 		this.V.add(node);
 	}
 
@@ -30,4 +31,12 @@ public class PCFG {
 		this.E.add(edge);
 	}
 
+	public void addNode(SyncNode node) {
+		this.syncNodes.add(node);
+	}
+
+	/**
+	 * TODO: Implementing the optimization
+	 */
+	public void optimize(){}
 }

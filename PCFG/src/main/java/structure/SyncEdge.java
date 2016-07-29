@@ -4,7 +4,7 @@ package structure;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-class SyncEdge {
+public class SyncEdge implements IEdge {
 
 	public class MalformedSyncEdge extends Exception {
 		public MalformedSyncEdge(String message) {
@@ -20,6 +20,7 @@ class SyncEdge {
 	INode from;
 	INode to;
 	TYPE type;
+	String label;
 
 	public SyncEdge(INode from, INode to) throws MalformedSyncEdge {
 		this.from = from;
@@ -40,5 +41,15 @@ class SyncEdge {
 
 	public TYPE getType() {
 		return type;
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	@Override
+	public String getLabel() {
+		return this.label;
 	}
 }

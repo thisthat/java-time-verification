@@ -7,7 +7,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-class SyncNode implements INode {
+public class SyncNode implements INode {
 	List<Node> nodes = new ArrayList<>();
 
 	public List<Node> getNodes() {

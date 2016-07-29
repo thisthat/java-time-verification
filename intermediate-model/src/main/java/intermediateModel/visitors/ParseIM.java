@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * The following class parse the Java code of the IM creating the Env structure that contains all the variables that
  * a particular instruction can see.
- * It abstract because the purpose it to allow other classes to easilly go through the IM without reimplementing the Env
+ * It abstract because the purpose it to allow other classes to easily go through the IM without reimplementing the Env
  * construction or the traveller of the IM.
  * The class that extends the following one has to call the {@link #analyze(List, Env)} method to start the traveling.
  * Then, it can override various hook up to do whatever it likes to.
@@ -21,6 +21,28 @@ import java.util.List;
  * @version %I%, %G%
  */
 public abstract class ParseIM {
+
+	protected Env base_env = new Env();
+	protected BuildEnvirormentClass build_base_env;
+	{
+		build_base_env = new BuildEnvirormentClass(base_env);
+	}
+
+	/**
+	 * The following method creates the basic environment for a class.
+	 * It goes through the def of all stms and set if variables are time related.
+	 * At the end of the execution of the method we know if an attribute is time reletad or not.
+	 * <hr>
+	 * <b>Efficency Tips</b>: Since we parse the IM we also collect the sync block and time related methods here.
+	 * @param c Class to analyze
+	 */
+	protected void createBaseEnv(ASTClass c){
+		build_base_env.buildEnvClass(c);
+		//check static
+		for (ASTStatic s : c.getStaticInit()) {
+			analyze(s.getStms(), base_env);
+		}
+	}
 
 	/**
 	 * This method is a dispatcher. It is ugly, but it is the only way to implement a pattern matching.
@@ -122,7 +144,6 @@ public abstract class ParseIM {
 			this.analyze(hc, new Env(env));
 		}
 	}
-
 
 
 	/**
@@ -396,6 +417,11 @@ public abstract class ParseIM {
 	 * @param env   Environment
 	 */
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
 	protected void analyzeASTThrow(ASTThrow elm, Env env){}
 	/**
 	 * Empty.

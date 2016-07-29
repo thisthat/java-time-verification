@@ -5,4 +5,6 @@ package structure;
  * @version %I%, %G%
  */
 public interface IEdge {
+	void setLabel(String label);
+	String getLabel();
 }
