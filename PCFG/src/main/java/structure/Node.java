@@ -8,6 +8,9 @@ public class Node implements INode {
 	String name;
 	String code;
 	TYPE type;
+	int id = 0;
+
+	public static int _ID = 0;
 
 	public enum TYPE {
 		RETURN,
@@ -26,6 +29,7 @@ public class Node implements INode {
 		this.name = name;
 		this.code = code;
 		this.type = type;
+		this.id = _ID++;
 	}
 
 	public String getName() {
@@ -50,5 +54,9 @@ public class Node implements INode {
 
 	public void setType(TYPE type) {
 		this.type = type;
+	}
+
+	public int getID() {
+		return id;
 	}
 }

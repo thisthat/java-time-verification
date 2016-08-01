@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class Main {
 
+	/*
 	public static void java8_main(String[] args) throws Exception {
 
 		if(args.length < 1){
@@ -54,6 +55,7 @@ public class Main {
 
 
 	}
+	*/
 
 	public static void main(String[] args) throws Exception {
 

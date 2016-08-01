@@ -5,4 +5,6 @@ package structure;
  * @version %I%, %G%
  */
 public interface INode {
+	String getName();
+	int getID();
 }

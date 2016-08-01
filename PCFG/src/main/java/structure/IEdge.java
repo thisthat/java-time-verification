@@ -7,4 +7,7 @@ package structure;
 public interface IEdge {
 	void setLabel(String label);
 	String getLabel();
+	INode getFrom();
+	INode getTo();
+
 }

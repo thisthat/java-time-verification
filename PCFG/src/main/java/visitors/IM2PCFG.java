@@ -1,7 +1,6 @@
 package visitors;
 
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ConvertIM;
 import org.javatuples.KeyValue;
@@ -80,6 +79,11 @@ public class IM2PCFG extends ConvertIM {
 		));
 		this.lastLabel = "True";
 		super.dispachStm(stm.getStms());
+
+		//back to the expr
+		Edge eBack = new Edge(this.lastNode, has_next);
+		this.pcfg.addEdge(eBack);
+
 		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS);
 		this.pcfg.addNode(end_for);
 		Edge e = new Edge(has_next, end_for);
@@ -108,6 +112,10 @@ public class IM2PCFG extends ConvertIM {
 		if(stm.getPost().size() > 0){
 			stm.getPost().forEach(this::convertRE);
 		}
+		//to expr again
+		Edge eBack = new Edge(this.lastNode, expr_for);
+		this.pcfg.addEdge(eBack);
+		//close the for
 		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS);
 		this.pcfg.addNode(end_for);
 		Edge e = new Edge(expr_for, end_for);
@@ -127,6 +135,7 @@ public class IM2PCFG extends ConvertIM {
 		e.setLabel("True");
 		pcfg.addEdge(e);
 		this.lastLabel = "False";
+		this.lastNode = expr;
 	}
 
 	@Override
@@ -135,6 +144,9 @@ public class IM2PCFG extends ConvertIM {
 		addState( expr );
 		this.lastLabel = "True";
 		dispachStm(stm.getStms());
+		//back to the expr
+		Edge e = new Edge( this.lastNode , expr );
+		this.pcfg.addEdge(e);
 		this.lastLabel = "False";
 		this.lastNode = expr;
 	}
@@ -150,14 +162,20 @@ public class IM2PCFG extends ConvertIM {
 	@Override
 	protected void convertIf(ASTIf stm) {
 		Node expr = new Node(stm.getGuard().getExpressionName(), stm.getGuard().getCode(), Node.TYPE.NORMAL);
+		Node end_if = new Node("_end_if", "", Node.TYPE.USELESS);
 		addState( expr );
 		this.lastLabel = "True";
 		super.dispachStm(stm.getIfBranch().getStms());
+		//jump to the end
+		Edge eEnd = new Edge(this.lastNode, end_if);
+		this.pcfg.addEdge(eEnd);
+
 		this.lastLabel = "False";
+		this.lastNode = expr;
 		if(stm.getElseBranch() != null){
 			dispachStm(stm.getElseBranch().getStms());
 		}
-		Node end_if = new Node("_end_if", "", Node.TYPE.USELESS);
+
 		addState(end_if);
 	}
 
@@ -171,6 +189,7 @@ public class IM2PCFG extends ConvertIM {
 		this.pcfg.addNode(end_try);
 		addState(init_try);
 
+
 		super.dispachStm(stm.getTryBranch().getStms());
 
 		//go to finally
@@ -178,11 +197,11 @@ public class IM2PCFG extends ConvertIM {
 		this.pcfg.addEdge(toFinally);
 
 		if(stm.getCatchBranch().size() > 0){
+			Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
+			Edge e = new Edge(init_try, catch_try);
+			this.pcfg.addNode(catch_try);
+			this.pcfg.addEdge(e);
 			for(ASTTry.ASTCatchBranch c : stm.getCatchBranch()){
-				Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
-				Edge e = new Edge(init_try, catch_try);
-				this.pcfg.addNode(catch_try);
-				this.pcfg.addEdge(e);
 				Node instance = new Node(
 						c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType(),
 						c.getCode(),
@@ -198,7 +217,7 @@ public class IM2PCFG extends ConvertIM {
 				Edge toFinallyFromCatch = new Edge(this.lastNode, finally_try);
 				this.pcfg.addEdge(toFinallyFromCatch);
 				//from catch to end try
-				Edge toEnd = new Edge(catch_try, end_try);
+				Edge toEnd = new Edge(instance, finally_try);
 				toEnd.setLabel("False");
 				this.pcfg.addEdge(toEnd);
 			}
@@ -209,6 +228,9 @@ public class IM2PCFG extends ConvertIM {
 			super.dispachStm(stm.getFinallyBranch().getStms());
 			Edge toEnd = new Edge(this.lastNode, end_try);
 			this.pcfg.addEdge(toEnd);
+		} else {
+			Edge finalEdge = new Edge(finally_try, end_try);
+			this.pcfg.addEdge(finalEdge);
 		}
 
 		this.lastNode = end_try;
@@ -216,6 +238,7 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertTryResource(ASTTryResources stm) {
+
 		Node init_try = new Node("try", "", Node.TYPE.TRY);
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY);
 		Node end_try = new Node("endtry", "", Node.TYPE.USELESS);
@@ -230,11 +253,11 @@ public class IM2PCFG extends ConvertIM {
 		this.pcfg.addEdge(toFinally);
 
 		if(stm.getCatchBranch().size() > 0){
+			Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
+			Edge e = new Edge(init_try, catch_try);
+			this.pcfg.addNode(catch_try);
+			this.pcfg.addEdge(e);
 			for(ASTTry.ASTCatchBranch c : stm.getCatchBranch()){
-				Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
-				Edge e = new Edge(init_try, catch_try);
-				this.pcfg.addNode(catch_try);
-				this.pcfg.addEdge(e);
 				Node instance = new Node(
 						c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType(),
 						c.getCode(),
@@ -250,29 +273,28 @@ public class IM2PCFG extends ConvertIM {
 				Edge toFinallyFromCatch = new Edge(this.lastNode, finally_try);
 				this.pcfg.addEdge(toFinallyFromCatch);
 				//from catch to end try
-				Edge toEnd = new Edge(catch_try, end_try);
+				Edge toEnd = new Edge(instance, finally_try);
 				toEnd.setLabel("False");
 				this.pcfg.addEdge(toEnd);
 			}
 		}
 
+		this.lastNode = finally_try;
 		if(stm.getFinallyBranch() != null){
-			this.lastNode = finally_try;
 			super.dispachStm(stm.getFinallyBranch().getStms());
-
-			//convert the resources
-			for(ASTRE r : stm.getResources()){
-				Node resource = new Node(
-						"close_" + r.getExpressionName(),
-						r.getCode(),
-						Node.TYPE.NORMAL
-				);
-				addState(resource);
-			}
-
-			Edge toEnd = new Edge(this.lastNode, end_try);
-			this.pcfg.addEdge(toEnd);
 		}
+		//convert the resources
+		for(ASTRE r : stm.getResources()){
+			Node resource = new Node(
+					"close_" + r.getExpressionName(),
+					r.getCode(),
+					Node.TYPE.NORMAL
+			);
+			addState(resource);
+		}
+
+		Edge toEnd = new Edge(this.lastNode, end_try);
+		this.pcfg.addEdge(toEnd);
 
 		this.lastNode = end_try;
 	}
@@ -310,6 +332,8 @@ public class IM2PCFG extends ConvertIM {
 			Edge toEnd = new Edge(this.lastNode, end_switch);
 			this.pcfg.addEdge(toEnd);
 		}
+		this.lastLabel = "";
+		this.lastNode = end_switch;
 	}
 
 	@Override
@@ -365,9 +389,10 @@ public class IM2PCFG extends ConvertIM {
 		if(this.isMultiLabel){
 			for(Node n : this.multiLabel){
 				Edge e = new Edge(n, node);
-				e.setLabel("T");
+				e.setLabel("True");
 				this.pcfg.addEdge(e);
 			}
+			this.isMultiLabel = false;
 			this.multiLabel.clear();
 		}
 		if(this.syncNode != null){
