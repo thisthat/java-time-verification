@@ -9,4 +9,5 @@ public interface IASTVar {
 	String getName();
 	boolean isTimeCritical();
 	void setTimeCritical(boolean timeCritical);
+	boolean equals(Object o);
 }

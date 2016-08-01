@@ -17,6 +17,7 @@ import org.antlr.v4.runtime.Token;
 public class ASTRE extends IASTStm implements IASTVisitor {
 
 	IASTRE expression;
+	private static int _ID = 0;
 
 	public ASTRE(Token start, Token end, IASTRE expression) {
 		super(start, end);
@@ -36,7 +37,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 					var_name[0] = elm.getValue();
 				}
 			});
-			return var_name[0];
+			return var_name[0] + "_" + _ID++;
 		}
 		if(expression instanceof ASTBinary){
 			final String[] var_name = new String[1];
@@ -46,9 +47,9 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 					var_name[0] = elm.getValue();
 				}
 			});
-			return expression.getClass().getSimpleName() + "_" + var_name[0];
+			return expression.getClass().getSimpleName() + "_" + var_name[0] + "_" + _ID++;
 		}
-		return expression.getClass().getSimpleName();
+		return expression.getClass().getSimpleName() + "_" + _ID++;
 	}
 
 	@Override

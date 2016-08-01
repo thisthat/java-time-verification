@@ -40,8 +40,8 @@ public class Java2AST {
 	private char[] source;
 
 	public enum VERSION {
-		Java_7,
-		Java_8,
+		@Deprecated Java_7,
+		@Deprecated Java_8,
 		JDT
 	}
 
@@ -49,6 +49,7 @@ public class Java2AST {
      * Getter of the AST
      * @return the AST of the source file
      */
+    @Deprecated
     public ParserRuleContext getContext() {
         return context;
     }

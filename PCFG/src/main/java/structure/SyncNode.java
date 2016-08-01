@@ -11,9 +11,15 @@ public class SyncNode implements INode {
 
 	public static int _ID = 0;
 	int id = 0;
+	private String expr;
+	int line;
+	String className;
 
-	public SyncNode() {
+	public SyncNode(String expr, int line, String className) {
 		this.id = _ID++;
+		this.expr = expr;
+		this.line = line;
+		this.className = className;
 	}
 
 	List<Node> nodes = new ArrayList<>();
@@ -38,5 +44,17 @@ public class SyncNode implements INode {
 	@Override
 	public int getID() {
 		return id;
+	}
+
+	public String getExpr() {
+		return expr;
+	}
+
+	public int getLine() {
+		return line;
+	}
+
+	public String getClassName() {
+		return className;
 	}
 }

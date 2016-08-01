@@ -1,18 +1,26 @@
 package visitors;
 
+import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ConvertIM;
 import org.javatuples.KeyValue;
-import structure.Edge;
-import structure.Node;
-import structure.PCFG;
-import structure.SyncNode;
+import structure.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
+ * The following class convert the IM of a set of methods in a CFG first.
+ * Then, it create cross links between the CFGs of the methods where there is:
+ * <ul>
+ *     <li>a synchronization on the same variables</li>
+ *     <li>a method call on the same synchronized methods</li>
+ * </ul>
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
@@ -24,16 +32,21 @@ public class IM2PCFG extends ConvertIM {
 	private String lastLabel;
 	private boolean isMultiLabel = false;
 	private List<Node> multiLabel = new ArrayList<>();
+	private IndexingFile classIndexer = new IndexingFile();
+	private List<IndexData> indexs = new ArrayList<>();
+	private String lastClass = "";
 
 	public IM2PCFG(List<KeyValue<String,ASTClass>> classes) {
 		this.classes = classes;
 	}
 
 	public IM2PCFG() {
+
 	}
 
 	public void addClass(ASTClass c, String methodName){
 		this.classes.add(new KeyValue<String, ASTClass>(methodName, c));
+		indexs.add( classIndexer.index(c) );
 	}
 
 	public PCFG buildPCFG(){
@@ -45,24 +58,79 @@ public class IM2PCFG extends ConvertIM {
 			for(IASTMethod m : c.getValue().getMethods()){
 				//only work on the method specified
 				if(m.getName().equals(c.getKey())) {
-					addSingleClassStates(m);
+					addSingleClassStates(c.getValue(), m);
 				}
 			}
-
 		}
+
 		//optimize
 		pcfg.optimize();
 
 		//check for sync blocks
+		calculateSyncBlock();
 
 		//check for call on sync methods
+
 
 		return pcfg;
 	}
 
-	private void addSingleClassStates(IASTMethod c){
+	private void calculateSyncBlock() {
+		//get the sync blocks of the methods that we are looking for
+		List<IndexSyncBlock> syncBlocks = new ArrayList<>();
+		for(KeyValue<String,ASTClass> c : classes){
+			for(IndexData data : indexs){
+				for(IndexSyncBlock s : data.getListOfSyncBlocks()){
+					if(
+							s.getClassName().equals(
+									c.getValue().getName()
+							)
+							&&
+							s.getMethodName().equals(
+									c.getKey())
+							)
+					{
+						syncBlocks.add(s);
+					}
+				}
+			}
+		}
+		//everyone is checked against everyone
+		for(IndexSyncBlock outter : syncBlocks){
+			IASTVar varOutter = outter.getEnv().getVar(outter.getExpr());
+			if(varOutter == null) { //could be a method call or something else than a simple var :(
+				//for the moment we consider only variables
+				continue;
+			}
+			for(IndexSyncBlock inner : syncBlocks) {
+				if (outter == inner) { //we do not check myself with myself
+					continue;
+				}
+				IASTVar varInner = inner.getEnv().getVar(inner.getExpr());
+				if(varInner == null){//could be a method call or something else than a simple var :(
+					//for the moment we consider only variables
+					continue;
+				}
+				if(varInner.getType().equals(varOutter.getType())){
+					//we gotta a match
+					SyncNode outSync = pcfg.getSyncNodeByExpr( outter.getExpr(), outter.getLine(), outter.getClassName() );
+					SyncNode inSync  = pcfg.getSyncNodeByExpr( inner.getExpr(),  inner.getLine(),  inner.getClassName()  );
+					SyncEdge sEdge = null;
+					try {
+						sEdge = new SyncEdge(outSync,inSync);
+					} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
+						malformedSyncEdge.printStackTrace();
+					}
+					pcfg.addEdge(sEdge);
+				}
+			}
+		}
+	}
+
+	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		dispachStm(c.getStms());
+		lastClass = c.getName();
+		dispachStm(m.getStms());
 	}
 
 
@@ -153,7 +221,7 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertSyncronized(ASTSynchronized stm) {
-		syncNode = new SyncNode();
+		syncNode = new SyncNode(stm.getExpr().getCode(), stm.getLine(), this.lastClass );
 		pcfg.addNode(syncNode);
 		dispachStm(stm.getStms());
 		syncNode = null;
@@ -238,7 +306,6 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertTryResource(ASTTryResources stm) {
-
 		Node init_try = new Node("try", "", Node.TYPE.TRY);
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY);
 		Node end_try = new Node("endtry", "", Node.TYPE.USELESS);

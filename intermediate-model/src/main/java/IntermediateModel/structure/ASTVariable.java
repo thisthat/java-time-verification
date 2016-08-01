@@ -40,6 +40,7 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 
 	@Override
 	public boolean equals(Object o) {
+		if(o instanceof ASTAttribute) return equals((ASTAttribute) o);
 		if (this == o) return true;
 		if (!(o instanceof ASTVariable)) return false;
 
@@ -49,6 +50,10 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 		if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null) return false;
 
 		return true;
+	}
+
+	public boolean equals(ASTAttribute o){
+		return this.getName() == o.getName() && this.getType() == o.getType();
 	}
 
 	@Override

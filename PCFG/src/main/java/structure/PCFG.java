@@ -10,7 +10,8 @@ import java.util.List;
 public class PCFG {
 	List<Node> V = new ArrayList<>();
 	List<SyncNode> syncNodes = new ArrayList<>();
-	List<IEdge> E = new ArrayList<>();
+	List<Edge> E = new ArrayList<>();
+	List<SyncEdge> ESync = new ArrayList<>();
 
 	public PCFG() {
 	}
@@ -19,7 +20,7 @@ public class PCFG {
 		return V;
 	}
 
-	public List<IEdge> getE() {
+	public List<Edge> getE() {
 		return E;
 	}
 
@@ -27,8 +28,11 @@ public class PCFG {
 		this.V.add(node);
 	}
 
-	public void addEdge(IEdge edge){
+	public void addEdge(Edge edge){
 		this.E.add(edge);
+	}
+	public void addEdge(SyncEdge edge){
+		this.ESync.add(edge);
 	}
 
 	public void addNode(SyncNode node) {
@@ -42,42 +46,52 @@ public class PCFG {
 
 	public String toGraphViz(boolean hideName){
 		StringBuilder out = new StringBuilder();
-		out.append("digraph {\nrankdir=LR;\n");
-		if(hideName){
-			for(Node v :  V){
-				out.append("s" + v.getID() + ";\n");
-			}
-			int i = 0;
-			for(SyncNode s : syncNodes){
-				i++;
-				out.append("subgraph cluster_1 {\nnode [style=filled];\n");
-				for(Node v : s.getNodes()){
-					out.append("s" + v.getID() + ";\n");
-				}
-				out.append("label = \"sync block " + i + "\";\ncolor=blue\n}\n");
-			}
-			for(IEdge e : E){
-				out.append("s" + e.getFrom().getID() + " -> " + "s" + e.getTo().getID() + ";\n");
-			}
+		out.append("digraph {\nrankdir=LR;\ncompound=true;\n");
+		for(Node v :  V){
+			out.append(printNode(v, hideName) + ";\n");
 		}
-		else {
-			for(Node v :  V){
-				out.append(v.getName() + ";\n");
+		int i = 0;
+		for(SyncNode s : syncNodes){
+			i++;
+			out.append("subgraph cluster_" + s.getID() + " {\nnode [style=filled];\n");
+			for(Node v : s.getNodes()){
+				out.append(printNode(v, hideName) + ";\n");
 			}
-			int i = 0;
-			for(SyncNode s : syncNodes){
-				i++;
-				out.append("subgraph cluster_1 {\nnode [style=filled];\n");
-				for(Node v : s.getNodes()){
-					out.append(v.getName() + ";\n");
-				}
-				out.append("label = \"sync block " + i + "\";\ncolor=blue\n}\n");
-			}
-			for(IEdge e : E){
-				out.append(e.getFrom().getName() + " -> " + e.getTo().getName() + ";\n");
+			out.append("label = \"sync block on " + s.getExpr() + "\";\ncolor=blue\n}\n");
+		}
+		for(IEdge e : E){
+			out.append(printNode(e.getFrom(), hideName) + " -> " + printNode(e.getTo(), hideName) + ";\n");
+		}
+		for(SyncEdge sEdge : ESync){
+			if(sEdge.getType() == SyncEdge.TYPE.SYNC_BLOCK){
+				SyncNode from 	= ((SyncNode) sEdge.getFrom());
+				SyncNode to 	= ((SyncNode) sEdge.getTo());
+				Node f = from.getNodes().get(0);
+				Node t = to.getNodes().get(0);
+				out.append(printNode(f, hideName) + " -> " + printNode(t, hideName) + " [ltail=cluster_" + from.getID() + ",lhead=cluster_" + to.getID() + "];\n");
 			}
 		}
 		out.append("}\n");
 		return out.toString();
+	}
+
+	private static String printNode(INode v, boolean hideName) {
+		if(hideName) {
+			return "s" + v.getID();
+		}
+		return v.getName();
+	}
+
+	public SyncNode getSyncNodeByExpr(String expr, int line, String className){
+		for(SyncNode s : syncNodes){
+			if(
+					s.getExpr().equals(expr) &&
+					s.getClassName().equals(className) &&
+					s.getLine() == line
+			) {
+				return s;
+			}
+		}
+		return null;
 	}
 }

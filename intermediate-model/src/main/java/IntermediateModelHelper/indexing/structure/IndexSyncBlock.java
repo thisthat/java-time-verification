@@ -1,6 +1,8 @@
 package IntermediateModelHelper.indexing.structure;
 
 
+import IntermediateModelHelper.envirorment.Env;
+
 /**
  * The following class is used to save some data in a MongoDB.
  * The data stored consists in:
@@ -24,11 +26,12 @@ public class IndexSyncBlock {
 	int start = 0;
 	int end = 0;
 	int line = 0;
+	Env env;
 
 	public IndexSyncBlock() {
 	}
 
-	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line) {
+	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, Env env) {
 		this.packageName = packageName;
 		this.className = className;
 		this.methodName = methodName;
@@ -36,6 +39,7 @@ public class IndexSyncBlock {
 		this.start = start;
 		this.end = end;
 		this.line = line;
+		this.env = env;
 	}
 
 	public String getPackageName() {
@@ -92,5 +96,13 @@ public class IndexSyncBlock {
 
 	public void setLine(int line) {
 		this.line = line;
+	}
+
+	public Env getEnv() {
+		return env;
+	}
+
+	public void setEnv(Env env) {
+		this.env = env;
 	}
 }

@@ -61,7 +61,7 @@ public class IndexingFile extends ParseIM {
 		return im;
 	}
 
-	private IndexSyncBlock prepareOutput(ASTSynchronized m) {
+	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
 		is.setPackageName(data.getClassPackage());
 		is.setClassName(data.getClassName());
@@ -70,6 +70,7 @@ public class IndexingFile extends ParseIM {
 		is.setStart(m.getStart());
 		is.setEnd(m.getEnd());
 		is.setLine(m.getLine());
+		is.setEnv(e);
 		return is;
 	}
 
@@ -101,7 +102,7 @@ public class IndexingFile extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
-		data.addSyncBlock(prepareOutput(elm));
+		data.addSyncBlock(prepareOutput(elm, env));
 	}
 
 	@Override
