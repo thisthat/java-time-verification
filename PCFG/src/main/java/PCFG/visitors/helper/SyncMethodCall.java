@@ -1,4 +1,4 @@
-package visitors.helper;
+package PCFG.visitors.helper;
 
 import intermediateModel.structure.ASTRE;
 

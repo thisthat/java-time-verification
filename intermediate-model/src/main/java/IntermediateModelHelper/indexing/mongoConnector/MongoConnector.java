@@ -91,8 +91,8 @@ public class MongoConnector {
 	}
 
 	/**
-	 *
-	 * @param indexStructureClass
+	 * Insert a indexed class in the database iff. it is not already present
+	 * @param indexStructureClass	Indexed structure of a class to insert
 	 */
 	public void add(IndexData indexStructureClass){
 		if(existClassIndex(indexStructureClass)){
@@ -136,7 +136,11 @@ public class MongoConnector {
 		return q.asList();
 	}
 
-
+	/**
+	 * Get the list of classes that belong to an import statement
+	 * @param query	package name of the import
+	 * @return	List of {@link IndexData} classes
+	 */
 	public List<IndexData> getFromImport(String query){
 		// create a regular expression which matches any string which includes "test"
 		Pattern regexp = Pattern.compile(query);

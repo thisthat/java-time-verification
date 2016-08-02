@@ -1,4 +1,4 @@
-package structure;
+package PCFG.structure;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

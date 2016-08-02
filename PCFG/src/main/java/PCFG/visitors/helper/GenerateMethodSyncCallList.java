@@ -1,4 +1,4 @@
-package visitors.helper;
+package PCFG.visitors.helper;
 
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
@@ -23,6 +23,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ *
+ * With the following class we help the construction of the {@link PCFG.structure.SyncEdge}.
+ * The idea is to parse the method that we are currently looking through and collect all the information about
+ * what are the method calls to synchronized method.
+ *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
@@ -39,12 +44,23 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	Map<String, List<IndexMethod>> syncMethods = new HashMap<>();
 	List<IndexData> imports;
 
+	/**
+	 * Constructor.
+	 * It creates the object and pre-process the {@link ASTClass} in input collecting from the database all the info
+	 * from the import section.
+	 * @param _class	Class under analysis
+	 * @param _method	Method of the class under analysis
+	 */
 	public GenerateMethodSyncCallList(ASTClass _class, IASTMethod _method) {
 		this._class = _class;
 		this._method = _method;
 		processImports();
 	}
 
+	/**
+	 * It connects to the mongodb and prepare the data in order to resolve the from which
+	 * objects the method calls are coming from.
+	 */
 	private void processImports() {
 		for(ASTImport imp : this._class.getImports()){
 			String pkg = imp.getPackagename();
@@ -91,9 +107,9 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	 * <ul>
 	 *     <li><b>Attribute Access</b>: Check if the attribute name exists in the list of Sync methods and as well the method call in its list.</li>
 	 *     <li><b>Variable</b>: Get the type of the variable, with it check if is in the list of Sync methods and as well the method call in its list.</li>
-	 *     <li><b>Multiple Method call</b>: Get the type of the return of the previous call, with it check if is in the list of Sync methods and as well the method call in its list.
-	 *     									Moreover, we do not need to process recursively the check because it does it for us the visitor.</li>
-	 *     <li><b>null</b>:</li> Check if the call to a local class method is sync or not.
+	 *     <li><b>Multiple Method call</b>: Get the type of the return of the previous call, with it check if is in the list of Sync methods and as well
+	 *     									the method call in its list. Moreover, we do not need to process recursively the check because it does it for us the visitor.</li>
+	 *     <li><b>null</b>: Check if the call to a local class method is sync or not.</li>
 	 * </ul>
 	 * @param r 	Statement
 	 * @param env   Environment
@@ -213,10 +229,10 @@ public class GenerateMethodSyncCallList extends ParseIM {
 				IASTVar var = e.getVar(varName);
 				if(var != null){
 					//exist smth in the env (should be always the case)
-					IndexData _class = searchInImports(var.getType());
-					if(_class != null){
+					IndexData _classImport = searchInImports(var.getType());
+					if(_classImport != null){
 						//we have smth to work with
-						for(IndexMethod m : _class.getListOfMethods()){
+						for(IndexMethod m : _classImport.getListOfMethods()){
 							if(m.getName().equals(methodCalled)){
 								return m.getReturnType();
 							}
@@ -227,7 +243,23 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		}
 		if(calee instanceof ASTMethodCall){
 			//recursive call
-			return getTypeMethodCall(((ASTMethodCall) calee), e);
+			String previousCallReturn = getTypeMethodCall(((ASTMethodCall) calee), e);
+			IndexData _classImport = searchInImports(previousCallReturn);
+			if(_classImport != null){
+				//we have smth to work with
+				for(IndexMethod m : _classImport.getListOfMethods()){
+					if(m.getName().equals(methodCalled)){
+						return m.getReturnType();
+					}
+				}
+			} else {
+				//could be a local call then
+				for(IASTMethod m : _class.getMethods()){
+					if(m.getName().equals(methodCalled)){
+						return m.getReturnType();
+					}
+				}
+			}
 		}
 		return null;
 	}

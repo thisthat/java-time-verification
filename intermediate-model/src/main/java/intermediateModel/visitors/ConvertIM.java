@@ -18,7 +18,7 @@ public abstract class ConvertIM {
 	}
 	/**
 	 * Ugly workaround to have pattern matching in haskel fashion on java
-	 * @param stm
+	 * @param stm	Statement to analyze
 	 */
 	protected void dispachStm(IASTStm stm){
 		if (stm instanceof ASTRE){

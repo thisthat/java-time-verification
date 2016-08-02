@@ -11,7 +11,7 @@
     <name>XAL</name>
     <groupId>java-xal</groupId>
     <description>
-        The module is used to create the XAL structure.
+        The module is used to create the XAL PCFG.structure.
     </description>
     <artifactId>xal</artifactId>
     <version>0.1-SNAPSHOT</version>

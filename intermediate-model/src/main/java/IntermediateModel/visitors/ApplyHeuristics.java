@@ -75,8 +75,8 @@ public class ApplyHeuristics {
 
 	/**
 	 * The following method is used to index a class and calculate which are the attributes that are time relevant.
-	 * @param c
-	 * @return
+	 * @param c	Class to Index
+	 * @return	Environment resulting from the indexing procedure
 	 */
 	protected Env indexing(ASTClass c){
 		BuildEnvirormentClass be = new BuildEnvirormentClass();

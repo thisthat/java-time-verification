@@ -1,4 +1,4 @@
-package visitors;
+package PCFG.visitors;
 
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
@@ -8,9 +8,9 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ConvertIM;
 import org.javatuples.KeyValue;
-import structure.*;
-import visitors.helper.GenerateMethodSyncCallList;
-import visitors.helper.SyncMethodCall;
+import PCFG.structure.*;
+import PCFG.visitors.helper.GenerateMethodSyncCallList;
+import PCFG.visitors.helper.SyncMethodCall;
 
 import java.util.ArrayList;
 import java.util.HashMap;

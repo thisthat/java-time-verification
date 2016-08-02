@@ -1,18 +1,14 @@
-package pcfg;
+package PCFG;
 
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
-import structure.PCFG;
-import visitors.IM2PCFG;
+import PCFG.structure.PCFG;
+import PCFG.visitors.IM2PCFG;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

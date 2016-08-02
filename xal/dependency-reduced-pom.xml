@@ -10,7 +10,7 @@
   <artifactId>xal</artifactId>
   <name>XAL</name>
   <version>0.1-SNAPSHOT</version>
-  <description>The module is used to create the XAL structure.</description>
+  <description>The module is used to create the XAL PCFG.structure.</description>
   <build>
     <plugins>
       <plugin>

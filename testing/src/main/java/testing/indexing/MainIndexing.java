@@ -1,4 +1,4 @@
-package indexing;
+package testing.indexing;
 
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;

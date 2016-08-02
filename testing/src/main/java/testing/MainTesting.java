@@ -1,4 +1,4 @@
-/* WALA
+package testing;/* WALA
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.*;

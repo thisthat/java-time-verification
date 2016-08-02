@@ -1,4 +1,4 @@
-package mongo;
+package testing.mongo;
 
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;

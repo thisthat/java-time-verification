@@ -4,9 +4,9 @@ import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 import parser.Java2AST;
-import structure.Node;
-import structure.PCFG;
-import visitors.IM2PCFG;
+import PCFG.structure.Node;
+import PCFG.structure.PCFG;
+import PCFG.visitors.IM2PCFG;
 
 import static org.junit.Assert.assertEquals;
 
