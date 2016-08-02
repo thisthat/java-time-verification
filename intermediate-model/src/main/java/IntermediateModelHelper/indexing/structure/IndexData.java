@@ -3,6 +3,7 @@ package IntermediateModelHelper.indexing.structure;
 import com.google.common.annotations.Beta;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
+import org.mongodb.morphia.utils.IndexType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,7 @@ import java.util.List;
 
 @Entity("IndexData")
 @Indexes({
-		@Index(value = "className", fields = @Field("className")),
-		@Index(value = "classPackage", fields = @Field("classPackage"))
+		@Index(fields = @Field(value = "$**", type = IndexType.TEXT))
 })
 public class IndexData {
 	@Id
@@ -42,21 +42,21 @@ public class IndexData {
 	List<IndexSyncBlock> listOfSyncBlocks = new ArrayList<>();
 
 	String classPackage = "";
-	String className = "";
+	String Name = "";
 	String extendedType = "";
 	List<String> interfacesImplemented = new ArrayList<>();
 
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, String classPackage, String className, String extendedType, List<String> interfacesImplemented) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, String classPackage, String Name, String extendedType, List<String> interfacesImplemented) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
 		this.listOfSyncMethods = listOfSyncMethods;
 		this.listOfSyncBlocks = listOfSyncBlocks;
 		this.classPackage = classPackage;
-		this.className = className;
+		this.Name = Name;
 		this.extendedType = extendedType;
 		this.interfacesImplemented = interfacesImplemented;
 	}
@@ -110,11 +110,11 @@ public class IndexData {
 	}
 
 	public String getClassName() {
-		return className;
+		return Name;
 	}
 
 	public void setClassName(String className) {
-		this.className = className;
+		this.Name = className;
 	}
 
 	public String getExtendedType() {
@@ -143,5 +143,13 @@ public class IndexData {
 
 	public void addSyncBlock(IndexSyncBlock b) {
 		this.listOfSyncBlocks.add(b);
+	}
+
+	@Override
+	public String toString() {
+		return "IndexData{" +
+				"classPackage='" + classPackage + '\'' +
+				", className='" + Name + '\'' +
+				"}\n";
 	}
 }

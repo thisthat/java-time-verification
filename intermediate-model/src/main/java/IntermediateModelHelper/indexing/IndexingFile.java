@@ -3,6 +3,7 @@ package IntermediateModelHelper.indexing;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexEnv;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.interfaces.IASTMethod;
@@ -70,7 +71,7 @@ public class IndexingFile extends ParseIM {
 		is.setStart(m.getStart());
 		is.setEnd(m.getEnd());
 		is.setLine(m.getLine());
-		is.setEnv(e);
+		is.setEnv( new IndexEnv(e));
 		return is;
 	}
 

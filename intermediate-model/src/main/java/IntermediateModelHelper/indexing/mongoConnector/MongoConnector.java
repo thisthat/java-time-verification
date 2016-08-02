@@ -13,6 +13,7 @@ import org.mongodb.morphia.query.Query;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * The following class implements a connection to MongoDB.
@@ -43,7 +44,7 @@ public class MongoConnector {
 		options.setStoreEmpties(true);
 		options.setStoreNulls(true);
 		morphia.getMapper().setOptions(options);
-		morphia.mapPackage("intermediateModel.structure");
+		morphia.map(IndexData.class);
 		datastore.ensureIndexes();
 	}
 
@@ -108,7 +109,7 @@ public class MongoConnector {
 	 */
 	public List<IndexData> getIndex(String name, String packageName){
 		return  datastore.createQuery(IndexData.class)
-				.field("className").equal(name)
+				.field("Name").equal(name)
 				.field("classPackage").equal(packageName)
 				.asList();
 	}
@@ -133,6 +134,19 @@ public class MongoConnector {
 				q.criteria("interfacesImplemented").contains("Runnable")
 		);
 		return q.asList();
+	}
+
+	public List<IndexData> getFromImport(String query){
+		// create a regular expression which matches any string which includes "test"
+		Pattern regexp = Pattern.compile(query);
+		// use this regular expression to create a query
+		Query<IndexData> q = datastore.createQuery(IndexData.class);//.filter("classPackage",regexp);
+		if(query.endsWith("*")){
+			q.field("classPackage").startsWith(query);
+		} else {
+			q.field("classPackage").equal(query);
+		}
+		return q.search(query).asList();
 	}
 
 	/**

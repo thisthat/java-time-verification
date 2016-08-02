@@ -44,6 +44,13 @@ public abstract class ParseIM {
 		}
 	}
 
+
+	protected void analyzeMethod(IASTMethod method){
+		Env eMethod = new Env(base_env);
+		eMethod = build_base_env.checkPars(method.getParameters(), eMethod);
+		analyze(method.getStms(), eMethod);
+	}
+
 	/**
 	 * This method is a dispatcher. It is ugly, but it is the only way to implement a pattern matching.
 	 * It goes through the list of {@link IASTStm} and dispatch to the method that can handle that
@@ -459,4 +466,5 @@ public abstract class ParseIM {
 	 * @param env   Environment
 	 */
 	protected void analyzeASTHiddenClass(ASTHiddenClass elm, Env env){};
+
 }

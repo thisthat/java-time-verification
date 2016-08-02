@@ -48,7 +48,11 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(ImportDeclaration node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		listOfImports.add( new ASTImport(start, stop, false, node.getName().getFullyQualifiedName()) );
+		String suffix = "";
+		if(node.toString().trim().endsWith("*;")){
+			suffix = ".*";
+		}
+		listOfImports.add( new ASTImport(start, stop, false, node.getName().getFullyQualifiedName() + suffix ));
 		return super.visit(node);
 	}
 

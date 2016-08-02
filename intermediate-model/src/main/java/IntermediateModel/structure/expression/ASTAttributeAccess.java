@@ -24,6 +24,14 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 		this.attributeName = attributeName;
 	}
 
+	public String getAttributeName() {
+		return attributeName;
+	}
+
+	public IASTRE getVariableName() {
+		return variableName;
+	}
+
 	@Override
 	public String toString() {
 		return "ASTAttributeAccess{" +
