@@ -22,8 +22,10 @@ public class MainIndexing {
 	}
 
 	private void run() throws IOException, ParseErrorsException {
+		long start = System.currentTimeMillis();
 		IndexingProject indexProject = new IndexingProject("vuze");
 		int n = indexProject.indexProject(VUZE);
-		System.out.println("Indexed " + n + " files");
+		long end = System.currentTimeMillis();
+		System.out.println("Indexed " + n + " files [" + (end - start) + "ms]");
 	}
 }

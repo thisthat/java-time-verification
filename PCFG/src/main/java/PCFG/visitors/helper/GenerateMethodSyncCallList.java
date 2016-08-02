@@ -1,6 +1,7 @@
 package PCFG.visitors.helper;
 
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
@@ -42,7 +43,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	List<SyncMethodCall> syncCalls = new ArrayList<>();
 	MongoConnector mongo = MongoConnector.getInstance(DB_NAME);
 	Map<String, List<IndexMethod>> syncMethods = new HashMap<>();
-	List<IndexData> imports;
+	List<IndexData> imports = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -139,7 +140,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 						if(containsMethod(methodCalled, methods)){
 							//also the call is in the list -> we gotta a match
 							IndexMethod m = getMethod(methodCalled, methods);
-							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getName(), methodCalled, r));
+							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getType(), methodCalled, r));
 						}
 					}
 				}
@@ -155,7 +156,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								if(containsMethod(methodCalled, methods)){
 									//also the call is in the list -> we gotta a match
 									IndexMethod m = getMethod(methodCalled, methods);
-									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getName(), methodCalled, r));
+									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getType(), methodCalled, r));
 								}
 							}
 						}
@@ -179,7 +180,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							if(containsMethod(methodCalled, methods)){
 								//also the call is in the list -> we gotta a match
 								IndexMethod m = getMethod(methodCalled, methods);
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getName(), methodCalled, r));
+								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getType(), methodCalled, r));
 							}
 						}
 					}

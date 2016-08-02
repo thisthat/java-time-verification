@@ -59,4 +59,8 @@ public class Node implements INode {
 	public int getID() {
 		return id;
 	}
+
+	public boolean equalsByCode(Node obj) {
+		return obj.getCode().equals(this.code);
+	}
 }

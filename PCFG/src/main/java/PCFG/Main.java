@@ -35,7 +35,7 @@ public class Main {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, method, false);
 
 		//add the second method
 		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
@@ -44,7 +44,7 @@ public class Main {
 		v = new JDTVisitor(ast);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, method, false);
 
 		// build
 		PCFG graph = p.buildPCFG();

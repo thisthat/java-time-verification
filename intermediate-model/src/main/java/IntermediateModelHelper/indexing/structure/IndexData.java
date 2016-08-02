@@ -44,21 +44,39 @@ public class IndexData {
 	String classPackage = "";
 	String Name = "";
 	String extendedType = "";
+	String fullName = "";
 	List<String> interfacesImplemented = new ArrayList<>();
 
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, String classPackage, String Name, String extendedType, List<String> interfacesImplemented) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, String classPackage, String name, String extendedType, String fullName, List<String> interfacesImplemented) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
 		this.listOfSyncMethods = listOfSyncMethods;
 		this.listOfSyncBlocks = listOfSyncBlocks;
 		this.classPackage = classPackage;
-		this.Name = Name;
+		Name = name;
 		this.extendedType = extendedType;
+		this.fullName = fullName;
 		this.interfacesImplemented = interfacesImplemented;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public ObjectId getId() {

@@ -1,6 +1,7 @@
 package PCFG.visitors;
 
 import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
@@ -46,10 +47,17 @@ public class IM2PCFG extends ConvertIM {
 	public IM2PCFG() {
 
 	}
-
 	public void addClass(ASTClass c, String methodName){
+		addClass(c,methodName, true);
+	}
+	public void addClass(ASTClass c, String methodName, boolean isIndexed){
 		this.classes.add(new KeyValue<String, ASTClass>(methodName, c));
-		indexs.add( classIndexer.index(c) );
+		IndexData index = classIndexer.index(c);
+		indexs.add( index );
+		if(!isIndexed){
+			MongoConnector mongo = MongoConnector.getInstance("vuze");
+			mongo.add(index);
+		}
 	}
 
 	public PCFG buildPCFG(){
@@ -92,6 +100,28 @@ public class IM2PCFG extends ConvertIM {
 			}
 		}
 
+		//we have the list of all
+		for(KeyValue<String,ASTClass> cOut : classes){
+			ASTClass outClass = cOut.getValue();
+			for(KeyValue<String,ASTClass> cIn : classes){
+				if(cIn.equals(cOut)) continue;
+				ASTClass inClass = cIn.getValue();
+				List<SyncMethodCall> outter = syncCalls.get(outClass);
+				List<SyncMethodCall> inner  = syncCalls.get(inClass);
+				for(SyncMethodCall outMethod : outter){
+					for(SyncMethodCall inMethod : inner){
+						if(outMethod.equals(inMethod)){
+							createLink(outMethod, inMethod);
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	private void createLink(SyncMethodCall outMethod, SyncMethodCall inMethod) {
+		System.err.println("Gotta mattch: " + outMethod.toString());
 	}
 
 	private void calculateSyncBlock() {

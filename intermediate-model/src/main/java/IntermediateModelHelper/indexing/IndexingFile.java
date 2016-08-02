@@ -33,6 +33,13 @@ public class IndexingFile extends ParseIM {
 		data = new IndexData();
 		data.setClassName(c.getName());
 		data.setClassPackage(c.getPackageName());
+		String fullname = "";
+		if(c.getPackageName().trim().equals("")){
+			fullname = c.getName();
+		} else {
+			fullname = c.getPackageName() + "." + c.getName();
+		}
+		data.setFullName(fullname);
 		data.setExtendedType(c.getExtendClass());
 		data.setInterfacesImplemented(c.getImplmentsInterfaces());
 		//collecting the names of methods and sync method
@@ -52,6 +59,7 @@ public class IndexingFile extends ParseIM {
 		IndexMethod im = new IndexMethod();
 		im.setName(m.getName());
 		im.setPackageName(data.getClassPackage());
+		im.setType(data.getClassName());
 		im.setParameters(IndexMethod.convertPars(m.getParameters()));
 		im.setExceptionsThrowed(m.getExceptionsThrowed());
 		im.setStart(((IASTStm)m).getStart());

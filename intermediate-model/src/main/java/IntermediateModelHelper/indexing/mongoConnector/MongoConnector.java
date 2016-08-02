@@ -142,14 +142,11 @@ public class MongoConnector {
 	 * @return	List of {@link IndexData} classes
 	 */
 	public List<IndexData> getFromImport(String query){
-		// create a regular expression which matches any string which includes "test"
-		Pattern regexp = Pattern.compile(query);
-		// use this regular expression to create a query
 		Query<IndexData> q = datastore.createQuery(IndexData.class);//.filter("classPackage",regexp);
 		if(query.endsWith("*")){
-			q.field("classPackage").startsWith(query);
+			q.field("fullName").startsWith(query);
 		} else {
-			q.field("classPackage").equal(query);
+			q.field("fullName").equal(query);
 		}
 		return q.search(query).asList();
 	}

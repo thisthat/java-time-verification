@@ -24,6 +24,7 @@ public class IndexMethod {
 	String packageName = "";
 	String name = "";
 	String returnType = "";
+	String type = "";
 	List<IndexParameter> parameters = new ArrayList<>();
 	List<String> exceptionsThrowed = new ArrayList<>();
 	int start = 0;
@@ -32,11 +33,11 @@ public class IndexMethod {
 	boolean isConstructor = false;
 	boolean isSync = false;
 
-	public IndexMethod(String packageName, String name, String returnType, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
-
+	public IndexMethod(String packageName, String name, String returnType, String type, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
 		this.packageName = packageName;
 		this.name = name;
 		this.returnType = returnType;
+		this.type = type;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.start = start;
@@ -44,6 +45,14 @@ public class IndexMethod {
 		this.line = line;
 		this.isConstructor = isConstructor;
 		this.isSync = isSync;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String fullName) {
+		this.type = fullName;
 	}
 
 	public static List<IndexParameter> convertPars(List<ASTVariable> parameters) {
