@@ -1,6 +1,9 @@
+import intermediateModel.interfaces.IASTMethod;
+
 class Thread_1 extends Thread {
 
 	Object minPrime;
+	IASTMethod m;
 
 	PrimeThread(Object minPrime) {
 		this.minPrime = minPrime;
@@ -9,7 +12,8 @@ class Thread_1 extends Thread {
 	public void run() {
 		int do_smth = 0;
 		synchronized (minPrime){
-			do_smth = minPrime.hashCode();
+			m.lol();
+			do_smth = minPrime.hashCode().toString();
 		}
 		System.out.toString("Result" + do_smth);
 	}

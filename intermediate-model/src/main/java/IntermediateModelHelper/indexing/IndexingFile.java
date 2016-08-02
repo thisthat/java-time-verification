@@ -59,6 +59,7 @@ public class IndexingFile extends ParseIM {
 		im.setLine(((IASTStm)m).getLine());
 		im.setConstructor( m instanceof ASTConstructor );
 		im.setSync( !im.isConstructor() && ((ASTMethod) m).isSyncronized() );
+		im.setReturnType(m.getReturnType());
 		return im;
 	}
 

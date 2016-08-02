@@ -35,6 +35,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s2;\n" +
@@ -63,6 +64,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s2;\n" +
@@ -100,6 +102,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s2;\n" +
@@ -143,6 +146,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s2;\n" +
@@ -178,6 +182,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s2;\n" +
 				"s1;\n" +
@@ -228,6 +233,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s2;\n" +
@@ -263,17 +269,18 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s2;\n" +
 				"s3;\n" +
 				"s4;\n" +
-				"subgraph cluster_1 {\n" +
+				"subgraph cluster_0 {\n" +
 				"node [style=filled];\n" +
 				"s1;\n" +
 				"s2;\n" +
 				"s3;\n" +
-				"label = \"sync block 1\";\n" +
+				"label = \"sync block on expr\";\n" +
 				"color=blue\n" +
 				"}\n" +
 				"s0 -> s1;\n" +
@@ -303,6 +310,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s3;\n" +
@@ -325,6 +333,7 @@ public class TestPCFG {
 		graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s3;\n" +
@@ -347,6 +356,7 @@ public class TestPCFG {
 		graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s1;\n" +
 				"s3;\n" +
@@ -382,6 +392,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s2;\n" +
 				"s3;\n" +
@@ -421,6 +432,7 @@ public class TestPCFG {
 		graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s2;\n" +
 				"s3;\n" +
@@ -467,6 +479,7 @@ public class TestPCFG {
 		String graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s2;\n" +
 				"s3;\n" +
@@ -508,6 +521,7 @@ public class TestPCFG {
 		graph = g.toGraphViz(true);
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
+				"compound=true;\n" +
 				"s0;\n" +
 				"s2;\n" +
 				"s3;\n" +

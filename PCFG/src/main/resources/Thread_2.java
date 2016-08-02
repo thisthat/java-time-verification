@@ -1,3 +1,5 @@
+import xyz.abc.*;
+
 class Thread_2 extends Thread {
 
 	Object minPrime;
@@ -12,7 +14,7 @@ class Thread_2 extends Thread {
 		synchronized (minPrime){
 			do_smth = minPrime.hashCode();
 			if(do_smth > 10){
-				do_smth = init();
+				do_smth = abc.init();
 			}
 		}
 		System.out.toString("Result" + do_smth);
@@ -21,7 +23,7 @@ class Thread_2 extends Thread {
 		}
 	}
 
-	private int init(){
+	private synchronized int init(){
 		return 10 * 90;
 	}
 }

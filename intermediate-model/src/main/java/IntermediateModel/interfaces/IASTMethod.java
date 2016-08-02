@@ -13,4 +13,5 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	List<ASTVariable> getParameters();
 	String getName();
 	List<String> getExceptionsThrowed();
+	String getReturnType();
 }

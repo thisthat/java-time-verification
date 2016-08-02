@@ -2,15 +2,18 @@ package visitors;
 
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ConvertIM;
 import org.javatuples.KeyValue;
 import structure.*;
+import visitors.helper.GenerateMethodSyncCallList;
+import visitors.helper.SyncMethodCall;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -70,9 +73,25 @@ public class IM2PCFG extends ConvertIM {
 		calculateSyncBlock();
 
 		//check for call on sync methods
-
+		calculateSyncCall();
 
 		return pcfg;
+	}
+
+	private void calculateSyncCall() {
+		HashMap<ASTClass,List<SyncMethodCall>> syncCalls = new HashMap<>();
+
+		for(KeyValue<String,ASTClass> c : classes){
+			for(IASTMethod m : c.getValue().getMethods()){
+				//only work on the method specified
+				if(m.getName().equals(c.getKey())) {
+					ASTClass _class = c.getValue();
+					GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, m);
+					syncCalls.put(_class, helper.calculateSyncCallList());
+				}
+			}
+		}
+
 	}
 
 	private void calculateSyncBlock() {
@@ -97,7 +116,7 @@ public class IM2PCFG extends ConvertIM {
 		}
 		//everyone is checked against everyone
 		for(IndexSyncBlock outter : syncBlocks){
-			IASTVar varOutter = outter.getEnv().getVar(outter.getExpr());
+			IndexParameter varOutter = outter.getEnv().getVar(outter.getExpr());
 			if(varOutter == null) { //could be a method call or something else than a simple var :(
 				//for the moment we consider only variables
 				continue;
@@ -106,7 +125,7 @@ public class IM2PCFG extends ConvertIM {
 				if (outter == inner) { //we do not check myself with myself
 					continue;
 				}
-				IASTVar varInner = inner.getEnv().getVar(inner.getExpr());
+				IndexParameter varInner = inner.getEnv().getVar(inner.getExpr());
 				if(varInner == null){//could be a method call or something else than a simple var :(
 					//for the moment we consider only variables
 					continue;

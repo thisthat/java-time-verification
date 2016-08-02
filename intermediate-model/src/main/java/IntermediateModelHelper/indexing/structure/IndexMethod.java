@@ -23,6 +23,7 @@ import java.util.List;
 public class IndexMethod {
 	String packageName = "";
 	String name = "";
+	String returnType = "";
 	List<IndexParameter> parameters = new ArrayList<>();
 	List<String> exceptionsThrowed = new ArrayList<>();
 	int start = 0;
@@ -31,10 +32,12 @@ public class IndexMethod {
 	boolean isConstructor = false;
 	boolean isSync = false;
 
-	public IndexMethod(String packageName, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
+	public IndexMethod(String packageName, String name, String returnType, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
+
 		this.packageName = packageName;
 		this.name = name;
-		this.parameters = convertPars(parameters);
+		this.returnType = returnType;
+		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.start = start;
 		this.end = end;
@@ -129,5 +132,13 @@ public class IndexMethod {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(String returnType) {
+		this.returnType = returnType;
 	}
 }

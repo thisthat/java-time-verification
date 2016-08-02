@@ -1,27 +1,33 @@
 package pcfg;
 
-import intermediateModel.interfaces.IASTMethod;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import IntermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
 import structure.PCFG;
-import structure.SyncNode;
 import visitors.IM2PCFG;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
 public class Main {
+
+
+
 	public static void main(String[] args) throws IOException, ParseErrorsException {
 		new Main().run();
 	}
 
 	public void run() throws IOException, ParseErrorsException {
+
 		IM2PCFG p = new IM2PCFG();
 
 		//first method
@@ -46,6 +52,6 @@ public class Main {
 
 		// build
 		PCFG graph = p.buildPCFG();
-		System.out.println(graph.toGraphViz(false));
+		//System.out.println(graph.toGraphViz(false));
 	}
 }

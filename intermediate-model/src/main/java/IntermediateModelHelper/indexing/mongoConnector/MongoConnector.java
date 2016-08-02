@@ -136,6 +136,7 @@ public class MongoConnector {
 		return q.asList();
 	}
 
+
 	public List<IndexData> getFromImport(String query){
 		// create a regular expression which matches any string which includes "test"
 		Pattern regexp = Pattern.compile(query);
