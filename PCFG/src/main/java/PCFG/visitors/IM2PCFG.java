@@ -31,6 +31,7 @@ import java.util.List;
 public class IM2PCFG extends ConvertIM {
 	private List<KeyValue<String,ASTClass>> classes = new ArrayList<>();
 	private PCFG pcfg;
+	private CFG  lastCfg;
 	private Node lastNode;
 	private SyncNode syncNode;
 	private String lastLabel;
@@ -137,7 +138,7 @@ public class IM2PCFG extends ConvertIM {
 		}
 		try {
 			SyncEdge e = new SyncEdge(from, to);
-			this.pcfg.addEdge(e);
+			this.pcfg.addSyncEdge(e);
 		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
 			malformedSyncEdge.printStackTrace();
 		}
@@ -186,10 +187,10 @@ public class IM2PCFG extends ConvertIM {
 					SyncEdge sEdge = null;
 					try {
 						sEdge = new SyncEdge(outSync,inSync);
+						pcfg.addSyncEdge(sEdge);
 					} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
 						malformedSyncEdge.printStackTrace();
 					}
-					pcfg.addEdge(sEdge);
 				}
 			}
 		}
@@ -197,6 +198,8 @@ public class IM2PCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
+		lastCfg = new CFG();
+		this.pcfg.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispachStm(m.getStms());
 	}
@@ -218,13 +221,13 @@ public class IM2PCFG extends ConvertIM {
 
 		//back to the expr
 		Edge eBack = new Edge(this.lastNode, has_next);
-		this.pcfg.addEdge(eBack);
+		this.lastCfg.addEdge(eBack);
 
 		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS);
-		this.pcfg.addNode(end_for);
+		this.lastCfg.addNode(end_for);
 		Edge e = new Edge(has_next, end_for);
 		e.setLabel("False");
-		this.pcfg.addEdge(e);
+		this.lastCfg.addEdge(e);
 		this.lastNode = end_for;
 	}
 
@@ -250,13 +253,13 @@ public class IM2PCFG extends ConvertIM {
 		}
 		//to expr again
 		Edge eBack = new Edge(this.lastNode, expr_for);
-		this.pcfg.addEdge(eBack);
+		this.lastCfg.addEdge(eBack);
 		//close the for
 		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS);
-		this.pcfg.addNode(end_for);
+		this.lastCfg.addNode(end_for);
 		Edge e = new Edge(expr_for, end_for);
 		e.setLabel("False");
-		this.pcfg.addEdge(e);
+		this.lastCfg.addEdge(e);
 		this.lastNode = end_for;
 	}
 
@@ -269,7 +272,7 @@ public class IM2PCFG extends ConvertIM {
 		addState( expr );
 		Edge e = new Edge( expr, init_do_while );
 		e.setLabel("True");
-		pcfg.addEdge(e);
+		this.lastCfg.addEdge(e);
 		this.lastLabel = "False";
 		this.lastNode = expr;
 	}
@@ -282,7 +285,7 @@ public class IM2PCFG extends ConvertIM {
 		dispachStm(stm.getStms());
 		//back to the expr
 		Edge e = new Edge( this.lastNode , expr );
-		this.pcfg.addEdge(e);
+		this.lastCfg.addEdge(e);
 		this.lastLabel = "False";
 		this.lastNode = expr;
 	}
@@ -290,7 +293,7 @@ public class IM2PCFG extends ConvertIM {
 	@Override
 	protected void convertSyncronized(ASTSynchronized stm) {
 		syncNode = new SyncNode(stm.getExpr().getCode(), stm.getLine(), this.lastClass );
-		pcfg.addNode(syncNode);
+		this.lastCfg.addNode(syncNode);
 		dispachStm(stm.getStms());
 		syncNode = null;
 	}
@@ -304,7 +307,7 @@ public class IM2PCFG extends ConvertIM {
 		super.dispachStm(stm.getIfBranch().getStms());
 		//jump to the end
 		Edge eEnd = new Edge(this.lastNode, end_if);
-		this.pcfg.addEdge(eEnd);
+		this.lastCfg.addEdge(eEnd);
 
 		this.lastLabel = "False";
 		this.lastNode = expr;
@@ -321,8 +324,8 @@ public class IM2PCFG extends ConvertIM {
 		Node init_try = new Node("try", "", Node.TYPE.TRY);
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY);
 		Node end_try = new Node("endtry", "", Node.TYPE.USELESS);
-		this.pcfg.addNode(finally_try);
-		this.pcfg.addNode(end_try);
+		this.lastCfg.addNode(finally_try);
+		this.lastCfg.addNode(end_try);
 		addState(init_try);
 
 
@@ -330,13 +333,13 @@ public class IM2PCFG extends ConvertIM {
 
 		//go to finally
 		Edge toFinally = new Edge(this.lastNode, finally_try);
-		this.pcfg.addEdge(toFinally);
+		this.lastCfg.addEdge(toFinally);
 
 		if(stm.getCatchBranch().size() > 0){
 			Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
 			Edge e = new Edge(init_try, catch_try);
-			this.pcfg.addNode(catch_try);
-			this.pcfg.addEdge(e);
+			this.lastCfg.addNode(catch_try);
+			this.lastCfg.addEdge(e);
 			for(ASTTry.ASTCatchBranch c : stm.getCatchBranch()){
 				Node instance = new Node(
 						c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType(),
@@ -344,18 +347,18 @@ public class IM2PCFG extends ConvertIM {
 						Node.TYPE.NORMAL
 				);
 				Edge eInstance = new Edge(catch_try, instance);
-				this.pcfg.addNode(instance);
-				this.pcfg.addEdge(eInstance);
+				this.lastCfg.addNode(instance);
+				this.lastCfg.addEdge(eInstance);
 				this.lastNode = instance;
 				this.lastLabel = "True";
 				super.dispachStm(c.getStms());
 				//to finally
 				Edge toFinallyFromCatch = new Edge(this.lastNode, finally_try);
-				this.pcfg.addEdge(toFinallyFromCatch);
+				this.lastCfg.addEdge(toFinallyFromCatch);
 				//from catch to end try
 				Edge toEnd = new Edge(instance, finally_try);
 				toEnd.setLabel("False");
-				this.pcfg.addEdge(toEnd);
+				this.lastCfg.addEdge(toEnd);
 			}
 		}
 
@@ -363,10 +366,10 @@ public class IM2PCFG extends ConvertIM {
 			this.lastNode = finally_try;
 			super.dispachStm(stm.getFinallyBranch().getStms());
 			Edge toEnd = new Edge(this.lastNode, end_try);
-			this.pcfg.addEdge(toEnd);
+			this.lastCfg.addEdge(toEnd);
 		} else {
 			Edge finalEdge = new Edge(finally_try, end_try);
-			this.pcfg.addEdge(finalEdge);
+			this.lastCfg.addEdge(finalEdge);
 		}
 
 		this.lastNode = end_try;
@@ -377,21 +380,21 @@ public class IM2PCFG extends ConvertIM {
 		Node init_try = new Node("try", "", Node.TYPE.TRY);
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY);
 		Node end_try = new Node("endtry", "", Node.TYPE.USELESS);
-		this.pcfg.addNode(finally_try);
-		this.pcfg.addNode(end_try);
+		this.lastCfg.addNode(finally_try);
+		this.lastCfg.addNode(end_try);
 		addState(init_try);
 
 		super.dispachStm(stm.getTryBranch().getStms());
 
 		//go to finally
 		Edge toFinally = new Edge(this.lastNode, finally_try);
-		this.pcfg.addEdge(toFinally);
+		this.lastCfg.addEdge(toFinally);
 
 		if(stm.getCatchBranch().size() > 0){
 			Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
 			Edge e = new Edge(init_try, catch_try);
-			this.pcfg.addNode(catch_try);
-			this.pcfg.addEdge(e);
+			this.lastCfg.addNode(catch_try);
+			this.lastCfg.addEdge(e);
 			for(ASTTry.ASTCatchBranch c : stm.getCatchBranch()){
 				Node instance = new Node(
 						c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType(),
@@ -399,18 +402,18 @@ public class IM2PCFG extends ConvertIM {
 						Node.TYPE.NORMAL
 				);
 				Edge eInstance = new Edge(catch_try, instance);
-				this.pcfg.addNode(instance);
-				this.pcfg.addEdge(eInstance);
+				this.lastCfg.addNode(instance);
+				this.lastCfg.addEdge(eInstance);
 				this.lastNode = instance;
 				this.lastLabel = "True";
 				super.dispachStm(c.getStms());
 				//to finally
 				Edge toFinallyFromCatch = new Edge(this.lastNode, finally_try);
-				this.pcfg.addEdge(toFinallyFromCatch);
+				this.lastCfg.addEdge(toFinallyFromCatch);
 				//from catch to end try
 				Edge toEnd = new Edge(instance, finally_try);
 				toEnd.setLabel("False");
-				this.pcfg.addEdge(toEnd);
+				this.lastCfg.addEdge(toEnd);
 			}
 		}
 
@@ -429,7 +432,7 @@ public class IM2PCFG extends ConvertIM {
 		}
 
 		Edge toEnd = new Edge(this.lastNode, end_try);
-		this.pcfg.addEdge(toEnd);
+		this.lastCfg.addEdge(toEnd);
 
 		this.lastNode = end_try;
 	}
@@ -440,7 +443,7 @@ public class IM2PCFG extends ConvertIM {
 		Node init_switch = new Node("switch", "", Node.TYPE.SWITCH);
 		Node end_switch = new Node("endSwitch", "", Node.TYPE.USELESS);
 
-		this.pcfg.addNode(end_switch);
+		this.lastCfg.addNode(end_switch);
 		addState(init_switch);
 
 		Node check = new Node(
@@ -458,14 +461,14 @@ public class IM2PCFG extends ConvertIM {
 						Node.TYPE.NORMAL
 				);
 				Edge e = new Edge(check, labelSwitch);
-				this.pcfg.addNode(labelSwitch);
-				this.pcfg.addEdge(e);
+				this.lastCfg.addNode(labelSwitch);
+				this.lastCfg.addEdge(e);
 				this.multiLabel.add(labelSwitch);
 			}
 			this.isMultiLabel = true;
 			super.dispachStm(c.getStms());
 			Edge toEnd = new Edge(this.lastNode, end_switch);
-			this.pcfg.addEdge(toEnd);
+			this.lastCfg.addEdge(toEnd);
 		}
 		this.lastLabel = "";
 		this.lastNode = end_switch;
@@ -515,17 +518,17 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	private void addState(Node node) {
-		this.pcfg.addNode(node);
+		this.lastCfg.addNode(node);
 		if(this.lastNode != null && !this.isMultiLabel){
 			Edge e = new Edge(this.lastNode, node);
 			e.setLabel(lastLabel);
-			this.pcfg.addEdge(e);
+			this.lastCfg.addEdge(e);
 		}
 		if(this.isMultiLabel){
 			for(Node n : this.multiLabel){
 				Edge e = new Edge(n, node);
 				e.setLabel("True");
-				this.pcfg.addEdge(e);
+				this.lastCfg.addEdge(e);
 			}
 			this.isMultiLabel = false;
 			this.multiLabel.clear();
