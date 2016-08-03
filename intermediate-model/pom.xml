@@ -67,7 +67,7 @@
                 <version>2.19.1</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/TestHeuristics.java</exclude>
+                        <!-- <exclude>**/TestHeuristics.java</exclude> -->
                     </excludes>
                 </configuration>
             </plugin>
