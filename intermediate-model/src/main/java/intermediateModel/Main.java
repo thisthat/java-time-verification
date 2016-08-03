@@ -1,6 +1,7 @@
 package intermediateModel;
 
 import IntermediateModelHelper.converter.GenerateXAL;
+import IntermediateModelHelper.indexing.IndexingFile;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.CreateIntemediateModel;
@@ -22,45 +23,15 @@ import java.util.List;
  */
 public class Main {
 
-	public static void java8_main(String[] args) throws Exception {
-
-		if(args.length < 1){
-			usage();
-			return;
-		}
-		Java2AST a = new Java2AST(args[0]);
-		a.convertToAST(Java2AST.VERSION.Java_8);
-		ParserRuleContext ast = a.getContext();
-		ParseTreeWalker walker = new ParseTreeWalker();
-		CreateIntemediateModel sv = new CreateIntemediateModel();
-		System.out.println("Create IM");
-		walker.walk(sv, ast);
-
-
-		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
-		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
-		ah.subscribe(AnnotatedTypes.class);
-
-		for(ASTClass c : sv.listOfClasses){
-			ah.analyze(c);
-			String s = Arrays.toString( ah.getTimeConstraint().toArray() );
-			System.err.println(s);
-			System.err.println("__________");
-		}
-
-
-	}
-
 	public static void main(String[] args) throws Exception {
 
 
 
 		List<String> files = new ArrayList<>();
-		files.add( Main.class.getClassLoader().getResource("ExportChangesJob.java").getFile() );
+		//files.add( Main.class.getClassLoader().getResource("AttributeTimeRelated.java").getFile() );
+		//files.add( Main.class.getClassLoader().getResource("ExportChangesJob.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("SmallTest.java").getFile() );
+		files.add( Main.class.getClassLoader().getResource("Test.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("JavaTimerExampleTask.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("FailoverTimeoutTest.java").getFile() );
 		//files.add( Main.class.getClassLoader().getResource("MCGroupImpl.java").getFile() );
@@ -84,6 +55,9 @@ public class Main {
 			ah.subscribe(AnnotatedTypes.class);
 
 			for(ASTClass c : v.listOfClasses){
+
+				IndexingFile index = new IndexingFile();
+				index.index(c);
 
 				ah.analyze(c);
 				String s = Arrays.toString( ah.getTimeConstraint().toArray() );

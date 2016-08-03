@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <name>Intermediate-Model</name>
     <packaging>jar</packaging>
-    <groupId>java-xal</groupId>
     <artifactId>intermediate-model</artifactId>
     <version>0.1-SNAPSHOT</version>
     <description>
@@ -18,7 +17,6 @@
         allows us to keep track of the information in the file and perform evaluation over it.
     </description>
     <dependencies>
-
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>java-parser</artifactId>
@@ -50,8 +48,16 @@
             <artifactId>convert2xal</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb.morphia</groupId>
+            <artifactId>morphia</artifactId>
+            <version>1.2.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -60,7 +66,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-
+                    <excludes>
+                        <exclude>**/TestHeuristics.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 

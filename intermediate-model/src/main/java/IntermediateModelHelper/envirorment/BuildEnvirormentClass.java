@@ -1,9 +1,7 @@
 package IntermediateModelHelper.envirorment;
 
 
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
+import intermediateModel.interfaces.*;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
@@ -145,6 +143,11 @@ public class BuildEnvirormentClass {
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 				setVariableInEnv(elm, env);
 			}
+
+			@Override
+			public void enterASTAssignment(ASTAssignment elm) {
+				setVariableInEnv(elm, env);
+			}
 		});
 	}
 
@@ -217,6 +220,38 @@ public class BuildEnvirormentClass {
 	}
 
 	/**
+	 * The method accept a {@link ASTVariableDeclaration} and an {@link Env}.
+	 * It checks if the varible is a time relevant type and in the positive case it adds the var to the envirorment.
+	 * Moreover, it checks if the expression of inizialization is a time relevant expression.
+	 * The checks that the method performs are regarding to:
+	 * <ul>
+	 *     <li>There is a call to a method that is time relevant</li>
+	 *     <li>There is a math expression that involves time relevant variable</li>
+	 * </ul>
+	 * @param v			Variable to check
+	 * @param where		Envirorment where to add
+	 */
+	public void setVariableInEnv(ASTAssignment v, Env where){
+		IASTRE left = v.getLeft();
+		if(left instanceof ASTLiteral){
+			String name = ((ASTLiteral) left).getValue();
+			IASTVar var = where.getVar(name);
+			if(var != null //should be never the case if code compiles
+				&& checkIt(v.getRight(), where)){ //if exists something time related
+				var.setTimeCritical(true); //the assigned var is time relevant
+				v.getRight().visit(new DefualtASTREVisitor() { //and also all the var used inside the expr
+					@Override
+					public void enterASTLiteral(ASTLiteral elm) {
+						IASTVar var = where.getVar(elm.getValue());
+						if(var != null) //avoid method call that can be literal as well
+							var.setTimeCritical(true);
+					}
+				});
+			}
+		}
+	}
+
+	/**
 	 * The method accept a {@link ASTBinary} expression and an {@link Env}.
 	 * It checks if the expression is a time relevant expression.
 	 * The checks that the method performs are regarding to:
@@ -228,10 +263,9 @@ public class BuildEnvirormentClass {
 	 * @param where	The envirorment to use for the search
 	 * @return		true if the expression contains time relevant objects
 	 */
-	public static boolean checkIt(ASTBinary elm, Env where) {
+	public static boolean checkIt(IASTRE elm, Env where) {
 		final boolean[] r = {false};
 		elm.visit(new DefualtASTREVisitor(){
-			ASTBinary tmp = elm;
 			@Override
 			public void enterASTLiteral(ASTLiteral literal) {
 				if(where.existVarName(literal.getValue()) //must be visible

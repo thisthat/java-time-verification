@@ -1,0 +1,470 @@
+package intermediateModel.visitors;
+
+import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
+import IntermediateModelHelper.envirorment.Env;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTNewObject;
+
+import java.util.List;
+
+/**
+ * The following class parse the Java code of the IM creating the Env structure that contains all the variables that
+ * a particular instruction can see.
+ * It abstract because the purpose it to allow other classes to easily go through the IM without reimplementing the Env
+ * construction or the traveller of the IM.
+ * The class that extends the following one has to call the {@link #analyze(List, Env)} method to start the traveling.
+ * Then, it can override various hook up to do whatever it likes to.
+ *
+ * @author Giovanni Liva (@thisthatDC)
+ * @version %I%, %G%
+ */
+public abstract class ParseIM {
+
+	protected Env base_env = new Env();
+	protected BuildEnvirormentClass build_base_env;
+	{
+		build_base_env = new BuildEnvirormentClass(base_env);
+	}
+
+	/**
+	 * The following method creates the basic environment for a class.
+	 * It goes through the def of all stms and set if variables are time related.
+	 * At the end of the execution of the method we know if an attribute is time reletad or not.
+	 * <hr>
+	 * <b>Efficency Tips</b>: Since we parse the IM we also collect the sync block and time related methods here.
+	 * @param c Class to analyze
+	 */
+	protected void createBaseEnv(ASTClass c){
+		build_base_env.buildEnvClass(c);
+		//check static
+		for (ASTStatic s : c.getStaticInit()) {
+			analyze(s.getStms(), base_env);
+		}
+	}
+
+
+	protected void analyzeMethod(IASTMethod method){
+		Env eMethod = new Env(base_env);
+		eMethod = build_base_env.checkPars(method.getParameters(), eMethod);
+		analyze(method.getStms(), eMethod);
+	}
+
+	/**
+	 * This method is a dispatcher. It is ugly, but it is the only way to implement a pattern matching.
+	 * It goes through the list of {@link IASTStm} and dispatch to the method that can handle that
+	 * particular type of statement.
+	 * <b>Particular Note:</b> from the fact that {@link ASTTryResources} extends {@link ASTTry}, the order
+	 * in the if is <u><b>REALLY IMPORTANT</b></u>. The first type must be checked before otherwise it will
+	 * be dispatched always to the latter type.
+	 * @param stms	List of statements to analyze
+	 * @param env	Environment that is visible to that list of statements
+	 */
+	protected void analyze(List<IASTStm> stms, Env env){
+		for(IASTStm stm : stms) {
+			if (stm instanceof ASTRE){
+				analyze((ASTRE) stm, env);
+			}
+			else if(stm	instanceof ASTBreak){
+				analyze((ASTBreak)stm, env);
+			}
+			else if(stm	instanceof ASTContinue){
+				analyze((ASTContinue)stm, env);
+			}
+			else if(stm	instanceof ASTDoWhile){
+				analyze((ASTDoWhile)stm, env);
+			}
+			else if(stm	instanceof ASTFor){
+				analyze((ASTFor)stm, env);
+			}
+			else if(stm	instanceof ASTForEach){
+				analyze((ASTForEach)stm, env);
+			}
+			else if(stm	instanceof ASTIf){
+				analyze((ASTIf)stm, env);
+			}
+			else if(stm	instanceof ASTReturn){
+				analyze((ASTReturn)stm, env);
+			}
+			else if(stm	instanceof ASTSwitch){
+				analyze((ASTSwitch)stm, env);
+			}
+			else if(stm	instanceof ASTSynchronized){
+				analyze((ASTSynchronized)stm, env);
+			}
+			else if(stm	instanceof ASTThrow){
+				analyze((ASTThrow)stm, env);
+			}
+			//the order is important because ASTTry is extended by ASTTryResources
+			else if(stm	instanceof ASTTryResources){
+				analyze((ASTTryResources)stm, env);
+			}
+			else if(stm	instanceof ASTTry){
+				analyze((ASTTry)stm, env);
+			}
+			else if(stm	instanceof ASTWhile){
+				analyze((ASTWhile)stm, env);
+			}
+			else if(stm instanceof ASTNewObject){
+				analyze((ASTNewObject) stm, env);
+			}
+			else if(stm instanceof ASTHiddenClass){
+				analyze((ASTHiddenClass)stm, env);
+			}
+			else {
+				analyze(stm, env);
+			}
+		}
+	}
+
+	/**
+	 * Break stm
+	 * @param elm	{@link ASTBreak} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTBreak elm, Env env) {
+		analyzeASTBreak(elm,env);
+	}
+
+
+	/**
+	 * Continue stm
+	 * @param elm	{@link ASTContinue} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTContinue elm, Env env) {
+		analyzeASTContinue(elm,env);
+	}
+
+
+	/**
+	 * TODO: Rewrite this looking inside the inner class
+	 *
+	 * @param stm	{@link ASTNewObject} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTNewObject stm, Env env) {
+		analyzeASTNewObject(stm,env);
+		ASTHiddenClass hc = stm.getHiddenClass();
+		if(hc != null){
+			this.analyze(hc, new Env(env));
+		}
+	}
+
+
+	/**
+	 * Right Expression to check.
+	 * If it contains a new object, we must iterate over it as well!
+	 * @param r		{@link ASTRE} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTRE r, Env env){
+		if(r != null && r.getExpression() != null) {
+			r.getExpression().visit(new DefaultASTVisitor() {
+				@Override
+				public void enterASTNewObject(ASTNewObject elm) {
+					analyze(elm, new Env(env));
+				}
+			});
+		}
+		analyzeASTRE(r,env);
+	}
+
+	/**
+	 * In the Do-While the expression is not visible by the stms and the environment and the stms environment is not
+	 * visible by the expression.
+	 * @param elm	{@link ASTDoWhile} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTDoWhile elm, Env env) {
+		this.analyze(elm.getStms(), new Env(env));
+		this.analyze(elm.getExpr(), new Env(env));
+		analyzeASTDoWhile(elm,env);
+	}
+
+	/**
+	 * The for statements can see the variables in all the three right expressions.
+	 *
+	 * @param elm	{@link ASTFor} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTFor elm, Env env) {
+		Env new_env = new Env(env);
+		for(ASTRE exp : elm.getInit()) {
+			this.analyze(exp, new_env);
+		}
+		this.analyze(elm.getExpr(), new_env);
+		for(ASTRE exp : elm.getPost()){
+			this.analyze(exp, new_env);
+		}
+		this.analyze(elm.getStms(), new_env);
+		analyzeASTFor(elm,env);
+	}
+
+	/**
+	 * We extend the environment with the expression in the foreach and then check in the stms.
+	 * @param elm	{@link ASTForEach} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTForEach elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
+		analyzeASTForEach(elm, env);
+	}
+
+	/**
+	 * The if share the guard visibility with both <b>then</b> and <b>else</b> branches.
+	 * But, the <b>then</b> and <b>else</b> have a different environment.
+	 * @param elm	{@link ASTIf} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTIf elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getGuard(), new_env);
+		this.analyze(elm.getIfBranch().getStms(), new Env(new_env));
+		if(elm.getElseBranch() != null)
+			this.analyze(elm.getElseBranch().getStms(), new Env(new_env));
+		analyzeASTIf(elm, env);
+	}
+
+	/**
+	 * The return extends the environment with the expression (if it is present).
+	 * @param elm	{@link ASTReturn} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTReturn elm, Env env) {
+		if(elm.getExpr() != null)
+			this.analyze(elm.getExpr(), env);
+		analyzeASTReturn(elm, env);
+	}
+
+	/**
+	 * The switch shares the visibility of the expression with each case block.
+	 * However, each case block has its own environment.
+	 * @param elm	{@link ASTSwitch} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTSwitch elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		for (ASTSwitch.ASTCase c : elm.getCases()) {
+			this.analyze( c.getStms(), new Env(new_env));
+		}
+		analyzeASTSwitch(elm,env);
+	}
+
+	/**
+	 * In a synchronized block the statements can see the expression on which we lock on the object.
+	 * @param elm	{@link ASTSynchronized} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTSynchronized elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
+		analyzeASTSynchronized(elm,env);
+	}
+
+	/**
+	 * Throw statement extends the environment with the right expression that it carries.
+	 * @param elm	{@link ASTThrow} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTThrow elm, Env env) {
+		this.analyze(elm.getExpr(), env);
+		analyzeASTThrow(elm, env);
+	}
+
+	/**
+	 * The try/catch/finally branches have a separate environment.
+	 * Moreover, each catch block has its own environment.
+	 * @param elm	{@link ASTTry} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTTry elm, Env env) {
+		Env new_env_try = new Env(env);
+		Env new_env_finally = new Env(env);
+
+		analyze(elm.getTryBranch().getStms(), new_env_try);
+		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
+			Env new_env_catch = new Env(env);
+			analyze( catchBranch.getStms(), new_env_catch );
+		}
+		if(elm.getFinallyBranch() != null)
+			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
+
+		analyzeASTTry(elm,env);
+	}
+
+	/**
+	 * The try/catch/finally branches have a separate environment.
+	 * Moreover, each catch block has its own environment.
+	 * All the blocks share the environment with the resources.
+	 * @param elm	{@link ASTTryResources} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTTryResources elm, Env env) {
+		Env env_resource = new Env(env);
+		for(ASTRE r : elm.getResources()){
+			this.analyze(r, env_resource);
+		}
+		Env new_env_try = new Env(env_resource);
+		Env new_env_finally = new Env(env_resource);
+		analyze(elm.getTryBranch().getStms(), new_env_try);
+		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
+			Env new_env_catch = new Env(env_resource);
+			analyze( catchBranch.getStms(), new_env_catch );
+		}
+		if(elm.getFinallyBranch() != null)
+			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
+		analyzeASTTryResources(elm,env);
+	}
+
+	/**
+	 * The statement in the while can access to the guard.
+	 * @param elm	{@link ASTWhile} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTWhile elm, Env env) {
+		Env new_env = new Env(env);
+		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
+		analyzeASTWhile(elm, env);
+	}
+
+	/**
+	 * We have a hidden class, thus we iterate over its methods with a new env.
+	 * We extend the environment with the base attributes and methods of the hidden class.
+	 * @param elm	{@link ASTHiddenClass} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(ASTHiddenClass elm, Env env) {
+		BuildEnvirormentClass hidden_env = new BuildEnvirormentClass(new Env(env));
+		hidden_env.buildEnvClass(elm);
+		Env new_env = hidden_env.getEnv();
+		//check static
+		for (ASTStatic s : elm.getStaticInit()) {
+			this.analyze(s.getStms(), new_env);
+		}
+		//check method
+		for (IASTMethod m : elm.getMethods()) {
+			Env eMethod = new Env(new_env);
+			eMethod = hidden_env.checkPars(m.getParameters(), eMethod);
+			this.analyze(m.getStms(), eMethod);
+		}
+		analyzeASTHiddenClass(elm, env);
+	}
+
+	/**
+	 * Fall over method. If we forgot something, we will know ;)
+	 * @param r	{@link IASTStm} instruction to check.
+	 * @param env	{@link Env} visible by the instruction.
+	 */
+	private void analyze(IASTStm r, Env env){
+		System.err.println("Not Implemented Yet :: " + r.getClass().getSimpleName());
+	}
+
+	/*
+	 * The following is the list of methods that other classes can override to implement their own logic
+	 */
+
+	/**
+	 * Empty.
+	 * @param stm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTNewObject(ASTNewObject stm, Env env) {}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTDoWhile(ASTDoWhile elm, Env env){}
+	/**
+	 * Empty.
+	 * @param r 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTRE(ASTRE r, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTFor(ASTFor elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTForEach(ASTForEach elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTIf(ASTIf elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTReturn(ASTReturn elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTSwitch(ASTSwitch elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTThrow(ASTThrow elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTTry(ASTTry elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTTryResources(ASTTryResources elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTWhile(ASTWhile elm, Env env){}
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTBreak(ASTBreak elm, Env env){};
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTContinue(ASTContinue elm, Env env){};
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeASTHiddenClass(ASTHiddenClass elm, Env env){};
+
+}

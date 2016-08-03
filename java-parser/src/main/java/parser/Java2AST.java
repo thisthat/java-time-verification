@@ -1,5 +1,6 @@
 package parser;
 
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import parser.grammar.*;
 
@@ -38,8 +40,8 @@ public class Java2AST {
 	private char[] source;
 
 	public enum VERSION {
-		Java_7,
-		Java_8,
+		@Deprecated Java_7,
+		@Deprecated Java_8,
 		JDT
 	}
 
@@ -47,6 +49,7 @@ public class Java2AST {
      * Getter of the AST
      * @return the AST of the source file
      */
+    @Deprecated
     public ParserRuleContext getContext() {
         return context;
     }
@@ -137,10 +140,13 @@ public class Java2AST {
 
 		File file1 = new File(this.filename);
 		String source = readFileToString(file1, "utf-8");
-		parserJDT = ASTParser.newParser(AST.JLS8);  // handles JDK 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7
+		parserJDT = ASTParser.newParser(AST.JLS8);  // handles JDK 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8
 		parserJDT.setKind(ASTParser.K_COMPILATION_UNIT);
 		parserJDT.setSource(source.toCharArray());
 		parserJDT.setResolveBindings(true);
+		Map<String, String> options = JavaCore.getOptions();
+		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
+		parserJDT.setCompilerOptions(options);
 
 		this.source = source.toCharArray();
 		ASTSrc.getInstance().setSource(this.source);

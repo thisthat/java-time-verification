@@ -38,16 +38,12 @@ The next features to implement are:
 
 # Known Issues
 new Object does not take in account that an hidden class can be created in the initialization.
-At the moment, the method of the hidden class are put as method of the last visited class.
+At the moment, the method of the hidden class are put as method of the last visited class. *(SOLVED)*
 
 # Current Branch
-The current branch aim to introduce the rewriting logic to apply heuristics.
-In order to do that, we have to:
-* introduce the possibilities to add annotation to the elements of the IM
-* create an interface for the heuristics that has the following elements
-    * **let** it creates a set of annotations
-    * **where** it restricts the space of search, when it matches we can apply the heuristic
-    * **rewrite** it express how to rewrite the node of the IM
+In the current branch we try to create the index structure of the project in order to create the PCFG.
+In particular we'd like to index:
+* single file in order to have what are the global vars that are timed related -> avoid order problem
+* single file to have the list of what methods returns time related variables
+* the strcuture of the class for generating the Fully Qualified Names
 
-Questions:
-* the IM has to keep with it for each node the Env that it can see?

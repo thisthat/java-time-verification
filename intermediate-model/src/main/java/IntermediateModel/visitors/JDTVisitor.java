@@ -3,6 +3,7 @@ package intermediateModel.visitors;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.utility.Getter;
 import intermediateModel.visitors.utility.REParserJDT;
@@ -47,7 +48,11 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(ImportDeclaration node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		listOfImports.add( new ASTImport(start, stop, false, node.getName().getFullyQualifiedName()) );
+		String suffix = "";
+		if(node.toString().trim().endsWith("*;")){
+			suffix = ".*";
+		}
+		listOfImports.add( new ASTImport(start, stop, false, node.getName().getFullyQualifiedName() + suffix ));
 		return super.visit(node);
 	}
 
@@ -128,6 +133,16 @@ public class JDTVisitor extends ASTVisitor {
 				packageName = stackPackage.peek();
 			}
 
+		}
+	}
+
+	@Override
+	public void endVisit(AnonymousClassDeclaration node) {
+		if(stackClasses.size() > 0) {
+			ASTClass c = stackClasses.pop();
+			if (c.equals(lastClass) && stackClasses.size() > 0) {
+				lastClass = stackClasses.peek();
+			}
 		}
 	}
 
@@ -515,7 +530,22 @@ public class JDTVisitor extends ASTVisitor {
 			return null;
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
-		return new ASTRE(start, stop, REParserJDT.getExpr(ctx));
+		ASTRE expr =  new ASTRE(start, stop, REParserJDT.getExpr(ctx));
+		//handle special hidden classes
+		final boolean[] found = {false};
+		final ASTHiddenClass[] obj = {null};
+		expr.visit(new DefaultASTVisitor(){
+			@Override
+			public void enterASTNewObject(ASTNewObject elm) {
+				found[0] = elm.getHiddenClass() != null;
+				obj[0] = elm.getHiddenClass();
+			}
+		});
+		if(found[0]){
+			stackClasses.push(obj[0]);
+			lastClass = obj[0];
+		}
+		return expr;
 	}
 
 	//Helper to nullify objects

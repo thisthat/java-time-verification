@@ -4,6 +4,10 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
+import intermediateModel.structure.expression.ASTBinary;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.visitors.DefaultASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -13,6 +17,7 @@ import org.antlr.v4.runtime.Token;
 public class ASTRE extends IASTStm implements IASTVisitor {
 
 	IASTRE expression;
+	private static int _ID = 0;
 
 	public ASTRE(Token start, Token end, IASTRE expression) {
 		super(start, end);
@@ -24,7 +29,27 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	}
 
 	public String getExpressionName(){
-		return expression.getClass().getSimpleName();
+		if(expression instanceof ASTVariableDeclaration){
+			final String[] var_name = new String[1];
+			((ASTVariableDeclaration) expression).getName().visit(new DefaultASTVisitor(){
+				@Override
+				public void enterASTLiteral(ASTLiteral elm) {
+					var_name[0] = elm.getValue();
+				}
+			});
+			return var_name[0] + "_" + _ID++;
+		}
+		if(expression instanceof ASTBinary){
+			final String[] var_name = new String[1];
+			expression.visit(new DefaultASTVisitor(){
+				@Override
+				public void enterASTLiteral(ASTLiteral elm) {
+					var_name[0] = elm.getValue();
+				}
+			});
+			return expression.getClass().getSimpleName() + "_" + var_name[0] + "_" + _ID++;
+		}
+		return expression.getClass().getSimpleName() + "_" + _ID++;
 	}
 
 	@Override
@@ -46,5 +71,6 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTRE(this);
+		expression.visit(visitor);
 	}
 }

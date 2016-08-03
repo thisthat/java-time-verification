@@ -17,7 +17,7 @@ import java.util.List;
  * It provides the set of methods that each member of the IM has to have.
  * Although it is abstract, it does not have any abstract methods. It is abstract just to prevent
  * any initialization of the following general object without any concrete semantic for a Java program.
- * <br />
+ *
  * It provides all the basic structure to have pointer to code, the code itself, knowledge about if is it time critical
  * and store annotations for latter usage (e.g. Apply Heuristics).
  *
@@ -50,7 +50,8 @@ public abstract class IASTStm implements IASTVisitor{
 		ABSTRACT,
 		FINAL,
 		PRIVATE,
-		STRICTFP
+		STRICTFP,
+		HIDDEN //hidden classes
 	}
 
 	protected int start;

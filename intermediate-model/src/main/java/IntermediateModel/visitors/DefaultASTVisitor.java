@@ -113,4 +113,9 @@ public class DefaultASTVisitor extends DefualtASTREVisitor implements ASTVisitor
 	public void enterASTWhile(ASTWhile elm) {
 
 	}
+
+	@Override
+	public void enterASTHiddenClass(ASTHiddenClass astHiddenClass) {
+
+	}
 }

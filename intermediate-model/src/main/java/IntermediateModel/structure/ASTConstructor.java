@@ -34,6 +34,11 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		return exceptionsThrowed;
 	}
 
+	@Override
+	public String getReturnType() {
+		return "void";
+	}
+
 	public void setExceptionsThrowed(List<String> exceptionsThrowed) {
 		this.exceptionsThrowed = exceptionsThrowed;
 	}

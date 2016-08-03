@@ -18,42 +18,7 @@ import java.util.Map;
  */
 public class Env {
 
-	protected class EnvMethod {
-		private String name;
-		private boolean istimeRelevant;
 
-		public EnvMethod(String name) {
-			this.name = name;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public boolean istimeRelevant() {
-			return istimeRelevant;
-		}
-
-		public void setIstimeRelevant(boolean istimeRelevant) {
-			this.istimeRelevant = istimeRelevant;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (!(o instanceof EnvMethod)) return false;
-
-			EnvMethod envMethod = (EnvMethod) o;
-
-			return getName() != null ? getName().equals(envMethod.getName()) : envMethod.getName() == null;
-
-		}
-
-		@Override
-		public int hashCode() {
-			return getName() != null ? getName().hashCode() : 0;
-		}
-	}
 
 	private Env prev;
 	private List<IASTVar> varList;
@@ -72,6 +37,14 @@ public class Env {
 
 	public Env(Env prev) {
 		this.prev = prev;
+	}
+
+	public List<IASTVar> getVarList() {
+		return varList;
+	}
+
+	public Env getPrev() {
+		return prev;
 	}
 
 	public boolean existVarName(String v){

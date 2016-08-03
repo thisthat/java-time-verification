@@ -26,6 +26,18 @@ import static junit.framework.Assert.*;
 // AllSwitchStatisticsResource
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 
+	public void abcdef(){
+		async_dispatcher.dispatch(
+				new AERunnable()
+				{
+					public void
+					runSupport()
+					{
+						sendToGroupSupport( param_data );
+					}
+				});
+	}
+
 	@Deprecated
 	private Test(int i, int k, Timer t) throws RuntimeException, IOException {
 		do {

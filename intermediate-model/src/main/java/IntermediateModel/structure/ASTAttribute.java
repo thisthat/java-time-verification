@@ -80,4 +80,25 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 		if(expr != null)
 			expr.visit(visitor);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof ASTVariable)
+			return equals((ASTVariable) o);
+		if (this == o) return true;
+		if (!(o instanceof ASTAttribute)) return false;
+
+		ASTAttribute that = (ASTAttribute) o;
+
+		if (getAccessRight() != that.getAccessRight()) return false;
+		if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null) return false;
+		if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+		return getExpr() != null ? getExpr().equals(that.getExpr()) : that.getExpr() == null;
+	}
+
+	public boolean equals(ASTVariable o) {
+		return this.getName() == o.getName() && this.getType() == o.getType();
+	}
+
+
 }
