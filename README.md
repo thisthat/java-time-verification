@@ -27,9 +27,9 @@ The master branch will be keep updated with the latest perfectly functional vers
 All the development will be performed in a separate branch that will be merge to the main only when it is perfectly stable.
 
 The next features to implement are:
-* Indexing before parse
-* Store information in a database
-* Create a PCFG from the source code
+* Indexing before parse [DONE]
+* Store information in a database [DONE]
+* Create a PCFG from the source code [DONE]
 * User defined heuristics
     * Create a grammar to specify them
     * Parse and create the heuristic automatically
@@ -37,13 +37,11 @@ The next features to implement are:
 * Rewrite the source code with the annotations
 
 # Known Issues
-new Object does not take in account that an hidden class can be created in the initialization.
-At the moment, the method of the hidden class are put as method of the last visited class. *(SOLVED)*
+We broke the Heuristic functionality :/
 
 # Current Branch
-In the current branch we try to create the index structure of the project in order to create the PCFG.
+
 In particular we'd like to index:
 * single file in order to have what are the global vars that are timed related -> avoid order problem
 * single file to have the list of what methods returns time related variables
-* the strcuture of the class for generating the Fully Qualified Names
 
