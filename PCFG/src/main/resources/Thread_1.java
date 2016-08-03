@@ -19,5 +19,6 @@ class Thread_1 extends Thread {
 		}
 		System.out.toString("Result" + do_smth);
 		var.init();
+		callAb();
 	}
 }

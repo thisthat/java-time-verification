@@ -13,6 +13,7 @@ public class PCFG {
 	List<Edge> E = new ArrayList<>();
 	List<SyncEdge> ESync = new ArrayList<>();
 
+
 	public PCFG() {
 	}
 
@@ -69,6 +70,10 @@ public class PCFG {
 				Node f = from.getNodes().get(0);
 				Node t = to.getNodes().get(0);
 				out.append(printNode(f, hideName) + " -> " + printNode(t, hideName) + " [ltail=cluster_" + from.getID() + ",lhead=cluster_" + to.getID() + "];\n");
+			} else {
+				Node from = (Node) sEdge.getFrom();
+				Node to   = (Node) sEdge.getTo();
+				out.append(printNode(from, hideName) + " -> " + printNode(to, hideName) + "[color=red,penwidth=1.0];\n");
 			}
 		}
 		out.append("}\n");

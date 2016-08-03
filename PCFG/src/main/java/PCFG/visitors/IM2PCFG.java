@@ -118,10 +118,29 @@ public class IM2PCFG extends ConvertIM {
 			}
 		}
 
+
+
 	}
 
 	private void createLink(SyncMethodCall outMethod, SyncMethodCall inMethod) {
-		System.err.println("Gotta mattch: " + outMethod.toString());
+		Node from = null;
+		Node to = null;
+		String codeOut = outMethod.getNode().getCode();
+		String codeIn  = inMethod.getNode().getCode();
+		for(Node v : this.pcfg.getV()){
+			String code = v.getCode();
+			if(code.equals(codeOut)){
+				from = v;
+			} else if(code.equals(codeIn)){
+				to = v;
+			}
+		}
+		try {
+			SyncEdge e = new SyncEdge(from, to);
+			this.pcfg.addEdge(e);
+		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
+			malformedSyncEdge.printStackTrace();
+		}
 	}
 
 	private void calculateSyncBlock() {

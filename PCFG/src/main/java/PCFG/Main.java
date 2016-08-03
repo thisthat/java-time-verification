@@ -48,6 +48,6 @@ public class Main {
 
 		// build
 		PCFG graph = p.buildPCFG();
-		//System.out.println(graph.toGraphViz(false));
+		System.out.println(graph.toGraphViz(false));
 	}
 }
