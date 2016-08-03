@@ -1,12 +1,12 @@
+import PCFG.structure.Node;
+import PCFG.structure.PCFG;
+import PCFG.visitors.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 import parser.Java2AST;
-import PCFG.structure.Node;
-import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
  * @version %I%, %G%
  */
 public class TestPCFG {
+
 
 	@Test
 	public void TestRE() throws Exception {
@@ -32,8 +33,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
-		assertEquals("digraph {\n" +
+
+		//3 nodes
+		assertEquals(g.getV().size(), 3);
+		assertEquals(g.getE().size(), 2);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+		/*assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
 				"s0;\n" +
@@ -41,7 +48,7 @@ public class TestPCFG {
 				"s2;\n" +
 				"s0 -> s1;\n" +
 				"s1 -> s2;\n" +
-				"}", graph.trim());
+				"}", graph.trim());*/
 		Node._ID = 0;
 	}
 
@@ -61,8 +68,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
-		assertEquals("digraph {\n" +
+
+		assertEquals(g.getV().size(), 7);
+		assertEquals(g.getE().size(), 7);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
 				"s0;\n" +
@@ -79,7 +92,7 @@ public class TestPCFG {
 				"s4 -> s5;\n" +
 				"s5 -> s1;\n" +
 				"s5 -> s6;\n" +
-				"}", graph.trim());
+				"}", graph.trim()); */
 		Node._ID = 0;
 	}
 
@@ -99,7 +112,13 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 10);
+		assertEquals(g.getE().size(), 10);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -124,6 +143,7 @@ public class TestPCFG {
 				"s3 -> s8;\n" +
 				"s8 -> s9;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 	}
 
@@ -143,7 +163,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 6);
+		assertEquals(g.getE().size(), 6);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -159,7 +186,7 @@ public class TestPCFG {
 				"s3 -> s4;\n" +
 				"s4 -> s1;\n" +
 				"s1 -> s5;\n" +
-				"}", graph.trim());
+				"}", graph.trim()); */
 		Node._ID = 0;
 	}
 
@@ -179,7 +206,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 13);
+		assertEquals(g.getE().size(), 14);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -211,6 +245,7 @@ public class TestPCFG {
 				"s11 -> s2;\n" +
 				"s2 -> s12;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 	}
 
@@ -230,7 +265,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 6);
+		assertEquals(g.getE().size(), 6);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -247,6 +289,7 @@ public class TestPCFG {
 				"s1 -> s4;\n" +
 				"s4 -> s5;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 	}
 
@@ -266,7 +309,15 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 5);
+		assertEquals(g.getE().size(), 4);
+		assertEquals(g.getSyncNodes().size(), 1 );
+		assertEquals(g.getSyncNodes().get(0).getNodes().size(), 3 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -288,6 +339,7 @@ public class TestPCFG {
 				"s2 -> s3;\n" +
 				"s3 -> s4;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 	}
 
@@ -307,7 +359,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 5);
+		assertEquals(g.getE().size(), 5);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -322,6 +381,7 @@ public class TestPCFG {
 				"s1 -> s2;\n" +
 				"s2 -> s4;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 
 		// check the second method
@@ -330,7 +390,14 @@ public class TestPCFG {
 		p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		g = p.buildPCFG();
-		graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 5);
+		assertEquals(g.getE().size(), 5);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -345,6 +412,7 @@ public class TestPCFG {
 				"s1 -> s2;\n" +
 				"s2 -> s4;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 
 		// check the second method
@@ -353,7 +421,14 @@ public class TestPCFG {
 		p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		g = p.buildPCFG();
-		graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 6);
+		assertEquals(g.getE().size(), 6);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -370,6 +445,7 @@ public class TestPCFG {
 				"s4 -> s2;\n" +
 				"s2 -> s5;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 	}
 
@@ -389,7 +465,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 12);
+		assertEquals(g.getE().size(), 15);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -421,7 +504,9 @@ public class TestPCFG {
 				"s2 -> s3;\n" +
 				"s3 -> s11;\n" +
 				"}", graph.trim());
+		*/
 		Node._ID = 0;
+
 
 		// check the second method
 		m = c.getMethods().get(1);
@@ -429,7 +514,14 @@ public class TestPCFG {
 		p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		g = p.buildPCFG();
-		graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 11);
+		assertEquals(g.getE().size(), 12);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -457,6 +549,7 @@ public class TestPCFG {
 				"s9 -> s3;\n" +
 				"s3 -> s10;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 	}
 
@@ -476,7 +569,14 @@ public class TestPCFG {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		PCFG g = p.buildPCFG();
-		String graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 13);
+		assertEquals(g.getE().size(), 16);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -510,6 +610,7 @@ public class TestPCFG {
 				"s11 -> s3;\n" +
 				"s3 -> s12;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 
 		// check the second method
@@ -518,7 +619,14 @@ public class TestPCFG {
 		p = new IM2PCFG();
 		p.addClass(c, m.getName());
 		g = p.buildPCFG();
-		graph = g.toGraphViz(true);
+
+		assertEquals(g.getV().size(), 11);
+		assertEquals(g.getE().size(), 12);
+		assertEquals(g.getSyncNodes().size(), 0 );
+		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getESync().size(), 0 );
+
+		/*
 		assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
 				"compound=true;\n" +
@@ -546,6 +654,7 @@ public class TestPCFG {
 				"s9 -> s3;\n" +
 				"s3 -> s10;\n" +
 				"}", graph.trim());
+				*/
 		Node._ID = 0;
 	}
 

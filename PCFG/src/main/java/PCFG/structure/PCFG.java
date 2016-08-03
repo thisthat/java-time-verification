@@ -32,6 +32,28 @@ public class PCFG {
 		return out;
 	}
 
+	public List<Node> getV() {
+		List<Node> out = new ArrayList<>();
+		for(CFG cfg : processes){
+			out.addAll( cfg.getV() );
+		}
+		return out;
+	}
+	public List<Edge> getE() {
+		List<Edge> out = new ArrayList<>();
+		for(CFG cfg : processes){
+			out.addAll( cfg.getE() );
+		}
+		return out;
+	}
+	public List<SyncEdge> getESync() {
+		return ESync;
+	}
+
+	public List<CFG> getProcesses() {
+		return processes;
+	}
+
 	/**
 	 * TODO: Implementing the optimization
 	 */
@@ -95,13 +117,5 @@ public class PCFG {
 			}
 		}
 		return null;
-	}
-
-	public List<Node> getV() {
-		List<Node> out = new ArrayList<>();
-		for(CFG cfg : processes){
-			out.addAll( cfg.getV() );
-		}
-		return out;
 	}
 }
