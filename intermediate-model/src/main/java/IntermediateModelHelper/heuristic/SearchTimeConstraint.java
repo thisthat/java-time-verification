@@ -31,12 +31,6 @@ public abstract class SearchTimeConstraint {
 	 * @param env	Envirorment visible to that statement
 	 */
 	public abstract void next(IASTStm stm, Env env);
-	/**
-	 * It used to accept an Expression
-	 * @param expr	Expression to process
-	 * @param env	Envirorment visible to that statement
-	 */
-	public abstract void next(IASTRE expr, Env env);
 
 	/**
 	 * Add a constraint to the list

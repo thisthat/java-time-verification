@@ -1,5 +1,6 @@
 package IntermediateModelHelper.indexing;
 
+import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.structure.IndexData;
@@ -93,21 +94,22 @@ public class IndexingFile extends ParseIM {
 	 * @param c Class to analyze
 	 */
 	@Override
-	protected void createBaseEnv(ASTClass c){
+	protected Env createBaseEnv(ASTClass c){
 		super.createBaseEnv(c);
 		//check method
 		for (IASTMethod m : c.getMethods()) {
 			lastMethodName = m.getName();
 			Env eMethod = new Env(base_env);
-			eMethod = build_base_env.checkPars(m.getParameters(), eMethod);
+			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			super.analyze(m.getStms(), eMethod);
 		}
+		return base_env;
 	}
 
 
 	@Override
 	protected void analyzeASTRE(ASTRE r, Env env) {
-		build_base_env.checkRE(r, env);
+		CheckExpression.checkRE(r, env);
 	}
 
 	@Override

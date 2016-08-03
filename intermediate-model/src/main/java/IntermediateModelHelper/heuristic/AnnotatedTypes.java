@@ -68,9 +68,4 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 		}
 	}
 
-	@Override
-	public void next(IASTRE expr, Env env) {
-
-	}
-
 }
