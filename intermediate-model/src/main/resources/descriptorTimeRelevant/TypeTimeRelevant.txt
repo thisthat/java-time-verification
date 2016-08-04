@@ -4,5 +4,3 @@ Thread
 TimeUnit
 TimeUnit.SECONDS
 TimeUnit.MILLISECONDS
-Socket
-DatagramSocket
