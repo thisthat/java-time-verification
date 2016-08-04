@@ -37,12 +37,8 @@ The next features to implement are:
 * Rewrite the source code with the annotations
 
 # Known Issues
-We broke the Heuristic functionality :/
 
 # Current Branch
 
-In particular we'd like to index:
-* single file in order to have what are the global vars that are timed related -> avoid order problem
-* single file to have the list of what methods returns time related variables
-* fix the heuristics
+
 
