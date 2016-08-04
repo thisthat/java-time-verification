@@ -40,8 +40,6 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		String s = Arrays.toString( ah.getTimeConstraint().toArray() );
-		System.err.println(s);
 
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
@@ -61,7 +59,7 @@ public class TestHeuristics {
 
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 
-		assertEquals(constraints.size(), 2);
+
 
 		assertTrue(constraints.contains(new Triplet<>(
 				103,
@@ -73,6 +71,8 @@ public class TestHeuristics {
 				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)));",
 				ThreadTime.class
 		)));
+
+		assertEquals(constraints.size(), 2);
 
 	}
 
@@ -90,7 +90,7 @@ public class TestHeuristics {
 
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 
-		assertEquals(constraints.size(), 4);
+
 
 		assertTrue(constraints.contains(new Triplet<>(
 				16,
@@ -113,6 +113,8 @@ public class TestHeuristics {
 				ThreadTime.class
 		)));
 
+		assertEquals(constraints.size(), 4);
+
 	}
 
 	@Test
@@ -129,7 +131,7 @@ public class TestHeuristics {
 
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 
-		assertEquals(constraints.size(), 1);
+
 
 		assertTrue(constraints.contains(new Triplet<>(
 				817,
@@ -137,6 +139,7 @@ public class TestHeuristics {
 				SocketTimeout.class
 		)));
 
+		assertEquals(constraints.size(), 1);
 
 	}
 
@@ -154,7 +157,7 @@ public class TestHeuristics {
 
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 
-		assertEquals(constraints.size(), 1);
+
 
 		assertTrue(constraints.contains(new Triplet<>(
 				349,
@@ -162,6 +165,7 @@ public class TestHeuristics {
 				ThreadTime.class
 		)));
 
+		assertEquals(constraints.size(), 1);
 
 	}
 
@@ -196,13 +200,14 @@ public class TestHeuristics {
 
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 
-		assertEquals(constraints.size(), 1);
+
 
 		assertTrue(constraints.contains(new Triplet<>(
 				39,
 				"DataOutputStream dos = new DataOutputStream( socket.getOutputStream());",
 				SocketTimeout.class
 		)));
+		assertEquals(constraints.size(), 1);
 
 
 	}
@@ -223,22 +228,23 @@ public class TestHeuristics {
 		ah.analyze(cs.get(0));
 		constraints = ah.getTimeConstraint();
 
-		assertEquals(constraints.size(), 3);
+
 		assertTrue(constraints.contains(new Triplet<>(
-				74,
+				86,
 				"Thread.sleep(5000);",
 				ThreadTime.class
 		)));
 		assertTrue(constraints.contains(new Triplet<>(
-				193,
+				205,
 				"wait();",
 				ThreadTime.class
 		)));
 		assertTrue(constraints.contains(new Triplet<>(
-				220,
+				232,
 				"createTopologyThread.sleep(1000);",
 				ThreadTime.class
 		)));
+		assertEquals(constraints.size(), 3);
 
 		//Second class
 		ah.analyze(cs.get(1));
@@ -254,22 +260,22 @@ public class TestHeuristics {
 		ah.analyze(cs.get(3));
 		constraints = ah.getTimeConstraint();
 		assertTrue(constraints.contains(new Triplet<>(
-				278,
-				"Thread.sleep(5000);",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
-				281,
-				"Thread.sleep(5000);",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
 				290,
+				"Thread.sleep(5000);",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				293,
+				"Thread.sleep(5000);",
+				ThreadTime.class
+		)));
+		assertTrue(constraints.contains(new Triplet<>(
+				302,
 				"Thread.sleep(_class.SleepTimeout);",
 				ThreadTime.class
 		)));
 		assertTrue(constraints.contains(new Triplet<>(
-				296,
+				308,
 				"Thread.join();",
 				ThreadTime.class
 		)));
@@ -327,7 +333,7 @@ public class TestHeuristics {
 
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 
-		assertEquals(constraints.size(), 2);
+
 
 		assertTrue(constraints.contains(new Triplet<>(
 				612,
@@ -339,7 +345,7 @@ public class TestHeuristics {
 				"PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), \"UTF8\"));",
 				SocketTimeout.class
 		)));
-
+		assertEquals(constraints.size(), 2);
 
 	}
 

@@ -2,6 +2,8 @@ package IntermediateModelHelper.heuristic;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
@@ -51,15 +53,21 @@ public class ThreadTime extends SearchTimeConstraint {
 				IASTRE calee = mc.getExprCallee();
 				if( calee instanceof ASTLiteral){
 					String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
-					if( env.existVarName(var_name) || //is a var of the env
-						BuildEnvirormentClass.typeTimeRelevant.stream().anyMatch(type -> (var_name.equals(type))) //static var
-					){
+					if( env.existVarName(var_name) && BuildEnvirormentClass.getInstance().hasVarTypeTimeRelated(env.getVar(var_name))) //is a var of the env
+					{
 						found = true;
 					}
 				} else if(calee instanceof ASTAttributeAccess){
-					String callReconstructed = ((ASTAttributeAccess) calee).getCode();
-					if( BuildEnvirormentClass.typeTimeRelevant.stream().anyMatch(type -> (callReconstructed.equals(type))) //static var
-							){
+					//???
+					ASTAttributeAccess attribute = (ASTAttributeAccess) calee;
+					String className = "";
+					if(attribute.getVariableName() instanceof ASTLiteral){
+						className = ((ASTLiteral) attribute.getVariableName()).getValue();
+					} else {
+						//we have to use a failover technique
+						className = attribute.getCode();
+					}
+					if(BuildEnvirormentClass.getInstance().isTypeTimeRelated(className)){
 						found = true;
 					}
 				}
@@ -82,9 +90,7 @@ public class ThreadTime extends SearchTimeConstraint {
 				//in form var.join()
 				if(mc.getExprCallee() instanceof ASTLiteral){
 					String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
-					if( env.existVarName(var_name) || //is a var of the env
-						BuildEnvirormentClass.typeTimeRelevant.stream().anyMatch(type -> (var_name.equals(type))) //static var
-					){
+					if( env.existVarName(var_name) && BuildEnvirormentClass.getInstance().hasVarTypeTimeRelated(env.getVar(var_name))){
 						found = true;
 					}
 				}
@@ -98,11 +104,6 @@ public class ThreadTime extends SearchTimeConstraint {
 			this.addConstraint(stm);
 			stm.addConstraint(stm.getLine(), time, ThreadTime.class);
 		}
-
-	}
-
-	@Override
-	public void next(IASTRE expr, Env env) {
 
 	}
 }

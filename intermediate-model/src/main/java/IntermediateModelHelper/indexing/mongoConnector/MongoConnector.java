@@ -158,4 +158,8 @@ public class MongoConnector {
 	public MongoDatabase getDb() {
 		return db;
 	}
+
+	public void delete(ASTClass c) {
+
+	}
 }

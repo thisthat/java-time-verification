@@ -1,5 +1,6 @@
 package intermediateModel.visitors;
 
+import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTMethod;
@@ -23,31 +24,27 @@ import java.util.List;
 public abstract class ParseIM {
 
 	protected Env base_env = new Env();
-	protected BuildEnvirormentClass build_base_env;
-	{
-		build_base_env = new BuildEnvirormentClass(base_env);
-	}
+	protected BuildEnvirormentClass build_base_env = BuildEnvirormentClass.getInstance();
 
 	/**
 	 * The following method creates the basic environment for a class.
 	 * It goes through the def of all stms and set if variables are time related.
 	 * At the end of the execution of the method we know if an attribute is time reletad or not.
-	 * <hr>
-	 * <b>Efficency Tips</b>: Since we parse the IM we also collect the sync block and time related methods here.
 	 * @param c Class to analyze
 	 */
-	protected void createBaseEnv(ASTClass c){
-		build_base_env.buildEnvClass(c);
+	protected Env createBaseEnv(ASTClass c){
+		base_env = build_base_env.buildEnvClass(c);
 		//check static
 		for (ASTStatic s : c.getStaticInit()) {
 			analyze(s.getStms(), base_env);
 		}
+		return base_env;
 	}
 
 
 	protected void analyzeMethod(IASTMethod method){
 		Env eMethod = new Env(base_env);
-		eMethod = build_base_env.checkPars(method.getParameters(), eMethod);
+		eMethod = CheckExpression.checkPars(method.getParameters(), eMethod);
 		analyze(method.getStms(), eMethod);
 	}
 
@@ -125,6 +122,7 @@ public abstract class ParseIM {
 	 */
 	private void analyze(ASTBreak elm, Env env) {
 		analyzeASTBreak(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 
@@ -135,17 +133,18 @@ public abstract class ParseIM {
 	 */
 	private void analyze(ASTContinue elm, Env env) {
 		analyzeASTContinue(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 
 	/**
-	 * TODO: Rewrite this looking inside the inner class
-	 *
+	 * new Object creation. In particular, if it has a hidden class declaration, go through it.
 	 * @param stm	{@link ASTNewObject} instruction to check.
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTNewObject stm, Env env) {
 		analyzeASTNewObject(stm,env);
+		analyzeEveryStm(stm,env);
 		ASTHiddenClass hc = stm.getHiddenClass();
 		if(hc != null){
 			this.analyze(hc, new Env(env));
@@ -168,7 +167,10 @@ public abstract class ParseIM {
 				}
 			});
 		}
+		CheckExpression.checkRE(r, env);
+
 		analyzeASTRE(r,env);
+		analyzeEveryStm(r,env);
 	}
 
 	/**
@@ -180,7 +182,9 @@ public abstract class ParseIM {
 	private void analyze(ASTDoWhile elm, Env env) {
 		this.analyze(elm.getStms(), new Env(env));
 		this.analyze(elm.getExpr(), new Env(env));
+
 		analyzeASTDoWhile(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -195,11 +199,13 @@ public abstract class ParseIM {
 			this.analyze(exp, new_env);
 		}
 		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
 		for(ASTRE exp : elm.getPost()){
 			this.analyze(exp, new_env);
 		}
-		this.analyze(elm.getStms(), new_env);
+
 		analyzeASTFor(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -211,7 +217,9 @@ public abstract class ParseIM {
 		Env new_env = new Env(env);
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
+
 		analyzeASTForEach(elm, env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -226,7 +234,9 @@ public abstract class ParseIM {
 		this.analyze(elm.getIfBranch().getStms(), new Env(new_env));
 		if(elm.getElseBranch() != null)
 			this.analyze(elm.getElseBranch().getStms(), new Env(new_env));
+
 		analyzeASTIf(elm, env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -237,7 +247,9 @@ public abstract class ParseIM {
 	private void analyze(ASTReturn elm, Env env) {
 		if(elm.getExpr() != null)
 			this.analyze(elm.getExpr(), env);
+
 		analyzeASTReturn(elm, env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -252,7 +264,9 @@ public abstract class ParseIM {
 		for (ASTSwitch.ASTCase c : elm.getCases()) {
 			this.analyze( c.getStms(), new Env(new_env));
 		}
+
 		analyzeASTSwitch(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -264,7 +278,9 @@ public abstract class ParseIM {
 		Env new_env = new Env(env);
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
+
 		analyzeASTSynchronized(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -274,6 +290,8 @@ public abstract class ParseIM {
 	 */
 	private void analyze(ASTThrow elm, Env env) {
 		this.analyze(elm.getExpr(), env);
+
+		analyzeEveryStm(elm,env);
 		analyzeASTThrow(elm, env);
 	}
 
@@ -296,6 +314,7 @@ public abstract class ParseIM {
 			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
 
 		analyzeASTTry(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -319,7 +338,9 @@ public abstract class ParseIM {
 		}
 		if(elm.getFinallyBranch() != null)
 			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
+
 		analyzeASTTryResources(elm,env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -331,7 +352,9 @@ public abstract class ParseIM {
 		Env new_env = new Env(env);
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
+
 		analyzeASTWhile(elm, env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -341,9 +364,7 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTHiddenClass elm, Env env) {
-		BuildEnvirormentClass hidden_env = new BuildEnvirormentClass(new Env(env));
-		hidden_env.buildEnvClass(elm);
-		Env new_env = hidden_env.getEnv();
+		Env new_env = build_base_env.buildEnvClass(elm, env);
 		//check static
 		for (ASTStatic s : elm.getStaticInit()) {
 			this.analyze(s.getStms(), new_env);
@@ -351,10 +372,11 @@ public abstract class ParseIM {
 		//check method
 		for (IASTMethod m : elm.getMethods()) {
 			Env eMethod = new Env(new_env);
-			eMethod = hidden_env.checkPars(m.getParameters(), eMethod);
+			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			this.analyze(m.getStms(), eMethod);
 		}
 		analyzeASTHiddenClass(elm, env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -466,5 +488,11 @@ public abstract class ParseIM {
 	 * @param env   Environment
 	 */
 	protected void analyzeASTHiddenClass(ASTHiddenClass elm, Env env){};
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void analyzeEveryStm(IASTStm elm, Env env){};
 
 }

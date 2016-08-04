@@ -66,8 +66,4 @@ public class TimerType extends SearchTimeConstraint {
 		}
 	}
 
-	@Override
-	public void next(IASTRE expr, Env env) {
-
-	}
 }

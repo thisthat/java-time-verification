@@ -84,17 +84,4 @@ public class SocketTimeout extends SearchTimeConstraint {
 
 	}
 
-	@Override
-	public void next(IASTRE expr, Env env) {
-		if(!(expr instanceof ASTMethodCall)) return;
-		ASTMethodCall mc = (ASTMethodCall) expr;
-		String methodName = mc.getMethodName();
-		if(methodName.equals("receive") || methodName.equals("getOutputStream")){
-			found = true;
-			mc.setTimeCritical(true);
-		}
-		if(found){
-			this.addConstraint(mc.getLine(), mc.getCode());
-		}
-	}
 }

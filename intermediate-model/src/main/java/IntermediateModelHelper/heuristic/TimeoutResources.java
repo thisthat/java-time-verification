@@ -1,5 +1,6 @@
 package IntermediateModelHelper.heuristic;
 
+import IntermediateModelHelper.CheckExpression;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
@@ -40,7 +41,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case lessEqual:
 					case greater:
 					case greaterEqual:
-						if(BuildEnvirormentClass.checkIt(elm, env)){
+						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
 							found[0] = true;
 						}
@@ -84,9 +85,4 @@ public class TimeoutResources extends SearchTimeConstraint {
 		return r[0];
 	}
 	*/
-
-	@Override
-	public void next(IASTRE expr, Env env) {
-
-	}
 }
