@@ -2,6 +2,9 @@ package intermediateModel.visitors;
 
 
 import IntermediateModelHelper.CheckExpression;
+import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
@@ -60,6 +63,14 @@ public class ApplyHeuristics extends ParseIM {
 			}
 		}
 		Env base = super.createBaseEnv(c);
+		IndexingFile indexingFile = new IndexingFile();
+		IndexData data = indexingFile.index(c);
+		for(IndexParameter p : data.getTimeAttribute()){
+			if(base.existVarName(p.getName())){
+				IASTVar v = base.getVar(p.getName());
+				v.setTimeCritical(true);
+			}
+		}
 		//check method
 		for(IASTMethod m : c.getMethods()){
 			Env eMethod = new Env(base);

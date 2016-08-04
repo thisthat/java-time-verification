@@ -40,6 +40,7 @@ public class IndexData {
 	List<String> listOfTimedMethods = new ArrayList<>();
 	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
 	List<IndexSyncBlock> listOfSyncBlocks = new ArrayList<>();
+	List<IndexParameter> timeAttribute = new ArrayList<>();
 
 	String classPackage = "";
 	String Name = "";
@@ -161,6 +162,14 @@ public class IndexData {
 
 	public void addSyncBlock(IndexSyncBlock b) {
 		this.listOfSyncBlocks.add(b);
+	}
+
+	public List<IndexParameter> getTimeAttribute() {
+		return timeAttribute;
+	}
+
+	public void setTimeAttribute(List<IndexParameter> timeAttribute) {
+		this.timeAttribute = timeAttribute;
 	}
 
 	@Override

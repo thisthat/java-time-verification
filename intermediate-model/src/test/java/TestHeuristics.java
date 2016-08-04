@@ -40,6 +40,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
+
 		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 	}

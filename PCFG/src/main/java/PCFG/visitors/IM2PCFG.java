@@ -49,16 +49,9 @@ public class IM2PCFG extends ConvertIM {
 
 	}
 	public void addClass(ASTClass c, String methodName){
-		addClass(c,methodName, true);
-	}
-	public void addClass(ASTClass c, String methodName, boolean isIndexed){
 		this.classes.add(new KeyValue<String, ASTClass>(methodName, c));
 		IndexData index = classIndexer.index(c);
 		indexs.add( index );
-		if(!isIndexed){
-			MongoConnector mongo = MongoConnector.getInstance("vuze");
-			mongo.add(index);
-		}
 	}
 
 	public PCFG buildPCFG(){
