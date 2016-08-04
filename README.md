@@ -29,7 +29,7 @@ All the development will be performed in a separate branch that will be merge to
 The next features to implement are:
 * Indexing before parse [DONE]
 * Store information in a database [DONE]
-* Create a PCFG from the source code [DONE]
+* Create a PCFG w/ Time Constraints from the source code [DONE]
 * User defined heuristics
     * Create a grammar to specify them
     * Parse and create the heuristic automatically
@@ -37,6 +37,8 @@ The next features to implement are:
 * Rewrite the source code with the annotations
 
 # Known Issues
+
+At the moment we do not have any issue :stuck_out_tongue:
 
 # Current Branch
 
