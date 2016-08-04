@@ -83,12 +83,13 @@ public class Env {
 	 */
 	public boolean existVarNameTimeRelevant(String v){
 		for(IASTVar vEnv : varList){
-			if(vEnv.getName().equals(v))
+			if(vEnv.getName().equals(v)) {
 				return vEnv.isTimeCritical();
+			}
 		}
 		//is not here, search in the previous ones
 		if(prev != null){
-			return prev.existVarName(v);
+			return prev.existVarNameTimeRelevant(v);
 		} else {
 			return false;
 		}

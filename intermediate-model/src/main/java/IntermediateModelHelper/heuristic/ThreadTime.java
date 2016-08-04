@@ -3,6 +3,7 @@ package IntermediateModelHelper.heuristic;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
@@ -58,6 +59,17 @@ public class ThreadTime extends SearchTimeConstraint {
 					}
 				} else if(calee instanceof ASTAttributeAccess){
 					//???
+					ASTAttributeAccess attribute = (ASTAttributeAccess) calee;
+					String className = "";
+					if(attribute.getVariableName() instanceof ASTLiteral){
+						className = ((ASTLiteral) attribute.getVariableName()).getValue();
+					} else {
+						//we have to use a failover technique
+						className = attribute.getCode();
+					}
+					if(BuildEnvirormentClass.getInstance().isTypeTimeRelated(className)){
+						found = true;
+					}
 				}
 			}
 

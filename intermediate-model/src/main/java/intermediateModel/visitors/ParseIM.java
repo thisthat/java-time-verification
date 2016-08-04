@@ -199,10 +199,10 @@ public abstract class ParseIM {
 			this.analyze(exp, new_env);
 		}
 		this.analyze(elm.getExpr(), new_env);
+		this.analyze(elm.getStms(), new_env);
 		for(ASTRE exp : elm.getPost()){
 			this.analyze(exp, new_env);
 		}
-		this.analyze(elm.getStms(), new_env);
 
 		analyzeASTFor(elm,env);
 		analyzeEveryStm(elm,env);

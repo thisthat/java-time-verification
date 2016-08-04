@@ -29,19 +29,8 @@ public class TestEnvirorment {
 		ast.accept(v);
 		intemediateModel = v.listOfClasses;
     }
-	public class ApplyHeuristicsTest extends ApplyHeuristics {
-		@Override
-		public Env indexing(ASTClass c) {
-			return super.indexing(c);
-		}
-	}
 
-    @Test
-	public void TestEnvirorment() {
-		ApplyHeuristicsTest ah = new ApplyHeuristicsTest();
-		//we know there is only one class
-		Env e = ah.indexing(intemediateModel.get(0));
-	}
+
 
 
 }

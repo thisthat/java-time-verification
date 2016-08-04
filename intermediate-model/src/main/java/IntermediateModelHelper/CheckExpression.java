@@ -98,10 +98,9 @@ public class CheckExpression {
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
 					if(where.existMethodTimeRelevant( elm.getMethodName() )){
-						ASTVariable vv = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
 						v.setTimeCritical(true);
-						vv.setTimeCritical(true);
-						where.addVar(vv);
+						var.setTimeCritical(true);
+						where.addVar(var);
 					}
 				}
 
@@ -116,9 +115,8 @@ public class CheckExpression {
 						case mod:
 							if(checkIt(elm, where)){
 								v.setTimeCritical(true);
-								ASTVariable vv = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
-								vv.setTimeCritical(true);
-								where.addVar(vv);
+								var.setTimeCritical(true);
+								where.addVar(var);
 							}
 					}
 				}
@@ -175,14 +173,13 @@ public class CheckExpression {
 		elm.visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTLiteral(ASTLiteral literal) {
-				if(where.existVarName(literal.getValue()) //must be visible
-						&& where.getVar(literal.getValue()).isTimeCritical() ) //and time critical
+				if(where.existVarNameTimeRelevant(literal.getValue()) ) //and time critical
 					r[0] = true;
 			}
 
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
-				if(where.existMethod(elm.getMethodName())){
+				if(where.existMethodTimeRelevant(elm.getMethodName())){
 					r[0] = true;
 				}
 			}

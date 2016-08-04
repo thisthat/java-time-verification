@@ -125,5 +125,14 @@ public class BuildEnvirormentClass {
 		return typeTimeRelevant.stream().anyMatch(type -> (type.equals(v.getType())));
 	}
 
+	/**
+	 * Checks if the type is a time related type.
+	 * @param t	Type to check
+	 * @return	True if is in the list of those types that are time related.
+	 */
+	public boolean isTypeTimeRelated(String t){
+		return typeTimeRelevant.stream().anyMatch(type -> (type.equals(t)));
+	}
+
 
 }
