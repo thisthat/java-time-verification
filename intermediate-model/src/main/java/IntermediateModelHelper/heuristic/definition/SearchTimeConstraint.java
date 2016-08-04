@@ -1,4 +1,4 @@
-package IntermediateModelHelper.heuristic;
+package IntermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
@@ -21,9 +21,14 @@ public abstract class SearchTimeConstraint {
 
 	/**
 	 * Stores the list of {@link Triplet} of time instruction the heurisitc found.
-	 * It saves line and code of the time constraint.
+	 * It saves:
+	 * <ul>
+	 *     <li>Message</li>
+	 *     <li>Node of IM</li>
+	 *     <li>Type of Heuristic that found the constraint</li>
+	 * </ul>
 	 */
-	protected List<Triplet<Integer,String,Class>> timeConstraint = new ArrayList<>();
+	protected List<Triplet<String,IASTStm,Class>> timeConstraint = new ArrayList<>();
 
 	/**
 	 * It used to accept a Statement
@@ -34,26 +39,19 @@ public abstract class SearchTimeConstraint {
 
 	/**
 	 * Add a constraint to the list
+	 * @param message Message to store with the time constraint
 	 * @param stm	The instruction to add to the list
 	 */
-	protected void addConstraint(IASTStm stm){
-		timeConstraint.add( new Triplet<>(stm.getLine(), stm.getCode(), getClass()) );
-	}
-
-	/**
-	 * Add an line of code as time constraint.
-	 * @param line	The number of line in the code
-	 * @param src  	The source code
-	 */
-	protected void addConstraint(int line, String src){
-		timeConstraint.add( new Triplet<>(line, src, getClass()) );
+	protected void addConstraint(String message, IASTStm stm){
+		timeConstraint.add( new Triplet<>(message, stm, getClass()) );
+		stm.addConstraint( stm.getLine(), message, getClass() );
 	}
 
 	/**
 	 * Getter.
 	 * @return The list of constraint.
 	 */
-	public List<Triplet<Integer, String, Class>> getTimeConstraint() {
+	public List<Triplet<String, IASTStm, Class>> getTimeConstraint() {
 		return timeConstraint;
 	}
 

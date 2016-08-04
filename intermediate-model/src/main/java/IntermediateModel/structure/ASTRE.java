@@ -60,8 +60,19 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return true;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ASTRE)) return false;
+
+		ASTRE astre = (ASTRE) o;
+
+		return astre.getCode().equals(this.getCode());
+
+	}
+
+	@Override
+	public int hashCode() {
+		return getExpression() != null ? getExpression().hashCode() : 0;
 	}
 
 	public IASTRE getExpression() {

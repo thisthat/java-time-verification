@@ -1,4 +1,5 @@
-import IntermediateModelHelper.heuristic.*;
+import IntermediateModelHelper.heuristic.definition.*;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;
@@ -7,7 +8,6 @@ import org.javatuples.Triplet;
 import org.junit.Test;
 import parser.Java2AST;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +41,7 @@ public class TestHeuristics {
 		ah.analyze(cs.get(0));
 
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 	}
 
@@ -57,20 +57,22 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 
 
 
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				103,
 				"assertTrue(duration > 3000);",
-				TimeoutResources.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				TimeoutResources.class,
+				constraints
+		));
+		assertTrue(check(
 				195,
 				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)));",
-				ThreadTime.class
-		)));
+				ThreadTime.class,
+				constraints
+		));
 
 		assertEquals(constraints.size(), 2);
 
@@ -88,30 +90,33 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 
 
-
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				16,
 				"Thread.sleep(4000);",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				ThreadTime.class,
+				constraints
+		));
+		assertTrue(check(
 				35,
 				"timer.schedule(task, 0, 5000);",
-				TimerType.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				TimerType.class,
+				constraints
+		));
+		assertTrue(check(
 				38,
 				"task.wait();",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				ThreadTime.class,
+				constraints
+		));
+		assertTrue(check(
 				43,
 				"Thread.sleep(10000);",
-				ThreadTime.class
-		)));
+				ThreadTime.class,
+				constraints
+		));
 
 		assertEquals(constraints.size(), 4);
 
@@ -129,15 +134,15 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 
 
-
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				817,
 				"socket.receive( packet );",
-				SocketTimeout.class
-		)));
+				SocketTimeout.class,
+				constraints
+		));
 
 		assertEquals(constraints.size(), 1);
 
@@ -155,16 +160,15 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 
 
-
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				349,
 				"Thread.sleep(500+((int)Math.random()*1000));",
-				ThreadTime.class
-		)));
-
+				ThreadTime.class,
+				constraints
+		));
 		assertEquals(constraints.size(), 1);
 
 	}
@@ -181,8 +185,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
-
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 	}
 
@@ -198,15 +201,15 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 
 
-
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				39,
 				"DataOutputStream dos = new DataOutputStream( socket.getOutputStream());",
-				SocketTimeout.class
-		)));
+				SocketTimeout.class,
+				constraints
+		));
 		assertEquals(constraints.size(), 1);
 
 
@@ -222,28 +225,30 @@ public class TestHeuristics {
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
-		List<Triplet<Integer,String,Class>> constraints;
-
+		List<Triplet<String,IASTStm,Class>> constraints;
 		//First class
 		ah.analyze(cs.get(0));
 		constraints = ah.getTimeConstraint();
 
 
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				86,
 				"Thread.sleep(5000);",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				ThreadTime.class,
+				constraints
+		));
+		assertTrue(check(
 				205,
 				"wait();",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				ThreadTime.class,
+				constraints
+		));
+		assertTrue(check(
 				232,
 				"createTopologyThread.sleep(1000);",
-				ThreadTime.class
-		)));
+				ThreadTime.class,
+				constraints
+		));
 		assertEquals(constraints.size(), 3);
 
 		//Second class
@@ -259,26 +264,30 @@ public class TestHeuristics {
 		//Fourth class
 		ah.analyze(cs.get(3));
 		constraints = ah.getTimeConstraint();
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				290,
 				"Thread.sleep(5000);",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				ThreadTime.class,
+				constraints
+		));
+		assertTrue(check(
 				293,
 				"Thread.sleep(5000);",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				ThreadTime.class,
+				constraints
+		));
+		assertTrue(check(
 				302,
 				"Thread.sleep(_class.SleepTimeout);",
-				ThreadTime.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				ThreadTime.class,
+				constraints
+		));
+		assertTrue(check(
 				308,
 				"Thread.join();",
-				ThreadTime.class
-		)));
+				ThreadTime.class,
+				constraints
+		));
 
 
 	}
@@ -294,9 +303,7 @@ public class TestHeuristics {
 		ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
-
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
-
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 
 	}
@@ -313,8 +320,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
-
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 
 	}
@@ -331,23 +337,35 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
 
 
-
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				612,
 				"SystemTime.getMonotonousTime() - last_fail < period",
-				TimeoutResources.class
-		)));
-		assertTrue(constraints.contains(new Triplet<>(
+				TimeoutResources.class,
+				constraints
+		));
+		assertTrue(check(
 				864,
 				"PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), \"UTF8\"));",
-				SocketTimeout.class
-		)));
+				SocketTimeout.class,
+				constraints
+		));
 		assertEquals(constraints.size(), 2);
 
 	}
 
+	private boolean check(int line, String code, Class _class, List<Triplet<String, IASTStm, Class>> constraints ){
+		boolean flag = false;
+		for(Triplet<String, IASTStm, Class> c : constraints){
+			if(		c.getValue1().getCode().equals(code) &&
+					c.getValue1().getLine() == line &&
+					c.getValue2().equals(_class)){
+				flag = true;
+			}
+		}
+		return flag;
+	}
 
 }

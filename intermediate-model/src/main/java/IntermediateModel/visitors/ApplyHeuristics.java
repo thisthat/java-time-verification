@@ -2,18 +2,16 @@ package intermediateModel.visitors;
 
 
 import IntermediateModelHelper.CheckExpression;
+import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.*;
 import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.heuristic.SearchTimeConstraint;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -38,6 +36,31 @@ public class ApplyHeuristics extends ParseIM {
 	}
 	public ApplyHeuristics(BuildEnvirormentClass env) {
 		this.build_base_env = env;
+	}
+
+	/**
+	 * The following method simplify the usage of the current class.
+	 * It gets, with a set of predefined heuristics, the time constraints of the given class.
+	 * In particular, the list of heuristics that it uses are:
+	 * <ul>
+	 *     <li>{@link ThreadTime}</li>
+	 *     <li>{@link SocketTimeout}</li>
+	 *     <li>{@link TimeoutResources}</li>
+	 *     <li>{@link TimerType}</li>
+	 *     <li>{@link AnnotatedTypes}</li>
+	 * </ul>
+	 * @param c	Class to analyze
+	 * @return	List of time constraints with the predefined set of heuristics
+	 */
+	public static List<Triplet<String,IASTStm,Class>> getConstraint(ASTClass c){
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(c);
+		return ah.getTimeConstraint();
 	}
 
 	public void subscribe(Class<? extends SearchTimeConstraint> strategy){
@@ -92,8 +115,8 @@ public class ApplyHeuristics extends ParseIM {
 	}
 
 
-	public List<Triplet<Integer, String, Class>> getTimeConstraint() {
-		List<Triplet<Integer, String, Class>> out = new ArrayList<>();
+	public List<Triplet<String, IASTStm, Class>> getTimeConstraint() {
+		List<Triplet<String, IASTStm, Class>> out = new ArrayList<>();
 		for(SearchTimeConstraint s : strategies){
 			out.addAll(s.getTimeConstraint());
 		}

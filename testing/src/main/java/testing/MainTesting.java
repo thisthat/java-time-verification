@@ -15,7 +15,7 @@ import org.neo4j.driver.v1.*;
 */
 
 
-import IntermediateModelHelper.heuristic.*;
+import IntermediateModelHelper.heuristic.definition.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;

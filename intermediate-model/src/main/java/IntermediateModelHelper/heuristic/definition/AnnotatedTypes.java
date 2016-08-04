@@ -1,4 +1,4 @@
-package IntermediateModelHelper.heuristic;
+package IntermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
@@ -64,7 +64,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 			}
 		}
 		if(found){
-			this.addConstraint(stm);
+			this.addConstraint("", stm);
 		}
 	}
 

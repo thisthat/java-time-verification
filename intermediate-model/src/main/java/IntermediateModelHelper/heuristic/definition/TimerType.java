@@ -1,4 +1,4 @@
-package IntermediateModelHelper.heuristic;
+package IntermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
@@ -51,14 +51,16 @@ public class TimerType extends SearchTimeConstraint {
 				String vName = ((ASTLiteral) mc.getExprCallee()).getValue();
 				if(var_list.stream().anyMatch( name -> name.getName().equals(vName))){ //that is in the env with type Timer
 					stm.setTimeCritical(true);
-					this.addConstraint(stm);
+
 					//get value of delay
 					if(mc.getParameters().size() > 1){
 						IASTRE r = mc.getParameters().get(1);
 						if(r instanceof ASTLiteral){
-							stm.addConstraint(stm.getLine(), ((ASTLiteral) r).getValue(), TimerType.class);
+							//stm.addConstraint(stm.getLine(), ((ASTLiteral) r).getValue(), TimerType.class);
+							this.addConstraint(((ASTLiteral) r).getValue(), stm);
 						} else {
-							stm.addConstraint(stm.getLine(), r.toString(), TimerType.class);
+							//stm.addConstraint(stm.getLine(), r.toString(), TimerType.class);
+							this.addConstraint(((ASTLiteral) r).getValue(), stm);
 						}
 					}
 				}

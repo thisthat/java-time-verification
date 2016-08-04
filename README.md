@@ -42,5 +42,8 @@ At the moment we do not have any issue :stuck_out_tongue:
 
 # Current Branch
 
+In the current branch we will:
+* Add time notation to the PCFG
+
 
 
