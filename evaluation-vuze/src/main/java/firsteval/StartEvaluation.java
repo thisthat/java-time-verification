@@ -1,6 +1,6 @@
 package firsteval;
 
-import IntermediateModelHelper.heuristic.*;
+import IntermediateModelHelper.heuristic.definition.*;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;

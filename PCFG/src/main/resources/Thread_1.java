@@ -18,6 +18,7 @@ class Thread_1 extends Thread {
 			do_smth = minPrime.hashCode().toString();
 		}
 		System.out.toString("Result" + do_smth);
+		Thread.sleep(1000);
 		var.init();
 		callAb();
 	}

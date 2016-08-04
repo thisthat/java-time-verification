@@ -1,4 +1,4 @@
-package IntermediateModelHelper.heuristic;
+package IntermediateModelHelper.heuristic.definition;
 
 
 import intermediateModel.interfaces.IASTRE;
@@ -77,8 +77,7 @@ public class SocketTimeout extends SearchTimeConstraint {
 
 		}
 		if(found && !value_timeout.equals("")){
-			this.addConstraint(stm.getLine(), stm.getCode());
-			stm.addConstraint(stm.getLine(), value_timeout, SocketTimeout.class);
+			this.addConstraint(value_timeout, stm);
 			found = false;
 		}
 

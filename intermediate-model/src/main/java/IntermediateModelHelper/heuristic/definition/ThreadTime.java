@@ -1,9 +1,7 @@
-package IntermediateModelHelper.heuristic;
+package IntermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
@@ -101,8 +99,7 @@ public class ThreadTime extends SearchTimeConstraint {
 			found = true;
 		}
 		if(found){
-			this.addConstraint(stm);
-			stm.addConstraint(stm.getLine(), time, ThreadTime.class);
+			this.addConstraint(time, stm);
 		}
 
 	}

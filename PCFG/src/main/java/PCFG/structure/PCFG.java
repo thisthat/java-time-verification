@@ -77,7 +77,9 @@ public class PCFG {
 				out.append("\tlabel = \"sync block on " + s.getExpr() + "\";\n\tcolor=blue\n}\n");
 			}
 			for(IEdge e : process.getE()){
-				out.append(printNode(e.getFrom(), hideName) + " -> " + printNode(e.getTo(), hideName) + ";\n");
+				out.append(printNode(e.getFrom(), hideName) + " -> " + printNode(e.getTo(), hideName));
+				out.append("[ label = \"" + e.getLabel() + "\" ]");
+				out.append(";\n");
 			}
 			out.append("label = \"process #" + i + "\";\n\tcolor=green\n}\n");
 		}

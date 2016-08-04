@@ -12,6 +12,7 @@ public class Edge implements IEdge{
 	public Edge(Node from, Node to) {
 		this.from = from;
 		this.to = to;
+		this.label = "";
 	}
 
 	public Node getFrom() {

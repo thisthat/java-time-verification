@@ -1,14 +1,11 @@
 package intermediateModel;
 
 import IntermediateModelHelper.converter.GenerateXAL;
+import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.CreateIntemediateModel;
 import intermediateModel.visitors.JDTVisitor;
-import IntermediateModelHelper.heuristic.*;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 

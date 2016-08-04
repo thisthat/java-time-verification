@@ -1,13 +1,11 @@
-package IntermediateModelHelper.heuristic;
+package IntermediateModelHelper.heuristic.definition;
 
 import IntermediateModelHelper.CheckExpression;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
-import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefualtASTREVisitor;
-import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 
 /**
@@ -50,8 +48,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 		});
 
 		if(found[0]){
-			this.addConstraint(stm);
-			stm.addConstraint(stm.getLine(), stm.getCode(), TimeoutResources.class);
+			this.addConstraint(stm.getCode(),stm);
 		}
 
 	}

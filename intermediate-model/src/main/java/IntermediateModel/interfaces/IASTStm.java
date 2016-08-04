@@ -60,6 +60,7 @@ public abstract class IASTStm implements IASTVisitor{
 	protected Token endToken = null;
 	protected String code = "";
 	protected int line;
+	protected int lineEnd;
 	protected Triplet<Integer,String, Class> constraint = null;
 	@Beta protected List<String> annotations = new ArrayList<>();
 	private boolean isTimeCritical = false;
@@ -116,6 +117,7 @@ public abstract class IASTStm implements IASTVisitor{
 			ASTSrc instance = ASTSrc.getInstance();
 			char[] source = instance.source;
 			line = instance.getLine(start) + 1;
+			lineEnd = instance.getLine(end) + 1;
 			code = new String(Arrays.copyOfRange(source, start, end));
 			return;
 		}
@@ -165,6 +167,14 @@ public abstract class IASTStm implements IASTVisitor{
 	 */
 	public int getLine(){
 		return line;
+	}
+
+	/**
+	 * Get the end line in the file of the node
+	 * @return the end line number
+	 */
+	public int getLineEnd(){
+		return lineEnd;
 	}
 
 	/**

@@ -6,13 +6,18 @@ import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
+import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.ConvertIM;
 import org.javatuples.KeyValue;
 import PCFG.structure.*;
 import PCFG.visitors.helper.GenerateMethodSyncCallList;
 import PCFG.visitors.helper.SyncMethodCall;
+import org.javatuples.Triplet;
+import parser.ASTSrc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,17 +34,19 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class IM2PCFG extends ConvertIM {
+
 	private List<KeyValue<String,ASTClass>> classes = new ArrayList<>();
 	private PCFG pcfg;
 	private CFG  lastCfg;
 	private Node lastNode;
 	private SyncNode syncNode;
-	private String lastLabel;
+	private String lastLabel = "";
 	private boolean isMultiLabel = false;
 	private List<Node> multiLabel = new ArrayList<>();
 	private IndexingFile classIndexer = new IndexingFile();
 	private List<IndexData> indexs = new ArrayList<>();
 	private String lastClass = "";
+	private List<Triplet<String, IASTStm, Class>> constraints = new ArrayList<>();
 
 	public IM2PCFG(List<KeyValue<String,ASTClass>> classes) {
 		this.classes = classes;
@@ -49,6 +56,25 @@ public class IM2PCFG extends ConvertIM {
 
 	}
 	public void addClass(ASTClass c, String methodName){
+
+		List<Triplet<String,IASTStm,Class>> currentClassConstraint = ApplyHeuristics.getConstraint(c);
+		IASTMethod met = null;
+		for(IASTMethod m : c.getMethods()){
+			if(m.getName().equals(methodName)){
+				met = m;
+			}
+		}
+		if(met != null){
+			int startLine =  ((IASTStm) met).getLine();
+			int endLine   =  ((IASTStm) met).getLineEnd();
+			for(Triplet<String,IASTStm,Class> time : currentClassConstraint){
+				int line = time.getValue1().getLine();
+				if(startLine <= line && line <= endLine){
+					this.constraints.add(time);
+				}
+			}
+		}
+
 		this.classes.add(new KeyValue<String, ASTClass>(methodName, c));
 		IndexData index = classIndexer.index(c);
 		indexs.add( index );
@@ -307,7 +333,6 @@ public class IM2PCFG extends ConvertIM {
 		if(stm.getElseBranch() != null){
 			dispachStm(stm.getElseBranch().getStms());
 		}
-
 		addState(end_if);
 	}
 
@@ -505,6 +530,10 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertRE(ASTRE stm) {
+		Triplet<String, IASTStm, Class> c = getConstraint(stm);
+		if(c != null){
+			this.lastLabel = this.lastLabel + "[" + c.getValue0() + "]";
+		}
 		addState(
 				new Node(stm.getExpressionName(), stm.getCode(), Node.TYPE.NORMAL)
 		);
@@ -533,4 +562,12 @@ public class IM2PCFG extends ConvertIM {
 		this.lastLabel = "";
 	}
 
+	private Triplet<String, IASTStm, Class> getConstraint(ASTRE r){
+		for(Triplet<String, IASTStm, Class> c : this.constraints){
+			if(c.getValue1().equals(r)){
+				return c;
+			}
+		}
+		return null;
+	}
 }

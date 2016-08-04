@@ -1,18 +1,15 @@
-import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.heuristic.*;
+import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;
-import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
-import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -51,15 +48,28 @@ public class TestEnvirorment {
 		IndexingFile indexing = new IndexingFile();
 		IndexData data = indexing.index(cs.get(0));
 
-		List<Triplet<Integer,String,Class>> constraints = ah.getTimeConstraint();
+		List<Triplet<String, IASTStm, Class>> constraints = ah.getTimeConstraint();
 
-		assertTrue(constraints.contains(new Triplet<>(
+		assertTrue(check(
 				14,
 				"paused_on > 0 && started_on > 0",
-				TimeoutResources.class
-		)));
+				TimeoutResources.class,
+				constraints
+		));
 
 		assertEquals(constraints.size(), 1);
 
+	}
+
+	private boolean check(int line, String message, Class _class, List<Triplet<String, IASTStm, Class>> constraints ){
+		boolean flag = false;
+		for(Triplet<String, IASTStm, Class> c : constraints){
+			if(c.getValue0().equals(message) &&
+			   c.getValue1().getLine() == line &&
+			   c.getValue2().equals(_class)){
+				flag = true;
+			}
+		}
+		return flag;
 	}
 }
