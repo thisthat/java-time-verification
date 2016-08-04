@@ -1,7 +1,6 @@
 package PCFG.visitors.helper;
 
 import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;

@@ -11,8 +11,10 @@ public class CFG {
 	List<Node> V = new ArrayList<>();
 	List<SyncNode> syncNodes = new ArrayList<>();
 	List<Edge> E = new ArrayList<>();
+	String name;
 
-	public CFG() {
+	public CFG(String name) {
+		this.name = name;
 	}
 
 	public List<Node> getV() {
@@ -37,5 +39,9 @@ public class CFG {
 
 	public List<SyncNode> getSyncNodes() {
 		return syncNodes;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

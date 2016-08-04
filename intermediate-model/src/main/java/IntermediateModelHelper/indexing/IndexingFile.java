@@ -1,7 +1,6 @@
 package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.*;

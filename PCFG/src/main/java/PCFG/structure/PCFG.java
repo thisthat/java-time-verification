@@ -81,7 +81,7 @@ public class PCFG {
 				out.append("[ label = \"" + e.getLabel() + "\" ]");
 				out.append(";\n");
 			}
-			out.append("label = \"process #" + i + "\";\n\tcolor=green\n}\n");
+			out.append("label = \"" + process.getName() + "\";\n\tcolor=green\n}\n");
 		}
 
 		for(SyncEdge sEdge : ESync){

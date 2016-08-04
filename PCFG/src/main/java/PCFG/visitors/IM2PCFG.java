@@ -15,9 +15,7 @@ import PCFG.structure.*;
 import PCFG.visitors.helper.GenerateMethodSyncCallList;
 import PCFG.visitors.helper.SyncMethodCall;
 import org.javatuples.Triplet;
-import parser.ASTSrc;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -217,7 +215,7 @@ public class IM2PCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		lastCfg = new CFG();
+		lastCfg = new CFG(c.getName());
 		this.pcfg.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispachStm(m.getStms());

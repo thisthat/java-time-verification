@@ -13,7 +13,6 @@ import org.mongodb.morphia.query.Query;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * The following class implements a connection to MongoDB.
@@ -35,8 +34,8 @@ public class MongoConnector {
 	 * Protected constructor. We want to give a database as singleton.
 	 * @param db_name Name of the DB to use
 	 */
-	protected MongoConnector(String db_name) {
-		MongoClient mongoClient = new MongoClient();
+	protected MongoConnector(String db_name, String ip, int port) {
+		MongoClient mongoClient = new MongoClient(ip, port);
 		db = mongoClient.getDatabase(db_name);
 		indexCollection = db.getCollection("IndexData");
 		datastore = morphia.createDatastore(mongoClient, db_name);
@@ -57,7 +56,23 @@ public class MongoConnector {
 		if(instances.containsKey(db_name)){
 			return instances.get(db_name);
 		}
-		MongoConnector m = new MongoConnector(db_name);
+		MongoOptions options = MongoOptions.getInstance();
+		MongoConnector m = new MongoConnector(db_name, options.getIp(), options.getPort());
+		instances.put(db_name, m);
+		return m;
+	}
+
+	/**
+	 * Get the instance of the default DB with lazy initialization.
+	 * @return The singleton of the selected DB.
+	 */
+	public static synchronized MongoConnector getInstance() {
+		MongoOptions options = MongoOptions.getInstance();
+		String db_name = options.getDbName();
+		if(instances.containsKey(db_name)){
+			return instances.get(db_name);
+		}
+		MongoConnector m = new MongoConnector(db_name, options.getIp(), options.getPort());
 		instances.put(db_name, m);
 		return m;
 	}
