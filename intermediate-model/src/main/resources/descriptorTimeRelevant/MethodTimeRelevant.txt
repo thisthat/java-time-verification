@@ -1,4 +1,4 @@
-getMonotonousTime
-getSimpleName
-currentTimeMillis
-getCurrentTime
+getMonotonousTime,int
+getSimpleName,int
+currentTimeMillis,int
+getCurrentTime,int

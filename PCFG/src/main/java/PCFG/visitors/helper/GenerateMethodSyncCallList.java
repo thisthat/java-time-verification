@@ -141,7 +141,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 						if(containsMethod(methodCalled, methods)){
 							//also the call is in the list -> we gotta a match
 							IndexMethod m = getMethod(methodCalled, methods);
-							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getType(), methodCalled, r));
+							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r));
 						}
 					}
 				}
@@ -157,7 +157,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								if(containsMethod(methodCalled, methods)){
 									//also the call is in the list -> we gotta a match
 									IndexMethod m = getMethod(methodCalled, methods);
-									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getType(), methodCalled, r));
+									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r));
 								}
 							}
 						}
@@ -181,7 +181,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							if(containsMethod(methodCalled, methods)){
 								//also the call is in the list -> we gotta a match
 								IndexMethod m = getMethod(methodCalled, methods);
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getType(), methodCalled, r));
+								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r));
 							}
 						}
 					}

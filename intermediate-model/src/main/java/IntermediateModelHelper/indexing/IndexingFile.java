@@ -10,6 +10,7 @@ import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ParseIM;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,15 @@ public class IndexingFile extends ParseIM {
 
 	String lastMethodName = "";
 	IndexData data;
-	MongoConnector mongo = MongoConnector.getInstance("vuze");
+	MongoConnector mongo;
+
+	public IndexingFile() {
+		mongo = MongoConnector.getInstance("vuze");
+	}
+
+	public IndexingFile(MongoConnector mongo) {
+		this.mongo = mongo;
+	}
 
 	/**
 	 * Start the indexing of a {@link ASTClass}.
@@ -54,6 +63,7 @@ public class IndexingFile extends ParseIM {
 		data = new IndexData();
 		data.setClassName(c.getName());
 		data.setClassPackage(c.getPackageName());
+		data.setImports(convertImports(c.getImports()));
 		String fullname = "";
 		if(c.getPackageName().trim().equals("")){
 			fullname = c.getName();
@@ -87,6 +97,14 @@ public class IndexingFile extends ParseIM {
 		return data;
 	}
 
+	private List<String> convertImports(List<ASTImport> imports) {
+		List<String> out = new ArrayList<>();
+		for(ASTImport i : imports){
+			out.add(i.getPackagename());
+		}
+		return out;
+	}
+
 	/**
 	 * Convert an {@link IASTMethod} Object to {@link IndexMethod} structure
 	 * @param m	Method to convert
@@ -96,7 +114,7 @@ public class IndexingFile extends ParseIM {
 		IndexMethod im = new IndexMethod();
 		im.setName(m.getName());
 		im.setPackageName(data.getClassPackage());
-		im.setType(data.getClassName());
+		im.setFromClass(data.getClassName());
 		im.setParameters(IndexMethod.convertPars(m.getParameters()));
 		im.setExceptionsThrowed(m.getExceptionsThrowed());
 		im.setStart(((IASTStm)m).getStart());

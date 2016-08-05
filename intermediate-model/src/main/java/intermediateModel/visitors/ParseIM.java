@@ -59,6 +59,7 @@ public abstract class ParseIM {
 	 * @param env	Environment that is visible to that list of statements
 	 */
 	protected void analyze(List<IASTStm> stms, Env env){
+		
 		for(IASTStm stm : stms) {
 			if (stm instanceof ASTRE){
 				analyze((ASTRE) stm, env);

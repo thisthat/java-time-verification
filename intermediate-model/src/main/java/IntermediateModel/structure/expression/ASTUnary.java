@@ -27,6 +27,13 @@ public class ASTUnary extends IASTStm implements IASTRE {
 		this.expr = expr;
 	}
 
+	public OPERATOR getOp() {
+		return op;
+	}
+
+	public IASTRE getExpr() {
+		return expr;
+	}
 
 	@Override
 	public void visit(ASTREVisitor visitor) {

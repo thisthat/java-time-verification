@@ -1,6 +1,11 @@
 package PCFG.visitors.helper;
 
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.ASTVariable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -10,6 +15,7 @@ public class SyncMethodCall {
 	private String _packageName;
 	private String _className;
 	private String _methodName;
+	private List<ASTVariable> params = new ArrayList<>();
 	private ASTRE node;
 
 	public SyncMethodCall(String _packageName, String _className, String _methodName, ASTRE node) {
@@ -17,6 +23,10 @@ public class SyncMethodCall {
 		this._className = _className;
 		this._methodName = _methodName;
 		this.node = node;
+	}
+
+	public List<ASTVariable> getParams() {
+		return params;
 	}
 
 	public String get_packageName() {

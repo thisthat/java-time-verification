@@ -90,9 +90,9 @@ public class IndexingProject {
 			result.accept(v);
 			//pp filename
 			for(ASTClass c : v.listOfClasses){
-				IndexingFile indexing = new IndexingFile();
-				IndexData index = indexing.index(c);
-				db.add(index);
+				IndexingFile indexing = new IndexingFile(db);
+				indexing.index(c);
+				//db.add(index);
 			}
 			n_file++;
 		}

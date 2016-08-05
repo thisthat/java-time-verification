@@ -103,7 +103,12 @@ public class BuildEnvirormentClass {
 	private void buildEnvMethod(IASTMethod mm, Env where) {
 		//put the default method from list
 		for(String m : methodTimeRelevant){
-			where.addMethodTimeRelevant(m);
+			String[] exp = m.split(",");
+			List<String> signature = new ArrayList<>();
+			for(int i = 2; i < exp.length; i++){
+				signature.add(exp[i]);
+			}
+			where.addMethodTimeRelevant(exp[0], exp[1], signature);
 		}
 		//return type is one of the interesting one - only methods
 		if (mm instanceof ASTMethod) {
@@ -112,7 +117,7 @@ public class BuildEnvirormentClass {
 			m.setTimeCritical(
 					typeTimeRelevant.stream().anyMatch(type -> (type.equals(retType)))
 			);
-			where.addMethod(m.getName());
+			where.addMethod(m.getName(), m.getReturnType(), m.getSignature());
 		}
 	}
 

@@ -2,6 +2,8 @@ package IntermediateModelHelper.envirorment;
 
 
 import com.google.common.annotations.Beta;
+import com.google.common.primitives.SignedBytes;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.expression.ASTMethodCall;
@@ -207,7 +209,6 @@ public class Env {
 	 * @param methodName	Name of the method that we are looking for
 	 * @return				True if it exists in the Env
 	 */
-	@Beta
 	public boolean existMethod(String methodName){
 		for(EnvMethod mm : methodList){
 			String method = mm.getName();
@@ -228,9 +229,8 @@ public class Env {
 	 * @param methodName	Name of the method that we are looking for
 	 * @return				True if it exists in the Env
 	 */
-	@Beta
-	public boolean existMethodTimeRelevant(String methodName){
-		EnvMethod mEnv = new EnvMethod(methodName);
+	public boolean existMethodTimeRelevant(String methodName, List<String> signature){
+		EnvMethod mEnv = new EnvMethod(methodName, signature);
 		if(methodList.contains(mEnv)){
 			boolean flag = false;
 			for(EnvMethod mm : methodList){
@@ -242,7 +242,7 @@ public class Env {
 		}
 		//is not here, search in the previous ones
 		if(prev != null){
-			return prev.existMethodTimeRelevant(methodName);
+			return prev.existMethodTimeRelevant(methodName, signature);
 		} else {
 			return false;
 		}
@@ -266,21 +266,42 @@ public class Env {
 	 * Add to the Environment a new Method
 	 * @param method	Method to add
 	 */
-	@Beta
-	public void addMethod(String method){
-		methodList.add( new EnvMethod(method));
+	public void addMethod(String method, String ret, List<String> signature){
+		methodList.add( new EnvMethod(method, ret, signature));
 	}
 
 	/**
 	 * Add to the Environment a new Method that is time related
 	 * @param method	Method name to add
 	 */
-	@Beta
-	public void addMethodTimeRelevant(String method){
-		EnvMethod m = new EnvMethod(method);
+	public void addMethodTimeRelevant(String method, String retType, List<String> signature){
+		EnvMethod m = new EnvMethod(method, retType, signature);
 		m.setIstimeRelevant(true);
 		methodList.add( m );
 	}
+
+
+	public EnvMethod getMethod(String methodName){
+		for(EnvMethod mm : methodList){
+			String method = mm.getName();
+			if(method.equals(methodName)) {
+				return mm;
+			}
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.getMethod(methodName);
+		} else {
+			return null;
+		}
+	}
+
+
+	public String getExprType(IASTRE r){
+		ResolveExpressionType resolver = new ResolveExpressionType(this);
+		return resolver.getType(r);
+	}
+
 
 	/**
 	 * Return the list of flag of all the variables.

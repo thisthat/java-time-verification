@@ -1,19 +1,18 @@
 package PCFG.visitors;
 
 import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
+import PCFG.structure.*;
+import PCFG.visitors.helper.GenerateMethodSyncCallList;
+import PCFG.visitors.helper.SyncMethodCall;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.ConvertIM;
 import org.javatuples.KeyValue;
-import PCFG.structure.*;
-import PCFG.visitors.helper.GenerateMethodSyncCallList;
-import PCFG.visitors.helper.SyncMethodCall;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
