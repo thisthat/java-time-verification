@@ -87,6 +87,11 @@ public class IndexingFile extends ParseIM {
 		return data;
 	}
 
+	/**
+	 * Convert an {@link IASTMethod} Object to {@link IndexMethod} structure
+	 * @param m	Method to convert
+	 * @return	Its representation in the {@link IndexMethod} structure.
+	 */
 	private IndexMethod prepareOutput(IASTMethod m) {
 		IndexMethod im = new IndexMethod();
 		im.setName(m.getName());
@@ -103,6 +108,12 @@ public class IndexingFile extends ParseIM {
 		return im;
 	}
 
+	/**
+	 * Convert an {@link ASTSynchronized} Object to {@link IndexSyncBlock} structure
+	 * @param m	Synchronized block to convert
+	 * @param e Environment of the Synchronized block
+	 * @return	Its representation in the {@link IndexMethod} structure.
+	 */
 	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
 		is.setPackageName(data.getClassPackage());

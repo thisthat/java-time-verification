@@ -92,7 +92,10 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		return null;
 	}
 
-
+	/**
+	 * Run the computation of the calls to a synchronized method
+	 * @return	List of {@link SyncMethodCall}
+	 */
 	public List<SyncMethodCall> calculateSyncCallList(){
 		syncCalls.clear();
 		super.createBaseEnv(_class);

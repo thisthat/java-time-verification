@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * The following class implements a connection to MongoDB.
  * It allows to store and retrieve {@link IndexData} objects.
- * TODO: extend the possibility to specify where MongoDB is.
  *
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -31,13 +30,21 @@ public class MongoConnector {
 	Datastore datastore;
 
 	/**
+	 * Field enumeration
+	 */
+	private final String __PACKAGE_NAME		= "classPackage";
+	private final String __CLASS_NAME 		= "Name";
+	private final String __FULL_NAME 		= "fullName";
+	private final String __COLLECTION_NAME 	= "IndexData";
+
+	/**
 	 * Protected constructor. We want to give a database as singleton.
 	 * @param db_name Name of the DB to use
 	 */
 	protected MongoConnector(String db_name, String ip, int port) {
 		MongoClient mongoClient = new MongoClient(ip, port);
 		db = mongoClient.getDatabase(db_name);
-		indexCollection = db.getCollection("IndexData");
+		indexCollection = db.getCollection(__COLLECTION_NAME);
 		datastore = morphia.createDatastore(mongoClient, db_name);
 		MapperOptions options = new MapperOptions();
 		options.setStoreEmpties(true);
@@ -124,8 +131,8 @@ public class MongoConnector {
 	 */
 	public List<IndexData> getIndex(String name, String packageName){
 		return  datastore.createQuery(IndexData.class)
-				.field("Name").equal(name)
-				.field("classPackage").equal(packageName)
+				.field(__CLASS_NAME).equal(name)
+				.field(__PACKAGE_NAME).equal(packageName)
 				.asList();
 	}
 
@@ -159,9 +166,9 @@ public class MongoConnector {
 	public List<IndexData> getFromImport(String query){
 		Query<IndexData> q = datastore.createQuery(IndexData.class);//.filter("classPackage",regexp);
 		if(query.endsWith("*")){
-			q.field("fullName").startsWith(query);
+			q.field(__FULL_NAME).startsWith(query);
 		} else {
-			q.field("fullName").equal(query);
+			q.field(__FULL_NAME).equal(query);
 		}
 		return q.search(query).asList();
 	}
@@ -174,7 +181,14 @@ public class MongoConnector {
 		return db;
 	}
 
+	/**
+	 * Delete a class from the DB
+	 * @param c	Class to remove
+	 */
 	public void delete(ASTClass c) {
-
+		Query<IndexData> q = datastore.createQuery(IndexData.class)
+				.field(__CLASS_NAME).equal(c.getName())
+				.field(__PACKAGE_NAME).equal(c.getPackageName());
+		datastore.delete(q);
 	}
 }

@@ -193,15 +193,4 @@ public class Getter {
 		if(expr == null) return null;
 		return rightExpression(expr);
 	}
-
-	//TODO
-	public static ASTRE JDTExpression(Expression initializer) {
-		return null;
-		/*return new ASTRE(initializer.getStartPosition(), initializer.getStartPosition() + initializer.getLength(), new IASTRE() {
-			@Override
-			public void visit(ASTREVisitor visitor) {
-
-			}
-		});*/
-	}
 }

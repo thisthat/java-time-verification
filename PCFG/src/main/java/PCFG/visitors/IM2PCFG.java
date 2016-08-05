@@ -53,6 +53,13 @@ public class IM2PCFG extends ConvertIM {
 	public IM2PCFG() {
 
 	}
+
+	/**
+	 * Insert a class in the list of classes to process for creating the PCFG.
+	 * Moreover, the method will index the class and extract the time constraint in it.
+	 * @param c				Class to analyze
+	 * @param methodName	Method of the class to analyze
+	 */
 	public void addClass(ASTClass c, String methodName){
 
 		List<Triplet<String,IASTStm,Class>> currentClassConstraint = ApplyHeuristics.getConstraint(c);
