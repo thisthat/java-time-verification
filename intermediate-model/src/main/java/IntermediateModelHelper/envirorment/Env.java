@@ -6,6 +6,7 @@ import com.google.common.primitives.SignedBytes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTMethod;
+import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 
 import java.util.ArrayList;
@@ -298,6 +299,16 @@ public class Env {
 
 
 	public String getExprType(IASTRE r){
+		if(r instanceof ASTLiteral){
+			String expr = ((ASTLiteral) r).getValue();
+			try{
+				Integer.parseInt(expr);
+				return "int";
+			} catch (Exception e){
+
+			}
+			return "String";
+		}
 		ResolveExpressionType resolver = new ResolveExpressionType(this);
 		return resolver.getType(r);
 	}

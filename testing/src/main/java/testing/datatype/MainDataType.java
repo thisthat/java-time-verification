@@ -1,6 +1,6 @@
 package testing.datatype;
 
-import IntermediateModelHelper.indexing.DataTree;
+import IntermediateModelHelper.indexing.DataTreeType;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModel.visitors.JDTVisitor;
@@ -37,7 +37,7 @@ public class MainDataType {
 		JDTVisitor v = new JDTVisitor(ast);
 		ast.accept(v);
 
-		DataTree d = new DataTree(v.listOfClasses.get(0));
+		DataTreeType d = new DataTreeType(v.listOfClasses.get(0));
 		d.toString();
 	}
 }

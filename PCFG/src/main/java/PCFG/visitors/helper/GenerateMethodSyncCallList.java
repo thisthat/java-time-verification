@@ -1,16 +1,15 @@
 package PCFG.visitors.helper;
 
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.indexing.DataTreeType;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
+import IntermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTImport;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -77,16 +77,16 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		}
 	}
 
-	private boolean containsMethod(String name, List<IndexMethod> methods){
+	private boolean containsMethod(String name, List<String> parsType, List<IndexMethod> methods){
 		for(IndexMethod m : methods){
-			if(m.getName().equals(name))
+			if(m.equalBySignature(name, parsType))
 				return true;
 		}
 		return false;
 	}
-	private IndexMethod getMethod(String name, List<IndexMethod> methods){
+	private IndexMethod getMethod(String name, List<String> parsType, List<IndexMethod> methods){
 		for(IndexMethod m : methods){
-			if(m.getName().equals(name))
+			if(m.equalBySignature(name, parsType))
 				return m;
 		}
 		return null;
@@ -123,12 +123,29 @@ public class GenerateMethodSyncCallList extends ParseIM {
 			public void enterASTMethodCall(ASTMethodCall elm) {
 				String methodCalled = elm.getMethodName();
 				IASTRE expr = elm.getExprCallee();
+				List<String> actual_pars = new ArrayList<String>();
+				for(IASTRE p : elm.getParameters()){
+					actual_pars.add(env.getExprType(p));
+				}
 				if(expr == null){
 					//local call - we can skip constructors because they are never sync
 					for(IASTMethod m : _class.getMethods()){
 						if(m instanceof ASTMethod){
-							if(((ASTMethod) m).isSyncronized()){
-								syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r));
+							ASTMethod method = ((ASTMethod) m);
+							if(method.isSyncronized()){
+								boolean flag = true;
+								if(actual_pars.size() == m.getParameters().size()){
+									for(int i = 0, max = actual_pars.size(); i < max; i++){
+										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i), m.getParameters().get(i).getType())){
+											flag = false;
+										}
+									}
+								} else {
+									flag = false;
+								}
+								if(flag) {
+									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, actual_pars));
+								}
 							}
 						}
 					}
@@ -138,10 +155,22 @@ public class GenerateMethodSyncCallList extends ParseIM {
 					if(syncMethods.containsKey(attribute)){
 						//exists in the list
 						List<IndexMethod> methods = syncMethods.get(attribute);
-						if(containsMethod(methodCalled, methods)){
+						if(containsMethod(methodCalled, actual_pars, methods)){
 							//also the call is in the list -> we gotta a match
-							IndexMethod m = getMethod(methodCalled, methods);
-							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r));
+							IndexMethod m = getMethod(methodCalled, actual_pars, methods);
+							boolean flag = true;
+							if(actual_pars.size() == m.getParameters().size()){
+								for(int i = 0, max = actual_pars.size(); i < max; i++){
+									if(!DataTreeType.checkEqualsTypes(actual_pars.get(i), m.getParameters().get(i).getType())){
+										flag = false;
+									}
+								}
+							} else {
+								flag = false;
+							}
+							if(flag) {
+								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars));
+							}
 						}
 					}
 				}
@@ -154,18 +183,43 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							if(syncMethods.containsKey(varType)){
 								//exists in the list
 								List<IndexMethod> methods = syncMethods.get(varType);
-								if(containsMethod(methodCalled, methods)){
+								if(containsMethod(methodCalled, actual_pars, methods)){
 									//also the call is in the list -> we gotta a match
-									IndexMethod m = getMethod(methodCalled, methods);
-									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r));
+									IndexMethod m = getMethod(methodCalled, actual_pars, methods);
+									boolean flag = true;
+									if(actual_pars.size() == m.getParameters().size()){
+										for(int i = 0, max = actual_pars.size(); i < max; i++){
+											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i), m.getParameters().get(i).getType())){
+												flag = false;
+											}
+										}
+									} else {
+										flag = false;
+									}
+									if(flag) {
+										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars));
+									}
 								}
 							}
 						}
 					} else { //if is this. check locally
 						for(IASTMethod m : _class.getMethods()){
 							if(m instanceof ASTMethod){
-								if(((ASTMethod) m).isSyncronized()){
-									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r));
+								ASTMethod method = ((ASTMethod) m);
+								if(method.isSyncronized()){
+									boolean flag = true;
+									if(actual_pars.size() == m.getParameters().size()){
+										for(int i = 0, max = actual_pars.size(); i < max; i++){
+											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i), m.getParameters().get(i).getType())){
+												flag = false;
+											}
+										}
+									} else {
+										flag = false;
+									}
+									if(flag) {
+										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, actual_pars));
+									}
 								}
 							}
 						}
@@ -178,10 +232,22 @@ public class GenerateMethodSyncCallList extends ParseIM {
 						if(syncMethods.containsKey(type)){
 							//exists in the list
 							List<IndexMethod> methods = syncMethods.get(type);
-							if(containsMethod(methodCalled, methods)){
+							if(containsMethod(methodCalled, actual_pars, methods)){
 								//also the call is in the list -> we gotta a match
-								IndexMethod m = getMethod(methodCalled, methods);
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r));
+								IndexMethod m = getMethod(methodCalled, actual_pars, methods);
+								boolean flag = true;
+								if(actual_pars.size() == m.getParameters().size()){
+									for(int i = 0, max = actual_pars.size(); i < max; i++){
+										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i), m.getParameters().get(i).getType())){
+											flag = false;
+										}
+									}
+								} else {
+									flag = false;
+								}
+								if(flag) {
+									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars));
+								}
 							}
 						}
 					}

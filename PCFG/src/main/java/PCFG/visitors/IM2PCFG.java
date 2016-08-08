@@ -134,7 +134,7 @@ public class IM2PCFG extends ConvertIM {
 				List<SyncMethodCall> inner  = syncCalls.get(inClass);
 				for(SyncMethodCall outMethod : outter){
 					for(SyncMethodCall inMethod : inner){
-						if(outMethod.equals(inMethod)){
+						if(outMethod.equalsBySignature(inMethod)){
 							createLink(outMethod, inMethod);
 						}
 					}
