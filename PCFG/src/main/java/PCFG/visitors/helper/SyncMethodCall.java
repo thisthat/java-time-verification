@@ -1,10 +1,8 @@
 package PCFG.visitors.helper;
 
 import IntermediateModelHelper.indexing.DataTreeType;
-import com.sun.tools.javac.util.Pair;
-import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.ASTVariable;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +69,7 @@ public class SyncMethodCall {
 		if(!this._methodName.equals(o.get_methodName())) return false; //not same method name
 		if(this.paramsType.size() != o.getParamsType().size()) return false; //not same number of parameters
 		for(int i = 0, max = this.paramsType.size(); i < max; i++){ //not same type for each par
-			if(!DataTreeType.checkEqualsTypes(this.paramsType.get(i).fst, o.getParamsType().get(i).fst,  this.paramsType.get(i).snd, o.getParamsType().get(i).snd )){
+			if(!DataTreeType.checkEqualsTypes(this.paramsType.get(i).getValue0(), o.getParamsType().get(i).getValue0(),  this.paramsType.get(i).getValue1(), o.getParamsType().get(i).getValue1() )){
 				return false;
 			}
 		}

@@ -6,23 +6,24 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
-import IntermediateModelHelper.indexing.structure.IndexParameter;
-import com.sun.tools.javac.util.Pair;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.*;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTImport;
+import intermediateModel.structure.ASTMethod;
+import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.ParseIM;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -143,8 +144,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								boolean flag = true;
 								if(actual_pars.size() == m.getParameters().size()){
 									for(int i = 0, max = actual_pars.size(); i < max; i++){
-										String pkg1 = actual_pars.get(i).snd;
-										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).fst, m.getParameters().get(i).getType(), pkg1, pkg2)){
+										String pkg1 = actual_pars.get(i).getValue1();
+										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, pkg2)){
 											flag = false;
 										}
 									}
@@ -169,8 +170,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							boolean flag = true;
 							if(actual_pars.size() == m.getParameters().size()){
 								for(int i = 0, max = actual_pars.size(); i < max; i++){
-									String pkg1 = actual_pars.get(i).snd;
-									if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).fst, m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
+									String pkg1 = actual_pars.get(i).getValue1();
+									if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
 										flag = false;
 									}
 								}
@@ -198,8 +199,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									boolean flag = true;
 									if(actual_pars.size() == m.getParameters().size()){
 										for(int i = 0, max = actual_pars.size(); i < max; i++){
-											String pkg1 = actual_pars.get(i).snd;
-											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).fst, m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
+											String pkg1 = actual_pars.get(i).getValue1();
+											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
 												flag = false;
 											}
 										}
@@ -220,8 +221,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									boolean flag = true;
 									if(actual_pars.size() == m.getParameters().size()){
 										for(int i = 0, max = actual_pars.size(); i < max; i++){
-											String pkg1 = actual_pars.get(i).snd;
-											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).fst, m.getParameters().get(i).getType(), pkg1, pkg2)){
+											String pkg1 = actual_pars.get(i).getValue1();
+											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, pkg2)){
 												flag = false;
 											}
 										}
@@ -249,8 +250,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								boolean flag = true;
 								if(actual_pars.size() == m.getParameters().size()){
 									for(int i = 0, max = actual_pars.size(); i < max; i++){
-										String pkg1 = actual_pars.get(i).snd;
-										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).fst, m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
+										String pkg1 = actual_pars.get(i).getValue1();
+										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
 											flag = false;
 										}
 									}
@@ -274,8 +275,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 			for(IndexMethod m : imp.getListOfMethods()){
 				if(m.getName().equals(methodCalled) && actual_pars.size() == m.getParameters().size()){
 					for(int i = 0, max = actual_pars.size(); i < max; i++){
-						String pkg1 = getImportPkgFromType(actual_pars.get(i).snd);
-						if(DataTreeType.checkEqualsTypes(actual_pars.get(i).fst, m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
+						String pkg1 = getImportPkgFromType(actual_pars.get(i).getValue1());
+						if(DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
 							out = imp.getFullName();
 						}
 					}

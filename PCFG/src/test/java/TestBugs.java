@@ -1,6 +1,4 @@
 import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import PCFG.Main;
 import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
 import intermediateModel.structure.ASTClass;
@@ -10,7 +8,6 @@ import org.junit.Test;
 import parser.Java2AST;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -98,7 +95,7 @@ public class TestBugs {
 		assertEquals(g.getESync().size(), 4 );
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = AssertionError.class)
 	public void TestBug22_package_error() throws Exception {
 		IM2PCFG p = new IM2PCFG();
 

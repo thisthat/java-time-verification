@@ -1,8 +1,8 @@
 package IntermediateModelHelper.indexing.structure;
 
 import IntermediateModelHelper.indexing.DataTreeType;
-import com.sun.tools.javac.util.Pair;
 import intermediateModel.structure.ASTVariable;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,8 +82,8 @@ public class IndexMethod {
 			//they are equal for class and package and number of parameter, check the signature
 			for(int i = 0; i < parsType.size(); i++){
 				String t1 = this.getParameters().get(i).getType();
-				String t2 = parsType.get(i).fst;
-				if(!DataTreeType.checkEqualsTypes(t1,t2, this.getPackageName(), parsType.get(i).snd )){
+				String t2 = parsType.get(i).getValue0();
+				if(!DataTreeType.checkEqualsTypes(t1,t2, this.getPackageName(), parsType.get(i).getValue1() )){
 					flag = false;
 				}
 			}
