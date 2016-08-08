@@ -69,7 +69,11 @@ public class SyncMethodCall {
 		if(!this._methodName.equals(o.get_methodName())) return false; //not same method name
 		if(this.paramsType.size() != o.getParamsType().size()) return false; //not same number of parameters
 		for(int i = 0, max = this.paramsType.size(); i < max; i++){ //not same type for each par
-			if(!DataTreeType.checkEqualsTypes(this.paramsType.get(i).getValue0(), o.getParamsType().get(i).getValue0(),  this.paramsType.get(i).getValue1(), o.getParamsType().get(i).getValue1() )){
+			String type1 = this.paramsType.get(i).getValue0();
+			String type2 = o.getParamsType().get(i).getValue0();
+			String pkg1  = this.paramsType.get(i).getValue1();
+			String pkg2  = o.getParamsType().get(i).getValue1();
+			if(!DataTreeType.checkEqualsTypes(type1, type2, pkg1, pkg2)){
 				return false;
 			}
 		}

@@ -153,7 +153,11 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									flag = false;
 								}
 								if(flag) {
-									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, actual_pars));
+									List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+									for(int i = 0, max = m.getParameters().size(); i < max; i++){
+										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
+									}
+									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars));
 								}
 							}
 						}
@@ -179,7 +183,11 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								flag = false;
 							}
 							if(flag) {
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars));
+								List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+								for(int i = 0, max = m.getParameters().size(); i < max; i++){
+									methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+								}
+								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars));
 							}
 						}
 					}
@@ -208,7 +216,11 @@ public class GenerateMethodSyncCallList extends ParseIM {
 										flag = false;
 									}
 									if(flag) {
-										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars));
+										List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+										for(int i = 0, max = m.getParameters().size(); i < max; i++){
+											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+										}
+										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars));
 									}
 								}
 							}
@@ -230,7 +242,11 @@ public class GenerateMethodSyncCallList extends ParseIM {
 										flag = false;
 									}
 									if(flag) {
-										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, actual_pars));
+										List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+										for(int i = 0, max = m.getParameters().size(); i < max; i++){
+											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
+										}
+										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars));
 									}
 								}
 							}
@@ -259,6 +275,10 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									flag = false;
 								}
 								if(flag) {
+									List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+									for(int i = 0, max = m.getParameters().size(); i < max; i++){
+										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+									}
 									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars));
 								}
 							}
@@ -268,24 +288,6 @@ public class GenerateMethodSyncCallList extends ParseIM {
 			}
 		});
 	}
-
-	private String getImportPkgFromMethodCall(String methodCalled, List<Pair<String,String>> actual_pars) {
-		String out = null;
-		for(IndexData imp : imports){
-			for(IndexMethod m : imp.getListOfMethods()){
-				if(m.getName().equals(methodCalled) && actual_pars.size() == m.getParameters().size()){
-					for(int i = 0, max = actual_pars.size(); i < max; i++){
-						String pkg1 = getImportPkgFromType(actual_pars.get(i).getValue1());
-						if(DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
-							out = imp.getFullName();
-						}
-					}
-				}
-			}
-		}
-		return out;
-	}
-
 
 	private String getImportPkgFromType(String s) {
 		String out = null;

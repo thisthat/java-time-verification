@@ -6,6 +6,7 @@ import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
 import intermediateModel.structure.ASTClass;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ public class DataTreeType {
 	DataTreeType extended = null;
 	MongoConnector db;
 	IndexData current;
+	List<DataTreeType> interfaces = new ArrayList<>();
 
 	public DataTreeType(ASTClass _class) {
 		MongoOptions options = MongoOptions.getInstance();
@@ -33,12 +35,13 @@ public class DataTreeType {
 
 	private void solveBinding() {
 		String extType = current.getExtendedType();
-		if(extType.equals("Object")){
+		/* if(extType.equals("Object")){
 			return;
-		}
+		} */
 		for(String i : current.getImports()){
 			List<IndexData> imports = db.getFromImport(i);
 			for(IndexData index : imports){
+				//Check on types
 				if(index.getClassName().equals(extType)){
 					try {
 						extended = new DataTreeType(index.getName(), index.getClassPackage());
@@ -47,6 +50,17 @@ public class DataTreeType {
 						extended = null;
 					}
 
+				}
+				//Check on interfaces
+				for(String intf : index.getInterfacesImplemented()){
+					if( index.getInterfacesImplemented().stream().anyMatch( tInterface -> tInterface.equals(intf)) ){
+						try {
+							DataTreeType tmp = new DataTreeType(intf, index.getClassPackage());
+							interfaces.add(tmp);
+						} catch (Exception e){
+							//we cannot resolve the binding for the interface
+						}
+					}
 				}
 			}
 		}
@@ -66,11 +80,23 @@ public class DataTreeType {
 	}
 
 	public boolean isTypeCompatible(String type){
+		if(current.getClassName().equals("IXString_v2")){
+			int i = 0;
+			int j = i + 1;
+		}
 		if(current.getClassName().equals(type) || current.getExtendedType().equals(type)){ //extended or current type
 			return true;
 		}
 		//interfaces
-		//TODO implement the tree for them
+		boolean flag = false;
+		for(DataTreeType _interface : interfaces){
+			if(_interface.isTypeCompatible(type)){
+				flag = true;
+			}
+		}
+		if(flag){
+			return true;
+		}
 		if(extended == null) {
 			return false;
 		}
