@@ -1,7 +1,8 @@
 import intermediateModel.interfaces.IASTMethod;
 import Thread_2;
+import abcd.XString;
 
-class Thread_1 extends Thread {
+class Thread_3 extends Thread {
 
 	Object minPrime;
 	IASTMethod m;
@@ -12,7 +13,7 @@ class Thread_1 extends Thread {
 	}
 
 	public void run() {
-		String do_smth;
+		XString do_smth;
 		var.init(do_smth);
 		var.init();
 	}

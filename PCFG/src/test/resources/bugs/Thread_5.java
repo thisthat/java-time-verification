@@ -1,8 +1,8 @@
 import intermediateModel.interfaces.IASTMethod;
 import Thread_2;
-import abcd.XString_v2;
+import abcde.*;
 
-class Thread_4 extends Thread {
+class Thread_5 extends Thread {
 
 	Object minPrime;
 	IASTMethod m;

@@ -1,6 +1,7 @@
 package IntermediateModelHelper.indexing.structure;
 
 import IntermediateModelHelper.indexing.DataTreeType;
+import com.sun.tools.javac.util.Pair;
 import intermediateModel.structure.ASTVariable;
 
 import java.util.ArrayList;
@@ -75,31 +76,14 @@ public class IndexMethod {
 		return flag;
 	}
 
-	public boolean equalBySignature(String name, String packageName, List<String> typeParameters){
+	public boolean equalBySignature(String name, List<Pair<String,String>> parsType){
 		boolean flag = true;
-		if(name.equals(this.getName()) && packageName.equals(this.getPackageName()) && typeParameters.size() == this.getParameters().size()){
+		if(name.equals(this.getName()) && parsType.size() == this.getParameters().size()){
 			//they are equal for class and package and number of parameter, check the signature
-			for(int i = 0; i < typeParameters.size(); i++){
-				String t1 = typeParameters.get(i);
-				String t2 = this.getParameters().get(i).getType();
-				if(!t1.equals(t2)){
-					flag = false;
-				}
-			}
-		} else {
-			flag = false;
-		}
-		return flag;
-	}
-
-	public boolean equalBySignature(String name, List<String> typeParameters){
-		boolean flag = true;
-		if(name.equals(this.getName()) && typeParameters.size() == this.getParameters().size()){
-			//they are equal for class and package and number of parameter, check the signature
-			for(int i = 0; i < typeParameters.size(); i++){
-				String t1 = typeParameters.get(i);
-				String t2 = this.getParameters().get(i).getType();
-				if(!DataTreeType.checkEqualsTypes(t1,t2)){
+			for(int i = 0; i < parsType.size(); i++){
+				String t1 = this.getParameters().get(i).getType();
+				String t2 = parsType.get(i).fst;
+				if(!DataTreeType.checkEqualsTypes(t1,t2, this.getPackageName(), parsType.get(i).snd )){
 					flag = false;
 				}
 			}

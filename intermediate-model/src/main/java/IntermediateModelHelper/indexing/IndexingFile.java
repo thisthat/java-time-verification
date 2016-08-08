@@ -3,6 +3,7 @@ package IntermediateModelHelper.indexing;
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
@@ -27,7 +28,8 @@ public class IndexingFile extends ParseIM {
 	MongoConnector mongo;
 
 	public IndexingFile() {
-		mongo = MongoConnector.getInstance("vuze");
+		String dbname = MongoOptions.getInstance().getDbName();
+		mongo = MongoConnector.getInstance(dbname);
 	}
 
 	public IndexingFile(MongoConnector mongo) {

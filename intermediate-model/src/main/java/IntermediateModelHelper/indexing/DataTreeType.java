@@ -24,9 +24,9 @@ public class DataTreeType {
 		solveBinding();
 	}
 
-	public DataTreeType(String _class, String _package) {
+	public DataTreeType(String _class, String _package) throws Exception {
 		MongoOptions options = MongoOptions.getInstance();
-		db = MongoConnector.getInstance( options.getDbName() );
+		db = MongoConnector.getInstance( options.getDbName());
 		current = db.getIndex(_class, _package).get(0);
 		solveBinding();
 	}
@@ -40,7 +40,13 @@ public class DataTreeType {
 			List<IndexData> imports = db.getFromImport(i);
 			for(IndexData index : imports){
 				if(index.getClassName().equals(extType)){
-					extended = new DataTreeType(index.getName(), index.getClassPackage());
+					try {
+						extended = new DataTreeType(index.getName(), index.getClassPackage());
+					} catch (Exception e){
+						//we cannot resolve the binding for the extended
+						extended = null;
+					}
+
 				}
 			}
 		}
@@ -60,9 +66,11 @@ public class DataTreeType {
 	}
 
 	public boolean isTypeCompatible(String type){
-		if(current.getClassName().equals(type) || current.getExtendedType().equals(type)){
+		if(current.getClassName().equals(type) || current.getExtendedType().equals(type)){ //extended or current type
 			return true;
 		}
+		//interfaces
+		//TODO implement the tree for them
 		if(extended == null) {
 			return false;
 		}
@@ -79,9 +87,26 @@ public class DataTreeType {
 		return extended.isExtending(_className);
 	}
 
-	public static boolean checkEqualsTypes(String type1, String type2){
+	public static boolean checkEqualsTypes(String type1, String type2, String pkg1, String pkg2){
 		if(type1 == null || type2 == null){
 			return false;
+		}
+		//some one extends the other?
+		try {
+			DataTreeType t1 = new DataTreeType(type1, pkg1);
+			if (t1.isTypeCompatible(type2)) {
+				return true;
+			}
+		} catch (Exception e){
+			//we don't have to do anything
+		}
+		try{
+			DataTreeType t2 = new DataTreeType(type2, pkg2);
+			if (t2.isTypeCompatible(type1)) {
+				return true;
+			}
+		} catch (Exception e){
+			//we don't have to do anything
 		}
 		if(!type1.equals(type2)){
 			return false;

@@ -1,5 +1,7 @@
 package PCFG.visitors.helper;
 
+import IntermediateModelHelper.indexing.DataTreeType;
+import com.sun.tools.javac.util.Pair;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.ASTVariable;
@@ -15,10 +17,10 @@ public class SyncMethodCall {
 	private String _packageName;
 	private String _className;
 	private String _methodName;
-	private List<String> paramsType = new ArrayList<>();
+	private List<Pair<String, String>> paramsType = new ArrayList<>();
 	private ASTRE node;
 
-	public SyncMethodCall(String _packageName, String _className, String _methodName, ASTRE node, List<String> paramsType) {
+	public SyncMethodCall(String _packageName, String _className, String _methodName, ASTRE node, List<Pair<String, String>> paramsType) {
 		this._packageName = _packageName;
 		this._className = _className;
 		this._methodName = _methodName;
@@ -26,7 +28,7 @@ public class SyncMethodCall {
 		this.paramsType = paramsType;
 	}
 
-	public List<String> getParamsType() {
+	public List<Pair<String, String>> getParamsType() {
 		return paramsType;
 	}
 
@@ -69,9 +71,9 @@ public class SyncMethodCall {
 		if(!this._methodName.equals(o.get_methodName())) return false; //not same method name
 		if(this.paramsType.size() != o.getParamsType().size()) return false; //not same number of parameters
 		for(int i = 0, max = this.paramsType.size(); i < max; i++){ //not same type for each par
-			String t1 = this.paramsType.get(i);
-			String t2 = o.getParamsType().get(i);
-			if(!t1.equals(t2))	return false;
+			if(!DataTreeType.checkEqualsTypes(this.paramsType.get(i).fst, o.getParamsType().get(i).fst,  this.paramsType.get(i).snd, o.getParamsType().get(i).snd )){
+				return false;
+			}
 		}
 		return true;
 	}

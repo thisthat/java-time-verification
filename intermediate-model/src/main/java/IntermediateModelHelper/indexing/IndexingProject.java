@@ -1,6 +1,7 @@
 package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
@@ -35,6 +36,15 @@ public class IndexingProject {
 	 * @param name	Project Name
 	 */
 	public IndexingProject(String name) {
+		this.db = MongoConnector.getInstance(name);
+		this.projectName = name;
+	}
+
+	/**
+	 * Construct the db given the standard project name defined in {@link MongoOptions}.
+	 */
+	public IndexingProject() {
+		String name = MongoOptions.getInstance().getDbName();
 		this.db = MongoConnector.getInstance(name);
 		this.projectName = name;
 	}

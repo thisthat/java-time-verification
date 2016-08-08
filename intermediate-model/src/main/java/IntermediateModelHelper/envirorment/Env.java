@@ -307,7 +307,9 @@ public class Env {
 			} catch (Exception e){
 
 			}
-			return "String";
+			if(expr.startsWith("\"") && expr.endsWith("\"")) {
+				return "String";
+			}
 		}
 		ResolveExpressionType resolver = new ResolveExpressionType(this);
 		return resolver.getType(r);
