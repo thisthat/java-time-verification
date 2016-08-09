@@ -27,6 +27,10 @@ public class ASTArrayInitializer extends IASTStm implements IASTRE {
 		this.exprs = exprs;
 	}
 
+	public List<IASTRE> getExprs() {
+		return exprs;
+	}
+
 	@Override
 	public void visit(ASTREVisitor visitor) {
 		visitor.enterASTArrayInitializer(this);

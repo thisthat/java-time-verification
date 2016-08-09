@@ -27,6 +27,14 @@ public class ASTCast extends IASTStm implements IASTRE {
 		this.expr = expr;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public IASTRE getExpr() {
+		return expr;
+	}
+
 	@Override
 	public String toString() {
 		return "ASTCast{" +

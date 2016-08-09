@@ -12,14 +12,8 @@ class Thread_1 extends Thread {
 	}
 
 	public void run() {
-		int do_smth = 0;
-		synchronized (minPrime){
-			m.lol();
-			do_smth = minPrime.hashCode().toString();
-		}
-		System.out.toString("Result" + do_smth);
-		Thread.sleep(1000);
+		String do_smth;
 		var.init(do_smth);
-		callAb();
+		var.init();
 	}
 }

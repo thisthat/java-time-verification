@@ -111,6 +111,14 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 		return out;
 	}
 
+	public List<String> getSignature(){
+		List<String> out = new ArrayList<>();
+		for(ASTVariable p : parameters){
+			out.add(p.getType());
+		}
+		return out;
+	}
+
 	public void setStms(List<IASTStm> stms) {
 		this.stms = stms;
 	}

@@ -9,6 +9,7 @@ import intermediateModel.structure.ASTVariable;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +98,7 @@ public class CheckExpression {
 
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(where.existMethodTimeRelevant( elm.getMethodName() )){
+					if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
 						v.setTimeCritical(true);
 						var.setTimeCritical(true);
 						where.addVar(var);
@@ -179,12 +180,20 @@ public class CheckExpression {
 
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
-				if(where.existMethodTimeRelevant(elm.getMethodName())){
+				if(where.existMethodTimeRelevant(elm.getMethodName(), getSignature(elm.getParameters(), where))){
 					r[0] = true;
 				}
 			}
 
 		});
 		return r[0];
+	}
+
+	private static List<String> getSignature(List<IASTRE> parameters, Env where){
+		List<String> out = new ArrayList<>();
+		for(IASTRE p : parameters){
+			out.add(where.getExprType(p));
+		}
+		return out;
 	}
 }

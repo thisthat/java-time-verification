@@ -1,16 +1,19 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
 import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexMethod;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTImport;
 import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.MapperOptions;
 import org.mongodb.morphia.query.Query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class MongoConnector {
 	 * Field enumeration
 	 */
 	private final String __PACKAGE_NAME		= "classPackage";
-	private final String __CLASS_NAME 		= "Name";
+	private final String __CLASS_NAME 		= "name";
 	private final String __FULL_NAME 		= "fullName";
 	private final String __COLLECTION_NAME 	= "IndexData";
 
@@ -52,6 +55,7 @@ public class MongoConnector {
 		morphia.getMapper().setOptions(options);
 		morphia.map(IndexData.class);
 		datastore.ensureIndexes();
+		datastore.ensureCaps();
 	}
 
 	/**
@@ -145,6 +149,7 @@ public class MongoConnector {
 		return  getIndex(c.getName(), c.getPackageName());
 	}
 
+
 	/**
 	 * It queries the database to retrieve all the classes that are Threads.
 	 * @return list of {@link IndexData} objects.
@@ -170,8 +175,19 @@ public class MongoConnector {
 		} else {
 			q.field(__FULL_NAME).equal(query);
 		}
+		datastore.ensureIndexes();
 		return q.search(query).asList();
 	}
+
+	public List<IndexData> getFromImport(ASTClass _class){
+		List<IndexData> imports = new ArrayList<>();
+		for(ASTImport imp : _class.getImports()){
+			String pkg = imp.getPackagename();
+			imports.addAll(getFromImport(pkg));
+		}
+		return imports;
+	}
+
 
 	/**
 	 * Getter of the DB structure.

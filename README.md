@@ -38,12 +38,12 @@ The next features to implement are:
 
 # Known Issues
 
-At the moment we do not have any issue :stuck_out_tongue:
+Inheritance is not taken in account when solve where a method call is defined.
 
 # Current Branch
 
 In the current branch we will:
-* Add time notation to the PCFG
+* Fix bug 22
 
 
 

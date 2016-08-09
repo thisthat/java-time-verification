@@ -1,6 +1,11 @@
 package PCFG.visitors.helper;
 
+import IntermediateModelHelper.indexing.DataTreeType;
 import intermediateModel.structure.ASTRE;
+import org.javatuples.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -10,13 +15,19 @@ public class SyncMethodCall {
 	private String _packageName;
 	private String _className;
 	private String _methodName;
+	private List<Pair<String, String>> paramsType = new ArrayList<>();
 	private ASTRE node;
 
-	public SyncMethodCall(String _packageName, String _className, String _methodName, ASTRE node) {
+	public SyncMethodCall(String _packageName, String _className, String _methodName, ASTRE node, List<Pair<String, String>> paramsType) {
 		this._packageName = _packageName;
 		this._className = _className;
 		this._methodName = _methodName;
 		this.node = node;
+		this.paramsType = paramsType;
+	}
+
+	public List<Pair<String, String>> getParamsType() {
+		return paramsType;
 	}
 
 	public String get_packageName() {
@@ -52,6 +63,20 @@ public class SyncMethodCall {
 		if (get_className() != null ? !get_className().equals(that.get_className()) : that.get_className() != null)
 			return false;
 		return get_methodName() != null ? get_methodName().equals(that.get_methodName()) : that.get_methodName() == null;
+	}
 
+	public boolean equalsBySignature(SyncMethodCall o){
+		if(!this._methodName.equals(o.get_methodName())) return false; //not same method name
+		if(this.paramsType.size() != o.getParamsType().size()) return false; //not same number of parameters
+		for(int i = 0, max = this.paramsType.size(); i < max; i++){ //not same type for each par
+			String type1 = this.paramsType.get(i).getValue0();
+			String type2 = o.getParamsType().get(i).getValue0();
+			String pkg1  = this.paramsType.get(i).getValue1();
+			String pkg2  = o.getParamsType().get(i).getValue1();
+			if(!DataTreeType.checkEqualsTypes(type1, type2, pkg1, pkg2)){
+				return false;
+			}
+		}
+		return true;
 	}
 }

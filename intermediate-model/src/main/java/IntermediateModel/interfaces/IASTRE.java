@@ -31,4 +31,5 @@ public interface IASTRE extends IASTVisitor {
 	}
 
 	void visit(ASTREVisitor visitor);
+
 }

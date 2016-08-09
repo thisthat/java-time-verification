@@ -7,7 +7,7 @@ package IntermediateModelHelper.indexing.mongoConnector;
 public class MongoOptions {
 	private final String ip = "localhost";
 	private final int port = 27017;
-	private final String dbName = "test";
+	private String dbName = "test";
 	private final static MongoOptions instance = new MongoOptions();
 
 	protected MongoOptions() {
@@ -27,5 +27,9 @@ public class MongoOptions {
 
 	public String getDbName() {
 		return dbName;
+	}
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
 	}
 }

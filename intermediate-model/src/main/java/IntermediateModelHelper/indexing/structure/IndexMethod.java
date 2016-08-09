@@ -1,6 +1,8 @@
 package IntermediateModelHelper.indexing.structure;
 
+import IntermediateModelHelper.indexing.DataTreeType;
 import intermediateModel.structure.ASTVariable;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class IndexMethod {
 	String packageName = "";
 	String name = "";
 	String returnType = "";
-	String type = "";
+	String fromClass = "";
 	List<IndexParameter> parameters = new ArrayList<>();
 	List<String> exceptionsThrowed = new ArrayList<>();
 	int start = 0;
@@ -33,11 +35,11 @@ public class IndexMethod {
 	boolean isConstructor = false;
 	boolean isSync = false;
 
-	public IndexMethod(String packageName, String name, String returnType, String type, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
+	public IndexMethod(String packageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
 		this.packageName = packageName;
 		this.name = name;
 		this.returnType = returnType;
-		this.type = type;
+		this.fromClass = fromClass;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.start = start;
@@ -47,13 +49,7 @@ public class IndexMethod {
 		this.isSync = isSync;
 	}
 
-	public String getType() {
-		return type;
-	}
 
-	public void setType(String fullName) {
-		this.type = fullName;
-	}
 
 	public static List<IndexParameter> convertPars(List<ASTVariable> parameters) {
 		List<IndexParameter> l = new ArrayList<>();
@@ -61,6 +57,40 @@ public class IndexMethod {
 			l.add(new IndexParameter(v.getType(), v.getName()));
 		}
 		return l;
+	}
+
+	public boolean equalBySignature(IndexMethod m){
+		boolean flag = true;
+		if(m.getName().equals(this.getName()) && m.getPackageName().equals(this.getPackageName()) && m.getParameters().size() == this.getParameters().size()){
+			//they are equal for class and package and number of parameter, check the signature
+			for(int i = 0; i < m.getParameters().size(); i++){
+				String t1 = m.getParameters().get(i).getType();
+				String t2 = this.getParameters().get(i).getType();
+				if(!t1.equals(t2)){
+					flag = false;
+				}
+			}
+		} else {
+			flag = false;
+		}
+		return flag;
+	}
+
+	public boolean equalBySignature(String name, List<Pair<String,String>> parsType){
+		boolean flag = true;
+		if(name.equals(this.getName()) && parsType.size() == this.getParameters().size()){
+			//they are equal for class and package and number of parameter, check the signature
+			for(int i = 0; i < parsType.size(); i++){
+				String t1 = this.getParameters().get(i).getType();
+				String t2 = parsType.get(i).getValue0();
+				if(!DataTreeType.checkEqualsTypes(t1,t2, this.getPackageName(), parsType.get(i).getValue1() )){
+					flag = false;
+				}
+			}
+		} else {
+			flag = false;
+		}
+		return flag;
 	}
 
 	public IndexMethod() {
@@ -150,4 +180,13 @@ public class IndexMethod {
 	public void setReturnType(String returnType) {
 		this.returnType = returnType;
 	}
+
+	public String getFromClass() {
+		return fromClass;
+	}
+
+	public void setFromClass(String fromClass) {
+		this.fromClass = fromClass;
+	}
+
 }

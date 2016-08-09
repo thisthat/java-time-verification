@@ -29,9 +29,9 @@ import java.util.List;
  */
 
 @Entity("IndexData")
-@Indexes({
+@Indexes(
 		@Index(fields = @Field(value = "$**", type = IndexType.TEXT))
-})
+)
 public class IndexData {
 	@Id
 	private ObjectId id;
@@ -41,9 +41,10 @@ public class IndexData {
 	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
 	List<IndexSyncBlock> listOfSyncBlocks = new ArrayList<>();
 	List<IndexParameter> timeAttribute = new ArrayList<>();
+	List<String> imports = new ArrayList<>();
 
 	String classPackage = "";
-	String Name = "";
+	String name = "";
 	String extendedType = "";
 	String fullName = "";
 	List<String> interfacesImplemented = new ArrayList<>();
@@ -51,25 +52,27 @@ public class IndexData {
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, String classPackage, String name, String extendedType, String fullName, List<String> interfacesImplemented) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String name, String extendedType, String fullName, List<String> interfacesImplemented) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
 		this.listOfSyncMethods = listOfSyncMethods;
 		this.listOfSyncBlocks = listOfSyncBlocks;
+		this.timeAttribute = timeAttribute;
+		this.imports = imports;
 		this.classPackage = classPackage;
-		Name = name;
+		this.name = name;
 		this.extendedType = extendedType;
 		this.fullName = fullName;
 		this.interfacesImplemented = interfacesImplemented;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		name = name;
 	}
 
 	public String getFullName() {
@@ -129,11 +132,11 @@ public class IndexData {
 	}
 
 	public String getClassName() {
-		return Name;
+		return name;
 	}
 
 	public void setClassName(String className) {
-		this.Name = className;
+		this.name = className;
 	}
 
 	public String getExtendedType() {
@@ -172,11 +175,19 @@ public class IndexData {
 		this.timeAttribute = timeAttribute;
 	}
 
+	public List<String> getImports() {
+		return imports;
+	}
+
+	public void setImports(List<String> imports) {
+		this.imports = imports;
+	}
+
 	@Override
 	public String toString() {
 		return "IndexData{" +
 				"classPackage='" + classPackage + '\'' +
-				", className='" + Name + '\'' +
+				", className='" + name + '\'' +
 				"}\n";
 	}
 }
