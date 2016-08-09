@@ -113,6 +113,25 @@ public class DataTreeType {
 		return extended.isExtending(_className);
 	}
 
+	public static boolean checkCompatibleTypes(String type1, String type2, String pkg1, String pkg2){
+		if(type1 == null || type2 == null){
+			return false;
+		}
+		//some one extends the other?
+		try {
+			DataTreeType t1 = new DataTreeType(type1, pkg1);
+			if (t1.isTypeCompatible(type2)) {
+				return true;
+			}
+		} catch (Exception e){
+			//we don't have to do anything
+		}
+		if(type1.equals(type2)){
+			return true;
+		}
+		return false;
+	}
+
 	public static boolean checkEqualsTypes(String type1, String type2, String pkg1, String pkg2){
 		if(type1 == null || type2 == null){
 			return false;
@@ -134,9 +153,9 @@ public class DataTreeType {
 		} catch (Exception e){
 			//we don't have to do anything
 		}
-		if(!type1.equals(type2)){
-			return false;
+		if(type1.equals(type2)){
+			return true;
 		}
-		return true;
+		return false;
 	}
 }
