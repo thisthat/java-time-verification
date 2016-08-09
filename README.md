@@ -38,12 +38,11 @@ The next features to implement are:
 
 # Known Issues
 
-Inheritance is not taken in account when solve where a method call is defined.
 
 # Current Branch
 
-In the current branch we will:
-* Fix bug 22
+
+
 
 
 
