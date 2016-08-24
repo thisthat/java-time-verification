@@ -1,6 +1,7 @@
 package random100fromtop5package;
 
 import IntermediateModelHelper.heuristic.definition.*;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;
@@ -107,9 +108,9 @@ public class StartEvaluation {
 				ah.analyze(c);
 				if(ah.getTimeConstraint().size() > 0) {
 					String s = Arrays.toString(ah.getTimeConstraint().toArray());
-					for(Triplet<Integer,String,Class> t : ah.getTimeConstraint()){
+					for(Triplet<String, IASTStm ,Class> t : ah.getTimeConstraint()){
 						//pp code
-						String code = t.getValue1();
+						String code = t.getValue1().getCode();
 						code = code.replace("\n", "");
 						code = code.replace("\r", "");
 						code = code.replace("\t", " ");

@@ -103,6 +103,9 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
+		if(this.hiddenClass != null){
+			this.hiddenClass.visit(visitor);
+		}
 	}
 }
 

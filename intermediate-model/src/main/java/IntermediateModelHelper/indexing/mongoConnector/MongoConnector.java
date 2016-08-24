@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTImport;
 import org.bson.Document;
+import org.javatuples.Pair;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.MapperOptions;
@@ -16,6 +17,7 @@ import org.mongodb.morphia.query.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The following class implements a connection to MongoDB.
@@ -31,6 +33,8 @@ public class MongoConnector {
 	MongoCollection<Document> indexCollection;
 	final Morphia morphia = new Morphia();
 	Datastore datastore;
+	Map<String,List<IndexData>> cacheImport = new HashMap<>();
+	Map<Pair<String,String>,List<IndexData>> cacheIndex = new HashMap<>();
 
 	/**
 	 * Field enumeration
@@ -134,10 +138,16 @@ public class MongoConnector {
 	 * @return				List of {@link IndexData} documents
 	 */
 	public List<IndexData> getIndex(String name, String packageName){
-		return  datastore.createQuery(IndexData.class)
+		Pair<String,String> p = new Pair<>(name,packageName);
+		if(cacheIndex.containsKey(p)){
+			return cacheIndex.get(p);
+		}
+		List<IndexData> out =  datastore.createQuery(IndexData.class)
 				.field(__CLASS_NAME).equal(name)
 				.field(__PACKAGE_NAME).equal(packageName)
 				.asList();
+		cacheIndex.put(p, out);
+		return out;
 	}
 
 	/**
@@ -169,6 +179,9 @@ public class MongoConnector {
 	 * @return	List of {@link IndexData} classes
 	 */
 	public List<IndexData> getFromImport(String query){
+		if(cacheImport.containsKey(query)){
+			return cacheImport.get(query);
+		}
 		Query<IndexData> q = datastore.createQuery(IndexData.class);//.filter("classPackage",regexp);
 		if(query.endsWith("*")){
 			q.field(__FULL_NAME).startsWith(query);
@@ -176,7 +189,9 @@ public class MongoConnector {
 			q.field(__FULL_NAME).equal(query);
 		}
 		datastore.ensureIndexes();
-		return q.search(query).asList();
+		List<IndexData> out = q.search(query).asList();
+		cacheImport.put(query, out);
+		return out;
 	}
 
 	public List<IndexData> getFromImport(ASTClass _class){

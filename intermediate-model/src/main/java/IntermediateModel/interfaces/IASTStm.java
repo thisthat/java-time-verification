@@ -118,12 +118,24 @@ public abstract class IASTStm implements IASTVisitor{
 			char[] source = instance.source;
 			line = instance.getLine(start) + 1;
 			lineEnd = instance.getLine(end) + 1;
-			code = new String(Arrays.copyOfRange(source, start, end));
+			try {
+				code = new String(Arrays.copyOfRange(source, start, end));
+			} catch (Exception e){
+				//it is not a problem
+			}
 			return;
 		}
 		code = startToken.getInputStream().getText(new Interval(startToken.getStartIndex(), endToken.getStopIndex()));
 		line = startToken.getLine();
 		//code = new String(Arrays.copyOfRange(source, start, end));
+	}
+
+	/**
+	 * Set the source code
+	 * @param code code of the statement
+	 */
+	public void setSouceCode(String code){
+		this.code = code;
 	}
 
 	/**

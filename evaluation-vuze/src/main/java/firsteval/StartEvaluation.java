@@ -1,6 +1,7 @@
 package firsteval;
 
 import IntermediateModelHelper.heuristic.definition.*;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.JDTVisitor;
@@ -74,20 +75,17 @@ public class StartEvaluation {
 					//System.out.println("[" + filename + "]");
 					//System.out.println(s);
 					//System.out.println("__________");
-					for(Triplet<Integer,String,Class> t : ah.getTimeConstraint()){
+					for(Triplet<String,IASTStm,Class> t : ah.getTimeConstraint()){
 						//pp code
-						String code = t.getValue1();
+						String code = t.getValue1().getCode();
 						code = code.replace("\n", "");
 						code = code.replace("\r", "");
 						code = code.replace("\t", " ");
 						code = code.replace(";", "");
 						writer.println(String.format("%s;%s;%s;%s;%s", c.getPackageName(), filename, t.getValue0(), code, t.getValue2().getSimpleName() ));
 					}
-
 				}
-
 			}
-
 		}
 
 		writer.close();

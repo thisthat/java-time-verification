@@ -28,6 +28,7 @@ public class JDTVisitor extends ASTVisitor {
 	private IASTHasStms lastMethod;
 
 	private Stack<ASTClass> stackClasses = new Stack<>();
+	private Stack<IASTHasStms> stackMethods = new Stack<>();
 	private Stack<String> stackPackage = new Stack<>();
 	private Stack<IASTHasStms> stackSwitch = new Stack<>();
 	private Stack<ASTSwitch> casewitch = new Stack<>();
@@ -144,6 +145,12 @@ public class JDTVisitor extends ASTVisitor {
 				lastClass = stackClasses.peek();
 			}
 		}
+		if(stackMethods.size() > 0) {
+			IASTHasStms c = stackMethods.pop();
+			if (c.equals(lastMethod) && stackMethods.size() > 0) {
+				lastMethod = stackMethods.peek();
+			}
+		}
 	}
 
 	@Override
@@ -198,6 +205,7 @@ public class JDTVisitor extends ASTVisitor {
 
 		lastClass.addMethod(method);
 		lastMethod = method;
+		stackMethods.push(method);
 		return true;
 	}
 
@@ -503,6 +511,20 @@ public class JDTVisitor extends ASTVisitor {
 						new ASTVariableDeclaration(start, stop, type,
 								REParserJDT.getExpr(v.getName()), REParserJDT.getExpr(v.getInitializer()))
 						);
+				//handle special hidden classes
+				final boolean[] found = {false};
+				final ASTHiddenClass[] obj = {null};
+				re.visit(new DefaultASTVisitor(){
+					@Override
+					public void enterASTNewObject(ASTNewObject elm) {
+						found[0] = elm.getHiddenClass() != null;
+						obj[0] = elm.getHiddenClass();
+					}
+				});
+				if(found[0]){
+					stackClasses.push(obj[0]);
+					lastClass = obj[0];
+				}
 				lastMethod.addStms(re);
 			}
 		}
@@ -515,6 +537,7 @@ public class JDTVisitor extends ASTVisitor {
 		lastMethod.addStms(re);
 		return true;
 	}
+
 
 	@Override
 	public boolean visit(ThrowStatement node) {

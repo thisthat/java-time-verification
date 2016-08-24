@@ -89,6 +89,7 @@ public class CheckExpression {
 	private static void setVariableInEnv(ASTVariableDeclaration v, Env where){
 		//check the type
 		ASTVariable var = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
+		var.setSouceCode(v.getCode());
 		var.setTimeCritical(v.isTimeCritical());
 		setVariableInEnv(var, where);
 		//check the expr

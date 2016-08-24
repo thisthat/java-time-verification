@@ -12,6 +12,7 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.ConvertIM;
+import intermediateModel.visitors.DefaultASTVisitor;
 import org.javatuples.KeyValue;
 import org.javatuples.Triplet;
 
@@ -53,6 +54,10 @@ public class IM2PCFG extends ConvertIM {
 
 	}
 
+	public int getConstraintsSize() {
+		return constraints.size();
+	}
+
 	/**
 	 * Insert a class in the list of classes to process for creating the PCFG.
 	 * Moreover, the method will index the class and extract the time constraint in it.
@@ -90,12 +95,30 @@ public class IM2PCFG extends ConvertIM {
 
 		//add all the states to the PCFG
 		for(KeyValue<String,ASTClass> c : classes){
+			//consider also hidden methods
+			c.getValue().visit(new DefaultASTVisitor(){
+				@Override
+				public void enterASTMethod(ASTMethod m) {
+					if(m.getName().equals(c.getKey())) {
+						addSingleClassStates(c.getValue(), m);
+					}
+				}
+
+				@Override
+				public void enterASTConstructor(ASTConstructor m) {
+					if(m.getName().equals(c.getKey())) {
+						addSingleClassStates(c.getValue(), m);
+					}
+				}
+			});
+			/*
 			for(IASTMethod m : c.getValue().getMethods()){
 				//only work on the method specified
 				if(m.getName().equals(c.getKey())) {
 					addSingleClassStates(c.getValue(), m);
 				}
 			}
+			*/
 		}
 
 		//optimize
@@ -114,14 +137,34 @@ public class IM2PCFG extends ConvertIM {
 		HashMap<ASTClass,List<SyncMethodCall>> syncCalls = new HashMap<>();
 
 		for(KeyValue<String,ASTClass> c : classes){
-			for(IASTMethod m : c.getValue().getMethods()){
+			//consider also hidden methods
+			c.getValue().visit(new DefaultASTVisitor(){
+				@Override
+				public void enterASTMethod(ASTMethod elm) {
+					if(elm.getName().equals(c.getKey())) {
+						ASTClass _class = c.getValue();
+						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
+						syncCalls.put(_class, helper.calculateSyncCallList());
+					}
+				}
+
+				@Override
+				public void enterASTConstructor(ASTConstructor elm) {
+					if(elm.getName().equals(c.getKey())) {
+						ASTClass _class = c.getValue();
+						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
+						syncCalls.put(_class, helper.calculateSyncCallList());
+					}
+				}
+			});
+			/*for(IASTMethod m : c.getValue().getMethods()){
 				//only work on the method specified
 				if(m.getName().equals(c.getKey())) {
 					ASTClass _class = c.getValue();
 					GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, m);
 					syncCalls.put(_class, helper.calculateSyncCallList());
 				}
-			}
+			}*/
 		}
 
 		//we have the list of all
