@@ -1,9 +1,11 @@
 import IntermediateModelHelper.indexing.IndexingProject;
+import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
 
@@ -14,6 +16,12 @@ import static org.junit.Assert.assertEquals;
  * @version %I%, %G%
  */
 public class TestBugs {
+
+	@Before
+	public void setUp() throws Exception {
+		MongoOptions.getInstance().setDbName("test");
+
+	}
 
 	@Test
 	public void TestBug23() throws Exception {

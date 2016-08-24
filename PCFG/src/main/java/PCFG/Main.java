@@ -21,7 +21,7 @@ public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
 
-	public static void main(String[] args) throws IOException, ParseErrorsException {
+	public static void main(String[] args) throws Exception {
 		new Main().run();
 	}
 
@@ -54,6 +54,34 @@ public class Main {
 		System.out.println(graph.toGraphViz(false));
 	}
 
+	public void run2() throws Exception {
+		IM2PCFG p = new IM2PCFG();
+
+		//first method
+		String f =  Main.class.getClassLoader().getResource("bugs/Thread_1.java").getFile();
+		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast);
+		ast.accept(v);
+		//we have only one class
+		ASTClass c = v.listOfClasses.get(0);
+		String method = "run";
+		p.addClass(c, method);
+
+		//add the second method
+		f =  Main.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast);
+		ast.accept(v);
+		c = v.listOfClasses.get(0);
+		p.addClass(c, method);
+
+		// build
+		PCFG g = p.buildPCFG();
+
+		System.out.println(g.toGraphViz(false));
+	}
 
 	public void run1() throws IOException, ParseErrorsException {
 

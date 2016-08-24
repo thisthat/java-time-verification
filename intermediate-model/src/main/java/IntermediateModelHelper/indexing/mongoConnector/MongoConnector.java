@@ -146,7 +146,9 @@ public class MongoConnector {
 				.field(__CLASS_NAME).equal(name)
 				.field(__PACKAGE_NAME).equal(packageName)
 				.asList();
-		cacheIndex.put(p, out);
+		if(out.size() > 0) {
+			cacheIndex.put(p, out);
+		}
 		return out;
 	}
 
@@ -190,7 +192,9 @@ public class MongoConnector {
 		}
 		datastore.ensureIndexes();
 		List<IndexData> out = q.search(query).asList();
-		cacheImport.put(query, out);
+		if(out.size() > 0) {
+			cacheImport.put(query, out);
+		}
 		return out;
 	}
 
@@ -221,5 +225,7 @@ public class MongoConnector {
 				.field(__CLASS_NAME).equal(c.getName())
 				.field(__PACKAGE_NAME).equal(c.getPackageName());
 		datastore.delete(q);
+		Pair<String,String> p = new Pair<>(c.getName(),c.getPackageName());
+		cacheIndex.remove(p);
 	}
 }
