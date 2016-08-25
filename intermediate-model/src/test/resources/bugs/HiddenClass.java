@@ -49,7 +49,9 @@ BuddyPluginViewBetaChat
 					controlMoved(
 							ControlEvent e)
 					{
-						handleChange();
+						try {
+							handleChange();
+						} catch(Exception e) {}
 					}
 
 					private void

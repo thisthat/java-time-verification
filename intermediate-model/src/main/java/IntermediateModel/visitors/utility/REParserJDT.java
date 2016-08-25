@@ -263,8 +263,6 @@ public class REParserJDT {
 		ASTNewObject obj = new ASTNewObject(start,stop, type, false, pars);
 		if(expr.getAnonymousClassDeclaration() != null){
 			AnonymousClassDeclaration hc = expr.getAnonymousClassDeclaration();
-			JDTVisitor v = new JDTVisitor( hc. );
-			hc.accept(v);
 			int st, sp;
 			st = hc.getStartPosition();
 			sp = st + hc.getLength();

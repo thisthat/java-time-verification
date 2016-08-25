@@ -26,6 +26,7 @@ public class TestInheritance {
 		IndexingProject indexing = new IndexingProject();
 		indexing.indexProject(directory, true);
 
+
 	}
 
 	@Test

@@ -144,7 +144,7 @@ public class DataTreeType {
 			}
 		} catch (Exception e){
 			//we don't have to do anything
-			//System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 		try{
 			DataTreeType t2 = new DataTreeType(type2, pkg2);
@@ -153,7 +153,7 @@ public class DataTreeType {
 			}
 		} catch (Exception e){
 			//we don't have to do anything
-			//System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 		if(type1.equals(type2)){
 			return true;

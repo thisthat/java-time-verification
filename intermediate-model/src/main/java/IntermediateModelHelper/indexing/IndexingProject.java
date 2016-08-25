@@ -106,6 +106,8 @@ public class IndexingProject {
 			}
 			n_file++;
 		}
+		//ensure indexes
+		db.ensureIndexes();
 		return n_file;
 	}
 
