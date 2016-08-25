@@ -3,6 +3,7 @@ package intermediateModel.visitors.utility;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.expression.*;
+import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
@@ -262,6 +263,8 @@ public class REParserJDT {
 		ASTNewObject obj = new ASTNewObject(start,stop, type, false, pars);
 		if(expr.getAnonymousClassDeclaration() != null){
 			AnonymousClassDeclaration hc = expr.getAnonymousClassDeclaration();
+			JDTVisitor v = new JDTVisitor( hc. );
+			hc.accept(v);
 			int st, sp;
 			st = hc.getStartPosition();
 			sp = st + hc.getLength();

@@ -1,12 +1,12 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
 import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexMethod;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTImport;
+import org.bson.BsonSerializationException;
 import org.bson.Document;
 import org.javatuples.Pair;
 import org.mongodb.morphia.Datastore;
@@ -128,7 +128,12 @@ public class MongoConnector {
 		if(existClassIndex(indexStructureClass)){
 			return;
 		}
-		datastore.save(indexStructureClass);
+		//System.out.println("Saving " + indexStructureClass.getClassName());
+		try {
+			datastore.save(indexStructureClass);
+		} catch (BsonSerializationException e){
+			System.err.println("File too big, cannot handle it!");
+		}
 	}
 
 	/**
@@ -190,7 +195,6 @@ public class MongoConnector {
 		} else {
 			q.field(__FULL_NAME).equal(query);
 		}
-		datastore.ensureIndexes();
 		List<IndexData> out = q.search(query).asList();
 		if(out.size() > 0) {
 			cacheImport.put(query, out);
@@ -207,6 +211,9 @@ public class MongoConnector {
 		return imports;
 	}
 
+	public void ensureIndexes(){
+		datastore.ensureIndexes();
+	}
 
 	/**
 	 * Getter of the DB structure.
@@ -227,5 +234,12 @@ public class MongoConnector {
 		datastore.delete(q);
 		Pair<String,String> p = new Pair<>(c.getName(),c.getPackageName());
 		cacheIndex.remove(p);
+	}
+
+	/**
+	 * Delete the current database
+	 */
+	public void drop(){
+		this.db.drop();
 	}
 }

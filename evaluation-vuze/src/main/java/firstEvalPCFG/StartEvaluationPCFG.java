@@ -2,6 +2,7 @@ package firstEvalPCFG;
 
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.IndexingProject;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
@@ -33,12 +34,14 @@ public class StartEvaluationPCFG {
 	}
 
 	private void run() throws FileNotFoundException, UnsupportedEncodingException {
-		writer = new PrintWriter( "result" + this.getClass().getSimpleName() .toString()+ ".csv", "UTF-8");
+		writer = new PrintWriter("result" + this.getClass().getSimpleName().toString() + ".csv", "UTF-8");
 		writer.println("package-out;class-name-out;method-name-out;package-in;class-name-in;method-name-in;time-constraint;number-sync;total;");
 		MongoOptions.getInstance().setDbName(_EVALUATION_NAME);
 		String dir = StartEvaluationPCFG.class.getClassLoader().getResource("vuze/index.txt").getPath();
 		dir = dir.substring(0, dir.lastIndexOf("/") + 1);
 		indexProject(dir);
+		MongoConnector mongo = MongoConnector.getInstance(_EVALUATION_NAME);
+		mongo.ensureIndexes();
 		System.out.println("Project indexed");
 		computeAllClasses(dir);
 		System.out.println("Classes generated");
@@ -71,8 +74,8 @@ public class StartEvaluationPCFG {
 
 	private void compare(ASTClass cOut, IASTMethod mOut, ASTClass cIn, IASTMethod mIn) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(cOut, mOut.getName());
-		p.addClass(cIn , mIn.getName());
+		p.addClass(cOut, mOut.getName(), false);
+		p.addClass(cIn , mIn.getName(), false);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();
@@ -80,6 +83,7 @@ public class StartEvaluationPCFG {
 		String pkgIn = cIn.getPackageName();
 		//System.out.println(cOut.getName() + ":" + mOut.getName() + "_vs_" + cIn.getName() + ":" + mIn.getName() + " = " + timeConstraint + "," + numberSync);
 		writer.println(String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;", pkgOut, cOut.getName(), mOut.getName(), pkgIn, cIn.getName(), mIn.getName(), timeConstraint, numberSync, (timeConstraint + numberSync) ));
+		writer.flush();
 	}
 
 	private void computeAllClasses(String _dir) {

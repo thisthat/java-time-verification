@@ -22,7 +22,7 @@ public class Main {
 	List<ASTClass> classes = new ArrayList<>();
 
 	public static void main(String[] args) throws Exception {
-		new Main().run();
+		new Main().run1();
 	}
 
 	public void run() throws IOException, ParseErrorsException {
@@ -38,7 +38,7 @@ public class Main {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "RelatedContentSearcher";
-		p.addClass(c, method);
+		p.addClass(c, method, true);
 
 		//add the second method
 		f =  Main.class.getClassLoader().getResource("RelatedContentSearcher.java").getFile();
@@ -47,7 +47,7 @@ public class Main {
 		v = new JDTVisitor(ast);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, "cancel");
+		p.addClass(c, "cancel", true);
 
 		// build
 		PCFG graph = p.buildPCFG();
@@ -66,7 +66,7 @@ public class Main {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, method, true);
 
 		//add the second method
 		f =  Main.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
@@ -75,7 +75,7 @@ public class Main {
 		v = new JDTVisitor(ast);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, method, true);
 
 		// build
 		PCFG g = p.buildPCFG();
@@ -88,7 +88,7 @@ public class Main {
 
 
 		//first method
-		String f =  Main.class.getClassLoader().getResource("RelatedContentSearcher.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("VuzeActivitiesEntry.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast);

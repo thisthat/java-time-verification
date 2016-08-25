@@ -145,7 +145,9 @@ public class JDTVisitor extends ASTVisitor {
 				lastClass = stackClasses.peek();
 			}
 		}
-		if(stackMethods.size() > 0) {
+		//test
+		lastMethod = lastClass.getMethods().get(lastClass.getMethods().size()-1);
+		if(1 == 0 && stackMethods.size() > 0) {
 			IASTHasStms c = stackMethods.pop();
 			if (c.equals(lastMethod) && stackMethods.size() > 0) {
 				lastMethod = stackMethods.peek();

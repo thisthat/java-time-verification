@@ -95,7 +95,7 @@ public class IndexingFile extends ParseIM {
 			p.setName(v.getName());
 			data.getTimeAttribute().add(p);
 		}
-		mongo.add(data);
+		//mongo.add(data);
 		return data;
 	}
 
@@ -176,6 +176,8 @@ public class IndexingFile extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
+		System.out.println(elm.toString());
+		System.out.println("------");
 		data.addSyncBlock(prepareOutput(elm, env));
 	}
 
