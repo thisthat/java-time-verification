@@ -28,14 +28,14 @@ public class JDTVisitor extends ASTVisitor {
 	private IASTHasStms lastMethod;
 
 	private Stack<ASTClass> stackClasses = new Stack<>();
-	private Stack<IASTHasStms> stackMethods = new Stack<>();
 	private Stack<String> stackPackage = new Stack<>();
 	private Stack<IASTHasStms> stackSwitch = new Stack<>();
 	private Stack<ASTSwitch> casewitch = new Stack<>();
+	private String path;
 
-
-	public JDTVisitor(CompilationUnit cu) {
+	public JDTVisitor(CompilationUnit cu, String path) {
 		this.cu = cu;
+		this.path = path;
 	}
 
 	@Override
@@ -85,6 +85,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 		ASTClass c = new ASTClass(start, stop, packageName, className, visibility, superClass, superInterfaces);
+		c.setPath(path);
 		c.setImports(listOfImports);
 		//attributes of the class
 		for(FieldDeclaration f : node.getFields()){

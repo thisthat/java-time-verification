@@ -35,7 +35,7 @@ public class MainSyncBlockHugeClass {
 			return;
 		}
 		CompilationUnit result = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(result);
+		JDTVisitor v = new JDTVisitor(result, base_path);
 		result.accept(v);
 		for(ASTClass c : v.listOfClasses){
 			IndexingFile indexing = new IndexingFile(db);

@@ -22,7 +22,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("Re.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -57,7 +57,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("DoWhile.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -101,7 +101,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("For.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -152,7 +152,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("While.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -195,7 +195,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("Switch.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -254,7 +254,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("ForEach.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -298,7 +298,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("Sync.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -348,7 +348,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("If.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -454,7 +454,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("Try.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -558,7 +558,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("TryResource.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -663,7 +663,7 @@ public class TestPCFG {
 		String f =  TestPCFG.class.getClassLoader().getResource("GoTo.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		// we have only one class
 		ASTClass c = v.listOfClasses.get(0);

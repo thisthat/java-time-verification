@@ -58,7 +58,7 @@ public class MongoConnect {
 			String f = files.get(i);
 			Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 			CompilationUnit ast = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(ast);
+			JDTVisitor v = new JDTVisitor(ast,f);
 			ast.accept(v);
 
 			for(ASTClass c : v.listOfClasses){
@@ -92,7 +92,7 @@ public class MongoConnect {
 			String filename = ((File)i.next()).getAbsolutePath();
 			Java2AST a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
 			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result);
+			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
 			//pp filename
 			for(ASTClass c : v.listOfClasses){

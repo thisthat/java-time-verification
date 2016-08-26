@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class MongoThread {
 	public static void main(String[] args){
-		MongoConnector mongo = MongoConnector.getInstance("vuze");
-		List<IndexData> data = mongo.getThreads();
-		data.toString();
+		MongoConnector mongo = MongoConnector.getInstance("vuze_eval");
+		List<IndexData> datas = mongo.getClassesThatImports("com.aelitis.azureus.core.content.RelatedContentManager","RCMSearchXFer");
+		System.out.println(datas.size());
 	}
 
 }

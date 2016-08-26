@@ -55,7 +55,7 @@ public class TestCreationIM {
 				continue;
 			}
 			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result);
+			JDTVisitor v = new JDTVisitor(result, filename);
 			//System.err.println("Processing: " + filename);
 			result.accept(v);
 			for(ASTClass c : v.listOfClasses){

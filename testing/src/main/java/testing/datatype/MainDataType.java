@@ -34,7 +34,7 @@ public class MainDataType {
 		String file = _TEST_ + "/Square.java";
 		Java2AST a = new Java2AST(file, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, file);
 		ast.accept(v);
 
 		DataTreeType d = new DataTreeType(v.listOfClasses.get(0));

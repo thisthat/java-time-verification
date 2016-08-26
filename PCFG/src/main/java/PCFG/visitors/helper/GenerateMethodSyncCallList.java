@@ -119,6 +119,9 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	 */
 	@Override
 	protected void analyzeASTRE(ASTRE r, Env env) {
+		if(r == null || r.getExpression() == null){
+			return;
+		}
 		r.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {

@@ -5,9 +5,13 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
 import intermediateModel.structure.ASTClass;
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -15,25 +19,47 @@ import java.util.List;
  */
 public class DataTreeType {
 	DataTreeType extended = null;
-	MongoConnector db;
 	IndexData current;
 	List<DataTreeType> interfaces = new ArrayList<>();
 
+	private static Map<Pair<String,String>,Triplet<DataTreeType,IndexData,List<DataTreeType>>> cache = new HashMap<>();
+
 	public DataTreeType(ASTClass _class) {
 		MongoOptions options = MongoOptions.getInstance();
-		db = MongoConnector.getInstance( options.getDbName() );
-		current = db.getIndex(_class).get(0);
-		solveBinding();
+		MongoConnector db = MongoConnector.getInstance( options.getDbName() );
+		Pair<String,String> p = new Pair<>(_class.getPackageName(), _class.getName());
+		if(cache.containsKey(p)){
+			Triplet<DataTreeType,IndexData,List<DataTreeType>> t = cache.get(p);
+			extended = t.getValue0();
+			current = t.getValue1();
+			interfaces = t.getValue2();
+		} else {
+			current = db.getIndex(_class).get(0);
+			solveBinding(db);
+			Triplet<DataTreeType,IndexData,List<DataTreeType>> t = new Triplet<>(extended, current, interfaces);
+			cache.put(p, t);
+		}
+
 	}
 
-	public DataTreeType(String _class, String _package) throws Exception {
+	public DataTreeType(String _class, String _package) {
 		MongoOptions options = MongoOptions.getInstance();
-		db = MongoConnector.getInstance( options.getDbName());
-		current = db.getIndex(_class, _package).get(0);
-		solveBinding();
+		MongoConnector db = MongoConnector.getInstance( options.getDbName());
+		Pair<String,String> p = new Pair<>(_package, _class);
+		if(cache.containsKey(p)){
+			Triplet<DataTreeType,IndexData,List<DataTreeType>> t = cache.get(p);
+			extended = t.getValue0();
+			current = t.getValue1();
+			interfaces = t.getValue2();
+		} else {
+			current = db.getIndex(_class, _package).get(0);
+			solveBinding(db);
+			Triplet<DataTreeType,IndexData,List<DataTreeType>> t = new Triplet<>(extended, current, interfaces);
+			cache.put(p, t);
+		}
 	}
 
-	private void solveBinding() {
+	private void solveBinding(MongoConnector db) {
 		String extType = current.getExtendedType();
 		/* if(extType.equals("Object")){
 			return;
@@ -41,7 +67,7 @@ public class DataTreeType {
 		for(String i : current.getImports()){
 			List<IndexData> imports = db.getFromImport(i);
 			for(IndexData index : imports){
-				//Check on types
+				//Check on types to resolve the extends
 				if(index.getClassName().equals(extType)){
 					try {
 						extended = new DataTreeType(index.getName(), index.getClassPackage());
@@ -49,11 +75,10 @@ public class DataTreeType {
 						//we cannot resolve the binding for the extended
 						extended = null;
 					}
-
 				}
-				//Check on interfaces
+				//Check on interfaces -> ERROR HERE
 				for(String intf : index.getInterfacesImplemented()){
-					if( index.getInterfacesImplemented().stream().anyMatch( tInterface -> tInterface.equals(intf)) ){
+					if( current.getInterfacesImplemented().stream().anyMatch( tInterface -> tInterface.equals(intf)) ){
 						try {
 							DataTreeType tmp = new DataTreeType(intf, index.getClassPackage());
 							interfaces.add(tmp);
@@ -80,10 +105,6 @@ public class DataTreeType {
 	}
 
 	public boolean isTypeCompatible(String type){
-		if(current.getClassName().equals("IXString_v2")){
-			int i = 0;
-			int j = i + 1;
-		}
 		if(current.getClassName().equals(type) || current.getExtendedType().equals(type)){ //extended or current type
 			return true;
 		}
@@ -144,7 +165,7 @@ public class DataTreeType {
 			}
 		} catch (Exception e){
 			//we don't have to do anything
-			System.err.println(e.getMessage());
+			//System.err.println(e.getMessage());
 		}
 		try{
 			DataTreeType t2 = new DataTreeType(type2, pkg2);
@@ -153,7 +174,7 @@ public class DataTreeType {
 			}
 		} catch (Exception e){
 			//we don't have to do anything
-			System.err.println(e.getMessage());
+			//System.err.println(e.getMessage());
 		}
 		if(type1.equals(type2)){
 			return true;

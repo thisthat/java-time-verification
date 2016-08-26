@@ -44,7 +44,7 @@ public class IndexingFile extends ParseIM {
 	 * @return	The index data structure of the class.
 	 */
 	public IndexData index(ASTClass c){
-		return index(c, true);
+		return index(c, false);
 	}
 	/**
 	 * Start the indexing of a {@link ASTClass}.
@@ -63,6 +63,7 @@ public class IndexingFile extends ParseIM {
 			}
 		}
 		data = new IndexData();
+		data.setPath(c.getPath());
 		data.setClassName(c.getName());
 		data.setClassPackage(c.getPackageName());
 		data.setImports(convertImports(c.getImports()));

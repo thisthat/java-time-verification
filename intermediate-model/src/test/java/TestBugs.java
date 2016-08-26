@@ -20,7 +20,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/HiddenClass.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -51,7 +51,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Strange.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast,f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);

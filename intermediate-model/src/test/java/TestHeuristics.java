@@ -23,7 +23,7 @@ public class TestHeuristics {
 		Java2AST a = new Java2AST( filename );
 		a.convertToAST(Java2AST.VERSION.JDT);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);
 		return v.listOfClasses;
 	}

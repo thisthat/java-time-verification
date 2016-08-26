@@ -47,12 +47,13 @@ public class IndexData {
 	String name = "";
 	String extendedType = "";
 	String fullName = "";
+	String path = "";
 	List<String> interfacesImplemented = new ArrayList<>();
 
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String name, String extendedType, String fullName, List<String> interfacesImplemented) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
@@ -64,6 +65,7 @@ public class IndexData {
 		this.name = name;
 		this.extendedType = extendedType;
 		this.fullName = fullName;
+		this.path = path;
 		this.interfacesImplemented = interfacesImplemented;
 	}
 
@@ -181,6 +183,14 @@ public class IndexData {
 
 	public void setImports(List<String> imports) {
 		this.imports = imports;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	@Override

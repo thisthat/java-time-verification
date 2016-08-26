@@ -5,7 +5,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTImport;
 import org.bson.BsonSerializationException;
 import org.bson.Document;
 import org.javatuples.Pair;
@@ -41,6 +40,7 @@ public class MongoConnector {
 	 */
 	private final String __PACKAGE_NAME		= "classPackage";
 	private final String __CLASS_NAME 		= "name";
+	private final String __IMPORTS 			= "imports";
 	private final String __FULL_NAME 		= "fullName";
 	private final String __COLLECTION_NAME 	= "IndexData";
 
@@ -196,19 +196,22 @@ public class MongoConnector {
 			q.field(__FULL_NAME).equal(query);
 		}
 		List<IndexData> out = q.search(query).asList();
-		if(out.size() > 0) {
+		//if(out.size() > 0) {
 			cacheImport.put(query, out);
-		}
+		//} else {
+		//	cacheImport.put(query, new ArrayList<>());
+		//}
 		return out;
 	}
 
-	public List<IndexData> getFromImport(ASTClass _class){
-		List<IndexData> imports = new ArrayList<>();
-		for(ASTImport imp : _class.getImports()){
-			String pkg = imp.getPackagename();
-			imports.addAll(getFromImport(pkg));
-		}
-		return imports;
+
+	public List<IndexData> getClassesThatImports(String _package, String name){
+		Query<IndexData> q = datastore.createQuery(IndexData.class);
+		q.or(
+			q.criteria(__IMPORTS).contains(_package + ".*"),
+			q.criteria(__IMPORTS).contains(_package + "." + name)
+		);
+		return q.asList();
 	}
 
 	public void ensureIndexes(){
@@ -241,5 +244,7 @@ public class MongoConnector {
 	 */
 	public void drop(){
 		this.db.drop();
+		this.cacheIndex = new HashMap<>();
+		this.cacheImport = new HashMap<>();
 	}
 }

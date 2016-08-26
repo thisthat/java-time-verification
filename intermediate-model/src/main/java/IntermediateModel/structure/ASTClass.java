@@ -26,6 +26,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	String extendClass;
 	List<ASTImport> imports = new ArrayList<>();
 	List<ASTAttribute> attributes = new ArrayList<>();
+	String path;
 
 	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);
@@ -63,6 +64,10 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.accessRight = accessRight;
 		this.extendClass = extendClass == null ? "Object" : extendClass;
 		this.implmentsInterfaces = implmentsInterfaces;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public List<ASTImport> getImports() {
@@ -183,6 +188,10 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 			return false;
 
 		return true;
+	}
+
+	public String getPath(){
+		return path;
 	}
 
 	@Override

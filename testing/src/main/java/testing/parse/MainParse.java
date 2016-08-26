@@ -2,9 +2,6 @@ package testing.parse;
 
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
@@ -202,7 +199,7 @@ public class MainParse {
 			return;
 		}
 		CompilationUnit result = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(result);
+		JDTVisitor v = new JDTVisitor(result, base_path);
 		result.accept(v);
 		for(ASTClass c : v.listOfClasses){
 			MainParse.IndexingFile indexingFile = new IndexingFile();

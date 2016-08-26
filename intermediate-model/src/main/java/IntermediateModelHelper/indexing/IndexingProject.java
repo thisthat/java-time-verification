@@ -2,7 +2,6 @@ package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
 import org.apache.commons.io.FileUtils;
@@ -96,7 +95,7 @@ public class IndexingProject {
 				continue;
 			}
 			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result);
+			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
 			//pp filename
 			for(ASTClass c : v.listOfClasses){

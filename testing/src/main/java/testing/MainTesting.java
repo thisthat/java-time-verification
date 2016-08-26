@@ -53,7 +53,7 @@ public class MainTesting {
 			String f = files.get(i);
 			Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 			CompilationUnit ast = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(ast);
+			JDTVisitor v = new JDTVisitor(ast,f);
 			ast.accept(v);
 
 

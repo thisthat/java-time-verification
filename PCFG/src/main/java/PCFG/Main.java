@@ -33,7 +33,7 @@ public class Main {
 		String f =  Main.class.getClassLoader().getResource("RelatedContentSearcher.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -44,7 +44,7 @@ public class Main {
 		f =  Main.class.getClassLoader().getResource("RelatedContentSearcher.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, "cancel", true);
@@ -61,7 +61,7 @@ public class Main {
 		String f =  Main.class.getClassLoader().getResource("bugs/Thread_1.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -72,7 +72,7 @@ public class Main {
 		f =  Main.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, method, true);
@@ -91,7 +91,7 @@ public class Main {
 		String f =  Main.class.getClassLoader().getResource("VuzeActivitiesEntry.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 
 		classes.addAll(v.listOfClasses);
@@ -100,7 +100,7 @@ public class Main {
 		f =  Main.class.getClassLoader().getResource("VuzeActivitiesEntry.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 
 		classes.addAll(v.listOfClasses);

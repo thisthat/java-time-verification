@@ -31,7 +31,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_1.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -42,7 +42,7 @@ public class TestBugs {
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, method);
@@ -75,7 +75,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_3.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -86,7 +86,7 @@ public class TestBugs {
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, method);
@@ -118,7 +118,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_4.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -129,7 +129,7 @@ public class TestBugs {
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, method);
@@ -161,7 +161,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_5.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -172,7 +172,7 @@ public class TestBugs {
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, method);
@@ -204,7 +204,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_6.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -215,7 +215,7 @@ public class TestBugs {
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_7.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, method);
@@ -247,7 +247,7 @@ public class TestBugs {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_8.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast);
+		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
@@ -258,7 +258,7 @@ public class TestBugs {
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_9.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
-		v = new JDTVisitor(ast);
+		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
 		p.addClass(c, method);
