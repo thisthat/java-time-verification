@@ -25,6 +25,9 @@ public class SyncEdge implements IEdge {
 	public SyncEdge(INode from, INode to) throws MalformedSyncEdge {
 		this.from = from;
 		this.to = to;
+		if(from == null || to == null){
+			System.out.println("Breakpoint");
+		}
 		if(!from.getClass().equals(to.getClass())){
 			throw new MalformedSyncEdge("From and To nodes are not of the same kind");
 		}

@@ -99,7 +99,7 @@ public class StartEvaluation {
 		for(String filename : listJavafiles){
 			Java2AST a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
 			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result);
+			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
 			//pp filename
 			filename = filename.substring( filename.indexOf("/" + __dir) );

@@ -1,18 +1,16 @@
 library(plyr)
 
 csv <- read.csv("resultIndexSyncnumber.csv", sep = ";", header = T)
-package <- csv$package
-type <- csv$type
-correct <- csv$correct
+csv_sum_greater_zero <- csv[csv$sum>0,]
+csv_importing_greater_zero_and_sum_zero <- csv[csv$sum==0 & csv$num.imported > 0,]
 
-top5package <- count(package)
-top5package <- top5package[order(top5package$freq, decreasing = T),]
-top5 <- top5package[1:5,]
+aggregate_sum <- ddply(csv_sum_greater_zero, .(package), summarize, Sum=sum(sum))
+aggregate_import <- ddply(csv_sum_greater_zero, .(package), summarize, imported=sum(num.imported))
 
-par(mai=c(4,1,1,1))
-barplot(top5$freq, main = "Top 5 packages", xlab = "", ylab = "freq", names.arg = top5$x, las=2, cex.names= 0.85)
+t <- cbind(aggregate_sum[ order( aggregate_sum$package ),] , aggregate_import[order(aggregate_import$package), ])
+t <- t[,c(1,2,4)]
+
+top5sum <- t[order( t$Sum , decreasing = T ),][1:5,]
+top5import <- t[order( t$imported , decreasing = T ),][1:5,]
 
 
-par(mai=c(1,1,1,1))
-typeCount <- count(type)
-barplot(typeCount$freq, main = "Heuristic Frequency", ylab = "freq", names.arg = typeCount$x)

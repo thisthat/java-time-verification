@@ -156,16 +156,16 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public String toString(){
 		String out = "";
-		out = packageName + "." + name + "\n";
+		out = packageName + "." + name;// + "\n";
 		//for(ASTImport imp : imports){
 		//	out += imp.toString();
 		//}
-		for(ASTAttribute a : attributes){
-			out += a.toString();
-		}
-		for(IASTMethod m : methods){
-			out += m.toString();
-		}
+		//for(ASTAttribute a : attributes){
+		//	out += a.toString();
+		//}
+		//for(IASTMethod m : methods){
+		//	out += m.toString();
+		//}
 		return out;
 	}
 

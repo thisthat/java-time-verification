@@ -1,5 +1,6 @@
 package PCFG;
 
+import PCFG.visitors.helper.SyncMethodCall;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
@@ -22,7 +23,7 @@ public class Main {
 	List<ASTClass> classes = new ArrayList<>();
 
 	public static void main(String[] args) throws Exception {
-		new Main().run1();
+		new Main().run2();
 	}
 
 	public void run() throws IOException, ParseErrorsException {
@@ -58,7 +59,7 @@ public class Main {
 		IM2PCFG p = new IM2PCFG();
 
 		//first method
-		String f =  Main.class.getClassLoader().getResource("bugs/Thread_1.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("Thread_1.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -69,7 +70,7 @@ public class Main {
 		p.addClass(c, method, true);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
+		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -88,7 +89,7 @@ public class Main {
 
 
 		//first method
-		String f =  Main.class.getClassLoader().getResource("VuzeActivitiesEntry.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("SubscriptionManagerImpl.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -97,7 +98,7 @@ public class Main {
 		classes.addAll(v.listOfClasses);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("VuzeActivitiesEntry.java").getFile();
+		f =  Main.class.getClassLoader().getResource("SubscriptionManagerImpl.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -115,6 +116,11 @@ public class Main {
 						p.addClass(cIn, mIn.getName());
 						PCFG graph = p.buildPCFG();
 						graph.optimize();
+						if(mIn.getName().equals("initWithCore")){
+							System.out.println(graph.toGraphViz(!true));
+							System.exit(0);
+						}
+
 					}
 				}
 			}

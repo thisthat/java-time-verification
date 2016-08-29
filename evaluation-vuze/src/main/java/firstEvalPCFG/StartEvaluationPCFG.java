@@ -108,7 +108,7 @@ public class StartEvaluationPCFG {
 				continue;
 			}
 			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result);
+			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
 			listOfClasses.addAll(v.listOfClasses);
 		}

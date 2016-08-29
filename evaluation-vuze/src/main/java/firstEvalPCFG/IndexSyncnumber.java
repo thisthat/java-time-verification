@@ -56,7 +56,7 @@ public class IndexSyncnumber {
 				continue;
 			}
 			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result);
+			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
 			for(ASTClass c : v.listOfClasses){
 				IndexingFile indexing = new IndexingFile(db);
@@ -65,7 +65,8 @@ public class IndexSyncnumber {
 				int sync_method = data.getListOfSyncMethods().size();
 				int time_constraint = ApplyHeuristics.getConstraint(c).size();
 				int sum = sync_block + sync_method + time_constraint;
-				writer.println(String.format("%s;%s;%s;%s;%s;%s;", data.getClassPackage(), data.getName(), sync_block, sync_method, time_constraint, sum ));
+				int imported = db.getClassesThatImports(c.getPackageName(), c.getName()).size();
+				writer.println(String.format("%s;%s;%s;%s;%s;%s;%s", data.getClassPackage(), data.getName(), sync_block, sync_method, time_constraint, sum, imported));
 				writer.flush();
 			}
 		}
@@ -76,6 +77,6 @@ public class IndexSyncnumber {
 		this.db = MongoConnector.getInstance("test");
 		this.db.drop();
 		writer = new PrintWriter("result" + this.getClass().getSimpleName().toString() + ".csv", "UTF-8");
-		writer.println("package;classname;sync-block;sync-method;time-constraint;sum;");
+		writer.println("package;classname;sync-block;sync-method;time-constraint;sum;num-imported");
 	}
 }

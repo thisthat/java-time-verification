@@ -217,6 +217,11 @@ public class IM2PCFG extends ConvertIM {
 			this.pcfg.addSyncEdge(e);
 		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
 			malformedSyncEdge.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("error parsing: ");
+			for(KeyValue<String,ASTClass> c : classes){
+				System.out.println("\t" + c.getValue().toString() + " :: " + c.getKey());
+			}
 		}
 	}
 
@@ -261,11 +266,16 @@ public class IM2PCFG extends ConvertIM {
 					SyncNode outSync = pcfg.getSyncNodeByExpr( outter.getExpr(), outter.getLine(), outter.getClassName() );
 					SyncNode inSync  = pcfg.getSyncNodeByExpr( inner.getExpr(),  inner.getLine(),  inner.getClassName()  );
 					SyncEdge sEdge = null;
-					try {
-						sEdge = new SyncEdge(outSync,inSync);
-						pcfg.addSyncEdge(sEdge);
-					} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
-						malformedSyncEdge.printStackTrace();
+					if(outSync == null || inSync == null){
+						// we have smt in the hidden class -> How to handle?
+					} else {
+						//link between two different sync blocks
+						try {
+							sEdge = new SyncEdge(outSync, inSync);
+							pcfg.addSyncEdge(sEdge);
+						} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
+							malformedSyncEdge.printStackTrace();
+						}
 					}
 				}
 			}
@@ -274,7 +284,7 @@ public class IM2PCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		lastCfg = new CFG(c.getName());
+		lastCfg = new CFG(c.getName() + "::" + m.getName());
 		this.pcfg.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispachStm(m.getStms());

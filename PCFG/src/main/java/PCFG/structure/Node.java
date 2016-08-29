@@ -33,7 +33,7 @@ public class Node implements INode {
 	}
 
 	public String getName() {
-		return name;
+		return name + "_" + this.id;
 	}
 
 	public void setName(String name) {
