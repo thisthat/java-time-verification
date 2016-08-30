@@ -1,4 +1,6 @@
-package PCFG.structure;
+package PCFG.structure.node;
+
+import PCFG.structure.PCFG;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ public class SyncNode implements INode {
 	private String expr;
 	int line;
 	String className;
+	List<Node> nodes = new ArrayList<>();
+
 
 	public SyncNode(String expr, int line, String className) {
 		this.id = _ID++;
@@ -21,8 +25,6 @@ public class SyncNode implements INode {
 		this.line = line;
 		this.className = className;
 	}
-
-	List<Node> nodes = new ArrayList<>();
 
 	public List<Node> getNodes() {
 		return nodes;
@@ -56,5 +58,16 @@ public class SyncNode implements INode {
 
 	public String getClassName() {
 		return className;
+	}
+
+	@Override
+	public String toGraphViz(boolean hideName) {
+		StringBuilder out = new StringBuilder();
+		out.append("\tsubgraph cluster_sync" + this.getID() + " {\n\t\t\tnode [style=filled];\n");
+		for(Node v : this.getNodes()){
+			out.append("\t\t" + v.toGraphViz(hideName) + ";\n");
+		}
+		out.append("\t\t\tlabel = \"sync block on " + this.getExpr() + "\";\n\t\t\tcolor=blue\n\t\t}\n");
+		return out.toString();
 	}
 }

@@ -1,5 +1,12 @@
 package PCFG.structure;
 
+import PCFG.structure.edge.Edge;
+import PCFG.structure.edge.SyncEdge;
+import PCFG.structure.edge.IEdge;
+import PCFG.structure.node.INode;
+import PCFG.structure.node.Node;
+import PCFG.structure.node.SyncNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +16,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class PCFG {
+public class PCFG implements ICFGElement {
 
 	List<SyncEdge> ESync = new ArrayList<>();
 	List<CFG> processes = new ArrayList<>();
@@ -98,59 +105,20 @@ public class PCFG {
 	 * @param hideName	If the flag is set to true, the names are converted with a progressive number
 	 * @return	Graphviz representation of the PCFG
 	 */
+	//TODO rewrite this ugly method
 	public String toGraphViz(boolean hideName){
 		StringBuilder out = new StringBuilder();
-		out.append("digraph {\nrankdir=TD;\ncompound=true;\n");
+		out.append("digraph {\n\trankdir=TD;\n\tcompound=true;\n");
 
 		int i = 0;
 		for(CFG process : processes){
-			out.append("subgraph cluster_" + i++ + " {\nnode [style=filled];\n");
-			for(Node v :  process.getV()){
-				out.append(printNode(v, hideName) + ";\n");
-			}
-			for(SyncNode s : process.getSyncNodes()){
-				out.append("\tsubgraph cluster_0" + s.getID() + " {\n\tnode [style=filled];\n");
-				for(Node v : s.getNodes()){
-					out.append("\t" + printNode(v, hideName) + ";\n");
-				}
-				out.append("\tlabel = \"sync block on " + s.getExpr() + "\";\n\tcolor=blue\n}\n");
-			}
-			for(IEdge e : process.getE()){
-				out.append(printNode(e.getFrom(), hideName) + " -> " + printNode(e.getTo(), hideName));
-				out.append("[ label = \"" + e.getLabel() + "\" ]");
-				out.append(";\n");
-			}
-			out.append("label = \"" + process.getName() + "\";\n\tcolor=green\n}\n");
+			out.append(process.toGraphViz(hideName));
 		}
-
 		for(SyncEdge sEdge : ESync){
-			if(sEdge.getType() == SyncEdge.TYPE.SYNC_BLOCK){
-				SyncNode from 	= ((SyncNode) sEdge.getFrom());
-				SyncNode to 	= ((SyncNode) sEdge.getTo());
-				Node f = from.getNodes().get(0);
-				Node t = to.getNodes().get(0);
-				out.append(printNode(f, hideName) + " -> " + printNode(t, hideName) + " [ltail=cluster_0" + from.getID() + ",lhead=cluster_0" + to.getID() + "];\n");
-			} else {
-				Node from = (Node) sEdge.getFrom();
-				Node to   = (Node) sEdge.getTo();
-				out.append(printNode(from, hideName) + " -> " + printNode(to, hideName) + "[color=red,penwidth=1.0];\n");
-			}
+			out.append(sEdge.toGraphViz(hideName));
 		}
 		out.append("}\n");
 		return out.toString();
-	}
-
-	/**
-	 * Return the name of the Node
-	 * @param v			Node to print the name
-	 * @param hideName	Flag to check if use real name or ids
-	 * @return			Name of the node
-	 */
-	private static String printNode(INode v, boolean hideName) {
-		if(hideName) {
-			return "s" + v.getID();
-		}
-		return v.getName();
 	}
 
 	/**
@@ -170,6 +138,10 @@ public class PCFG {
 				return s;
 			}
 		}
+		return null;
+	}
+
+	public INode getNodeInBound(int start, int end){
 		return null;
 	}
 }

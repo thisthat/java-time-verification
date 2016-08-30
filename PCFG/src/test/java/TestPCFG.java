@@ -1,4 +1,4 @@
-import PCFG.structure.Node;
+import PCFG.structure.node.Node;
 import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;

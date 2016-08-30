@@ -23,7 +23,7 @@ public class Main {
 	List<ASTClass> classes = new ArrayList<>();
 
 	public static void main(String[] args) throws Exception {
-		new Main().run2();
+		new Main().run1();
 	}
 
 	public void run() throws IOException, ParseErrorsException {
@@ -110,17 +110,16 @@ public class Main {
 			for(ASTClass cIn : classes){
 				for(IASTMethod mOut : cOut.getMethods()){
 					for(IASTMethod mIn : cIn.getMethods()){
-						System.out.println(mOut.getName() + "--" + mIn.getName());
+						if(!mIn.getName().equals("initWithCore")){
+							continue;
+						}
 						IM2PCFG p = new IM2PCFG();
 						p.addClass(cOut, mOut.getName());
 						p.addClass(cIn, mIn.getName());
 						PCFG graph = p.buildPCFG();
 						graph.optimize();
-						if(mIn.getName().equals("initWithCore")){
-							System.out.println(graph.toGraphViz(!true));
-							System.exit(0);
-						}
-
+						System.out.println(graph.toGraphViz(!true));
+						System.exit(0);
 					}
 				}
 			}

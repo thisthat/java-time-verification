@@ -6,6 +6,7 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
+import PCFG.structure.edge.SyncEdge;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
@@ -27,7 +28,7 @@ import java.util.Map;
 
 /**
  *
- * With the following class we help the construction of the {@link PCFG.structure.SyncEdge}.
+ * With the following class we help the construction of the {@link SyncEdge}.
  * The idea is to parse the method that we are currently looking through and collect all the information about
  * what are the method calls to synchronized method.
  *

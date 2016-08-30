@@ -5,6 +5,10 @@ import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.structure.*;
+import PCFG.structure.edge.Edge;
+import PCFG.structure.edge.SyncEdge;
+import PCFG.structure.node.Node;
+import PCFG.structure.node.SyncNode;
 import PCFG.visitors.helper.GenerateMethodSyncCallList;
 import PCFG.visitors.helper.SyncMethodCall;
 import intermediateModel.interfaces.IASTMethod;
@@ -268,6 +272,13 @@ public class IM2PCFG extends ConvertIM {
 					SyncEdge sEdge = null;
 					if(outSync == null || inSync == null){
 						// we have smt in the hidden class -> How to handle?
+						//for the moment we say there is a link between the two nodes that handle the sync call
+						if(outSync == null){
+							pcfg.getNodeInBound( outter.getStart(), outter.getEnd() );
+						}
+						if(inSync == null){
+
+						}
 					} else {
 						//link between two different sync blocks
 						try {
