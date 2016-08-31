@@ -501,6 +501,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 		String type = node.getType().toString();
+		IASTHasStms bck = lastMethod;
 		for(Object o : node.fragments()){
 			if(o instanceof VariableDeclarationFragment){
 				VariableDeclarationFragment v = (VariableDeclarationFragment)o;
@@ -522,9 +523,10 @@ public class JDTVisitor extends ASTVisitor {
 					stackClasses.push(obj[0]);
 					lastClass = obj[0];
 				}*/
-				lastMethod.addStms(re);
+				bck.addStms(re);
 			}
 		}
+		lastMethod = bck;
 		return true;
 	}
 

@@ -2,6 +2,7 @@ package intermediateModel.visitors;
 
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTNewObject;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public abstract class ConvertIM {
 			convertASTSwitch((ASTSwitch)stm);
 		}
 		else if(stm	instanceof ASTSynchronized){
-			convertSyncronized((ASTSynchronized)stm);
+			convertSynchronized((ASTSynchronized)stm);
 		}
 		else if(stm	instanceof ASTThrow){
 			convertThrow((ASTThrow)stm);
@@ -64,8 +65,23 @@ public abstract class ConvertIM {
 		else if(stm	instanceof ASTWhile){
 			convertWhile((ASTWhile)stm);
 		}
+		else if(stm instanceof ASTNewObject){
+			convertASTNewObject((ASTNewObject) stm);
+		}
+		else if(stm instanceof ASTHiddenClass){
+			convertASTHiddenClass((ASTHiddenClass)stm);
+		}
 	}
 
+
+
+
+	protected void convertASTHiddenClass(ASTHiddenClass stm) {
+
+	}
+	protected void convertASTNewObject(ASTNewObject stm) {
+
+	}
 	protected void convertWhile(ASTWhile stm) {
 
 	}
@@ -82,7 +98,7 @@ public abstract class ConvertIM {
 
 	}
 
-	protected void convertSyncronized(ASTSynchronized stm) {
+	protected void convertSynchronized(ASTSynchronized stm) {
 
 	}
 
@@ -110,7 +126,7 @@ public abstract class ConvertIM {
 	protected void convertContinue(ASTContinue stm) {
 	}
 
-	protected void convertBreak(ASTBreak stm){};
+	protected void convertBreak(ASTBreak stm){}
 
-	protected void convertRE(ASTRE stm){};
+	protected void convertRE(ASTRE stm){}
 }

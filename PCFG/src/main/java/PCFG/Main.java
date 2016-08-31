@@ -97,33 +97,15 @@ public class Main {
 
 		classes.addAll(v.listOfClasses);
 
-		//add the second method
-		f =  Main.class.getClassLoader().getResource("SubscriptionManagerImpl.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
-		ast = a.getContextJDT();
-		v = new JDTVisitor(ast, f);
-		ast.accept(v);
+		ASTClass c = classes.get(0);
 
-		classes.addAll(v.listOfClasses);
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, "preInitialise");
+		p.addClass(c, "initWithCore");
+		PCFG graph = p.buildPCFG();
+		graph.optimize();
+		System.out.println(graph.toGraphViz(!true));
 
-		for(ASTClass cOut : classes){
-			for(ASTClass cIn : classes){
-				for(IASTMethod mOut : cOut.getMethods()){
-					for(IASTMethod mIn : cIn.getMethods()){
-						if(!mIn.getName().equals("initWithCore")){
-							continue;
-						}
-						IM2PCFG p = new IM2PCFG();
-						p.addClass(cOut, mOut.getName());
-						p.addClass(cIn, mIn.getName());
-						PCFG graph = p.buildPCFG();
-						graph.optimize();
-						System.out.println(graph.toGraphViz(!true));
-						System.exit(0);
-					}
-				}
-			}
-		}
 
 
 

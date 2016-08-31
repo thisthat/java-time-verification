@@ -1,5 +1,6 @@
 package PCFG.visitors;
 
+import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
@@ -14,6 +15,7 @@ import PCFG.visitors.helper.SyncMethodCall;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.ConvertIM;
 import intermediateModel.visitors.DefaultASTVisitor;
@@ -388,7 +390,7 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	@Override
-	protected void convertSyncronized(ASTSynchronized stm) {
+	protected void convertSynchronized(ASTSynchronized stm) {
 		syncNode = new SyncNode(stm.getExpr().getCode(), stm.getLine(), this.lastClass );
 		this.lastCfg.addNode(syncNode);
 		dispachStm(stm.getStms());
@@ -607,14 +609,39 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	@Override
-	protected void convertRE(ASTRE stm) {
-		Triplet<String, IASTStm, Class> c = getConstraint(stm);
+	protected void convertRE(ASTRE r) {
+		Triplet<String, IASTStm, Class> c = getConstraint(r);
 		if(c != null){
 			this.lastLabel = this.lastLabel + "[" + c.getValue0() + "]";
 		}
 		addState(
-				new Node(stm.getExpressionName(), stm.getCode(), Node.TYPE.NORMAL)
+				new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL)
 		);
+		System.err.println("New Object " + r.getLine());
+		if(r != null && r.getExpression() != null) {
+			r.getExpression().visit(new DefaultASTVisitor() {
+				@Override
+				public void enterASTNewObject(ASTNewObject elm) {
+					convertASTNewObject(elm);
+				}
+			});
+		}
+	}
+
+	@Override
+	protected void convertASTNewObject(ASTNewObject stm) {
+		ASTHiddenClass hc = stm.getHiddenClass();
+		if(hc != null){
+			this.convertASTHiddenClass(hc);
+		}
+	}
+
+	@Override
+	protected void convertASTHiddenClass(ASTHiddenClass stm) {
+		System.err.println("Hidden Class" + stm.getLine());
+		for(IASTMethod m : stm.getMethods()){
+			addSingleClassStates(stm, m);
+		}
 	}
 
 	private void addState(Node node) {

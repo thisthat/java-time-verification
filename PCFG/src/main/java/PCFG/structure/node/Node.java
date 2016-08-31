@@ -25,7 +25,8 @@ public class Node implements INode {
 		FINALLY,
 		SWITCH,
 		NORMAL,
-		USELESS
+		USELESS,
+		HIDDENCLASS
 	}
 
 	public Node(String name, String code, TYPE type, int start, int end) {
