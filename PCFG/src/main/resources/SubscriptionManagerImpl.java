@@ -370,6 +370,27 @@ SubscriptionManagerImpl
 	initWithCore(
 		AzureusCore 	_core )
 	{
+		COConfigurationManager.addParameterListener(
+				CONFIG_MAX_RESULTS,
+				new ParameterListener()
+				{
+					public void
+					parameterChanged(
+							String	 name )
+					{
+						final int	max_results = COConfigurationManager.getIntParameter( CONFIG_MAX_RESULTS );
+
+						new AEThread2( "Subs:max results changer", true )
+						{
+							public void
+							run()
+							{
+								checkMaxResults( max_results );
+							}
+						}.start();
+					}
+				});
+
 		synchronized( this ){
 			
 			if ( started ){

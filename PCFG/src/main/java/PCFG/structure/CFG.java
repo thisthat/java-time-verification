@@ -1,5 +1,7 @@
 package PCFG.structure;
 
+import PCFG.structure.anonym.AnonymClass;
+import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.edge.IEdge;
 import PCFG.structure.node.Node;
@@ -18,7 +20,9 @@ public class CFG implements ICFGElement {
 
 	List<Node> V = new ArrayList<>();
 	List<SyncNode> syncNodes = new ArrayList<>();
+	List<AnonymClass> anonNodes = new ArrayList<>();
 	List<Edge> E = new ArrayList<>();
+	List<AnonymEdge> anonEdge = new ArrayList<>();
 	String name;
 	int id;
 
@@ -43,9 +47,15 @@ public class CFG implements ICFGElement {
 		this.E.add(edge);
 	}
 
+	public void addEdge(AnonymEdge edge){
+		this.anonEdge.add(edge);
+	}
+
 	public void addNode(SyncNode node) {
 		this.syncNodes.add(node);
 	}
+
+	public void addNode(AnonymClass node) { this.anonNodes.add(node); }
 
 	public List<SyncNode> getSyncNodes() {
 		return syncNodes;
@@ -53,6 +63,14 @@ public class CFG implements ICFGElement {
 
 	public String getName() {
 		return name;
+	}
+
+	public List<AnonymClass> getAnonNodes() {
+		return anonNodes;
+	}
+
+	public List<AnonymEdge> getAnonEdge() {
+		return anonEdge;
 	}
 
 	@Override
@@ -67,6 +85,12 @@ public class CFG implements ICFGElement {
 		}
 		for(IEdge e : this.getE()){
 			out.append("\t" + e.toGraphViz(hideName));
+		}
+		for(AnonymClass a : this.getAnonNodes()){
+			out.append("\t" + a.toGraphViz(hideName));
+		}
+		for(AnonymEdge ae : this.getAnonEdge()){
+			out.append("\t" + ae.toGraphViz(hideName));
 		}
 		out.append("\t\tlabel = \"" + this.getName() + "\";\n\t\tcolor=green\n\t}\n");
 		return out.toString();

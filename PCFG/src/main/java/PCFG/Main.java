@@ -89,7 +89,7 @@ public class Main {
 
 
 		//first method
-		String f =  Main.class.getClassLoader().getResource("SubscriptionManagerImpl.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("smallSubscriptionManager.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);

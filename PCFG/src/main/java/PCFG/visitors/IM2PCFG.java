@@ -6,6 +6,8 @@ import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.structure.*;
+import PCFG.structure.anonym.AnonymClass;
+import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
@@ -41,6 +43,7 @@ public class IM2PCFG extends ConvertIM {
 
 	private List<KeyValue<String,ASTClass>> classes = new ArrayList<>();
 	private PCFG pcfg;
+	private IHasCFG lastPCFG = null;
 	private CFG  lastCfg;
 	private Node lastNode;
 	private SyncNode syncNode;
@@ -108,7 +111,7 @@ public class IM2PCFG extends ConvertIM {
 	public PCFG buildPCFG(){
 		//init data
 		pcfg = new PCFG();
-
+		lastPCFG = pcfg;
 		//add all the states to the PCFG
 		for(KeyValue<String,ASTClass> c : classes){
 			//consider also hidden methods
@@ -127,14 +130,6 @@ public class IM2PCFG extends ConvertIM {
 					}
 				}
 			});
-			/*
-			for(IASTMethod m : c.getValue().getMethods()){
-				//only work on the method specified
-				if(m.getName().equals(c.getKey())) {
-					addSingleClassStates(c.getValue(), m);
-				}
-			}
-			*/
 		}
 
 		//optimize
@@ -298,9 +293,32 @@ public class IM2PCFG extends ConvertIM {
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
 		lastCfg = new CFG(c.getName() + "::" + m.getName());
-		this.pcfg.addCFG(lastCfg);
+		lastPCFG.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispachStm(m.getStms());
+	}
+
+	private void addSingleClassStates(ASTHiddenClass c, IASTMethod m){
+		Node bckNode = lastNode;
+		CFG bck = lastCfg;
+		String bckLastClass = lastClass;
+		IHasCFG bckLastPCFG = lastPCFG;
+		//new anonym
+		AnonymClass anon = new AnonymClass();
+		lastCfg.addNode(anon);
+		AnonymEdge anonEdge = new AnonymEdge(lastNode,anon);
+		lastCfg.addEdge(anonEdge);
+		//init
+		lastNode = null;
+		lastCfg = new CFG("anonymous" + "::" + m.getName());
+		lastPCFG = anon;
+		lastPCFG.addCFG(lastCfg);
+		lastClass = "anonymous";
+		dispachStm(m.getStms());
+		lastCfg = bck;
+		lastNode = bckNode;
+		lastClass = bckLastClass;
+		lastPCFG = bckLastPCFG;
 	}
 
 
@@ -617,7 +635,6 @@ public class IM2PCFG extends ConvertIM {
 		addState(
 				new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL)
 		);
-		System.err.println("New Object " + r.getLine());
 		if(r != null && r.getExpression() != null) {
 			r.getExpression().visit(new DefaultASTVisitor() {
 				@Override
@@ -628,17 +645,18 @@ public class IM2PCFG extends ConvertIM {
 		}
 	}
 
+	List<ASTHiddenClass> visitedHidden = new ArrayList<>();
 	@Override
 	protected void convertASTNewObject(ASTNewObject stm) {
 		ASTHiddenClass hc = stm.getHiddenClass();
-		if(hc != null){
+		if(hc != null && !visitedHidden.contains(hc)){
+			visitedHidden.add(hc);
 			this.convertASTHiddenClass(hc);
 		}
 	}
 
 	@Override
 	protected void convertASTHiddenClass(ASTHiddenClass stm) {
-		System.err.println("Hidden Class" + stm.getLine());
 		for(IASTMethod m : stm.getMethods()){
 			addSingleClassStates(stm, m);
 		}

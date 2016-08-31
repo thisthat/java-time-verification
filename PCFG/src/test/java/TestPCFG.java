@@ -38,7 +38,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 3);
 		assertEquals(g.getE().size(), 2);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 		/*assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
@@ -72,7 +72,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 7);
 		assertEquals(g.getE().size(), 7);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*assertEquals("digraph {\n" +
@@ -116,7 +116,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 10);
 		assertEquals(g.getE().size(), 10);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 		/*
 		assertEquals("digraph {\n" +
@@ -167,7 +167,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 6);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -210,7 +210,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 13);
 		assertEquals(g.getE().size(), 14);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -269,7 +269,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 6);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -314,7 +314,7 @@ public class TestPCFG {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 1 );
 		assertEquals(g.getSyncNodes().get(0).getNodes().size(), 3 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -363,7 +363,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 5);
 		assertEquals(g.getE().size(), 5);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -394,7 +394,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 5);
 		assertEquals(g.getE().size(), 5);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -425,7 +425,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 6);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -469,7 +469,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 12);
 		assertEquals(g.getE().size(), 15);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -518,7 +518,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 11);
 		assertEquals(g.getE().size(), 12);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -573,7 +573,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 13);
 		assertEquals(g.getE().size(), 16);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -623,7 +623,7 @@ public class TestPCFG {
 		assertEquals(g.getV().size(), 11);
 		assertEquals(g.getE().size(), 12);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*

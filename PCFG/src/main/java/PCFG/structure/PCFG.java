@@ -16,7 +16,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class PCFG implements ICFGElement {
+public class PCFG implements ICFGElement, IHasCFG {
 
 	List<SyncEdge> ESync = new ArrayList<>();
 	List<CFG> processes = new ArrayList<>();
@@ -91,7 +91,7 @@ public class PCFG implements ICFGElement {
 	 * Get the list of CFGs in the PCFG.
 	 * @return List of {@link CFG}
 	 */
-	public List<CFG> getProcesses() {
+	public List<CFG> getCFG() {
 		return processes;
 	}
 
