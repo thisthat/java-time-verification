@@ -159,11 +159,23 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTRE r, Env env){
+
 		if(r != null && r.getExpression() != null) {
 			r.getExpression().visit(new DefaultASTVisitor() {
+				boolean visit = true;
 				@Override
 				public void enterASTNewObject(ASTNewObject elm) {
-					analyze(elm, new Env(env));
+					if(visit) analyze(elm, new Env(env));
+				}
+
+				@Override
+				public void enterASTHiddenClass(ASTHiddenClass astHiddenClass) {
+					visit = false;
+				}
+
+				@Override
+				public void exitASTHiddenClass(ASTHiddenClass astHiddenClass) {
+					visit = true;
 				}
 			});
 		}

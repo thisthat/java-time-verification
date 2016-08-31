@@ -261,15 +261,18 @@ SubscriptionManagerImpl
 						new AEThread2( "Subs:max results changer", true )
 						{
 							public void
-							run()
-							{
-								checkMaxResults( max_results );
+							run() {
+								int dosmth = 0;
+								synchronized (rss_publisher){
+									checkMaxResults(max_results);
+								}
+								dosmth = 1;
 							}
 						}.start();
 					}
 				});
 
-		synchronized( this ){
+		synchronized( logger ){
 
 			if ( started ){
 

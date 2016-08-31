@@ -17,7 +17,7 @@ import java.util.List;
 public class CFG implements ICFGElement {
 
 	private static int ID = 0;
-
+	public static final String _CLUSTER_NAME = "cluster_cfg_";
 	List<Node> V = new ArrayList<>();
 	List<SyncNode> syncNodes = new ArrayList<>();
 	List<AnonymClass> anonNodes = new ArrayList<>();
@@ -76,7 +76,7 @@ public class CFG implements ICFGElement {
 	@Override
 	public String toGraphViz(boolean hideName) {
 		StringBuilder out = new StringBuilder();
-		out.append("\tsubgraph cluster_cfg_" + this.id + " {\n\t\tnode [style=filled];\n");
+		out.append("\tsubgraph " + _CLUSTER_NAME + this.id + " {\n\t\tnode [style=filled];\n");
 		for(Node v :  this.getV()){
 			out.append("\t" + v.toGraphViz(hideName) + ";\n");
 		}

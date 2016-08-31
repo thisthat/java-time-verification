@@ -177,8 +177,6 @@ public class IndexingFile extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
-		//System.out.println(elm.toString());
-		//System.out.println("------");
 		data.addSyncBlock(prepareOutput(elm, env));
 	}
 

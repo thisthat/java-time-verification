@@ -17,6 +17,7 @@ public class SyncNode implements INode {
 	int line;
 	String className;
 	List<Node> nodes = new ArrayList<>();
+	public static final String _CLUSTER_NAME = "cluster_sync";
 
 
 	public SyncNode(String expr, int line, String className) {
@@ -63,7 +64,7 @@ public class SyncNode implements INode {
 	@Override
 	public String toGraphViz(boolean hideName) {
 		StringBuilder out = new StringBuilder();
-		out.append("\tsubgraph cluster_sync" + this.getID() + " {\n\t\t\tnode [style=filled];\n");
+		out.append("\tsubgraph " + _CLUSTER_NAME + this.getID() + " {\n\t\t\tnode [style=filled];\n");
 		for(Node v : this.getNodes()){
 			out.append("\t\t" + v.toGraphViz(hideName) + ";\n");
 		}

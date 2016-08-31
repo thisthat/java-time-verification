@@ -30,4 +30,27 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void enterASTVariable(ASTVariable elm);
 	void enterASTWhile(ASTWhile elm);
 	void enterASTHiddenClass(ASTHiddenClass astHiddenClass);
+
+	void exitASTAttribute(ASTAttribute elm);
+	void exitASTBreak(ASTBreak elm);
+	void exitASTClass(ASTClass elm);
+	void exitASTConstructor(ASTConstructor elm);
+	void exitASTContinue(ASTContinue elm);
+	void exitASTDoWhile(ASTDoWhile elm);
+	void exitASTFor(ASTFor elm);
+	void exitASTForEach(ASTForEach elm);
+	void exitASTIf(ASTIf elm);
+	void exitASTImport(ASTImport elm);
+	void exitASTMethod(ASTMethod elm);
+	void exitASTRE(ASTRE elm);
+	void exitASTReturn(ASTReturn elm);
+	void exitASTStatic(ASTStatic elm);
+	void exitASTSwitch(ASTSwitch elm);
+	void exitASTSynchronized(ASTSynchronized elm);
+	void exitASTThrow(ASTThrow elm);
+	void exitASTTry(ASTTry elm);
+	void exitASTTryResources(ASTTryResources elm);
+	void exitASTVariable(ASTVariable elm);
+	void exitASTWhile(ASTWhile elm);
+	void exitASTHiddenClass(ASTHiddenClass astHiddenClass);
 }
