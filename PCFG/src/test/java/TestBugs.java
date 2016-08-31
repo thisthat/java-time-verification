@@ -55,7 +55,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 
 	}
@@ -99,7 +99,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -142,7 +142,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -185,7 +185,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -228,7 +228,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -271,7 +271,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 2 );
 	}
 
