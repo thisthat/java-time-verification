@@ -88,15 +88,20 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
+		visitor.exitASTMethodCall(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTMethodCall(this);
 		if(exprCallee != null)
 			exprCallee.visit(visitor);
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
+		visitor.exitASTMethodCall(this);
+		visitor.exitAll(this);
 	}
 }

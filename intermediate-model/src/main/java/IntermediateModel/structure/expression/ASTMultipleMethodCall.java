@@ -66,15 +66,20 @@ public class ASTMultipleMethodCall extends IASTStm implements IASTRE {
 		for(IASTRE m : methods){
 			m.visit(visitor);
 		}
+		visitor.exitASTMultipleMethodCall(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTMultipleMethodCall(this);
 		if(variable != null)
 			variable.visit(visitor);
 		for(IASTRE m : methods){
 			m.visit(visitor);
 		}
+		visitor.exitASTMultipleMethodCall(this);
+		visitor.exitAll(this);
 	}
 }

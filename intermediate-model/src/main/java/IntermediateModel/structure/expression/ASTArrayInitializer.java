@@ -33,17 +33,23 @@ public class ASTArrayInitializer extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTArrayInitializer(this);
 		for(IASTRE e : exprs){
 			e.visit(visitor);
 		}
+		visitor.exitASTArrayInitializer(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTArrayInitializer(this);
 		for(IASTRE e : exprs){
 			e.visit(visitor);
 		}
+		visitor.exitASTArrayInitializer(this);
+		visitor.exitAll(this);
 	}
 }
