@@ -35,6 +35,15 @@ public class CFG implements ICFGElement {
 		return V;
 	}
 
+	public List<Node> getAllNodes(){
+		List<Node> nodes = new ArrayList<>();
+		nodes.addAll(V);
+		for(AnonymClass c : anonNodes){
+			nodes.addAll( c.AllNodes() );
+		}
+		return nodes;
+	}
+
 	public List<Edge> getE() {
 		return E;
 	}

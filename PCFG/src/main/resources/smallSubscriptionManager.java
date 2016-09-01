@@ -124,6 +124,7 @@ SubscriptionManagerImpl
 	public static void
 	preInitialise()
 	{
+
 		synchronized( SubscriptionManagerImpl.class ){
 
 			if ( pre_initialised ){
@@ -177,7 +178,7 @@ SubscriptionManagerImpl
 						}
 					}
 				});*/
-		int i = 10;
+		abc();
 	}
 
 
@@ -266,11 +267,13 @@ SubscriptionManagerImpl
 								synchronized (rss_publisher){
 									checkMaxResults(max_results);
 								}
+								abc();
 								dosmth = 1;
 							}
 						}.start();
 					}
 				});
+		abc();
 
 		synchronized( logger ){
 
@@ -281,5 +284,9 @@ SubscriptionManagerImpl
 
 			started	= true;
 		}
+	}
+
+	public synchronized void abc(){
+
 	}
 }

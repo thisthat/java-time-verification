@@ -1,6 +1,7 @@
 package PCFG.structure.node;
 
 import PCFG.structure.PCFG;
+import intermediateModel.structure.ASTRE;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -11,7 +12,7 @@ public class Node implements INode {
 	String code;
 	TYPE type;
 	int id = 0;
-	int start,end;
+	int start,end,line;
 
 	public static int _ID = 0;
 
@@ -29,25 +30,14 @@ public class Node implements INode {
 		HIDDENCLASS
 	}
 
-	public Node(String name, String code, TYPE type, int start, int end) {
+	public Node(String name, String code, TYPE type, int start, int end, int line) {
 		this.name = name;
 		this.code = code;
 		this.type = type;
 		this.id = _ID++;
 		this.start = start;
 		this.end = end;
-	}
-	public Node(String name, String code, TYPE type) {
-		this.name = name;
-		this.code = code;
-		if(type == TYPE.NORMAL){
-			//TODO
-			//we should use breakpoint on this line to check which are the call to node that does not send start and end position in the file
-			StackTraceElement[] cause = Thread.currentThread().getStackTrace();
-			//System.err.println(Arrays.toString(cause));
-		}
-		this.type = type;
-		this.id = _ID++;
+		this.line = line;
 	}
 
 	public String getName() {
@@ -90,6 +80,10 @@ public class Node implements INode {
 		return end;
 	}
 
+	public int getLine() {
+		return line;
+	}
+
 	@Override
 	public String toGraphViz(boolean hideName) {
 		String name;
@@ -99,5 +93,37 @@ public class Node implements INode {
 			name = this.getName();
 		}
 		return "\t" + name;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Node)) return false;
+
+		Node node = (Node) o;
+
+		if (getStart() != node.getStart()) return false;
+		if (getEnd() != node.getEnd()) return false;
+		if (line != node.getLine()) return false;
+		if (getCode() != null ? !getCode().equals(node.getCode()) : node.getCode() != null) return false;
+		return getType() == node.getType();
+	}
+
+	public boolean equals(ASTRE r){
+		if (getStart() != r.getStart()) return false;
+		if (getEnd() != r.getEnd()) return false;
+		if (line != r.getLine()) return false;
+		if (getCode() != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getCode() != null ? getCode().hashCode() : 0;
+		result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+		result = 31 * result + getStart();
+		result = 31 * result + getEnd();
+		result = 31 * result + line;
+		return result;
 	}
 }

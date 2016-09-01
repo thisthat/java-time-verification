@@ -14,15 +14,17 @@ public class SyncNode implements INode {
 	public static int _ID = 0;
 	int id = 0;
 	private String expr;
-	int line;
+	int start,end,line;
 	String className;
 	List<Node> nodes = new ArrayList<>();
 	public static final String _CLUSTER_NAME = "cluster_sync";
 
 
-	public SyncNode(String expr, int line, String className) {
+	public SyncNode(String expr, int start, int end, int line, String className) {
 		this.id = _ID++;
 		this.expr = expr;
+		this.start = start;
+		this.end = end;
 		this.line = line;
 		this.className = className;
 	}

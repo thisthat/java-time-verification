@@ -8,6 +8,7 @@ import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -56,5 +57,13 @@ public class AnonymClass implements INode, IHasCFG {
 	@Override
 	public List<CFG> getCFG() {
 		return this.methods;
+	}
+
+	public List<Node> AllNodes() {
+		List<Node> nodes = new ArrayList<>();
+		for(CFG c : methods){
+			nodes.addAll(c.getAllNodes());
+		}
+		return nodes;
 	}
 }

@@ -62,7 +62,7 @@ public class PCFG implements ICFGElement, IHasCFG {
 	public List<Node> getV() {
 		List<Node> out = new ArrayList<>();
 		for(CFG cfg : processes){
-			out.addAll( cfg.getV() );
+			out.addAll( cfg.getAllNodes() );
 		}
 		return out;
 	}

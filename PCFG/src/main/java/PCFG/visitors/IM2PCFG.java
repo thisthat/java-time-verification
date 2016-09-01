@@ -136,7 +136,7 @@ public class IM2PCFG extends ConvertIM {
 		pcfg.optimize();
 
 		//check for sync blocks
-		calculateSyncBlock();
+		//calculateSyncBlock();
 
 		//check for call on sync methods
 		calculateSyncCall();
@@ -145,7 +145,7 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	private void calculateSyncCall() {
-		HashMap<ASTClass,List<SyncMethodCall>> syncCalls = new HashMap<>();
+		HashMap<KeyValue<String,ASTClass>,List<SyncMethodCall>> syncCalls = new HashMap<>();
 
 		for(KeyValue<String,ASTClass> c : classes){
 			//consider also hidden methods
@@ -155,7 +155,7 @@ public class IM2PCFG extends ConvertIM {
 					if(elm.getName().equals(c.getKey())) {
 						ASTClass _class = c.getValue();
 						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
-						syncCalls.put(_class, helper.calculateSyncCallList());
+						syncCalls.put(c, helper.calculateSyncCallList());
 					}
 				}
 
@@ -164,28 +164,18 @@ public class IM2PCFG extends ConvertIM {
 					if(elm.getName().equals(c.getKey())) {
 						ASTClass _class = c.getValue();
 						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
-						syncCalls.put(_class, helper.calculateSyncCallList());
+						syncCalls.put(c, helper.calculateSyncCallList());
 					}
 				}
 			});
-			/*for(IASTMethod m : c.getValue().getMethods()){
-				//only work on the method specified
-				if(m.getName().equals(c.getKey())) {
-					ASTClass _class = c.getValue();
-					GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, m);
-					syncCalls.put(_class, helper.calculateSyncCallList());
-				}
-			}*/
 		}
 
-		//we have the list of all
+		//we have the list of all -> create the link between 'em
 		for(KeyValue<String,ASTClass> cOut : classes){
-			ASTClass outClass = cOut.getValue();
 			for(KeyValue<String,ASTClass> cIn : classes){
 				if(cIn.equals(cOut)) continue;
-				ASTClass inClass = cIn.getValue();
-				List<SyncMethodCall> outter = syncCalls.get(outClass);
-				List<SyncMethodCall> inner  = syncCalls.get(inClass);
+				List<SyncMethodCall> outter = syncCalls.get(cOut);
+				List<SyncMethodCall> inner  = syncCalls.get(cIn);
 				for(SyncMethodCall outMethod : outter){
 					for(SyncMethodCall inMethod : inner){
 						if(outMethod.equalsBySignature(inMethod)){
@@ -203,13 +193,12 @@ public class IM2PCFG extends ConvertIM {
 	private void createLink(SyncMethodCall outMethod, SyncMethodCall inMethod) {
 		Node from = null;
 		Node to = null;
-		String codeOut = outMethod.getNode().getCode();
-		String codeIn  = inMethod.getNode().getCode();
+		ASTRE codeOut = outMethod.getNode();
+		ASTRE codeIn  = inMethod.getNode();
 		for(Node v : this.pcfg.getV()){
-			String code = v.getCode();
-			if(code.equals(codeOut)){
+			if(v.equals(codeOut)){
 				from = v;
-			} else if(code.equals(codeIn)){
+			} else if(v.equals(codeIn)){
 				to = v;
 			}
 		}
@@ -325,13 +314,14 @@ public class IM2PCFG extends ConvertIM {
 	@Override
 	protected void convertForeach(ASTForEach stm) {
 
-		Node has_next = new Node("hasNext", "", Node.TYPE.FOREACH);
+		Node has_next = new Node("hasNext", "", Node.TYPE.FOREACH, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(has_next);
-
+		ASTVariable var = stm.getVar();
 		addState(new Node(
-				stm.getVar().getName() + "_takes_" + stm.getExpr().getExpressionName(),
-				stm.getVar().getCode() + " : " + stm.getExpr().getCode(),
-				Node.TYPE.NORMAL
+				var.getName() + "_takes_" + stm.getExpr().getExpressionName(),
+				var.getCode() + " : " + stm.getExpr().getCode(),
+				Node.TYPE.NORMAL,
+				var.getStart(), var.getEnd(), var.getLine()
 		));
 		this.lastLabel = "True";
 		super.dispachStm(stm.getStms());
@@ -340,7 +330,7 @@ public class IM2PCFG extends ConvertIM {
 		Edge eBack = new Edge(this.lastNode, has_next);
 		this.lastCfg.addEdge(eBack);
 
-		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS);
+		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		this.lastCfg.addNode(end_for);
 		Edge e = new Edge(has_next, end_for);
 		e.setLabel("False");
@@ -350,12 +340,12 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertFor(ASTFor stm) {
-		Node init_for = new Node("_init_for", "", Node.TYPE.USELESS);
+		Node init_for = new Node("_init_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(init_for);
 		if(stm.getInit().size() > 0){
 			stm.getInit().forEach(this::convertRE);
 		}
-		Node expr_for = new Node("_expr_for", "", Node.TYPE.USELESS);
+		Node expr_for = new Node("_expr_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(expr_for);
 		if(stm.getExpr() != null){
 			convertRE(stm.getExpr());
@@ -363,7 +353,7 @@ public class IM2PCFG extends ConvertIM {
 		this.lastLabel = "True";
 		dispachStm(stm.getStms());
 		this.lastLabel = "";
-		Node post_for = new Node("_post_for", "", Node.TYPE.USELESS);
+		Node post_for = new Node("_post_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(post_for);
 		if(stm.getPost().size() > 0){
 			stm.getPost().forEach(this::convertRE);
@@ -372,7 +362,7 @@ public class IM2PCFG extends ConvertIM {
 		Edge eBack = new Edge(this.lastNode, expr_for);
 		this.lastCfg.addEdge(eBack);
 		//close the for
-		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS);
+		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		this.lastCfg.addNode(end_for);
 		Edge e = new Edge(expr_for, end_for);
 		e.setLabel("False");
@@ -382,10 +372,11 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertDoWhile(ASTDoWhile stm) {
-		Node init_do_while = new Node("_init_do_while", "", Node.TYPE.USELESS);
+		Node init_do_while = new Node("_init_do_while", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(init_do_while);
 		dispachStm(stm.getStms());
-		Node expr = new Node(stm.getExpr().getExpressionName(), stm.getExpr().getCode(), Node.TYPE.NORMAL);
+		ASTRE ex = stm.getExpr();
+		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.NORMAL, ex.getStart(), ex.getEnd(), ex.getLine() );
 		addState( expr );
 		Edge e = new Edge( expr, init_do_while );
 		e.setLabel("True");
@@ -396,7 +387,7 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertWhile(ASTWhile stm) {
-		Node expr = new Node(stm.getExpr().getExpressionName(), stm.getExpr().getCode(), Node.TYPE.NORMAL);
+		Node expr = new Node(stm.getExpr().getExpressionName(), stm.getExpr().getCode(), Node.TYPE.NORMAL, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState( expr );
 		this.lastLabel = "True";
 		dispachStm(stm.getStms());
@@ -409,7 +400,7 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertSynchronized(ASTSynchronized stm) {
-		syncNode = new SyncNode(stm.getExpr().getCode(), stm.getLine(), this.lastClass );
+		syncNode = new SyncNode(stm.getExpr().getCode(), stm.getStart(), stm.getEnd(), stm.getLine(), this.lastClass );
 		this.lastCfg.addNode(syncNode);
 		dispachStm(stm.getStms());
 		syncNode = null;
@@ -417,8 +408,9 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertIf(ASTIf stm) {
-		Node expr = new Node(stm.getGuard().getExpressionName(), stm.getGuard().getCode(), Node.TYPE.NORMAL);
-		Node end_if = new Node("_end_if", "", Node.TYPE.USELESS);
+		ASTRE ex = stm.getGuard();
+		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.NORMAL, ex.getStart(), ex.getEnd(), ex.getLine() );
+		Node end_if = new Node("_end_if", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState( expr );
 		this.lastLabel = "True";
 		super.dispachStm(stm.getIfBranch().getStms());
@@ -437,9 +429,9 @@ public class IM2PCFG extends ConvertIM {
 	@Override
 	protected void convertTry(ASTTry stm) {
 
-		Node init_try = new Node("try", "", Node.TYPE.TRY);
-		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY);
-		Node end_try = new Node("endtry", "", Node.TYPE.USELESS);
+		Node init_try = new Node("try", "", Node.TYPE.TRY, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node end_try = new Node("endtry", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		this.lastCfg.addNode(finally_try);
 		this.lastCfg.addNode(end_try);
 		addState(init_try);
@@ -452,7 +444,7 @@ public class IM2PCFG extends ConvertIM {
 		this.lastCfg.addEdge(toFinally);
 
 		if(stm.getCatchBranch().size() > 0){
-			Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
+			Node catch_try = new Node("catch", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 			Edge e = new Edge(init_try, catch_try);
 			this.lastCfg.addNode(catch_try);
 			this.lastCfg.addEdge(e);
@@ -460,7 +452,8 @@ public class IM2PCFG extends ConvertIM {
 				Node instance = new Node(
 						c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType(),
 						c.getCode(),
-						Node.TYPE.NORMAL
+						Node.TYPE.NORMAL,
+						c.getStart(), c.getEnd(), c.getLine()
 				);
 				Edge eInstance = new Edge(catch_try, instance);
 				this.lastCfg.addNode(instance);
@@ -493,9 +486,9 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertTryResource(ASTTryResources stm) {
-		Node init_try = new Node("try", "", Node.TYPE.TRY);
-		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY);
-		Node end_try = new Node("endtry", "", Node.TYPE.USELESS);
+		Node init_try = new Node("try", "", Node.TYPE.TRY, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node end_try = new Node("endtry", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		this.lastCfg.addNode(finally_try);
 		this.lastCfg.addNode(end_try);
 		addState(init_try);
@@ -507,7 +500,7 @@ public class IM2PCFG extends ConvertIM {
 		this.lastCfg.addEdge(toFinally);
 
 		if(stm.getCatchBranch().size() > 0){
-			Node catch_try = new Node("catch", "", Node.TYPE.USELESS);
+			Node catch_try = new Node("catch", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 			Edge e = new Edge(init_try, catch_try);
 			this.lastCfg.addNode(catch_try);
 			this.lastCfg.addEdge(e);
@@ -515,7 +508,8 @@ public class IM2PCFG extends ConvertIM {
 				Node instance = new Node(
 						c.getExpr().getName() + "_instanceOf_" + c.getExpr().getType(),
 						c.getCode(),
-						Node.TYPE.NORMAL
+						Node.TYPE.NORMAL,
+						c.getStart(), c.getEnd(), c.getLine()
 				);
 				Edge eInstance = new Edge(catch_try, instance);
 				this.lastCfg.addNode(instance);
@@ -542,7 +536,8 @@ public class IM2PCFG extends ConvertIM {
 			Node resource = new Node(
 					"close_" + r.getExpressionName(),
 					r.getCode(),
-					Node.TYPE.NORMAL
+					Node.TYPE.NORMAL,
+					r.getStart(), r.getEnd(), r.getLine()
 			);
 			addState(resource);
 		}
@@ -556,16 +551,17 @@ public class IM2PCFG extends ConvertIM {
 	@Override
 	protected void convertASTSwitch(ASTSwitch stm) {
 
-		Node init_switch = new Node("switch", "", Node.TYPE.SWITCH);
-		Node end_switch = new Node("endSwitch", "", Node.TYPE.USELESS);
+		Node init_switch = new Node("switch", "", Node.TYPE.SWITCH, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node end_switch = new Node("endSwitch", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 
 		this.lastCfg.addNode(end_switch);
 		addState(init_switch);
 
 		Node check = new Node(
 				"check_" + stm.getExpr().getExpressionName(),
-				stm.getCode(),
-				Node.TYPE.NORMAL
+				stm.getExpr().getCode(),
+				Node.TYPE.NORMAL,
+				stm.getExpr().getStart(), stm.getExpr().getEnd(), stm.getExpr().getLine()
 		);
 		addState(check);
 
@@ -574,7 +570,8 @@ public class IM2PCFG extends ConvertIM {
 				Node labelSwitch = new Node(
 						"equals_" + label,
 						label,
-						Node.TYPE.NORMAL
+						Node.TYPE.NORMAL,
+						c.getStart(), c.getEnd(), c.getLine()
 				);
 				Edge e = new Edge(check, labelSwitch);
 				this.lastCfg.addNode(labelSwitch);
@@ -592,37 +589,48 @@ public class IM2PCFG extends ConvertIM {
 
 	@Override
 	protected void convertReturn(ASTReturn stm) {
+		int start, end, line;
+		start = stm.getExpr() != null ? stm.getExpr().getStart() : stm.getStart();
+		end   = stm.getExpr() != null ? stm.getExpr().getEnd()   : stm.getEnd();
+		line  = stm.getExpr() != null ? stm.getExpr().getLine()  : stm.getLine();
 		addState(
 				new Node(
 						"return" + ( stm.getExpr() != null ? "_" + stm.getExpr().getExpressionName() : ""),
 						stm.getCode(),
-						Node.TYPE.RETURN
+						Node.TYPE.RETURN,
+						start, end, line
 				)
 		);
 	}
 
 	@Override
 	protected void convertThrow(ASTThrow stm) {
+		int start, end, line;
+		start = stm.getExpr() != null ? stm.getExpr().getStart() : stm.getStart();
+		end   = stm.getExpr() != null ? stm.getExpr().getEnd()   : stm.getEnd();
+		line  = stm.getExpr() != null ? stm.getExpr().getLine()  : stm.getLine();
 		addState(
 				new Node(
 						"throw" + ( stm.getExpr() != null ? "_" + stm.getExpr().getExpressionName() : ""),
 						stm.getCode(),
-						Node.TYPE.THROW
+						Node.TYPE.THROW,
+						start, end, line
 				)
 		);
 	}
 
 	@Override
 	protected void convertContinue(ASTContinue stm) {
+
 		addState(
-				new Node("continue", stm.getCode(), Node.TYPE.CONTINUE)
+				new Node("continue", stm.getCode(), Node.TYPE.CONTINUE, stm.getStart(), stm.getEnd(), stm.getLine())
 		);
 	}
 
 	@Override
 	protected void convertBreak(ASTBreak stm) {
 		addState(
-				new Node("break", stm.getCode(), Node.TYPE.BREAK)
+				new Node("break", stm.getCode(), Node.TYPE.BREAK, stm.getStart(), stm.getEnd(), stm.getLine())
 		);
 	}
 
@@ -633,7 +641,7 @@ public class IM2PCFG extends ConvertIM {
 			this.lastLabel = this.lastLabel + "[" + c.getValue0() + "]";
 		}
 		addState(
-				new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL)
+				new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL, r.getStart(), r.getEnd(), r.getLine())
 		);
 		if(r != null && r.getExpression() != null) {
 			r.getExpression().visit(new DefaultASTVisitor() {
