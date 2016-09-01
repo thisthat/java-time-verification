@@ -49,6 +49,7 @@ public class ASTStatic extends IASTStm implements IASTHasStms, IASTVisitor {
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTStatic(this);
 	}
 
 }

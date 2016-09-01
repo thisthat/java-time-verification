@@ -140,5 +140,6 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTMethod(this);
 	}
 }

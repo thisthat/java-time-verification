@@ -48,5 +48,6 @@ public class ASTImport extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTImport(this);
+		visitor.exitASTImport(this);
 	}
 }

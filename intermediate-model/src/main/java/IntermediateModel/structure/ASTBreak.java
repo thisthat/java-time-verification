@@ -29,5 +29,6 @@ public class ASTBreak extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTBreak(this);
+		visitor.exitASTBreak(this);
 	}
 }

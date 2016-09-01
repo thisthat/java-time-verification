@@ -256,6 +256,7 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 		}
 		if(finallyBranch != null)
 			finallyBranch.visit(visitor);
+		visitor.exitASTTry(this);
 	}
 
 }

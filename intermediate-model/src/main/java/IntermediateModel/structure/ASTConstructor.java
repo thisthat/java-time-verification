@@ -111,5 +111,6 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTConstructor(this);
 	}
 }

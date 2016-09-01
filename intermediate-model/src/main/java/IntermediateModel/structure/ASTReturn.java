@@ -50,5 +50,6 @@ public class ASTReturn extends IASTStm implements IASTVisitor {
 		visitor.enterASTReturn(this);
 		if(expr != null)
 			expr.visit(visitor);
+		visitor.exitASTReturn(this);
 	}
 }

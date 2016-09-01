@@ -217,5 +217,6 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		for(ASTAttribute a : attributes){
 			a.visit(visitor);
 		}
+		visitor.exitASTClass(this);
 	}
 }
