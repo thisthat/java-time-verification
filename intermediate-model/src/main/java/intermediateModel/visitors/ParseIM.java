@@ -381,14 +381,15 @@ public abstract class ParseIM {
 		for (ASTStatic s : elm.getStaticInit()) {
 			this.analyze(s.getStms(), new_env);
 		}
+		analyzeASTHiddenClass(elm, env);
 		//check method
 		for (IASTMethod m : elm.getMethods()) {
 			Env eMethod = new Env(new_env);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			this.analyze(m.getStms(), eMethod);
 		}
-		analyzeASTHiddenClass(elm, env);
 		analyzeEveryStm(elm,env);
+		endAnalyzeHiddenClass(elm, env);
 	}
 
 	/**
@@ -500,6 +501,12 @@ public abstract class ParseIM {
 	 * @param env   Environment
 	 */
 	protected void analyzeASTHiddenClass(ASTHiddenClass elm, Env env){};
+	/**
+	 * Empty.
+	 * @param elm 	Statement
+	 * @param env   Environment
+	 */
+	protected void endAnalyzeHiddenClass(ASTHiddenClass elm, Env env) {}
 	/**
 	 * Empty.
 	 * @param elm 	Statement

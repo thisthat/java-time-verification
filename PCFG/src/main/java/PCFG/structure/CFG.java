@@ -67,6 +67,15 @@ public class CFG implements ICFGElement {
 	public void addNode(AnonymClass node) { this.anonNodes.add(node); }
 
 	public List<SyncNode> getSyncNodes() {
+		List<SyncNode> nodes = new ArrayList<>();
+		nodes.addAll(syncNodes);
+		for(AnonymClass c : anonNodes){
+			nodes.addAll( c.getSyncNodes() );
+		}
+		return nodes;
+	}
+
+	private List<SyncNode> getSyncNodesNoSubClass() {
 		return syncNodes;
 	}
 
@@ -89,7 +98,7 @@ public class CFG implements ICFGElement {
 		for(Node v :  this.getV()){
 			out.append("\t" + v.toGraphViz(hideName) + ";\n");
 		}
-		for(SyncNode s : this.getSyncNodes()){
+		for(SyncNode s : this.getSyncNodesNoSubClass()){
 			out.append("\t" + s.toGraphViz(hideName));
 		}
 		for(IEdge e : this.getE()){
@@ -104,4 +113,8 @@ public class CFG implements ICFGElement {
 		out.append("\t\tlabel = \"" + this.getName() + "\";\n\t\tcolor=green\n\t}\n");
 		return out.toString();
 	}
+
+
+
+
 }

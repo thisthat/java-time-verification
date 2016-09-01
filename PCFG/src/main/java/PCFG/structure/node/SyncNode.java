@@ -59,6 +59,14 @@ public class SyncNode implements INode {
 		return line;
 	}
 
+	public int getStart() {
+		return start;
+	}
+
+	public int getEnd() {
+		return end;
+	}
+
 	public String getClassName() {
 		return className;
 	}

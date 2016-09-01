@@ -10,6 +10,8 @@ import parser.exception.ParseErrorsException;
 import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +83,10 @@ public class Main {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		BufferedWriter writer = null;
+		writer = new BufferedWriter(new FileWriter("graph.dot"));
+		writer.write(g.toGraphViz(false));
+		writer.close();
 	}
 
 	public void run1() throws IOException, ParseErrorsException {
@@ -104,7 +109,11 @@ public class Main {
 		p.addClass(c, "initWithCore");
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
-		System.out.println(graph.toGraphViz(!true));
+
+		BufferedWriter writer = null;
+		writer = new BufferedWriter(new FileWriter("graph.dot"));
+		writer.write(graph.toGraphViz(false));
+		writer.close();
 
 
 

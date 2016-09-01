@@ -124,24 +124,23 @@ public class PCFG implements ICFGElement, IHasCFG {
 	/**
 	 * From an expression, retrieve the correlative synchronization node.
 	 * @param expr			Src code of the expression
+	 * @param start			Src code of the expression
+	 * @param end			Src code of the expression
 	 * @param line			Line number of the node
-	 * @param className		Class of the node to whom belongs to.
 	 * @return	The syncnode.
 	 */
-	public SyncNode getSyncNodeByExpr(String expr, int line, String className){
+	public SyncNode getSyncNodeByExpr(String expr, int start, int end, int line){
 		for(SyncNode s : this.getSyncNodes()){
 			if(
 					s.getExpr().equals(expr) &&
-					s.getClassName().equals(className) &&
-					s.getLine() == line
+					//s.getClassName().equals(className) &&
+					s.getLine() == line &&
+					s.getStart() == start &&
+					s.getEnd() == end
 			) {
 				return s;
 			}
 		}
-		return null;
-	}
-
-	public INode getNodeInBound(int start, int end){
 		return null;
 	}
 }

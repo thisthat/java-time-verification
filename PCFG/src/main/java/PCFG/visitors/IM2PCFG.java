@@ -136,7 +136,7 @@ public class IM2PCFG extends ConvertIM {
 		pcfg.optimize();
 
 		//check for sync blocks
-		//calculateSyncBlock();
+		calculateSyncBlock();
 
 		//check for call on sync methods
 		calculateSyncCall();
@@ -217,22 +217,35 @@ public class IM2PCFG extends ConvertIM {
 
 	private void calculateSyncBlock() {
 		//get the sync blocks of the methods that we are looking for
+		List<IndexSyncBlock> tmp_syncBlocks = new ArrayList<>();
 		List<IndexSyncBlock> syncBlocks = new ArrayList<>();
 		for(KeyValue<String,ASTClass> c : classes){
 			for(IndexData data : indexs){
 				for(IndexSyncBlock s : data.getListOfSyncBlocks()){
 					if(
-							s.getClassName().equals(
+							/*s.getClassName().equals(
 									c.getValue().getName()
 							)
-							&&
+							&&*/
 							s.getMethodName().equals(
 									c.getKey())
 							)
 					{
-						syncBlocks.add(s);
+						tmp_syncBlocks.add(s);
 					}
 				}
+			}
+		}
+		//remove duplicate -> it happens when we are using the same class to do the job
+		for(IndexSyncBlock is : tmp_syncBlocks){
+			boolean exists = false;
+			for(IndexSyncBlock actualSync : syncBlocks){
+				if(actualSync.equals(is)){
+					exists = true;
+				}
+			}
+			if(!exists){
+				syncBlocks.add(is);
 			}
 		}
 		//everyone is checked against everyone
@@ -243,7 +256,9 @@ public class IM2PCFG extends ConvertIM {
 				continue;
 			}
 			for(IndexSyncBlock inner : syncBlocks) {
-				if (outter == inner) { //we do not check myself with myself
+				if (outter == inner ||
+					(outter.getClassName().equals(inner.getClassName()) && outter.getPackageName().equals(inner.getPackageName()) && outter.getMethodName().equals(inner.getMethodName())) ) {
+					//we do not check myself with myself
 					continue;
 				}
 				IndexParameter varInner = inner.getEnv().getVar(inner.getExpr());
@@ -253,18 +268,12 @@ public class IM2PCFG extends ConvertIM {
 				}
 				if(varInner.getType().equals(varOutter.getType())){
 					//we gotta a match
-					SyncNode outSync = pcfg.getSyncNodeByExpr( outter.getExpr(), outter.getLine(), outter.getClassName() );
-					SyncNode inSync  = pcfg.getSyncNodeByExpr( inner.getExpr(),  inner.getLine(),  inner.getClassName()  );
+					SyncNode outSync = pcfg.getSyncNodeByExpr( outter.getExpr(), outter.getStart(), outter.getEnd(), outter.getLine() );
+					SyncNode inSync  = pcfg.getSyncNodeByExpr( inner.getExpr(), inner.getStart(), inner.getEnd(), inner.getLine() );
 					SyncEdge sEdge = null;
 					if(outSync == null || inSync == null){
 						// we have smt in the hidden class -> How to handle?
-						//for the moment we say there is a link between the two nodes that handle the sync call
-						if(outSync == null){
-							pcfg.getNodeInBound( outter.getStart(), outter.getEnd() );
-						}
-						if(inSync == null){
-
-						}
+						System.err.println("Null pointer to sync block");
 					} else {
 						//link between two different sync blocks
 						try {

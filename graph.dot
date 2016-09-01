@@ -1,0 +1,98 @@
+digraph {
+	rankdir=TD;
+	compound=true;
+	subgraph cluster_cfg_0 {
+		node [style=filled];
+		ASTLiteral_0;
+		return_2;
+		_end_if_1;
+		ASTAssignment_3;
+		ASTMethodCall_abc_4;
+		subgraph cluster_sync0 {
+			node [style=filled];
+			ASTLiteral_0;
+			return_2;
+			_end_if_1;
+			ASTAssignment_3;
+			label = "sync block on SubscriptionManagerImpl.class";
+			color=blue
+		}
+		ASTLiteral_0 -> 	return_2[ label = "True" ];
+		return_2 -> 	_end_if_1[ label = "" ];
+		ASTLiteral_0 -> 	_end_if_1[ label = "False" ];
+		_end_if_1 -> 	ASTAssignment_3[ label = "" ];
+		ASTAssignment_3 -> 	ASTMethodCall_abc_4[ label = "" ];
+		label = "SubscriptionManagerImpl::preInitialise";
+		color=green
+	}
+	subgraph cluster_cfg_1 {
+		node [style=filled];
+		ASTMethodCall_addParameterListener_5;
+		ASTMethodCall_abc_12;
+		ASTLiteral_13;
+		return_15;
+		_end_if_14;
+		ASTAssignment_16;
+		subgraph cluster_sync2 {
+			node [style=filled];
+			ASTLiteral_13;
+			return_15;
+			_end_if_14;
+			ASTAssignment_16;
+			label = "sync block on logger";
+			color=blue
+		}
+		ASTMethodCall_addParameterListener_5 -> 	ASTMethodCall_abc_12[ label = "" ];
+		ASTMethodCall_abc_12 -> 	ASTLiteral_13[ label = "" ];
+		ASTLiteral_13 -> 	return_15[ label = "True" ];
+		return_15 -> 	_end_if_14[ label = "" ];
+		ASTLiteral_13 -> 	_end_if_14[ label = "False" ];
+		_end_if_14 -> 	ASTAssignment_16[ label = "" ];
+		subgraph cluster_anonymcfg_0 {
+		node [style=filled];
+	subgraph cluster_cfg_2 {
+		node [style=filled];
+		max_results_6;
+		ASTMethodCall_start_7;
+		max_results_6 -> 	ASTMethodCall_start_7[ label = "" ];
+		subgraph cluster_anonymcfg_1 {
+		node [style=filled];
+	subgraph cluster_cfg_3 {
+		node [style=filled];
+		dosmth_8;
+		ASTMethodCall_checkMaxResults_9;
+		ASTMethodCall_abc_10;
+		ASTAssignment_11;
+		subgraph cluster_sync1 {
+			node [style=filled];
+			ASTMethodCall_checkMaxResults_9;
+			label = "sync block on logger";
+			color=blue
+		}
+		dosmth_8 -> 	ASTMethodCall_checkMaxResults_9[ label = "" ];
+		ASTMethodCall_checkMaxResults_9 -> 	ASTMethodCall_abc_10[ label = "" ];
+		ASTMethodCall_abc_10 -> 	ASTAssignment_11[ label = "" ];
+		label = "anonymous::run";
+		color=green
+	}
+		label = "anonymousClass_1";
+		color=red
+	}
+		ASTMethodCall_start_7 -> 	dosmth_8[ lhead = "cluster_anonymcfg_1" ];
+		label = "anonymous::parameterChanged";
+		color=green
+	}
+		label = "anonymousClass_0";
+		color=red
+	}
+		ASTMethodCall_addParameterListener_5 -> 	max_results_6[ lhead = "cluster_anonymcfg_0" ];
+		label = "SubscriptionManagerImpl::initWithCore";
+		color=green
+	}
+	ASTMethodCall_checkMaxResults_9 -> 	ASTLiteral_13 [ltail=cluster_sync1,lhead=cluster_sync2];
+	ASTLiteral_13 -> 	ASTMethodCall_checkMaxResults_9 [ltail=cluster_sync2,lhead=cluster_sync1];
+	ASTMethodCall_abc_4 -> 	ASTMethodCall_abc_10[color=red,penwidth=1.0];
+	ASTMethodCall_abc_4 -> 	ASTMethodCall_abc_12[color=red,penwidth=1.0];
+	ASTMethodCall_abc_10 -> 	ASTMethodCall_abc_4[color=red,penwidth=1.0];
+	ASTMethodCall_abc_12 -> 	ASTMethodCall_abc_4[color=red,penwidth=1.0];
+}

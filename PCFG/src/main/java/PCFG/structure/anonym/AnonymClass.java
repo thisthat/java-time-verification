@@ -66,4 +66,13 @@ public class AnonymClass implements INode, IHasCFG {
 		}
 		return nodes;
 	}
+
+
+	public List<SyncNode> getSyncNodes() {
+		List<SyncNode> nodes = new ArrayList<>();
+		for(CFG c : methods){
+			nodes.addAll(c.getSyncNodes());
+		}
+		return nodes;
+	}
 }

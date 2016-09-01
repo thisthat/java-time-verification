@@ -264,7 +264,7 @@ SubscriptionManagerImpl
 							public void
 							run() {
 								int dosmth = 0;
-								synchronized (rss_publisher){
+								synchronized (logger){
 									checkMaxResults(max_results);
 								}
 								abc();

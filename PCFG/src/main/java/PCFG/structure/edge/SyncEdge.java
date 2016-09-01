@@ -72,7 +72,7 @@ public class SyncEdge implements IEdge {
 			SyncNode to 	= ((SyncNode) this.getTo());
 			Node f = from.getNodes().get(0);
 			Node t = to.getNodes().get(0);
-			out.append(f.toGraphViz(hideName) + " -> " + t.toGraphViz(hideName) + " [ltail=" + CFG._CLUSTER_NAME + from.getID() + ",lhead=" + SyncNode._CLUSTER_NAME + to.getID() + "];\n");
+			out.append(f.toGraphViz(hideName) + " -> " + t.toGraphViz(hideName) + " [ltail=" + SyncNode._CLUSTER_NAME + from.getID() + ",lhead=" + SyncNode._CLUSTER_NAME + to.getID() + "];\n");
 		} else {
 			Node from = (Node) this.getFrom();
 			Node to   = (Node) this.getTo();
