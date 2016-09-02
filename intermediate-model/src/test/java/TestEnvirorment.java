@@ -35,7 +35,7 @@ public class TestEnvirorment {
 
 	@Test
 	public void TestShowBug18() throws Exception {
-		String filename = getClass().getClassLoader().getResource("AttributeTimeRelated.java").getFile();
+		String filename = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);

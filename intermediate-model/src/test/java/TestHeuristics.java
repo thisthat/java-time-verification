@@ -30,7 +30,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestExportChangesJob() throws Exception {
-		String filename = getClass().getClassLoader().getResource("ExportChangesJob.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/ExportChangesJob.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -47,7 +47,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestFailoverTimeoutTest() throws Exception {
-		String filename = getClass().getClassLoader().getResource("FailoverTimeoutTest.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/FailoverTimeoutTest.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -80,7 +80,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestJavaTimerExampleTask() throws Exception {
-		String filename = getClass().getClassLoader().getResource("JavaTimerExampleTask.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/JavaTimerExampleTask.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -124,7 +124,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestMCGroupImpl() throws Exception {
-		String filename = getClass().getClassLoader().getResource("MCGroupImpl.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/MCGroupImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -150,7 +150,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestProjectServiceImpl() throws Exception {
-		String filename = getClass().getClassLoader().getResource("ProjectServiceImpl.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/ProjectServiceImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -175,7 +175,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestSmallTest() throws Exception {
-		String filename = getClass().getClassLoader().getResource("SmallTest.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/SmallTest.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -191,7 +191,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestsocketTest() throws Exception {
-		String filename = getClass().getClassLoader().getResource("socketTest.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/socketTest.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -217,7 +217,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestTest() throws Exception {
-		String filename = getClass().getClassLoader().getResource("Test.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/Test.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -294,7 +294,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TesttestLambdas() throws Exception {
-		String filename = getClass().getClassLoader().getResource("testLambdas.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/testLambdas.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -310,7 +310,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestTimerEvent() throws Exception {
-		String filename = getClass().getClassLoader().getResource("TimerEvent.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/TimerEvent.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
@@ -327,7 +327,7 @@ public class TestHeuristics {
 
 	@Test
 	public void TestUPnPImpl() throws Exception {
-		String filename = getClass().getClassLoader().getResource("UPnPImpl.java").getFile();
+		String filename = getClass().getClassLoader().getResource("examples/UPnPImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);

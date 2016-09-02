@@ -51,7 +51,7 @@ public class IM2PCFG extends ConvertIM {
 	private boolean isMultiLabel = false;
 	private List<Node> multiLabel = new ArrayList<>();
 	private IndexingFile classIndexer = new IndexingFile();
-	private List<IndexData> indexs = new ArrayList<>();
+	private List<KeyValue<KeyValue<String,ASTClass>,IndexData>> indexs = new ArrayList<>();
 	private String lastClass = "";
 	private List<Triplet<String, IASTStm, Class>> constraints = new ArrayList<>();
 
@@ -102,10 +102,10 @@ public class IM2PCFG extends ConvertIM {
 				}
 			}
 		}
-
-		this.classes.add(new KeyValue<String, ASTClass>(methodName, c));
+		KeyValue<String, ASTClass> k = new KeyValue<>(methodName, c);
+		this.classes.add(k);
 		IndexData index = classIndexer.index(c, reindex);
-		indexs.add( index );
+		indexs.add( new KeyValue<>(k, index) );
 	}
 
 	public PCFG buildPCFG(){
@@ -220,19 +220,19 @@ public class IM2PCFG extends ConvertIM {
 		List<IndexSyncBlock> tmp_syncBlocks = new ArrayList<>();
 		List<IndexSyncBlock> syncBlocks = new ArrayList<>();
 		for(KeyValue<String,ASTClass> c : classes){
-			for(IndexData data : indexs){
-				for(IndexSyncBlock s : data.getListOfSyncBlocks()){
-					if(
-							/*s.getClassName().equals(
-									c.getValue().getName()
-							)
-							&&*/
-							s.getMethodName().equals(
-									c.getKey())
-							)
-					{
-						tmp_syncBlocks.add(s);
-					}
+			IndexData data = null;
+			for(KeyValue<KeyValue<String,ASTClass>, IndexData> k : indexs) {
+				if(k.getKey().equals(c)){
+					data = k.getValue();
+				}
+			}
+			for(IndexSyncBlock s : data.getListOfSyncBlocks()){
+				if(
+						s.getMethodName().equals(
+								c.getKey())
+						)
+				{
+					tmp_syncBlocks.add(s);
 				}
 			}
 		}
@@ -274,6 +274,10 @@ public class IM2PCFG extends ConvertIM {
 					if(outSync == null || inSync == null){
 						// we have smt in the hidden class -> How to handle?
 						System.err.println("Null pointer to sync block");
+						for(KeyValue<String,ASTClass> c : this.classes){
+							System.err.println(c.getKey() + " :: " + c.getValue().getPackageName() + "." + c.getValue().getName());
+						}
+						System.err.println("_____");
 					} else {
 						//link between two different sync blocks
 						try {

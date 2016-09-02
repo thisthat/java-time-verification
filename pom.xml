@@ -17,7 +17,7 @@
         <module>intermediate-model</module>
         <module>testing</module>
         <module>PCFG</module>
-        <!--<module>evaluation-vuze</module>-->
+        <module>evaluation-vuze</module>
     </modules>
 
 

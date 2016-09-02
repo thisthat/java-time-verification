@@ -25,7 +25,7 @@ public class Main {
 	List<ASTClass> classes = new ArrayList<>();
 
 	public static void main(String[] args) throws Exception {
-		new Main().run1();
+		new Main().run2();
 	}
 
 	public void run() throws IOException, ParseErrorsException {
@@ -58,34 +58,31 @@ public class Main {
 	}
 
 	public void run2() throws Exception {
-		IM2PCFG p = new IM2PCFG();
-
-		//first method
-		String f =  Main.class.getClassLoader().getResource("Thread_1.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("bugs/ThreadPool.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
-		//we have only one class
-		ASTClass c = v.listOfClasses.get(0);
-		String method = "run";
-		p.addClass(c, method, true);
+		classes.addAll(v.listOfClasses);
+		ASTClass c = classes.get(0);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
+		f =  Main.class.getClassLoader().getResource("bugs/PairingManagerTunnelHandler.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
-		c = v.listOfClasses.get(0);
-		p.addClass(c, method, true);
+		ASTClass c1 = v.listOfClasses.get(0);
 
-		// build
-		PCFG g = p.buildPCFG();
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, "generateEvidence");
+		p.addClass(c1, "start");
+		PCFG graph = p.buildPCFG();
+		graph.optimize();
 
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter("graph.dot"));
-		writer.write(g.toGraphViz(false));
+		writer.write(graph.toGraphViz(false));
 		writer.close();
 	}
 
