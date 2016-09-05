@@ -10,3 +10,4 @@ target
 **/.idea/tasks.xml
 *.dot
 *.png
+*.csv

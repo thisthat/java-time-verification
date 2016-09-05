@@ -14,9 +14,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,11 +28,13 @@ import java.util.List;
  */
 public class EvalTopFile {
 
+	final int _HOWMANY_ = 5;
 	MongoConnector db;
-	PrintWriter[] writer = new PrintWriter[5];
-	String[] packages = new String[5];
+	PrintWriter[] writer = new PrintWriter[_HOWMANY_];
+	String[] packages = new String[_HOWMANY_];
 	private static final String _EVALUATION_NAME = "vuze_top_file";
-	private static final int _MAX = 5;
+	private static int _INIT = -1;
+	private static int _MAX = -1;
 
 	//parameters
 	private boolean _INDEXING = false;
@@ -61,6 +63,18 @@ public class EvalTopFile {
 		this.base_path = base_path;
 	}
 
+	public void setMin(int n){
+		this._INIT = n;
+	}
+	public void setMax(int n){
+		this._MAX = n;
+	}
+
+	public void setFile(int n) {
+		this._INIT = n;
+		this._MAX = n+1;
+	}
+
 	public static void main(String[] args) throws Exception {
 		EvalTopFile eval = new EvalTopFile();
 		int i = 0;
@@ -83,6 +97,15 @@ public class EvalTopFile {
 				case "-path":
 					eval.setBase_path(args[i++]);
 					break;
+				case "-min":
+					eval.setMin(Integer.parseInt(args[i++]));
+					break;
+				case "-max":
+					eval.setMax(Integer.parseInt(args[i++]));
+					break;
+				case "-pkg":
+					eval.setFile(Integer.parseInt(args[i++]));
+					break;
 			}
 		}
 		eval.run();
@@ -90,11 +113,24 @@ public class EvalTopFile {
 
 	private void run() throws Exception {
 		conf();
-		for(int i = 0; i < _MAX; i++){
+		for(int i = _INIT; i < _MAX; i++){
 			System.out.println("Package " + i + " started");
 			process_package(packages[i], i);
+			send_email(i);
 		}
 		close();
+	}
+
+	private void send_email(int i) {
+		try {
+			String a= "http://sensarisvolti.altervista.org/send_email.php?msg=package%20" + i + "%20finish";
+			URL url = new URL(a);
+			URLConnection conn = url.openConnection();
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			br.read();
+		} catch (Exception e){
+			//is not a problem if we can not send the email
+		}
 	}
 
 	private void process_package(String aPackage, int i) {
@@ -153,7 +189,7 @@ public class EvalTopFile {
 		this.db = MongoConnector.getInstance();
 		if(_INDEXING) this.db.drop();
 		//init output file
-		for(int i = 0; i < _MAX; i++) {
+		for(int i = _INIT; i < _MAX; i++) {
 			writer[i] = new PrintWriter("result_" + i + "_" + this.getClass().getSimpleName().toString() + ".csv", "UTF-8");
 			writer[i].println("package-out;class-name-out;method-name-out;package-in;class-name-in;method-name-in;time-constraint;number-sync;total;");
 		}
@@ -163,13 +199,14 @@ public class EvalTopFile {
 		packages[2] = base_path + "org/gudy/azureus2/core3/util/TorrentUtils.java"; //as before but here the number of sync blocks is 10
 		packages[3] = base_path + "org/gudy/azureus2/core3/util/Timer.java"; //class with the highest number of sync methods that is included in the most number of files
 		packages[4] = base_path + "org/gudy/azureus2/pluginsimpl/local/PluginInitializer.java"; //promising class. high number of syncblock and avg imported
+		//packages[1] = base_path + "Thread_1.java"; //promising class. high number of syncblock and avg imported
 
 		//index whole vuze
 		if(_INDEXING) new IndexingProject(_EVALUATION_NAME).indexProject(base_path, true);
 	}
 
 	private void close() {
-		for(int i = 0; i < _MAX; i++) {
+		for(int i = _INIT; i < _MAX; i++) {
 			writer[i].close();
 		}
 	}

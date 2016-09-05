@@ -58,7 +58,7 @@ public class Main {
 	}
 
 	public void run2() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("bugs/ThreadPool.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("bugs/Timer.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -67,7 +67,7 @@ public class Main {
 		ASTClass c = classes.get(0);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("bugs/PairingManagerTunnelHandler.java").getFile();
+		f =  Main.class.getClassLoader().getResource("bugs/LightWeightSeed.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -75,8 +75,8 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, "generateEvidence");
-		p.addClass(c1, "start");
+		p.addClass(c, "destroy");
+		p.addClass(c1, "getDescription");
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 

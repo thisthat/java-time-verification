@@ -142,7 +142,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 				if(expr == null){
 					//local call - we can skip constructors because they are never sync
 					for(IASTMethod m : _class.getMethods()){
-						if(m instanceof ASTMethod){
+						if(m instanceof ASTMethod && m.getName().equals(methodCalled)){
 							ASTMethod method = ((ASTMethod) m);
 							if(method.isSyncronized()){
 								boolean flag = true;
