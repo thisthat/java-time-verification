@@ -48,6 +48,11 @@
             <artifactId>intermediate-model</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>PCFG</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

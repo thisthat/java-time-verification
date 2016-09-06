@@ -75,4 +75,10 @@ public class AnonymClass implements INode, IHasCFG {
 		}
 		return nodes;
 	}
+
+	public void setStartEnd() {
+		for(CFG m : methods){
+			m.setStartEnd();
+		}
+	}
 }

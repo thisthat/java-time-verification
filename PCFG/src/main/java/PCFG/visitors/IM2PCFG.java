@@ -1,11 +1,12 @@
 package PCFG.visitors;
 
-import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import PCFG.structure.*;
+import PCFG.structure.CFG;
+import PCFG.structure.IHasCFG;
+import PCFG.structure.PCFG;
 import PCFG.structure.anonym.AnonymClass;
 import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
@@ -65,6 +66,9 @@ public class IM2PCFG extends ConvertIM {
 
 	public int getConstraintsSize() {
 		return constraints.size();
+	}
+	public List<Triplet<String, IASTStm, Class>> getConstraints() {
+		return constraints;
 	}
 
 	/**
@@ -132,8 +136,6 @@ public class IM2PCFG extends ConvertIM {
 			});
 		}
 
-		//optimize
-		pcfg.optimize();
 
 		//check for sync blocks
 		calculateSyncBlock();
@@ -141,7 +143,24 @@ public class IM2PCFG extends ConvertIM {
 		//check for call on sync methods
 		calculateSyncCall();
 
+		//set time constraint
+		addTimeConstraint();
+
+
+		//optimize
+		pcfg.optimize();
+
 		return pcfg;
+	}
+
+	private void addTimeConstraint() {
+		for(Node v : pcfg.getV()){
+			for(Triplet<String, IASTStm, Class> c : constraints){
+				if(v.equals(c)){
+					v.setConstraint(c);
+				}
+			}
+		}
 	}
 
 	private void calculateSyncCall() {

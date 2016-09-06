@@ -98,7 +98,11 @@ public class PCFG implements ICFGElement, IHasCFG {
 	/**
 	 * TODO: Implementing the optimization
 	 */
-	public void optimize(){}
+	public void optimize(){
+		for(CFG p : processes){
+			p.setStartEnd();
+		}
+	}
 
 	/**
 	 * PrettyPrint the PCFG in the Graphviz syntax

@@ -1,7 +1,9 @@
 package PCFG.structure.node;
 
 import PCFG.structure.PCFG;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
+import org.javatuples.Triplet;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -13,8 +15,35 @@ public class Node implements INode {
 	TYPE type;
 	int id = 0;
 	int start,end,line;
+	Triplet<String,IASTStm,Class> constraint = null;
+	boolean isStart = false;
+	boolean isEnd = false;
 
 	public static int _ID = 0;
+
+	public void setConstraint(Triplet<String,IASTStm,Class> constraint) {
+		this.constraint = constraint;
+	}
+
+	public Triplet<String, IASTStm, Class> getConstraint() {
+		return constraint;
+	}
+
+	public boolean isStart() {
+		return isStart;
+	}
+
+	public void setStart(boolean start) {
+		isStart = start;
+	}
+
+	public boolean isEnd() {
+		return isEnd;
+	}
+
+	public void setEnd(boolean end) {
+		isEnd = end;
+	}
 
 	public enum TYPE {
 		RETURN,
@@ -104,16 +133,25 @@ public class Node implements INode {
 
 		if (getStart() != node.getStart()) return false;
 		if (getEnd() != node.getEnd()) return false;
-		if (line != node.getLine()) return false;
+		if (getLine() != node.getLine()) return false;
 		if (getCode() != null ? !getCode().equals(node.getCode()) : node.getCode() != null) return false;
 		return getType() == node.getType();
 	}
 
 	public boolean equals(ASTRE r){
 		if (getStart() != r.getStart()) return false;
-		if (getEnd() != r.getEnd()) return false;
-		if (line != r.getLine()) return false;
-		if (getCode() != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
+		if (getEnd()   != r.getEnd()) return false;
+		if (getLine()  != r.getLine()) return false;
+		if (getCode()  != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
+		return true;
+	}
+
+	public boolean equals(Triplet<String,IASTStm,Class> c){
+		IASTStm r = c.getValue1();
+		if (getStart() != r.getStart()) return false;
+		if (getEnd()   != r.getEnd()) return false;
+		if (getLine()  != r.getLine()) return false;
+		if (getCode()  != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
 		return true;
 	}
 

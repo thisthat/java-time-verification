@@ -7,10 +7,12 @@ import IntermediateModelHelper.indexing.structure.IndexData;
 import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.javatuples.Triplet;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
 
@@ -76,6 +78,7 @@ public class EvalTopFile {
 	}
 
 	public static void main(String[] args) throws Exception {
+		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 		EvalTopFile eval = new EvalTopFile();
 		int i = 0;
 		while(i < args.length){
@@ -128,6 +131,10 @@ public class EvalTopFile {
 			URLConnection conn = url.openConnection();
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			br.read();
+			br.close();
+			br = null;
+			conn = null;
+			url = null;
 		} catch (Exception e){
 			//is not a problem if we can not send the email
 		}
@@ -140,17 +147,21 @@ public class EvalTopFile {
 			List<ASTClass> listOfAllClasses = new ArrayList<>();
 			List<IndexData> d = db.getClassesThatImports(work_item.getPackageName(), work_item.getName());
 			for(IndexData data : d){
-				listOfAllClasses.addAll( computeFile(data.getPath()) );
+				listOfAllClasses.addAll( computeFile(data.getPath().replace("/data/giovanni/vuze", base_path) ) );
 			}
+			//listOfAllClasses.addAll(computeFile("/Users/giovanni/repository/java-xal/evaluation-vuze/src/main/resources/vuze/com/aelitis/azureus/core/networkmanager/impl/udp/NetworkGlueLoopBack.java"));
 			//add myself as well!
 			listOfAllClasses.addAll(working_set);
 			int total = 0;
 			for(ASTClass _class : listOfAllClasses){
+				total += ( work_item.getMethods().size() * _class.getMethods().size()  );
+				/*
 				for(IASTMethod method_work_item : work_item.getMethods()){
 					for(IASTMethod method_class : _class.getMethods()){
 						total++;
 					}
 				}
+				*/
 			}
 			System.out.println("[" + work_item.toString() + "] Total number of methods: " + total);
 			int current = 0;
@@ -159,6 +170,7 @@ public class EvalTopFile {
 					for(IASTMethod method_class : _class.getMethods()){
 						current++;
 						double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
+						//if(perc < 23.8f) continue;
 						System.out.print(String.format("\r[%s %%]", perc ));
 						compare(work_item, method_work_item, _class, method_class, i);
 					}
@@ -178,8 +190,10 @@ public class EvalTopFile {
 		String pkgOut = work_item.getPackageName();
 		String pkgIn = aClass.getPackageName();
 		//System.out.println(cOut.getName() + ":" + mOut.getName() + "_vs_" + cIn.getName() + ":" + mIn.getName() + " = " + timeConstraint + "," + numberSync);
-		writer[i].println(String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;", pkgOut, work_item.getName(), method_work_item.getName(), pkgIn, aClass.getName(), method_class.getName(), timeConstraint, numberSync, (timeConstraint + numberSync) ));
+		String out = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;", pkgOut, work_item.getName(), method_work_item.getName(), pkgIn, aClass.getName(), method_class.getName(), timeConstraint, numberSync, (timeConstraint + numberSync) );
+		writer[i].println(out);
 		writer[i].flush();
+		p = null;
 	}
 
 	private void conf() throws Exception {

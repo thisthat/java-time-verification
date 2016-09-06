@@ -8,6 +8,7 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,21 +29,6 @@ public class BuildEnvirormentClass {
 	private static List<String> typeTimeRelevant;// = new ArrayList<>();
 	private static List<String> methodTimeRelevant;// = new ArrayList<>();
 
-	{
-		String f = getClass().getClassLoader().getResource("descriptorTimeRelevant/TypeTimeRelevant.txt").getFile();
-		try {
-			typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
-		} catch (IOException e) {
-			typeTimeRelevant = new ArrayList<>();
-		}
-		f = getClass().getClassLoader().getResource("descriptorTimeRelevant/MethodTimeRelevant.txt").getFile();
-		try {
-			methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
-		} catch (IOException e) {
-			methodTimeRelevant = new ArrayList<>();
-		}
-	}
-
 	/**
 	 * Get the instance with lazy initialization.
 	 * @return The singleton
@@ -54,7 +40,18 @@ public class BuildEnvirormentClass {
 		return instance;
 	}
 
-	protected BuildEnvirormentClass(){}
+	protected BuildEnvirormentClass(){
+		try {
+			String path = BuildEnvirormentClass.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			path = path.substring(0, path.lastIndexOf("/")) + "/conf/";
+			String f = path + "TypeTimeRelevant.txt";
+			typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
+			f = path + "MethodTimeRelevant.txt";
+			methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	/**

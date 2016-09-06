@@ -96,7 +96,17 @@ public class CFG implements ICFGElement {
 		StringBuilder out = new StringBuilder();
 		out.append("\tsubgraph " + _CLUSTER_NAME + this.id + " {\n\t\tnode [style=filled];\n");
 		for(Node v :  this.getV()){
-			out.append("\t" + v.toGraphViz(hideName) + ";\n");
+			String color = "";
+			if(v.getConstraint() != null){
+				color = "[ color=salmon2 ]";
+			}
+			if(v.isStart()){
+				color = "[ color=deepskyblue ]";
+			}
+			if(v.isEnd()){
+				color = "[ color=darkorange1 ]";
+			}
+			out.append("\t" + v.toGraphViz(hideName) + color + ";\n");
 		}
 		for(SyncNode s : this.getSyncNodesNoSubClass()){
 			out.append("\t" + s.toGraphViz(hideName));
@@ -115,6 +125,14 @@ public class CFG implements ICFGElement {
 	}
 
 
-
+	public void setStartEnd(){
+		if(this.getV().size() > 0) {
+			this.getV().get(0).setStart(true);
+			this.getV().get(this.getV().size() - 1).setEnd(true);
+		}
+		for(AnonymClass c : this.getAnonNodes()){
+			c.setStartEnd();
+		}
+	}
 
 }
