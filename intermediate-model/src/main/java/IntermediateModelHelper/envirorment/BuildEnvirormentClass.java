@@ -50,6 +50,20 @@ public class BuildEnvirormentClass {
 			methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
 		} catch (Exception e) {
 			e.printStackTrace();
+			//try to load from resources
+			String f = getClass().getClassLoader().getResource("descriptorTimeRelevant/TypeTimeRelevant.txt").getFile();
+			try {
+				typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
+			} catch (IOException e1) {
+				typeTimeRelevant = new ArrayList<>();
+			}
+			f = getClass().getClassLoader().getResource("descriptorTimeRelevant/MethodTimeRelevant.txt").getFile();
+			try {
+				methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
+			} catch (IOException e1) {
+				methodTimeRelevant = new ArrayList<>();
+			}
+
 		}
 	}
 
