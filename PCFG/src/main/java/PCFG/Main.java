@@ -1,9 +1,8 @@
 package PCFG;
 
-import PCFG.visitors.helper.SyncMethodCall;
-import intermediateModel.interfaces.IASTMethod;
+import PCFG.converter.ToDot;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
@@ -54,7 +53,8 @@ public class Main {
 
 		// build
 		PCFG graph = p.buildPCFG();
-		System.out.println(graph.toGraphViz(false));
+		ToDot toGraphViz = new ToDot(false);
+		System.out.println(toGraphViz.convert(graph));
 	}
 
 	public void run2() throws Exception {
@@ -82,7 +82,8 @@ public class Main {
 
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter("graph.dot"));
-		writer.write(graph.toGraphViz(false));
+		ToDot toGraphViz = new ToDot(false);
+		writer.write(toGraphViz.convert(graph));
 		writer.close();
 	}
 
@@ -109,7 +110,8 @@ public class Main {
 
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter("graph.dot"));
-		writer.write(graph.toGraphViz(false));
+		ToDot toGraphViz = new ToDot(false);
+		writer.write(toGraphViz.convert(graph));
 		writer.close();
 
 

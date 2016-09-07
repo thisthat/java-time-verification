@@ -4,7 +4,7 @@ import IntermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package intermediateModel.visitors.utility;
+package intermediateModel.visitors.creation.utility;
 
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.LocalSearch;
@@ -7,7 +7,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.eclipse.jdt.core.dom.Expression;
 import parser.grammar.Java8CommentSupportedParser.*;
 
 import java.util.ArrayList;

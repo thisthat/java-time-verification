@@ -1,9 +1,8 @@
-package intermediateModel.visitors.utility;
+package intermediateModel.visitors.creation.utility;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.JDTVisitor;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;

@@ -1,10 +1,7 @@
 package PCFG.structure.edge;
 
-import PCFG.structure.CFG;
-import PCFG.structure.PCFG;
 import PCFG.structure.node.INode;
 import PCFG.structure.node.Node;
-import PCFG.structure.node.SyncNode;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -63,22 +60,4 @@ public class SyncEdge implements IEdge {
 		return this.label;
 	}
 
-	@Override
-	public String toGraphViz(boolean hideName) {
-		StringBuilder out = new StringBuilder();
-
-		if(this.getType() == SyncEdge.TYPE.SYNC_BLOCK){
-			SyncNode from 	= ((SyncNode) this.getFrom());
-			SyncNode to 	= ((SyncNode) this.getTo());
-			Node f = from.getNodes().get(0);
-			Node t = to.getNodes().get(0);
-			out.append(f.toGraphViz(hideName) + " -> " + t.toGraphViz(hideName) + " [ltail=" + SyncNode._CLUSTER_NAME + from.getID() + ",lhead=" + SyncNode._CLUSTER_NAME + to.getID() + ", color=blue,penwidth=1.0];\n");
-		} else {
-			Node from = (Node) this.getFrom();
-			Node to   = (Node) this.getTo();
-			out.append(from.toGraphViz(hideName) + " -> " + to.toGraphViz(hideName) + "[color=red,penwidth=1.0];\n");
-		}
-
-		return out.toString();
-	}
 }

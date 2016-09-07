@@ -3,7 +3,6 @@ package PCFG.structure;
 import PCFG.structure.anonym.AnonymClass;
 import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
-import PCFG.structure.edge.IEdge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class CFG implements ICFGElement {
+public class CFG {
 
 	private static int ID = 0;
 	public static final String _CLUSTER_NAME = "cluster_cfg_";
@@ -29,6 +28,10 @@ public class CFG implements ICFGElement {
 	public CFG(String name) {
 		this.name = name;
 		this.id = ID++;
+	}
+
+	public static int getID() {
+		return ID;
 	}
 
 	public List<Node> getV() {
@@ -75,7 +78,7 @@ public class CFG implements ICFGElement {
 		return nodes;
 	}
 
-	private List<SyncNode> getSyncNodesNoSubClass() {
+	public List<SyncNode> getSyncNodesNoSubClass() {
 		return syncNodes;
 	}
 
@@ -90,40 +93,6 @@ public class CFG implements ICFGElement {
 	public List<AnonymEdge> getAnonEdge() {
 		return anonEdge;
 	}
-
-	@Override
-	public String toGraphViz(boolean hideName) {
-		StringBuilder out = new StringBuilder();
-		out.append("\tsubgraph " + _CLUSTER_NAME + this.id + " {\n\t\tnode [style=filled];\n");
-		for(Node v :  this.getV()){
-			String color = "";
-			if(v.getConstraint() != null){
-				color = "[ color=salmon2 ]";
-			}
-			if(v.isStart()){
-				color = "[ color=deepskyblue ]";
-			}
-			if(v.isEnd()){
-				color = "[ color=darkorange1 ]";
-			}
-			out.append("\t" + v.toGraphViz(hideName) + color + ";\n");
-		}
-		for(SyncNode s : this.getSyncNodesNoSubClass()){
-			out.append("\t" + s.toGraphViz(hideName));
-		}
-		for(IEdge e : this.getE()){
-			out.append("\t" + e.toGraphViz(hideName));
-		}
-		for(AnonymClass a : this.getAnonNodes()){
-			out.append("\t" + a.toGraphViz(hideName));
-		}
-		for(AnonymEdge ae : this.getAnonEdge()){
-			out.append("\t" + ae.toGraphViz(hideName));
-		}
-		out.append("\t\tlabel = \"" + this.getName() + "\";\n\t\tcolor=green\n\t}\n");
-		return out.toString();
-	}
-
 
 	public void setStartEnd(){
 		if(this.getV().size() > 0) {

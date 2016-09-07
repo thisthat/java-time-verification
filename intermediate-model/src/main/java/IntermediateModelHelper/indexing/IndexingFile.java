@@ -9,7 +9,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import intermediateModel.visitors.ParseIM;
+import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
 import java.util.List;

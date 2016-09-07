@@ -1,4 +1,4 @@
-package intermediateModel.visitors;
+package intermediateModel.visitors.interfaces;
 
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.BuildEnvironment;
@@ -7,6 +7,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.List;
 

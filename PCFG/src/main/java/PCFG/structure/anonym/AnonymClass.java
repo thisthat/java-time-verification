@@ -39,17 +39,6 @@ public class AnonymClass implements INode, IHasCFG {
 	}
 
 	@Override
-	public String toGraphViz(boolean hideName) {
-		StringBuilder out = new StringBuilder();
-		out.append("\tsubgraph " + _CLUSTER_NAME +  this.id + " {\n\t\tnode [style=filled];\n");
-		for(CFG m : methods){
-			out.append(m.toGraphViz(hideName));
-		}
-		out.append("\t\tlabel = \"" + this.getName() + "\";\n\t\tcolor=red\n\t}\n");
-		return out.toString();
-	}
-
-	@Override
 	public void addCFG(CFG cfg) {
 		this.methods.add(cfg);
 	}

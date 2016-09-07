@@ -1,6 +1,5 @@
 package firstEvalPCFG;
 
-import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
@@ -8,7 +7,7 @@ import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;

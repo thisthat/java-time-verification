@@ -1,4 +1,4 @@
-package intermediateModel.visitors;
+package intermediateModel.visitors.interfaces;
 
 import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;

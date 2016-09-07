@@ -2,7 +2,7 @@ import IntermediateModelHelper.heuristic.definition.*;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Test;

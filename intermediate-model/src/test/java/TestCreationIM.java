@@ -4,7 +4,7 @@ import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.NotYetImplemented;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import XALConversion.util.Pair;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;

@@ -1,6 +1,5 @@
 package PCFG.structure.node;
 
-import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import org.javatuples.Triplet;
@@ -111,17 +110,6 @@ public class Node implements INode {
 
 	public int getLine() {
 		return line;
-	}
-
-	@Override
-	public String toGraphViz(boolean hideName) {
-		String name;
-		if(hideName) {
-			name = "s" + this.getID();
-		} else {
-			name = this.getName();
-		}
-		return "\t" + name;
 	}
 
 	@Override

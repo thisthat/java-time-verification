@@ -1,5 +1,6 @@
-package intermediateModel.visitors;
+package intermediateModel.visitors.interfaces;
 
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
@@ -12,6 +13,21 @@ import java.util.List;
  */
 public abstract class ConvertIM {
 
+	public void processClass(ASTClass c){
+		for(IASTMethod m : c.getMethods()){
+			dispatchMethod(m, c);
+		}
+	}
+
+	protected void dispatchMethod(IASTMethod m, ASTClass c){
+		dispachStm(m.getStms());
+		if(m instanceof ASTConstructor){
+			for(ASTStatic init : c.getStaticInit()){
+				dispachStm(init.getStms());
+			}
+		}
+	}
+
 	protected void dispachStm(List<IASTStm> stms){
 		for(IASTStm stm : stms){
 			dispachStm(stm);
@@ -21,7 +37,7 @@ public abstract class ConvertIM {
 	 * Ugly workaround to have pattern matching in haskel fashion on java
 	 * @param stm	Statement to analyze
 	 */
-	protected void dispachStm(IASTStm stm){
+	private void dispachStm(IASTStm stm){
 		if (stm instanceof ASTRE){
 			convertRE((ASTRE) stm);
 		}
@@ -74,59 +90,21 @@ public abstract class ConvertIM {
 	}
 
 
+	protected abstract void convertASTHiddenClass(ASTHiddenClass stm);
+	protected abstract void convertASTNewObject(ASTNewObject stm);
+	protected abstract void convertWhile(ASTWhile stm);
+	protected abstract void convertTry(ASTTry stm);
+	protected abstract void convertTryResource(ASTTryResources stm);
+	protected abstract void convertThrow(ASTThrow stm);
+	protected abstract void convertSynchronized(ASTSynchronized stm);
+	protected abstract void convertASTSwitch(ASTSwitch stm) ;
+	protected abstract void convertReturn(ASTReturn stm);
+	protected abstract void convertIf(ASTIf stm);
+	protected abstract void convertForeach(ASTForEach stm);
+	protected abstract void convertFor(ASTFor stm);
+	protected abstract void convertDoWhile(ASTDoWhile stm) ;
+	protected abstract void convertContinue(ASTContinue stm);
+	protected abstract void convertBreak(ASTBreak stm);
+	protected abstract void convertRE(ASTRE stm);
 
-
-	protected void convertASTHiddenClass(ASTHiddenClass stm) {
-
-	}
-	protected void convertASTNewObject(ASTNewObject stm) {
-
-	}
-	protected void convertWhile(ASTWhile stm) {
-
-	}
-
-	protected void convertTry(ASTTry stm) {
-
-	}
-
-	protected void convertTryResource(ASTTryResources stm) {
-
-	}
-
-	protected void convertThrow(ASTThrow stm) {
-
-	}
-
-	protected void convertSynchronized(ASTSynchronized stm) {
-
-	}
-
-	protected void convertASTSwitch(ASTSwitch stm) {
-
-	}
-
-	protected void convertReturn(ASTReturn stm) {
-
-	}
-
-	protected void convertIf(ASTIf stm) {
-	}
-
-	protected void convertForeach(ASTForEach stm) {
-	}
-
-	protected void convertFor(ASTFor stm) {
-
-	}
-
-	protected void convertDoWhile(ASTDoWhile stm) {
-	}
-
-	protected void convertContinue(ASTContinue stm) {
-	}
-
-	protected void convertBreak(ASTBreak stm){}
-
-	protected void convertRE(ASTRE stm){}
 }

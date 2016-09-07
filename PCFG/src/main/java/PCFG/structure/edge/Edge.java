@@ -1,6 +1,5 @@
 package PCFG.structure.edge;
 
-import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;
 
 /**
@@ -36,12 +35,4 @@ public class Edge implements IEdge {
 		return this.label;
 	}
 
-	@Override
-	public String toGraphViz(boolean hideName) {
-		StringBuilder out = new StringBuilder();
-		out.append(this.getFrom().toGraphViz(hideName) + " -> " + this.getTo().toGraphViz(hideName));
-		out.append("[ label = \"" + this.getLabel() + "\" ]");
-		out.append(";\n");
-		return out.toString();
-	}
 }

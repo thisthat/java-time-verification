@@ -4,14 +4,12 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.PCFG;
 import PCFG.visitors.IM2PCFG;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

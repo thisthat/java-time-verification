@@ -1,9 +1,8 @@
 package PCFG.structure;
 
+import PCFG.converter.ToDot;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.edge.SyncEdge;
-import PCFG.structure.edge.IEdge;
-import PCFG.structure.node.INode;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class PCFG implements ICFGElement, IHasCFG {
+public class PCFG implements IHasCFG {
 
 	List<SyncEdge> ESync = new ArrayList<>();
 	List<CFG> processes = new ArrayList<>();
@@ -104,25 +103,9 @@ public class PCFG implements ICFGElement, IHasCFG {
 		}
 	}
 
-	/**
-	 * PrettyPrint the PCFG in the Graphviz syntax
-	 * @param hideName	If the flag is set to true, the names are converted with a progressive number
-	 * @return	Graphviz representation of the PCFG
-	 */
-	//TODO rewrite this ugly method
-	public String toGraphViz(boolean hideName){
-		StringBuilder out = new StringBuilder();
-		out.append("digraph {\n\trankdir=TD;\n\tcompound=true;\n");
-
-		int i = 0;
-		for(CFG process : processes){
-			out.append(process.toGraphViz(hideName));
-		}
-		for(SyncEdge sEdge : ESync){
-			out.append(sEdge.toGraphViz(hideName));
-		}
-		out.append("}\n");
-		return out.toString();
+	public String toGraphViz(boolean hideNames){
+		ToDot toGraphViz = new ToDot(hideNames);
+		return toGraphViz.convert(this);
 	}
 
 	/**

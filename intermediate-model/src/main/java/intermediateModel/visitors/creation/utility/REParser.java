@@ -1,4 +1,4 @@
-package intermediateModel.visitors.utility;
+package intermediateModel.visitors.creation.utility;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;

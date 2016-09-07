@@ -1,12 +1,11 @@
-package intermediateModel.visitors;
+package intermediateModel.visitors.creation;
 
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.utility.Getter;
-import intermediateModel.visitors.utility.REParserJDT;
+import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
@@ -155,6 +154,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 		ASTStatic s = new ASTStatic(start, stop);
+		lastClass.addStaticInit(s);
 		lastMethod = s;
 		return true;
 	}

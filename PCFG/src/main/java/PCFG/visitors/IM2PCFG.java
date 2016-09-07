@@ -20,7 +20,7 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.ConvertIM;
+import intermediateModel.visitors.interfaces.ConvertIM;
 import intermediateModel.visitors.DefaultASTVisitor;
 import org.javatuples.KeyValue;
 import org.javatuples.Triplet;
@@ -316,7 +316,7 @@ public class IM2PCFG extends ConvertIM {
 		lastCfg = new CFG(c.getName() + "::" + m.getName());
 		lastPCFG.addCFG(lastCfg);
 		lastClass = c.getName();
-		dispachStm(m.getStms());
+		dispatchMethod(m, c);
 	}
 
 	private void addSingleClassStates(ASTHiddenClass c, IASTMethod m){
@@ -343,7 +343,6 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 
-	@Override
 	protected void convertForeach(ASTForEach stm) {
 
 		Node has_next = new Node("hasNext", "", Node.TYPE.FOREACH, stm.getStart(), stm.getEnd(), stm.getLine());
@@ -370,7 +369,6 @@ public class IM2PCFG extends ConvertIM {
 		this.lastNode = end_for;
 	}
 
-	@Override
 	protected void convertFor(ASTFor stm) {
 		Node init_for = new Node("_init_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(init_for);
@@ -402,7 +400,6 @@ public class IM2PCFG extends ConvertIM {
 		this.lastNode = end_for;
 	}
 
-	@Override
 	protected void convertDoWhile(ASTDoWhile stm) {
 		Node init_do_while = new Node("_init_do_while", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(init_do_while);
@@ -417,7 +414,6 @@ public class IM2PCFG extends ConvertIM {
 		this.lastNode = expr;
 	}
 
-	@Override
 	protected void convertWhile(ASTWhile stm) {
 		Node expr = new Node(stm.getExpr().getExpressionName(), stm.getExpr().getCode(), Node.TYPE.NORMAL, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState( expr );
@@ -430,7 +426,6 @@ public class IM2PCFG extends ConvertIM {
 		this.lastNode = expr;
 	}
 
-	@Override
 	protected void convertSynchronized(ASTSynchronized stm) {
 		syncNode = new SyncNode(stm.getExpr().getCode(), stm.getStart(), stm.getEnd(), stm.getLine(), this.lastClass );
 		this.lastCfg.addNode(syncNode);
@@ -438,7 +433,6 @@ public class IM2PCFG extends ConvertIM {
 		syncNode = null;
 	}
 
-	@Override
 	protected void convertIf(ASTIf stm) {
 		ASTRE ex = stm.getGuard();
 		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.NORMAL, ex.getStart(), ex.getEnd(), ex.getLine() );
@@ -458,7 +452,6 @@ public class IM2PCFG extends ConvertIM {
 		addState(end_if);
 	}
 
-	@Override
 	protected void convertTry(ASTTry stm) {
 
 		Node init_try = new Node("try", "", Node.TYPE.TRY, stm.getStart(), stm.getEnd(), stm.getLine());
@@ -516,7 +509,6 @@ public class IM2PCFG extends ConvertIM {
 		this.lastNode = end_try;
 	}
 
-	@Override
 	protected void convertTryResource(ASTTryResources stm) {
 		Node init_try = new Node("try", "", Node.TYPE.TRY, stm.getStart(), stm.getEnd(), stm.getLine());
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY, stm.getStart(), stm.getEnd(), stm.getLine());
@@ -580,7 +572,6 @@ public class IM2PCFG extends ConvertIM {
 		this.lastNode = end_try;
 	}
 
-	@Override
 	protected void convertASTSwitch(ASTSwitch stm) {
 
 		Node init_switch = new Node("switch", "", Node.TYPE.SWITCH, stm.getStart(), stm.getEnd(), stm.getLine());
@@ -619,7 +610,7 @@ public class IM2PCFG extends ConvertIM {
 		this.lastNode = end_switch;
 	}
 
-	@Override
+
 	protected void convertReturn(ASTReturn stm) {
 		int start, end, line;
 		start = stm.getExpr() != null ? stm.getExpr().getStart() : stm.getStart();
@@ -635,7 +626,6 @@ public class IM2PCFG extends ConvertIM {
 		);
 	}
 
-	@Override
 	protected void convertThrow(ASTThrow stm) {
 		int start, end, line;
 		start = stm.getExpr() != null ? stm.getExpr().getStart() : stm.getStart();
@@ -651,7 +641,6 @@ public class IM2PCFG extends ConvertIM {
 		);
 	}
 
-	@Override
 	protected void convertContinue(ASTContinue stm) {
 
 		addState(
@@ -659,14 +648,12 @@ public class IM2PCFG extends ConvertIM {
 		);
 	}
 
-	@Override
 	protected void convertBreak(ASTBreak stm) {
 		addState(
 				new Node("break", stm.getCode(), Node.TYPE.BREAK, stm.getStart(), stm.getEnd(), stm.getLine())
 		);
 	}
 
-	@Override
 	protected void convertRE(ASTRE r) {
 		Triplet<String, IASTStm, Class> c = getConstraint(r);
 		if(c != null){
@@ -686,16 +673,14 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	List<ASTHiddenClass> visitedHidden = new ArrayList<>();
-	@Override
 	protected void convertASTNewObject(ASTNewObject stm) {
 		ASTHiddenClass hc = stm.getHiddenClass();
 		if(hc != null && !visitedHidden.contains(hc)){
 			visitedHidden.add(hc);
-			this.convertASTHiddenClass(hc);
+			convertASTHiddenClass(hc);
 		}
 	}
 
-	@Override
 	protected void convertASTHiddenClass(ASTHiddenClass stm) {
 		for(IASTMethod m : stm.getMethods()){
 			addSingleClassStates(stm, m);

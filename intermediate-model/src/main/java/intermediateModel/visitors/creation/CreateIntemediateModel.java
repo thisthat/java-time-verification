@@ -1,4 +1,4 @@
-package intermediateModel.visitors;
+package intermediateModel.visitors.creation;
 
 
 
@@ -7,8 +7,8 @@ import parser.ASTSrc;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
-import intermediateModel.visitors.utility.Getter;
-import intermediateModel.visitors.utility.REParser;
+import intermediateModel.visitors.creation.utility.Getter;
+import intermediateModel.visitors.creation.utility.REParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.NotNull;

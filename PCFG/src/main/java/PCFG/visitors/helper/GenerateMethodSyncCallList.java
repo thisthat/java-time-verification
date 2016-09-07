@@ -18,7 +18,7 @@ import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModel.visitors.ParseIM;
+import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
