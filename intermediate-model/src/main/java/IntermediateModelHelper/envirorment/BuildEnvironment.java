@@ -4,11 +4,8 @@ package IntermediateModelHelper.envirorment;
 import com.google.common.annotations.Beta;
 import intermediateModel.interfaces.*;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.DefualtASTREVisitor;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +20,9 @@ import java.util.List;
  * @version %I%, %G%
  *
  */
-public class BuildEnvirormentClass {
+public class BuildEnvironment {
 
-	private static BuildEnvirormentClass instance = null;// = new BuildEnvirormentClass();
+	private static BuildEnvironment instance = null;// = new BuildEnvironment();
 	private static List<String> typeTimeRelevant;// = new ArrayList<>();
 	private static List<String> methodTimeRelevant;// = new ArrayList<>();
 
@@ -33,23 +30,23 @@ public class BuildEnvirormentClass {
 	 * Get the instance with lazy initialization.
 	 * @return The singleton
 	 */
-	public static synchronized BuildEnvirormentClass getInstance() {
+	public static synchronized BuildEnvironment getInstance() {
 		if(instance == null){
-			instance = new BuildEnvirormentClass();
+			instance = new BuildEnvironment();
 		}
 		return instance;
 	}
 
-	protected BuildEnvirormentClass(){
+	protected BuildEnvironment(){
 		try {
-			String path = BuildEnvirormentClass.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			String path = BuildEnvironment.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 			path = path.substring(0, path.lastIndexOf("/")) + "/conf/";
 			String f = path + "TypeTimeRelevant.txt";
 			typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
 			f = path + "MethodTimeRelevant.txt";
 			methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("Cannot read from FS. Trying to populate time relevant information from resources.");
 			//try to load from resources
 			String f = getClass().getClassLoader().getResource("descriptorTimeRelevant/TypeTimeRelevant.txt").getFile();
 			try {

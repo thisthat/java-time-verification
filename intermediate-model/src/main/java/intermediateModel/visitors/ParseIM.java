@@ -1,7 +1,7 @@
 package intermediateModel.visitors;
 
 import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
+import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class ParseIM {
 
 	protected Env base_env = new Env();
-	protected BuildEnvirormentClass build_base_env = BuildEnvirormentClass.getInstance();
+	protected BuildEnvironment build_base_env = BuildEnvironment.getInstance();
 
 	/**
 	 * The following method creates the basic environment for a class.
