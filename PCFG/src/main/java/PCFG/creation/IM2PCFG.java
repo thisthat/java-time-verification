@@ -1,4 +1,4 @@
-package PCFG.visitors;
+package PCFG.creation;
 
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
@@ -13,8 +13,8 @@ import PCFG.structure.edge.Edge;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
-import PCFG.visitors.helper.GenerateMethodSyncCallList;
-import PCFG.visitors.helper.SyncMethodCall;
+import PCFG.creation.helper.GenerateMethodSyncCallList;
+import PCFG.creation.helper.SyncMethodCall;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
@@ -42,7 +42,7 @@ import java.util.List;
  */
 public class IM2PCFG extends ConvertIM {
 
-	private List<KeyValue<String,ASTClass>> classes = new ArrayList<>();
+	private List<KeyValue<IASTMethod,ASTClass>> classes = new ArrayList<>();
 	private PCFG pcfg;
 	private IHasCFG lastPCFG = null;
 	private CFG  lastCfg;
@@ -52,11 +52,11 @@ public class IM2PCFG extends ConvertIM {
 	private boolean isMultiLabel = false;
 	private List<Node> multiLabel = new ArrayList<>();
 	private IndexingFile classIndexer = new IndexingFile();
-	private List<KeyValue<KeyValue<String,ASTClass>,IndexData>> indexs = new ArrayList<>();
+	private List<KeyValue<KeyValue<IASTMethod,ASTClass>,IndexData>> indexs = new ArrayList<>();
 	private String lastClass = "";
 	private List<Triplet<String, IASTStm, Class>> constraints = new ArrayList<>();
 
-	public IM2PCFG(List<KeyValue<String,ASTClass>> classes) {
+	public IM2PCFG(List<KeyValue<IASTMethod,ASTClass>> classes) {
 		this.classes = classes;
 	}
 
@@ -67,32 +67,29 @@ public class IM2PCFG extends ConvertIM {
 	public int getConstraintsSize() {
 		return constraints.size();
 	}
-	public List<Triplet<String, IASTStm, Class>> getConstraints() {
-		return constraints;
-	}
 
 	/**
 	 * Insert a class in the list of classes to process for creating the PCFG.
 	 * Moreover, the method will index the class and extract the time constraint in it.
 	 * @param c				Class to analyze
-	 * @param methodName	Method of the class to analyze
+	 * @param method		Method of the class to analyze
 	 */
-	public void addClass(ASTClass c, String methodName){
-		addClass(c, methodName, true);
+	public void addClass(ASTClass c, IASTMethod method){
+		addClass(c, method, true);
 	}
 	/**
 	 * Insert a class in the list of classes to process for creating the PCFG.
 	 * Moreover, the method will index the class and extract the time constraint in it.
 	 * @param c				Class to analyze
-	 * @param methodName	Method of the class to analyze
+	 * @param method		Method of the class to analyze
 	 * @param reindex		If true override the value in the DB
 	 */
-	public void addClass(ASTClass c, String methodName, boolean reindex){
+	public void addClass(ASTClass c, IASTMethod method, boolean reindex){
 
 		List<Triplet<String,IASTStm,Class>> currentClassConstraint = ApplyHeuristics.getConstraint(c);
 		IASTMethod met = null;
 		for(IASTMethod m : c.getMethods()){
-			if(m.getName().equals(methodName)){
+			if(m.equals(method)){
 				met = m;
 			}
 		}
@@ -106,7 +103,7 @@ public class IM2PCFG extends ConvertIM {
 				}
 			}
 		}
-		KeyValue<String, ASTClass> k = new KeyValue<>(methodName, c);
+		KeyValue<IASTMethod, ASTClass> k = new KeyValue<>(method, c);
 		this.classes.add(k);
 		IndexData index = classIndexer.index(c, reindex);
 		indexs.add( new KeyValue<>(k, index) );
@@ -117,19 +114,19 @@ public class IM2PCFG extends ConvertIM {
 		pcfg = new PCFG();
 		lastPCFG = pcfg;
 		//add all the states to the PCFG
-		for(KeyValue<String,ASTClass> c : classes){
+		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){
 				@Override
 				public void enterASTMethod(ASTMethod m) {
-					if(m.getName().equals(c.getKey())) {
+					if(m.equalsBySignature( c.getKey())) {
 						addSingleClassStates(c.getValue(), m);
 					}
 				}
 
 				@Override
 				public void enterASTConstructor(ASTConstructor m) {
-					if(m.getName().equals(c.getKey())) {
+					if(m.equalsBySignature(c.getKey())) {
 						addSingleClassStates(c.getValue(), m);
 					}
 				}
@@ -164,14 +161,14 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	private void calculateSyncCall() {
-		HashMap<KeyValue<String,ASTClass>,List<SyncMethodCall>> syncCalls = new HashMap<>();
+		HashMap<KeyValue<IASTMethod,ASTClass>,List<SyncMethodCall>> syncCalls = new HashMap<>();
 
-		for(KeyValue<String,ASTClass> c : classes){
+		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){
 				@Override
 				public void enterASTMethod(ASTMethod elm) {
-					if(elm.getName().equals(c.getKey())) {
+					if(elm.equalsBySignature(c.getKey())) {
 						ASTClass _class = c.getValue();
 						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
 						syncCalls.put(c, helper.calculateSyncCallList());
@@ -180,7 +177,7 @@ public class IM2PCFG extends ConvertIM {
 
 				@Override
 				public void enterASTConstructor(ASTConstructor elm) {
-					if(elm.getName().equals(c.getKey())) {
+					if(elm.equalsBySignature(c.getKey())) {
 						ASTClass _class = c.getValue();
 						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
 						syncCalls.put(c, helper.calculateSyncCallList());
@@ -190,8 +187,8 @@ public class IM2PCFG extends ConvertIM {
 		}
 
 		//we have the list of all -> create the link between 'em
-		for(KeyValue<String,ASTClass> cOut : classes){
-			for(KeyValue<String,ASTClass> cIn : classes){
+		for(KeyValue<IASTMethod,ASTClass> cOut : classes){
+			for(KeyValue<IASTMethod,ASTClass> cIn : classes){
 				if(cIn.equals(cOut)) continue;
 				List<SyncMethodCall> outter = syncCalls.get(cOut);
 				List<SyncMethodCall> inner  = syncCalls.get(cIn);
@@ -228,7 +225,7 @@ public class IM2PCFG extends ConvertIM {
 			malformedSyncEdge.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("error parsing: ");
-			for(KeyValue<String,ASTClass> c : classes){
+			for(KeyValue<IASTMethod,ASTClass> c : classes){
 				System.out.println("\t" + c.getValue().toString() + " :: " + c.getKey());
 			}
 		}
@@ -238,9 +235,9 @@ public class IM2PCFG extends ConvertIM {
 		//get the sync blocks of the methods that we are looking for
 		List<IndexSyncBlock> tmp_syncBlocks = new ArrayList<>();
 		List<IndexSyncBlock> syncBlocks = new ArrayList<>();
-		for(KeyValue<String,ASTClass> c : classes){
+		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			IndexData data = null;
-			for(KeyValue<KeyValue<String,ASTClass>, IndexData> k : indexs) {
+			for(KeyValue<KeyValue<IASTMethod,ASTClass>, IndexData> k : indexs) {
 				if(k.getKey().equals(c)){
 					data = k.getValue();
 				}
@@ -293,8 +290,8 @@ public class IM2PCFG extends ConvertIM {
 					if(outSync == null || inSync == null){
 						// we have smt in the hidden class -> How to handle?
 						System.err.println("Null pointer to sync block");
-						for(KeyValue<String,ASTClass> c : this.classes){
-							System.err.println(c.getKey() + " :: " + c.getValue().getPackageName() + "." + c.getValue().getName());
+						for(KeyValue<IASTMethod,ASTClass> c : this.classes){
+							System.err.println(c.getKey()  + " :: " + c.getValue().getPackageName() + "." + c.getValue().getName());
 						}
 						System.err.println("_____");
 					} else {

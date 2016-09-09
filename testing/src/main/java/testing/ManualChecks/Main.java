@@ -2,7 +2,7 @@ package testing.ManualChecks;
 
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.creation.IM2PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -11,6 +11,7 @@ import parser.Java2AST;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,8 +48,12 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, "releaseManual");
-		p.addClass(c1, "NetworkGlueLoopBack");
+		p.addClass(c, c.getMethodBySignature("releaseManual",
+				Arrays.asList("ThreadPoolTask")
+		));
+		p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
+				Arrays.asList("NetworkGlueListener")
+		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 

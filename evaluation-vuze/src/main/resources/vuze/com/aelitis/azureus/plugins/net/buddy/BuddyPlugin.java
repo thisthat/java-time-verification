@@ -3664,7 +3664,7 @@ BuddyPlugin
 	{
 		final long timeout = 120*1000;
 
-		final Object[] 		result 		= { null };
+		final Object[] 		resy	nick_name_param 		= { null };
 		final AESemaphore	result_sem 	= new AESemaphore( "BuddyPlugin:upt" );
 			
 		log( "Attempting to download torrent for " + Base32.encode( hash ));

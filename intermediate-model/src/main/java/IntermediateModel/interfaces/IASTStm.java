@@ -25,6 +25,7 @@ import java.util.List;
  * @version %I%, %G%
  */
 public abstract class IASTStm implements IASTVisitor{
+
 	/**
 	 * @deprecated  we uses the type of the class itself to identify the semantic of the object
 	 */

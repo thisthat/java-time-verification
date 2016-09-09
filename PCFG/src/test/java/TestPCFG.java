@@ -1,6 +1,6 @@
 import PCFG.structure.node.Node;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.creation.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
@@ -31,7 +31,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		//3 nodes
@@ -66,7 +66,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 7);
@@ -110,7 +110,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 10);
@@ -161,7 +161,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 6);
@@ -204,7 +204,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 13);
@@ -263,7 +263,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 6);
@@ -307,7 +307,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 5);
@@ -357,7 +357,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 5);
@@ -388,7 +388,7 @@ public class TestPCFG {
 		m = c.getMethods().get(1);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 5);
@@ -419,7 +419,7 @@ public class TestPCFG {
 		m = c.getMethods().get(2);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 6);
@@ -463,7 +463,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 12);
@@ -512,7 +512,7 @@ public class TestPCFG {
 		m = c.getMethods().get(1);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 11);
@@ -567,7 +567,7 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 13);
@@ -617,7 +617,7 @@ public class TestPCFG {
 		m = c.getMethods().get(1);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 11);
@@ -677,10 +677,10 @@ public class TestPCFG {
 		IM2PCFG pBreak 	  	= new IM2PCFG();
 		IM2PCFG pReturn 	= new IM2PCFG();
 		IM2PCFG pThrow 		= new IM2PCFG();
-		pContinue.addClass(	c, mContinue.getName());
-		pBreak.addClass(	c, mBreak.getName());
-		pReturn.addClass(	c, mReturn.getName());
-		pThrow.addClass(	c, mThrow.getName());
+		pContinue.addClass(	c, mContinue);
+		pBreak.addClass(	c, mBreak);
+		pReturn.addClass(	c, mReturn);
+		pThrow.addClass(	c, mThrow);
 		Node._ID = 0;
 		PCFG gContinue 	= pContinue.buildPCFG();
 		Node._ID = 0;

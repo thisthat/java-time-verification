@@ -97,17 +97,6 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 			out = out.substring(0,out.length()-1);
 		}
 		out += ") : " + returnType + " ";
-		if(exceptionsThrowed.size() > 0){
-			out += " throws ";
-			for(String v: exceptionsThrowed){
-				out += v.toString() + ",";
-			}
-			out = out.substring(0,out.length()-1);
-		}
-		out += "\n";
-		for(IASTStm e : stms){
-			out += e.toString() + "\n";
-		}
 		return out;
 	}
 
@@ -141,5 +130,18 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 			s.visit(visitor);
 		}
 		visitor.exitASTMethod(this);
+	}
+
+	public boolean equalsBySignature(IASTMethod c) {
+		if(!c.getName().equals(this.name)) return false;
+		if(c.getParameters().size() != this.parameters.size()) return false;
+		boolean flag = true;
+		List<ASTVariable> pars = c.getParameters();
+		for(int i = 0; i < this.parameters.size(); i++){
+			if(!pars.get(i).getType().equals(this.parameters.get(i).getType())){
+				flag = false;
+			}
+		}
+		return flag;
 	}
 }

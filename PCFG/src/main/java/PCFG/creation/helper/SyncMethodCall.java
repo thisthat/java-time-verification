@@ -1,4 +1,4 @@
-package PCFG.visitors.helper;
+package PCFG.creation.helper;
 
 import IntermediateModelHelper.indexing.DataTreeType;
 import intermediateModel.structure.ASTRE;

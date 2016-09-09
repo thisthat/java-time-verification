@@ -5,11 +5,11 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.structure.edge.SyncEdge;
+import PCFG.creation.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
-import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
@@ -18,8 +18,6 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -144,22 +142,22 @@ public class EvalTopFile {
 		for(ASTClass work_item : working_set){
 			List<ASTClass> listOfAllClasses = new ArrayList<>();
 			List<IndexData> d = db.getClassesThatImports(work_item.getPackageName(), work_item.getName());
+			List<String> datapaths = new ArrayList<>(); //to avoid duplicates due to inner classes
 			for(IndexData data : d){
-				listOfAllClasses.addAll( computeFile(data.getPath().replace("/data/giovanni/vuze", base_path) ) );
+				if(!datapaths.contains(data.getPath())){
+					datapaths.add(data.getPath());
+					listOfAllClasses.addAll( computeFile(data.getPath().replace("/data/giovanni/vuze", base_path) ) );
+				}
 			}
+			datapaths.clear();
+			datapaths = null;
 			//listOfAllClasses.addAll(computeFile("/Users/giovanni/repository/java-xal/evaluation-vuze/src/main/resources/vuze/com/aelitis/azureus/core/networkmanager/impl/udp/NetworkGlueLoopBack.java"));
 			//add myself as well!
 			listOfAllClasses.addAll(working_set);
 			int total = 0;
+			int n = work_item.getMethods().size();
 			for(ASTClass _class : listOfAllClasses){
-				total += ( work_item.getMethods().size() * _class.getMethods().size()  );
-				/*
-				for(IASTMethod method_work_item : work_item.getMethods()){
-					for(IASTMethod method_class : _class.getMethods()){
-						total++;
-					}
-				}
-				*/
+				total += ( n * _class.getMethods().size()  );
 			}
 			System.out.println("[" + work_item.toString() + "] Total number of methods: " + total);
 			int current = 0;
@@ -174,21 +172,30 @@ public class EvalTopFile {
 					}
 				}
 			}
+			listOfAllClasses.clear();
 			System.out.println();
 		}
 	}
 
 	private void compare(ASTClass work_item, IASTMethod method_work_item, ASTClass aClass, IASTMethod method_class, int i) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(work_item, method_work_item.getName(), false);
-		p.addClass(aClass , method_class.getName(), false);
+		p.addClass(work_item, method_work_item, false);
+		p.addClass(aClass , method_class, false);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();
+		int numberSyncBlock = 0, numberSyncCall = 0;
+		for(SyncEdge e : graph.getESync()){
+			if(e.getType() == SyncEdge.TYPE.SYNC_BLOCK){
+				numberSyncBlock++;
+			} else {
+				numberSyncCall++;
+			}
+		}
 		String pkgOut = work_item.getPackageName();
 		String pkgIn = aClass.getPackageName();
 		//System.out.println(cOut.getName() + ":" + mOut.getName() + "_vs_" + cIn.getName() + ":" + mIn.getName() + " = " + timeConstraint + "," + numberSync);
-		String out = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;", pkgOut, work_item.getName(), method_work_item.getName(), pkgIn, aClass.getName(), method_class.getName(), timeConstraint, numberSync, (timeConstraint + numberSync) );
+		String out = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s", pkgOut, work_item.getName(), method_work_item.getName(), pkgIn, aClass.getName(), method_class.getName(), timeConstraint, numberSyncBlock, numberSyncCall, (timeConstraint + numberSync) );
 		writer[i].println(out);
 		writer[i].flush();
 		p = null;
@@ -223,22 +230,6 @@ public class EvalTopFile {
 		}
 	}
 
-	private List<ASTClass> computeClasses(String _dir) {
-		File dir = new File(_dir);
-		String[] filter = {"java"};
-		Collection<File> files = FileUtils.listFiles(
-				dir,
-				filter,
-				true
-		);
-		Iterator i = files.iterator();
-		List<ASTClass> out = new ArrayList<>();
-		while (i.hasNext()) {
-			String filename = ((File)i.next()).getAbsolutePath();
-			out.addAll(computeFile(filename));
-		}
-		return out;
-	}
 	private List<ASTClass> computeFile(String filename){
 		Java2AST a = null;
 		List<ASTClass> out = new ArrayList<>();

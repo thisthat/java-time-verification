@@ -1,18 +1,20 @@
 package PCFG;
 
 import PCFG.converter.ToDot;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.creation.IM2PCFG;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,7 +41,9 @@ public class Main {
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
-		String method = "RelatedContentSearcher";
+		IASTMethod method = c.getMethodBySignature("RelatedContentSearcher",
+				Arrays.asList("RelatedContentManager","DistributedDatabaseTransferType","DHTPluginInterface","boolean")
+		);
 		p.addClass(c, method, true);
 
 		//add the second method
@@ -49,7 +53,7 @@ public class Main {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, "cancel", true);
+		//p.addClass(c, "cancel", true);
 
 		// build
 		PCFG graph = p.buildPCFG();
@@ -75,8 +79,12 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, "destroy");
-		p.addClass(c1, "getDescription");
+		p.addClass(c, c.getMethodBySignature("destroy",
+				Arrays.asList()
+		));
+		p.addClass(c1, c1.getMethodBySignature("getDescription",
+				Arrays.asList()
+		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 
@@ -103,8 +111,12 @@ public class Main {
 		ASTClass c = classes.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, "preInitialise");
-		p.addClass(c, "initWithCore");
+		p.addClass(c, c.getMethodBySignature("preInitialise",
+				Arrays.asList()
+		));
+		p.addClass(c, c.getMethodBySignature("initWithCore",
+				Arrays.asList("AzureusCore")
+		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 
