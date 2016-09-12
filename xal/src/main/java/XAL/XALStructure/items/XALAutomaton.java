@@ -3,6 +3,7 @@ package XAL.XALStructure.items;
 import XAL.XALStructure.XALAddState;
 import XAL.XALStructure.XALItem;
 import XAL.XALStructure.exception.XALMalformedException;
+import com.sun.tools.javac.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,11 @@ public class XALAutomaton extends XALItem implements XALAddState {
         this.id = id;
     }
 
-    /**
+	public XALActionPool getActionPool() {
+		return actionPool;
+	}
+
+	/**
      * Get the {@link XALGlobalState} of the automata
      * @return the list of variables of the automata
      */
@@ -301,4 +306,32 @@ public class XALAutomaton extends XALItem implements XALAddState {
     protected boolean checkConstriant() {
         return true;
     }
+
+	public XALState getNodeFromNumericID(int i){
+		for(XALState s : this.getStates()){
+			if(s instanceof XALSync) {
+				XALState r = ((XALSync)s).getNodeFromNumericID(i);
+				if(r != null) {
+					return r;
+				}
+			}
+			else if(s.getNumericID() == i){
+				return s;
+			}
+		}
+		return null;
+	}
+
+	public XALSync getSyncNodeFromNumericID(int id) {
+		for(XALState s : this.getStates()){
+			if(s instanceof XALSync) {
+				if(s.getNumericID() == id){
+					return (XALSync) s;
+				} else {
+					return ((XALSync)s).getSyncNodeFromNumericID(id);
+				}
+			}
+		}
+		return null;
+	}
 }

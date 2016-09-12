@@ -6,9 +6,14 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.*;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTAttributeAccess;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
@@ -29,6 +34,7 @@ public class IndexingFile extends ParseIM {
 	MongoConnector mongo;
 	String anonymousClass = "";
 	Stack<String> stackAnonymousClasses = new Stack<>();
+	ASTClass _c = null;
 
 	public IndexingFile() {
 		String dbname = MongoOptions.getInstance().getDbName();
@@ -57,6 +63,7 @@ public class IndexingFile extends ParseIM {
 	 * @return	The index data structure of the class.
 	 */
 	public IndexData index(ASTClass c, boolean forceReindex) {
+		this._c = c;
 		if(mongo.existClassIndex(c)){
 			if(forceReindex){
 				mongo.delete(c);
@@ -148,6 +155,55 @@ public class IndexingFile extends ParseIM {
 		is.setEnd(m.getEnd());
 		is.setLine(m.getLine());
 		is.setEnv( new IndexEnv(e));
+		boolean[] flag = {false};
+		//check if the expression of the current variable is possible to be used outside of the class
+		// can be used only in two cases:
+		// 1. The variable is in a return statement
+		// 2. Appears in left hand side of an assignment
+		ParseIM checkAccessibleFromOutside = new ParseIM() {
+			private boolean checkIASTRE(IASTRE e){
+				if(e instanceof ASTLiteral){
+					if(((ASTLiteral) e).getValue().equals(is.getExpr())){
+						return true;
+					}
+				}
+				if(e instanceof ASTAttributeAccess){
+					if(((ASTAttributeAccess) e).getAttributeName().equals(is.getExpr())){
+						return true;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			protected void analyzeASTRE(ASTRE r, Env env) {
+				if(r.getExpression() != null)
+					r.getExpression().visit(new DefualtASTREVisitor(){
+						@Override
+						public void enterASTAssignment(ASTAssignment elm) {
+							IASTRE left = elm.getLeft();
+							flag[0] = checkIASTRE(left);
+						}
+					});
+			}
+
+			@Override
+			protected void analyzeASTReturn(ASTReturn elm, Env env) {
+				ASTRE expr = elm.getExpr();
+				if(expr != null){
+					IASTRE e = expr.getExpression();
+					flag[0] = checkIASTRE(e);
+				}
+			}
+
+			public void start(ASTClass _c){
+				for(IASTMethod m : _c.getMethods()){
+					analyzeMethod(m);
+				}
+			}
+		};
+		checkAccessibleFromOutside.start(_c);
+		is.setAccessibleFromOutside(flag[0]);
 		return is;
 	}
 

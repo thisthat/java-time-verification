@@ -24,6 +24,7 @@ public class IndexSyncBlock {
 	int end = 0;
 	int line = 0;
 	IndexEnv env;
+	boolean isAccessibleFromOutside = false;
 
 	public IndexSyncBlock() {
 	}
@@ -40,7 +41,7 @@ public class IndexSyncBlock {
 	}
 
 
-	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env) {
+	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env, boolean isAccessibleFromOutside) {
 		this.packageName = packageName;
 		this.className = className;
 		this.methodName = methodName;
@@ -49,6 +50,7 @@ public class IndexSyncBlock {
 		this.end = end;
 		this.line = line;
 		this.env = env;
+		this.isAccessibleFromOutside = isAccessibleFromOutside;
 	}
 
 	public String getPackageName() {
@@ -113,6 +115,14 @@ public class IndexSyncBlock {
 
 	public void setEnv(IndexEnv env) {
 		this.env = env;
+	}
+
+	public boolean isAccessibleFromOutside() {
+		return isAccessibleFromOutside;
+	}
+
+	public void setAccessibleFromOutside(boolean accessibleFromOutside) {
+		isAccessibleFromOutside = accessibleFromOutside;
 	}
 
 	@Override

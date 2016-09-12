@@ -39,7 +39,7 @@ public class XALDocument extends XALItem {
     }
 
     public String getFilename() {
-        return filename;
+        return filename + ".xal";
     }
 
     /**
@@ -93,4 +93,24 @@ public class XALDocument extends XALItem {
         XALDocument that = (XALDocument) o;
         return getFilename() != null ? getFilename().equals(that.getFilename()) : that.getFilename() == null;
     }
+
+    public XALState getNodeFromNumericID(int id){
+        for(XALAutomaton a : this.automatons){
+            XALState s = a.getNodeFromNumericID(id);
+            if(s != null){
+                return s;
+            }
+        }
+        return null;
+    }
+
+	public XALState getSyncNodeFromNumericID(int id) {
+		for(XALAutomaton a : this.automatons){
+			XALState s = a.getSyncNodeFromNumericID(id);
+			if(s != null){
+				return s;
+			}
+		}
+		return null;
+	}
 }

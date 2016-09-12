@@ -42,6 +42,11 @@ public abstract class ParseIM {
 		return base_env;
 	}
 
+	/**
+	 * For anonymous definition
+	 */
+	public void start(ASTClass c){}
+
 
 	protected void analyzeMethod(IASTMethod method){
 		Env eMethod = new Env(base_env);
