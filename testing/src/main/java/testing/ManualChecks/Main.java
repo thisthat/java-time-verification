@@ -51,9 +51,12 @@ public class Main {
 		p.addClass(c, c.getMethodBySignature("releaseManual",
 				Arrays.asList("ThreadPoolTask")
 		));
-		p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
-				Arrays.asList("NetworkGlueListener")
+		p.addClass(c, c.getMethodBySignature("releaseManual",
+				Arrays.asList("ThreadPoolTask")
 		));
+		/*p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
+				Arrays.asList("NetworkGlueListener")
+		));*/
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 

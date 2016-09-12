@@ -28,6 +28,18 @@ public class IndexSyncBlock {
 	public IndexSyncBlock() {
 	}
 
+	public IndexSyncBlock(IndexSyncBlock s) {
+		this.packageName = s.getPackageName();
+		this.className = s.getClassName();
+		this.methodName = s.getMethodName();
+		this.expr = s.getExpr();
+		this.start = s.getStart();
+		this.end = s.getEnd();
+		this.line = s.getLine();
+		this.env = s.getEnv();
+	}
+
+
 	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env) {
 		this.packageName = packageName;
 		this.className = className;

@@ -4,6 +4,8 @@ import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
+import PCFG.creation.helper.CalculateSyncBlock;
+import PCFG.creation.helper.CalculateSyncCall;
 import PCFG.structure.CFG;
 import PCFG.structure.IHasCFG;
 import PCFG.structure.PCFG;
@@ -135,14 +137,13 @@ public class IM2PCFG extends ConvertIM {
 
 
 		//check for sync blocks
-		calculateSyncBlock();
+		CalculateSyncBlock.calculateSyncBlock(this.classes, this.indexs, this.pcfg);
 
 		//check for call on sync methods
-		calculateSyncCall();
+		CalculateSyncCall.calculateSyncCall(this.classes, this.pcfg);
 
 		//set time constraint
 		addTimeConstraint();
-
 
 		//optimize
 		pcfg.optimize();
@@ -160,153 +161,9 @@ public class IM2PCFG extends ConvertIM {
 		}
 	}
 
-	private void calculateSyncCall() {
-		HashMap<KeyValue<IASTMethod,ASTClass>,List<SyncMethodCall>> syncCalls = new HashMap<>();
-
-		for(KeyValue<IASTMethod,ASTClass> c : classes){
-			//consider also hidden methods
-			c.getValue().visit(new DefaultASTVisitor(){
-				@Override
-				public void enterASTMethod(ASTMethod elm) {
-					if(elm.equalsBySignature(c.getKey())) {
-						ASTClass _class = c.getValue();
-						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
-						syncCalls.put(c, helper.calculateSyncCallList());
-					}
-				}
-
-				@Override
-				public void enterASTConstructor(ASTConstructor elm) {
-					if(elm.equalsBySignature(c.getKey())) {
-						ASTClass _class = c.getValue();
-						GenerateMethodSyncCallList helper = new GenerateMethodSyncCallList(_class, elm);
-						syncCalls.put(c, helper.calculateSyncCallList());
-					}
-				}
-			});
-		}
-
-		//we have the list of all -> create the link between 'em
-		for(KeyValue<IASTMethod,ASTClass> cOut : classes){
-			for(KeyValue<IASTMethod,ASTClass> cIn : classes){
-				if(cIn.equals(cOut)) continue;
-				List<SyncMethodCall> outter = syncCalls.get(cOut);
-				List<SyncMethodCall> inner  = syncCalls.get(cIn);
-				for(SyncMethodCall outMethod : outter){
-					for(SyncMethodCall inMethod : inner){
-						if(outMethod.equalsBySignature(inMethod)){
-							createLink(outMethod, inMethod);
-						}
-					}
-				}
-			}
-		}
 
 
 
-	}
-
-	private void createLink(SyncMethodCall outMethod, SyncMethodCall inMethod) {
-		Node from = null;
-		Node to = null;
-		ASTRE codeOut = outMethod.getNode();
-		ASTRE codeIn  = inMethod.getNode();
-		for(Node v : this.pcfg.getV()){
-			if(v.equals(codeOut)){
-				from = v;
-			} else if(v.equals(codeIn)){
-				to = v;
-			}
-		}
-		try {
-			SyncEdge e = new SyncEdge(from, to);
-			this.pcfg.addSyncEdge(e);
-		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
-			malformedSyncEdge.printStackTrace();
-		} catch (Exception e) {
-			System.out.println("error parsing: ");
-			for(KeyValue<IASTMethod,ASTClass> c : classes){
-				System.out.println("\t" + c.getValue().toString() + " :: " + c.getKey());
-			}
-		}
-	}
-
-	private void calculateSyncBlock() {
-		//get the sync blocks of the methods that we are looking for
-		List<IndexSyncBlock> tmp_syncBlocks = new ArrayList<>();
-		List<IndexSyncBlock> syncBlocks = new ArrayList<>();
-		for(KeyValue<IASTMethod,ASTClass> c : classes){
-			IndexData data = null;
-			for(KeyValue<KeyValue<IASTMethod,ASTClass>, IndexData> k : indexs) {
-				if(k.getKey().equals(c)){
-					data = k.getValue();
-				}
-			}
-			for(IndexSyncBlock s : data.getListOfSyncBlocks()){
-				if(
-						s.getMethodName().equals(
-								c.getKey())
-						)
-				{
-					tmp_syncBlocks.add(s);
-				}
-			}
-		}
-		//remove duplicate -> it happens when we are using the same class to do the job
-		for(IndexSyncBlock is : tmp_syncBlocks){
-			boolean exists = false;
-			for(IndexSyncBlock actualSync : syncBlocks){
-				if(actualSync.equals(is)){
-					exists = true;
-				}
-			}
-			if(!exists){
-				syncBlocks.add(is);
-			}
-		}
-		//everyone is checked against everyone
-		for(IndexSyncBlock outter : syncBlocks){
-			IndexParameter varOutter = outter.getEnv().getVar(outter.getExpr());
-			if(varOutter == null) { //could be a method call or something else than a simple var :(
-				//for the moment we consider only variables
-				continue;
-			}
-			for(IndexSyncBlock inner : syncBlocks) {
-				if (outter == inner ||
-					(outter.getClassName().equals(inner.getClassName()) && outter.getPackageName().equals(inner.getPackageName()) && outter.getMethodName().equals(inner.getMethodName())) ) {
-					//we do not check myself with myself
-					continue;
-				}
-				IndexParameter varInner = inner.getEnv().getVar(inner.getExpr());
-				if(varInner == null){//could be a method call or something else than a simple var :(
-					//for the moment we consider only variables
-					continue;
-				}
-				if(varInner.getType().equals(varOutter.getType())){
-					//we gotta a match
-					SyncNode outSync = pcfg.getSyncNodeByExpr( outter.getExpr(), outter.getStart(), outter.getEnd(), outter.getLine() );
-					SyncNode inSync  = pcfg.getSyncNodeByExpr( inner.getExpr(), inner.getStart(), inner.getEnd(), inner.getLine() );
-					SyncEdge sEdge = null;
-					if(outSync == null || inSync == null){
-						// we have smt in the hidden class -> How to handle?
-						System.err.println("Null pointer to sync block");
-						for(KeyValue<IASTMethod,ASTClass> c : this.classes){
-							System.err.println(c.getKey()  + " :: " + c.getValue().getPackageName() + "." + c.getValue().getName());
-						}
-						System.err.println("_____");
-					} else {
-						//link between two different sync blocks
-						try {
-							sEdge = new SyncEdge(outSync, inSync);
-							pcfg.addSyncEdge(sEdge);
-						} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
-							malformedSyncEdge.printStackTrace();
-						}
-					}
-				}
-			}
-		}
-	}
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;

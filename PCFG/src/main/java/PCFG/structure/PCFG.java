@@ -130,4 +130,32 @@ public class PCFG implements IHasCFG {
 		}
 		return null;
 	}
+
+	/**
+	 * From an expression, retrieve the correlative synchronization node.
+	 * @param expr			Src code of the expression
+	 * @param start			Src code of the expression
+	 * @param end			Src code of the expression
+	 * @param line			Line number of the node
+	 * @param skip 			Number of node to skip
+	 * @return	The syncnode.
+	 */
+	public SyncNode getSyncNodeByExprSkip(String expr, int start, int end, int line, int skip){
+		for(SyncNode s : this.getSyncNodes()){
+			if(
+					s.getExpr().equals(expr) &&
+							//s.getClassName().equals(className) &&
+							s.getLine() == line &&
+							s.getStart() == start &&
+							s.getEnd() == end
+					) {
+				if(skip <= 0){
+					return s;
+				} else {
+					skip--;
+				}
+			}
+		}
+		return null;
+	}
 }
