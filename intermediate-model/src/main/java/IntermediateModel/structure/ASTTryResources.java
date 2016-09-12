@@ -62,6 +62,12 @@ public class ASTTryResources extends ASTTry implements IASTVisitor {
 		for(ASTRE r : resources){
 			r.visit(visitor);
 		}
-		super.visit(visitor);
+		tryBranch.visit(visitor);
+		for(ASTCatchBranch c : getCatchBranch()){
+			c.visit(visitor);
+		}
+		if(finallyBranch != null)
+			finallyBranch.visit(visitor);
+		visitor.exitASTTryResources(this);
 	}
 }

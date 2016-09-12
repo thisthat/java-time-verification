@@ -19,7 +19,7 @@ import IntermediateModelHelper.heuristic.definition.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;

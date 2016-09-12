@@ -1,13 +1,15 @@
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.creation.IM2PCFG;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +38,7 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
@@ -45,7 +47,7 @@ public class TestBugs {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		// build
 		PCFG g = p.buildPCFG();
@@ -55,7 +57,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 
 	}
@@ -80,7 +82,7 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
@@ -89,7 +91,7 @@ public class TestBugs {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		// build
 		PCFG g = p.buildPCFG();
@@ -99,7 +101,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -123,7 +125,7 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
@@ -132,7 +134,7 @@ public class TestBugs {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		// build
 		PCFG g = p.buildPCFG();
@@ -142,7 +144,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -166,7 +168,7 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
@@ -175,7 +177,7 @@ public class TestBugs {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		// build
 		PCFG g = p.buildPCFG();
@@ -185,7 +187,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -209,7 +211,7 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_7.java").getFile();
@@ -218,7 +220,7 @@ public class TestBugs {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		// build
 		PCFG g = p.buildPCFG();
@@ -228,7 +230,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 4 );
 	}
 
@@ -252,7 +254,7 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		String method = "run";
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_9.java").getFile();
@@ -261,7 +263,7 @@ public class TestBugs {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, method);
+		p.addClass(c, c.getMethodBySignature(method, new ArrayList<>()));
 
 		// build
 		PCFG g = p.buildPCFG();
@@ -271,7 +273,7 @@ public class TestBugs {
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 2 );
+		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 2 );
 	}
 

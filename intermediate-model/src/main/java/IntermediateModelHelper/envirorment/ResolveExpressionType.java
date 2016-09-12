@@ -2,9 +2,7 @@ package IntermediateModelHelper.envirorment;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.ParseRE;
-
-import java.util.Objects;
+import intermediateModel.visitors.interfaces.ParseRE;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

@@ -217,5 +217,26 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		for(ASTAttribute a : attributes){
 			a.visit(visitor);
 		}
+		visitor.exitASTClass(this);
+	}
+
+	public IASTMethod getMethodBySignature(String name, List<String> types){
+		IASTMethod out = null;
+		for(IASTMethod m : this.methods){
+			if(!m.getName().equals(name)) continue;
+			List<ASTVariable> pars = m.getParameters();
+			if(pars.size() == types.size()){
+				boolean flag = true;
+				for(int i = 0; i < pars.size(); i++){
+					if(!pars.get(i).getType().equals(types.get(i))){
+						flag = false;
+					}
+				}
+				if(flag){
+					out = m;
+				}
+			}
+		}
+		return out;
 	}
 }

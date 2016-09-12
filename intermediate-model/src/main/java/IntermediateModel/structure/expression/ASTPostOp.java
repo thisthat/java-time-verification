@@ -41,11 +41,16 @@ public class ASTPostOp extends IASTStm implements IASTRE {
 		visitor.enterAll(this);
 		visitor.enterASTPostOp(this);
 		var.visit(visitor);
+		visitor.exitASTPostOp(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTPostOp(this);
 		var.visit(visitor);
+		visitor.exitASTPostOp(this);
+		visitor.exitAll(this);
 	}
 }

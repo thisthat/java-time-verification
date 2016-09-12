@@ -83,5 +83,6 @@ public class ASTSynchronized extends IASTStm implements IASTHasStms, IASTVisitor
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTSynchronized(this);
 	}
 }

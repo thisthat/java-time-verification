@@ -97,5 +97,6 @@ public class ASTForEach  extends IASTStm implements IASTHasStms, IASTVisitor {
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTForEach(this);
 	}
 }

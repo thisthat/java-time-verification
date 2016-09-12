@@ -161,5 +161,6 @@ public class ASTFor extends IASTStm implements IASTHasStms, IASTVisitor {
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTFor(this);
 	}
 }

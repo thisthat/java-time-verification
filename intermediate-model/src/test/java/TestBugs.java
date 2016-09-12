@@ -1,7 +1,9 @@
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTHiddenClass;
+import intermediateModel.structure.ASTIf;
 import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 import parser.Java2AST;
@@ -56,5 +58,22 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 
+	}
+
+	@Test
+	public void notWellParsed() throws Exception {
+		String f =  TestBugs.class.getClassLoader().getResource("bugs/NotWellParsed.java").getFile();
+		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast,f);
+		ast.accept(v);
+		//we have only one class
+		ASTClass c = v.listOfClasses.get(0);
+		assertEquals(c.getMethods().size(), 1);
+		IASTMethod m = c.getMethods().get(0);
+		assertEquals(m.getStms().size(), 1);
+		assertEquals(m.getStms().get(0).getClass(), ASTIf.class);
+		ASTIf elm = (ASTIf) m.getStms().get(0);
+		assertEquals(elm.getIfBranch().getStms().size(), 6);
 	}
 }

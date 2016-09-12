@@ -79,6 +79,7 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 		visitor.enterASTAttribute(this);
 		if(expr != null)
 			expr.visit(visitor);
+		visitor.exitASTAttribute(this);
 	}
 
 	@Override

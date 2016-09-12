@@ -1,17 +1,20 @@
 package PCFG;
 
-import PCFG.visitors.helper.SyncMethodCall;
+import PCFG.converter.ToDot;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
 import parser.exception.ParseErrorsException;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.creation.IM2PCFG;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,7 +41,9 @@ public class Main {
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
-		String method = "RelatedContentSearcher";
+		IASTMethod method = c.getMethodBySignature("RelatedContentSearcher",
+				Arrays.asList("RelatedContentManager","DistributedDatabaseTransferType","DHTPluginInterface","boolean")
+		);
 		p.addClass(c, method, true);
 
 		//add the second method
@@ -48,40 +53,46 @@ public class Main {
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		c = v.listOfClasses.get(0);
-		p.addClass(c, "cancel", true);
+		//p.addClass(c, "cancel", true);
 
 		// build
 		PCFG graph = p.buildPCFG();
-		System.out.println(graph.toGraphViz(false));
+		ToDot toGraphViz = new ToDot(false);
+		System.out.println(toGraphViz.convert(graph));
 	}
 
 	public void run2() throws Exception {
-		IM2PCFG p = new IM2PCFG();
-
-		//first method
-		String f =  Main.class.getClassLoader().getResource("Thread_1.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("bugs/Timer.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
-		//we have only one class
-		ASTClass c = v.listOfClasses.get(0);
-		String method = "run";
-		p.addClass(c, method, true);
+		classes.addAll(v.listOfClasses);
+		ASTClass c = classes.get(0);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
+		f =  Main.class.getClassLoader().getResource("bugs/LightWeightSeed.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
-		c = v.listOfClasses.get(0);
-		p.addClass(c, method, true);
+		ASTClass c1 = v.listOfClasses.get(0);
 
-		// build
-		PCFG g = p.buildPCFG();
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, c.getMethodBySignature("destroy",
+				Arrays.asList()
+		));
+		p.addClass(c1, c1.getMethodBySignature("getDescription",
+				Arrays.asList()
+		));
+		PCFG graph = p.buildPCFG();
+		graph.optimize();
 
-		System.out.println(g.toGraphViz(false));
+		BufferedWriter writer = null;
+		writer = new BufferedWriter(new FileWriter("graph.dot"));
+		ToDot toGraphViz = new ToDot(false);
+		writer.write(toGraphViz.convert(graph));
+		writer.close();
 	}
 
 	public void run1() throws IOException, ParseErrorsException {
@@ -89,7 +100,7 @@ public class Main {
 
 
 		//first method
-		String f =  Main.class.getClassLoader().getResource("SubscriptionManagerImpl.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("smallSubscriptionManager.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -97,34 +108,24 @@ public class Main {
 
 		classes.addAll(v.listOfClasses);
 
-		//add the second method
-		f =  Main.class.getClassLoader().getResource("SubscriptionManagerImpl.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
-		ast = a.getContextJDT();
-		v = new JDTVisitor(ast, f);
-		ast.accept(v);
+		ASTClass c = classes.get(0);
 
-		classes.addAll(v.listOfClasses);
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, c.getMethodBySignature("preInitialise",
+				Arrays.asList()
+		));
+		p.addClass(c, c.getMethodBySignature("initWithCore",
+				Arrays.asList("AzureusCore")
+		));
+		PCFG graph = p.buildPCFG();
+		graph.optimize();
 
-		for(ASTClass cOut : classes){
-			for(ASTClass cIn : classes){
-				for(IASTMethod mOut : cOut.getMethods()){
-					for(IASTMethod mIn : cIn.getMethods()){
-						System.out.println(mOut.getName() + "--" + mIn.getName());
-						IM2PCFG p = new IM2PCFG();
-						p.addClass(cOut, mOut.getName());
-						p.addClass(cIn, mIn.getName());
-						PCFG graph = p.buildPCFG();
-						graph.optimize();
-						if(mIn.getName().equals("initWithCore")){
-							System.out.println(graph.toGraphViz(!true));
-							System.exit(0);
-						}
+		BufferedWriter writer = null;
+		writer = new BufferedWriter(new FileWriter("graph.dot"));
+		ToDot toGraphViz = new ToDot(false);
+		writer.write(toGraphViz.convert(graph));
+		writer.close();
 
-					}
-				}
-			}
-		}
 
 
 

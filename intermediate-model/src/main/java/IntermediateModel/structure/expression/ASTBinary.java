@@ -69,12 +69,17 @@ public class ASTBinary extends IASTStm implements IASTRE {
 		visitor.enterAll(this);
 		left.visit(visitor);
 		right.visit(visitor);
+		visitor.exitASTbinary(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTbinary(this);
 		left.visit(visitor);
 		right.visit(visitor);
+		visitor.exitASTbinary(this);
+		visitor.exitAll(this);
 	}
 }

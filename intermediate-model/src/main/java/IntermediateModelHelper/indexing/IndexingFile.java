@@ -9,10 +9,11 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import intermediateModel.visitors.ParseIM;
+import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  *
@@ -26,6 +27,8 @@ public class IndexingFile extends ParseIM {
 	String lastMethodName = "";
 	IndexData data;
 	MongoConnector mongo;
+	String anonymousClass = "";
+	Stack<String> stackAnonymousClasses = new Stack<>();
 
 	public IndexingFile() {
 		String dbname = MongoOptions.getInstance().getDbName();
@@ -138,7 +141,7 @@ public class IndexingFile extends ParseIM {
 	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
 		is.setPackageName(data.getClassPackage());
-		is.setClassName(data.getClassName());
+		is.setClassName(data.getClassName() + anonymousClass);
 		is.setMethodName(lastMethodName);
 		is.setExpr(m.getExpr().getCode());
 		is.setStart(m.getStart());
@@ -170,6 +173,18 @@ public class IndexingFile extends ParseIM {
 	}
 
 
+
+	@Override
+	protected void analyzeASTHiddenClass(ASTHiddenClass elm, Env env) {
+		stackAnonymousClasses.push(anonymousClass);
+		anonymousClass += ".anonymous_class";
+	}
+
+	@Override
+	protected void endAnalyzeHiddenClass(ASTHiddenClass elm, Env env) {
+		anonymousClass = stackAnonymousClasses.pop();
+	}
+
 	@Override
 	protected void analyzeASTRE(ASTRE r, Env env) {
 		CheckExpression.checkRE(r, env);
@@ -177,8 +192,6 @@ public class IndexingFile extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
-		//System.out.println(elm.toString());
-		//System.out.println("------");
 		data.addSyncBlock(prepareOutput(elm, env));
 	}
 

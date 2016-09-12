@@ -2,6 +2,7 @@ package intermediateModel.visitors;
 
 
 import IntermediateModelHelper.CheckExpression;
+import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
@@ -10,8 +11,8 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
+import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class ApplyHeuristics extends ParseIM {
 	protected List<Class<? extends SearchTimeConstraint>> strategiesTypes = new ArrayList<>();
 
 	public ApplyHeuristics(){
-		build_base_env = BuildEnvirormentClass.getInstance();
+		build_base_env = BuildEnvironment.getInstance();
 	}
-	public ApplyHeuristics(BuildEnvirormentClass env) {
+	public ApplyHeuristics(BuildEnvironment env) {
 		this.build_base_env = env;
 	}
 

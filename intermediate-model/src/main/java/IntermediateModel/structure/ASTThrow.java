@@ -47,5 +47,6 @@ public class ASTThrow extends IASTStm implements IASTVisitor {
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTThrow(this);
 		expr.visit(visitor);
+		visitor.exitASTThrow(this);
 	}
 }

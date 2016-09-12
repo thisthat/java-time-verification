@@ -6,6 +6,7 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
 import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import org.antlr.v4.runtime.Token;
@@ -47,9 +48,21 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 					var_name[0] = elm.getValue();
 				}
 			});
-			return expression.getClass().getSimpleName() + "_" + var_name[0];// + "_" + _ID++;
+			return expression.getClass().getSimpleName() + "_" + escape(var_name[0]);// + "_" + _ID++;
+		}
+		if(expression instanceof ASTMethodCall){
+			return "ASTMethodCall_" + ((ASTMethodCall) expression).getMethodName();
 		}
 		return expression.getClass().getSimpleName();// + "_" + _ID++;
+	}
+
+	private String escape(String name){
+		if(name == null) {
+			return "";
+		}
+		name = name.replace("\"","");
+		name = name.replace(" ","");
+		return name;
 	}
 
 	@Override
@@ -83,5 +96,6 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTRE(this);
 		expression.visit(visitor);
+		visitor.exitASTRE(this);
 	}
 }

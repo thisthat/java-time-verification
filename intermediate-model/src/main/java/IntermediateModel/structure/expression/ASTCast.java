@@ -48,12 +48,17 @@ public class ASTCast extends IASTStm implements IASTRE {
 		visitor.enterAll(this);
 		visitor.enterASTCast(this);
 		expr.visit(visitor);
+		visitor.exitASTCast(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTCast(this);
 		expr.visit(visitor);
+		visitor.exitASTCast(this);
+		visitor.exitAll(this);
 	}
 
 

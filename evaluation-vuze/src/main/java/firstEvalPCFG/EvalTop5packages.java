@@ -5,11 +5,10 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
-import PCFG.visitors.helper.SyncMethodCall;
+import PCFG.creation.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
@@ -85,8 +84,8 @@ public class EvalTop5packages {
 
 	private void compare(ASTClass work_item, IASTMethod method_work_item, ASTClass aClass, IASTMethod method_class, int i) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(work_item, method_work_item.getName(), false);
-		p.addClass(aClass , method_class.getName(), false);
+		p.addClass(work_item, method_work_item, false);
+		p.addClass(aClass , method_class, false);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();

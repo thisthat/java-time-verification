@@ -1,6 +1,6 @@
 package IntermediateModelHelper;
 
-import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
+import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
@@ -68,7 +68,7 @@ public class CheckExpression {
 	 */
 	public static Env setVariableInEnv(ASTVariable v, Env where){
 		v.setTimeCritical(
-				BuildEnvirormentClass.getInstance().hasVarTypeTimeRelated(v)
+				BuildEnvironment.getInstance().hasVarTypeTimeRelated(v)
 		);
 		where.addVar(v);
 		return where;

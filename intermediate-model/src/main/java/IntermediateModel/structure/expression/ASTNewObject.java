@@ -95,10 +95,13 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
+		visitor.exitASTNewObject(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTNewObject(this);
 		for(IASTRE p : parameters){
 			p.visit(visitor);
@@ -106,6 +109,8 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		if(this.hiddenClass != null){
 			this.hiddenClass.visit(visitor);
 		}
+		visitor.exitASTNewObject(this);
+		visitor.exitAll(this);
 	}
 }
 

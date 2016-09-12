@@ -1,5 +1,11 @@
 package PCFG.structure;
 
+import PCFG.converter.ToDot;
+import PCFG.structure.edge.Edge;
+import PCFG.structure.edge.SyncEdge;
+import PCFG.structure.node.Node;
+import PCFG.structure.node.SyncNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +15,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class PCFG {
+public class PCFG implements IHasCFG {
 
 	List<SyncEdge> ESync = new ArrayList<>();
 	List<CFG> processes = new ArrayList<>();
@@ -55,7 +61,7 @@ public class PCFG {
 	public List<Node> getV() {
 		List<Node> out = new ArrayList<>();
 		for(CFG cfg : processes){
-			out.addAll( cfg.getV() );
+			out.addAll( cfg.getAllNodes() );
 		}
 		return out;
 	}
@@ -84,90 +90,70 @@ public class PCFG {
 	 * Get the list of CFGs in the PCFG.
 	 * @return List of {@link CFG}
 	 */
-	public List<CFG> getProcesses() {
+	public List<CFG> getCFG() {
 		return processes;
 	}
 
 	/**
 	 * TODO: Implementing the optimization
 	 */
-	public void optimize(){}
-
-	/**
-	 * PrettyPrint the PCFG in the Graphviz syntax
-	 * @param hideName	If the flag is set to true, the names are converted with a progressive number
-	 * @return	Graphviz representation of the PCFG
-	 */
-	public String toGraphViz(boolean hideName){
-		StringBuilder out = new StringBuilder();
-		out.append("digraph {\nrankdir=TD;\ncompound=true;\n");
-
-		int i = 0;
-		for(CFG process : processes){
-			out.append("subgraph cluster_" + i++ + " {\nnode [style=filled];\n");
-			for(Node v :  process.getV()){
-				out.append(printNode(v, hideName) + ";\n");
-			}
-			for(SyncNode s : process.getSyncNodes()){
-				out.append("\tsubgraph cluster_0" + s.getID() + " {\n\tnode [style=filled];\n");
-				for(Node v : s.getNodes()){
-					out.append("\t" + printNode(v, hideName) + ";\n");
-				}
-				out.append("\tlabel = \"sync block on " + s.getExpr() + "\";\n\tcolor=blue\n}\n");
-			}
-			for(IEdge e : process.getE()){
-				out.append(printNode(e.getFrom(), hideName) + " -> " + printNode(e.getTo(), hideName));
-				out.append("[ label = \"" + e.getLabel() + "\" ]");
-				out.append(";\n");
-			}
-			out.append("label = \"" + process.getName() + "\";\n\tcolor=green\n}\n");
+	public void optimize(){
+		for(CFG p : processes){
+			p.setStartEnd();
 		}
-
-		for(SyncEdge sEdge : ESync){
-			if(sEdge.getType() == SyncEdge.TYPE.SYNC_BLOCK){
-				SyncNode from 	= ((SyncNode) sEdge.getFrom());
-				SyncNode to 	= ((SyncNode) sEdge.getTo());
-				Node f = from.getNodes().get(0);
-				Node t = to.getNodes().get(0);
-				out.append(printNode(f, hideName) + " -> " + printNode(t, hideName) + " [ltail=cluster_0" + from.getID() + ",lhead=cluster_0" + to.getID() + "];\n");
-			} else {
-				Node from = (Node) sEdge.getFrom();
-				Node to   = (Node) sEdge.getTo();
-				out.append(printNode(from, hideName) + " -> " + printNode(to, hideName) + "[color=red,penwidth=1.0];\n");
-			}
-		}
-		out.append("}\n");
-		return out.toString();
 	}
 
-	/**
-	 * Return the name of the Node
-	 * @param v			Node to print the name
-	 * @param hideName	Flag to check if use real name or ids
-	 * @return			Name of the node
-	 */
-	private static String printNode(INode v, boolean hideName) {
-		if(hideName) {
-			return "s" + v.getID();
-		}
-		return v.getName();
+	public String toGraphViz(boolean hideNames){
+		ToDot toGraphViz = new ToDot(hideNames);
+		return toGraphViz.convert(this);
 	}
 
 	/**
 	 * From an expression, retrieve the correlative synchronization node.
 	 * @param expr			Src code of the expression
+	 * @param start			Src code of the expression
+	 * @param end			Src code of the expression
 	 * @param line			Line number of the node
-	 * @param className		Class of the node to whom belongs to.
 	 * @return	The syncnode.
 	 */
-	public SyncNode getSyncNodeByExpr(String expr, int line, String className){
+	public SyncNode getSyncNodeByExpr(String expr, int start, int end, int line){
 		for(SyncNode s : this.getSyncNodes()){
 			if(
 					s.getExpr().equals(expr) &&
-					s.getClassName().equals(className) &&
-					s.getLine() == line
+					//s.getClassName().equals(className) &&
+					s.getLine() == line &&
+					s.getStart() == start &&
+					s.getEnd() == end
 			) {
 				return s;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * From an expression, retrieve the correlative synchronization node.
+	 * @param expr			Src code of the expression
+	 * @param start			Src code of the expression
+	 * @param end			Src code of the expression
+	 * @param line			Line number of the node
+	 * @param skip 			Number of node to skip
+	 * @return	The syncnode.
+	 */
+	public SyncNode getSyncNodeByExprSkip(String expr, int start, int end, int line, int skip){
+		for(SyncNode s : this.getSyncNodes()){
+			if(
+					s.getExpr().equals(expr) &&
+							//s.getClassName().equals(className) &&
+							s.getLine() == line &&
+							s.getStart() == start &&
+							s.getEnd() == end
+					) {
+				if(skip <= 0){
+					return s;
+				} else {
+					skip--;
+				}
 			}
 		}
 		return null;

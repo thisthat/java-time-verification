@@ -44,10 +44,15 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 	public void visit(ASTREVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTAttributeAccess(this);
+		visitor.exitASTAttributeAccess(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTAttributeAccess(this);
+		visitor.exitASTAttributeAccess(this);
+		visitor.exitAll(this);
 	}
 }

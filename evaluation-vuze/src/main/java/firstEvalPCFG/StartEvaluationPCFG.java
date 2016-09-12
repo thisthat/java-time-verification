@@ -1,14 +1,13 @@
 package firstEvalPCFG;
 
-import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.creation.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
@@ -74,8 +73,8 @@ public class StartEvaluationPCFG {
 
 	private void compare(ASTClass cOut, IASTMethod mOut, ASTClass cIn, IASTMethod mIn) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(cOut, mOut.getName(), false);
-		p.addClass(cIn , mIn.getName(), false);
+		p.addClass(cOut, mOut, false);
+		p.addClass(cIn , mIn, false);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();

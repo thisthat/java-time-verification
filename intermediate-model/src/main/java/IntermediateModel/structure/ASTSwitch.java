@@ -158,5 +158,6 @@ public class ASTSwitch extends IASTStm {
 		for(ASTCase c : cases){
 			c.visit(visitor);
 		}
+		visitor.exitASTSwitch(this);
 	}
 }

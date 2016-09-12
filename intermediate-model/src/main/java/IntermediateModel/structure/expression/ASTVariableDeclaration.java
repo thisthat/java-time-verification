@@ -76,13 +76,18 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 		visitor.enterASTVariableDeclaration(this);
 		if(expr != null)
 			expr.visit(visitor);
+		visitor.exitASTVariableDeclaration(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTVariableDeclaration(this);
 		if(expr != null)
 			expr.visit(visitor);
+		visitor.exitASTVariableDeclaration(this);
+		visitor.exitAll(this);
 	}
 
 }

@@ -42,10 +42,15 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 	public void visit(ASTREVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTLiteral(this);
+		visitor.exitASTLiteral(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTLiteral(this);
+		visitor.exitASTLiteral(this);
+		visitor.exitAll(this);
 	}
 }

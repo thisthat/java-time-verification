@@ -39,5 +39,6 @@ public class ASTHiddenClass extends ASTClass implements IASTVisitor {
 		for(ASTAttribute a : attributes){
 			a.visit(visitor);
 		}
+		visitor.exitASTHiddenClass(this);
 	}
 }

@@ -4,7 +4,7 @@ import IntermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class TestEnvirorment {
 
 	@Test
 	public void TestShowBug18() throws Exception {
-		String filename = getClass().getClassLoader().getResource("AttributeTimeRelated.java").getFile();
+		String filename = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);

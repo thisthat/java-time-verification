@@ -12,8 +12,6 @@ class Thread_2 extends Thread {
 		System.out.toString("Start the thread");
 		int do_smth = this.init();
 		this.init("");
-
-
 	}
 
 	private synchronized int init(){

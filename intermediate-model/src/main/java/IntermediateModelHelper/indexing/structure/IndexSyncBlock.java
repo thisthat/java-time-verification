@@ -28,6 +28,18 @@ public class IndexSyncBlock {
 	public IndexSyncBlock() {
 	}
 
+	public IndexSyncBlock(IndexSyncBlock s) {
+		this.packageName = s.getPackageName();
+		this.className = s.getClassName();
+		this.methodName = s.getMethodName();
+		this.expr = s.getExpr();
+		this.start = s.getStart();
+		this.end = s.getEnd();
+		this.line = s.getLine();
+		this.env = s.getEnv();
+	}
+
+
 	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env) {
 		this.packageName = packageName;
 		this.className = className;
@@ -101,5 +113,37 @@ public class IndexSyncBlock {
 
 	public void setEnv(IndexEnv env) {
 		this.env = env;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof IndexSyncBlock)) return false;
+
+		IndexSyncBlock that = (IndexSyncBlock) o;
+
+		if (getStart() != that.getStart()) return false;
+		if (getEnd() != that.getEnd()) return false;
+		if (getLine() != that.getLine()) return false;
+		if (getPackageName() != null ? !getPackageName().equals(that.getPackageName()) : that.getPackageName() != null)
+			return false;
+		if (getClassName() != null ? !getClassName().equals(that.getClassName()) : that.getClassName() != null)
+			return false;
+		if (getMethodName() != null ? !getMethodName().equals(that.getMethodName()) : that.getMethodName() != null)
+			return false;
+		return getExpr() != null ? getExpr().equals(that.getExpr()) : that.getExpr() == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getPackageName() != null ? getPackageName().hashCode() : 0;
+		result = 31 * result + (getClassName() != null ? getClassName().hashCode() : 0);
+		result = 31 * result + (getMethodName() != null ? getMethodName().hashCode() : 0);
+		result = 31 * result + (getExpr() != null ? getExpr().hashCode() : 0);
+		result = 31 * result + getStart();
+		result = 31 * result + getEnd();
+		result = 31 * result + getLine();
+		return result;
 	}
 }

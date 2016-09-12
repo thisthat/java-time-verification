@@ -1,9 +1,9 @@
-import PCFG.structure.Node;
+import PCFG.structure.node.Node;
 import PCFG.structure.PCFG;
-import PCFG.visitors.IM2PCFG;
+import PCFG.creation.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.JDTVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 import parser.Java2AST;
@@ -31,14 +31,14 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		//3 nodes
 		assertEquals(g.getV().size(), 3);
 		assertEquals(g.getE().size(), 2);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 		/*assertEquals("digraph {\n" +
 				"rankdir=LR;\n" +
@@ -66,13 +66,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 7);
 		assertEquals(g.getE().size(), 7);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*assertEquals("digraph {\n" +
@@ -110,13 +110,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 10);
 		assertEquals(g.getE().size(), 10);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 		/*
 		assertEquals("digraph {\n" +
@@ -161,13 +161,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 6);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -204,13 +204,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 13);
 		assertEquals(g.getE().size(), 14);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -263,13 +263,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 6);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -307,14 +307,14 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 5);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 1 );
 		assertEquals(g.getSyncNodes().get(0).getNodes().size(), 3 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -357,13 +357,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 5);
 		assertEquals(g.getE().size(), 5);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -388,13 +388,13 @@ public class TestPCFG {
 		m = c.getMethods().get(1);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 5);
 		assertEquals(g.getE().size(), 5);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -419,13 +419,13 @@ public class TestPCFG {
 		m = c.getMethods().get(2);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 6);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -463,13 +463,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 12);
 		assertEquals(g.getE().size(), 15);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -512,13 +512,13 @@ public class TestPCFG {
 		m = c.getMethods().get(1);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 11);
 		assertEquals(g.getE().size(), 12);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -567,13 +567,13 @@ public class TestPCFG {
 
 		// Build the PCFG
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 13);
 		assertEquals(g.getE().size(), 16);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -617,13 +617,13 @@ public class TestPCFG {
 		m = c.getMethods().get(1);
 		// Build the PCFG
 		p = new IM2PCFG();
-		p.addClass(c, m.getName());
+		p.addClass(c, m);
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 11);
 		assertEquals(g.getE().size(), 12);
 		assertEquals(g.getSyncNodes().size(), 0 );
-		assertEquals(g.getProcesses().size(), 1 );
+		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
 
 		/*
@@ -677,10 +677,10 @@ public class TestPCFG {
 		IM2PCFG pBreak 	  	= new IM2PCFG();
 		IM2PCFG pReturn 	= new IM2PCFG();
 		IM2PCFG pThrow 		= new IM2PCFG();
-		pContinue.addClass(	c, mContinue.getName());
-		pBreak.addClass(	c, mBreak.getName());
-		pReturn.addClass(	c, mReturn.getName());
-		pThrow.addClass(	c, mThrow.getName());
+		pContinue.addClass(	c, mContinue);
+		pBreak.addClass(	c, mBreak);
+		pReturn.addClass(	c, mReturn);
+		pThrow.addClass(	c, mThrow);
 		Node._ID = 0;
 		PCFG gContinue 	= pContinue.buildPCFG();
 		Node._ID = 0;

@@ -1,12 +1,12 @@
 package IntermediateModelHelper.heuristic.definition;
 
+import IntermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
-import IntermediateModelHelper.envirorment.BuildEnvirormentClass;
 import IntermediateModelHelper.envirorment.Env;
 
 /**
@@ -51,7 +51,7 @@ public class ThreadTime extends SearchTimeConstraint {
 				IASTRE calee = mc.getExprCallee();
 				if( calee instanceof ASTLiteral){
 					String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
-					if( env.existVarName(var_name) && BuildEnvirormentClass.getInstance().hasVarTypeTimeRelated(env.getVar(var_name))) //is a var of the env
+					if( env.existVarName(var_name) && BuildEnvironment.getInstance().hasVarTypeTimeRelated(env.getVar(var_name))) //is a var of the env
 					{
 						found = true;
 					}
@@ -65,7 +65,7 @@ public class ThreadTime extends SearchTimeConstraint {
 						//we have to use a failover technique
 						className = attribute.getCode();
 					}
-					if(BuildEnvirormentClass.getInstance().isTypeTimeRelated(className)){
+					if(BuildEnvironment.getInstance().isTypeTimeRelated(className)){
 						found = true;
 					}
 				}
@@ -88,7 +88,7 @@ public class ThreadTime extends SearchTimeConstraint {
 				//in form var.join()
 				if(mc.getExprCallee() instanceof ASTLiteral){
 					String var_name = ((ASTLiteral) mc.getExprCallee()).getValue();
-					if( env.existVarName(var_name) && BuildEnvirormentClass.getInstance().hasVarTypeTimeRelated(env.getVar(var_name))){
+					if( env.existVarName(var_name) && BuildEnvironment.getInstance().hasVarTypeTimeRelated(env.getVar(var_name))){
 						found = true;
 					}
 				}

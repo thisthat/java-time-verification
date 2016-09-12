@@ -165,5 +165,6 @@ public class ASTIf extends IASTStm implements IASTVisitor {
 		ifBranch.visit(visitor);
 		if(elseBranch != null)
 			elseBranch.visit(visitor);
+		visitor.exitASTIf(this);
 	}
 }
