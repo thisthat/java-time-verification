@@ -3,7 +3,6 @@ package XAL.XALStructure.items;
 import XAL.XALStructure.XALAddState;
 import XAL.XALStructure.XALItem;
 import XAL.XALStructure.exception.XALMalformedException;
-import com.sun.tools.javac.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

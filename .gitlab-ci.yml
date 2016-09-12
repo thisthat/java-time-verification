@@ -3,8 +3,8 @@ before_script:
 
 test:
   script:
-    - mvn test
+    - mvn clean test
 
 compile:
   script:
-    - mvn compile
+    - mvn clean compile
