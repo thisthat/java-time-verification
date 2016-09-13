@@ -167,7 +167,7 @@ public class IM2PCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		lastCfg = new CFG(c.getName() + "::" + m.getName());
+		lastCfg = new CFG(c.getName() + "::" + m.getName(), c.hashCode());
 		lastPCFG.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispatchMethod(m, c);
@@ -185,7 +185,7 @@ public class IM2PCFG extends ConvertIM {
 		lastCfg.addEdge(anonEdge);
 		//init
 		lastNode = null;
-		lastCfg = new CFG("anonymous" + "::" + m.getName());
+		lastCfg = new CFG("anonymous" + "::" + m.getName(), lastCfg.getHashcode());
 		lastPCFG = anon;
 		lastPCFG.addCFG(lastCfg);
 		lastClass = "anonymous";

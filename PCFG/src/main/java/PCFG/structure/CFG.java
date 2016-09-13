@@ -24,14 +24,20 @@ public class CFG {
 	List<AnonymEdge> anonEdge = new ArrayList<>();
 	String name;
 	int id;
+	int hashcode;
 
-	public CFG(String name) {
+	public CFG(String name, int hashcode) {
 		this.name = name;
 		this.id = ID++;
+		this.hashcode = hashcode;
 	}
 
-	public static int getID() {
-		return ID;
+	public int getID() {
+		return this.id;
+	}
+
+	public int getHashcode() {
+		return hashcode;
 	}
 
 	public List<Node> getV() {

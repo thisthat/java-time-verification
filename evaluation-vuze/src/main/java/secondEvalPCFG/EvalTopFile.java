@@ -166,7 +166,7 @@ public class EvalTopFile {
 					for(IASTMethod method_class : _class.getMethods()){
 						current++;
 						double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
-						//if(perc < 23.8f) continue;
+						//if(perc < 99.5f) continue;
 						System.out.print(String.format("\r[%s %%]", perc ));
 						compare(work_item, method_work_item, _class, method_class, i);
 					}
@@ -221,7 +221,9 @@ public class EvalTopFile {
 		//packages[1] = base_path + "Thread_1.java"; //promising class. high number of syncblock and avg imported
 
 		//index whole vuze
+		System.out.println("[Start indexing]");
 		if(_INDEXING) new IndexingProject(_EVALUATION_NAME).indexProject(base_path, true);
+		System.out.println("[Finish indexing]");
 	}
 
 	private void close() {

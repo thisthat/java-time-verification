@@ -58,7 +58,7 @@ public class MongoConnector {
 		options.setStoreNulls(true);
 		morphia.getMapper().setOptions(options);
 		morphia.map(IndexData.class);
-		datastore.ensureIndexes();
+		//datastore.ensureIndexes();
 		datastore.ensureCaps();
 	}
 

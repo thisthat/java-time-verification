@@ -1,5 +1,11 @@
 package IntermediateModelHelper.indexing.structure;
 
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.ASTVariable;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The following class is used to save some data in a MongoDB.
  * The data stored consists in:
@@ -19,6 +25,7 @@ public class IndexSyncBlock {
 	String packageName = "";
 	String className = "";
 	String methodName = "";
+	List<String> signature = new ArrayList<>();
 	String expr = null;
 	int start = 0;
 	int end = 0;
@@ -38,10 +45,11 @@ public class IndexSyncBlock {
 		this.end = s.getEnd();
 		this.line = s.getLine();
 		this.env = s.getEnv();
+		this.signature = s.getSignature();
 	}
 
 
-	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env, boolean isAccessibleFromOutside) {
+	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env, boolean isAccessibleFromOutside, List<String> signature) {
 		this.packageName = packageName;
 		this.className = className;
 		this.methodName = methodName;
@@ -51,6 +59,7 @@ public class IndexSyncBlock {
 		this.line = line;
 		this.env = env;
 		this.isAccessibleFromOutside = isAccessibleFromOutside;
+		this.signature = signature;
 	}
 
 	public String getPackageName() {
@@ -125,6 +134,14 @@ public class IndexSyncBlock {
 		isAccessibleFromOutside = accessibleFromOutside;
 	}
 
+	public List<String> getSignature() {
+		return signature;
+	}
+
+	public void setSignature(List<String> signature) {
+		this.signature = signature;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -155,5 +172,17 @@ public class IndexSyncBlock {
 		result = 31 * result + getEnd();
 		result = 31 * result + getLine();
 		return result;
+	}
+
+	public boolean isInMethod(IASTMethod method) {
+		if(!this.methodName.equals(method.getName())) return false;
+		if(this.signature.size() != method.getParameters().size()) return false;
+		boolean flag = true;
+		for(int i = 0; i < this.signature.size(); i++){
+			if(!signature.get(i).equals(method.getParameters().get(i).getType())){
+				flag = false;
+			}
+		}
+		return flag;
 	}
 }

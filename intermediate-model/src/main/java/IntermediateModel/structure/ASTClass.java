@@ -5,6 +5,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
+import org.javatuples.KeyValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -238,5 +239,9 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 			}
 		}
 		return out;
+	}
+
+	public boolean isSameClass(ASTClass _class) {
+		return this.packageName.equals(_class.getPackageName()) && this.name.equals(_class.getName());
 	}
 }

@@ -30,6 +30,7 @@ import java.util.Stack;
 public class IndexingFile extends ParseIM {
 
 	String lastMethodName = "";
+	List<String> signatureLastMethodName = new ArrayList<>();
 	IndexData data;
 	MongoConnector mongo;
 	String anonymousClass = "";
@@ -155,6 +156,7 @@ public class IndexingFile extends ParseIM {
 		is.setEnd(m.getEnd());
 		is.setLine(m.getLine());
 		is.setEnv( new IndexEnv(e));
+		is.setSignature(signatureLastMethodName);
 		boolean[] flag = {false};
 		//check if the expression of the current variable is possible to be used outside of the class
 		// can be used only in two cases:
@@ -177,7 +179,7 @@ public class IndexingFile extends ParseIM {
 
 			@Override
 			protected void analyzeASTRE(ASTRE r, Env env) {
-				if(r.getExpression() != null)
+				if(r != null && r.getExpression() != null)
 					r.getExpression().visit(new DefualtASTREVisitor(){
 						@Override
 						public void enterASTAssignment(ASTAssignment elm) {
@@ -221,6 +223,10 @@ public class IndexingFile extends ParseIM {
 		//check method
 		for (IASTMethod m : c.getMethods()) {
 			lastMethodName = m.getName();
+			signatureLastMethodName.clear();
+			for(ASTVariable p : m.getParameters()){
+				signatureLastMethodName.add(p.getType());
+			}
 			Env eMethod = new Env(base_env);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			super.analyze(m.getStms(), eMethod);
