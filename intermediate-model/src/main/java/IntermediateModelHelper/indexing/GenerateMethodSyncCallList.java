@@ -1,19 +1,15 @@
-package PCFG.creation.helper;
+package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.indexing.DataTreeType;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
-import PCFG.structure.edge.SyncEdge;
+import IntermediateModelHelper.indexing.structure.SyncMethodCall;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTImport;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
@@ -27,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * With the following class we help the construction of the {@link SyncEdge}.
  * The idea is to parse the method that we are currently looking through and collect all the information about
  * what are the method calls to synchronized method.
  *
@@ -38,11 +32,13 @@ import java.util.Map;
 public class GenerateMethodSyncCallList extends ParseIM {
 
 	ASTClass _class;
-	IASTMethod _method;
+	List<IASTMethod> _methods = new ArrayList<>();
 	List<SyncMethodCall> syncCalls = new ArrayList<>();
 	MongoConnector mongo;
 	Map<String, List<IndexMethod>> syncMethods = new HashMap<>();
 	List<IndexData> imports = new ArrayList<>();
+	String lastMethod;
+	List<String> lastSignature = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -53,7 +49,22 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	 */
 	public GenerateMethodSyncCallList(ASTClass _class, IASTMethod _method) {
 		this._class = _class;
-		this._method = _method;
+		this._methods.add(_method);
+		mongo = MongoConnector.getInstance(MongoOptions.getInstance().getDbName());
+		processImports();
+
+	}
+
+	/**
+	 * Constructor.
+	 * It creates the object and pre-process the {@link ASTClass} in input collecting from the database all the info
+	 * from the import section.
+	 * @param _class	Class under analysis
+	 * @param _methods	List of Methods of the class under analysis
+	 */
+	public GenerateMethodSyncCallList(ASTClass _class, List<IASTMethod> _methods) {
+		this._class = _class;
+		this._methods = _methods;
 		mongo = MongoConnector.getInstance(MongoOptions.getInstance().getDbName());
 		processImports();
 
@@ -101,7 +112,14 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	public List<SyncMethodCall> calculateSyncCallList(){
 		syncCalls.clear();
 		super.createBaseEnv(_class);
-		super.analyzeMethod(this._method);
+		for(IASTMethod m : this._methods){
+			lastMethod = m.getName();
+			lastSignature.clear();
+			for(ASTVariable p : m.getParameters()){
+				lastSignature.add(p.getType());
+			}
+			super.analyzeMethod(m);
+		}
 		return syncCalls;
 	}
 
@@ -161,7 +179,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									for(int i = 0, max = m.getParameters().size(); i < max; i++){
 										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
 									}
-									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars));
+									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars, lastMethod, lastSignature));
 								}
 							}
 						}
@@ -191,7 +209,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								for(int i = 0, max = m.getParameters().size(); i < max; i++){
 									methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 								}
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars));
+								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars, lastMethod, lastSignature));
 							}
 						}
 					}
@@ -224,7 +242,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 										for(int i = 0, max = m.getParameters().size(); i < max; i++){
 											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 										}
-										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars));
+										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars, lastMethod, lastSignature));
 									}
 								}
 							}
@@ -250,7 +268,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 										for(int i = 0, max = m.getParameters().size(); i < max; i++){
 											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
 										}
-										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars));
+										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars, lastMethod, lastSignature));
 									}
 								}
 							}
@@ -283,7 +301,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									for(int i = 0, max = m.getParameters().size(); i < max; i++){
 										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 									}
-									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars));
+									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars, lastMethod, lastSignature));
 								}
 							}
 						}

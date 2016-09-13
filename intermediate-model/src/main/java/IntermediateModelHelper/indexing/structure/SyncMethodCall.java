@@ -1,4 +1,4 @@
-package PCFG.creation.helper;
+package IntermediateModelHelper.indexing.structure;
 
 import IntermediateModelHelper.indexing.DataTreeType;
 import intermediateModel.structure.ASTRE;
@@ -14,16 +14,28 @@ import java.util.List;
 public class SyncMethodCall {
 	private String _packageName;
 	private String _className;
-	private String _methodName;
+	private String _inMethodName;
+	private List<String> _signatureInMethod;
+	private String _methodCalled;
 	private List<Pair<String, String>> paramsType = new ArrayList<>();
 	private ASTRE node;
 
-	public SyncMethodCall(String _packageName, String _className, String _methodName, ASTRE node, List<Pair<String, String>> paramsType) {
+	public SyncMethodCall(String _packageName, String _className, String _methodCalled, ASTRE node, List<Pair<String, String>> paramsType, String _inMethodName, List<String> _signatureInMethod) {
 		this._packageName = _packageName;
 		this._className = _className;
-		this._methodName = _methodName;
+		this._methodCalled = _methodCalled;
 		this.node = node;
 		this.paramsType = paramsType;
+		this._inMethodName = _inMethodName;
+		this._signatureInMethod = _signatureInMethod;
+	}
+
+	public String get_inMethodName() {
+		return _inMethodName;
+	}
+
+	public List<String> get_signatureInMethod() {
+		return _signatureInMethod;
 	}
 
 	public List<Pair<String, String>> getParamsType() {
@@ -38,13 +50,13 @@ public class SyncMethodCall {
 		return _className;
 	}
 
-	public String get_methodName() {
-		return _methodName;
+	public String get_methodCalled() {
+		return _methodCalled;
 	}
 
 	@Override
 	public String toString() {
-		return _packageName + "." + _className + "#" + _methodName;
+		return _packageName + "." + _className + "#" + _methodCalled;
 	}
 
 	public ASTRE getNode() {
@@ -62,11 +74,11 @@ public class SyncMethodCall {
 			return false;
 		if (get_className() != null ? !get_className().equals(that.get_className()) : that.get_className() != null)
 			return false;
-		return get_methodName() != null ? get_methodName().equals(that.get_methodName()) : that.get_methodName() == null;
+		return get_methodCalled() != null ? get_methodCalled().equals(that.get_methodCalled()) : that.get_methodCalled() == null;
 	}
 
 	public boolean equalsBySignature(SyncMethodCall o){
-		if(!this._methodName.equals(o.get_methodName())) return false; //not same method name
+		if(!this._methodCalled.equals(o.get_methodCalled())) return false; //not same method name
 		if(this.paramsType.size() != o.getParamsType().size()) return false; //not same number of parameters
 		for(int i = 0, max = this.paramsType.size(); i < max; i++){ //not same type for each par
 			String type1 = this.paramsType.get(i).getValue0();

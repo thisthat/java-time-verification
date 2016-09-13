@@ -26,7 +26,7 @@ public class Main {
 
 		MongoOptions.getInstance().setDbName("vuze_top_file");
 
-		new Main().run1();
+		new Main().run();
 	}
 
 

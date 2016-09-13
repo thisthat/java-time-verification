@@ -79,7 +79,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.imports = imports;
 	}
 
-	public List<? extends IASTMethod> getMethods() {
+	public List<IASTMethod> getMethods() {
 		return methods;
 	}
 

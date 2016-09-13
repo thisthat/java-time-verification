@@ -27,7 +27,7 @@ import java.util.Stack;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class IndexingFile extends ParseIM {
+public class IndexingSyncCalls extends ParseIM {
 
 	String lastMethodName = "";
 	List<String> signatureLastMethodName = new ArrayList<>();
@@ -37,12 +37,12 @@ public class IndexingFile extends ParseIM {
 	Stack<String> stackAnonymousClasses = new Stack<>();
 	ASTClass _c = null;
 
-	public IndexingFile() {
+	public IndexingSyncCalls() {
 		String dbname = MongoOptions.getInstance().getDbName();
 		mongo = MongoConnector.getInstance(dbname);
 	}
 
-	public IndexingFile(MongoConnector mongo) {
+	public IndexingSyncCalls(MongoConnector mongo) {
 		this.mongo = mongo;
 	}
 
@@ -109,11 +109,6 @@ public class IndexingFile extends ParseIM {
 		}
 		mongo.add(data);
 		//collect calls to a sync method
-		/*GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, c.getMethods());
-		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();
-		for(SyncMethodCall call : calls){
-			mongo.add(new IndexSyncCall(call));
-		}*/
 		return data;
 	}
 

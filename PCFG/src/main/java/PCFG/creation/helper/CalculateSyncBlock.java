@@ -51,13 +51,13 @@ public class CalculateSyncBlock {
 		boolean isSameClass = class_1.getValue().isSameClass(class_2.getValue());
 		//everyone is checked against everyone
 		for(IndexSyncBlock outter : syncBlocks_1){
-			IndexParameter varOutter = outter.getEnv().getVar(outter.getExpr());
+			IndexParameter varOutter = outter.getSyncVar(); //outter.getEnv().getVar(outter.getExpr());
 			if(varOutter == null) { //could be a method call or something else than a simple var :(
 				//for the moment we consider only variables
 				continue;
 			}
 			for(IndexSyncBlock inner : syncBlocks_2) {
-				IndexParameter varInner = inner.getEnv().getVar(inner.getExpr());
+				IndexParameter varInner = inner.getSyncVar(); //inner.getEnv().getVar(inner.getExpr());
 				if(varInner == null && isSameClass){
 					if(inner.getExpr().equals(outter.getExpr())){
 						//we have a match on this or ClassName.class

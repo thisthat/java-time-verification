@@ -2,8 +2,6 @@ package PCFG.creation;
 
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexParameter;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.creation.helper.CalculateSyncBlock;
 import PCFG.creation.helper.CalculateSyncCall;
 import PCFG.structure.CFG;
@@ -12,11 +10,8 @@ import PCFG.structure.PCFG;
 import PCFG.structure.anonym.AnonymClass;
 import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
-import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
-import PCFG.creation.helper.GenerateMethodSyncCallList;
-import PCFG.creation.helper.SyncMethodCall;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
@@ -28,7 +23,6 @@ import org.javatuples.KeyValue;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -311,9 +305,10 @@ public class IM2PCFG extends ConvertIM {
 		Node init_try = new Node("try", "", Node.TYPE.TRY, stm.getStart(), stm.getEnd(), stm.getLine());
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY, stm.getStart(), stm.getEnd(), stm.getLine());
 		Node end_try = new Node("endtry", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
-		this.lastCfg.addNode(finally_try);
-		this.lastCfg.addNode(end_try);
 		addState(init_try);
+		this.lastCfg.addNode(finally_try);
+		//this.lastCfg.addNode(end_try);
+
 
 
 		super.dispachStm(stm.getTryBranch().getStms());
@@ -361,15 +356,15 @@ public class IM2PCFG extends ConvertIM {
 		}
 
 		this.lastNode = end_try;
+		this.lastCfg.addNode(end_try);
 	}
 
 	protected void convertTryResource(ASTTryResources stm) {
 		Node init_try = new Node("try", "", Node.TYPE.TRY, stm.getStart(), stm.getEnd(), stm.getLine());
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY, stm.getStart(), stm.getEnd(), stm.getLine());
 		Node end_try = new Node("endtry", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
-		this.lastCfg.addNode(finally_try);
-		this.lastCfg.addNode(end_try);
 		addState(init_try);
+		this.lastCfg.addNode(finally_try);
 
 		super.dispachStm(stm.getTryBranch().getStms());
 
@@ -424,6 +419,7 @@ public class IM2PCFG extends ConvertIM {
 		this.lastCfg.addEdge(toEnd);
 
 		this.lastNode = end_try;
+		this.lastCfg.addNode(end_try);
 	}
 
 	protected void convertASTSwitch(ASTSwitch stm) {

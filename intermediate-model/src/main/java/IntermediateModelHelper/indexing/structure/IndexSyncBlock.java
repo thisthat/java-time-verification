@@ -30,7 +30,7 @@ public class IndexSyncBlock {
 	int start = 0;
 	int end = 0;
 	int line = 0;
-	IndexEnv env;
+	IndexParameter syncVar;
 	boolean isAccessibleFromOutside = false;
 
 	public IndexSyncBlock() {
@@ -44,12 +44,12 @@ public class IndexSyncBlock {
 		this.start = s.getStart();
 		this.end = s.getEnd();
 		this.line = s.getLine();
-		this.env = s.getEnv();
+		this.syncVar = s.getSyncVar();
 		this.signature = s.getSignature();
 	}
 
 
-	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env, boolean isAccessibleFromOutside, List<String> signature) {
+	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, List<String> signature) {
 		this.packageName = packageName;
 		this.className = className;
 		this.methodName = methodName;
@@ -57,9 +57,17 @@ public class IndexSyncBlock {
 		this.start = start;
 		this.end = end;
 		this.line = line;
-		this.env = env;
+		this.syncVar = syncVar;
 		this.isAccessibleFromOutside = isAccessibleFromOutside;
 		this.signature = signature;
+	}
+
+	public IndexParameter getSyncVar() {
+		return syncVar;
+	}
+
+	public void setSyncVar(IndexParameter syncVar) {
+		this.syncVar = syncVar;
 	}
 
 	public String getPackageName() {
@@ -116,14 +124,6 @@ public class IndexSyncBlock {
 
 	public void setLine(int line) {
 		this.line = line;
-	}
-
-	public IndexEnv getEnv() {
-		return env;
-	}
-
-	public void setEnv(IndexEnv env) {
-		this.env = env;
 	}
 
 	public boolean isAccessibleFromOutside() {

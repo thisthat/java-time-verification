@@ -1,6 +1,7 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
 import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexSyncCall;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -43,6 +44,7 @@ public class MongoConnector {
 	private final String __IMPORTS 			= "imports";
 	private final String __FULL_NAME 		= "fullName";
 	private final String __COLLECTION_NAME 	= "IndexData";
+	private final String __SYNC_CALL 		= "IndexSyncCall";
 
 	/**
 	 * Protected constructor. We want to give a database as singleton.
@@ -57,8 +59,8 @@ public class MongoConnector {
 		options.setStoreEmpties(true);
 		options.setStoreNulls(true);
 		morphia.getMapper().setOptions(options);
-		morphia.map(IndexData.class);
-		//datastore.ensureIndexes();
+		morphia.mapPackage("IntermediateModelHelper.indexing.structure");
+		datastore.ensureIndexes();
 		datastore.ensureCaps();
 	}
 
@@ -131,6 +133,14 @@ public class MongoConnector {
 		//System.out.println("Saving " + indexStructureClass.getClassName());
 		try {
 			datastore.save(indexStructureClass);
+		} catch (BsonSerializationException e){
+			System.err.println("File too big, cannot handle it!");
+		}
+	}
+
+	public void add(IndexSyncCall indexSyncCall){
+		try {
+			datastore.save(indexSyncCall);
 		} catch (BsonSerializationException e){
 			System.err.println("File too big, cannot handle it!");
 		}

@@ -1,4 +1,5 @@
 import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.interfaces.IASTMethod;
@@ -26,6 +27,7 @@ public class TestBugs {
 	@Before
 	public void setUp() throws Exception {
 		MongoOptions.getInstance().setDbName("intermediate_model_" + this.getClass().getSimpleName());
+		MongoConnector.getInstance().ensureIndexes();
 	}
 
 	@Test
