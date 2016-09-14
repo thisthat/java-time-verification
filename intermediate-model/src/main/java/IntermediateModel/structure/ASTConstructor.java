@@ -2,6 +2,7 @@ package intermediateModel.structure;
 
 import intermediateModel.interfaces.*;
 import org.antlr.v4.runtime.Token;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,15 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		return "void";
 	}
 
+	@Override
+	public List<String> getSignature(){
+		List<String> out = new ArrayList<>();
+		for(ASTVariable p : parameters){
+			out.add(p.getType());
+		}
+		return out;
+	}
+
 	public void setExceptionsThrowed(List<String> exceptionsThrowed) {
 		this.exceptionsThrowed = exceptionsThrowed;
 	}
@@ -74,6 +84,19 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		List<ASTVariable> pars = c.getParameters();
 		for(int i = 0; i < this.parameters.size(); i++){
 			if(!pars.get(i).getType().equals(this.parameters.get(i).getType())){
+				flag = false;
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean equalsBySignature(String name, List<Pair<String, String>> signature) {
+		if(name.equals(this.name)) return false;
+		if(signature.size() != this.parameters.size()) return false;
+		boolean flag = true;
+		for(int i = 0; i < this.parameters.size(); i++){
+			if(!signature.get(i).getValue1().equals(this.parameters.get(i).getType())){
 				flag = false;
 			}
 		}

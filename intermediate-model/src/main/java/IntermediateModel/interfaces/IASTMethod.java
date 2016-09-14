@@ -2,6 +2,7 @@ package intermediateModel.interfaces;
 
 
 import intermediateModel.structure.ASTVariable;
+import org.javatuples.Pair;
 
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	String getName();
 	List<String> getExceptionsThrowed();
 	String getReturnType();
+	List<String> getSignature();
+	boolean equalsBySignature(IASTMethod c);
+	boolean equalsBySignature(String name, List<Pair<String,String>> signature);
 }

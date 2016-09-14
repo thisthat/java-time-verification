@@ -1,6 +1,6 @@
 package IntermediateModelHelper.indexing.structure;
 
-import IntermediateModelHelper.indexing.DataTreeType;
+import IntermediateModelHelper.types.DataTreeType;
 import intermediateModel.structure.ASTRE;
 import org.javatuples.Pair;
 
@@ -14,13 +14,14 @@ import java.util.List;
 public class SyncMethodCall {
 	private String _packageName;
 	private String _className;
+	private List<String> _signatureMethodCalled = new ArrayList<>();
 	private String _inMethodName;
 	private List<String> _signatureInMethod;
 	private String _methodCalled;
 	private List<Pair<String, String>> paramsType = new ArrayList<>();
 	private ASTRE node;
 
-	public SyncMethodCall(String _packageName, String _className, String _methodCalled, ASTRE node, List<Pair<String, String>> paramsType, String _inMethodName, List<String> _signatureInMethod) {
+	public SyncMethodCall(String _packageName, String _className, String _methodCalled, List<String> signatureMethodCalled, ASTRE node, List<Pair<String, String>> paramsType, String _inMethodName, List<String> _signatureInMethod) {
 		this._packageName = _packageName;
 		this._className = _className;
 		this._methodCalled = _methodCalled;
@@ -28,6 +29,11 @@ public class SyncMethodCall {
 		this.paramsType = paramsType;
 		this._inMethodName = _inMethodName;
 		this._signatureInMethod = _signatureInMethod;
+		this._signatureMethodCalled = signatureMethodCalled;
+	}
+
+	public List<String> get_signatureMethodCalled() {
+		return _signatureMethodCalled;
 	}
 
 	public String get_inMethodName() {

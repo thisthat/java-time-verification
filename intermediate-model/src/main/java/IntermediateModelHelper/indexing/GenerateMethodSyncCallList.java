@@ -6,6 +6,8 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
 import IntermediateModelHelper.indexing.structure.SyncMethodCall;
+import IntermediateModelHelper.types.DataTreeType;
+import IntermediateModelHelper.types.ResolveTypes;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
@@ -77,9 +79,10 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	private void processImports() {
 		for(ASTImport imp : this._class.getImports()){
 			String pkg = imp.getPackagename();
-			imports = mongo.getFromImport(pkg);
+			List<IndexData> current = mongo.getFromImport(pkg);
+			if(current.size() > 0) imports.addAll(current);
 			//System.out.println(Arrays.toString(d.toArray()));
-			for(IndexData index : imports){
+			for(IndexData index : current){
 				String objName = index.getClassName();
 				List<IndexMethod> names = new ArrayList<>();
 				for(IndexMethod m : index.getListOfSyncMethods()){
@@ -141,6 +144,9 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		if(r == null || r.getExpression() == null){
 			return;
 		}
+		String inMethod = lastMethod;
+		List<String> inSignature = new ArrayList<>();
+		inSignature.addAll(lastSignature);
 		r.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
@@ -151,7 +157,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 					actual_pars.add(
 							new Pair<String, String>(
 									env.getExprType(p),
-									getImportPkgFromType(env.getExprType(p))
+									ResolveTypes.getImportPkgFromType(imports, env.getExprType(p))
 							)
 
 					);
@@ -179,7 +185,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									for(int i = 0, max = m.getParameters().size(); i < max; i++){
 										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
 									}
-									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars, lastMethod, lastSignature));
+									//local call
+									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature));
 								}
 							}
 						}
@@ -206,10 +213,12 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							}
 							if(flag) {
 								List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+								List<String> signature = new ArrayList<String>();
 								for(int i = 0, max = m.getParameters().size(); i < max; i++){
 									methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+									signature.add(m.getParameters().get(i).getType());
 								}
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars, lastMethod, lastSignature));
+								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature));
 							}
 						}
 					}
@@ -239,10 +248,12 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									}
 									if(flag) {
 										List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+										List<String> signature = new ArrayList<String>();
 										for(int i = 0, max = m.getParameters().size(); i < max; i++){
 											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+											signature.add(m.getParameters().get(i).getType());
 										}
-										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, methodPars, lastMethod, lastSignature));
+										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature));
 									}
 								}
 							}
@@ -268,7 +279,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 										for(int i = 0, max = m.getParameters().size(); i < max; i++){
 											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
 										}
-										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, r, methodPars, lastMethod, lastSignature));
+										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature));
 									}
 								}
 							}
@@ -276,7 +287,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 					}
 				}
 				if(expr instanceof ASTMethodCall){
-					String type = getTypeMethodCall((ASTMethodCall) expr, env);
+					String type = ResolveTypes.getTypeMethodCall(imports, _class, (ASTMethodCall) expr, env);
 					if(type != null){
 						//we have a type
 						if(syncMethods.containsKey(type)){
@@ -298,10 +309,12 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								}
 								if(flag) {
 									List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+									List<String> signature = new ArrayList<String>();
 									for(int i = 0, max = m.getParameters().size(); i < max; i++){
 										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+										signature.add(m.getParameters().get(i).getType());
 									}
-									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, r, actual_pars, lastMethod, lastSignature));
+									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, actual_pars, inMethod, inSignature));
 								}
 							}
 						}
@@ -311,112 +324,6 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		});
 	}
 
-	private String getImportPkgFromType(String s) {
-		String out = null;
-		for(IndexData i : imports){
-			DataTreeType tImp = null;
-			try {
-				tImp = new DataTreeType(i.getClassName(), i.getClassPackage());
-				if(tImp.isTypeCompatible(s)){
-					out = i.getClassPackage();
-				}
-			} catch (Exception e) {
-				continue;
-			}
-		}
-		return out;
-	}
 
-	/**
-	 * Resolve the type of a method call.
-	 * Possible cases:
-	 * <ul>
-	 *     <li><b>Attribute access ( Class.method() )</b>: search in the imports the class that has that method</li>
-	 *     <li><b>Variable ( var.method() )</b>: <ul>
-	 *         <li><b>this</b>: search the method in the current class</li>
-	 *         <li><b>variable</b>: get the variable type from the {@link Env} and get the method from its class</li>
-	 *     </ul></li>
-	 *     <li><b>Method call ( methodn()._.method1().method0() )</b>: Resolve the type of the last call recursively and then search for the method definition in the class of the last type</li>
-	 * </ul>
-	 * @param expr	Expression which contains the method call to resolve the type
-	 * @return		Name of the type or null if we cannot solve it
-	 */
-	private String getTypeMethodCall(ASTMethodCall expr, Env e){
-		IASTRE calee = expr.getExprCallee();
-		String methodCalled = expr.getMethodName();
-		if(calee instanceof ASTAttributeAccess){
-			final String[] varTypeHelper = new String[1];
-			((ASTAttributeAccess) calee).getVariableName().visit(new DefualtASTREVisitor(){
-				@Override
-				public void enterASTLiteral(ASTLiteral elm) {
-					varTypeHelper[0] = elm.getValue();
-				}
-			});
-			String varType = varTypeHelper[0];
-			IndexData _class = searchInImports(varType);
-			if(_class != null){
-				//we have smth to work with
-				for(IndexMethod m : _class.getListOfMethods()){
-					if(m.getName().equals(methodCalled)){
-						return m.getReturnType();
-					}
-				}
-			}
-		}
-		if(calee instanceof ASTLiteral){
-			String varName = ((ASTLiteral) calee).getValue();
-			if(varName.equals("this")){
-				//local search
-				for(IASTMethod m : _class.getMethods()){
-					if(m.getName().equals(methodCalled)){
-						return m.getReturnType();
-					}
-				}
-			} else {
-				//get type in env
-				IASTVar var = e.getVar(varName);
-				if(var != null){
-					//exist smth in the env (should be always the case)
-					IndexData _classImport = searchInImports(var.getType());
-					if(_classImport != null){
-						//we have smth to work with
-						for(IndexMethod m : _classImport.getListOfMethods()){
-							if(m.getName().equals(methodCalled)){
-								return m.getReturnType();
-							}
-						}
-					}
-				}
-			}
-		}
-		if(calee instanceof ASTMethodCall){
-			//recursive call
-			String previousCallReturn = getTypeMethodCall(((ASTMethodCall) calee), e);
-			IndexData _classImport = searchInImports(previousCallReturn);
-			if(_classImport != null){
-				//we have smth to work with
-				for(IndexMethod m : _classImport.getListOfMethods()){
-					if(m.getName().equals(methodCalled)){
-						return m.getReturnType();
-					}
-				}
-			} else {
-				//could be a local call then
-				for(IASTMethod m : _class.getMethods()){
-					if(m.getName().equals(methodCalled)){
-						return m.getReturnType();
-					}
-				}
-			}
-		}
-		return null;
-	}
 
-	private IndexData searchInImports(String type){
-		for(IndexData imp : imports){
-			if(imp.getClassName().equals(type))
-				return imp;
-		}
-		return null;
-	}
 }

@@ -1,6 +1,6 @@
 package testing.datatype;
 
-import IntermediateModelHelper.indexing.DataTreeType;
+import IntermediateModelHelper.types.DataTreeType;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModel.visitors.creation.JDTVisitor;

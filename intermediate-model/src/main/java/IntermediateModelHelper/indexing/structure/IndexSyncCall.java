@@ -17,27 +17,69 @@ import java.util.List;
 public class IndexSyncCall {
 	@Id
 	private ObjectId id;
-	private String _packageName;
-	private String _className;
+	private String classPackage;
+	private String name;
+	private String methodName;
+	private List<String> methodSignature;
+	private String _inClassPackage;
+	private String _inClassName;
 	private String _inMethodName;
 	private List<String> _signatureInMethod;
+	private String path = "";
+	private int line;
 
 	public IndexSyncCall() {
 	}
 
-	public IndexSyncCall(ObjectId id, String _packageName, String _className, String _inMethodName, List<String> _signatureInMethod) {
+	public IndexSyncCall(ObjectId id, String classPackage, String name, String methodName, List<String> methodSignature, String _inClassPackage, String _inClassName, String _inMethodName, List<String> _signatureInMethod, String path, int line) {
 		this.id = id;
-		this._packageName = _packageName;
-		this._className = _className;
+		this.classPackage = classPackage;
+		this.name = name;
+		this.methodName = methodName;
+		this.methodSignature = methodSignature;
+		this._inClassPackage = _inClassPackage;
+		this._inClassName = _inClassName;
 		this._inMethodName = _inMethodName;
 		this._signatureInMethod = _signatureInMethod;
+		this.path = path;
+		this.line = line;
 	}
 
-	public IndexSyncCall(SyncMethodCall call) {
-		this._packageName = call.get_packageName();
-		this._className = call.get_className();
+	public IndexSyncCall(SyncMethodCall call, String inPkgClass, String inClass, String path) {
+		this._inClassPackage = inPkgClass;
+		this._inClassName = inClass;
+		this.classPackage = call.get_packageName();
+		this.name = call.get_className();
+		this.methodName = call.get_methodCalled();
 		this._inMethodName = call.get_inMethodName();
 		this._signatureInMethod = call.get_signatureInMethod();
+		this.path = path;
+		this.line = call.getNode().getLine();
+		this.methodSignature = call.get_signatureMethodCalled();
+	}
+
+	public List<String> getMethodSignature() {
+		return methodSignature;
+	}
+
+	public void setMethodSignature(List<String> methodSignature) {
+		this.methodSignature = methodSignature;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+
+	public int getLine() {
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
 	}
 
 	public ObjectId getId() {
@@ -48,20 +90,68 @@ public class IndexSyncCall {
 		this.id = id;
 	}
 
-	public String get_packageName() {
-		return _packageName;
+	public String getPackageName() {
+		return classPackage;
 	}
 
-	public void set_packageName(String _packageName) {
-		this._packageName = _packageName;
+	public void setPackageName(String classPackage) {
+		this.classPackage = classPackage;
 	}
 
-	public String get_className() {
-		return _className;
+	public String getClassName() {
+		return name;
 	}
 
-	public void set_className(String _className) {
-		this._className = _className;
+	public void setClassName(String name) {
+		this.name = name;
+	}
+
+	public String getInMethodName() {
+		return _inMethodName;
+	}
+
+	public void setInMethodName(String _inMethodName) {
+		this._inMethodName = _inMethodName;
+	}
+
+	public List<String> getSignatureInMethod() {
+		return _signatureInMethod;
+	}
+
+	public void setSignatureInMethod(List<String> _signatureInMethod) {
+		this._signatureInMethod = _signatureInMethod;
+	}
+
+	public String getClassPackage() {
+		return classPackage;
+	}
+
+	public void setClassPackage(String classPackage) {
+		this.classPackage = classPackage;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String get_inClassPackage() {
+		return _inClassPackage;
+	}
+
+	public void set_inClassPackage(String _inClassPackage) {
+		this._inClassPackage = _inClassPackage;
+	}
+
+	public String get_inClassName() {
+		return _inClassName;
+	}
+
+	public void set_inClassName(String _inClassName) {
+		this._inClassName = _inClassName;
 	}
 
 	public String get_inMethodName() {
@@ -78,5 +168,13 @@ public class IndexSyncCall {
 
 	public void set_signatureInMethod(List<String> _signatureInMethod) {
 		this._signatureInMethod = _signatureInMethod;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 }

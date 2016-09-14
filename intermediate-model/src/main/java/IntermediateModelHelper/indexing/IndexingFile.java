@@ -108,12 +108,6 @@ public class IndexingFile extends ParseIM {
 			data.getTimeAttribute().add(p);
 		}
 		mongo.add(data);
-		//collect calls to a sync method
-		/*GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, c.getMethods());
-		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();
-		for(SyncMethodCall call : calls){
-			mongo.add(new IndexSyncCall(call));
-		}*/
 		return data;
 	}
 
@@ -155,7 +149,7 @@ public class IndexingFile extends ParseIM {
 	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
 		is.setPackageName(data.getClassPackage());
-		is.setClassName(data.getClassName() + anonymousClass);
+		is.setName(data.getClassName() + anonymousClass);
 		is.setMethodName(lastMethodName);
 		is.setExpr(m.getExpr().getCode());
 		is.setStart(m.getStart());
@@ -216,6 +210,7 @@ public class IndexingFile extends ParseIM {
 		return is;
 	}
 
+
 	/**
 	 * The following method creates the basic environment for a class.
 	 * It goes through the def of all stms and set if variables are time related.
@@ -230,7 +225,7 @@ public class IndexingFile extends ParseIM {
 		//check method
 		for (IASTMethod m : c.getMethods()) {
 			lastMethodName = m.getName();
-			signatureLastMethodName.clear();
+			signatureLastMethodName = new ArrayList<>();
 			for(ASTVariable p : m.getParameters()){
 				signatureLastMethodName.add(p.getType());
 			}

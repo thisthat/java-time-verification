@@ -1,4 +1,4 @@
-import IntermediateModelHelper.indexing.DataTreeType;
+import IntermediateModelHelper.types.DataTreeType;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;

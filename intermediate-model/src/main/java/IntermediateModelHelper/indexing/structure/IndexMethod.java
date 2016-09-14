@@ -1,6 +1,6 @@
 package IntermediateModelHelper.indexing.structure;
 
-import IntermediateModelHelper.indexing.DataTreeType;
+import IntermediateModelHelper.types.DataTreeType;
 import intermediateModel.structure.ASTVariable;
 import org.javatuples.Pair;
 

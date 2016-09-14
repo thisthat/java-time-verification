@@ -1,4 +1,4 @@
-package IntermediateModelHelper.indexing;
+package IntermediateModelHelper.types;
 
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
@@ -181,4 +181,6 @@ public class DataTreeType {
 		}
 		return false;
 	}
+
+
 }

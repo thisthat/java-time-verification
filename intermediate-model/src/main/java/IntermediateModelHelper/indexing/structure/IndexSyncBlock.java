@@ -2,6 +2,7 @@ package IntermediateModelHelper.indexing.structure;
 
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTVariable;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,8 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class IndexSyncBlock {
-	String packageName = "";
-	String className = "";
+	String classPackage = "";
+	String name = "";
 	String methodName = "";
 	List<String> signature = new ArrayList<>();
 	String expr = null;
@@ -32,13 +33,15 @@ public class IndexSyncBlock {
 	int line = 0;
 	IndexParameter syncVar;
 	boolean isAccessibleFromOutside = false;
+	String exprPkg;
+	String exprType;
 
 	public IndexSyncBlock() {
 	}
 
 	public IndexSyncBlock(IndexSyncBlock s) {
-		this.packageName = s.getPackageName();
-		this.className = s.getClassName();
+		this.classPackage = s.getPackageName();
+		this.name = s.getName();
 		this.methodName = s.getMethodName();
 		this.expr = s.getExpr();
 		this.start = s.getStart();
@@ -49,9 +52,9 @@ public class IndexSyncBlock {
 	}
 
 
-	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, List<String> signature) {
-		this.packageName = packageName;
-		this.className = className;
+	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, List<String> signature, String exprPkg, String exprType) {
+		this.classPackage = packageName;
+		this.name = name;
 		this.methodName = methodName;
 		this.expr = expr;
 		this.start = start;
@@ -60,6 +63,8 @@ public class IndexSyncBlock {
 		this.syncVar = syncVar;
 		this.isAccessibleFromOutside = isAccessibleFromOutside;
 		this.signature = signature;
+		this.exprPkg = exprPkg;
+		this.exprType = exprType;
 	}
 
 	public IndexParameter getSyncVar() {
@@ -71,19 +76,19 @@ public class IndexSyncBlock {
 	}
 
 	public String getPackageName() {
-		return packageName;
+		return classPackage;
 	}
 
 	public void setPackageName(String packageName) {
-		this.packageName = packageName;
+		this.classPackage = packageName;
 	}
 
-	public String getClassName() {
-		return className;
+	public String getName() {
+		return name;
 	}
 
-	public void setClassName(String className) {
-		this.className = className;
+	public void setName(String className) {
+		this.name = className;
 	}
 
 	public String getMethodName() {
@@ -142,6 +147,22 @@ public class IndexSyncBlock {
 		this.signature = signature;
 	}
 
+	public String getExprPkg() {
+		return exprPkg;
+	}
+
+	public void setExprPkg(String exprPkg) {
+		this.exprPkg = exprPkg;
+	}
+
+	public String getExprType() {
+		return exprType;
+	}
+
+	public void setExprType(String exprType) {
+		this.exprType = exprType;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -154,7 +175,7 @@ public class IndexSyncBlock {
 		if (getLine() != that.getLine()) return false;
 		if (getPackageName() != null ? !getPackageName().equals(that.getPackageName()) : that.getPackageName() != null)
 			return false;
-		if (getClassName() != null ? !getClassName().equals(that.getClassName()) : that.getClassName() != null)
+		if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
 			return false;
 		if (getMethodName() != null ? !getMethodName().equals(that.getMethodName()) : that.getMethodName() != null)
 			return false;
@@ -165,7 +186,7 @@ public class IndexSyncBlock {
 	@Override
 	public int hashCode() {
 		int result = getPackageName() != null ? getPackageName().hashCode() : 0;
-		result = 31 * result + (getClassName() != null ? getClassName().hashCode() : 0);
+		result = 31 * result + (getName() != null ? getName().hashCode() : 0);
 		result = 31 * result + (getMethodName() != null ? getMethodName().hashCode() : 0);
 		result = 31 * result + (getExpr() != null ? getExpr().hashCode() : 0);
 		result = 31 * result + getStart();

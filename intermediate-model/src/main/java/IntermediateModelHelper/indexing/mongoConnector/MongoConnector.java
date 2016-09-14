@@ -1,6 +1,7 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
 import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import IntermediateModelHelper.indexing.structure.IndexSyncCall;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -35,6 +36,8 @@ public class MongoConnector {
 	Datastore datastore;
 	Map<String,List<IndexData>> cacheImport = new HashMap<>();
 	Map<Pair<String,String>,List<IndexData>> cacheIndex = new HashMap<>();
+	Map<Pair<String,String>,List<IndexSyncCall>> cacheSyncCall = new HashMap<>();
+	Map<Pair<String,String>,List<IndexSyncBlock>> cacheSyncBlock = new HashMap<>();
 
 	/**
 	 * Field enumeration
@@ -123,6 +126,32 @@ public class MongoConnector {
 	}
 
 	/**
+	 * Check if a class is already in the DB in the collection of Synchronized calls.
+	 * @param c	{@link ASTClass} to search
+	 * @return	True if it is already in the DB.
+	 */
+	public boolean existSyncCallIndex(ASTClass c) {
+		return existSyncCallIndex(c.getName(),c.getPackageName());
+	}
+	/**
+	 * Check if a class is already in the DB in the collection of Synchronized calls.
+	 * @param i	{@link IndexSyncCall} to search
+	 * @return	True if it is already in the DB.
+	 */
+	public boolean existSyncCallIndex(IndexSyncCall i){
+		return existSyncCallIndex(i.getClassName(), i.getPackageName());
+	}
+	/**
+	 * Check if a class is already in the DB in the collection of Synchronized calls.
+	 * @param name			Name of the class to search
+	 * @param packageName	Package of the class to search
+	 * @return	True if it is already in the DB.
+	 */
+	public boolean existSyncCallIndex(String name, String packageName){
+		return getSyncIndex(name,packageName).size() > 0;
+	}
+
+	/**
 	 * Insert a indexed class in the database iff. it is not already present
 	 * @param indexStructureClass	Indexed structure of a class to insert
 	 */
@@ -141,6 +170,14 @@ public class MongoConnector {
 	public void add(IndexSyncCall indexSyncCall){
 		try {
 			datastore.save(indexSyncCall);
+		} catch (BsonSerializationException e){
+			System.err.println("File too big, cannot handle it!");
+		}
+	}
+
+	public void add(IndexSyncBlock indexSyncBlock) {
+		try {
+			datastore.save(indexSyncBlock);
 		} catch (BsonSerializationException e){
 			System.err.println("File too big, cannot handle it!");
 		}
@@ -176,6 +213,56 @@ public class MongoConnector {
 		return  getIndex(c.getName(), c.getPackageName());
 	}
 
+
+	public List<IndexSyncCall> getSyncIndex(ASTClass c) {
+		return getSyncIndex(c.getName(), c.getPackageName());
+	}
+
+	/**
+	 * Retrieve the list of classes from the database.
+	 * @param name			Name of the class to get
+	 * @param packageName	PackageName of the class to get
+	 * @return				List of {@link IndexData} documents
+	 */
+	public List<IndexSyncCall> getSyncIndex(String name, String packageName){
+		Pair<String,String> p = new Pair<>(name,packageName);
+		if(cacheSyncCall.containsKey(p)){
+			return cacheSyncCall.get(p);
+		}
+		List<IndexSyncCall> out =  datastore.createQuery(IndexSyncCall.class)
+				.field(__CLASS_NAME).equal(name)
+				.field(__PACKAGE_NAME).equal(packageName)
+				.asList();
+		if(out.size() > 0) {
+			cacheSyncCall.put(p, out);
+		}
+		return out;
+	}
+
+	public List<IndexSyncBlock> getSyncBlockIndex(ASTClass c) {
+		return getSyncBlockIndex(c.getName(), c.getPackageName());
+	}
+
+	/**
+	 * Retrieve the list of sync block of classes from the database.
+	 * @param name			Name of the class to get
+	 * @param packageName	PackageName of the class to get
+	 * @return				List of {@link IndexData} documents
+	 */
+	public List<IndexSyncBlock> getSyncBlockIndex(String name, String packageName){
+		Pair<String,String> p = new Pair<>(name,packageName);
+		if(cacheSyncBlock.containsKey(p)){
+			return cacheSyncBlock.get(p);
+		}
+		List<IndexSyncBlock> out =  datastore.createQuery(IndexSyncBlock.class)
+				.field(__CLASS_NAME).equal(name)
+				.field(__PACKAGE_NAME).equal(packageName)
+				.asList();
+		if(out.size() > 0) {
+			cacheSyncBlock.put(p, out);
+		}
+		return out;
+	}
 
 	/**
 	 * It queries the database to retrieve all the classes that are Threads.
@@ -256,5 +343,24 @@ public class MongoConnector {
 		this.db.drop();
 		this.cacheIndex = new HashMap<>();
 		this.cacheImport = new HashMap<>();
+	}
+
+
+	public void deleteSyncCalls(ASTClass c) {
+		Query<IndexSyncCall> q = datastore.createQuery(IndexSyncCall.class)
+				.field(__CLASS_NAME).equal(c.getName())
+				.field(__PACKAGE_NAME).equal(c.getPackageName());
+		datastore.delete(q);
+		Pair<String,String> p = new Pair<>(c.getName(),c.getPackageName());
+		cacheSyncCall.remove(p);
+	}
+
+	public void deleteSyncBlock(ASTClass c) {
+		Query<IndexSyncBlock> q = datastore.createQuery(IndexSyncBlock.class)
+				.field(__CLASS_NAME).equal(c.getName())
+				.field(__PACKAGE_NAME).equal(c.getPackageName());
+		datastore.delete(q);
+		Pair<String,String> p = new Pair<>(c.getName(),c.getPackageName());
+		cacheSyncBlock.remove(p);
 	}
 }

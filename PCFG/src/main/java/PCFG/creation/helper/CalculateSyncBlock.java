@@ -144,7 +144,7 @@ public class CalculateSyncBlock {
 	}
 
 	private static boolean sameClass(IndexSyncBlock inner, IndexSyncBlock outter) {
-		return inner.getPackageName().equals(outter.getPackageName()) && inner.getClassName().equals(outter.getClassName());
+		return inner.getPackageName().equals(outter.getPackageName()) && inner.getName().equals(outter.getName());
 	}
 
 }

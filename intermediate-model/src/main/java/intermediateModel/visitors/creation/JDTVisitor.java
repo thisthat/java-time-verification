@@ -8,7 +8,11 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import parser.Java2AST;
+import parser.exception.ParseErrorsException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -31,6 +35,19 @@ public class JDTVisitor extends ASTVisitor {
 	private Stack<IASTHasStms> stackSwitch = new Stack<>();
 	private Stack<ASTSwitch> casewitch = new Stack<>();
 	private String path;
+
+	public static List<ASTClass> parse(String filename){
+		Java2AST a = null;
+		try {
+			a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+		} catch (IOException e) {
+		} catch (ParseErrorsException e) {
+		}
+		CompilationUnit result = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(result, filename);
+		result.accept(v);
+		return v.listOfClasses;
+	}
 
 	public JDTVisitor(CompilationUnit cu, String path) {
 		this.cu = cu;
