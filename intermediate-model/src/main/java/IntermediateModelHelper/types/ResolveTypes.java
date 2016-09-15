@@ -31,6 +31,14 @@ public class ResolveTypes {
 			if(imp.getClassName().equals(type))
 				return imp;
 		}
+		//we can import a subclass for importing as well the parent one .-. apparently
+		for(IndexData imp : imports){
+			if(type == null){
+				continue;
+			}
+			if(imp.getClassPackage().endsWith(type))
+				return imp;
+		}
 		return null;
 	}
 
@@ -87,7 +95,7 @@ public class ResolveTypes {
 			});
 			String varType = varTypeHelper[0];
 			IndexData _class_pkg = ResolveTypes.getPackageFromImports(imports,varType);
-			if(_class != null){
+			if(_class_pkg != null){
 				//we have smth to work with
 				for(IndexMethod m : _class_pkg.getListOfMethods()){
 					if(m.equalBySignature(methodCalled, actual_pars)){
@@ -113,6 +121,16 @@ public class ResolveTypes {
 					IndexData _classImport = ResolveTypes.getPackageFromImports(imports,var.getType());
 					if(_classImport != null){
 						//we have smth to work with
+						for(IndexMethod m : _classImport.getListOfMethods()){
+							if(m.equalBySignature(methodCalled, actual_pars)){
+								return m.getReturnType();
+							}
+						}
+					}
+				} else {
+					//static call?
+					IndexData _classImport = ResolveTypes.getPackageFromImports(imports, varName);
+					if(_classImport != null){
 						for(IndexMethod m : _classImport.getListOfMethods()){
 							if(m.equalBySignature(methodCalled, actual_pars)){
 								return m.getReturnType();
@@ -148,10 +166,10 @@ public class ResolveTypes {
 	public static Pair<String,String> getSynchronizedExprType(List<IndexData> imports, IASTRE expr, ASTClass c, Env e){
 		//5 cases: this, var, methodCall(), Smth.class, Smth.attribute
 		Pair<String,String> out = new Pair<>("","");
-		//cases: this, var, Smth.class
+		//cases: this, var, Smth.class, ClassName.this
 		if(expr instanceof ASTLiteral){
 			String val = ((ASTLiteral) expr).getValue();
-			if(val.equals("this")) {
+			if(val.equals("this") || val.endsWith(".this")) {
 				out = new Pair<>(c.getPackageName(), c.getName());
 			}
 			else if(val.endsWith(".class")){
@@ -172,7 +190,7 @@ public class ResolveTypes {
 				//it is a variable
 				IASTVar type = e.getVar(val);
 				if(type == null){
-					System.err.println("Should be not the case! Resolving sync expr for class:" + c.getPath());
+					System.err.println("[Var] Should be not the case! Resolving sync expr for class:" + c.getPath());
 					System.err.println("@line:" + ((ASTLiteral) expr).getLine());
 				} else {
 					IndexData d = getPackageFromImports(imports, type.getType());
@@ -193,14 +211,14 @@ public class ResolveTypes {
 				String varName = ((ASTLiteral) var).getValue();
 				IASTVar type = e.getVar(varName);
 				if (type == null) {
-					System.err.println("Should be not the case! Resolving sync expr for class:" + c.getPath());
-					System.err.println("@line:" + ((ASTLiteral) expr).getLine());
+					System.err.println("[Attribute] Should be not the case! Resolving sync expr for class:" + c.getPath());
+					System.err.println("@line:" + ((ASTAttributeAccess) expr).getLine() );
 				} else {
 					IndexData d = getPackageFromImports(imports, type.getType());
 					if (d == null) {
 						//if d is null then it is not indexed!
-						System.err.println("Should be not the case! Resolving sync expr for class:" + c.getPath());
-						System.err.println("@line:" + ((ASTLiteral) expr).getLine());
+						System.err.println("[Attribute] Should be not the case! Resolving sync expr for class:" + c.getPath());
+						System.err.println("@line:" + ((ASTAttributeAccess) expr).getLine() );
 					} else {
 						List<ASTClass> classes = JDTVisitor.parse(d.getPath());
 						for(ASTClass cc : classes){

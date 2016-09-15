@@ -73,7 +73,7 @@ public class IndexingSyncBlock extends ParseIM {
 			}
 		}
 		//collect sync blocks
-		processImports();
+		processImports(this._c);
 		createBaseEnv(c);
 		for(IndexSyncBlock s : output){
 			mongo.add(s);
@@ -85,11 +85,21 @@ public class IndexingSyncBlock extends ParseIM {
 	 * It connects to the mongodb and prepare the data in order to resolve the from which
 	 * objects the method calls are coming from.
 	 */
-	private void processImports() {
-		for(ASTImport imp : this._c.getImports()){
+	private void processImports(ASTClass c) {
+		for(ASTImport imp : c.getImports()){
 			String pkg = imp.getPackagename();
 			List<IndexData> d = mongo.getFromImport(pkg);
 			if(d.size() > 0) imports.addAll(d);
+		}
+		//add myself as well
+		String pkg = c.getPackageName() + "." + c.getName();
+		List<IndexData> d = mongo.getFromImport(pkg);
+		if(d.size() > 0) imports.addAll(d);
+		//and my subs
+		d = mongo.getFromImport(pkg + ".*");
+		if(d.size() > 0) imports.addAll(d);
+		if(c.getParent() != null){
+			processImports(c.getParent());
 		}
 	}
 

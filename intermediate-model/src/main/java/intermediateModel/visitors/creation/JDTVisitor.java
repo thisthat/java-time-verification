@@ -131,6 +131,8 @@ public class JDTVisitor extends ASTVisitor {
 		packageName = packageName + "." + className;
 		stackPackage.push(packageName);
 
+		c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
+
 		listOfClasses.add(c);
 		stackClasses.push(c);
 		lastClass = c;

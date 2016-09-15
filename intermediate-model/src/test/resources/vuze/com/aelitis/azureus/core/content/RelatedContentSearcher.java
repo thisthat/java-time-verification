@@ -378,7 +378,7 @@ RelatedContentSearcher
 								
 							observer.resultReceived( si, result );
 						}
-					}finally{
+					} finally{
 						
 						try{	
 							final List<DistributedDatabaseContact> 	initial_hinted_contacts = searchForeignBlooms( term );

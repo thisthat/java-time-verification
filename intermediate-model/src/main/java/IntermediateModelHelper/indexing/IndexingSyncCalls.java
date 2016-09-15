@@ -27,7 +27,7 @@ import java.util.Stack;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class IndexingSyncCalls extends ParseIM {
+public class IndexingSyncCalls  {
 
 	MongoConnector mongo;
 	ASTClass _c = null;

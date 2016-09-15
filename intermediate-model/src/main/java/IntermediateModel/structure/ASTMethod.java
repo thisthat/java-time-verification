@@ -153,6 +153,9 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 		if(signature.size() != this.parameters.size()) return false;
 		boolean flag = true;
 		for(int i = 0; i < this.parameters.size(); i++){
+			if(signature.get(i) == null || signature.get(i).getValue1() == null){
+				return false;
+			}
 			if(!signature.get(i).getValue1().equals(this.parameters.get(i).getType())){
 				flag = false;
 			}

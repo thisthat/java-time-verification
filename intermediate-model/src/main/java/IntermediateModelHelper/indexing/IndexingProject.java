@@ -223,7 +223,7 @@ public class IndexingProject {
 	}
 
 
-	private void delete(){
+	public void delete(){
 		db.getDb().drop();
 	}
 
