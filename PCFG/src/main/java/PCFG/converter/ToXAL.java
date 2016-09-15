@@ -1,5 +1,6 @@
 package PCFG.converter;
 
+import PCFG.optimization.OptimizeForXAL;
 import PCFG.structure.CFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.anonym.AnonymClass;
@@ -33,7 +34,7 @@ public class ToXAL implements IConverter {
 	}
 
 	public XALDocument getXAL(PCFG pcfg, String filename) {
-		pcfg.removeNodeAlreadyInSync();
+		pcfg = pcfg.optimize( new OptimizeForXAL() );
 		XALDocument document = new XALDocument(filename);
 		this.doc = document;
 		for(CFG c : pcfg.getCFG()){

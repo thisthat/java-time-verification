@@ -44,7 +44,7 @@ public class CFG {
 		return V;
 	}
 
-	void setV(List<Node> V){
+	public void setV(List<Node> V){
 		this.V = V;
 	}
 

@@ -1,4 +1,5 @@
 public class Small {
+
 	public void m1(){
 		while(true){
 
