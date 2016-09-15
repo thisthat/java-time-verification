@@ -27,7 +27,7 @@ public abstract class XALProduction extends XALItem {
      * @author Giovanni Liva (@thisthatDC)
      * @version %I%, %G%
      */
-    protected class XALSystem {
+    protected class XALSystem extends XALItem{
         private String className = null;
         private String name;
         private String path;
@@ -53,6 +53,16 @@ public abstract class XALProduction extends XALItem {
 
         public String getPath() {
             return path;
+        }
+
+        @Override
+        public String toString(int tab) {
+            return tab(tab) + "<System Name=\"" + this.name + "\" Path=\"" + this.path + "\"/>\n";
+        }
+
+        @Override
+        protected boolean checkConstriant() {
+            return false;
         }
     }
 

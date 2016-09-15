@@ -38,7 +38,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 					var_name[0] = elm.getValue();
 				}
 			});
-			return var_name[0];// + "_" + _ID++;
+			return "Declaration_" + var_name[0];
 		}
 		if(expression instanceof ASTBinary){
 			final String[] var_name = new String[1];
@@ -51,7 +51,10 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 			return expression.getClass().getSimpleName() + "_" + escape(var_name[0]);// + "_" + _ID++;
 		}
 		if(expression instanceof ASTMethodCall){
-			return "ASTMethodCall_" + ((ASTMethodCall) expression).getMethodName();
+			return "call_to_" + ((ASTMethodCall) expression).getMethodName();
+		}
+		if(expression instanceof ASTLiteral){
+			return ((ASTLiteral) expression).getValue();
 		}
 		return expression.getClass().getSimpleName();// + "_" + _ID++;
 	}

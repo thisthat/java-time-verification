@@ -24,14 +24,13 @@ public class Calculator {
         /* mul
         tiasdi
          */
-        System.out.println("20 - 10 = " +
-                myApp.operateBinary(20, 10, subtraction));
+
 
         synchronized (this){
-
+            System.out.println("20 - 10 = " +
+                    myApp.operateBinary(20, 10, subtraction));
         }
 
-        synchronized ()
     }
 }
 

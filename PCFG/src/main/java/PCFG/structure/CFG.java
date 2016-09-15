@@ -44,6 +44,10 @@ public class CFG {
 		return V;
 	}
 
+	void setV(List<Node> V){
+		this.V = V;
+	}
+
 	public List<Node> getAllNodes(){
 		List<Node> nodes = new ArrayList<>();
 		nodes.addAll(V);

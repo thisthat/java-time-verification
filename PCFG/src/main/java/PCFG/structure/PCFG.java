@@ -2,6 +2,7 @@ package PCFG.structure;
 
 import PCFG.converter.ToDot;
 import PCFG.structure.edge.Edge;
+import PCFG.structure.edge.IEdge;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
@@ -100,6 +101,71 @@ public class PCFG implements IHasCFG {
 	public void optimize(){
 		for(CFG p : processes){
 			p.setStartEnd();
+		}
+	}
+
+	public void removeNodeAlreadyInSync(){
+		for(CFG p : processes){
+			for(SyncNode n : p.getSyncNodes()){
+				removeNodeAlreadyInSync(n,p);
+			}
+
+		}
+	}
+
+	private void removeNodeAlreadyInSync(SyncNode n, CFG p){
+		//collect all nodes in sync
+		List<Node> nodesInSync = new ArrayList<>();
+		//for(SyncNode n : p.getSyncNodes()){
+			nodesInSync.addAll( n.getNodes() );
+		//}
+		//remove from the main automata
+		List<Node> newV = new ArrayList<>();
+		newV.addAll( p.getV() );
+		for(Node v : p.getV() ){
+			if(nodesInSync.contains(v)){
+				newV.remove(v);
+			}
+		}
+		//set init and last
+		if(newV.size() > 0) newV.get(0).setStart(true);
+		if(newV.size() > 0) newV.get(newV.size()-1).setEnd(true);
+
+		if(nodesInSync.size() > 0) nodesInSync.get(0).setStart(true);
+		if(nodesInSync.size() > 0) nodesInSync.get(nodesInSync.size()-1).setEnd(true);
+
+		p.setV(newV);
+		//bypass the arrows
+		List<Node> fromArrow = new ArrayList<>();
+		List<Node> toArrow = new ArrayList<>();
+		List<Edge> toRemove = new ArrayList<>();
+		List<Edge> toAdd = new ArrayList<>();
+
+		for(Edge e : p.getE()){
+			if(!nodesInSync.contains(e.getFrom()) && nodesInSync.contains(e.getTo())){
+				fromArrow.add(e.getFrom());
+			}
+			if(nodesInSync.contains(e.getFrom()) && !nodesInSync.contains(e.getTo())){
+				toArrow.add(e.getTo());
+			}
+			if(nodesInSync.contains(e.getFrom()) || nodesInSync.contains(e.getTo())){
+				toRemove.add(e);
+			}
+			if(nodesInSync.contains(e.getFrom()) && nodesInSync.contains(e.getTo())){
+				toAdd.add(e);
+			}
+		}
+		for(Edge e : toRemove){
+			p.getE().remove(e);
+		}
+		n.setNewEdges(toAdd);
+		n.setNodesEntered(fromArrow);
+		for(Node f : fromArrow){
+			for(Node t : toArrow){
+				p.addEdge(
+						new Edge(f,t)
+				);
+			}
 		}
 	}
 

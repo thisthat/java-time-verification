@@ -1,5 +1,7 @@
 package PCFG.structure.node;
 
+import PCFG.structure.edge.Edge;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,8 @@ public class SyncNode implements INode {
 	int start,end,line;
 	String className;
 	List<Node> nodes = new ArrayList<>();
+	List<Node> nodesEntered = new ArrayList<>();
+	List<Edge> newEdges = new ArrayList<>();
 	public static final String _CLUSTER_NAME = "cluster_sync";
 
 
@@ -69,4 +73,19 @@ public class SyncNode implements INode {
 		return className;
 	}
 
+	public void setNewEdges(List<Edge> e){
+		this.newEdges = e;
+	}
+
+	public List<Edge> getNewEdges() {
+		return newEdges;
+	}
+
+	public List<Node> getNodesEntered() {
+		return nodesEntered;
+	}
+
+	public void setNodesEntered(List<Node> nodesEntered) {
+		this.nodesEntered = nodesEntered;
+	}
 }

@@ -55,7 +55,8 @@ public class Node implements INode {
 		SWITCH,
 		NORMAL,
 		USELESS,
-		HIDDENCLASS
+		HIDDENCLASS,
+		CONTAINS_SYNC
 	}
 
 	public Node(String name, String code, TYPE type, int start, int end, int line) {

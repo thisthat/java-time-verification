@@ -25,15 +25,16 @@ public class ToXAL implements IConverter {
 	XALAutomaton lastAutomaton = null;
 	@Override
 	public String convert(PCFG pcfg) {
-		return getXAL(pcfg).toString();
-	}
-
-	public XALDocument getXAL(PCFG pcfg) {
 		String name = "";
 		for(CFG c : pcfg.getCFG()){
 			name +=  c.getName() + "_";
 		}
-		XALDocument document = new XALDocument(name);
+		return getXAL(pcfg,name).toString();
+	}
+
+	public XALDocument getXAL(PCFG pcfg, String filename) {
+		pcfg.removeNodeAlreadyInSync();
+		XALDocument document = new XALDocument(filename);
 		this.doc = document;
 		for(CFG c : pcfg.getCFG()){
 			getXAL(c);
@@ -47,23 +48,11 @@ public class ToXAL implements IConverter {
 
 	private void getXAL(CFG cfg) {
 		XALAutomaton automa = new XALAutomaton(cfg.getName());
-
+		doc.addAutomaton(automa);
+		lastAutomaton = automa;
+		aut = automa;
 		for(Node v : cfg.getV()){
-			XALState s = new XALState(v.getName());
-			automa.addState(s);
-			if(v.getConstraint() != null){
-
-			}
-			if(v.isStart()){
-				try {
-					automa.setInitialState(s);
-				} catch (XALMalformedException e) {
-					e.printStackTrace();
-				}
-			}
-			if(v.isEnd()){
-				automa.addFinalState(s);
-			}
+			getXAL(v);
 		}
 		for(SyncNode s : cfg.getSyncNodesNoSubClass()){
 			getXAL(s);
@@ -71,14 +60,14 @@ public class ToXAL implements IConverter {
 		for(IEdge e : cfg.getE()){
 			getXAL(e);
 		}
-		for(AnonymClass a : cfg.getAnonNodes()){
+		/*for(AnonymClass a : cfg.getAnonNodes()){
 			getXAL(a);
 		}
 		for(AnonymEdge ae : cfg.getAnonEdge()){
 			getXAL(ae);
-		}
+		}*/
 		//automa.addFinalState();
-		doc.addAutomaton(automa);
+
 	}
 
 	private void getXAL(AnonymClass a) {
@@ -100,18 +89,48 @@ public class ToXAL implements IConverter {
 		XALState s = new XALState(v.getName());
 		s.setNumericID(v.getID());
 		aut.addState(s);
+		if(v.getConstraint() != null){
+
+		}
+		if(v.isStart()){
+			try {
+				lastAutomaton.setInitialState(s);
+			} catch (XALMalformedException e) {
+				e.printStackTrace();
+			}
+		}
+		if(v.isEnd()){
+			lastAutomaton.addFinalState(s);
+		}
 	}
 
 	private void getXAL(SyncNode sv) {
-		XALSync syncNode = new XALSync(sv.getExpr(), aut);
-		syncNode.setNumericID(sv.getID());
-		aut.addState(syncNode);
-		XALAddState bck = aut;
-		aut = syncNode;
+		XALAutomaton bck = lastAutomaton;
+		XALAddState bckAut = aut;
+		XALAutomaton automa = new XALAutomaton("sync_on_" + sv.getExpr() + "_" + sv.getID());
+		doc.addAutomaton(automa);
+
+		//creating metrics
+		String name = automa.getId();
+		String path = doc.getFilename();
+		for(Node from : sv.getNodesEntered()){
+			String nameMetric = "to_sync_node_" + from.getID();
+			XALMetric m = new XALMetric(nameMetric, XALProduction.ProductionType.automaton , "", name, path, new XALEnumeration());
+			lastAutomaton.getActionPool().addProduction(m);
+			doc.getNodeFromNumericID(from.getID()).setNameMetric(nameMetric);
+		}
+
+
+		lastAutomaton = automa;
+		aut = automa;
 		for(Node v : sv.getNodes()){
 			getXAL(v);
 		}
-		aut = bck;
+		for(Edge e : sv.getNewEdges()){
+			getXAL(e);
+		}
+		lastAutomaton = bck;
+		aut = bckAut;
 	}
 
 	private void getXAL(IEdge e) {
@@ -129,6 +148,7 @@ public class ToXAL implements IConverter {
 		Node to = e.getTo();
 		XALState f = doc.getNodeFromNumericID(from.getID());
 		XALState t = doc.getNodeFromNumericID(to.getID());
+		if(f == null || t == null) return;
 		lastAutomaton.addTransition(new XALTransition(f,t));
 	}
 

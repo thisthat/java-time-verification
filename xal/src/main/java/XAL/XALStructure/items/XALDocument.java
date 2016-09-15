@@ -39,7 +39,7 @@ public class XALDocument extends XALItem {
     }
 
     public String getFilename() {
-        return filename + ".xal";
+        return filename + (filename.endsWith(".xal") ? "" : ".xal");
     }
 
     /**
