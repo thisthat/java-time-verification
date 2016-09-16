@@ -1,7 +1,9 @@
 package PCFG.creation;
 
 import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.IndexingSyncBlock;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.creation.helper.CalculateSyncBlock;
 import PCFG.creation.helper.CalculateSyncCall;
 import PCFG.structure.CFG;
@@ -47,10 +49,10 @@ public class IM2PCFG extends ConvertIM {
 	private String lastLabel = "";
 	private boolean isMultiLabel = false;
 	private List<Node> multiLabel = new ArrayList<>();
-	private IndexingFile classIndexer = new IndexingFile();
-	private List<KeyValue<KeyValue<IASTMethod,ASTClass>,IndexData>> indexs = new ArrayList<>();
+	private List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock> >> indexs = new ArrayList<>();
 	private String lastClass = "";
 	private List<Triplet<String, IASTStm, Class>> constraints = new ArrayList<>();
+
 
 	public IM2PCFG(List<KeyValue<IASTMethod,ASTClass>> classes) {
 		this.classes = classes;
@@ -71,7 +73,7 @@ public class IM2PCFG extends ConvertIM {
 	 * @param method		Method of the class to analyze
 	 */
 	public void addClass(ASTClass c, IASTMethod method){
-		addClass(c, method, true);
+		addClass(c, method, false);
 	}
 	/**
 	 * Insert a class in the list of classes to process for creating the PCFG.
@@ -101,14 +103,23 @@ public class IM2PCFG extends ConvertIM {
 		}
 		KeyValue<IASTMethod, ASTClass> k = new KeyValue<>(method, c);
 		this.classes.add(k);
-		IndexData index = classIndexer.index(c, reindex);
-		indexs.add( new KeyValue<>(k, index) );
+		//IndexingFile indexFile = new IndexingFile();
+		//indexFile.index(c, reindex);
+
+
 	}
 
 	public PCFG buildPCFG(){
 		//init data
 		pcfg = new PCFG();
 		lastPCFG = pcfg;
+		this.indexs.clear();
+		for(KeyValue<IASTMethod,ASTClass> k : this.classes){
+			IndexingSyncBlock indexing = new IndexingSyncBlock();
+			List<IndexSyncBlock> blocks = indexing.index(k.getValue(), false);
+			this.indexs.add( new KeyValue<>(k, blocks) );
+		}
+
 		//add all the states to the PCFG
 		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//consider also hidden methods
@@ -128,7 +139,6 @@ public class IM2PCFG extends ConvertIM {
 				}
 			});
 		}
-
 
 		//check for sync blocks
 		CalculateSyncBlock.calculateSyncBlock(this.classes, this.indexs, this.pcfg);

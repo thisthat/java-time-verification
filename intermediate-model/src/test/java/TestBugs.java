@@ -1,7 +1,9 @@
 import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.IndexingSyncBlock;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTHiddenClass;
@@ -12,6 +14,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,6 +31,7 @@ public class TestBugs {
 	@Before
 	public void setUp() throws Exception {
 		MongoOptions.getInstance().setDbName("intermediate_model_" + this.getClass().getSimpleName());
+		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
 	}
 
@@ -102,9 +107,12 @@ public class TestBugs {
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
 		IndexingFile indexing = new IndexingFile();
+		IndexingSyncBlock indexingSyncBlock = new IndexingSyncBlock();
 		IndexData d = indexing.index(c, true);
 		assertEquals(d.getListOfSyncBlocks().size(),1);
-		assertTrue(d.getListOfSyncBlocks().get(0).isAccessibleFromOutside());
+		List<IndexSyncBlock> i = indexingSyncBlock.index(c, true);
+		assertEquals(i.size(), 1);
+		assertTrue(i.get(0).isAccessibleFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/FirstCase_2.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -114,9 +122,12 @@ public class TestBugs {
 		//we have only one class
 		c = v.listOfClasses.get(0);
 		indexing = new IndexingFile();
+		indexingSyncBlock = new IndexingSyncBlock();
 		d = indexing.index(c, true);
 		assertEquals(d.getListOfSyncBlocks().size(),1);
-		assertTrue(d.getListOfSyncBlocks().get(0).isAccessibleFromOutside());
+		i = indexingSyncBlock.index(c, true);
+		assertEquals(i.size(), 1);
+		assertTrue(i.get(0).isAccessibleFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/FirstCase_3.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -126,9 +137,12 @@ public class TestBugs {
 		//we have only one class
 		c = v.listOfClasses.get(0);
 		indexing = new IndexingFile();
+		indexingSyncBlock = new IndexingSyncBlock();
 		d = indexing.index(c, true);
 		assertEquals(d.getListOfSyncBlocks().size(),1);
-		assertFalse(d.getListOfSyncBlocks().get(0).isAccessibleFromOutside());
+		i = indexingSyncBlock.index(c, true);
+		assertEquals(i.size(), 1);
+		assertFalse(i.get(0).isAccessibleFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/SecondCase_1.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -138,9 +152,12 @@ public class TestBugs {
 		//we have only one class
 		c = v.listOfClasses.get(0);
 		indexing = new IndexingFile();
+		indexingSyncBlock = new IndexingSyncBlock();
 		d = indexing.index(c, true);
 		assertEquals(d.getListOfSyncBlocks().size(),1);
-		assertTrue(d.getListOfSyncBlocks().get(0).isAccessibleFromOutside());
+		i = indexingSyncBlock.index(c, true);
+		assertEquals(i.size(), 1);
+		assertTrue(i.get(0).isAccessibleFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/SecondCase_2.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -150,8 +167,11 @@ public class TestBugs {
 		//we have only one class
 		c = v.listOfClasses.get(0);
 		indexing = new IndexingFile();
+		indexingSyncBlock = new IndexingSyncBlock();
 		d = indexing.index(c, true);
 		assertEquals(d.getListOfSyncBlocks().size(),1);
-		assertFalse(d.getListOfSyncBlocks().get(0).isAccessibleFromOutside());
+		i = indexingSyncBlock.index(c, true);
+		assertEquals(i.size(), 1);
+		assertFalse(i.get(0).isAccessibleFromOutside());
 	}
 }

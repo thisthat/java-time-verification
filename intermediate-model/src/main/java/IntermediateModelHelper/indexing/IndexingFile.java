@@ -158,55 +158,6 @@ public class IndexingFile extends ParseIM {
 		IndexEnv e_index = new IndexEnv(e);
 		is.setSyncVar( e_index.getVar(is.getExpr()) );
 		is.setSignature(signatureLastMethodName);
-		boolean[] flag = {false};
-		//check if the expression of the current variable is possible to be used outside of the class
-		// can be used only in two cases:
-		// 1. The variable is in a return statement
-		// 2. Appears in left hand side of an assignment
-		ParseIM checkAccessibleFromOutside = new ParseIM() {
-			private boolean checkIASTRE(IASTRE e){
-				if(e instanceof ASTLiteral){
-					if(((ASTLiteral) e).getValue().equals(is.getExpr())){
-						return true;
-					}
-				}
-				if(e instanceof ASTAttributeAccess){
-					if(((ASTAttributeAccess) e).getAttributeName().equals(is.getExpr())){
-						return true;
-					}
-				}
-				return false;
-			}
-
-			@Override
-			protected void analyzeASTRE(ASTRE r, Env env) {
-				if(r != null && r.getExpression() != null)
-					r.getExpression().visit(new DefualtASTREVisitor(){
-						@Override
-						public void enterASTAssignment(ASTAssignment elm) {
-							IASTRE left = elm.getLeft();
-							flag[0] = checkIASTRE(left);
-						}
-					});
-			}
-
-			@Override
-			protected void analyzeASTReturn(ASTReturn elm, Env env) {
-				ASTRE expr = elm.getExpr();
-				if(expr != null){
-					IASTRE e = expr.getExpression();
-					flag[0] = checkIASTRE(e);
-				}
-			}
-
-			public void start(ASTClass _c){
-				for(IASTMethod m : _c.getMethods()){
-					analyzeMethod(m);
-				}
-			}
-		};
-		checkAccessibleFromOutside.start(_c);
-		is.setAccessibleFromOutside(flag[0]);
 		return is;
 	}
 

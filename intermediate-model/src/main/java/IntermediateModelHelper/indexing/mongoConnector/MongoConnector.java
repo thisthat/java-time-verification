@@ -10,6 +10,7 @@ import intermediateModel.structure.ASTClass;
 import org.bson.BsonSerializationException;
 import org.bson.Document;
 import org.javatuples.Pair;
+import org.javatuples.Sextet;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.MapperOptions;
@@ -37,7 +38,7 @@ public class MongoConnector {
 	Map<String,List<IndexData>> cacheImport = new HashMap<>();
 	Map<Pair<String,String>,List<IndexData>> cacheIndex = new HashMap<>();
 	Map<Pair<String,String>,List<IndexSyncCall>> cacheSyncCall = new HashMap<>();
-	Map<Pair<String,String>,List<IndexSyncBlock>> cacheSyncBlock = new HashMap<>();
+	Map<Sextet<String,String,String,List<String>,Integer,Integer>,List<IndexSyncBlock>> cacheSyncBlock = new HashMap<>();
 
 	/**
 	 * Field enumeration
@@ -47,7 +48,10 @@ public class MongoConnector {
 	private final String __IMPORTS 			= "imports";
 	private final String __FULL_NAME 		= "fullName";
 	private final String __COLLECTION_NAME 	= "IndexData";
-	private final String __SYNC_CALL 		= "IndexSyncCall";
+	private final String __METHOD_NAME 		= "methodName";
+	private final String __SIGNATURE 		= "signature";
+	private final String __START	 		= "start";
+	private final String __END		 		= "end";
 
 	/**
 	 * Protected constructor. We want to give a database as singleton.
@@ -152,6 +156,32 @@ public class MongoConnector {
 	}
 
 	/**
+	 * Check if a class is already in the DB in the collection of Synchronized blocks.
+	 * @param c	{@link ASTClass} to search
+	 * @return	True if it is already in the DB.
+	 */
+	public boolean existSyncBlockIndex(ASTClass c) {
+		return getSyncBlockIndexClass(c.getName(),c.getPackageName()).size() > 0;
+	}
+	/**
+	 * Check if a class is already in the DB in the collection of Synchronized blocks.
+	 * @param i	{@link IndexSyncBlock} to search
+	 * @return	True if it is already in the DB.
+	 */
+	public boolean existSyncBlockIndex(IndexSyncBlock i){
+		return existSyncBlockIndex(i.getName(), i.getPackageName(), i.getMethodName(), i.getSignature(), i.getStart(), i.getEnd());
+	}
+	/**
+	 * Check if a class is already in the DB in the collection of Synchronized blocks.
+	 * @param name			Name of the class to search
+	 * @param packageName	Package of the class to search
+	 * @return	True if it is already in the DB.
+	 */
+	public boolean existSyncBlockIndex(String name, String packageName, String methodName, List<String> signature, int start, int end){
+		return getSyncBlockIndex(name,packageName, methodName, signature, start, end).size() > 0;
+	}
+
+	/**
 	 * Insert a indexed class in the database iff. it is not already present
 	 * @param indexStructureClass	Indexed structure of a class to insert
 	 */
@@ -168,6 +198,9 @@ public class MongoConnector {
 	}
 
 	public void add(IndexSyncCall indexSyncCall){
+		if(existSyncCallIndex(indexSyncCall)){
+			return;
+		}
 		try {
 			datastore.save(indexSyncCall);
 		} catch (BsonSerializationException e){
@@ -176,6 +209,9 @@ public class MongoConnector {
 	}
 
 	public void add(IndexSyncBlock indexSyncBlock) {
+		if(existSyncBlockIndex(indexSyncBlock)){
+			return;
+		}
 		try {
 			datastore.save(indexSyncBlock);
 		} catch (BsonSerializationException e){
@@ -240,7 +276,7 @@ public class MongoConnector {
 	}
 
 	public List<IndexSyncBlock> getSyncBlockIndex(ASTClass c) {
-		return getSyncBlockIndex(c.getName(), c.getPackageName());
+		return getSyncBlockIndexClass(c.getName(), c.getPackageName());
 	}
 
 	/**
@@ -249,18 +285,36 @@ public class MongoConnector {
 	 * @param packageName	PackageName of the class to get
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexSyncBlock> getSyncBlockIndex(String name, String packageName){
-		Pair<String,String> p = new Pair<>(name,packageName);
+	public List<IndexSyncBlock> getSyncBlockIndex(String name, String packageName, String methodName, List<String> signature, int start, int end){
+		Sextet<String,String,String,List<String>,Integer,Integer> p = new Sextet<>(name,packageName, methodName, signature, start, end);
 		if(cacheSyncBlock.containsKey(p)){
 			return cacheSyncBlock.get(p);
 		}
 		List<IndexSyncBlock> out =  datastore.createQuery(IndexSyncBlock.class)
 				.field(__CLASS_NAME).equal(name)
 				.field(__PACKAGE_NAME).equal(packageName)
+				.field(__METHOD_NAME).equal(methodName)
+				.field(__SIGNATURE).equal(signature)
+				.field(__START).equal(start)
+				.field(__END).equal(end)
 				.asList();
 		if(out.size() > 0) {
 			cacheSyncBlock.put(p, out);
 		}
+		return out;
+	}
+
+	/**
+	 * Retrieve the list of sync block of classes from the database.
+	 * @param name			Name of the class to get
+	 * @param packageName	PackageName of the class to get
+	 * @return				List of {@link IndexData} documents
+	 */
+	public List<IndexSyncBlock> getSyncBlockIndexClass(String name, String packageName){
+		List<IndexSyncBlock> out =  datastore.createQuery(IndexSyncBlock.class)
+				.field(__CLASS_NAME).equal(name)
+				.field(__PACKAGE_NAME).equal(packageName)
+				.asList();
 		return out;
 	}
 
@@ -293,9 +347,9 @@ public class MongoConnector {
 			q.field(__FULL_NAME).equal(query);
 		}
 		List<IndexData> out = q.search(query).asList();
-		//if(out.size() > 0) {
+		if(out.size() > 0) {
 			cacheImport.put(query, out);
-		//} else {
+		}// else {
 		//	cacheImport.put(query, new ArrayList<>());
 		//}
 		return out;
@@ -343,6 +397,8 @@ public class MongoConnector {
 		this.db.drop();
 		this.cacheIndex = new HashMap<>();
 		this.cacheImport = new HashMap<>();
+		this.cacheSyncBlock = new HashMap<>();
+		this.cacheSyncCall = new HashMap<>();
 	}
 
 

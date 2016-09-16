@@ -1,7 +1,7 @@
 import intermediateModel.interfaces.IASTMethod;
 import Thread_2;
 
-class Thread_1 extends Thread {
+class SecondCase_1 extends Thread {
 
 	Object minPrime;
 

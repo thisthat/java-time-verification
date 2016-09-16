@@ -1,5 +1,6 @@
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.IndexingProject;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import PCFG.structure.PCFG;
@@ -24,7 +25,8 @@ public class TestBugs {
 	@Before
 	public void setUp() throws Exception {
 		MongoOptions.getInstance().setDbName("test");
-
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
 	}
 
 	@Test

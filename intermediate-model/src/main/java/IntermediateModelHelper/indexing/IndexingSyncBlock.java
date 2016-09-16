@@ -10,10 +10,12 @@ import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import IntermediateModelHelper.indexing.structure.IndexSyncCall;
 import IntermediateModelHelper.types.ResolveTypes;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTImport;
-import intermediateModel.structure.ASTSynchronized;
-import intermediateModel.structure.ASTVariable;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTAttributeAccess;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Pair;
 
@@ -64,7 +66,7 @@ public class IndexingSyncBlock extends ParseIM {
 	 */
 	public List<IndexSyncBlock> index(ASTClass c, boolean forceReindex) {
 		this._c = c;
-		if(mongo.existSyncCallIndex(c)){
+		if(mongo.existSyncBlockIndex(c)){
 			if(forceReindex){
 				mongo.deleteSyncBlock(c);
 			} else {
@@ -141,6 +143,62 @@ public class IndexingSyncBlock extends ParseIM {
 		sync.setSignature(signatureLastMethodName);
 		sync.setExprPkg(exprType.getValue0());
 		sync.setExprType(exprType.getValue1());
+
+		//is accessible from outside
+		boolean startValue = (exprType.getValue0().equals("") && exprType.getValue1().equals("")); //workaround to check if is inherited!
+		boolean[] flag = {startValue};
+		//check if the expression of the current variable is possible to be used outside of the class
+		// can be used only in two cases:
+		// 1. The variable is in a return statement
+		// 2. Appears in left hand side of an assignment
+		ParseIM checkAccessibleFromOutside = new ParseIM() {
+			private boolean checkIASTRE(IASTRE e){
+				if(e instanceof ASTLiteral){
+					if(((ASTLiteral) e).getValue().equals(sync.getExpr())){
+						return true;
+					}
+				}
+				if(e instanceof ASTAttributeAccess){
+					if(((ASTAttributeAccess) e).getAttributeName().equals(sync.getExpr())){
+						return true;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			protected void analyzeASTRE(ASTRE r, Env env) {
+				if(r != null && r.getExpression() != null)
+					r.getExpression().visit(new DefualtASTREVisitor(){
+						@Override
+						public void enterASTAssignment(ASTAssignment elm) {
+							IASTRE left = elm.getLeft();
+							if(!flag[0]) {
+								flag[0] = checkIASTRE(left);
+							}
+						}
+					});
+			}
+
+			@Override
+			protected void analyzeASTReturn(ASTReturn elm, Env env) {
+				ASTRE expr = elm.getExpr();
+				if(expr != null){
+					IASTRE e = expr.getExpression();
+					if(!flag[0]) {
+						flag[0] = checkIASTRE(e);
+					}
+				}
+			}
+
+			public void start(ASTClass _c){
+				for(IASTMethod m : _c.getMethods()){
+					analyzeMethod(m);
+				}
+			}
+		};
+		checkAccessibleFromOutside.start(_c);
+		sync.setAccessibleFromOutside(flag[0]);
 		output.add(sync);
 	}
 }

@@ -1,6 +1,5 @@
 package PCFG.creation.helper;
 
-import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
@@ -8,14 +7,7 @@ import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.SyncNode;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.ASTReturn;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.KeyValue;
 
 import java.util.ArrayList;
@@ -27,21 +19,21 @@ import java.util.List;
  */
 public class CalculateSyncBlock {
 
-	public static void calculateSyncBlock(List<KeyValue<IASTMethod,ASTClass>> classes, List<KeyValue<KeyValue<IASTMethod,ASTClass>,IndexData>> indexs, PCFG pcfg){
+	public static void calculateSyncBlock(List<KeyValue<IASTMethod,ASTClass>> classes, List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock>>> indexes, PCFG pcfg){
 		if(classes.size() < 2) return;
 		if(classes.size() == 2){
-			calculateSyncBlockDifferentClasses(classes.get(0), classes.get(1), indexs, pcfg);
+			calculateSyncBlockDifferentClasses(classes.get(0), classes.get(1), indexes, pcfg);
 		} else {
 			for(KeyValue<IASTMethod,ASTClass> c1 : classes){
 				for(KeyValue<IASTMethod,ASTClass> c2 : classes) {
 					if(c1 != c2)
-						calculateSyncBlockDifferentClasses(c1, c2, indexs, pcfg);
+						calculateSyncBlockDifferentClasses(c1, c2, indexes, pcfg);
 				}
 			}
 		}
 	}
 
-	private static void calculateSyncBlockDifferentClasses(KeyValue<IASTMethod,ASTClass> class_1, KeyValue<IASTMethod,ASTClass> class_2, List<KeyValue<KeyValue<IASTMethod,ASTClass>,IndexData>> indexes, PCFG pcfg) {
+	private static void calculateSyncBlockDifferentClasses(KeyValue<IASTMethod,ASTClass> class_1, KeyValue<IASTMethod,ASTClass> class_2, List<KeyValue<KeyValue<IASTMethod,ASTClass>,List<IndexSyncBlock>>> indexes, PCFG pcfg) {
 		//get the sync blocks of the methods that we are looking for
 		ArrayList<KeyValue<IASTMethod,ASTClass>> classes = new ArrayList<>();
 		classes.add(class_1);
@@ -110,18 +102,13 @@ public class CalculateSyncBlock {
 	}
 
 
-	private static List<IndexSyncBlock> getSyncBlocks(KeyValue<IASTMethod,ASTClass> c, List<KeyValue<KeyValue<IASTMethod,ASTClass>, IndexData>> indexes){
+	private static List<IndexSyncBlock> getSyncBlocks(KeyValue<IASTMethod,ASTClass> c, List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock>>>indexes){
 		List<IndexSyncBlock> syncBlocks = new ArrayList<>();
-		IndexData data = null;
-		for(KeyValue<KeyValue<IASTMethod,ASTClass>, IndexData> k : indexes) {
-			if(k.getKey().equals(c)){
-				data = k.getValue();
-			}
-		}
-		for(IndexSyncBlock s : data.getListOfSyncBlocks()){
-			if( s.isInMethod(c.getKey()) )
-			{
-				syncBlocks.add( new IndexSyncBlock(s) );
+		List<IndexSyncBlock> ss = new ArrayList<>();
+		for(KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock>> single : indexes){
+			KeyValue<IASTMethod,ASTClass> k = single.getKey();
+			if(k.equals(c)){
+				return single.getValue();
 			}
 		}
 		return (syncBlocks);
