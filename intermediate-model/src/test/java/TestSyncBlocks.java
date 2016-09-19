@@ -25,6 +25,7 @@ public class TestSyncBlocks {
 
 
 		MongoOptions.getInstance().setDbName("testSyncBlocks");
+		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
 
 		IndexingProject indexing = new IndexingProject();

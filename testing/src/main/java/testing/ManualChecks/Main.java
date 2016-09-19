@@ -5,6 +5,7 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
+import PCFG.structure.edge.SyncEdge;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -26,14 +27,14 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		MongoOptions.getInstance().setDbName("vuze_top_file");
+		MongoOptions.getInstance().setDbName("vuze_third");
 
-		new Main().run1();
+		new Main().run();
 	}
 
 
 	public void run() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("manual/PluginInitializer.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("manual/SubscriptionManagerImpl.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -42,7 +43,7 @@ public class Main {
 		ASTClass c = classes.get(0);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("manual/PluginInitializer.java").getFile();
+		f =  Main.class.getClassLoader().getResource("manual/TorrentUtil.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -50,17 +51,28 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("initialisePlugins",
-				Arrays.asList()
-		));
-		p.addClass(c1, c1.getMethodBySignature("initialisePlugins",
-				Arrays.asList()
-		));
+		p.addClass(c, c.getMethodBySignature("lookupAssociationsSupport",
+				Arrays.asList("DHTPluginInterface","byte[]","SubscriptionLookupListener")
+		), false);
+		p.addClass(c1, c1.getMethodBySignature("removeDownloadsSupport",
+				Arrays.asList("DownloadManager[]","AERunnable","boolean")
+		), false);
 		/*p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
 				Arrays.asList("NetworkGlueListener")
 		));*/
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
+
+		int timeConstraint = p.getConstraintsSize();
+		int numberSyncBlock = 0;
+		int numberSyncCall = 0;
+		for(SyncEdge e : graph.getESync()){
+			if(e.getType() == SyncEdge.TYPE.SYNC_BLOCK){
+				numberSyncBlock++;
+			} else {
+				numberSyncCall++;
+			}
+		}
 
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter("graph.dot"));
@@ -69,7 +81,7 @@ public class Main {
 	}
 
 	public void run1() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("manual/TagPropertyConstraintHandler.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("manual/AzureusCoreImpl.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -86,11 +98,11 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("apply",
+		p.addClass(c, c.getMethodBySignature("AzureusCoreImpl",
 				Arrays.asList()
 		));
 
-		p.addClass(c1, c1.getMethodBySignature("apply",
+		p.addClass(c1, c1.getMethodBySignature("AzureusCoreImpl",
 				Arrays.asList()
 		));
 		PCFG graph = p.buildPCFG();

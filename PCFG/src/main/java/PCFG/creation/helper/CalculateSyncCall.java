@@ -71,9 +71,9 @@ public class CalculateSyncCall {
 		ASTRE codeOut = outMethod.getNode();
 		ASTRE codeIn  = inMethod.getNode();
 		for(Node v : pcfg.getV()){
-			if(v.equals(codeOut)){
+			if(from == null && v.equals(codeOut)){
 				from = v;
-			} else if(v.equals(codeIn)){
+			} else if(to == null && v.equals(codeIn)){
 				to = v;
 			}
 		}

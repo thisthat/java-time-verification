@@ -23,6 +23,7 @@ public class TestInheritance {
 
 
 		MongoOptions.getInstance().setDbName("testInheritance");
+		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
 
 		IndexingProject indexing = new IndexingProject();

@@ -14,6 +14,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTVariable;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.bson.Document;
 import org.javatuples.Quartet;
@@ -25,6 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +73,8 @@ public class ThirdEvaluation {
 
 	final String _NAME_ = "vuze_third";
 	boolean isIndexed = false;
+	boolean runBlocks = false;
+	boolean runCalls  = false;
 	String base_path = "";
 	GeneralInfo statistics = new GeneralInfo();
 	PrintWriter writerBlocks;
@@ -87,6 +92,12 @@ public class ThirdEvaluation {
 					break;
 				case "-path":
 					eval.setBase_path(args[i++]);
+					break;
+				case "-block":
+					eval.setRunBlocks(true);
+					break;
+				case "-call":
+					eval.setRunCalls(true);
 					break;
 			}
 		}
@@ -110,7 +121,7 @@ public class ThirdEvaluation {
 		MongoOptions.getInstance().setDbName(_NAME_);
 		writerBlocks = new PrintWriter("syncBlocks.csv", "UTF-8");
 		writerBlocks.println("package-out;class-name-out;method-name-out;package-in;class-name-in;method-name-in;time-constraint;number-sync;total");
-		writerCalls = new PrintWriter("syncBlocks.csv", "UTF-8");
+		writerCalls = new PrintWriter("syncCalls.csv", "UTF-8");
 		writerCalls.println("package-out;class-name-out;method-name-out;package-in;class-name-in;method-name-in;time-constraint;number-sync;total");
 	}
 
@@ -181,10 +192,25 @@ public class ThirdEvaluation {
 		}
 		statistics.methodBoth = methodBoth;
 
-		evalSyncBlocks(syncsblock);
+		if(runBlocks) evalSyncBlocks(syncsblock);
+
+		if(runCalls) evalSyncCall(syncsCall);
 
 		double end = new Date().getTime();
-		System.out.println("[Eval] "+(end-start)/1000 + " s");
+		System.out.println("\n[Eval] "+(end-start)/1000 + " s");
+	}
+
+	private void evalSyncCall(List<IndexSyncCall> syncsCall) {
+		int total = syncsCall.size() * syncsCall.size();
+		int current = 0;
+		for(IndexSyncCall first : syncsCall){
+			for(IndexSyncCall second : syncsCall){
+				current++;
+				double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
+				System.out.print(String.format("\r[%s %%]", perc ));
+				compare(first,second);
+			}
+		}
 	}
 
 	private void evalSyncBlocks(List<IndexSyncBlock> methodsBlock) {
@@ -258,6 +284,88 @@ public class ThirdEvaluation {
 		compare(class_1, method_1, class_2, method_2, EvalType.BLOCKS);
 	}
 
+	private void compare(IndexSyncCall m1, IndexSyncCall m2) {
+		List<ASTClass> classes_m1  = JDTVisitor.parse(m1.getPath());
+		List<ASTClass> classes_m2  = JDTVisitor.parse(m2.getPath());
+		ASTClass class_1 = null, class_2 = null;
+		IASTMethod method_1 = null, method_2 = null;
+		for(ASTClass c : classes_m1){
+			if(c.getName().equals(m1.get_inClassName())){
+				class_1 = c;
+			}
+		}
+		for(ASTClass c : classes_m2){
+			if(c.getName().equals(m2.get_inClassName())){
+				class_2 = c;
+			}
+		}
+		String methodName = m1.getInMethodName();
+		List<String> signature = m1.getSignatureInMethod();
+		for(IASTMethod m : class_1.getMethods()){
+			if(m.getName().equals(methodName)) {
+				if(m.getParameters().size() == signature.size()){
+					boolean flag = true;
+					for(int i = 0; i < signature.size(); i++){
+						if(!m.getParameters().get(i).getType().equals(signature.get(i))){
+							flag = false;
+						}
+					}
+					if(flag){
+						method_1 = m;
+					}
+				}
+			}
+		}
+		if(method_1 == null){
+			//get the constructor, it means the sync call is in the static init block
+			for(IASTMethod m : class_1.getMethods()){
+				if(m instanceof ASTConstructor){
+					method_1 = m;
+				}
+			}
+			if(method_1 == null){
+				//still null, it is a load time -> create empty constructor for the sake of checks
+				method_1 = new ASTConstructor(class_1.getStart(), class_1.getEnd(), class_1.getName(), new ArrayList<ASTVariable>(), new ArrayList<String>());
+				class_1.addMethod(method_1);
+			}
+		}
+		methodName = m2.getInMethodName();
+		signature = m2.getSignatureInMethod();
+		for(IASTMethod m : class_2.getMethods()){
+			if(m.getName().equals(methodName)) {
+				if(m.getParameters().size() == signature.size()){
+					boolean flag = true;
+					for(int i = 0; i < m.getParameters().size(); i++){
+						if(!m.getParameters().get(i).getType().equals(signature.get(i))){
+							flag = false;
+						}
+					}
+					if(flag){
+						method_2 = m;
+					}
+				}
+			}
+		}
+		if(method_2 == null){
+			//get the constructor, it means the sync call is in the static init block
+			for(IASTMethod m : class_2.getMethods()){
+				if(m instanceof ASTConstructor){
+					method_2 = m;
+				}
+			}
+			if(method_2 == null){
+				//still null, it is a load time -> create empty constructor for the sake of checks
+				method_2 = new ASTConstructor(class_2.getStart(), class_2.getEnd(), class_2.getName(), new ArrayList<ASTVariable>(), new ArrayList<String>());
+				class_2.addMethod(method_2);
+			}
+		}
+		if(class_1 == null || method_1 == null || class_2 == null || method_2 == null){
+			System.err.println("Null");
+			return;
+		}
+		compare(class_1, method_1, class_2, method_2, EvalType.CALLS);
+	}
+
 	private void compare(ASTClass class_1, IASTMethod method_1, ASTClass class_2, IASTMethod method_2, EvalType type) {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(class_1, method_1, false);
@@ -269,22 +377,33 @@ public class ThirdEvaluation {
 		for(SyncEdge e : graph.getESync()){
 			if(e.getType() == SyncEdge.TYPE.SYNC_BLOCK){
 				numberSyncBlock++;
-			} else {
+			} else if(e.getType() == SyncEdge.TYPE.SYNC_NODE) {
 				numberSyncCall++;
+			}
+		}
+		if(timeConstraint > 0){
+			if(numberSyncBlock > 0){
+				statistics.methodTimeBlock++;
+			}
+			if(numberSyncCall > 0){
+				statistics.methodTimeCalls++;
+			}
+			if(numberSyncBlock > 0 && numberSyncCall > 0){
+				statistics.methodTimeBoth++;
 			}
 		}
 		String pkgOut = class_1.getPackageName();
 		String cOut = class_1.getName();
-		String mOut = method_1.getName();
+		String mOut = method_1.getName() + ":" + Arrays.toString(method_1.getSignature().toArray()) ;
 		String pkgIn = class_2.getPackageName();
 		String cIn = class_2.getName();
-		String mIn = method_2.getName();
+		String mIn = method_2.getName() + ":" + Arrays.toString(method_2.getSignature().toArray()) ;
 
 		if(type == EvalType.BLOCKS) {
 			String out = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s", pkgOut, cOut, mOut, pkgIn, cIn, mIn, timeConstraint, numberSyncBlock, (timeConstraint + numberSyncBlock));
 			writerBlocks.println(out);
 			writerBlocks.flush();
-		} else {
+		} else if(type == EvalType.CALLS) {
 			String out = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s", pkgOut, cOut, mOut, pkgIn, cIn, mIn, timeConstraint, numberSyncCall, (timeConstraint + numberSyncCall));
 			writerCalls.println(out);
 			writerCalls.flush();
@@ -321,5 +440,12 @@ public class ThirdEvaluation {
 		this.base_path = base_path;
 	}
 
+	public void setRunBlocks(boolean runBlocks) {
+		this.runBlocks = runBlocks;
+	}
+
+	public void setRunCalls(boolean runCalls) {
+		this.runCalls = runCalls;
+	}
 }
 

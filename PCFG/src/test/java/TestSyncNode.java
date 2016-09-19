@@ -25,6 +25,7 @@ public class TestSyncNode {
 	public void setUp() throws Exception {
 		MongoOptions.getInstance().setDbName(DB_NAME);
 		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
 	}
 
 	@Test

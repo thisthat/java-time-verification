@@ -196,7 +196,8 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 			return false;
 		if (getExtendClass() != null ? !getExtendClass().equals(astClass.getExtendClass()) : astClass.getExtendClass() != null)
 			return false;
-
+		if (getLine() != astClass.getLine()) return false;
+		if (getLineEnd() != astClass.getLineEnd()) return false;
 		return true;
 	}
 

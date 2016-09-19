@@ -31,6 +31,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		this.exceptionsThrowed = exceptionsThrowed;
 	}
 
+
 	public List<String> getExceptionsThrowed() {
 		return exceptionsThrowed;
 	}

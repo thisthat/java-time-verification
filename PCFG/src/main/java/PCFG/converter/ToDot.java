@@ -93,7 +93,7 @@ public class ToDot implements IConverter {
 		for(AnonymEdge ae : cfg.getAnonEdge()){
 			out.append(tabs() +  convert(ae));
 		}
-		out.append(tabs() + "label = \"" + cfg.getName() + "\";\n");
+		out.append(tabs() + "label = \"" + cfg.getName() + "_" + cfg.getID() + "\";\n");
 		out.append(tabs() + "color=green\n");
 		tabs--;
 		out.append(tabs() + "}\n");

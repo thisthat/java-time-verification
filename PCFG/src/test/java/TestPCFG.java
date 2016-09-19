@@ -1,3 +1,5 @@
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.node.Node;
 import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
@@ -5,6 +7,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
 
@@ -16,6 +19,12 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestPCFG {
 
+	@Before
+	public void setUp() throws Exception {
+		MongoOptions.getInstance().setDbName("TestPCFG");
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
+	}
 
 	@Test
 	public void TestRE() throws Exception {

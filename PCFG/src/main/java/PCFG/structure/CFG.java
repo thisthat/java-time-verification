@@ -25,11 +25,20 @@ public class CFG {
 	String name;
 	int id;
 	int hashcode;
+	int line = 0;
 
 	public CFG(String name, int hashcode) {
 		this.name = name;
 		this.id = ID++;
 		this.hashcode = hashcode;
+	}
+
+	public int getLine() {
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
 	}
 
 	public int getID() {

@@ -197,26 +197,15 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	private void addSingleClassStates(ASTHiddenClass c, IASTMethod m){
-		Node bckNode = lastNode;
-		CFG bck = lastCfg;
-		String bckLastClass = lastClass;
-		IHasCFG bckLastPCFG = lastPCFG;
-		//new anonym
-		AnonymClass anon = new AnonymClass();
-		lastCfg.addNode(anon);
-		AnonymEdge anonEdge = new AnonymEdge(lastNode,anon);
-		lastCfg.addEdge(anonEdge);
+
 		//init
 		lastNode = null;
 		lastCfg = new CFG("anonymous" + "::" + m.getName(), lastCfg.getHashcode());
-		lastPCFG = anon;
+		lastCfg.setLine(m.getLine());
 		lastPCFG.addCFG(lastCfg);
 		lastClass = "anonymous";
 		dispachStm(m.getStms());
-		lastCfg = bck;
-		lastNode = bckNode;
-		lastClass = bckLastClass;
-		lastPCFG = bckLastPCFG;
+
 	}
 
 
@@ -503,6 +492,16 @@ public class IM2PCFG extends ConvertIM {
 						start, end, line
 				)
 		);
+		ASTRE r = stm.getExpr();
+		if(r != null && r.getExpression() != null) {
+			r.getExpression().visit(new DefaultASTVisitor() {
+				@Override
+				public void enterASTNewObject(ASTNewObject elm) {
+					convertASTNewObject(elm);
+				}
+			});
+		}
+
 	}
 
 	protected void convertThrow(ASTThrow stm) {
@@ -561,9 +560,23 @@ public class IM2PCFG extends ConvertIM {
 	}
 
 	protected void convertASTHiddenClass(ASTHiddenClass stm) {
+		Node bckNode = lastNode;
+		CFG bck = lastCfg;
+		String bckLastClass = lastClass;
+		IHasCFG bckLastPCFG = lastPCFG;
+		//new anonym
+		AnonymClass anon = new AnonymClass();
+		lastCfg.addNode(anon);
+		AnonymEdge anonEdge = new AnonymEdge(lastNode,anon);
+		lastCfg.addEdge(anonEdge);
+		lastPCFG = anon;
 		for(IASTMethod m : stm.getMethods()){
 			addSingleClassStates(stm, m);
 		}
+		lastCfg = bck;
+		lastNode = bckNode;
+		lastClass = bckLastClass;
+		lastPCFG = bckLastPCFG;
 	}
 
 	private void addState(Node node) {
