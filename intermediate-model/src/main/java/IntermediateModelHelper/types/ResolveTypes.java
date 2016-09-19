@@ -247,7 +247,7 @@ public class ResolveTypes {
 		List<IndexData> imports = new ArrayList<>();
 		Pair<String,String> out = new Pair<>("","");
 		for(ASTImport i : c.getImports()){
-			imports.addAll(MongoConnector.getInstance().getFromImport(i.getPackagename()));
+			imports.addAll(MongoConnector.getInstance().getFromImport(i.getPackagename(), false));
 		}
 		IndexData d = getPackageFromImports(imports, type);
 		if(d == null){

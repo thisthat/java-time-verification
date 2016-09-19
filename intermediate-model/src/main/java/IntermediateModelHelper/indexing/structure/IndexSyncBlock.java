@@ -35,6 +35,7 @@ public class IndexSyncBlock {
 	boolean isAccessibleFromOutside = false;
 	String exprPkg;
 	String exprType;
+	String path;
 
 	public IndexSyncBlock() {
 	}
@@ -49,10 +50,11 @@ public class IndexSyncBlock {
 		this.line = s.getLine();
 		this.syncVar = s.getSyncVar();
 		this.signature = s.getSignature();
+		this.path = s.getPath();
 	}
 
 
-	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, List<String> signature, String exprPkg, String exprType) {
+	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, List<String> signature, String exprPkg, String exprType, String path) {
 		this.classPackage = packageName;
 		this.name = name;
 		this.methodName = methodName;
@@ -65,6 +67,7 @@ public class IndexSyncBlock {
 		this.signature = signature;
 		this.exprPkg = exprPkg;
 		this.exprType = exprType;
+		this.path = path;
 	}
 
 	public IndexParameter getSyncVar() {
@@ -161,6 +164,14 @@ public class IndexSyncBlock {
 
 	public void setExprType(String exprType) {
 		this.exprType = exprType;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	@Override

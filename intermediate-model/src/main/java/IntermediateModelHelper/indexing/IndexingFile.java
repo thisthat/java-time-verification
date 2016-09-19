@@ -158,6 +158,7 @@ public class IndexingFile extends ParseIM {
 		IndexEnv e_index = new IndexEnv(e);
 		is.setSyncVar( e_index.getVar(is.getExpr()) );
 		is.setSignature(signatureLastMethodName);
+		is.setPath(data.getPath());
 		return is;
 	}
 

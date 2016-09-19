@@ -52,6 +52,7 @@ public class IM2PCFG extends ConvertIM {
 	private List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock> >> indexs = new ArrayList<>();
 	private String lastClass = "";
 	private List<Triplet<String, IASTStm, Class>> constraints = new ArrayList<>();
+	List<ASTHiddenClass> visitedHidden = new ArrayList<>();
 
 
 	public IM2PCFG(List<KeyValue<IASTMethod,ASTClass>> classes) {
@@ -117,11 +118,29 @@ public class IM2PCFG extends ConvertIM {
 		for(KeyValue<IASTMethod,ASTClass> k : this.classes){
 			IndexingSyncBlock indexing = new IndexingSyncBlock();
 			List<IndexSyncBlock> blocks = indexing.index(k.getValue(), false);
-			this.indexs.add( new KeyValue<>(k, blocks) );
+			List<IndexSyncBlock> toAdd = new ArrayList<>();
+			IASTMethod m = k.getKey();
+			for(IndexSyncBlock b : blocks){
+				boolean f = false;
+				if(m.getName().equals(b.getMethodName()) && m.getParameters().size() == b.getSignature().size()){
+					f = true;
+					for(int i = 0; i < m.getParameters().size(); i++){
+						if(!m.getParameters().get(i).getType().equals( b.getSignature().get(i) )){
+							f = false;
+						}
+					}
+				}
+				if(f){
+					toAdd.add(b);
+				}
+			}
+			this.indexs.add( new KeyValue<>(k, toAdd) );
 		}
 
 		//add all the states to the PCFG
 		for(KeyValue<IASTMethod,ASTClass> c : classes){
+			//reset structure
+			visitedHidden.clear();
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){
 				@Override
@@ -532,7 +551,7 @@ public class IM2PCFG extends ConvertIM {
 		}
 	}
 
-	List<ASTHiddenClass> visitedHidden = new ArrayList<>();
+
 	protected void convertASTNewObject(ASTNewObject stm) {
 		ASTHiddenClass hc = stm.getHiddenClass();
 		if(hc != null && !visitedHidden.contains(hc)){

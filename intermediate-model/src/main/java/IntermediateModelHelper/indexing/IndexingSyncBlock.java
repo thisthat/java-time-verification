@@ -90,15 +90,15 @@ public class IndexingSyncBlock extends ParseIM {
 	private void processImports(ASTClass c) {
 		for(ASTImport imp : c.getImports()){
 			String pkg = imp.getPackagename();
-			List<IndexData> d = mongo.getFromImport(pkg);
+			List<IndexData> d = mongo.getFromImport(pkg, true);
 			if(d.size() > 0) imports.addAll(d);
 		}
 		//add myself as well
 		String pkg = c.getPackageName() + "." + c.getName();
-		List<IndexData> d = mongo.getFromImport(pkg);
+		List<IndexData> d = mongo.getFromImport(pkg, true);
 		if(d.size() > 0) imports.addAll(d);
 		//and my subs
-		d = mongo.getFromImport(pkg + ".*");
+		d = mongo.getFromImport(pkg + ".*", true);
 		if(d.size() > 0) imports.addAll(d);
 		if(c.getParent() != null){
 			processImports(c.getParent());
@@ -128,10 +128,29 @@ public class IndexingSyncBlock extends ParseIM {
 
 	@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
+		if(lastMethodName.equals("")) {
+			//we are in static
+			for(IASTMethod m : this._c.getMethods()){
+				if(m instanceof ASTConstructor){
+					lastMethodName = m.getName();
+					signatureLastMethodName = new ArrayList<>();
+					for(ASTVariable p : m.getParameters()){
+						signatureLastMethodName.add(p.getType());
+					}
+					doJob(elm, env);
+				}
+			}
+		} else {
+			doJob(elm, env);
+		}
+	}
+
+	private void doJob(ASTSynchronized elm, Env env){
 		Pair<String,String> exprType = ResolveTypes.getSynchronizedExprType(imports, elm.getExpr().getExpression(), this._c, env);
 		//System.out.println(exprType.getValue0() + " : " + exprType.getValue1());
 		IndexSyncBlock sync = new IndexSyncBlock();
 		sync.setPackageName(this._c.getPackageName());
+		sync.setPath(this._c.getPath());
 		sync.setName(this._c.getName());
 		sync.setMethodName(lastMethodName);
 		sync.setExpr(elm.getExpr().getCode());

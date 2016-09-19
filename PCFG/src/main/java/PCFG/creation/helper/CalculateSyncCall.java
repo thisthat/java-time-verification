@@ -83,7 +83,7 @@ public class CalculateSyncCall {
 		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
 			malformedSyncEdge.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("error parsing: ");
+			System.out.println("error creating link: ");
 			for(KeyValue<IASTMethod,ASTClass> c : classes){
 				System.out.println("\t" + c.getValue().toString() + " :: " + c.getKey());
 			}

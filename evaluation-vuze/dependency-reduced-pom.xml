@@ -30,7 +30,7 @@
                 </transformer>
                 <transformer />
                 <transformer>
-                  <mainClass>secondEvalPCFG.EvalTopFile</mainClass>
+                  <mainClass>thirdEval.ThirdEvaluation</mainClass>
                 </transformer>
               </transformers>
             </configuration>

@@ -79,7 +79,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	private void processImports() {
 		for(ASTImport imp : this._class.getImports()){
 			String pkg = imp.getPackagename();
-			List<IndexData> current = mongo.getFromImport(pkg);
+			List<IndexData> current = mongo.getFromImport(pkg, true);
 			if(current.size() > 0) imports.addAll(current);
 			//System.out.println(Arrays.toString(d.toArray()));
 			for(IndexData index : current){

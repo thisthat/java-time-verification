@@ -65,7 +65,7 @@ public class DataTreeType {
 			return;
 		} */
 		for(String i : current.getImports()){
-			List<IndexData> imports = db.getFromImport(i);
+			List<IndexData> imports = db.getFromImport(i, false);
 			for(IndexData index : imports){
 				//Check on types to resolve the extends
 				if(index.getClassName().equals(extType)){

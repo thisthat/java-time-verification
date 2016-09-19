@@ -336,7 +336,7 @@ public class MongoConnector {
 	 * @param query	package name of the import
 	 * @return	List of {@link IndexData} classes
 	 */
-	public List<IndexData> getFromImport(String query){
+	public List<IndexData> getFromImport(String query, boolean forceCache){
 		if(cacheImport.containsKey(query)){
 			return cacheImport.get(query);
 		}
@@ -349,9 +349,9 @@ public class MongoConnector {
 		List<IndexData> out = q.search(query).asList();
 		if(out.size() > 0) {
 			cacheImport.put(query, out);
-		}// else {
-		//	cacheImport.put(query, new ArrayList<>());
-		//}
+		} else { // if(forceCache){
+			cacheImport.put(query, new ArrayList<>());
+		}
 		return out;
 	}
 
@@ -375,6 +375,14 @@ public class MongoConnector {
 	 */
 	public MongoDatabase getDb() {
 		return db;
+	}
+
+	/**
+	 * Getter of the DB structure.
+	 * @return the database structure.
+	 */
+	public Datastore getDatastore() {
+		return datastore;
 	}
 
 	/**
