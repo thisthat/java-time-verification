@@ -17,6 +17,8 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	String getReturnType();
 	List<String> getSignature();
 	int getLine();
+	int getStart();
+	int getEnd();
 	boolean equalsBySignature(IASTMethod c);
 	boolean equalsBySignature(String name, List<Pair<String,String>> signature);
 }

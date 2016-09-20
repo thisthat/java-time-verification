@@ -15,6 +15,7 @@ import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTAssignment;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Pair;
@@ -170,19 +171,34 @@ public class IndexingSyncBlock extends ParseIM {
 		// can be used only in two cases:
 		// 1. The variable is in a return statement
 		// 2. Appears in left hand side of an assignment
+		// 2.1 Must not be an array (we change the value stored inside the var, not the variable itself)
+		// 2.2 Must not be a new declaration
 		ParseIM checkAccessibleFromOutside = new ParseIM() {
-			private boolean checkIASTRE(IASTRE e){
+			private boolean checkIASTRE(IASTRE e, Env env){
 				if(e instanceof ASTLiteral){
 					if(((ASTLiteral) e).getValue().equals(sync.getExpr())){
+						if(((ASTLiteral) e).getCode().endsWith("]")){ //does it work like that?
+							//We should think about gettin' in touch with the concrete types of the program and do not abstract from them. At least arrays...
+							//handle cases where we store smth inside an array
+							return false;
+						}
 						return true;
 					}
 				}
 				if(e instanceof ASTAttributeAccess){
 					if(((ASTAttributeAccess) e).getAttributeName().equals(sync.getExpr())){
+						if(((ASTAttributeAccess) e).getCode().endsWith("]")){ //does it work like that?
+							//handle cases where we store smth inside an array
+							return false;
+						}
 						return true;
 					}
 				}
 				return false;
+			}
+
+			private boolean checkNew(IASTRE right, Env env) {
+				return (right instanceof ASTNewObject);
 			}
 
 			@Override
@@ -192,8 +208,9 @@ public class IndexingSyncBlock extends ParseIM {
 						@Override
 						public void enterASTAssignment(ASTAssignment elm) {
 							IASTRE left = elm.getLeft();
+							IASTRE right = elm.getRight();
 							if(!flag[0]) {
-								flag[0] = checkIASTRE(left);
+								flag[0] = checkIASTRE(left, env) && !checkNew(right, env);
 							}
 						}
 					});
@@ -205,7 +222,7 @@ public class IndexingSyncBlock extends ParseIM {
 				if(expr != null){
 					IASTRE e = expr.getExpression();
 					if(!flag[0]) {
-						flag[0] = checkIASTRE(e);
+						flag[0] = checkIASTRE(e, env);
 					}
 				}
 			}

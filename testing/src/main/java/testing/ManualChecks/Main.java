@@ -34,45 +34,34 @@ public class Main {
 
 
 	public void run() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("manual/SubscriptionManagerImpl.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("manual/HTTPNetworkConnection.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		classes.addAll(v.listOfClasses);
-		ASTClass c = classes.get(0);
+		ASTClass c = classes.get(4);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("manual/TorrentUtil.java").getFile();
+		f =  Main.class.getClassLoader().getResource("manual/HTTPNetworkConnection.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
-		ASTClass c1 = v.listOfClasses.get(0);
+		ASTClass c1 = v.listOfClasses.get(4);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("lookupAssociationsSupport",
-				Arrays.asList("DHTPluginInterface","byte[]","SubscriptionLookupListener")
+		p.addClass(c, c.getMethodBySignature("pendingRequest",
+				Arrays.asList("BTRequest","httpRequest")
 		), false);
-		p.addClass(c1, c1.getMethodBySignature("removeDownloadsSupport",
-				Arrays.asList("DownloadManager[]","AERunnable","boolean")
+		p.addClass(c1, c1.getMethodBySignature("pendingRequest",
+				Arrays.asList("BTRequest","httpRequest")
 		), false);
 		/*p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
 				Arrays.asList("NetworkGlueListener")
 		));*/
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
-
-		int timeConstraint = p.getConstraintsSize();
-		int numberSyncBlock = 0;
-		int numberSyncCall = 0;
-		for(SyncEdge e : graph.getESync()){
-			if(e.getType() == SyncEdge.TYPE.SYNC_BLOCK){
-				numberSyncBlock++;
-			} else {
-				numberSyncCall++;
-			}
-		}
 
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter("graph.dot"));

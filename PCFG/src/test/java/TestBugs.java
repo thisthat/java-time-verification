@@ -56,7 +56,7 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		g.toGraphViz(false);
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);

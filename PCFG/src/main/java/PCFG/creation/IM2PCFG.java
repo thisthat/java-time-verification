@@ -130,6 +130,9 @@ public class IM2PCFG extends ConvertIM {
 						}
 					}
 				}
+				if(m.getStart() > b.getStart() || b.getEnd() > m.getEnd() ){
+					f = false;
+				}
 				if(f){
 					toAdd.add(b);
 				}

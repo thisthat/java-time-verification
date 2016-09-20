@@ -50,12 +50,14 @@ public class ThirdEvaluation {
 		public long methodTimeBlock = 0;
 		public long methodTimeCalls = 0;
 		public long methodTimeBoth = 0;
+		public long nSyncMethods;
 
 		@Override
 		public String toString() {
 			String out = "";
 			out += String.format("#Classes: %d \n", this.nClasses);
 			out += String.format("#Methods: %d \n", this.nMethods);
+			out += String.format("#Synchronized Methods: %d \n", this.nSyncMethods);
 			out += String.format("#Sync Blocks: %d \n", this.syncBlock);
 			out += String.format("#Sync Calls: %d \n", this.syncCalls);
 
@@ -71,7 +73,7 @@ public class ThirdEvaluation {
 		}
 	}
 
-	final String _NAME_ = "vuze_third";
+	String _NAME_ = "vuze_third";
 	boolean isIndexed = false;
 	boolean runBlocks = false;
 	boolean runCalls  = false;
@@ -98,6 +100,9 @@ public class ThirdEvaluation {
 					break;
 				case "-call":
 					eval.setRunCalls(true);
+					break;
+				case "name":
+					eval.set_NAME_(args[i++]);
 					break;
 			}
 		}
@@ -155,10 +160,13 @@ public class ThirdEvaluation {
 
 		Query<IndexData> all = mongo.createQuery(IndexData.class);
 		int nMethods = 0;
+		int nSyncMethod = 0;
 		for(IndexData data : all.asList()){
 			nMethods += data.getListOfMethods().size();
+			nSyncMethod += data.getListOfSyncMethods().size();
 		}
 		statistics.nMethods = nMethods;
+		statistics.nSyncMethods = nSyncMethod;
 
 		Query<IndexSyncBlock> qBlock = mongo.createQuery(IndexSyncBlock.class);
 		List<IndexSyncBlock> syncsblock = qBlock.asList();
@@ -446,6 +454,10 @@ public class ThirdEvaluation {
 
 	public void setRunCalls(boolean runCalls) {
 		this.runCalls = runCalls;
+	}
+
+	public void set_NAME_(String _NAME_) {
+		this._NAME_ = _NAME_;
 	}
 }
 

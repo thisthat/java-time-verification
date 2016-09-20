@@ -51,7 +51,9 @@ public class CalculateSyncCall {
 		//we have the list of all -> create the link between 'em
 		for(KeyValue<IASTMethod,ASTClass> cOut : classes){
 			for(KeyValue<IASTMethod,ASTClass> cIn : classes){
-				if(cIn.equals(cOut)) continue;
+				if(cOut == cIn) continue;
+				boolean sameClass = cOut.getValue().isSameClass(cIn.getValue());
+				if(cIn.equals(cOut) && !sameClass) continue;
 				List<SyncMethodCall> outter = syncCalls.get(cOut);
 				List<SyncMethodCall> inner  = syncCalls.get(cIn);
 				for(SyncMethodCall outMethod : outter){
