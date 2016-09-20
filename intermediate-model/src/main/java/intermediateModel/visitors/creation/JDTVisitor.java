@@ -3,6 +3,7 @@ package intermediateModel.visitors.creation;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
@@ -80,11 +81,13 @@ public class JDTVisitor extends ASTVisitor {
 		ASTClass.Visibility visibility = ASTClass.Visibility.PRIVATE;
 		if(node.modifiers().size() > 0){
 			int i = 0;
-			while(!(node.modifiers().get(i) instanceof Modifier)){
+			while(i < node.modifiers().size() && !(node.modifiers().get(i) instanceof Modifier)){
 				i++;
 			}
-			Modifier m = (Modifier) node.modifiers().get(i);
-			visibility = Getter.visibility(m.toString());
+			if(i != node.modifiers().size()) {
+				Modifier m = (Modifier) node.modifiers().get(i);
+				visibility = Getter.visibility(m.toString());
+			}
 		}
 		String superClass = node.getSuperclassType() == null ? "Object" : node.getSuperclassType().toString();
 		List<String> superInterfaces = new ArrayList<>();
@@ -111,8 +114,10 @@ public class JDTVisitor extends ASTVisitor {
 				while(i < f.modifiers().size() && !(f.modifiers().get(i) instanceof Modifier)){
 					i++;
 				}
-				Modifier m = (Modifier) f.modifiers().get(i);
-				vis = Getter.visibility(m.toString());
+				if(i < f.modifiers().size()) {
+					Modifier m = (Modifier) f.modifiers().get(i);
+					vis = Getter.visibility(m.toString());
+				}
 			}
 			String type = f.getType().toString();
 			String name = "";
@@ -121,6 +126,7 @@ public class JDTVisitor extends ASTVisitor {
 				VariableDeclarationFragment vf = (VariableDeclarationFragment) ovf;
 				name = vf.getName().getFullyQualifiedName();
 				expr = getExprState(vf.getInitializer());
+				if(vf.getInitializer() instanceof LambdaExpression ) vf.getInitializer().delete(); //avoid lambda interfeer with remaning
 			}
 			int ss = 0; int st = 0;
 			ss = f.getStartPosition();
@@ -140,7 +146,111 @@ public class JDTVisitor extends ASTVisitor {
 	}
 
 	@Override
+	public boolean visit(EnumDeclaration node) {
+		String className = node.getName().getFullyQualifiedName();
+		ASTClass.Visibility visibility = ASTClass.Visibility.PRIVATE;
+		if(node.modifiers().size() > 0){
+			int i = 0;
+			while(i < node.modifiers().size() && !(node.modifiers().get(i) instanceof Modifier)){
+				i++;
+			}
+			if(i != node.modifiers().size()) {
+				Modifier m = (Modifier) node.modifiers().get(i);
+				visibility = Getter.visibility(m.toString());
+			}
+		}
+		String superClass = "Object";
+		List<String> superInterfaces = new ArrayList<>();
+		for(Object ost : node.superInterfaceTypes()){
+			if(ost instanceof SimpleType) {
+				SimpleType st = (SimpleType) ost;
+				superInterfaces.add(st.getName().getFullyQualifiedName());
+			}
+			else {
+				ParameterizedType pt = (ParameterizedType) ost;
+				superInterfaces.add(pt.getType().toString());
+			}
+		}
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		ASTClass c = new ASTClass(start, stop, packageName, className, visibility, superClass, superInterfaces);
+		c.setPath(path);
+		c.setImports(listOfImports);
+		//attributes of the class
+		for(Object fo : node.bodyDeclarations()){
+			if(!(fo instanceof FieldDeclaration)){
+				continue;
+			}
+			FieldDeclaration f = (FieldDeclaration) fo;
+			ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
+			if(f.modifiers().size() > 0){
+				int i = 0;
+				while(i < f.modifiers().size() && !(f.modifiers().get(i) instanceof Modifier)){
+					i++;
+				}
+				if(i < f.modifiers().size()) {
+					Modifier m = (Modifier) f.modifiers().get(i);
+					vis = Getter.visibility(m.toString());
+				}
+			}
+			String type = f.getType().toString();
+			String name = "";
+			ASTRE expr = null;
+			for(Object ovf : f.fragments()){
+				VariableDeclarationFragment vf = (VariableDeclarationFragment) ovf;
+				name = vf.getName().getFullyQualifiedName();
+				expr = getExprState(vf.getInitializer());
+			}
+			int ss = 0; int st = 0;
+			ss = f.getStartPosition();
+			st = ss + f.getLength();
+			ASTAttribute attribute = new ASTAttribute(ss, st, vis, type, name, expr);
+			c.addAttribute(attribute);
+		}
+		//const of enum
+		for(Object co : node.enumConstants()){
+			if(!(co instanceof  EnumConstantDeclaration)) continue;
+			EnumConstantDeclaration cons = (EnumConstantDeclaration) co;
+			String type = c.getName();
+			String name = cons.getName().getFullyQualifiedName();
+			int ss = 0; int st = 0;
+			ss = cons.getStartPosition();
+			st = ss + cons.getLength();
+			ASTRE expr = null;
+
+			ASTAttribute attribute = new ASTAttribute(ss, st, ASTClass.Visibility.PUBLIC, type, name, expr);
+			c.addAttribute(attribute);
+		}
+		packageName = packageName + "." + className;
+		stackPackage.push(packageName);
+
+		c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
+
+		listOfClasses.add(c);
+		stackClasses.push(c);
+		lastClass = c;
+		return true;
+	}
+
+	@Override
 	public void endVisit(TypeDeclaration node) {
+		if(stackClasses.size() > 0) {
+			ASTClass c = stackClasses.pop();
+			if (c.equals(lastClass) && stackClasses.size() > 0) {
+				lastClass = stackClasses.peek();
+			}
+		}
+		if(stackPackage.size() > 0) {
+			String t = stackPackage.pop();
+			if (t.equals(packageName) && stackPackage.size() > 0) {
+				packageName = stackPackage.peek();
+			}
+
+		}
+	}
+
+	@Override
+	public void endVisit(EnumDeclaration node) {
 		if(stackClasses.size() > 0) {
 			ASTClass c = stackClasses.pop();
 			if (c.equals(lastClass) && stackClasses.size() > 0) {
@@ -218,7 +328,6 @@ public class JDTVisitor extends ASTVisitor {
 		} else {
 			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync);
 		}
-
 		lastClass.addMethod(method);
 		lastMethod = method;
 		//stackMethods.push(method);
@@ -298,6 +407,7 @@ public class JDTVisitor extends ASTVisitor {
 
 		ASTRE guard = getExprState(node.getExpression());
 		ASTIf ifstm = new ASTIf(start, stop, guard);
+
 		lastMethod.addStms(ifstm);
 
 		int startThen = node.getThenStatement().getStartPosition();
@@ -574,20 +684,6 @@ public class JDTVisitor extends ASTVisitor {
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
 		ASTRE expr =  new ASTRE(start, stop, getExpr(ctx));
-		/*handle special hidden classes
-		final boolean[] found = {false};
-		final ASTHiddenClass[] obj = {null};
-		expr.visit(new DefaultASTVisitor(){
-			@Override
-			public void enterASTNewObject(ASTNewObject elm) {
-				found[0] = elm.getHiddenClass() != null;
-				obj[0] = elm.getHiddenClass();
-			}
-		});
-		if(found[0]){
-			stackClasses.push(obj[0]);
-			lastClass = obj[0];
-		}*/
 		return expr;
 	}
 
