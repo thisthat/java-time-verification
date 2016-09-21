@@ -151,7 +151,7 @@ public class ThirdEvaluation {
 		indexing.indexSyncCall(path, false);
 		System.out.println("Indexing Calls done");
 		double end = new Date().getTime();
-		System.out.println("[Indexing] "+(end-start)/1000 + " s");
+		System.out.println("[Indexing] "+ (end-start)/1000 + " s");
 	}
 
 	private void eval() {
@@ -225,7 +225,7 @@ public class ThirdEvaluation {
 			for(IndexSyncCall second : syncsCall){
 				current++;
 				double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
-				System.out.print(String.format("\r[%s %%]", perc ));
+				//System.out.print(String.format("\r[%s %%]", perc ));
 				compare(first,second);
 			}
 		}
@@ -238,7 +238,7 @@ public class ThirdEvaluation {
 			for(IndexSyncBlock second : methodsBlock){
 				current++;
 				double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
-				System.out.print(String.format("\r[%s %%]", perc ));
+				//System.out.print(String.format("\r[%s %%]", perc ));
 				if(DataTreeType.checkCompatibleTypes( first.getExprType(), second.getExprType(), first.getExprPkg(), second.getExprPkg() )){
 					compare(first, second);
 				}

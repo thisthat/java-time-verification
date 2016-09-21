@@ -40,11 +40,11 @@ public class CalculateSyncBlock {
 		classes.add(class_2);
 		List<IndexSyncBlock> syncBlocks_1 = getSyncBlocks(class_1, indexes);
 		List<IndexSyncBlock> syncBlocks_2 = getSyncBlocks(class_2, indexes);
-		boolean isSameClass = class_1.getValue().isSameClass(class_2.getValue());
+		boolean isSameClass = class_1.getValue().isSameClass(class_2.getValue()) && class_1.getValue().getPackageName().equals(class_2.getValue().getPackageName());
 		//everyone is checked against everyone
 		for(IndexSyncBlock outter : syncBlocks_1){
 			IndexParameter varOutter = outter.getSyncVar(); //outter.getEnv().getVar(outter.getExpr());
-			if(varOutter == null) { //could be a method call or something else than a simple var :(
+			if(varOutter == null || varOutter.getType() == null) { //could be a method call or something else than a simple var :(
 				//for the moment we consider only variables
 				continue;
 			}
@@ -55,11 +55,12 @@ public class CalculateSyncBlock {
 						//we have a match on this or ClassName.class
 						processMatch(pcfg, outter, inner, classes, isSameClass);
 					}
-				} else {
+				} else if(varInner != null) {
 					boolean canWeCheck = isSameClass || (inner.isAccessibleFromOutside() && outter.isAccessibleFromOutside());
 					if(
 							canWeCheck //both are accessible from outside or we are checking on same classes
 									&&
+									varInner.getType() != null &&
 									varInner.getType().equals(varOutter.getType()) //both same type
 							){
 						processMatch(pcfg, outter, inner, classes, isSameClass);

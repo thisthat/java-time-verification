@@ -163,7 +163,6 @@ public class IndexingSyncBlock extends ParseIM {
 		sync.setSignature(signatureLastMethodName);
 		sync.setExprPkg(exprType.getValue0());
 		sync.setExprType(exprType.getValue1());
-
 		//is accessible from outside
 		boolean startValue = (exprType.getValue0().equals("") && exprType.getValue1().equals("")); //workaround to check if is inherited!
 		boolean[] flag = {startValue};

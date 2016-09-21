@@ -74,6 +74,10 @@ public class ResolveTypes {
 	 */
 	public static String getTypeMethodCall(List<IndexData> imports, ASTClass _class, ASTMethodCall expr, Env e){
 		IASTRE calee = expr.getExprCallee();
+		if(calee == null){
+			//local method call
+			calee = new ASTLiteral(-1,-1, "this");
+		}
 		String methodCalled = expr.getMethodName();
 		List<Pair<String,String>> actual_pars = new ArrayList<Pair<String,String>>();
 		for(IASTRE p : expr.getParameters()){
@@ -108,11 +112,7 @@ public class ResolveTypes {
 			String varName = ((ASTLiteral) calee).getValue();
 			if(varName.equals("this")){
 				//local search
-				for(IASTMethod m : _class.getMethods()){
-					if(m.equalsBySignature(methodCalled, actual_pars)){
-						return m.getReturnType();
-					}
-				}
+				return localSearch(_class, methodCalled, actual_pars);
 			} else {
 				//get type in env
 				IASTVar var = e.getVar(varName);
@@ -160,7 +160,19 @@ public class ResolveTypes {
 				}
 			}
 		}
-		return null;
+		return "Object";
+	}
+
+	private static String localSearch(ASTClass _class, String methodCalled, List<Pair<String,String>> actual_pars){
+		for(IASTMethod m : _class.getMethods()){
+			if(m.equalsBySignature(methodCalled, actual_pars)){
+				return m.getReturnType();
+			}
+		}
+		if(_class.getParent() != null)
+			return localSearch(_class.getParent(), methodCalled, actual_pars);
+		else
+			return "";
 	}
 
 	public static Pair<String,String> getSynchronizedExprType(List<IndexData> imports, IASTRE expr, ASTClass c, Env e){
@@ -209,6 +221,9 @@ public class ResolveTypes {
 			String attribute = ((ASTAttributeAccess) expr).getAttributeName();
 			if (var instanceof ASTLiteral) {
 				String varName = ((ASTLiteral) var).getValue();
+				if(varName.equals("this")){
+					varName = attribute;
+				}
 				IASTVar type = e.getVar(varName);
 				if (type == null) {
 					System.err.println("[Attribute] Should be not the case! Resolving sync expr for class:" + c.getPath());
@@ -216,9 +231,8 @@ public class ResolveTypes {
 				} else {
 					IndexData d = getPackageFromImports(imports, type.getType());
 					if (d == null) {
-						//if d is null then it is not indexed!
-						System.err.println("[Attribute] Should be not the case! Resolving sync expr for class:" + c.getPath());
-						System.err.println("@line:" + ((ASTAttributeAccess) expr).getLine() );
+						//if d is null then it is a standard obj
+						out = new Pair<>("java.lang", type.getType());
 					} else {
 						List<ASTClass> classes = JDTVisitor.parse(d.getPath());
 						for(ASTClass cc : classes){

@@ -149,7 +149,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 
 	@Override
 	public boolean equalsBySignature(String name, List<Pair<String, String>> signature) {
-		if(name.equals(this.name)) return false;
+		if(!name.equals(this.name)) return false;
 		if(signature.size() != this.parameters.size()) return false;
 		boolean flag = true;
 		for(int i = 0; i < this.parameters.size(); i++){
