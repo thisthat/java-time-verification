@@ -4,10 +4,7 @@ import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexEnv;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import IntermediateModelHelper.indexing.structure.IndexSyncCall;
+import IntermediateModelHelper.indexing.structure.*;
 import IntermediateModelHelper.types.ResolveTypes;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
@@ -159,7 +156,13 @@ public class IndexingSyncBlock extends ParseIM {
 		sync.setEnd(elm.getEnd());
 		sync.setLine(elm.getLine());
 		IndexEnv e_index = new IndexEnv(env);
-		sync.setSyncVar( e_index.getVar(sync.getExpr()) );
+		IndexParameter v = e_index.getVar(sync.getExpr());
+		if(v != null) {
+			sync.setSyncVar(v);
+		} else {
+			sync.setSyncVar(new IndexParameter(exprType.getValue1(), sync.getExpr()));
+		}
+
 		sync.setSignature(signatureLastMethodName);
 		sync.setExprPkg(exprType.getValue0());
 		sync.setExprType(exprType.getValue1());

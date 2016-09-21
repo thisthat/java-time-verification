@@ -17,9 +17,9 @@ import static org.junit.Assert.assertEquals;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class TestNotSync {
+public class TestSynchronization {
 
-	final String DB_NAME = "TestNotSync";
+	final String DB_NAME = "TestSynchronization";
 
 	@Before
 	public void setUp() throws Exception {
@@ -30,7 +30,7 @@ public class TestNotSync {
 
 	@Test
 	public void TestSameVarButNotAccessibleFromOutside() throws Exception {
-		String f =  TestNotSync.class.getClassLoader().getResource("shouldNotSync/MagnetPlugin.java").getFile();
+		String f =  TestSynchronization.class.getClassLoader().getResource("shouldNotSync/MagnetPlugin.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -38,7 +38,7 @@ public class TestNotSync {
 		ASTClass c = v.listOfClasses.get(0);
 
 		//add the second method
-		f =  TestNotSync.class.getClassLoader().getResource("shouldNotSync/MagnetURIHandlerImpl.java").getFile();
+		f =  TestSynchronization.class.getClassLoader().getResource("shouldNotSync/MagnetURIHandlerImpl.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -58,6 +58,39 @@ public class TestNotSync {
 		assertEquals(g.getSyncNodes().size(), 12 + 7 );
 		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 0 );
+
+	}
+
+	@Test
+	public void TestSameClassOnThis() throws Exception {
+		String f =  TestSynchronization.class.getClassLoader().getResource("airavata/WaitDialog.java").getFile();
+		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c = v.listOfClasses.get(0);
+
+		//add the second method
+		f =  TestSynchronization.class.getClassLoader().getResource("airavata/WaitDialog.java").getFile();
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c1 = v.listOfClasses.get(0);
+
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, c.getMethodBySignature("show",
+				Arrays.asList()
+		), true);
+		p.addClass(c1, c1.getMethodBySignature("show",
+				Arrays.asList()
+		), true);
+		MongoConnector.getInstance().ensureIndexes();
+		PCFG g = p.buildPCFG();
+
+		assertEquals(g.getSyncNodes().size(), 1 + 1 );
+		assertEquals(g.getCFG().size(), 2 );
+		assertEquals(g.getESync().size(), 1 );
 
 	}
 }
