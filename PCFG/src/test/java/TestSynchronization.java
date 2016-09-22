@@ -93,4 +93,70 @@ public class TestSynchronization {
 		assertEquals(g.getESync().size(), 1 );
 
 	}
+
+	@Test
+	public void TestSameClassOnDotClass() throws Exception {
+		String f =  TestSynchronization.class.getClassLoader().getResource("airavata/WorkflowEnactmentService.java").getFile();
+		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c = v.listOfClasses.get(0);
+
+		//add the second method
+		f =  TestSynchronization.class.getClassLoader().getResource("airavata/WorkflowEnactmentService.java").getFile();
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c1 = v.listOfClasses.get(0);
+
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, c.getMethodBySignature("getInstance",
+				Arrays.asList()
+		), true);
+		p.addClass(c1, c1.getMethodBySignature("getInstance",
+				Arrays.asList()
+		), true);
+		MongoConnector.getInstance().ensureIndexes();
+		PCFG g = p.buildPCFG();
+
+		assertEquals(g.getSyncNodes().size(), 1 + 1 );
+		assertEquals(g.getCFG().size(), 2 );
+		assertEquals(g.getESync().size(), 1 );
+
+	}
+
+	@Test
+	public void TestSameOutsideVariable() throws Exception {
+		String f =  TestSynchronization.class.getClassLoader().getResource("airavata/HPCPullMonitor.java").getFile();
+		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c = v.listOfClasses.get(0);
+
+		//add the second method
+		f = TestSynchronization.class.getClassLoader().getResource("airavata/CommonUtils.java").getFile();
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c1 = v.listOfClasses.get(0);
+
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, c.getMethodBySignature("run",
+				Arrays.asList()
+		), true);
+		p.addClass(c1, c1.getMethodBySignature("addMonitortoQueue",
+				Arrays.asList("BlockingQueue<UserMonitorData>, MonitorID, JobExecutionContext".split(", "))
+		), true);
+		MongoConnector.getInstance().ensureIndexes();
+		PCFG g = p.buildPCFG();
+
+		assertEquals(g.getSyncNodes().size(), 1 + 1 );
+		assertEquals(g.getCFG().size(), 2 );
+		assertEquals(g.getESync().size(), 1 );
+
+	}
 }

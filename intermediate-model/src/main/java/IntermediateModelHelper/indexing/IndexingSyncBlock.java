@@ -176,6 +176,9 @@ public class IndexingSyncBlock extends ParseIM {
 		// 2.1 Must not be an array (we change the value stored inside the var, not the variable itself)
 		// 2.2 Must not be a new declaration
 		ParseIM checkAccessibleFromOutside = new ParseIM() {
+			private boolean checkIASTRE(ASTVariable v, Env env){
+				return sync.getExpr().equals(v.getName()) && sync.getExprType().equals(v.getType());
+			}
 			private boolean checkIASTRE(IASTRE e, Env env){
 				if(e instanceof ASTLiteral){
 					if(((ASTLiteral) e).getValue().equals(sync.getExpr())){
@@ -194,7 +197,10 @@ public class IndexingSyncBlock extends ParseIM {
 							return false;
 						}
 						return true;
+					} else {
+						return ((ASTAttributeAccess) e).getCode().equals(sync.getExpr());
 					}
+
 				}
 				return false;
 			}
@@ -231,6 +237,11 @@ public class IndexingSyncBlock extends ParseIM {
 
 			public void start(ASTClass _c){
 				for(IASTMethod m : _c.getMethods()){
+					for(ASTVariable v : m.getParameters()){
+						if(!flag[0]) {
+							flag[0] = checkIASTRE(v, env);
+						}
+					}
 					analyzeMethod(m);
 				}
 			}
