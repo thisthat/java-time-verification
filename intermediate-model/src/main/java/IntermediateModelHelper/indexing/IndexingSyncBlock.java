@@ -13,6 +13,7 @@ import intermediateModel.structure.expression.ASTAssignment;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Pair;
@@ -238,8 +239,19 @@ public class IndexingSyncBlock extends ParseIM {
 			public void start(ASTClass _c){
 				for(IASTMethod m : _c.getMethods()){
 					for(ASTVariable v : m.getParameters()){
-						if(!flag[0]) {
-							flag[0] = checkIASTRE(v, env);
+						boolean tmp[] = {false};
+						if(checkIASTRE(v, env)){
+							//it contains also a sync node?
+
+							m.visit(new DefaultASTVisitor(){
+								@Override
+								public void enterASTSynchronized(ASTSynchronized elm) {
+									tmp[0] = true;
+								}
+							});
+						}
+						if(tmp[0]){
+							flag[0] = true;
 						}
 					}
 					analyzeMethod(m);

@@ -262,7 +262,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 						for(IASTMethod m : _class.getMethods()){
 							if(m instanceof ASTMethod){
 								ASTMethod method = ((ASTMethod) m);
-								if(method.isSyncronized()){
+								if(method.isSyncronized() && method.getName().equals(methodCalled)){
 									boolean flag = true;
 									if(actual_pars.size() == m.getParameters().size()){
 										for(int i = 0, max = actual_pars.size(); i < max; i++){

@@ -1,3 +1,4 @@
+import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.creation.IM2PCFG;
@@ -157,6 +158,40 @@ public class TestSynchronization {
 		assertEquals(g.getSyncNodes().size(), 1 + 1 );
 		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 1 );
-
 	}
+
+	@Test
+	public void TestSameNameDifferentClasses() throws Exception {
+		String f =  TestSynchronization.class.getClassLoader().getResource("airavata/PredicatedTaskRunner_co.java").getFile();
+		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c = v.listOfClasses.get(0);
+
+		//add the second method
+		f = TestSynchronization.class.getClassLoader().getResource("airavata/PredicatedTaskRunner_wf.java").getFile();
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c1 = v.listOfClasses.get(0);
+
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, c.getMethodBySignature("addIdleTask",
+				Arrays.asList()
+		), true);
+		p.addClass(c1, c1.getMethodBySignature("addIdleTask",
+				Arrays.asList()
+		), true);
+		MongoConnector.getInstance().ensureIndexes();
+		PCFG g = p.buildPCFG();
+
+		assertEquals(g.getSyncNodes().size(), 1 + 1 );
+		assertEquals(g.getCFG().size(), 2 );
+		assertEquals(g.getESync().size(), 0 );
+	}
+
+
+
 }
