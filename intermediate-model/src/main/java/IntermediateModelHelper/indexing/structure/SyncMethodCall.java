@@ -84,6 +84,8 @@ public class SyncMethodCall {
 	}
 
 	public boolean equalsBySignature(SyncMethodCall o){
+		if(!this._packageName.equals(o.get_packageName())) return false;//not of the same pkg
+		if(!this._className.equals(o.get_className())) return false;//not of the same class
 		if(!this._methodCalled.equals(o.get_methodCalled())) return false; //not same method name
 		if(this.paramsType.size() != o.getParamsType().size()) return false; //not same number of parameters
 		for(int i = 0, max = this.paramsType.size(); i < max; i++){ //not same type for each par

@@ -90,7 +90,8 @@ public class Main {
 		System.out.println("[Indexing] "+ (end-start)/1000 + " s");
 */
 
-		String f =  Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
+		String f = "/Users/giovanni/repository/sources/vuze/vuze_mvn/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java";
+		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -106,11 +107,11 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("doFillBatch",
+		p.addClass(c, c.getMethodBySignature("AzureusCoreImpl",
 				Arrays.asList()
 		));
 
-		p.addClass(c1, c1.getMethodBySignature("doFillBatch",
+		p.addClass(c1, c1.getMethodBySignature("AzureusCoreImpl",
 				Arrays.asList()
 		));
 		PCFG graph = p.buildPCFG();

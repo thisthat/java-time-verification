@@ -25,8 +25,8 @@ public class TestSynchronization {
 	@Before
 	public void setUp() throws Exception {
 		MongoOptions.getInstance().setDbName(DB_NAME);
-		MongoConnector.getInstance().drop();
-		MongoConnector.getInstance().ensureIndexes();
+		MongoConnector.getInstance(DB_NAME).drop();
+		MongoConnector.getInstance(DB_NAME).ensureIndexes();
 	}
 
 	@Test
@@ -192,6 +192,42 @@ public class TestSynchronization {
 		assertEquals(g.getESync().size(), 0 );
 	}
 
+	@Test
+	public void TestSameSyncCallNameButInDifferentClasses() throws Exception {
+
+		String f =  TestSynchronization.class.getClassLoader().getResource("shouldNotSync/JarResource.java").getFile();
+		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		CompilationUnit ast = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c = v.listOfClasses.get(0);
+
+		//add the second method
+		f = TestSynchronization.class.getClassLoader().getResource("shouldNotSync/URLResource.java").getFile();
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c1 = v.listOfClasses.get(0);
+
+		String base_path = f.substring(0, f.lastIndexOf("/") + 1);
+		IndexingProject index = new IndexingProject(DB_NAME);
+		index.indexProject(base_path, true);
+		index.indexSyncCall(base_path,false);
+
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c, c.getMethodBySignature("exists",
+				Arrays.asList()
+		), true);
+		p.addClass(c1, c1.getMethodBySignature("exists",
+				Arrays.asList()
+		), true);
+		MongoConnector.getInstance().ensureIndexes();
+		PCFG g = p.buildPCFG();
+
+		assertEquals(g.getCFG().size(), 2 );
+		assertEquals(g.getESync().size(), 0 );
+	}
 
 
 }
