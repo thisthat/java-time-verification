@@ -19,10 +19,7 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The idea is to parse the method that we are currently looking through and collect all the information about
@@ -34,6 +31,7 @@ import java.util.Map;
 public class GenerateMethodSyncCallList extends ParseIM {
 
 	ASTClass _class;
+	ASTClass _lastClass;
 	List<IASTMethod> _methods = new ArrayList<>();
 	List<SyncMethodCall> syncCalls = new ArrayList<>();
 	MongoConnector mongo;
@@ -51,6 +49,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	 */
 	public GenerateMethodSyncCallList(ASTClass _class, IASTMethod _method) {
 		this._class = _class;
+		this._lastClass = _class;
 		this._methods.add(_method);
 		mongo = MongoConnector.getInstance(MongoOptions.getInstance().getDbName());
 		processImports();
@@ -91,6 +90,19 @@ public class GenerateMethodSyncCallList extends ParseIM {
 				syncMethods.put(objName, names);
 			}
 		}
+		String pkg = this._class.getPackageName() + ".*";
+		List<IndexData> current = mongo.getFromImport(pkg, true);
+		if(current.size() > 0) imports.addAll(current);
+		//System.out.println(Arrays.toString(d.toArray()));
+		for(IndexData index : current){
+			String objName = index.getClassName();
+			List<IndexMethod> names = new ArrayList<>();
+			for(IndexMethod m : index.getListOfSyncMethods()){
+				names.add(m);
+			}
+			syncMethods.put(objName, names);
+		}
+		//plus files in my package
 	}
 
 	private boolean containsMethod(String name, List<Pair<String,String>> parsType, List<IndexMethod> methods){
@@ -145,6 +157,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 			return;
 		}
 		String inMethod = lastMethod;
+		String inMethodPkg = _class.getPackageName();
+		String inMethodClass = _class.getName();
 		List<String> inSignature = new ArrayList<>();
 		inSignature.addAll(lastSignature);
 		r.getExpression().visit(new DefualtASTREVisitor(){
@@ -164,166 +178,169 @@ public class GenerateMethodSyncCallList extends ParseIM {
 				}
 				String pkg2 = _class.getPackageName();
 				if(expr == null){
-					//local call - we can skip constructors because they are never sync
-					for(IASTMethod m : _class.getMethods()){
-						if(m instanceof ASTMethod && m.getName().equals(methodCalled)){
-							ASTMethod method = ((ASTMethod) m);
-							if(method.isSyncronized()){
-								boolean flag = true;
-								if(actual_pars.size() == m.getParameters().size()){
-									for(int i = 0, max = actual_pars.size(); i < max; i++){
-										String pkg1 = actual_pars.get(i).getValue1();
-										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, pkg2)){
-											flag = false;
-										}
-									}
-								} else {
-									flag = false;
-								}
-								if(flag) {
-									List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
-									for(int i = 0, max = m.getParameters().size(); i < max; i++){
-										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
-									}
-									//local call
-									syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature));
-								}
-							}
-						}
-					}
+					localCall(methodCalled, actual_pars, pkg2, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 				}
 				if(expr instanceof ASTAttributeAccess){
 					String attribute = ((ASTAttributeAccess) expr).getAttributeName();
-					if(syncMethods.containsKey(attribute)){
-						//exists in the list
-						List<IndexMethod> methods = syncMethods.get(attribute);
-						if(containsMethod(methodCalled, actual_pars, methods)){
-							//also the call is in the list -> we gotta a match
-							IndexMethod m = getMethod(methodCalled, actual_pars, methods);
-							boolean flag = true;
-							if(actual_pars.size() == m.getParameters().size()){
-								for(int i = 0, max = actual_pars.size(); i < max; i++){
-									String pkg1 = actual_pars.get(i).getValue1();
-									if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
-										flag = false;
-									}
-								}
-							} else {
-								flag = false;
-							}
-							if(flag) {
-								List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
-								List<String> signature = new ArrayList<String>();
-								for(int i = 0, max = m.getParameters().size(); i < max; i++){
-									methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
-									signature.add(m.getParameters().get(i).getType());
-								}
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature));
-							}
-						}
-					}
+					attributeAccess(methodCalled, actual_pars, attribute, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 				}
 				if(expr instanceof ASTLiteral){
 					String varName = ((ASTLiteral) expr).getValue();
-					if(!varName.equals("this")){
-						IASTVar var = env.getVar(varName);
-						if(var != null){ //we have smth in the env (should be always the case)
-							String varType = var.getType();
-							if(syncMethods.containsKey(varType)){
-								//exists in the list
-								List<IndexMethod> methods = syncMethods.get(varType);
-								if(containsMethod(methodCalled, actual_pars, methods)){
-									//also the call is in the list -> we gotta a match
-									IndexMethod m = getMethod(methodCalled, actual_pars, methods);
-									boolean flag = true;
-									if(actual_pars.size() == m.getParameters().size()){
-										for(int i = 0, max = actual_pars.size(); i < max; i++){
-											String pkg1 = actual_pars.get(i).getValue1();
-											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
-												flag = false;
-											}
-										}
-									} else {
-										flag = false;
-									}
-									if(flag) {
-										List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
-										List<String> signature = new ArrayList<String>();
-										for(int i = 0, max = m.getParameters().size(); i < max; i++){
-											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
-											signature.add(m.getParameters().get(i).getType());
-										}
-										syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature));
-									}
-								}
-							}
-						}
-					} else { //if is this. check locally
-						for(IASTMethod m : _class.getMethods()){
-							if(m instanceof ASTMethod){
-								ASTMethod method = ((ASTMethod) m);
-								if(method.isSyncronized() && method.getName().equals(methodCalled)){
-									boolean flag = true;
-									if(actual_pars.size() == m.getParameters().size()){
-										for(int i = 0, max = actual_pars.size(); i < max; i++){
-											String pkg1 = actual_pars.get(i).getValue1();
-											if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, pkg2)){
-												flag = false;
-											}
-										}
-									} else {
-										flag = false;
-									}
-									if(flag) {
-										List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
-										for(int i = 0, max = m.getParameters().size(); i < max; i++){
-											methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
-										}
-										syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature));
-									}
-								}
-							}
-						}
-					}
+					literalAccess(methodCalled, actual_pars, pkg2, r, inMethod, inSignature, inMethodPkg, inMethodClass, varName, env);
 				}
 				if(expr instanceof ASTMethodCall){
 					String type = ResolveTypes.getTypeMethodCall(imports, _class, (ASTMethodCall) expr, env);
-					if(type != null){
-						//we have a type
-						if(syncMethods.containsKey(type)){
-							//exists in the list
-							List<IndexMethod> methods = syncMethods.get(type);
-							if(containsMethod(methodCalled, actual_pars, methods)){
-								//also the call is in the list -> we gotta a match
-								IndexMethod m = getMethod(methodCalled, actual_pars, methods);
-								boolean flag = true;
-								if(actual_pars.size() == m.getParameters().size()){
-									for(int i = 0, max = actual_pars.size(); i < max; i++){
-										String pkg1 = actual_pars.get(i).getValue1();
-										if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
-											flag = false;
-										}
-									}
-								} else {
-									flag = false;
-								}
-								if(flag) {
-									List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
-									List<String> signature = new ArrayList<String>();
-									for(int i = 0, max = m.getParameters().size(); i < max; i++){
-										methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
-										signature.add(m.getParameters().get(i).getType());
-									}
-									syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, actual_pars, inMethod, inSignature));
-								}
-							}
-						}
-					}
+					methodAccess(methodCalled, actual_pars, type, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 				}
 			}
 		});
 	}
 
 
+	private void localCall(String methodCalled, List<Pair<String,String>> actual_pars, String pkgClass, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass){
+		//local call - we can skip constructors because they are never sync
+		for(IASTMethod m : _class.getMethods()){
+			if(m instanceof ASTMethod && m.getName().equals(methodCalled)){
+				ASTMethod method = ((ASTMethod) m);
+				if(method.isSyncronized()){
+					boolean flag = true;
+					if(actual_pars.size() == m.getParameters().size()){
+						for(int i = 0, max = actual_pars.size(); i < max; i++){
+							String pkg1 = actual_pars.get(i).getValue1();
+							if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, pkgClass)){
+								flag = false;
+							}
+						}
+					} else {
+						flag = false;
+					}
+					if(flag) {
+						List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+						for(int i = 0, max = m.getParameters().size(); i < max; i++){
+							methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
+						}
+						//local call
+						syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+					}
+				}
+			}
+		}
+	}
 
+	private void attributeAccess(String methodCalled, List<Pair<String,String>> actual_pars, String attribute, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass){
+		if(syncMethods.containsKey(attribute)){
+			//exists in the list
+			List<IndexMethod> methods = syncMethods.get(attribute);
+			if(containsMethod(methodCalled, actual_pars, methods)){
+				//also the call is in the list -> we gotta a match
+				IndexMethod m = getMethod(methodCalled, actual_pars, methods);
+				boolean flag = true;
+				if(actual_pars.size() == m.getParameters().size()){
+					for(int i = 0, max = actual_pars.size(); i < max; i++){
+						String pkg1 = actual_pars.get(i).getValue1();
+						if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
+							flag = false;
+						}
+					}
+				} else {
+					flag = false;
+				}
+				if(flag) {
+					List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+					List<String> signature = new ArrayList<String>();
+					for(int i = 0, max = m.getParameters().size(); i < max; i++){
+						methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+						signature.add(m.getParameters().get(i).getType());
+					}
+					syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+				}
+			}
+		}
+	}
+
+	private void literalAccess(String methodCalled, List<Pair<String,String>> actual_pars, String pkgClass, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass, String varName, Env env){
+		if(!varName.equals("this")){
+			IASTVar var = env.getVar(varName);
+			if(var != null){ //we have smth in the env (should be always the case)
+				String varType = var.getType();
+				if(syncMethods.containsKey(varType)){
+					//exists in the list
+					List<IndexMethod> methods = syncMethods.get(varType);
+					if(containsMethod(methodCalled, actual_pars, methods)){
+						//also the call is in the list -> we gotta a match
+						IndexMethod m = getMethod(methodCalled, actual_pars, methods);
+						if(m != null) {
+							List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+							List<String> signature = new ArrayList<String>();
+							for(int i = 0, max = m.getParameters().size(); i < max; i++){
+								methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+								signature.add(m.getParameters().get(i).getType());
+							}
+							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+						}
+					}
+				}
+			}
+		} else { //if is this. check locally
+			for(IASTMethod m : _class.getMethods()){
+				if(m instanceof ASTMethod){
+					ASTMethod method = ((ASTMethod) m);
+					if(method.isSyncronized() && method.getName().equals(methodCalled)){
+						boolean flag = true;
+						if(actual_pars.size() == m.getParameters().size()){
+							for(int i = 0, max = actual_pars.size(); i < max; i++){
+								String pkg1 = actual_pars.get(i).getValue1();
+								if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, pkgClass)){
+									flag = false;
+								}
+							}
+						} else {
+							flag = false;
+						}
+						if(flag) {
+							List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+							for(int i = 0, max = m.getParameters().size(); i < max; i++){
+								methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
+							}
+							syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void methodAccess(String methodCalled, List<Pair<String,String>> actual_pars, String type, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass){
+		if(type != null){
+			//we have a type
+			if(syncMethods.containsKey(type)){
+				//exists in the list
+				List<IndexMethod> methods = syncMethods.get(type);
+				if(containsMethod(methodCalled, actual_pars, methods)){
+					//also the call is in the list -> we gotta a match
+					IndexMethod m = getMethod(methodCalled, actual_pars, methods);
+					boolean flag = true;
+					if(actual_pars.size() == m.getParameters().size()){
+						for(int i = 0, max = actual_pars.size(); i < max; i++){
+							String pkg1 = actual_pars.get(i).getValue1();
+							if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
+								flag = false;
+							}
+						}
+					} else {
+						flag = false;
+					}
+					if(flag) {
+						List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+						List<String> signature = new ArrayList<String>();
+						for(int i = 0, max = m.getParameters().size(); i < max; i++){
+							methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+							signature.add(m.getParameters().get(i).getType());
+						}
+						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, actual_pars, inMethod, inSignature, inMethodPkg, inMethodClass));
+					}
+				}
+			}
+		}
+	}
 }

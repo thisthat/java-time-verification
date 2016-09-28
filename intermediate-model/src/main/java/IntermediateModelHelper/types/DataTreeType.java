@@ -8,10 +8,7 @@ import intermediateModel.structure.ASTClass;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -176,10 +173,16 @@ public class DataTreeType {
 			//we don't have to do anything
 			//System.err.println(e.getMessage());
 		}
-		if(type1.equals(type2)){
-			return true;
-		}
-		return false;
+		return checkEqualsTypes(type1,type2);
+	}
+
+	private static boolean checkEqualsTypes(String type1, String type2) {
+		//search for basic types
+		List<String> basic_int = new ArrayList<>(Arrays.asList(new String[]{"int", "long", "float", "double", "Integer", "Long", "Float", "Double"}));
+		List<String> basic_bool = new ArrayList<>(Arrays.asList(new String[]{"boolean","Boolean"}));
+		if(basic_int.contains(type1) && basic_int.contains(type2)) return true;
+		if(basic_bool.contains(type1) && basic_bool.contains(type2)) return true;
+		return type1.equals(type2);
 	}
 
 

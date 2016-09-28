@@ -332,6 +332,7 @@ public abstract class ParseIM {
 		analyze(elm.getTryBranch().getStms(), new_env_try);
 		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
 			Env new_env_catch = new Env(env);
+			new_env_catch.addVar(catchBranch.getExpr());
 			analyze( catchBranch.getStms(), new_env_catch );
 		}
 		if(elm.getFinallyBranch() != null)
@@ -358,6 +359,7 @@ public abstract class ParseIM {
 		analyze(elm.getTryBranch().getStms(), new_env_try);
 		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
 			Env new_env_catch = new Env(env_resource);
+			new_env_catch.addVar(catchBranch.getExpr());
 			analyze( catchBranch.getStms(), new_env_catch );
 		}
 		if(elm.getFinallyBranch() != null)

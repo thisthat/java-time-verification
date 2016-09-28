@@ -60,11 +60,11 @@ public class IndexingSyncCalls  {
 	 */
 	public List<IndexSyncCall> index(ASTClass c, boolean forceReindex) {
 		this._c = c;
-		if(mongo.existSyncCallIndex(c)){
+		if(mongo.existSyncCallIndexClass(c)){
 			if(forceReindex){
 				mongo.deleteSyncCalls(c);
 			} else {
-				List<IndexSyncCall> out = mongo.getSyncIndex(c);
+				List<IndexSyncCall> out = mongo.getSyncCallIndexClass(c);
 				return out;
 			}
 		}
@@ -73,7 +73,7 @@ public class IndexingSyncCalls  {
 		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();
 		List<IndexSyncCall> out = new ArrayList<>();
 		for(SyncMethodCall call : calls){
-			IndexSyncCall index = new IndexSyncCall(call, c.getPackageName(), c.getName(), c.getPath());
+			IndexSyncCall index = new IndexSyncCall(call, c.getPath());
 			mongo.add(index);
 			out.add(index);
 		}

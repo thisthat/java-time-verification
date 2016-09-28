@@ -20,8 +20,10 @@ public class SyncMethodCall {
 	private String _methodCalled;
 	private List<Pair<String, String>> paramsType = new ArrayList<>();
 	private ASTRE node;
+	private String _inPackageName;
+	private String _inClassName;
 
-	public SyncMethodCall(String _packageName, String _className, String _methodCalled, List<String> signatureMethodCalled, ASTRE node, List<Pair<String, String>> paramsType, String _inMethodName, List<String> _signatureInMethod) {
+	public SyncMethodCall(String _packageName, String _className, String _methodCalled, List<String> signatureMethodCalled, ASTRE node, List<Pair<String, String>> paramsType, String _inMethodName, List<String> _signatureInMethod, String _inPackageName, String _inClassName) {
 		this._packageName = _packageName;
 		this._className = _className;
 		this._methodCalled = _methodCalled;
@@ -30,6 +32,8 @@ public class SyncMethodCall {
 		this._inMethodName = _inMethodName;
 		this._signatureInMethod = _signatureInMethod;
 		this._signatureMethodCalled = signatureMethodCalled;
+		this._inPackageName = _inPackageName;
+		this._inClassName = _inClassName;
 	}
 
 	public List<String> get_signatureMethodCalled() {
@@ -67,6 +71,14 @@ public class SyncMethodCall {
 
 	public ASTRE getNode() {
 		return node;
+	}
+
+	public String get_inPackageName() {
+		return _inPackageName;
+	}
+
+	public String get_inClassName() {
+		return _inClassName;
 	}
 
 	@Override

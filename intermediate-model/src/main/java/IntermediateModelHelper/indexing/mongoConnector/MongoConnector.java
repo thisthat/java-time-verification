@@ -10,6 +10,7 @@ import intermediateModel.structure.ASTClass;
 import org.bson.BsonSerializationException;
 import org.bson.Document;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -29,6 +30,7 @@ import java.util.Map;
  * @version %I%, %G%
  */
 public class MongoConnector {
+
 	private static HashMap<String,MongoConnector> instances = new HashMap<String, MongoConnector>();
 
 	MongoDatabase db;
@@ -37,7 +39,8 @@ public class MongoConnector {
 	Datastore datastore;
 	Map<String,List<IndexData>> cacheImport = new HashMap<>();
 	Map<Pair<String,String>,List<IndexData>> cacheIndex = new HashMap<>();
-	Map<Pair<String,String>,List<IndexSyncCall>> cacheSyncCall = new HashMap<>();
+	Map<Quartet<String,String, String, List<String>>,List<IndexSyncCall>> cacheSyncCall = new HashMap<>();
+	Map<Pair<String,String>,List<IndexSyncCall>> cacheSyncCallClass = new HashMap<>();
 	Map<Sextet<String,String,String,List<String>,Integer,Integer>,List<IndexSyncBlock>> cacheSyncBlock = new HashMap<>();
 
 	/**
@@ -50,6 +53,7 @@ public class MongoConnector {
 	private final String __COLLECTION_NAME 	= "IndexData";
 	private final String __METHOD_NAME 		= "methodName";
 	private final String __SIGNATURE 		= "signature";
+	private final String __SIGNATURE_SYNC 	= "methodSignature";
 	private final String __START	 		= "start";
 	private final String __END		 		= "end";
 
@@ -134,8 +138,8 @@ public class MongoConnector {
 	 * @param c	{@link ASTClass} to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncCallIndex(ASTClass c) {
-		return existSyncCallIndex(c.getName(),c.getPackageName());
+	public boolean existSyncCallIndexClass(ASTClass c) {
+		return getSyncCallIndexClass(c.getName(),c.getPackageName()).size() > 0;
 	}
 	/**
 	 * Check if a class is already in the DB in the collection of Synchronized calls.
@@ -143,7 +147,7 @@ public class MongoConnector {
 	 * @return	True if it is already in the DB.
 	 */
 	public boolean existSyncCallIndex(IndexSyncCall i){
-		return existSyncCallIndex(i.getClassName(), i.getPackageName());
+		return existSyncCallIndex(i.getClassName(), i.getPackageName(), i.getMethodName(), i.getMethodSignature());
 	}
 	/**
 	 * Check if a class is already in the DB in the collection of Synchronized calls.
@@ -151,8 +155,8 @@ public class MongoConnector {
 	 * @param packageName	Package of the class to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncCallIndex(String name, String packageName){
-		return getSyncIndex(name,packageName).size() > 0;
+	public boolean existSyncCallIndex(String name, String packageName, String methodName, List<String> signature){
+		return getSyncCallIndex(name,packageName, methodName, signature).size() > 0;
 	}
 
 	/**
@@ -250,24 +254,49 @@ public class MongoConnector {
 	}
 
 
-	public List<IndexSyncCall> getSyncIndex(ASTClass c) {
-		return getSyncIndex(c.getName(), c.getPackageName());
+	public List<IndexSyncCall> getSyncCallIndexClass(ASTClass c) {
+		return getSyncCallIndexClass(c.getName(), c.getPackageName());
 	}
 
 	/**
-	 * Retrieve the list of classes from the database.
+	 * Retrieve the list of Sync Call from the database of a class.
 	 * @param name			Name of the class to get
 	 * @param packageName	PackageName of the class to get
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexSyncCall> getSyncIndex(String name, String packageName){
+	public List<IndexSyncCall> getSyncCallIndexClass(String name, String packageName){
 		Pair<String,String> p = new Pair<>(name,packageName);
+		if(cacheSyncCallClass.containsKey(p)){
+			return cacheSyncCallClass.get(p);
+		}
+		List<IndexSyncCall> out =  datastore.createQuery(IndexSyncCall.class)
+				.field(__CLASS_NAME).equal(name)
+				.field(__PACKAGE_NAME).equal(packageName)
+				.asList();
+		if(out.size() > 0) {
+			cacheSyncCallClass.put(p, out);
+		}
+		return out;
+	}
+
+	/**
+	 * Retrieve the list of Sync Call from the database.
+	 * @param name			Name of the class to get
+	 * @param packageName	PackageName of the class to get
+	 * @param methodName    Method name to get
+	 * @param methodSignature Signature of the method to search
+	 * @return				List of {@link IndexData} documents
+	 */
+	public List<IndexSyncCall> getSyncCallIndex(String name, String packageName, String methodName, List<String> methodSignature){
+		Quartet<String,String, String, List<String>> p = new Quartet<>(name,packageName, methodName, methodSignature);
 		if(cacheSyncCall.containsKey(p)){
 			return cacheSyncCall.get(p);
 		}
 		List<IndexSyncCall> out =  datastore.createQuery(IndexSyncCall.class)
 				.field(__CLASS_NAME).equal(name)
 				.field(__PACKAGE_NAME).equal(packageName)
+				.field(__METHOD_NAME).equal(methodName)
+				.field(__SIGNATURE_SYNC).equal(methodSignature)
 				.asList();
 		if(out.size() > 0) {
 			cacheSyncCall.put(p, out);
@@ -342,7 +371,8 @@ public class MongoConnector {
 		}
 		Query<IndexData> q = datastore.createQuery(IndexData.class);//.filter("classPackage",regexp);
 		if(query.endsWith("*")){
-			q.field(__FULL_NAME).startsWith(query);
+			String qqq = query.substring(0,query.length()-1);
+			q.field(__FULL_NAME).startsWith(qqq);
 		} else {
 			q.field(__FULL_NAME).equal(query);
 		}

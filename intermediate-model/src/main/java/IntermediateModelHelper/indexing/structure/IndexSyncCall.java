@@ -45,9 +45,9 @@ public class IndexSyncCall {
 		this.line = line;
 	}
 
-	public IndexSyncCall(SyncMethodCall call, String inPkgClass, String inClass, String path) {
-		this._inClassPackage = inPkgClass;
-		this._inClassName = inClass;
+	public IndexSyncCall(SyncMethodCall call, String path) {
+		this._inClassPackage = call.get_inPackageName();
+		this._inClassName = call.get_inClassName();
 		this.classPackage = call.get_packageName();
 		this.name = call.get_className();
 		this.methodName = call.get_methodCalled();
