@@ -196,6 +196,8 @@ public class MongoConnector {
 		//System.out.println("Saving " + indexStructureClass.getClassName());
 		try {
 			datastore.save(indexStructureClass);
+			Pair<String,String> p = new Pair<>(indexStructureClass.getClassName(),indexStructureClass.getClassPackage());
+			cacheIndex.remove(p);
 		} catch (BsonSerializationException e){
 			System.err.println("File too big, cannot handle it!");
 		}
@@ -207,6 +209,11 @@ public class MongoConnector {
 		}
 		try {
 			datastore.save(indexSyncCall);
+			Pair<String,String> p = new Pair<>(indexSyncCall.getClassName(),indexSyncCall.getPackageName());
+			cacheSyncCallClass.remove(p);
+			Quartet<String,String, String, List<String>> ps = new Quartet<>(indexSyncCall.getClassName(),indexSyncCall.getPackageName(), indexSyncCall.getMethodName(), indexSyncCall.getMethodSignature());
+			cacheSyncCall.remove(ps);
+
 		} catch (BsonSerializationException e){
 			System.err.println("File too big, cannot handle it!");
 		}
@@ -218,6 +225,15 @@ public class MongoConnector {
 		}
 		try {
 			datastore.save(indexSyncBlock);
+			Sextet<String,String,String,List<String>,Integer,Integer> p = new Sextet<>(
+					indexSyncBlock.getName(),
+					indexSyncBlock.getPackageName(),
+					indexSyncBlock.getMethodName(),
+					indexSyncBlock.getSignature(),
+					indexSyncBlock.getStart(),
+					indexSyncBlock.getEnd()
+			);
+			cacheSyncBlock.remove(p);
 		} catch (BsonSerializationException e){
 			System.err.println("File too big, cannot handle it!");
 		}
@@ -230,8 +246,18 @@ public class MongoConnector {
 	 * @return				List of {@link IndexData} documents
 	 */
 	public List<IndexData> getIndex(String name, String packageName){
+		return getIndex(name, packageName, false);
+	}
+
+	/**
+	 * Retrieve the list of classes from the database.
+	 * @param name			Name of the class to get
+	 * @param packageName	PackageName of the class to get
+	 * @return				List of {@link IndexData} documents
+	 */
+	public List<IndexData> getIndex(String name, String packageName, boolean ignoreCache){
 		Pair<String,String> p = new Pair<>(name,packageName);
-		if(cacheIndex.containsKey(p)){
+		if(!ignoreCache && cacheIndex.containsKey(p)){
 			return cacheIndex.get(p);
 		}
 		List<IndexData> out =  datastore.createQuery(IndexData.class)
@@ -239,7 +265,7 @@ public class MongoConnector {
 				.field(__PACKAGE_NAME).equal(packageName)
 				.asList();
 		//if(out.size() > 0) {
-			cacheIndex.put(p, out);
+		cacheIndex.put(p, out);
 		//}
 		return out;
 	}
