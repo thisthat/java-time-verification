@@ -143,6 +143,9 @@ public class IndexingProject {
 			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
 			//pp filename
+			//if(filename.endsWith("/TopicSubscription.java")){
+			//	System.out.println("BRK");
+			//}
 			for(ASTClass c : v.listOfClasses){
 				IndexingSyncCalls indexing = new IndexingSyncCalls(db);
 				indexing.index(c);

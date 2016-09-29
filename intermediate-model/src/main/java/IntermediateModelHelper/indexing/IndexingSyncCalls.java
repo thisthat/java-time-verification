@@ -60,14 +60,6 @@ public class IndexingSyncCalls  {
 	 */
 	public List<IndexSyncCall> index(ASTClass c, boolean forceReindex) {
 		this._c = c;
-		if(mongo.existSyncCallIndexClass(c)){
-			if(forceReindex){
-				mongo.deleteSyncCalls(c);
-			} else {
-				List<IndexSyncCall> out = mongo.getSyncCallIndexClass(c);
-				return out;
-			}
-		}
 		//collect calls to a sync method
 		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, c.getMethods());
 		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();

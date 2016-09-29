@@ -5,7 +5,6 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
 import org.antlr.v4.runtime.Token;
-import org.javatuples.KeyValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +104,10 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	}
 
 	public String getExtendClass() {
-		return extendClass;
+		if(extendClass.contains("<")){
+			return extendClass.substring(0, extendClass.indexOf("<"));
+		} else
+			return extendClass;
 	}
 
 	public void addMethod(IASTMethod method){

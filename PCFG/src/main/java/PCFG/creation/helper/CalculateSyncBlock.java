@@ -1,6 +1,5 @@
 package PCFG.creation.helper;
 
-import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.structure.PCFG;

@@ -25,6 +25,7 @@ public class CalculateSyncCall {
 	public static void calculateSyncCall(List<KeyValue<IASTMethod,ASTClass>> classes, PCFG pcfg) {
 		HashMap<KeyValue<IASTMethod,ASTClass>,List<SyncMethodCall>> syncCalls = new HashMap<>();
 
+		//collect the sync method call for each searched method
 		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){

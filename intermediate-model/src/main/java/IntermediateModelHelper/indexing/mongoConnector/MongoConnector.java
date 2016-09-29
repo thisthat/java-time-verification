@@ -238,9 +238,9 @@ public class MongoConnector {
 				.field(__CLASS_NAME).equal(name)
 				.field(__PACKAGE_NAME).equal(packageName)
 				.asList();
-		if(out.size() > 0) {
+		//if(out.size() > 0) {
 			cacheIndex.put(p, out);
-		}
+		//}
 		return out;
 	}
 
@@ -371,8 +371,7 @@ public class MongoConnector {
 		}
 		Query<IndexData> q = datastore.createQuery(IndexData.class);//.filter("classPackage",regexp);
 		if(query.endsWith("*")){
-			String qqq = query.substring(0,query.length()-1);
-			q.field(__FULL_NAME).startsWith(qqq);
+			q.field(__FULL_NAME).startsWith(query);
 		} else {
 			q.field(__FULL_NAME).equal(query);
 		}
