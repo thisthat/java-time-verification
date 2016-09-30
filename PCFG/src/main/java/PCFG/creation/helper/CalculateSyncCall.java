@@ -1,5 +1,7 @@
 package PCFG.creation.helper;
 
+import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
+import IntermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.structure.*;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
@@ -23,6 +25,7 @@ public class CalculateSyncCall {
 	public static void calculateSyncCall(List<KeyValue<IASTMethod,ASTClass>> classes, PCFG pcfg) {
 		HashMap<KeyValue<IASTMethod,ASTClass>,List<SyncMethodCall>> syncCalls = new HashMap<>();
 
+		//collect the sync method call for each searched method
 		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){
@@ -49,7 +52,9 @@ public class CalculateSyncCall {
 		//we have the list of all -> create the link between 'em
 		for(KeyValue<IASTMethod,ASTClass> cOut : classes){
 			for(KeyValue<IASTMethod,ASTClass> cIn : classes){
-				if(cIn.equals(cOut)) continue;
+				if(cOut == cIn) continue;
+				boolean sameClass = cOut.getValue().isSameClass(cIn.getValue());
+				if(cIn.equals(cOut) && !sameClass) continue;
 				List<SyncMethodCall> outter = syncCalls.get(cOut);
 				List<SyncMethodCall> inner  = syncCalls.get(cIn);
 				for(SyncMethodCall outMethod : outter){
@@ -69,9 +74,9 @@ public class CalculateSyncCall {
 		ASTRE codeOut = outMethod.getNode();
 		ASTRE codeIn  = inMethod.getNode();
 		for(Node v : pcfg.getV()){
-			if(v.equals(codeOut)){
+			if(from == null && v.equals(codeOut)){
 				from = v;
-			} else if(v.equals(codeIn)){
+			} else if(to == null && v.equals(codeIn)){
 				to = v;
 			}
 		}
@@ -81,7 +86,7 @@ public class CalculateSyncCall {
 		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
 			malformedSyncEdge.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("error parsing: ");
+			System.out.println("error creating link: ");
 			for(KeyValue<IASTMethod,ASTClass> c : classes){
 				System.out.println("\t" + c.getValue().toString() + " :: " + c.getKey());
 			}

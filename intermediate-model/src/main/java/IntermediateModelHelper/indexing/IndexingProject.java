@@ -114,6 +114,99 @@ public class IndexingProject {
 	 * Start the indexing from the <b>base_path</b> passed as parameter.
 	 * It iterates on the directory and sub-directories searching for Java files.
 	 * @param base_path	Path from where start to search for Java files.
+	 * @return	The number of file parsed. <u>IT IS NOT THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
+	 */
+	public int indexSyncCall(String base_path, boolean deleteOld){
+		if(deleteOld) delete();
+		File dir = new File(base_path);
+		String[] filter = {"java"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator i = files.iterator();
+		int n_file = 0;
+		while (i.hasNext()) {
+			String filename = ((File)i.next()).getAbsolutePath();
+			Java2AST a = null;
+			try {
+				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			} catch (IOException e) {
+				e.printStackTrace();
+				continue;
+			} catch (ParseErrorsException e) {
+				e.printStackTrace();
+				continue;
+			}
+			CompilationUnit result = a.getContextJDT();
+			JDTVisitor v = new JDTVisitor(result, filename);
+			result.accept(v);
+			//pp filename
+			//if(filename.endsWith("/TopicSubscription.java")){
+			//	System.out.println("BRK");
+			//}
+			for(ASTClass c : v.listOfClasses){
+				IndexingSyncCalls indexing = new IndexingSyncCalls(db);
+				indexing.index(c);
+				//db.add(index);
+			}
+			n_file++;
+		}
+		//ensure indexes
+		db.ensureIndexes();
+		return n_file;
+	}
+
+	/**
+	 * Start the indexing from the <b>base_path</b> passed as parameter.
+	 * It iterates on the directory and sub-directories searching for Java files.
+	 * @param base_path	Path from where start to search for Java files.
+	 * @return	The number of file parsed. <u>IT IS NOT THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
+	 */
+	public int indexSyncBlock(String base_path, boolean deleteOld){
+		if(deleteOld) delete();
+		File dir = new File(base_path);
+		String[] filter = {"java"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator i = files.iterator();
+		int n_file = 0;
+		while (i.hasNext()) {
+			String filename = ((File)i.next()).getAbsolutePath();
+			Java2AST a = null;
+			try {
+				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			} catch (IOException e) {
+				e.printStackTrace();
+				continue;
+			} catch (ParseErrorsException e) {
+				e.printStackTrace();
+				continue;
+			}
+			CompilationUnit result = a.getContextJDT();
+			JDTVisitor v = new JDTVisitor(result, filename);
+			result.accept(v);
+			//pp filename
+			for(ASTClass c : v.listOfClasses){
+				IndexingSyncBlock indexing = new IndexingSyncBlock(db);
+				indexing.index(c);
+				//db.add(index);
+			}
+			n_file++;
+		}
+		//ensure indexes
+		db.ensureIndexes();
+		return n_file;
+	}
+
+	/**
+	 * Start the indexing from the <b>base_path</b> passed as parameter.
+	 * It iterates on the directory and sub-directories searching for Java files.
+	 * @param base_path	Path from where start to search for Java files.
 	 * @param delete	If true delete the database so we have fresh data.
 	 * @return			A {@link Future} that will contain soon or late the number of file parsed. <u>IT WILL NOT RETURN THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
 	 */
@@ -133,7 +226,7 @@ public class IndexingProject {
 	}
 
 
-	private void delete(){
+	public void delete(){
 		db.getDb().drop();
 	}
 

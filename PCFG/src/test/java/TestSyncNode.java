@@ -25,6 +25,7 @@ public class TestSyncNode {
 	public void setUp() throws Exception {
 		MongoOptions.getInstance().setDbName(DB_NAME);
 		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
 	}
 
 	@Test
@@ -58,7 +59,7 @@ public class TestSyncNode {
 		assertEquals(g.getE().size(), 26);
 		assertEquals(g.getSyncNodes().size(), 3 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 2 );
+		assertEquals(g.getESync().size(), 0 );
 
 	}
 }

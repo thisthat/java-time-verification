@@ -1,7 +1,6 @@
 package XAL.XALStructure.items;
 
 import XAL.XALStructure.XALAddState;
-import XAL.XALStructure.XALItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ import java.util.List;
 public class XALSync extends XALState implements XALAddState {
 
 
+	protected int _ID = -1;
     List<XALState> states = new ArrayList<XALState>();
     XALAddState parent;
 
@@ -49,7 +49,16 @@ public class XALSync extends XALState implements XALAddState {
         super(id,idAction,idMetric);
     }
 
-    /**
+
+	public int getNumericID() {
+		return _ID;
+	}
+
+	public void setNumericID(int _ID) {
+		this._ID = _ID;
+	}
+
+	/**
      * Add a state to the list of states inside a synchronized block
      * If the name already exists in the list, it will use a numeric index to make it unique.
      * @param state The {@link XALState} to add
@@ -83,7 +92,7 @@ public class XALSync extends XALState implements XALAddState {
     @Override
     public String toString(int tab) {
         String out = "";
-        out += tab(tab) + String.format("<Sync Id=\"%s\" ", this.id);
+        out += tab(tab) + String.format("<Sync Id=\"%s\" ", super.getId());
         if(style != null)
             out += String.format("style=\"%s\" ", this.style);
         out += ">\n";
@@ -108,4 +117,31 @@ public class XALSync extends XALState implements XALAddState {
         return true;
     }
 
+    public XALState getNodeFromNumericID(int i) {
+        for(XALState s : this.getStates()){
+            if(s instanceof XALSync) {
+                XALState r = ((XALSync)s).getNodeFromNumericID(i);
+                if(r != null) {
+                    return r;
+                }
+            }
+            else if(s.getNumericID() == i){
+                return s;
+            }
+        }
+        return null;
+    }
+
+	public XALSync getSyncNodeFromNumericID(int id) {
+		for(XALState s : this.getStates()){
+			if(s instanceof XALSync) {
+				if(s.getNumericID() == id){
+					return (XALSync) s;
+				} else {
+					return ((XALSync)s).getSyncNodeFromNumericID(id);
+				}
+			}
+		}
+		return null;
+	}
 }

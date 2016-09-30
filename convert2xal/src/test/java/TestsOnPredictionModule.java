@@ -42,7 +42,7 @@ public class TestsOnPredictionModule {
     public void TestNames() throws Exception {
         String[] filenameExpected = {"PredictionModule","SwitchNode","SwitchEdge", "GenerateTopologyAsync"};
         for(int i = 0; i < xalFiles.size(); i++){
-            assertEquals(xalFiles.get(i).getFilename(), filenameExpected[i]);
+            assertEquals(xalFiles.get(i).getFilename(), filenameExpected[i] + ".xal");
         }
     }
 

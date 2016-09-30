@@ -1,5 +1,8 @@
+import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.IndexingProject;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import IntermediateModelHelper.indexing.structure.IndexData;
 import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
 import intermediateModel.structure.ASTClass;
@@ -22,7 +25,8 @@ public class TestBugs {
 	@Before
 	public void setUp() throws Exception {
 		MongoOptions.getInstance().setDbName("test");
-
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
 	}
 
 	@Test
@@ -52,7 +56,7 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		g.toGraphViz(false);
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
@@ -276,7 +280,4 @@ public class TestBugs {
 		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 2 );
 	}
-
-
-
 }

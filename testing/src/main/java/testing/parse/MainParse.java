@@ -126,13 +126,13 @@ public class MainParse {
 		private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 			IndexSyncBlock is = new IndexSyncBlock();
 			is.setPackageName(data.getClassPackage());
-			is.setClassName(data.getClassName());
+			is.setName(data.getClassName());
 			is.setMethodName(lastMethodName);
 			is.setExpr(m.getExpr().getCode());
 			is.setStart(m.getStart());
 			is.setEnd(m.getEnd());
 			is.setLine(m.getLine());
-			is.setEnv( new IndexEnv(e));
+			is.setSyncVar( new IndexEnv(e).getVar(is.getExpr()));
 			return is;
 		}
 

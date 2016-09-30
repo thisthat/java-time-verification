@@ -1,5 +1,12 @@
 package IntermediateModelHelper.indexing.structure;
 
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.ASTVariable;
+import org.javatuples.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The following class is used to save some data in a MongoDB.
  * The data stored consists in:
@@ -16,55 +23,75 @@ package IntermediateModelHelper.indexing.structure;
  * @version %I%, %G%
  */
 public class IndexSyncBlock {
-	String packageName = "";
-	String className = "";
+	String classPackage = "";
+	String name = "";
 	String methodName = "";
+	List<String> signature = new ArrayList<>();
 	String expr = null;
 	int start = 0;
 	int end = 0;
 	int line = 0;
-	IndexEnv env;
+	IndexParameter syncVar;
+	boolean isAccessibleFromOutside = false;
+	String exprPkg;
+	String exprType;
+	String path;
 
 	public IndexSyncBlock() {
 	}
 
 	public IndexSyncBlock(IndexSyncBlock s) {
-		this.packageName = s.getPackageName();
-		this.className = s.getClassName();
+		this.classPackage = s.getPackageName();
+		this.name = s.getName();
 		this.methodName = s.getMethodName();
 		this.expr = s.getExpr();
 		this.start = s.getStart();
 		this.end = s.getEnd();
 		this.line = s.getLine();
-		this.env = s.getEnv();
+		this.syncVar = s.getSyncVar();
+		this.signature = s.getSignature();
+		this.path = s.getPath();
 	}
 
 
-	public IndexSyncBlock(String packageName, String className, String methodName, String expr, int start, int end, int line, IndexEnv env) {
-		this.packageName = packageName;
-		this.className = className;
+	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, List<String> signature, String exprPkg, String exprType, String path) {
+		this.classPackage = packageName;
+		this.name = name;
 		this.methodName = methodName;
 		this.expr = expr;
 		this.start = start;
 		this.end = end;
 		this.line = line;
-		this.env = env;
+		this.syncVar = syncVar;
+		this.isAccessibleFromOutside = isAccessibleFromOutside;
+		this.signature = signature;
+		this.exprPkg = exprPkg;
+		this.exprType = exprType;
+		this.path = path;
+	}
+
+	public IndexParameter getSyncVar() {
+		return syncVar;
+	}
+
+	public void setSyncVar(IndexParameter syncVar) {
+		this.syncVar = syncVar;
 	}
 
 	public String getPackageName() {
-		return packageName;
+		return classPackage;
 	}
 
 	public void setPackageName(String packageName) {
-		this.packageName = packageName;
+		this.classPackage = packageName;
 	}
 
-	public String getClassName() {
-		return className;
+	public String getName() {
+		return name;
 	}
 
-	public void setClassName(String className) {
-		this.className = className;
+	public void setName(String className) {
+		this.name = className;
 	}
 
 	public String getMethodName() {
@@ -107,12 +134,44 @@ public class IndexSyncBlock {
 		this.line = line;
 	}
 
-	public IndexEnv getEnv() {
-		return env;
+	public boolean isAccessibleFromOutside() {
+		return isAccessibleFromOutside;
 	}
 
-	public void setEnv(IndexEnv env) {
-		this.env = env;
+	public void setAccessibleFromOutside(boolean accessibleFromOutside) {
+		isAccessibleFromOutside = accessibleFromOutside;
+	}
+
+	public List<String> getSignature() {
+		return signature;
+	}
+
+	public void setSignature(List<String> signature) {
+		this.signature = signature;
+	}
+
+	public String getExprPkg() {
+		return exprPkg;
+	}
+
+	public void setExprPkg(String exprPkg) {
+		this.exprPkg = exprPkg;
+	}
+
+	public String getExprType() {
+		return exprType;
+	}
+
+	public void setExprType(String exprType) {
+		this.exprType = exprType;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	@Override
@@ -127,7 +186,7 @@ public class IndexSyncBlock {
 		if (getLine() != that.getLine()) return false;
 		if (getPackageName() != null ? !getPackageName().equals(that.getPackageName()) : that.getPackageName() != null)
 			return false;
-		if (getClassName() != null ? !getClassName().equals(that.getClassName()) : that.getClassName() != null)
+		if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
 			return false;
 		if (getMethodName() != null ? !getMethodName().equals(that.getMethodName()) : that.getMethodName() != null)
 			return false;
@@ -138,12 +197,24 @@ public class IndexSyncBlock {
 	@Override
 	public int hashCode() {
 		int result = getPackageName() != null ? getPackageName().hashCode() : 0;
-		result = 31 * result + (getClassName() != null ? getClassName().hashCode() : 0);
+		result = 31 * result + (getName() != null ? getName().hashCode() : 0);
 		result = 31 * result + (getMethodName() != null ? getMethodName().hashCode() : 0);
 		result = 31 * result + (getExpr() != null ? getExpr().hashCode() : 0);
 		result = 31 * result + getStart();
 		result = 31 * result + getEnd();
 		result = 31 * result + getLine();
 		return result;
+	}
+
+	public boolean isInMethod(IASTMethod method) {
+		if(!this.methodName.equals(method.getName())) return false;
+		if(this.signature.size() != method.getParameters().size()) return false;
+		boolean flag = true;
+		for(int i = 0; i < this.signature.size(); i++){
+			if(!signature.get(i).equals(method.getParameters().get(i).getType())){
+				flag = false;
+			}
+		}
+		return flag;
 	}
 }

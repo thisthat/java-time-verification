@@ -9,6 +9,7 @@ import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.DefaultASTVisitor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,12 +35,27 @@ public abstract class ParseIM {
 	 * @param c Class to analyze
 	 */
 	protected Env createBaseEnv(ASTClass c){
-		base_env = build_base_env.buildEnvClass(c);
+		return createBaseEnv(c, new Env());
+	}
+
+	private Env createBaseEnv(ASTClass c, Env e){
+		base_env = build_base_env.buildEnvClass(c,e);
 		//check static
 		for (ASTStatic s : c.getStaticInit()) {
 			analyze(s.getStms(), base_env);
 		}
+		//is c subclass of smth?
+		if(c.getParent() != null){
+			base_env = createBaseEnv(c.getParent(), base_env);
+		}
 		return base_env;
+	}
+
+	/**
+	 * For anonymous definition
+	 */
+	public void start(ASTClass c){
+
 	}
 
 
@@ -148,7 +164,9 @@ public abstract class ParseIM {
 		analyzeEveryStm(stm,env);
 		ASTHiddenClass hc = stm.getHiddenClass();
 		if(hc != null){
-			this.analyze(hc, new Env(env));
+			Env e = new Env(env);
+			e.addVar(new ASTVariable(-1,-1,"DUMMY", stm.getTypeName()));
+			this.analyze(hc, e);
 		}
 	}
 
@@ -160,25 +178,18 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTRE r, Env env){
-
 		if(r != null && r.getExpression() != null) {
+			final ASTNewObject[] objs = {null};
 			r.getExpression().visit(new DefaultASTVisitor() {
-				boolean visit = true;
 				@Override
 				public void enterASTNewObject(ASTNewObject elm) {
-					if(visit) analyze(elm, new Env(env));
-				}
-
-				@Override
-				public void enterASTHiddenClass(ASTHiddenClass astHiddenClass) {
-					visit = false;
-				}
-
-				@Override
-				public void exitASTHiddenClass(ASTHiddenClass astHiddenClass) {
-					visit = true;
+					if(objs[0] == null){
+						objs[0] = elm;
+					}
 				}
 			});
+			if(objs[0] != null)
+				analyze(objs[0], env);
 		}
 		CheckExpression.checkRE(r, env);
 
@@ -232,7 +243,7 @@ public abstract class ParseIM {
 		this.analyze(elm.getStms(), new_env);
 
 		analyzeASTForEach(elm, env);
-		analyzeEveryStm(elm,env);
+		analyzeEveryStm(elm, env);
 	}
 
 	/**
@@ -249,7 +260,7 @@ public abstract class ParseIM {
 			this.analyze(elm.getElseBranch().getStms(), new Env(new_env));
 
 		analyzeASTIf(elm, env);
-		analyzeEveryStm(elm,env);
+		analyzeEveryStm(elm, env);
 	}
 
 	/**
@@ -321,6 +332,7 @@ public abstract class ParseIM {
 		analyze(elm.getTryBranch().getStms(), new_env_try);
 		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
 			Env new_env_catch = new Env(env);
+			new_env_catch.addVar(catchBranch.getExpr());
 			analyze( catchBranch.getStms(), new_env_catch );
 		}
 		if(elm.getFinallyBranch() != null)
@@ -347,6 +359,7 @@ public abstract class ParseIM {
 		analyze(elm.getTryBranch().getStms(), new_env_try);
 		for(ASTTry.ASTCatchBranch catchBranch : elm.getCatchBranch()){
 			Env new_env_catch = new Env(env_resource);
+			new_env_catch.addVar(catchBranch.getExpr());
 			analyze( catchBranch.getStms(), new_env_catch );
 		}
 		if(elm.getFinallyBranch() != null)
@@ -363,6 +376,7 @@ public abstract class ParseIM {
 	 */
 	private void analyze(ASTWhile elm, Env env) {
 		Env new_env = new Env(env);
+		new_env.addVar(new ASTVariable(-1,-1,"WHILE","WHILE"));
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
 
@@ -377,19 +391,21 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTHiddenClass elm, Env env) {
-		Env new_env = build_base_env.buildEnvClass(elm, env);
+		Env new_env = this.createBaseEnv(elm, env);
+		/*Env new_env = build_base_env.buildEnvClass(elm, env);
 		//check static
 		for (ASTStatic s : elm.getStaticInit()) {
 			this.analyze(s.getStms(), new_env);
-		}
-		analyzeASTHiddenClass(elm, env);
+		}*/
+		analyzeASTHiddenClass(elm, new_env);
 		//check method
 		for (IASTMethod m : elm.getMethods()) {
 			Env eMethod = new Env(new_env);
+			eMethod.addVar(new ASTVariable(-1,-1,"DUMMY_METHOD",m.getName()));
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			this.analyze(m.getStms(), eMethod);
 		}
-		analyzeEveryStm(elm,env);
+		analyzeEveryStm(elm, env);
 		endAnalyzeHiddenClass(elm, env);
 	}
 

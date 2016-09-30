@@ -1,5 +1,6 @@
-import IntermediateModelHelper.indexing.DataTreeType;
+import IntermediateModelHelper.types.DataTreeType;
 import IntermediateModelHelper.indexing.IndexingProject;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,9 +23,12 @@ public class TestInheritance {
 
 
 		MongoOptions.getInstance().setDbName("testInheritance");
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
 
 		IndexingProject indexing = new IndexingProject();
-		indexing.indexProject(directory, true);
+		indexing.indexProject(directory, false);
+
 
 
 	}

@@ -24,18 +24,37 @@ public class CFG {
 	List<AnonymEdge> anonEdge = new ArrayList<>();
 	String name;
 	int id;
+	int hashcode;
+	int line = 0;
 
-	public CFG(String name) {
+	public CFG(String name, int hashcode) {
 		this.name = name;
 		this.id = ID++;
+		this.hashcode = hashcode;
 	}
 
-	public static int getID() {
-		return ID;
+	public int getLine() {
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	public int getID() {
+		return this.id;
+	}
+
+	public int getHashcode() {
+		return hashcode;
 	}
 
 	public List<Node> getV() {
 		return V;
+	}
+
+	public void setV(List<Node> V){
+		this.V = V;
 	}
 
 	public List<Node> getAllNodes(){

@@ -270,6 +270,13 @@ SubscriptionManagerImpl
 								abc();
 								dosmth = 1;
 							}
+
+							public void
+							checkMaxResults(int max_results) {
+								if(max_results < 0) {
+									max_results = 0;
+								}
+							}
 						}.start();
 					}
 				});

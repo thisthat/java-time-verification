@@ -6,9 +6,14 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.*;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTAttributeAccess;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
@@ -25,10 +30,12 @@ import java.util.Stack;
 public class IndexingFile extends ParseIM {
 
 	String lastMethodName = "";
+	List<String> signatureLastMethodName = new ArrayList<>();
 	IndexData data;
 	MongoConnector mongo;
 	String anonymousClass = "";
 	Stack<String> stackAnonymousClasses = new Stack<>();
+	ASTClass _c = null;
 
 	public IndexingFile() {
 		String dbname = MongoOptions.getInstance().getDbName();
@@ -57,6 +64,7 @@ public class IndexingFile extends ParseIM {
 	 * @return	The index data structure of the class.
 	 */
 	public IndexData index(ASTClass c, boolean forceReindex) {
+		this._c = c;
 		if(mongo.existClassIndex(c)){
 			if(forceReindex){
 				mongo.delete(c);
@@ -141,15 +149,19 @@ public class IndexingFile extends ParseIM {
 	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
 		is.setPackageName(data.getClassPackage());
-		is.setClassName(data.getClassName() + anonymousClass);
+		is.setName(data.getClassName() + anonymousClass);
 		is.setMethodName(lastMethodName);
 		is.setExpr(m.getExpr().getCode());
 		is.setStart(m.getStart());
 		is.setEnd(m.getEnd());
 		is.setLine(m.getLine());
-		is.setEnv( new IndexEnv(e));
+		IndexEnv e_index = new IndexEnv(e);
+		is.setSyncVar( e_index.getVar(is.getExpr()) );
+		is.setSignature(signatureLastMethodName);
+		is.setPath(data.getPath());
 		return is;
 	}
+
 
 	/**
 	 * The following method creates the basic environment for a class.
@@ -165,6 +177,10 @@ public class IndexingFile extends ParseIM {
 		//check method
 		for (IASTMethod m : c.getMethods()) {
 			lastMethodName = m.getName();
+			signatureLastMethodName = new ArrayList<>();
+			for(ASTVariable p : m.getParameters()){
+				signatureLastMethodName.add(p.getType());
+			}
 			Env eMethod = new Env(base_env);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			super.analyze(m.getStms(), eMethod);

@@ -55,7 +55,8 @@ public class Node implements INode {
 		SWITCH,
 		NORMAL,
 		USELESS,
-		HIDDENCLASS
+		HIDDENCLASS,
+		CONTAINS_SYNC
 	}
 
 	public Node(String name, String code, TYPE type, int start, int end, int line) {
@@ -130,7 +131,7 @@ public class Node implements INode {
 		if (getStart() != r.getStart()) return false;
 		if (getEnd()   != r.getEnd()) return false;
 		if (getLine()  != r.getLine()) return false;
-		if (getCode()  != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
+		if (getCode()  != null ? !getCode().contains(r.getCode()) : r.getCode() != null) return false;
 		return true;
 	}
 
