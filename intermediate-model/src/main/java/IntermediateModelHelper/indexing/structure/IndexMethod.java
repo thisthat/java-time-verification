@@ -34,8 +34,9 @@ public class IndexMethod {
 	int line = 0;
 	boolean isConstructor = false;
 	boolean isSync = false;
+	boolean isAbs = false;
 
-	public IndexMethod(String packageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
+	public IndexMethod(String packageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync, boolean isAbs) {
 		this.packageName = packageName;
 		this.name = name;
 		this.returnType = returnType;
@@ -47,6 +48,7 @@ public class IndexMethod {
 		this.line = line;
 		this.isConstructor = isConstructor;
 		this.isSync = isSync;
+		this.isAbs = isAbs;
 	}
 
 
@@ -158,6 +160,14 @@ public class IndexMethod {
 
 	public void setSync(boolean sync) {
 		isSync = sync;
+	}
+
+	public boolean isAbs() {
+		return isAbs;
+	}
+
+	public void setAbs(boolean abs) {
+		isAbs = abs;
 	}
 
 	public String getPackageName() {

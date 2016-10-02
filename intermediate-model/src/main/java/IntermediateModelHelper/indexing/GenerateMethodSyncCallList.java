@@ -39,6 +39,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	List<SyncMethodCall> syncCalls = new ArrayList<>();
 	MongoConnector mongo;
 	Map<String, List<IndexMethod>> syncMethods = new HashMap<>();
+	Map<String, List<IndexMethod>> syncMethodsInt = new HashMap<>();
 	List<IndexData> imports = new ArrayList<>();
 	String lastMethod;
 	List<String> lastSignature = new ArrayList<>();
@@ -107,6 +108,17 @@ public class GenerateMethodSyncCallList extends ParseIM {
 			names.add(m);
 		}
 		syncMethods.put(objName, names);
+		//is it an interface?
+		if(index.isInterface()){
+			List<IndexData> moreIndex = mongo.resolveClassImplementingInterface(index.getName(),index.getClassPackage());
+			List<IndexMethod> syncMethodInt = new ArrayList<>();
+			for(IndexData idx : moreIndex){
+				for(IndexMethod m : idx.getListOfSyncMethods()){
+					syncMethodInt.add(m);
+				}
+			}
+			syncMethodsInt.put(objName, syncMethodInt);
+		}
 		//now search on parent
 		if(!index.getExtendedType().equals("Object")){
 			String type = index.getExtendedType();
@@ -180,6 +192,9 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		if(r == null || r.getExpression() == null){
 			return;
 		}
+		if(r.getLine() == 115){
+			System.out.println("BRK");
+		} else { return; }
 		String inMethod = lastMethod;
 		String inMethodPkg = _class.getPackageName();
 		String inMethodClass = _class.getName();
@@ -192,10 +207,16 @@ public class GenerateMethodSyncCallList extends ParseIM {
 				IASTRE expr = elm.getExprCallee();
 				List<Pair<String,String>> actual_pars = new ArrayList<Pair<String,String>>();
 				for(IASTRE p : elm.getParameters()){
+					String exprType;
+					if(p instanceof ASTMethodCall){
+						exprType = ResolveTypes.getTypeMethodCall(imports, _class, (ASTMethodCall) p, env);
+					} else {
+						exprType = env.getExprType(p);
+					}
 					actual_pars.add(
 							new Pair<String, String>(
-									env.getExprType(p),
-									ResolveTypes.getImportPkgFromType(imports, env.getExprType(p))
+									exprType,
+									ResolveTypes.getImportPkgFromType(imports, exprType)
 							)
 
 					);
@@ -232,11 +253,14 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	private void localCall(String methodCalled, List<Pair<String,String>> actual_pars, String pkgClass, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass){
 		//local call - we can skip constructors because they are never sync
 		boolean found = false;
-		for(IASTMethod m : _class.getMethods()){
+		for(IASTMethod m : _class.getAllMethods()){
 			if(m instanceof ASTMethod && m.getName().equals(methodCalled)){
 				found = true;
 				ASTMethod method = ((ASTMethod) m);
-				if(method.isSyncronized()){
+				if(method.isAbstract()){ //cannot use this :( we have to go through the implementations
+					searchInExtension(_class.getPackageName(), _class.getName(), actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
+				}
+				else if(method.isSyncronized()){
 					boolean flag = true;
 					if(actual_pars.size() == m.getParameters().size()){
 						for(int i = 0, max = actual_pars.size(); i < max; i++){
@@ -254,7 +278,9 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
 						}
 						//local call
-						syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+						String pkg = _class.getPackageMethod(m);
+						String name = _class.getClassNameMethod(m);
+						syncCalls.add(new SyncMethodCall(pkg, name, methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
 					}
 				}
 			}
@@ -265,12 +291,34 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		}
 	}
 
+	private void searchInExtension(String packageName, String name, List<Pair<String, String>> actual_pars, String methodCalled, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass) {
+		List<IndexData> indexes = mongo.getExtensionOfClass(packageName, name);
+		for(IndexData c : indexes){
+			if(containsMethod(methodCalled, actual_pars, c.getListOfSyncMethods())){
+				//also the call is in the list -> we gotta a match
+				IndexMethod m = getMethod(methodCalled, actual_pars, c.getListOfSyncMethods());
+				if(m != null) {
+					List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
+					List<String> signature = new ArrayList<String>();
+					for(int i = 0, max = m.getParameters().size(); i < max; i++){
+						methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
+						signature.add(m.getParameters().get(i).getType());
+					}
+					syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_MAYBE_));
+				}
+			}
+		}
+	}
+
 	private void literalAccess(String methodCalled, List<Pair<String,String>> actual_pars, String pkgClass, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass, String varName, Env env){
 		if(varName.equals("this")){ //if is this. check locally
-			for(IASTMethod m : _class.getMethods()){
+			for(IASTMethod m : _class.getAllMethods()){
 				if(m instanceof ASTMethod){
 					ASTMethod method = ((ASTMethod) m);
-					if(method.isSyncronized() && method.getName().equals(methodCalled)){
+					if(method.isAbstract()){ //cannot use this :( we have to go through the implementations
+						searchInExtension(_class.getPackageName(), _class.getName(), actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
+					}
+					else if(method.isSyncronized() && method.getName().equals(methodCalled)){
 						boolean flag = true;
 						if(actual_pars.size() == m.getParameters().size()){
 							for(int i = 0, max = actual_pars.size(); i < max; i++){
@@ -287,7 +335,9 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							for(int i = 0, max = m.getParameters().size(); i < max; i++){
 								methodPars.add(new Pair<>( m.getParameters().get(i).getType(), _class.getPackageName() ));
 							}
-							syncCalls.add(new SyncMethodCall(_class.getPackageName(), _class.getName(), methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+							String pkg = _class.getPackageMethod(m);
+							String name = _class.getClassNameMethod(m);
+							syncCalls.add(new SyncMethodCall(pkg, name, methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
 						}
 					}
 				}
@@ -295,31 +345,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		} else if(varName.equals("super")) {
 			//search in parent class
 			String parentObjType = this._class.getExtendClass();
-			while(!parentObjType.equals("Object")) {
-				List<IndexMethod> methods = syncMethods.get(parentObjType);
-				//if it is null then it extends some class in a framework that we cannot consider
-				if (methods != null && containsMethod(methodCalled, actual_pars, methods)) {
-					//also the call is in the list -> we gotta a match
-					IndexMethod m = getMethod(methodCalled, actual_pars, methods);
-					if (m != null) {
-						List<Pair<String, String>> methodPars = new ArrayList<Pair<String, String>>();
-						List<String> signature = new ArrayList<String>();
-						for (int i = 0, max = m.getParameters().size(); i < max; i++) {
-							methodPars.add(new Pair<>(m.getParameters().get(i).getType(), m.getPackageName()));
-							signature.add(m.getParameters().get(i).getType());
-						}
-						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
-					}
-					parentObjType = "Object";
-				} else {
-					IndexData parent = getFromImport(parentObjType);
-					if (parent != null) {
-						parentObjType = parent.getExtendedType();
-					} else {
-						parentObjType = "Object";
-					}
-				}
-			}
+			searchInParent(parentObjType, actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 		} else { //search from the env
 			IASTVar var = env.getVar(varName);
 			if(var != null){ //we have smth in the env (should be always the case)
@@ -339,7 +365,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 								signature.add(m.getParameters().get(i).getType());
 							}
-							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
 						}
 					}
 				}
@@ -365,32 +391,44 @@ public class GenerateMethodSyncCallList extends ParseIM {
 					found = true;
 					//also the call is in the list -> we gotta a match
 					IndexMethod m = getMethod(methodCalled, actual_pars, methods);
-					boolean flag = true;
-					if(actual_pars.size() == m.getParameters().size()){
-						for(int i = 0, max = actual_pars.size(); i < max; i++){
-							String pkg1 = actual_pars.get(i).getValue1();
-							if(!DataTreeType.checkEqualsTypes(actual_pars.get(i).getValue0(), m.getParameters().get(i).getType(), pkg1, m.getPackageName())){
-								flag = false;
-							}
-						}
-					} else {
-						flag = false;
-					}
-					if(flag) {
+					if(m != null) {
 						List<Pair<String,String>> methodPars = new ArrayList<Pair<String, String>>();
 						List<String> signature = new ArrayList<String>();
 						for(int i = 0, max = m.getParameters().size(); i < max; i++){
 							methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 							signature.add(m.getParameters().get(i).getType());
 						}
-						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass));
+						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
 					}
 				} else {
-					//search on the parent again
+					searchInInterface(parentType, actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 					parentType = getParentType(parentType);
 				}
 			} else {
-				parentType = "Object";
+				searchInInterface(parentType, actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
+				parentType = getParentType(parentType);
+			}
+		}
+	}
+
+	private void searchInInterface(String intfType, List<Pair<String,String>> actual_pars, String methodCalled, ASTRE r, String inMethod, List<String> inSignature, String inMethodPkg, String inMethodClass){
+		//System.out.println("Search in the interfaces");
+		if (syncMethodsInt.containsKey(intfType)) {
+			//System.out.println("We are inside");
+			List<IndexMethod> methods = syncMethodsInt.get(intfType);
+			if (containsMethod(methodCalled, actual_pars, methods)) {
+				//for each potential call we save a link
+				for(IndexMethod m : methods){
+					if(m.equalBySignature(methodCalled, actual_pars)){
+						List<Pair<String, String>> methodPars = new ArrayList<>();
+						List<String> signature = new ArrayList<>();
+						for (int i = 0, max = m.getParameters().size(); i < max; i++) {
+							methodPars.add(new Pair<>(m.getParameters().get(i).getType(), m.getPackageName()));
+							signature.add(m.getParameters().get(i).getType());
+						}
+						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_MAYBE_));
+					}
+				}
 			}
 		}
 	}

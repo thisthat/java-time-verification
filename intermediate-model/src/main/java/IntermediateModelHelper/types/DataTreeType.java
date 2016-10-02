@@ -88,18 +88,6 @@ public class DataTreeType {
 		}
 	}
 
-	public IndexData getClassMethod(IndexMethod methodname){
-		for(IndexMethod m : current.getListOfMethods()){
-			if(m.equalBySignature(methodname)){
-				return current;
-			}
-		}
-		if(extended == null){
-			return null;
-		} else {
-			return extended.getClassMethod(methodname);
-		}
-	}
 
 	public boolean isTypeCompatible(String type){
 		if(current.getClassName().equals(type) || current.getExtendedType().equals(type)){ //extended or current type
@@ -154,6 +142,12 @@ public class DataTreeType {
 		if(type1 == null || type2 == null){
 			return false;
 		}
+		//null is always compatible
+		if(type1.equals("null")) return true;
+		if(type2.equals("null")) return true;
+		//this is ok only when there there are objects
+		if(type1.equals("this") && Character.isUpperCase(type2.charAt(0))) return true;
+		if(type2.equals("this") && Character.isUpperCase(type1.charAt(0))) return true;
 		//some one extends the other?
 		try {
 			DataTreeType t1 = new DataTreeType(type1, pkg1);
@@ -178,12 +172,11 @@ public class DataTreeType {
 
 	private static boolean checkEqualsTypes(String type1, String type2) {
 		//search for basic types
-		List<String> basic_int = new ArrayList<>(Arrays.asList(new String[]{"int", "long", "float", "double", "Integer", "Long", "Float", "Double"}));
+		List<String> basic_int = new ArrayList<>(Arrays.asList(new String[]{"short", "int", "long", "float", "double", "Short", "Integer", "Long", "Float", "Double"}));
 		List<String> basic_bool = new ArrayList<>(Arrays.asList(new String[]{"boolean","Boolean"}));
 		if(basic_int.contains(type1) && basic_int.contains(type2)) return true;
 		if(basic_bool.contains(type1) && basic_bool.contains(type2)) return true;
 		return type1.equals(type2);
 	}
-
 
 }

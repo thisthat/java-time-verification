@@ -78,6 +78,7 @@ public class IndexingFile extends ParseIM {
 		data.setClassName(c.getName());
 		data.setClassPackage(c.getPackageName());
 		data.setImports(convertImports(c.getImports()));
+		data.setInterface(c.isInterface());
 		String fullname = "";
 		if(c.getPackageName().trim().equals("")){
 			fullname = c.getName();
@@ -140,12 +141,12 @@ public class IndexingFile extends ParseIM {
 		return im;
 	}
 
-	/**
+	/*
 	 * Convert an {@link ASTSynchronized} Object to {@link IndexSyncBlock} structure
 	 * @param m	Synchronized block to convert
 	 * @param e Environment of the Synchronized block
 	 * @return	Its representation in the {@link IndexMethod} structure.
-	 */
+	 *
 	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
 		is.setPackageName(data.getClassPackage());
@@ -161,6 +162,7 @@ public class IndexingFile extends ParseIM {
 		is.setPath(data.getPath());
 		return is;
 	}
+	*/
 
 
 	/**
@@ -206,10 +208,10 @@ public class IndexingFile extends ParseIM {
 		CheckExpression.checkRE(r, env);
 	}
 
-	@Override
+	/*@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
 		data.addSyncBlock(prepareOutput(elm, env));
-	}
+	}*/
 
 	@Override
 	protected void analyzeASTReturn(ASTReturn elm, Env env) {

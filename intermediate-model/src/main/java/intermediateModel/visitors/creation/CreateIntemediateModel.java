@@ -26,6 +26,7 @@ import java.util.List;
  * @author      Giovanni Liva (@thisthatDC)
  * @version     %I%, %G%
  */
+@Deprecated
 public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 
 
@@ -200,7 +201,7 @@ public class CreateIntemediateModel extends Java8CommentSupportedBaseListener {
 			indexHeader = -1;
 		}
 
-		ASTMethod method = new ASTMethod(ctx.start, ctx.stop, methodName, returnType, pars, throwedException, false);
+		ASTMethod method = new ASTMethod(ctx.start, ctx.stop, methodName, returnType, pars, throwedException, false, false);
 		lastClass.addMethod(method);
 		lastMethod = method;
 	}

@@ -20,24 +20,27 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
 	boolean isSyncronized = false;
+	boolean isAbstract = false;
 
 
-	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
+	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.isSyncronized = isSyncronized;
+		this.isAbstract = isAbstract;
 	}
 
-	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
+	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.isSyncronized = isSyncronized;
+		this.isAbstract = isAbstract;
 	}
 
 	public boolean isSyncronized() {
@@ -46,6 +49,14 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 
 	public void setSyncronized(boolean syncronized) {
 		isSyncronized = syncronized;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean anAbstract) {
+		isAbstract = anAbstract;
 	}
 
 	public List<String> getExceptionsThrowed() {

@@ -2,6 +2,7 @@ package IntermediateModelHelper.envirorment;
 
 
 import com.google.common.annotations.Beta;
+import com.google.common.primitives.Booleans;
 import com.google.common.primitives.SignedBytes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
@@ -307,9 +308,11 @@ public class Env {
 			} catch (Exception e){
 
 			}
+			if(expr.equals("true") || expr.equals("false")) return "boolean";
 			if(expr.startsWith("\"") && expr.endsWith("\"")) {
 				return "String";
 			}
+			if(expr.equals("this")) return "this";
 		}
 		ResolveExpressionType resolver = new ResolveExpressionType(this);
 		return resolver.getType(r);

@@ -3,10 +3,7 @@ package searchSyncMethodCall;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexMethod;
-import IntermediateModelHelper.indexing.structure.IndexParameter;
-import IntermediateModelHelper.indexing.structure.IndexSyncCall;
+import IntermediateModelHelper.indexing.structure.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.commons.io.FileUtils;
@@ -38,6 +35,7 @@ public class Main {
 
 		public long methodSyncCall = 0;
 		public long nSyncMethods = 0;
+		public long nMaybe = 0;
 
 		@Override
 		public String toString() {
@@ -46,6 +44,7 @@ public class Main {
 			out += String.format("#Methods: %d \n", this.nMethods);
 			out += String.format("#Synchronized Methods: %d \n", this.nSyncMethods);
 			out += String.format("#Methods Sync Called: %d \n", this.methodSyncCall);
+			out += String.format("#Maybe Call: %d \n", this.nMaybe);
 			out += String.format("Total #Sync Calls: %d \n", this.syncCalls);
 			return  out;
 		}
@@ -69,7 +68,7 @@ public class Main {
 		System.out.println("Indexing done: " + i);
 		//indexing.indexSyncBlock(path, false);
 		//System.out.println("Indexing Blocks done");
-		//deleteCollection(name);
+		deleteCollection(name);
 		indexing.indexSyncCall(path, false);
 		System.out.println("Indexing Calls done");
 		double end = new Date().getTime();
@@ -82,7 +81,7 @@ public class Main {
 	}
 
 	private void run() throws Exception {
-		for(int i = 0; i < _NAMES_.length; i++){
+		for(int i = 1; i < _NAMES_.length-3; i++){
 			String name = _NAMES_[i];
 			conf(name);
 			indexProject(base_path + name, name);
@@ -96,6 +95,7 @@ public class Main {
 	private void conf(String name) throws Exception {
 		MongoOptions options = MongoOptions.getInstance();
 		options.setDbName(name);
+		statistics = new GeneralInfo();
 		//options.setIp(_BROCK_IP_);
 	}
 
@@ -130,7 +130,6 @@ public class Main {
 		statistics.nMethods = nMethods;
 		statistics.nSyncMethods = nSyncMethod;
 
-
 		Query<IndexSyncCall> qCall = mongo.createQuery(IndexSyncCall.class);
 		List<IndexSyncCall> syncsCall = qCall.asList();
 		List<Quartet<String, String, String,List<String>>> methodsCall = new ArrayList<>();
@@ -143,6 +142,9 @@ public class Main {
 			Quartet<String,String,String,List<String>> m1 = new Quartet<>(s.getPackageName(), s.getClassName(), s.getMethodName(),s.getMethodSignature());
 			if(!methodsCall.contains(m1)){
 				methodsCall.add(m1);
+			}
+			if(s.getType() == SyncMethodCall._SYNC_CALL_MAYBE_){
+				statistics.nMaybe++;
 			}
 		}
 		statistics.methodSyncCall = methodsCall.size();

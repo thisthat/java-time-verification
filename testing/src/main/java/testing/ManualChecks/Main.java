@@ -26,7 +26,7 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
-	static final String name = "manual";
+	static final String name = "airavata";
 
 	public static void main(String[] args) throws Exception {
 
@@ -90,7 +90,7 @@ public class Main {
 		System.out.println("[Indexing] "+ (end-start)/1000 + " s");
 */
 
-		String f = "/Users/giovanni/repository/sources/vuze/vuze_mvn/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java";
+		String f = "/Users/giovanni/repository/sources/airavata/modules/xbaya-gui/src/main/java/org/apache/airavata/xbaya/component/registry/ComponentRegistryLoader.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
@@ -107,12 +107,12 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("AzureusCoreImpl",
-				Arrays.asList()
+		p.addClass(c, c.getMethodBySignature("runInThread",
+				Arrays.asList("ComponentRegistry")
 		));
 
-		p.addClass(c1, c1.getMethodBySignature("AzureusCoreImpl",
-				Arrays.asList()
+		p.addClass(c1, c1.getMethodBySignature("runInThread",
+				Arrays.asList("ComponentRegistry")
 		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();

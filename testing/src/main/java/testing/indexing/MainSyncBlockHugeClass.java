@@ -40,8 +40,8 @@ public class MainSyncBlockHugeClass {
 		for(ASTClass c : v.listOfClasses){
 			IndexingFile indexing = new IndexingFile(db);
 			IndexData data = indexing.index(c);
-			int i = data.getListOfSyncBlocks().size();
-			System.out.println(i);
+			//int i = data.getListOfSyncBlocks().size();
+			//System.out.println(i);
 		}
 	}
 }

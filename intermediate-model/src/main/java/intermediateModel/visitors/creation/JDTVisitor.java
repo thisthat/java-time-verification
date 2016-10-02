@@ -134,6 +134,7 @@ public class JDTVisitor extends ASTVisitor {
 			ASTAttribute attribute = new ASTAttribute(ss, st, vis, type, name, expr);
 			c.addAttribute(attribute);
 		}
+		c.setInterface(node.isInterface());
 		packageName = packageName + "." + className;
 		stackPackage.push(packageName);
 
@@ -312,11 +313,15 @@ public class JDTVisitor extends ASTVisitor {
 		}
 		//is syncronized
 		boolean isSync = false;
+		boolean isAbs = false;
 		for(Object m : node.modifiers()){
 			if(m instanceof Modifier){
 				Modifier modifier = (Modifier)m;
 				if(modifier.isSynchronized()){
 					isSync = true;
+				}
+				if(modifier.isAbstract()){
+					isAbs = true;
 				}
 			}
 		}
@@ -326,7 +331,7 @@ public class JDTVisitor extends ASTVisitor {
 			//constructor
 			method = new ASTConstructor(start, stop, methodName, pars, throwedException);
 		} else {
-			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync);
+			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync, isAbs);
 		}
 		lastClass.addMethod(method);
 		lastMethod = method;

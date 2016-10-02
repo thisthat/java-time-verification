@@ -39,6 +39,8 @@ public class MongoConnector {
 	Datastore datastore;
 	Map<String,List<IndexData>> cacheImport = new HashMap<>();
 	Map<Pair<String,String>,List<IndexData>> cacheIndex = new HashMap<>();
+	Map<Pair<String,String>,List<IndexData>> cacheInterface = new HashMap<>();
+	Map<Pair<String,String>,List<IndexData>> cacheExtended = new HashMap<>();
 	Map<Quartet<String,String, String, List<String>>,List<IndexSyncCall>> cacheSyncCall = new HashMap<>();
 	Map<Pair<String,String>,List<IndexSyncCall>> cacheSyncCallClass = new HashMap<>();
 	Map<Sextet<String,String,String,List<String>,Integer,Integer>,List<IndexSyncBlock>> cacheSyncBlock = new HashMap<>();
@@ -52,6 +54,9 @@ public class MongoConnector {
 	private final String __FULL_NAME 		= "fullName";
 	private final String __COLLECTION_NAME 	= "IndexData";
 	private final String __METHOD_NAME 		= "methodName";
+	private final String __IS_INTERFACE		= "isInterface";
+	private final String __EXTENDED			= "extendedType";
+	private final String __IMPLEMENTS		= "interfacesImplemented";
 	private final String __SIGNATURE 		= "signature";
 	private final String __SIGNATURE_SYNC 	= "methodSignature";
 	private final String __START	 		= "start";
@@ -196,10 +201,25 @@ public class MongoConnector {
 		//System.out.println("Saving " + indexStructureClass.getClassName());
 		try {
 			datastore.save(indexStructureClass);
-			Pair<String,String> p = new Pair<>(indexStructureClass.getClassName(),indexStructureClass.getClassPackage());
-			cacheIndex.remove(p);
 		} catch (BsonSerializationException e){
 			System.err.println("File too big, cannot handle it!");
+		} finally {
+			Pair<String,String> p = new Pair<>(indexStructureClass.getClassName(),indexStructureClass.getClassPackage());
+			cacheIndex.remove(p);
+			cacheInterface.remove(p);
+			String extType = indexStructureClass.getExtendedType();
+			boolean f = false;
+			for(String imp : indexStructureClass.getImports()){
+				if(imp.endsWith(extType)){
+					Pair<String,String> pExt = new Pair<>(imp, extType);
+					cacheExtended.remove(pExt);
+					f = true;
+				}
+			}
+			if(!f) { //if we cannot find in the import, should be in the same pkg
+				Pair<String,String> pExt = new Pair<>(indexStructureClass.getClassPackage(), extType);
+				cacheExtended.remove(pExt);
+			}
 		}
 	}
 
@@ -414,8 +434,8 @@ public class MongoConnector {
 	public List<IndexData> getClassesThatImports(String _package, String name){
 		Query<IndexData> q = datastore.createQuery(IndexData.class);
 		q.or(
-			q.criteria(__IMPORTS).contains(_package + ".*"),
-			q.criteria(__IMPORTS).contains(_package + "." + name)
+			q.criteria(__IMPORTS).equal(_package + ".*"),
+			q.criteria(__IMPORTS).equal(_package + "." + name)
 		);
 		return q.asList();
 	}
@@ -452,6 +472,95 @@ public class MongoConnector {
 		Pair<String,String> p = new Pair<>(c.getName(),c.getPackageName());
 		cacheIndex.remove(p);
 	}
+
+	public List<IndexData> resolveClassImplementingInterface(String interfaceName, String packageName){
+		Pair<String,String> p = new Pair<>(interfaceName, packageName);
+		if(cacheInterface.containsKey(p)){
+			return cacheInterface.get(p);
+		}
+		List<IndexData> output = new ArrayList<>();
+		Query<IndexData> q;
+		List<IndexData> tmp;
+		if(cacheIndex.containsKey(p)){
+			tmp = cacheIndex.get(p);
+		} else {
+			q = datastore.createQuery(IndexData.class)
+					.field(__CLASS_NAME).equal(interfaceName)
+					.field(__PACKAGE_NAME).equal(packageName)
+					.field(__IS_INTERFACE).equal(true);
+			tmp = q.asList();
+		}
+		output.addAll(tmp);
+		//first collect all the interfaces that extends the current one
+		q = datastore.createQuery(IndexData.class)
+				.field(__IS_INTERFACE).equal(true)
+				.field(__IMPLEMENTS).contains(interfaceName);
+		q.or(
+				q.or(
+						q.criteria(__IMPORTS).equal(packageName + ".*"),
+						q.criteria(__IMPORTS).equal(packageName + "." + interfaceName)
+				),
+				q.criteria(__PACKAGE_NAME).equal(packageName)
+		);
+		tmp = q.asList();
+		output.addAll(tmp);
+		tmp.clear();
+		//for each of it collect the class that implements it
+		for(IndexData intf : output){
+			q = datastore.createQuery(IndexData.class)
+					.field(__IS_INTERFACE).equal(false)
+					.field(__IMPLEMENTS).contains(intf.getName());
+			q.or(
+					q.criteria(__IMPORTS).equal(intf.getClassPackage() + ".*"),
+					q.criteria(__IMPORTS).equal(intf.getClassPackage() + "." + intf.getName()),
+					q.criteria(__PACKAGE_NAME).equal(intf.getClassPackage())
+			);
+			tmp.addAll( q.asList() );
+		}
+		output.addAll(tmp);
+		//for each result collect the extensions of them until no one extended it anymore
+		tmp.clear();
+		int numNewInsert = output.size();
+		List<IndexData> tmp_output = new ArrayList<>(output);
+		while(numNewInsert != 0) {
+			tmp.clear();
+			for (IndexData data : tmp_output) {
+				if (data.isInterface()) continue;
+				tmp.addAll( getExtensionOfClass(data.getClassPackage(), data.getName()) );
+			}
+			numNewInsert = 0;
+			tmp_output.clear();
+			for(IndexData elm : tmp){
+				if(!output.contains(elm)){
+					numNewInsert++;
+					output.add(elm);
+					tmp_output.add(elm);
+				}
+			}
+		}
+		cacheInterface.put(p, output);
+		return output;
+	}
+
+	public List<IndexData> getExtensionOfClass(String pkg, String name){
+		Pair<String,String> p = new Pair<>(pkg, name);
+		if(cacheExtended.containsKey(p)){
+			return cacheExtended.get(p);
+		}
+		Query<IndexData> q;
+		q = datastore.createQuery(IndexData.class)
+				.field(__IS_INTERFACE).equal(false)
+				.field(__EXTENDED).equal(name);
+		q.or(
+				q.criteria(__IMPORTS).equal(pkg + ".*"),
+				q.criteria(__IMPORTS).equal(pkg + "." + name),
+				q.criteria(__PACKAGE_NAME).equal(pkg)
+		);
+		List<IndexData> out =  q.asList();
+		cacheExtended.put(p, out);
+		return out;
+	}
+
 
 	/**
 	 * Delete the current database

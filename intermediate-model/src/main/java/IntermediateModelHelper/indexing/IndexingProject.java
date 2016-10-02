@@ -29,6 +29,7 @@ import java.util.concurrent.Future;
 public class IndexingProject {
 	MongoConnector db;
 	String projectName;
+	boolean skipTest = true;
 
 	/**
 	 * Construct the db given the project name.
@@ -46,6 +47,14 @@ public class IndexingProject {
 		String name = MongoOptions.getInstance().getDbName();
 		this.db = MongoConnector.getInstance(name);
 		this.projectName = name;
+	}
+
+	public boolean isSkipTest() {
+		return skipTest;
+	}
+
+	public void setSkipTest(boolean skipTest) {
+		this.skipTest = skipTest;
 	}
 
 	public String getProjectName() {
@@ -84,6 +93,9 @@ public class IndexingProject {
 		int n_file = 0;
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
+			if(this.skipTest && filename.contains("/test")){
+				continue;
+			}
 			Java2AST a = null;
 			try {
 				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
@@ -129,6 +141,13 @@ public class IndexingProject {
 		int n_file = 0;
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
+			if(this.skipTest && filename.contains("/test")){
+				continue;
+			}
+			//System.out.println(filename);
+			/*if(!filename.endsWith("/AmqpConnection.java")){
+				continue;
+			}*/
 			Java2AST a = null;
 			try {
 				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
@@ -143,9 +162,6 @@ public class IndexingProject {
 			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
 			//pp filename
-			//if(filename.endsWith("/TopicSubscription.java")){
-			//	System.out.println("BRK");
-			//}
 			for(ASTClass c : v.listOfClasses){
 				IndexingSyncCalls indexing = new IndexingSyncCalls(db);
 				indexing.index(c);
@@ -177,6 +193,9 @@ public class IndexingProject {
 		int n_file = 0;
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
+			if(this.skipTest && filename.contains("/test")){
+				continue;
+			}
 			Java2AST a = null;
 			try {
 				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);

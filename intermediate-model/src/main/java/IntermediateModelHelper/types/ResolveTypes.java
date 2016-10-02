@@ -15,6 +15,7 @@ import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
+import org.eclipse.jdt.internal.core.index.Index;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -81,9 +82,15 @@ public class ResolveTypes {
 		String methodCalled = expr.getMethodName();
 		List<Pair<String,String>> actual_pars = new ArrayList<Pair<String,String>>();
 		for(IASTRE p : expr.getParameters()){
+			String exprType;
+			if(p instanceof ASTMethodCall){
+				exprType = ResolveTypes.getTypeMethodCall(imports, _class, (ASTMethodCall) p, e);
+			} else {
+				exprType = e.getExprType(p);
+			}
 			actual_pars.add(
 					new Pair<String, String>(
-							e.getExprType(p),
+							exprType,
 							ResolveTypes.getImportPkgFromType(imports, e.getExprType(p))
 					)
 
@@ -152,9 +159,22 @@ public class ResolveTypes {
 					}
 				}
 			} else {
+				MongoConnector mongo = MongoConnector.getInstance();
+				for(IndexData imp : imports){ //it is possible that it is in the same package of the previous method call
+					List<IndexData> src = mongo.getIndex(previousCallReturn, imp.getClassPackage());
+					if(src.size() > 0){
+						for(IndexData d : src){
+							for(IndexMethod m :d.getListOfMethods()){
+								if(m.equalBySignature(methodCalled, actual_pars)){
+									return m.getReturnType();
+								}
+							}
+						}
+					}
+				}
 				//could be a local call then
-				for(IASTMethod m : _class.getMethods()){
-					if(m.equalsBySignature(methodCalled, actual_pars)){
+				for (IASTMethod m : _class.getMethods()) {
+					if (m.equalsBySignature(methodCalled, actual_pars)) {
 						return m.getReturnType();
 					}
 				}
