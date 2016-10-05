@@ -151,6 +151,7 @@ public class DataTreeType {
 		} catch (Exception e){
 			//we don't have to do anything
 		}
+		/* compatible means that type1 < type2 and not viceversa
 		try {
 			DataTreeType t2 = new DataTreeType(type2, pkg2);
 			if (t2.isTypeCompatible(type1)) {
@@ -158,7 +159,7 @@ public class DataTreeType {
 			}
 		} catch (Exception e){
 			//we don't have to do anything
-		}
+		}*/
 		return checkEqualsTypes(type1,type2);
 	}
 

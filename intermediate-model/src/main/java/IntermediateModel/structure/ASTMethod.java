@@ -172,7 +172,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 			}
 			String t1 = this.parameters.get(i).getType();
 			String t2 = signature.get(i).getValue0();
-			if(!DataTreeType.checkCompatibleTypes(t1,t2, pkg , signature.get(i).getValue1() )){
+			if(!DataTreeType.checkEqualsTypes(t1,t2, pkg , signature.get(i).getValue1() )){
 				flag = false;
 			}
 		}

@@ -47,6 +47,7 @@ public class TestInterface {
 		f = f.substring(0, f.lastIndexOf("/") + 1);
 
 		IndexingProject indexing = new IndexingProject();
+		indexing.setSkipTest(false);
 		indexing.indexProject(f, false);
 
 		MongoConnector mongo = MongoConnector.getInstance();

@@ -106,7 +106,7 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
 	@Test(expected = AssertionError.class)
@@ -192,7 +192,7 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
 	@Test

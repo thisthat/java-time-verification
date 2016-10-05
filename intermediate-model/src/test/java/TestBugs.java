@@ -106,10 +106,7 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
-		IndexingFile indexing = new IndexingFile();
 		IndexingSyncBlock indexingSyncBlock = new IndexingSyncBlock();
-		IndexData d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		List<IndexSyncBlock> i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertTrue(i.get(0).isAccessibleFromOutside());
@@ -121,10 +118,7 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertTrue(i.get(0).isAccessibleFromOutside());
@@ -136,10 +130,7 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertFalse(i.get(0).isAccessibleFromOutside());
@@ -151,10 +142,7 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertTrue(i.get(0).isAccessibleFromOutside());
@@ -166,10 +154,7 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertFalse(i.get(0).isAccessibleFromOutside());

@@ -29,6 +29,7 @@ public class TestSyncBlocks {
 		MongoConnector.getInstance().ensureIndexes();
 
 		IndexingProject indexing = new IndexingProject();
+		indexing.setSkipTest(false);
 		indexing.indexProject(directory, true);
 		indexing.indexSyncBlock(directory, false);
 		

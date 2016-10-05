@@ -87,7 +87,7 @@ public class IndexMethod {
 			for(int i = 0; i < parsType.size(); i++){
 				String t1 = this.getParameters().get(i).getType();
 				String t2 = parsType.get(i).getValue0();
-				if(!DataTreeType.checkCompatibleTypes(t1,t2, this.getPackageName(), parsType.get(i).getValue1() )){
+				if(!DataTreeType.checkEqualsTypes(t1,t2, this.getPackageName(), parsType.get(i).getValue1() )){
 					flag = false;
 				}
 			}

@@ -214,7 +214,7 @@ public class ResolveTypes {
 								IndexData imp = ResolveTypes.getPackageFromImports(imports, type);
 								String pkg;
 								if(imp == null){
-									pkg = _classImport.getClassPackage();
+									pkg = "";
 								} else {
 									pkg = imp.getClassPackage();
 								}
