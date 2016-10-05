@@ -14,9 +14,7 @@ import parser.exception.ParseErrorsException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -37,7 +35,12 @@ public class JDTVisitor extends ASTVisitor {
 	private Stack<ASTSwitch> casewitch = new Stack<>();
 	private String path;
 
+	private static Map<String, List<ASTClass>> cache = new HashMap<>();
+
 	public static List<ASTClass> parse(String filename){
+		if(cache.containsKey(filename)){
+			return cache.get(filename);
+		}
 		Java2AST a = null;
 		try {
 			a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
@@ -47,6 +50,7 @@ public class JDTVisitor extends ASTVisitor {
 		CompilationUnit result = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
+		cache.put(filename, v.listOfClasses);
 		return v.listOfClasses;
 	}
 
@@ -118,6 +122,14 @@ public class JDTVisitor extends ASTVisitor {
 					Modifier m = (Modifier) f.modifiers().get(i);
 					vis = Getter.visibility(m.toString());
 				}
+				boolean isAbs = false;
+				for(i = 0; i < f.modifiers().size(); i++){
+					if(f.modifiers().get(i) instanceof Modifier){
+						Modifier m = (Modifier) f.modifiers().get(i);
+						if(m.isAbstract()) isAbs = true;
+					}
+				}
+				c.setAbstract(isAbs);
 			}
 			String type = f.getType().toString();
 			String name = "";
@@ -314,6 +326,7 @@ public class JDTVisitor extends ASTVisitor {
 		//is syncronized
 		boolean isSync = false;
 		boolean isAbs = false;
+		boolean isStatic = false;
 		for(Object m : node.modifiers()){
 			if(m instanceof Modifier){
 				Modifier modifier = (Modifier)m;
@@ -323,6 +336,9 @@ public class JDTVisitor extends ASTVisitor {
 				if(modifier.isAbstract()){
 					isAbs = true;
 				}
+				if(modifier.isStatic()){
+					isStatic = true;
+				}
 			}
 		}
 
@@ -331,7 +347,7 @@ public class JDTVisitor extends ASTVisitor {
 			//constructor
 			method = new ASTConstructor(start, stop, methodName, pars, throwedException);
 		} else {
-			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync, isAbs);
+			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync, isAbs, isStatic);
 		}
 		lastClass.addMethod(method);
 		lastMethod = method;

@@ -65,6 +65,7 @@ public class IndexingFile extends ParseIM {
 	 */
 	public IndexData index(ASTClass c, boolean forceReindex) {
 		this._c = c;
+		super.set_class(c);
 		if(mongo.existClassIndex(c)){
 			if(forceReindex){
 				mongo.delete(c);
@@ -76,10 +77,12 @@ public class IndexingFile extends ParseIM {
 		data = new IndexData();
 		data.setPath(c.getPath());
 		data.setClassName(c.getName());
-		data.setClassPackage(c.getPackageName());
+		data.setClassPackage(c.getRealPackageName());
+		data.setFullclassPackage(c.getPackageName());
 		data.setImports(convertImports(c.getImports()));
 		data.setInterface(c.isInterface());
-		String fullname = "";
+		data.setAbstract(c.isAbstract());
+		String fullname;
 		if(c.getPackageName().trim().equals("")){
 			fullname = c.getName();
 		} else {
@@ -129,6 +132,7 @@ public class IndexingFile extends ParseIM {
 		IndexMethod im = new IndexMethod();
 		im.setName(m.getName());
 		im.setPackageName(data.getClassPackage());
+		im.setFullpackageName(data.getFullclassPackage());
 		im.setFromClass(data.getClassName());
 		im.setParameters(IndexMethod.convertPars(m.getParameters()));
 		im.setExceptionsThrowed(m.getExceptionsThrowed());

@@ -144,8 +144,8 @@ public class IndexingProject {
 			if(this.skipTest && filename.contains("/test")){
 				continue;
 			}
-			//System.out.println(filename);
-			/*if(!filename.endsWith("/AmqpConnection.java")){
+			/*System.out.println(filename);
+			if(!filename.endsWith("/Airavata.java")){
 				continue;
 			}*/
 			Java2AST a = null;

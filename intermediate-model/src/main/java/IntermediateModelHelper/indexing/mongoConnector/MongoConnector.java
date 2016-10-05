@@ -411,7 +411,7 @@ public class MongoConnector {
 	 * @param query	package name of the import
 	 * @return	List of {@link IndexData} classes
 	 */
-	public List<IndexData> getFromImport(String query, boolean forceCache){
+	public List<IndexData> getFromImport(String query){
 		if(cacheImport.containsKey(query)){
 			return cacheImport.get(query);
 		}
@@ -509,12 +509,21 @@ public class MongoConnector {
 		for(IndexData intf : output){
 			q = datastore.createQuery(IndexData.class)
 					.field(__IS_INTERFACE).equal(false)
-					.field(__IMPLEMENTS).contains(intf.getName());
-			q.or(
-					q.criteria(__IMPORTS).equal(intf.getClassPackage() + ".*"),
-					q.criteria(__IMPORTS).equal(intf.getClassPackage() + "." + intf.getName()),
-					q.criteria(__PACKAGE_NAME).equal(intf.getClassPackage())
-			);
+					.field(__IMPLEMENTS).contains("(.?)" + intf.getName());
+			if(Character.isUpperCase(intf.getFullclassPackage().substring(intf.getFullclassPackage().lastIndexOf(".")+1).charAt(0))){
+				q.or(
+						q.criteria(__IMPORTS).contains(intf.getFullclassPackage() + ".*"),
+						q.criteria(__IMPORTS).contains(intf.getFullclassPackage() + "." + intf.getName()),
+						q.criteria(__PACKAGE_NAME).equal(intf.getClassPackage())
+				);
+			} else {
+				q.or(
+						q.criteria(__IMPORTS).equal(intf.getClassPackage() + ".*"),
+						q.criteria(__IMPORTS).equal(intf.getClassPackage() + "." + intf.getName()),
+						q.criteria(__PACKAGE_NAME).equal(intf.getClassPackage())
+				);
+			}
+
 			tmp.addAll( q.asList() );
 		}
 		output.addAll(tmp);

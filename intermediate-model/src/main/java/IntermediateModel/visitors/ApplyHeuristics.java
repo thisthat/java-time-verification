@@ -86,6 +86,7 @@ public class ApplyHeuristics extends ParseIM {
 				e.printStackTrace();
 			}
 		}
+		super.set_class(c);
 		Env base = super.createBaseEnv(c);
 		IndexingFile indexingFile = new IndexingFile();
 		IndexData data = indexingFile.index(c);

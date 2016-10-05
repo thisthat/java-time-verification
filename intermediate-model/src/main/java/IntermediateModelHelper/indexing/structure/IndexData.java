@@ -43,17 +43,19 @@ public class IndexData {
 	List<String> imports = new ArrayList<>();
 
 	String classPackage = "";
+	String fullclassPackage = "";
 	String name = "";
 	String extendedType = "";
 	String fullName = "";
 	String path = "";
 	List<String> interfacesImplemented = new ArrayList<>();
 	boolean isInterface;
+	boolean isAbstract;
 
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented, boolean isInterface) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String fullclassPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented, boolean isInterface, boolean isAbstract) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
@@ -61,12 +63,14 @@ public class IndexData {
 		this.timeAttribute = timeAttribute;
 		this.imports = imports;
 		this.classPackage = classPackage;
+		this.fullclassPackage = fullclassPackage;
 		this.name = name;
 		this.extendedType = extendedType;
 		this.fullName = fullName;
 		this.path = path;
 		this.interfacesImplemented = interfacesImplemented;
 		this.isInterface = isInterface;
+		this.isAbstract = isAbstract;
 	}
 
 	public String getName() {
@@ -189,6 +193,22 @@ public class IndexData {
 		this.path = path;
 	}
 
+	public String getFullclassPackage() {
+		return fullclassPackage;
+	}
+
+	public void setFullclassPackage(String fullclassPackage) {
+		this.fullclassPackage = fullclassPackage;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean anAbstract) {
+		isAbstract = anAbstract;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -218,6 +238,7 @@ public class IndexData {
 		return getInterfacesImplemented() != null ? getInterfacesImplemented().equals(data.getInterfacesImplemented()) : data.getInterfacesImplemented() == null;
 
 	}
+
 
 	@Override
 	public int hashCode() {

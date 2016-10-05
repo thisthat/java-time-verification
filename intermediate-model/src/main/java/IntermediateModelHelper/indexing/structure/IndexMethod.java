@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class IndexMethod {
 	String packageName = "";
+	String fullpackageName = "";
 	String name = "";
 	String returnType = "";
 	String fromClass = "";
@@ -36,8 +37,9 @@ public class IndexMethod {
 	boolean isSync = false;
 	boolean isAbs = false;
 
-	public IndexMethod(String packageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync, boolean isAbs) {
+	public IndexMethod(String packageName, String fullpackageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync, boolean isAbs) {
 		this.packageName = packageName;
+		this.fullpackageName = fullpackageName;
 		this.name = name;
 		this.returnType = returnType;
 		this.fromClass = fromClass;
@@ -85,7 +87,7 @@ public class IndexMethod {
 			for(int i = 0; i < parsType.size(); i++){
 				String t1 = this.getParameters().get(i).getType();
 				String t2 = parsType.get(i).getValue0();
-				if(!DataTreeType.checkEqualsTypes(t1,t2, this.getPackageName(), parsType.get(i).getValue1() )){
+				if(!DataTreeType.checkCompatibleTypes(t1,t2, this.getPackageName(), parsType.get(i).getValue1() )){
 					flag = false;
 				}
 			}
@@ -176,6 +178,14 @@ public class IndexMethod {
 
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
+	}
+
+	public String getFullpackageName() {
+		return fullpackageName;
+	}
+
+	public void setFullpackageName(String fullpackageName) {
+		this.fullpackageName = fullpackageName;
 	}
 
 	@Override

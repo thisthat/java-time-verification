@@ -5,6 +5,8 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.structure.ASTHiddenClass;
+import intermediateModel.structure.ASTRE;
+import intermediateModel.visitors.DefaultASTVisitor;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
@@ -94,6 +96,15 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		visitor.enterASTNewObject(this);
 		for(IASTRE p : parameters){
 			p.visit(visitor);
+		}
+		if(this.hiddenClass != null){
+			this.hiddenClass.visit(new DefaultASTVisitor(){
+				@Override
+				public void enterASTRE(ASTRE elm) {
+					if(elm.getExpression() != null)
+						elm.getExpression().visit(visitor);
+				}
+			});
 		}
 		visitor.exitASTNewObject(this);
 		visitor.exitAll(this);

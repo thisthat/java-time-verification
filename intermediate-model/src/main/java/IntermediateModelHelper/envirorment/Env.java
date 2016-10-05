@@ -6,6 +6,7 @@ import com.google.common.primitives.Booleans;
 import com.google.common.primitives.SignedBytes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
@@ -299,24 +300,18 @@ public class Env {
 	}
 
 
+	@Deprecated
 	public String getExprType(IASTRE r){
-		if(r instanceof ASTLiteral){
-			String expr = ((ASTLiteral) r).getValue();
-			try{
-				Integer.parseInt(expr);
-				return "int";
-			} catch (Exception e){
-
-			}
-			if(expr.equals("true") || expr.equals("false")) return "boolean";
-			if(expr.startsWith("\"") && expr.endsWith("\"")) {
-				return "String";
-			}
-			if(expr.equals("this")) return "this";
-		}
 		ResolveExpressionType resolver = new ResolveExpressionType(this);
 		return resolver.getType(r);
 	}
+
+	public String getExprType(IASTRE r, ASTClass c){
+		ResolveExpressionType resolver = new ResolveExpressionType(this);
+		return resolver.getType(r, c);
+	}
+
+
 
 
 	/**

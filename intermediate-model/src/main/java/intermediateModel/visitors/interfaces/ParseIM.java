@@ -4,6 +4,7 @@ import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
@@ -27,6 +28,19 @@ public abstract class ParseIM {
 
 	protected Env base_env = new Env();
 	protected BuildEnvironment build_base_env = BuildEnvironment.getInstance();
+	protected ASTClass _class;
+
+
+	public ParseIM(ASTClass _class) {
+		this._class = _class;
+	}
+
+	protected ParseIM() {
+	}
+
+	public void set_class(ASTClass _class) {
+		this._class = _class;
+	}
 
 	/**
 	 * The following method creates the basic environment for a class.
@@ -55,11 +69,23 @@ public abstract class ParseIM {
 	 * For anonymous definition
 	 */
 	public void start(ASTClass c){
-
+		set_class(c);
 	}
 
 
 	protected void analyzeMethod(IASTMethod method){
+		if(method instanceof ASTConstructor || method.isStatic()){
+			//we have to process also the initialization of expressions
+			for(ASTAttribute a : this._class.getAttributes()){
+				if(a.getExpr() != null){
+					analyze(a.getExpr(), base_env);
+				}
+			}
+			//and the statics
+			for(ASTStatic s : this._class.getStaticInit()){
+				analyze(s.getStms(), base_env);
+			}
+		}
 		Env eMethod = new Env(base_env);
 		eMethod = CheckExpression.checkPars(method.getParameters(), eMethod);
 		analyze(method.getStms(), eMethod);
@@ -168,6 +194,11 @@ public abstract class ParseIM {
 			e.addVar(new ASTVariable(-1,-1,"DUMMY", stm.getTypeName()));
 			this.analyze(hc, e);
 		}
+		for(IASTRE p : stm.getParameters()){
+			if(p instanceof ASTNewObject){
+				analyze((ASTNewObject) p, env);
+			}
+		}
 	}
 
 
@@ -239,6 +270,7 @@ public abstract class ParseIM {
 	 */
 	private void analyze(ASTForEach elm, Env env) {
 		Env new_env = new Env(env);
+		new_env.addVar( elm.getVar() );
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
 

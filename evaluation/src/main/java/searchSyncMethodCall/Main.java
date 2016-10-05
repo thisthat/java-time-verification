@@ -81,7 +81,7 @@ public class Main {
 	}
 
 	private void run() throws Exception {
-		for(int i = 1; i < _NAMES_.length-3; i++){
+		for(int i = 0; i < _NAMES_.length; i++){
 			String name = _NAMES_[i];
 			conf(name);
 			indexProject(base_path + name, name);
@@ -147,13 +147,16 @@ public class Main {
 				statistics.nMaybe++;
 			}
 		}
-		statistics.methodSyncCall = methodsCall.size();
-		PrintWriter write = new PrintWriter(name + "_listWhereSyncMethodAreCalled.csv");
+
+		PrintWriter write;
+		/*
+		write = new PrintWriter(name + "_listWhereSyncMethodAreCalled.csv");
 		for(Quartet<String, String, String,List<String>> entry : methodsWhereSyncCall){
 			write.println(ppCSV(entry));
 		}
 		write.close();
-
+		*/
+		statistics.methodSyncCall = 0;
 		write = new PrintWriter(name + "_listSyncMethod.csv");
 		for(Quartet<String, String, String,List<String>> entry : syncMethodNames){
 			boolean isCalled = false;
@@ -165,6 +168,7 @@ public class Main {
 					isCalled = true;
 				}
 			}
+			if(isCalled) statistics.methodSyncCall++;
 			write.println(pp(entry) + ";" + isCalled);
 		}
 		write.close();

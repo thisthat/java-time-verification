@@ -65,6 +65,7 @@ public class IndexingSyncBlock extends ParseIM {
 	 */
 	public List<IndexSyncBlock> index(ASTClass c, boolean forceReindex) {
 		this._c = c;
+		super.set_class(c);
 		if(mongo.existSyncBlockIndex(c)){
 			if(forceReindex){
 				mongo.deleteSyncBlock(c);
@@ -89,15 +90,15 @@ public class IndexingSyncBlock extends ParseIM {
 	private void processImports(ASTClass c) {
 		for(ASTImport imp : c.getImports()){
 			String pkg = imp.getPackagename();
-			List<IndexData> d = mongo.getFromImport(pkg, true);
+			List<IndexData> d = mongo.getFromImport(pkg);
 			if(d.size() > 0) imports.addAll(d);
 		}
 		//add myself as well
 		String pkg = c.getPackageName() + "." + c.getName();
-		List<IndexData> d = mongo.getFromImport(pkg, true);
+		List<IndexData> d = mongo.getFromImport(pkg);
 		if(d.size() > 0) imports.addAll(d);
 		//and my subs
-		d = mongo.getFromImport(pkg + ".*", true);
+		d = mongo.getFromImport(pkg + ".*");
 		if(d.size() > 0) imports.addAll(d);
 		if(c.getParent() != null){
 			processImports(c.getParent());
@@ -238,6 +239,7 @@ public class IndexingSyncBlock extends ParseIM {
 			}
 
 			public void start(ASTClass _c){
+				super.start(_c);
 				for(IASTMethod m : _c.getMethods()){
 					for(ASTVariable v : m.getParameters()){
 						boolean tmp[] = {false};

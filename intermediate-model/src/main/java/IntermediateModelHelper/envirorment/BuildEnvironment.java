@@ -1,9 +1,14 @@
 package IntermediateModelHelper.envirorment;
 
 
+import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.types.ResolveTypes;
 import com.google.common.annotations.Beta;
-import intermediateModel.interfaces.*;
-import intermediateModel.structure.*;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTAttribute;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTMethod;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -84,7 +89,16 @@ public class BuildEnvironment {
 		return _buildEnvClass(_class, new Env(old));
 	}
 
+	//TODO finish the impl
+	public Env getInheritEnv(ASTClass _class){
+		if(_class.getExtendClass().equals("Object"))
+			return new Env();
+		IndexData data = ResolveTypes.getPackageFromImportsString(_class.getPackageName(), _class.getImportsAsString(), _class.getExtendClass());
+		return new Env();
+	}
+
 	private Env _buildEnvClass(ASTClass _class, Env oldEnv){
+
 		Env where = oldEnv;
 		//check over attributes
 		for (ASTAttribute a : _class.getAttributes()) {
