@@ -34,9 +34,12 @@ public class IndexSyncBlock {
 	IndexParameter syncVar;
 	boolean isAccessibleFromOutside = false;
 	boolean isAccessibleWritingFromOutside = false;
+	boolean inheritedVar = false;
 	String exprPkg;
 	String exprType;
 	String path;
+	String pkgVar;
+	String classVar;
 
 	public IndexSyncBlock() {
 	}
@@ -52,10 +55,17 @@ public class IndexSyncBlock {
 		this.syncVar = s.getSyncVar();
 		this.signature = s.getSignature();
 		this.path = s.getPath();
+		this.isAccessibleFromOutside = s.isAccessibleFromOutside();
+		this.isAccessibleWritingFromOutside = s.isAccessibleWritingFromOutside();
+		this.inheritedVar = s.isInherited();
+		this.exprPkg = s.getExprPkg();
+		this.exprType = s.getExprType();
+		this.pkgVar = s.getPkgVar();
+		this.classVar = s.getClassVar();
 	}
 
 
-	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, boolean isAccessibleWritingFromOutside, List<String> signature, String exprPkg, String exprType, String path) {
+	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, boolean isAccessibleWritingFromOutside, boolean inheritedVar, List<String> signature, String exprPkg, String exprType, String path, String pkgVar, String classVar) {
 		this.classPackage = packageName;
 		this.name = name;
 		this.methodName = methodName;
@@ -70,6 +80,9 @@ public class IndexSyncBlock {
 		this.exprType = exprType;
 		this.path = path;
 		this.isAccessibleWritingFromOutside = isAccessibleWritingFromOutside;
+		this.inheritedVar = inheritedVar;
+		this.pkgVar = pkgVar;
+		this.classVar = classVar;
 	}
 
 	public IndexParameter getSyncVar() {
@@ -226,5 +239,34 @@ public class IndexSyncBlock {
 
 	public boolean isAccessibleWritingFromOutside() {
 		return isAccessibleWritingFromOutside;
+	}
+
+	public void setInherited(boolean inherited) {
+		this.inheritedVar = inherited;
+	}
+	public boolean isInherited(){
+		return this.inheritedVar;
+	}
+
+	public String getPkgVar() {
+		return pkgVar;
+	}
+
+	public void setPkgVar(String pkgVar) {
+		this.pkgVar = pkgVar;
+	}
+
+	public String getClassVar() {
+		return classVar;
+	}
+
+	public void setClassVar(String classVar) {
+		this.classVar = classVar;
+	}
+
+	public boolean sameInheritance(IndexSyncBlock outter) {
+		String pkg = outter.getPkgVar();
+		String cls = outter.getClassVar();
+		return this.pkgVar.equals(pkg) && this.classVar.equals(cls);
 	}
 }

@@ -169,8 +169,13 @@ public class IndexingSyncBlock extends ParseIM {
 		sync.setExprPkg(exprType.getValue0());
 		sync.setExprType(exprType.getValue1());
 		//is accessible from outside
-		boolean startValue = (exprType.getValue0().equals("") && exprType.getValue1().equals("")); //workaround to check if is inherited!
-		boolean[] flag = {startValue, false};
+		boolean isInherited = env.existVarName(sync.getExpr()) && env.isInherited(sync.getExpr());
+		String pkgVar = isInherited ? env.getExtendedEnv(sync.getExpr()).getPackageName() : "";
+		String classVar = isInherited ? env.getExtendedEnv(sync.getExpr()).getClassName() : "";
+		sync.setInherited(isInherited);
+		sync.setPkgVar(pkgVar);
+		sync.setClassVar(classVar);
+		boolean[] flag = {false, false}; //read,write access
 		//check if the expression of the current variable is possible to be used outside of the class
 		// can be used only in two cases:
 		// 1. The variable is in a return statement

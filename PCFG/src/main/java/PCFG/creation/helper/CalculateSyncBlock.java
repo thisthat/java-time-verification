@@ -57,7 +57,7 @@ public class CalculateSyncBlock {
 					}
 				} else if(varInner != null) {
 					boolean canWeCheck = 	isSameClass || //same class
-							(inner.isAccessibleFromOutside() && outter.isAccessibleFromOutside()) || //both vars can be accessed from outside
+							(inner.isInherited() && outter.isInherited() && inner.sameInheritance(outter)) || //both vars can be readed from outside
 							(inner.isAccessibleWritingFromOutside() && outter.getExpr().equals("this")) || //the first is accessible writing from outside and the other is this
 							(outter.isAccessibleWritingFromOutside() && inner.getExpr().equals("this")) || //the outter is accessible writing from outside and the inner is this
 							(outter.isAccessibleWritingFromOutside() && inner.isAccessibleWritingFromOutside()) ; //both can share a variable from outside
@@ -65,9 +65,6 @@ public class CalculateSyncBlock {
 							canWeCheck //both are accessible from outside or we are checking on same classes
 									&&
 									DataTreeType.checkEqualsTypes(inner.getExprType(), outter.getExprType(), inner.getExprPkg(), outter.getExprPkg())){
-					/*				varInner.getType() != null &&
-									varInner.getType().equals(varOutter.getType()) //both same type
-							){ */
 						processMatch(pcfg, outter, inner, classes, isSameClass);
 					}
 				}

@@ -45,6 +45,8 @@ public class Env {
 		this.prev = prev;
 	}
 
+
+
 	/**
 	 * Get the list of <u>ALL</u> variables of the current Env.
 	 * It does not look in the previous ones.
@@ -60,6 +62,10 @@ public class Env {
 	 */
 	public Env getPrev() {
 		return prev;
+	}
+
+	public void setPrev(Env prev) {
+		this.prev = prev;
 	}
 
 	/**
@@ -78,6 +84,24 @@ public class Env {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean isInherited(String v){
+		if(!existVarName(v)) return false;
+		return getCorrectEnv(v) instanceof EnvExtended;
+	}
+
+	public EnvExtended getExtendedEnv(){
+		if(this instanceof EnvExtended) return (EnvExtended) this;
+		if(this.prev == null) return null;
+		return this.prev.getExtendedEnv();
+	}
+
+	public EnvExtended getExtendedEnv(String v){
+		Env e = getCorrectEnv(v);
+		if(e instanceof EnvExtended) return (EnvExtended) e;
+		if(e.prev == null) return null;
+		return e.prev.getExtendedEnv(v);
 	}
 
 	/**
@@ -140,7 +164,7 @@ public class Env {
 
 	/**
 	 * Helper method for {@link Env#addFlag(String, Integer)}.
-	 * It retrives the Env where the particular variable was inserted.
+	 * It retrieves the Env where the particular variable was inserted.
 	 * @param v	Variable name to search
 	 * @return	Environment where the variable is defined
 	 */
