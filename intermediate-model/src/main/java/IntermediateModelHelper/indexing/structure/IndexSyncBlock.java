@@ -33,6 +33,7 @@ public class IndexSyncBlock {
 	int line = 0;
 	IndexParameter syncVar;
 	boolean isAccessibleFromOutside = false;
+	boolean isAccessibleWritingFromOutside = false;
 	String exprPkg;
 	String exprType;
 	String path;
@@ -54,7 +55,7 @@ public class IndexSyncBlock {
 	}
 
 
-	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, List<String> signature, String exprPkg, String exprType, String path) {
+	public IndexSyncBlock(String packageName, String name, String methodName, String expr, int start, int end, int line, IndexParameter syncVar, boolean isAccessibleFromOutside, boolean isAccessibleWritingFromOutside, List<String> signature, String exprPkg, String exprType, String path) {
 		this.classPackage = packageName;
 		this.name = name;
 		this.methodName = methodName;
@@ -68,6 +69,7 @@ public class IndexSyncBlock {
 		this.exprPkg = exprPkg;
 		this.exprType = exprType;
 		this.path = path;
+		this.isAccessibleWritingFromOutside = isAccessibleWritingFromOutside;
 	}
 
 	public IndexParameter getSyncVar() {
@@ -216,5 +218,13 @@ public class IndexSyncBlock {
 			}
 		}
 		return flag;
+	}
+
+	public void setAccessibleWritingFromOutside(boolean accessibleWritingFromOutside) {
+		this.isAccessibleWritingFromOutside = accessibleWritingFromOutside;
+	}
+
+	public boolean isAccessibleWritingFromOutside() {
+		return isAccessibleWritingFromOutside;
 	}
 }

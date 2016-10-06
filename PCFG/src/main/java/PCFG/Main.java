@@ -1,5 +1,6 @@
 package PCFG;
 
+import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.ToDot;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
@@ -24,9 +25,11 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
+	static final String db_name = "vuze";
 
 	public static void main(String[] args) throws Exception {
-		new Main().run2();
+		MongoOptions.getInstance().setDbName(db_name);
+		new Main().run1();
 	}
 
 	public void run() throws IOException, ParseErrorsException {
@@ -100,22 +103,26 @@ public class Main {
 
 
 		//first method
-		String f =  Main.class.getClassLoader().getResource("smallSubscriptionManager.java").getFile();
+		String f =  "/Users/giovanni/repository/sources/vuze/src/main/java/com/aelitis/azureus/ui/swt/mdi/BaseMdiEntry.java";
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
+		ASTClass c = v.listOfClasses.get(0);
 
-		classes.addAll(v.listOfClasses);
-
-		ASTClass c = classes.get(0);
+		f =  "/Users/giovanni/repository/sources/vuze/src/main/java/org/gudy/azureus2/ui/swt/views/table/impl/TableRowSWTBase.java";
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("preInitialise",
-				Arrays.asList()
+		p.addClass(c, c.getMethodBySignature("removeListener",
+				Arrays.asList("MdiEntryDropListener")
 		));
-		p.addClass(c, c.getMethodBySignature("initWithCore",
-				Arrays.asList("AzureusCore")
+		p.addClass(c1, c1.getMethodBySignature("setShown",
+				Arrays.asList("boolean", "boolean")
 		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();

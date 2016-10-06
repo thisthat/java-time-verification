@@ -2,6 +2,7 @@ package PCFG.creation.helper;
 
 import IntermediateModelHelper.indexing.structure.IndexParameter;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
+import IntermediateModelHelper.types.DataTreeType;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.SyncNode;
@@ -55,13 +56,18 @@ public class CalculateSyncBlock {
 						processMatch(pcfg, outter, inner, classes, isSameClass);
 					}
 				} else if(varInner != null) {
-					boolean canWeCheck = isSameClass || (inner.isAccessibleFromOutside() && outter.isAccessibleFromOutside());
+					boolean canWeCheck = 	isSameClass || //same class
+							(inner.isAccessibleFromOutside() && outter.isAccessibleFromOutside()) || //both vars can be accessed from outside
+							(inner.isAccessibleWritingFromOutside() && outter.getExpr().equals("this")) || //the first is accessible writing from outside and the other is this
+							(outter.isAccessibleWritingFromOutside() && inner.getExpr().equals("this")) || //the outter is accessible writing from outside and the inner is this
+							(outter.isAccessibleWritingFromOutside() && inner.isAccessibleWritingFromOutside()) ; //both can share a variable from outside
 					if(
 							canWeCheck //both are accessible from outside or we are checking on same classes
 									&&
-									varInner.getType() != null &&
+									DataTreeType.checkEqualsTypes(inner.getExprType(), outter.getExprType(), inner.getExprPkg(), outter.getExprPkg())){
+					/*				varInner.getType() != null &&
 									varInner.getType().equals(varOutter.getType()) //both same type
-							){
+							){ */
 						processMatch(pcfg, outter, inner, classes, isSameClass);
 					}
 				}

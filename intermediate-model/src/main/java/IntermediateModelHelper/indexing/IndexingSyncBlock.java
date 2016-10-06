@@ -170,7 +170,7 @@ public class IndexingSyncBlock extends ParseIM {
 		sync.setExprType(exprType.getValue1());
 		//is accessible from outside
 		boolean startValue = (exprType.getValue0().equals("") && exprType.getValue1().equals("")); //workaround to check if is inherited!
-		boolean[] flag = {startValue};
+		boolean[] flag = {startValue, false};
 		//check if the expression of the current variable is possible to be used outside of the class
 		// can be used only in two cases:
 		// 1. The variable is in a return statement
@@ -220,8 +220,8 @@ public class IndexingSyncBlock extends ParseIM {
 						public void enterASTAssignment(ASTAssignment elm) {
 							IASTRE left = elm.getLeft();
 							IASTRE right = elm.getRight();
-							if(!flag[0]) {
-								flag[0] = checkIASTRE(left, env) && !checkNew(right, env);
+							if(!flag[1]) {
+								flag[1] = checkIASTRE(left, env) && !checkNew(right, env);
 							}
 						}
 					});
@@ -254,7 +254,7 @@ public class IndexingSyncBlock extends ParseIM {
 							});
 						}
 						if(tmp[0]){
-							flag[0] = true;
+							flag[1] = true;
 						}
 					}
 					analyzeMethod(m);
@@ -263,6 +263,7 @@ public class IndexingSyncBlock extends ParseIM {
 		};
 		checkAccessibleFromOutside.start(_c);
 		sync.setAccessibleFromOutside(flag[0]);
+		sync.setAccessibleWritingFromOutside(flag[1]);
 		output.add(sync);
 	}
 }
