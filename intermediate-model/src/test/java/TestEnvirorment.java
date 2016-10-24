@@ -1,11 +1,14 @@
+import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.envirorment.EnvExtended;
+import IntermediateModelHelper.envirorment.EnvParameter;
 import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
@@ -20,6 +23,7 @@ import parser.Java2AST;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -30,6 +34,23 @@ import static org.junit.Assert.assertTrue;
 public class TestEnvirorment {
     String filename = "env/AttributeTimeRelated.java";
     List<ASTClass> intemediateModel;
+
+	public class TestParseIM extends ParseIM{
+		@Override
+		protected Env createBaseEnv(ASTClass c) {
+			return super.createBaseEnv(c);
+		}
+	}
+
+	public class TestMethodParseIM extends ParseIM{
+		public Env getEnv(IASTMethod method){
+			Env e = new Env();
+			//analyzeMethod(method, e);
+			Env eMethod = new EnvParameter(e, method.getName());
+			eMethod = CheckExpression.checkPars(method.getParameters(), eMethod);
+			return eMethod;
+		}
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -45,6 +66,60 @@ public class TestEnvirorment {
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);
 		return v.listOfClasses;
+	}
+
+
+	@Test
+	public void TestAttributeEnv() throws Exception {
+		String filename;
+		ASTClass cs;
+		String[] vars;
+		Env e;
+		filename = getClass().getClassLoader().getResource("env/Rectangle.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"length","width"};
+		e = (new TestParseIM()).createBaseEnv(cs);
+		for(String v : vars){
+			assertTrue(e.isClassAttribute(v));
+		}
+		filename = getClass().getClassLoader().getResource("env/Square.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"size"};
+		e = (new TestParseIM()).createBaseEnv(cs);
+		for(String v : vars){
+			assertTrue(e.isClassAttribute(v));
+		}
+		filename = getClass().getClassLoader().getResource("env/Shape.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"x","y"};
+		e = (new TestParseIM()).createBaseEnv(cs);
+		for(String v : vars){
+			assertTrue(e.isClassAttribute(v));
+		}
+	}
+
+	@Test
+	public void TestMethodParEnv() throws Exception {
+		String filename;
+		ASTClass cs;
+		String[] vars;
+		Env e;
+		filename = getClass().getClassLoader().getResource("env/Rectangle.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"length"};
+		e = (new TestMethodParseIM()).getEnv(cs.getFirstMethodByName("setLength"));
+		for(String v : vars){
+			assertTrue(e.isMethodParameter(v));
+		}
+		assertFalse(e.isMethodParameter("width"));
+		filename = getClass().getClassLoader().getResource("env/Square.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"size"};
+		e = (new TestMethodParseIM()).getEnv(cs.getFirstMethodByName("Square"));
+		for(String v : vars){
+			assertTrue(e.isMethodParameter(v));
+		}
+
 	}
 
 	@Test

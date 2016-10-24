@@ -6,6 +6,7 @@ import com.google.common.primitives.Booleans;
 import com.google.common.primitives.SignedBytes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.expression.ASTLiteral;
@@ -86,9 +87,35 @@ public class Env {
 		}
 	}
 
+
+	/**
+	 * The method will search if the closest definition of the variable is in a inherited class.
+	 * @param v Name of the variable to find
+	 * @return	True if the closest definition is in a inherited class.
+	 */
 	public boolean isInherited(String v){
 		if(!existVarName(v)) return false;
 		return getCorrectEnv(v) instanceof EnvExtended;
+	}
+
+	/**
+	 * The method will search if the closest definition of the variable is an attribute of the class.
+	 * @param v Name of the variable to find
+	 * @return	True if the closest definition is an attribute of the class.
+	 */
+	public boolean isClassAttribute(String v){
+		if(!existVarName(v)) return false;
+		return getVar(v) instanceof ASTAttribute;
+	}
+
+	/**
+	 * The method will search if the closest definition of the variable is an attribute of the class.
+	 * @param v Name of the variable to find
+	 * @return	True if the closest definition is an attribute of the class.
+	 */
+	public boolean isMethodParameter(String v){
+		if(!existVarName(v)) return false;
+		return getCorrectEnv(v) instanceof EnvParameter;
 	}
 
 	public EnvExtended getExtendedEnv(){
