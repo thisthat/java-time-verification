@@ -1139,6 +1139,7 @@ public class JDTVisitor extends ASTVisitor {
 	public IASTRE.OPERATOR getOperator(String op){
 		switch (op){
 			case "=": return IASTRE.OPERATOR.equal;
+			case "!=": return IASTRE.OPERATOR.notEqual;
 			case "+": return IASTRE.OPERATOR.plus;
 			case "-": return IASTRE.OPERATOR.minus;
 			case "/": return IASTRE.OPERATOR.div;

@@ -56,7 +56,7 @@ public class CalculateSyncBlock {
 						processMatch(pcfg, outter, inner, classes, isSameClass);
 					}
 				} else if(varInner != null) {
-					boolean canWeCheck = 	isSameClass || //same class
+					boolean canWeCheck = 	(isSameClass && inner.getExpr().equals(outter.getExpr())) || //same class on same var)
 							(inner.isInherited() && outter.isInherited() && inner.sameInheritance(outter)) || //both vars can be readed from outside
 							(inner.isAccessibleWritingFromOutside() && outter.getExpr().equals("this")) || //the first is accessible writing from outside and the other is this
 							(outter.isAccessibleWritingFromOutside() && inner.getExpr().equals("this")) || //the outter is accessible writing from outside and the inner is this

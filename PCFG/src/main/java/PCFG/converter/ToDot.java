@@ -71,15 +71,16 @@ public class ToDot implements IConverter {
 		for(Node v :  cfg.getV()){
 			String color = "";
 			if(v.getConstraint() != null){
-				color = "[ color=salmon2 ]";
+				color = " color=salmon2, ";
 			}
 			if(v.isStart()){
-				color = "[ color=deepskyblue ]";
+				color = " style=\"dashed\" ";
 			}
 			if(v.isEnd()){
-				color = "[ color=darkorange1 ]";
+				color = " color=\"black\", fontcolor=white, ";
 			}
-			out.append(tabs() + convert(v) + color + ";\n");
+			String label = "label=\"" + v.getNameNoID() + "\"";
+			out.append(tabs() + convert(v) + "[" + color +  label + "];\n");
 		}
 		for(SyncNode s : cfg.getSyncNodesNoSubClass()){
 			out.append(convert(s));
@@ -94,7 +95,7 @@ public class ToDot implements IConverter {
 			out.append(tabs() +  convert(ae));
 		}
 		out.append(tabs() + "label = \"" + cfg.getName() + "_" + cfg.getID() + "\";\n");
-		out.append(tabs() + "color=green\n");
+		out.append(tabs() + "color=black\n");
 		tabs--;
 		out.append(tabs() + "}\n");
 		return out.toString();
@@ -109,7 +110,7 @@ public class ToDot implements IConverter {
 			out.append(convert(m));
 		}
 		out.append(tabs() + "label = \"" + a.getName() + "\";\n");
-		out.append(tabs() + "color=red\n");
+		out.append(tabs() + "color=black, style=bold\n");
 		tabs--;
 		out.append(tabs() + "}\n");
 		return out.toString();
@@ -155,11 +156,11 @@ public class ToDot implements IConverter {
 			SyncNode to 	= ((SyncNode) e.getTo());
 			Node f = from.getNodes().get(0);
 			Node t = to.getNodes().get(0);
-			out.append(convert(f) + " -> " + convert(t) + " [ltail=" + SyncNode._CLUSTER_NAME + from.getID() + ",lhead=" + SyncNode._CLUSTER_NAME + to.getID() + ", color=blue,penwidth=1.0];\n");
+			out.append(convert(f) + " -> " + convert(t) + " [ltail=" + SyncNode._CLUSTER_NAME + from.getID() + ",lhead=" + SyncNode._CLUSTER_NAME + to.getID() + ", color=black,penwidth=1.0,dir=\"both\", style=\"dashed\"];\n");
 		} else {
 			Node from = (Node) e.getFrom();
 			Node to   = (Node) e.getTo();
-			out.append(convert(from) + " -> " + convert(to) + "[color=red,penwidth=1.0];\n");
+			out.append(convert(from) + " -> " + convert(to) + "[dir=both,color=black, style=bold,penwidth=1.0];\n");
 		}
 
 		return out.toString();
@@ -177,12 +178,13 @@ public class ToDot implements IConverter {
 		StringBuilder out = new StringBuilder();
 		out.append(tabs() + "subgraph " + SyncNode._CLUSTER_NAME + s.getID() + " {\n");
 		tabs++;
+		out.append(tabs() + "style=dashed;\n");
 		out.append(tabs() + "node [style=filled];\n");
 		for(Node v : s.getNodes()){
 			out.append(tabs() + convert(v) + ";\n");
 		}
 		out.append(tabs() + "label = \"sync block on " + s.getExpr() + "\";\n");
-		out.append(tabs() + "color=blue\n");
+		out.append(tabs() + "color=black\n");
 		tabs--;
 		out.append(tabs() + "}\n");
 		return out.toString();

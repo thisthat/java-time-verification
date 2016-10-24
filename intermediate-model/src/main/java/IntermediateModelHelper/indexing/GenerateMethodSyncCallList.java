@@ -110,7 +110,6 @@ public class GenerateMethodSyncCallList extends ParseIM {
 			String objName = index.getClassName();
 			processImportClass(index,objName);
 		}
-
 	}
 
 	private void processImportClass(IndexData index, String objName){

@@ -56,6 +56,7 @@ public class Node implements INode {
 		NORMAL,
 		USELESS,
 		HIDDENCLASS,
+		IF_EXPR,
 		CONTAINS_SYNC
 	}
 
@@ -71,6 +72,14 @@ public class Node implements INode {
 
 	public String getName() {
 		return name + "_" + this.id;
+	}
+
+	public String getNameNoID() {
+		String suf = "";
+		if(this.type == TYPE.IF_EXPR){
+			suf = "if ";
+		}
+		return  suf + name;// + "_" + this.id;
 	}
 
 	public void setName(String name) {

@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public interface LocalSearch {
 
 	//public <T extends ParseTree> T get(ParserRuleContext elm);
-	public static <T extends ParseTree> T get(ParserRuleContext elm, Class<?> type){
+	static <T extends ParseTree> T get(ParserRuleContext elm, Class<T> type){
 		T f = (elm.getClass() == type) ? (T) elm : null;
 		for(ParseTree c : elm.children){
 			if(c.getClass() == type){

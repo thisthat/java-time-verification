@@ -84,7 +84,7 @@ public class Main {
 		for(int i = 0; i < _NAMES_.length; i++){
 			String name = _NAMES_[i];
 			conf(name);
-			indexProject(base_path + name, name);
+			//indexProject(base_path + name, name);
 			eval(name);
 			System.out.println("\n[Working with: " + name + "]");
 			System.out.println(statistics);

@@ -25,11 +25,11 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
-	static final String db_name = "vuze";
+	static final String db_name = "test_paper";
 
 	public static void main(String[] args) throws Exception {
 		MongoOptions.getInstance().setDbName(db_name);
-		new Main().run1();
+		new Main().run2();
 	}
 
 	public void run() throws IOException, ParseErrorsException {
@@ -65,7 +65,7 @@ public class Main {
 	}
 
 	public void run2() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("bugs/Timer.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("Thread_1.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -74,7 +74,7 @@ public class Main {
 		ASTClass c = classes.get(0);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("bugs/LightWeightSeed.java").getFile();
+		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -82,10 +82,10 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("destroy",
+		p.addClass(c, c.getMethodBySignature("run",
 				Arrays.asList()
 		));
-		p.addClass(c1, c1.getMethodBySignature("getDescription",
+		p.addClass(c1, c1.getMethodBySignature("run",
 				Arrays.asList()
 		));
 		PCFG graph = p.buildPCFG();
@@ -121,8 +121,8 @@ public class Main {
 		p.addClass(c, c.getMethodBySignature("removeListener",
 				Arrays.asList("MdiEntryDropListener")
 		));
-		p.addClass(c1, c1.getMethodBySignature("setShown",
-				Arrays.asList("boolean", "boolean")
+		p.addClass(c1, c1.getMethodBySignature("locationChanged",
+				Arrays.asList("int")//, "boolean")
 		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();

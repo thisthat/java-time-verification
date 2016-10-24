@@ -189,8 +189,9 @@ public class IndexingSyncBlock extends ParseIM {
 			}
 			private boolean checkIASTRE(IASTRE e, Env env){
 				if(e instanceof ASTLiteral){
-					if(((ASTLiteral) e).getValue().equals(sync.getExpr())){
-						if(((ASTLiteral) e).getCode().endsWith("]")){ //does it work like that?
+					ASTLiteral lit = (ASTLiteral) e;
+					if(lit.getValue().equals(sync.getExpr())){
+						if(lit.getCode().endsWith("]")){ //does it work like that?
 							//We should think about gettin' in touch with the concrete types of the program and do not abstract from them. At least arrays...
 							//handle cases where we store smth inside an array
 							return false;
@@ -199,14 +200,17 @@ public class IndexingSyncBlock extends ParseIM {
 					}
 				}
 				if(e instanceof ASTAttributeAccess){
-					if(((ASTAttributeAccess) e).getAttributeName().equals(sync.getExpr())){
-						if(((ASTAttributeAccess) e).getCode().endsWith("]")){ //does it work like that?
+					ASTAttributeAccess att = (ASTAttributeAccess) e;
+					if( att.getAttributeName().equals(sync.getExpr()) &&
+						att.getVariableName().getCode().equals("this")
+					){
+						if(att.getCode().endsWith("]")){ //does it work like that?
 							//handle cases where we store smth inside an array
 							return false;
 						}
 						return true;
 					} else {
-						return ((ASTAttributeAccess) e).getCode().equals(sync.getExpr());
+						return att.getCode().equals(sync.getExpr());
 					}
 
 				}

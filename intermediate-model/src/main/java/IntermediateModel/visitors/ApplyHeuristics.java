@@ -54,6 +54,8 @@ public class ApplyHeuristics extends ParseIM {
 	 * @return	List of time constraints with the predefined set of heuristics
 	 */
 	public static List<Triplet<String,IASTStm,Class>> getConstraint(ASTClass c){
+		return new ArrayList<>();
+		/*
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
 		ah.subscribe(SocketTimeout.class);
@@ -62,6 +64,7 @@ public class ApplyHeuristics extends ParseIM {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
+		*/
 	}
 
 	public void subscribe(Class<? extends SearchTimeConstraint> strategy){

@@ -172,13 +172,13 @@ public class GetObjects {
         Pair<String,ParseTree> result = null;
         for(ParseTree c: ctx.children) {
             if(c.getChildCount() > 1){
-                result = new Pair(c.getClass().getSimpleName(), c);
+                result = new Pair<>(c.getClass().getSimpleName(), c);
             }
             else if(c instanceof ExpressionNameContext){
-                result = new Pair(c.getClass().getSimpleName(), c);
+                result = new Pair<>(c.getClass().getSimpleName(), c);
             }
             else if(c instanceof LiteralContext){
-                result = new Pair(c.getClass().getSimpleName(), c);
+                result = new Pair<>(c.getClass().getSimpleName(), c);
             }
             else if(c instanceof TerminalNode){
                 continue;

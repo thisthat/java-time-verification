@@ -123,4 +123,7 @@ public class CFG {
 		}
 	}
 
+	public void setE(List<Edge> e) {
+		this.E = e;
+	}
 }
