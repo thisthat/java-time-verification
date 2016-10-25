@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Scanner;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -80,4 +81,6 @@ public class CountTests {
 		System.out.println("Methods: " + n_meth);
 		System.out.println("S.Metho: " + n_smet);
 	}
+
+
 }
