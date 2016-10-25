@@ -1,6 +1,7 @@
 package intermediateModel.visitors.interfaces;
 
 import IntermediateModelHelper.CheckExpression;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.envirorment.EnvParameter;
@@ -11,7 +12,6 @@ import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.DefaultASTVisitor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +27,7 @@ import java.util.List;
  */
 public abstract class ParseIM {
 
-	protected Env base_env = new Env();
+	protected EnvBase base_env = new EnvBase();
 	protected BuildEnvironment build_base_env = BuildEnvironment.getInstance();
 	protected ASTClass _class;
 
@@ -49,12 +49,12 @@ public abstract class ParseIM {
 	 * At the end of the execution of the method we know if an attribute is time reletad or not.
 	 * @param c Class to analyze
 	 */
-	protected Env createBaseEnv(ASTClass c){
-		return createBaseEnv(c, new Env());
+	protected EnvBase createBaseEnv(ASTClass c){
+		return createBaseEnv(c, new EnvBase());
 	}
 
-	private Env createBaseEnv(ASTClass c, Env e){
-		base_env = build_base_env.buildEnvClass(c,e);
+	private EnvBase createBaseEnv(ASTClass c, EnvBase e){
+		base_env = (EnvBase) build_base_env.buildEnvClass(c, e);
 		//check static
 		for (ASTStatic s : c.getStaticInit()) {
 			analyze(s.getStms(), base_env);
@@ -71,6 +71,10 @@ public abstract class ParseIM {
 	 */
 	public void start(ASTClass c){
 		set_class(c);
+		EnvBase base = createBaseEnv(c);
+		for (IASTMethod m : c.getMethods()) {
+			analyze(m.getStms(), new Env(base));
+		}
 	}
 
 
@@ -428,12 +432,12 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTHiddenClass elm, Env env) {
-		Env new_env = this.createBaseEnv(elm, env);
-		/*Env new_env = build_base_env.buildEnvClass(elm, env);
+		Env new_env = this.createBaseEnv(elm, new EnvBase(env));
+		//Env new_env = build_base_env.buildEnvClass(elm, env);
 		//check static
 		for (ASTStatic s : elm.getStaticInit()) {
 			this.analyze(s.getStms(), new_env);
-		}*/
+		}
 		analyzeASTHiddenClass(elm, new_env);
 		//check method
 		for (IASTMethod m : elm.getMethods()) {

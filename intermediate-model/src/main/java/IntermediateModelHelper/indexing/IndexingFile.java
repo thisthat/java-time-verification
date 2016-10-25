@@ -2,18 +2,16 @@ package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.*;
+import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexMethod;
+import IntermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTAttributeAccess;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
@@ -178,7 +176,7 @@ public class IndexingFile extends ParseIM {
 	 * @param c Class to analyze
 	 */
 	@Override
-	protected Env createBaseEnv(ASTClass c){
+	protected EnvBase createBaseEnv(ASTClass c){
 		super.createBaseEnv(c);
 		//check method
 		for (IASTMethod m : c.getMethods()) {

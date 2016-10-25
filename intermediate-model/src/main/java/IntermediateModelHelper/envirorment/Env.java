@@ -2,15 +2,10 @@ package IntermediateModelHelper.envirorment;
 
 
 import com.google.common.annotations.Beta;
-import com.google.common.primitives.Booleans;
-import com.google.common.primitives.SignedBytes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.structure.expression.ASTMethodCall;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,6 +112,49 @@ public class Env {
 		if(!existVarName(v)) return false;
 		return getCorrectEnv(v) instanceof EnvParameter;
 	}
+
+	/**
+	 * The method search if the variable of the form <pre>this.var_name</pre> exists in the current {@link Env}
+	 * referred by the <b>this</b> keyword.
+	 * @param v Name of the variable to search
+	 * @return True if the variable exists in the environment referred to the current <b>this</b> keyword
+	 */
+	public boolean isInThis(String v){
+		if(!existVarName(v)) return false;
+		EnvBase current = getFirstEnvBase();
+		if(current == null) return false;
+		for(IASTVar vEnv : current.getVarList()){
+			if(vEnv.getName().equals(v))
+				return true;
+		}
+		return false;
+	}
+
+
+	/**
+	 * The method search if the variable of the form <pre>super.var_name</pre> exists in a super {@link EnvBase}.
+	 * @param v Name of the variable to search
+	 * @return True if the variable exists in a <b>super</b> environment.
+	 */
+	public boolean isInSuper(String v){
+		if(!existVarName(v)) return false;
+		EnvExtended ext = getExtendedEnv(v);
+		return ext != null;
+	}
+
+
+	/**
+	 * Search for the first definition of {@link EnvBase}. It could return null
+	 * @return Null if it cannot found an EnvBase or the EnvBase.
+	 */
+	public EnvBase getFirstEnvBase(){
+		Env current = this;
+		while(!(current instanceof EnvBase) && current != null){
+			current = current.getPrev();
+		}
+		return (EnvBase) current;
+	}
+
 
 	public EnvExtended getExtendedEnv(){
 		if(this instanceof EnvExtended) return (EnvExtended) this;

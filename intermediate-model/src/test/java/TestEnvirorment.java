@@ -1,5 +1,6 @@
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.envirorment.EnvExtended;
 import IntermediateModelHelper.envirorment.EnvParameter;
 import IntermediateModelHelper.heuristic.definition.*;
@@ -37,7 +38,7 @@ public class TestEnvirorment {
 
 	public class TestParseIM extends ParseIM{
 		@Override
-		protected Env createBaseEnv(ASTClass c) {
+		protected EnvBase createBaseEnv(ASTClass c) {
 			return super.createBaseEnv(c);
 		}
 	}
