@@ -5,16 +5,17 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>XAL</name>
     <groupId>java-xal</groupId>
+    <artifactId>xal</artifactId>
+    <version>0.1</version>
+
     <description>
         The module is used to create the XAL PCFG.structure.
     </description>
-    <artifactId>xal</artifactId>
-    <version>0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>

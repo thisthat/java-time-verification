@@ -2,6 +2,7 @@ package testing.parse;
 
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.indexing.structure.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
@@ -145,7 +146,7 @@ public class MainParse {
 		 * @param c Class to analyze
 		 */
 		@Override
-		protected Env createBaseEnv(ASTClass c){
+		protected EnvBase createBaseEnv(ASTClass c){
 			super.createBaseEnv(c);
 			//check method
 			for (IASTMethod m : c.getMethods()) {
