@@ -1,13 +1,10 @@
 package intermediateModel.structure.expression;
 
+import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.ASTREVisitor;
-import intermediateModel.structure.ASTVariable;
-import org.antlr.v4.runtime.Token;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,24 +17,12 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
 
-	public ASTMethodCall(Token start, Token end, String methodName, IASTRE exprCallee) {
-		super(start, end);
-		this.methodName = methodName;
-		this.exprCallee = exprCallee;
-	}
-
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
 		super(start, end);
 		this.methodName = methodName;
 		this.exprCallee = exprCallee;
 	}
 
-	public ASTMethodCall(Token start, Token end, String methodName, IASTRE exprCallee, List<IASTRE> parameters) {
-		super(start, end);
-		this.methodName = methodName;
-		this.exprCallee = exprCallee;
-		this.parameters = parameters;
-	}
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee, List<IASTRE> parameters) {
 		super(start, end);

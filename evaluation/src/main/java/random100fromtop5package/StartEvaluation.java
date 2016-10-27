@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
 import java.io.*;
 import java.util.*;
@@ -23,7 +22,7 @@ public class StartEvaluation {
 	private static final String __dir = "top5package";
 	private static final String __random = "evaluation-vuze/csvs/random100/files_" + __dir + ".csv";
 
-	public static void main(String args[]) throws IOException, ParseErrorsException, InterruptedException {
+	public static void main(String args[]) throws IOException, InterruptedException {
 		String path = "";
 		if(args.length < 1){
 			System.err.println("You should pass as parameter the directory of the project to analyze");
@@ -36,7 +35,7 @@ public class StartEvaluation {
 		new StartEvaluation().run(path);
 	}
 
-	public void run(String base_path) throws IOException, InterruptedException, ParseErrorsException {
+	public void run(String base_path) throws IOException, InterruptedException {
 		File f = new File(__random);
 		if(!f.exists()){
 			calculateFiles(base_path);
@@ -73,7 +72,7 @@ public class StartEvaluation {
 		writer.close();
 	}
 
-	private void parse() throws IOException, ParseErrorsException {
+	private void parse() throws IOException {
 
 
 		List<String> listJavafiles = new ArrayList<>();
@@ -97,7 +96,7 @@ public class StartEvaluation {
 		writer.println("package;file;line;code;type;correct");
 
 		for(String filename : listJavafiles){
-			Java2AST a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			Java2AST a = new Java2AST(filename,  true);
 			CompilationUnit result = a.getContextJDT();
 			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);

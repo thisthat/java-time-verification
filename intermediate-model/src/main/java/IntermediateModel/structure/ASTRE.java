@@ -4,10 +4,11 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import intermediateModel.structure.expression.*;
+import intermediateModel.structure.expression.ASTBinary;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.DefualtASTREVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -18,10 +19,6 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	IASTRE expression;
 	private static int _ID = 0;
 
-	public ASTRE(Token start, Token end, IASTRE expression) {
-		super(start, end);
-		this.expression = expression;
-	}
 	public ASTRE(int start, int end, IASTRE expression) {
 		super(start, end);
 		this.expression = expression;

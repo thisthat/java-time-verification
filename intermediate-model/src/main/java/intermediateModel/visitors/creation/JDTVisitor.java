@@ -3,16 +3,13 @@ package intermediateModel.visitors.creation;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -43,9 +40,8 @@ public class JDTVisitor extends ASTVisitor {
 		}
 		Java2AST a = null;
 		try {
-			a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			a = new Java2AST(filename, true);
 		} catch (IOException e) {
-		} catch (ParseErrorsException e) {
 		}
 		CompilationUnit result = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(result, filename);
@@ -885,8 +881,7 @@ public class JDTVisitor extends ASTVisitor {
 				ASTVariableDeclaration v = new ASTVariableDeclaration(vStart, vStop, type, name, e);
 				vars.add(v);
 			}
-			ASTVariableMultipleDeclaration multiplevars = new ASTVariableMultipleDeclaration(start,stop,type, vars);
-			ret = multiplevars;
+			ret = new ASTVariableMultipleDeclaration(start,stop,type, vars);
 		} else {
 			for(Object o :expr.fragments()){
 				VariableDeclarationFragment subVar = (VariableDeclarationFragment) o;
@@ -1087,7 +1082,7 @@ public class JDTVisitor extends ASTVisitor {
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		IASTRE.ADDDEC op = IASTRE.ADDDEC.increment;
-		if(expr.getOperator().equals("--")){
+		if(expr.getOperator().toString().equals("--")){
 			op = IASTRE.ADDDEC.decrement;
 		}
 		IASTRE e = getExpr(expr.getOperand());
@@ -1099,16 +1094,16 @@ public class JDTVisitor extends ASTVisitor {
 		stop = start + expr.getLength();
 		IASTRE e = getExpr(expr.getOperand());
 		//unary expr not
-		if(expr.getOperator().equals("!")){
+		if(expr.getOperator().toString().equals("!")){
 			return new ASTUnary(start,stop, IASTRE.OPERATOR.not, e);
 		}
 		//unary -num
-		if(expr.getOperator().equals("-")){
+		if(expr.getOperator().toString().equals("-")){
 			return new ASTUnary(start,stop, IASTRE.OPERATOR.minus, e);
 		}
 		//normal pre inc/dec
 		IASTRE.ADDDEC op = IASTRE.ADDDEC.increment;
-		if(expr.getOperator().equals("--")){
+		if(expr.getOperator().toString().equals("--")){
 			op = IASTRE.ADDDEC.decrement;
 		}
 		return new ASTPreOp(start, stop, e, op);

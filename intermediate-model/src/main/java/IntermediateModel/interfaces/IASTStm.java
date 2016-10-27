@@ -2,8 +2,6 @@ package intermediateModel.interfaces;
 
 
 import com.google.common.annotations.Beta;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Interval;
 import org.javatuples.Triplet;
 import parser.ASTSrc;
 
@@ -57,8 +55,6 @@ public abstract class IASTStm implements IASTVisitor{
 
 	protected int start;
 	protected int end;
-	protected Token startToken = null;
-	protected Token endToken = null;
 	protected String code = "";
 	protected int line;
 	protected int lineEnd;
@@ -114,20 +110,16 @@ public abstract class IASTStm implements IASTVisitor{
 	 * If they are not available it uses the {@link ASTSrc} class.
 	 */
 	protected void calculateSourceCode(){
-		if(startToken == null || endToken == null){
-			ASTSrc instance = ASTSrc.getInstance();
-			char[] source = instance.source;
-			line = instance.getLine(start) + 1;
-			lineEnd = instance.getLine(end) + 1;
-			try {
-				code = new String(Arrays.copyOfRange(source, start, end));
-			} catch (Exception e){
-				//it is not a problem
-			}
-			return;
+		ASTSrc instance = ASTSrc.getInstance();
+		char[] source = instance.source;
+		line = instance.getLine(start) + 1;
+		lineEnd = instance.getLine(end) + 1;
+		try {
+			code = new String(Arrays.copyOfRange(source, start, end));
+		} catch (Exception e){
+			//it is not a problem
 		}
-		code = startToken.getInputStream().getText(new Interval(startToken.getStartIndex(), endToken.getStopIndex()));
-		line = startToken.getLine();
+		return;
 		//code = new String(Arrays.copyOfRange(source, start, end));
 	}
 
@@ -139,15 +131,6 @@ public abstract class IASTStm implements IASTVisitor{
 		this.code = code;
 	}
 
-	/**
-	 * Static method to help the handle of source code extraction form ANTLRv4 Token structure
-	 * @param start start token
-	 * @param end   end token
-	 * @return		the source code associated w/ the tokens
-	 */
-	public static String getSrcFromToken(Token start, Token end){
-		return start.getInputStream().getText(new Interval(start.getStartIndex(), end.getStopIndex()));
-	}
 
 	/**
 	 * It returns the source code of the node.
@@ -219,19 +202,6 @@ public abstract class IASTStm implements IASTVisitor{
 	@Beta
 	public boolean existsAnnotation(String annotation){
 		return annotations.stream().anyMatch(a -> annotation.equals(a));
-	}
-
-	/**
-	 * Constructor that uses ANTLRv4 Token structure
-	 * @param start	Start token
-	 * @param end	End token
-	 */
-	protected IASTStm(Token start, Token end){
-		this.start = start.getStartIndex();
-		this.end = end.getStopIndex();
-		this.startToken = start;
-		this.endToken = end;
-		calculateSourceCode();
 	}
 
 	/**

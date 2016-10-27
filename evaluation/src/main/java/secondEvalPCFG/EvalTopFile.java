@@ -4,17 +4,19 @@ import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
-import PCFG.creation.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -236,11 +238,8 @@ public class EvalTopFile {
 		Java2AST a = null;
 		List<ASTClass> out = new ArrayList<>();
 		try {
-			a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			a = new Java2AST(filename, true);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return out;
-		} catch (ParseErrorsException e) {
 			e.printStackTrace();
 			return out;
 		}

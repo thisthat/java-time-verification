@@ -2,7 +2,6 @@ package testing.indexing;
 
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import parser.exception.ParseErrorsException;
 
 import java.io.IOException;
 
@@ -17,11 +16,11 @@ public class MainIndexing {
 
 	public static final String VUZE = "/Users/giovanni/repository/java-xal/intermediate-model/src/test/resources/vuze";
 
-	public static void main(String args[]) throws IOException, ParseErrorsException {
+	public static void main(String args[]) throws IOException {
 		new MainIndexing().run1();
 	}
 
-	private void run() throws IOException, ParseErrorsException {
+	private void run() throws IOException {
 		long start = System.currentTimeMillis();
 		IndexingProject indexProject = new IndexingProject("vuze");
 		int n = indexProject.indexProject(VUZE, true);
@@ -30,7 +29,7 @@ public class MainIndexing {
 		System.out.println("Indexed " + n + " files [" + (end - start) + "ms]");
 	}
 
-	private void run1() throws IOException, ParseErrorsException {
+	private void run1() throws IOException {
 		long start = System.currentTimeMillis();
 		IndexingProject indexProject = new IndexingProject("abcd");
 		String folder = MainIndexing.class.getClassLoader().getResource("testSyncExpr/Calculator.java").getPath();

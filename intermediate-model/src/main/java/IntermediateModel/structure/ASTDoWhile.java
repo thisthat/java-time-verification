@@ -3,7 +3,6 @@ package intermediateModel.structure;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 
 /**
@@ -11,15 +10,6 @@ import org.antlr.v4.runtime.Token;
  * @version %I%, %G%
  */
 public class ASTDoWhile extends ASTWhile implements IASTVisitor {
-
-
-	public ASTDoWhile(Token start, Token end) {
-		super(start, end);
-	}
-
-	public ASTDoWhile(Token start, Token end, ASTRE expr) {
-		super(start, end, expr);
-	}
 
 	public ASTDoWhile(int start, int end) {
 		super(start, end);

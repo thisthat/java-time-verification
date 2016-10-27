@@ -1,13 +1,12 @@
 package intermediateModel.structure.expression;
 
+import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.visitors.DefaultASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.List;
 
@@ -22,24 +21,10 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 	boolean isArray = false;
 	ASTHiddenClass hiddenClass = null;
 
-	public ASTNewObject(Token start, Token end, String typeName, boolean isArray) {
-		super(start, end);
-		this.typeName = typeName;
-		this.isArray = isArray;
-	}
-
 	public ASTNewObject(int start, int end, String typeName, boolean isArray) {
 		super(start, end);
 		this.typeName = typeName;
 		this.isArray = isArray;
-	}
-
-	public ASTNewObject(Token start, Token end, String typeName, boolean isArray, List<IASTRE> parameters) {
-		super(start, end);
-		this.typeName = typeName;
-		this.isArray = isArray;
-		this.parameters = parameters;
-
 	}
 
 	public ASTNewObject(int start, int end, String typeName, boolean isArray, List<IASTRE> parameters) {

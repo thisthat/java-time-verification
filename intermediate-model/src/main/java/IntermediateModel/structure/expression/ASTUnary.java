@@ -1,10 +1,9 @@
 package intermediateModel.structure.expression;
 
+import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.ASTREVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -14,12 +13,6 @@ public class ASTUnary extends IASTStm implements IASTRE {
 
 	private OPERATOR op;
 	private IASTRE expr;
-
-	public ASTUnary(Token start, Token end, OPERATOR op, IASTRE expr) {
-		super(start, end);
-		this.op = op;
-		this.expr = expr;
-	}
 
 	public ASTUnary(int start, int end, OPERATOR op, IASTRE expr) {
 		super(start, end);

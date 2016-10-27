@@ -51,11 +51,6 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 	}
 
 	@Override
-	public void enterASTMultipleMethodCall(ASTMultipleMethodCall elm) {
-
-	}
-
-	@Override
 	public void enterASTNewObject(ASTNewObject elm) {
 
 	}
@@ -132,11 +127,6 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 
 	@Override
 	public void exitASTMethodCall(ASTMethodCall elm) {
-
-	}
-
-	@Override
-	public void exitASTMultipleMethodCall(ASTMultipleMethodCall elm) {
 
 	}
 

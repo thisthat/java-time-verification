@@ -9,7 +9,6 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import java.util.List;
 public class Main2XAL {
 	List<ASTClass> classes= new ArrayList<>();
 
-	public static void main(String[] args) throws IOException, ParseErrorsException {
+	public static void main(String[] args) throws IOException {
 		if(args.length < 2){
 			System.out.println("Call the program passing as input a java file and the name of method to convert");
 			return;
@@ -30,8 +29,8 @@ public class Main2XAL {
 		new Main2XAL().run(args[0], args[1]);
 	}
 
-	public void run(String f, String n) throws IOException, ParseErrorsException {
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+	public void run(String f, String n) throws IOException {
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);

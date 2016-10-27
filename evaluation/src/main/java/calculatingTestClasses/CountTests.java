@@ -1,6 +1,5 @@
 package calculatingTestClasses;
 
-import IntermediateModelHelper.indexing.IndexingFile;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTMethod;
@@ -8,13 +7,11 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Scanner;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -53,11 +50,8 @@ public class CountTests {
 				n_file++;
 				Java2AST a = null;
 				try {
-					a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+					a = new Java2AST(filename, true);
 				} catch (IOException e) {
-					e.printStackTrace();
-					continue;
-				} catch (ParseErrorsException e) {
 					e.printStackTrace();
 					continue;
 				}

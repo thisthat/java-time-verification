@@ -5,16 +5,16 @@
     <packaging>jar</packaging>
     <groupId>java-xal</groupId>
     <artifactId>java-parser</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Java-Parser</name>
     <description>
-        The module creates two different parsers: Antlr4 and JDT.
-        It converts a java file into an AST.
+        The module creates an AST using JDT.
+        Since version 1.0 of the module Antlr4 is discontinued.
     </description>
     <parent>
         <groupId>java-xal</groupId>
         <artifactId>java-xal</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,12 +22,6 @@
         <antlr.version>4.5.1-1</antlr.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>4.2</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -74,29 +68,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr4-maven-plugin</artifactId>
-                <version>4.2</version>
-                <configuration>
-                    <arguments>
-                        <argument>-package</argument>
-                        <argument>parser.grammar</argument>
-                    </arguments>
-                    <listener>true</listener>
-                    <visitor>true</visitor>
-                    <outputDirectory>${basedir}/src/main/java/parser/grammar</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr4</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-
         </plugins>
     </build>
 

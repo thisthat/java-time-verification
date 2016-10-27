@@ -3,15 +3,14 @@ package firstEvalPCFG;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
+import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
 import java.io.*;
 import java.util.*;
@@ -98,11 +97,8 @@ public class StartEvaluationPCFG {
 			String filename = ((File)i.next()).getAbsolutePath();
 			Java2AST a = null;
 			try {
-				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+				a = new Java2AST(filename, true);
 			} catch (IOException e) {
-				e.printStackTrace();
-				continue;
-			} catch (ParseErrorsException e) {
 				e.printStackTrace();
 				continue;
 			}

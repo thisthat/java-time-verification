@@ -4,15 +4,14 @@ import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
-import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
+import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
-import parser.exception.ParseErrorsException;
 
 import java.io.File;
 import java.io.IOException;
@@ -145,11 +144,8 @@ public class EvalTop5packages {
 		Java2AST a = null;
 		List<ASTClass> out = new ArrayList<>();
 		try {
-			a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			a = new Java2AST(filename, true);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return out;
-		} catch (ParseErrorsException e) {
 			e.printStackTrace();
 			return out;
 		}

@@ -29,6 +29,11 @@
             <artifactId>morphia</artifactId>
             <version>1.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>java-parser</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

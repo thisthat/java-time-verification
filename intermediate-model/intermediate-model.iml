@@ -13,9 +13,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="java-parser" />
-    <orderEntry type="library" name="Maven: org.antlr:antlr4-runtime:4.2" level="project" />
-    <orderEntry type="library" name="Maven: org.abego.treelayout:org.abego.treelayout.core:1.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.antlr:antlr4-annotations:4.2" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jdt:org.eclipse.jdt.core:3.12.0.v20160516-2131" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.core:runtime:3.10.0-v20140318-2214" level="project" />
@@ -36,7 +33,6 @@
     <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Maven: org.javatuples:javatuples:1.2" level="project" />
     <orderEntry type="module" module-name="xal" />
-    <orderEntry type="module" module-name="convert2xal" />
     <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:bson:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:3.3.0" level="project" />
