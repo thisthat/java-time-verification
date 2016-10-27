@@ -61,7 +61,7 @@ public class IndexSyncnumber {
 			for(ASTClass c : v.listOfClasses){
 				IndexingFile indexing = new IndexingFile(db);
 				IndexData data = indexing.index(c);
-				int sync_block = data.getListOfSyncBlocks().size();
+				int sync_block = 0;//data.getListOfSyncBlocks().size();
 				int sync_method = data.getListOfSyncMethods().size();
 				int time_constraint = ApplyHeuristics.getConstraint(c).size();
 				int sum = sync_block + sync_method + time_constraint;

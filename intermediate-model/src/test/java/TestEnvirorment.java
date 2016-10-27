@@ -1,18 +1,30 @@
+import IntermediateModelHelper.CheckExpression;
+import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.envirorment.EnvBase;
+import IntermediateModelHelper.envirorment.EnvExtended;
+import IntermediateModelHelper.envirorment.EnvParameter;
 import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
+import IntermediateModelHelper.indexing.IndexingProject;
+import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
+import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -24,6 +36,30 @@ public class TestEnvirorment {
     String filename = "env/AttributeTimeRelated.java";
     List<ASTClass> intemediateModel;
 
+	public class TestParseIM extends ParseIM{
+		@Override
+		protected EnvBase createBaseEnv(ASTClass c) {
+			return super.createBaseEnv(c);
+		}
+	}
+
+	public class TestMethodParseIM extends ParseIM{
+		public Env getEnv(IASTMethod method){
+			Env e = new Env();
+			//analyzeMethod(method, e);
+			Env eMethod = new EnvParameter(e, method.getName());
+			eMethod = CheckExpression.checkPars(method.getParameters(), eMethod);
+			return eMethod;
+		}
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		MongoOptions.getInstance().setDbName("testEnv");
+		MongoConnector.getInstance().drop();
+
+	}
+
 	public List<ASTClass> init(String filename) throws Exception {
 		Java2AST a = new Java2AST( filename );
 		a.convertToAST(Java2AST.VERSION.JDT);
@@ -31,6 +67,60 @@ public class TestEnvirorment {
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);
 		return v.listOfClasses;
+	}
+
+
+	@Test
+	public void TestAttributeEnv() throws Exception {
+		String filename;
+		ASTClass cs;
+		String[] vars;
+		Env e;
+		filename = getClass().getClassLoader().getResource("env/Rectangle.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"length","width"};
+		e = (new TestParseIM()).createBaseEnv(cs);
+		for(String v : vars){
+			assertTrue(e.isClassAttribute(v));
+		}
+		filename = getClass().getClassLoader().getResource("env/Square.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"size"};
+		e = (new TestParseIM()).createBaseEnv(cs);
+		for(String v : vars){
+			assertTrue(e.isClassAttribute(v));
+		}
+		filename = getClass().getClassLoader().getResource("env/Shape.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"x","y"};
+		e = (new TestParseIM()).createBaseEnv(cs);
+		for(String v : vars){
+			assertTrue(e.isClassAttribute(v));
+		}
+	}
+
+	@Test
+	public void TestMethodParEnv() throws Exception {
+		String filename;
+		ASTClass cs;
+		String[] vars;
+		Env e;
+		filename = getClass().getClassLoader().getResource("env/Rectangle.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"length"};
+		e = (new TestMethodParseIM()).getEnv(cs.getFirstMethodByName("setLength"));
+		for(String v : vars){
+			assertTrue(e.isMethodParameter(v));
+		}
+		assertFalse(e.isMethodParameter("width"));
+		filename = getClass().getClassLoader().getResource("env/Square.java").getFile();
+		cs = init(filename).get(0);
+		vars = new String[] {"size"};
+		e = (new TestMethodParseIM()).getEnv(cs.getFirstMethodByName("Square"));
+		for(String v : vars){
+			assertTrue(e.isMethodParameter(v));
+		}
+
 	}
 
 	@Test
@@ -58,6 +148,88 @@ public class TestEnvirorment {
 		));
 
 		assertEquals(constraints.size(), 1);
+	}
+
+	@Test
+	public void TestEnvExtended() throws Exception {
+		IndexingProject indexing = new IndexingProject();
+		String directory = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
+		String base_path = directory.substring(0, directory.lastIndexOf("/")+1);
+		indexing.setSkipTest(false);
+		indexing.indexProject(base_path);
+		MongoConnector.getInstance().ensureIndexes();
+		final Env[] out = new Env[1];
+		ParseIM getEnv = new ParseIM (){
+			@Override
+			public void start(ASTClass c) {
+				super.start(c);
+				Env e = super.createBaseEnv(c);
+				e.setPrev( EnvExtended.getExtendedEnv(c));
+				out[0] = e;
+			}
+		};
+
+		List<ASTClass> cs;
+		EnvExtended e;
+		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Shape.java").getFile());
+		getEnv.start(cs.get(0));
+		assertTrue(out[0].getPrev().getPrev() == null);
+		assertTrue(out[0].existVarName("x"));
+		assertTrue(out[0].existVarName("y"));
+		assertTrue(out[0].getVar("x").getType().equals("int"));
+		assertTrue(out[0].getVar("y").getType().equals("int"));
+		e = out[0].getExtendedEnv();
+		assertEquals(e.getClassName(), "Object");
+		assertEquals(e.getPackageName(), "");
+
+		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Rectangle.java").getFile());
+		getEnv.start(cs.get(0));
+		assertTrue(out[0].getPrev() instanceof EnvExtended);
+		assertTrue(out[0].isInherited("x"));
+		assertTrue(out[0].isInherited("y"));
+		assertTrue(out[0].getPrev().existVarName("x"));
+		assertTrue(out[0].getPrev().existVarName("y"));
+		assertTrue(out[0].getPrev().getVar("x").getType().equals("int"));
+		assertTrue(out[0].getPrev().getVar("y").getType().equals("int"));
+		assertTrue(out[0].existVarName("length"));
+		assertTrue(out[0].existVarName("width"));
+		assertTrue(out[0].getVar("length").getType().equals("double"));
+		assertTrue(out[0].getVar("length").getType().equals("double"));
+		e = out[0].getExtendedEnv();
+		assertEquals(e.getClassName(), "Shape");
+		assertEquals(e.getPackageName(), "");
+		e = out[0].getExtendedEnv("x");
+		assertEquals(e.getClassName(), "Shape");
+		assertEquals(e.getPackageName(), "");
+
+		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Square.java").getFile());
+		getEnv.start(cs.get(0));
+		assertTrue(out[0].getPrev() instanceof EnvExtended);
+		assertTrue(out[0].getPrev().getPrev() instanceof EnvExtended);
+		assertTrue(out[0].isInherited("x"));
+		assertTrue(out[0].isInherited("y"));
+		assertTrue(out[0].isInherited("length"));
+		assertTrue(out[0].isInherited("width"));
+		assertTrue(out[0].existVarName("x"));
+		assertTrue(out[0].existVarName("y"));
+		assertTrue(out[0].getVar("x").getType().equals("int"));
+		assertTrue(out[0].getVar("y").getType().equals("int"));
+		assertTrue(out[0].existVarName("length"));
+		assertTrue(out[0].existVarName("width"));
+		assertTrue(out[0].getVar("length").getType().equals("double"));
+		assertTrue(out[0].getVar("length").getType().equals("double"));
+		assertTrue(out[0].existVarName("size"));
+		assertTrue(out[0].getVar("size").getType().equals("int"));
+		e = out[0].getExtendedEnv();
+		assertEquals(e.getClassName(), "Rectangle");
+		assertEquals(e.getPackageName(), "");
+		e = e.getExtendedEnv();
+		assertEquals(e.getClassName(), "Rectangle");
+		assertEquals(e.getPackageName(), "");
+		e = out[0].getExtendedEnv("x");
+		assertEquals(e.getClassName(), "Shape");
+		assertEquals(e.getPackageName(), "");
+
 
 	}
 

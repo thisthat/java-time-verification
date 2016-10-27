@@ -62,7 +62,7 @@ public class DataTreeType {
 			return;
 		} */
 		for(String i : current.getImports()){
-			List<IndexData> imports = db.getFromImport(i, false);
+			List<IndexData> imports = db.getFromImport(i);
 			for(IndexData index : imports){
 				//Check on types to resolve the extends
 				if(index.getClassName().equals(extType)){
@@ -73,33 +73,40 @@ public class DataTreeType {
 						extended = null;
 					}
 				}
-				//Check on interfaces -> ERROR HERE
-				for(String intf : index.getInterfacesImplemented()){
-					if( current.getInterfacesImplemented().stream().anyMatch( tInterface -> tInterface.equals(intf)) ){
-						try {
-							DataTreeType tmp = new DataTreeType(intf, index.getClassPackage());
-							interfaces.add(tmp);
-						} catch (Exception e){
-							//we cannot resolve the binding for the interface
-						}
+				//Check on interfaces
+				if( current.getInterfacesImplemented().stream().anyMatch( tInterface -> tInterface.equals(index.getName())) ){
+					try {
+						DataTreeType tmp = new DataTreeType(index.getName(), index.getClassPackage());
+						interfaces.add(tmp);
+					} catch (Exception e){
+						//we cannot resolve the binding for the interface
 					}
+				}
+			}
+		}
+		List<IndexData> imports = db.getFromImport(current.getClassPackage() + ".*");
+		for(IndexData index : imports){
+			//Check on types to resolve the extends
+			if(index.getClassName().equals(extType)){
+				try {
+					extended = new DataTreeType(index.getName(), index.getClassPackage());
+				} catch (Exception e){
+					//we cannot resolve the binding for the extended
+					extended = null;
+				}
+			}
+			//Check on interfaces
+			if( current.getInterfacesImplemented().stream().anyMatch( tInterface -> tInterface.equals(index.getName())) ){
+				try {
+					DataTreeType tmp = new DataTreeType(index.getName(), index.getClassPackage());
+					interfaces.add(tmp);
+				} catch (Exception e){
+					//we cannot resolve the binding for the interface
 				}
 			}
 		}
 	}
 
-	public IndexData getClassMethod(IndexMethod methodname){
-		for(IndexMethod m : current.getListOfMethods()){
-			if(m.equalBySignature(methodname)){
-				return current;
-			}
-		}
-		if(extended == null){
-			return null;
-		} else {
-			return extended.getClassMethod(methodname);
-		}
-	}
 
 	public boolean isTypeCompatible(String type){
 		if(current.getClassName().equals(type) || current.getExtendedType().equals(type)){ //extended or current type
@@ -144,10 +151,16 @@ public class DataTreeType {
 		} catch (Exception e){
 			//we don't have to do anything
 		}
-		if(type1.equals(type2)){
-			return true;
-		}
-		return false;
+		/* compatible means that type1 < type2 and not viceversa
+		try {
+			DataTreeType t2 = new DataTreeType(type2, pkg2);
+			if (t2.isTypeCompatible(type1)) {
+				return true;
+			}
+		} catch (Exception e){
+			//we don't have to do anything
+		}*/
+		return checkEqualsTypes(type1,type2);
 	}
 
 	public static boolean checkEqualsTypes(String type1, String type2, String pkg1, String pkg2){
@@ -178,12 +191,24 @@ public class DataTreeType {
 
 	private static boolean checkEqualsTypes(String type1, String type2) {
 		//search for basic types
-		List<String> basic_int = new ArrayList<>(Arrays.asList(new String[]{"int", "long", "float", "double", "Integer", "Long", "Float", "Double"}));
+		List<String> basic_int = new ArrayList<>(Arrays.asList(new String[]{"short", "int", "long", "float", "double", "Short", "Integer", "Long", "Float", "Double"}));
 		List<String> basic_bool = new ArrayList<>(Arrays.asList(new String[]{"boolean","Boolean"}));
 		if(basic_int.contains(type1) && basic_int.contains(type2)) return true;
 		if(basic_bool.contains(type1) && basic_bool.contains(type2)) return true;
-		return type1.equals(type2);
+		//dots?
+		type1 = type1.contains("<") ? type1.substring(0, type1.indexOf("<")) : type1;
+		type2 = type2.contains("<") ? type2.substring(0, type2.indexOf("<")) : type2;
+		String t1 = type1.contains(".") ? type1.substring(type1.indexOf(".") +1 ) : type1;
+		String t2 = type2.contains(".") ? type2.substring(type2.indexOf(".") +1 ) : type2;
+		if(t1.equals("Object") && t2.length() > 1) return Character.isUpperCase(t2.charAt(0));
+		if(t2.equals("Object") && t1.length() > 1) return Character.isUpperCase(t1.charAt(0));
+		//null is always compatible
+		if(type1.equals("null") && Character.isUpperCase(type2.charAt(0))) return true;
+		if(type2.equals("null") && Character.isUpperCase(type1.charAt(0))) return true;
+		//this is ok only when there there are objects
+		if(type1.equals("this") && Character.isUpperCase(type2.charAt(0))) return true;
+		if(type2.equals("this") && Character.isUpperCase(type1.charAt(0))) return true;
+		return t1.equals(t2);
 	}
-
 
 }

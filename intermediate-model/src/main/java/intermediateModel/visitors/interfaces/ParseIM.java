@@ -1,15 +1,17 @@
 package intermediateModel.visitors.interfaces;
 
 import IntermediateModelHelper.CheckExpression;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.envirorment.EnvParameter;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.DefaultASTVisitor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,8 +27,21 @@ import java.util.List;
  */
 public abstract class ParseIM {
 
-	protected Env base_env = new Env();
+	protected EnvBase base_env = new EnvBase();
 	protected BuildEnvironment build_base_env = BuildEnvironment.getInstance();
+	protected ASTClass _class;
+
+
+	public ParseIM(ASTClass _class) {
+		this._class = _class;
+	}
+
+	protected ParseIM() {
+	}
+
+	public void set_class(ASTClass _class) {
+		this._class = _class;
+	}
 
 	/**
 	 * The following method creates the basic environment for a class.
@@ -34,12 +49,12 @@ public abstract class ParseIM {
 	 * At the end of the execution of the method we know if an attribute is time reletad or not.
 	 * @param c Class to analyze
 	 */
-	protected Env createBaseEnv(ASTClass c){
-		return createBaseEnv(c, new Env());
+	protected EnvBase createBaseEnv(ASTClass c){
+		return createBaseEnv(c, new EnvBase());
 	}
 
-	private Env createBaseEnv(ASTClass c, Env e){
-		base_env = build_base_env.buildEnvClass(c,e);
+	private EnvBase createBaseEnv(ASTClass c, EnvBase e){
+		base_env = (EnvBase) build_base_env.buildEnvClass(c, e);
 		//check static
 		for (ASTStatic s : c.getStaticInit()) {
 			analyze(s.getStms(), base_env);
@@ -55,14 +70,34 @@ public abstract class ParseIM {
 	 * For anonymous definition
 	 */
 	public void start(ASTClass c){
-
+		set_class(c);
+		EnvBase base = createBaseEnv(c);
+		for (IASTMethod m : c.getMethods()) {
+			analyze(m.getStms(), new Env(base));
+		}
 	}
 
 
-	protected void analyzeMethod(IASTMethod method){
-		Env eMethod = new Env(base_env);
+	protected void analyzeMethod(IASTMethod method, Env e){
+		if(method instanceof ASTConstructor || method.isStatic()){
+			//we have to process also the initialization of expressions
+			for(ASTAttribute a : this._class.getAttributes()){
+				if(a.getExpr() != null){
+					analyze(a.getExpr(), e);
+				}
+			}
+			//and the statics
+			for(ASTStatic s : this._class.getStaticInit()){
+				analyze(s.getStms(), e);
+			}
+		}
+		Env eMethod = new EnvParameter(e, method.getName());
 		eMethod = CheckExpression.checkPars(method.getParameters(), eMethod);
 		analyze(method.getStms(), eMethod);
+	}
+
+	protected void analyzeMethod(IASTMethod method){
+		analyzeMethod(method, base_env);
 	}
 
 	/**
@@ -165,8 +200,13 @@ public abstract class ParseIM {
 		ASTHiddenClass hc = stm.getHiddenClass();
 		if(hc != null){
 			Env e = new Env(env);
-			e.addVar(new ASTVariable(-1,-1,"DUMMY", stm.getTypeName()));
+			//e.addVar(new ASTVariable(-1,-1,"DUMMY", stm.getTypeName()));
 			this.analyze(hc, e);
+		}
+		for(IASTRE p : stm.getParameters()){
+			if(p instanceof ASTNewObject){
+				analyze((ASTNewObject) p, env);
+			}
 		}
 	}
 
@@ -239,6 +279,7 @@ public abstract class ParseIM {
 	 */
 	private void analyze(ASTForEach elm, Env env) {
 		Env new_env = new Env(env);
+		new_env.addVar( elm.getVar() );
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
 
@@ -376,7 +417,7 @@ public abstract class ParseIM {
 	 */
 	private void analyze(ASTWhile elm, Env env) {
 		Env new_env = new Env(env);
-		new_env.addVar(new ASTVariable(-1,-1,"WHILE","WHILE"));
+		//new_env.addVar(new ASTVariable(-1,-1,"WHILE","WHILE"));
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
 
@@ -391,17 +432,17 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTHiddenClass elm, Env env) {
-		Env new_env = this.createBaseEnv(elm, env);
-		/*Env new_env = build_base_env.buildEnvClass(elm, env);
+		Env new_env = this.createBaseEnv(elm, new EnvBase(env));
+		//Env new_env = build_base_env.buildEnvClass(elm, env);
 		//check static
 		for (ASTStatic s : elm.getStaticInit()) {
 			this.analyze(s.getStms(), new_env);
-		}*/
+		}
 		analyzeASTHiddenClass(elm, new_env);
 		//check method
 		for (IASTMethod m : elm.getMethods()) {
-			Env eMethod = new Env(new_env);
-			eMethod.addVar(new ASTVariable(-1,-1,"DUMMY_METHOD",m.getName()));
+			Env eMethod = new EnvParameter(new_env, m.getName());
+			//eMethod.addVar(new ASTVariable(-1,-1,"DUMMY_METHOD",m.getName()));
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			this.analyze(m.getStms(), eMethod);
 		}

@@ -26,7 +26,7 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
-	static final String name = "manual";
+	static final String name = "wildfly-core";
 
 	public static void main(String[] args) throws Exception {
 
@@ -74,23 +74,7 @@ public class Main {
 
 	public void run1() throws Exception {
 
-		/*
-		String path = "/Users/giovanni/repository/sources/activemq";
-		double start = new Date().getTime();
-		IndexingProject indexing = new IndexingProject(name);
-		indexing.delete();
-		System.out.println("Finish delete");
-		indexing.indexProject(path, false);
-		System.out.println("Indexing done");
-		indexing.indexSyncBlock(path, false);
-		System.out.println("Indexing Blocks done");
-		indexing.indexSyncCall(path, false);
-		System.out.println("Indexing Calls done");
-		double end = new Date().getTime();
-		System.out.println("[Indexing] "+ (end-start)/1000 + " s");
-*/
-
-		String f = "/Users/giovanni/repository/sources/vuze/vuze_mvn/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java";
+		String f = "/Users/giovanni/repository/sources/wildfly-core/server/src/main/java/org/jboss/as/server/deployment/DeploymentUnitPhaseService.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
@@ -107,13 +91,15 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("AzureusCoreImpl",
-				Arrays.asList()
-		));
+		p.addClass(c, c.getFirstMethodByName("start"));
+		/*,
+				Arrays.asList("ThreadPool")
+		));*/
 
-		p.addClass(c1, c1.getMethodBySignature("AzureusCoreImpl",
-				Arrays.asList()
-		));
+		p.addClass(c, c.getFirstMethodByName("start"));
+		/*
+				Arrays.asList("ThreadPool")
+		));*/
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 

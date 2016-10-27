@@ -2,18 +2,16 @@ package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.*;
+import IntermediateModelHelper.indexing.structure.IndexData;
+import IntermediateModelHelper.indexing.structure.IndexMethod;
+import IntermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTAttributeAccess;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
@@ -65,6 +63,7 @@ public class IndexingFile extends ParseIM {
 	 */
 	public IndexData index(ASTClass c, boolean forceReindex) {
 		this._c = c;
+		super.set_class(c);
 		if(mongo.existClassIndex(c)){
 			if(forceReindex){
 				mongo.delete(c);
@@ -76,9 +75,12 @@ public class IndexingFile extends ParseIM {
 		data = new IndexData();
 		data.setPath(c.getPath());
 		data.setClassName(c.getName());
-		data.setClassPackage(c.getPackageName());
+		data.setClassPackage(c.getRealPackageName());
+		data.setFullclassPackage(c.getPackageName());
 		data.setImports(convertImports(c.getImports()));
-		String fullname = "";
+		data.setInterface(c.isInterface());
+		data.setAbstract(c.isAbstract());
+		String fullname;
 		if(c.getPackageName().trim().equals("")){
 			fullname = c.getName();
 		} else {
@@ -128,6 +130,7 @@ public class IndexingFile extends ParseIM {
 		IndexMethod im = new IndexMethod();
 		im.setName(m.getName());
 		im.setPackageName(data.getClassPackage());
+		im.setFullpackageName(data.getFullclassPackage());
 		im.setFromClass(data.getClassName());
 		im.setParameters(IndexMethod.convertPars(m.getParameters()));
 		im.setExceptionsThrowed(m.getExceptionsThrowed());
@@ -140,12 +143,12 @@ public class IndexingFile extends ParseIM {
 		return im;
 	}
 
-	/**
+	/*
 	 * Convert an {@link ASTSynchronized} Object to {@link IndexSyncBlock} structure
 	 * @param m	Synchronized block to convert
 	 * @param e Environment of the Synchronized block
 	 * @return	Its representation in the {@link IndexMethod} structure.
-	 */
+	 *
 	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
 		is.setPackageName(data.getClassPackage());
@@ -161,6 +164,7 @@ public class IndexingFile extends ParseIM {
 		is.setPath(data.getPath());
 		return is;
 	}
+	*/
 
 
 	/**
@@ -172,7 +176,7 @@ public class IndexingFile extends ParseIM {
 	 * @param c Class to analyze
 	 */
 	@Override
-	protected Env createBaseEnv(ASTClass c){
+	protected EnvBase createBaseEnv(ASTClass c){
 		super.createBaseEnv(c);
 		//check method
 		for (IASTMethod m : c.getMethods()) {
@@ -206,10 +210,10 @@ public class IndexingFile extends ParseIM {
 		CheckExpression.checkRE(r, env);
 	}
 
-	@Override
+	/*@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
 		data.addSyncBlock(prepareOutput(elm, env));
-	}
+	}*/
 
 	@Override
 	protected void analyzeASTReturn(ASTReturn elm, Env env) {

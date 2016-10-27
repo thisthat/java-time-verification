@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class IndexMethod {
 	String packageName = "";
+	String fullpackageName = "";
 	String name = "";
 	String returnType = "";
 	String fromClass = "";
@@ -34,9 +35,11 @@ public class IndexMethod {
 	int line = 0;
 	boolean isConstructor = false;
 	boolean isSync = false;
+	boolean isAbs = false;
 
-	public IndexMethod(String packageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync) {
+	public IndexMethod(String packageName, String fullpackageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync, boolean isAbs) {
 		this.packageName = packageName;
+		this.fullpackageName = fullpackageName;
 		this.name = name;
 		this.returnType = returnType;
 		this.fromClass = fromClass;
@@ -47,6 +50,7 @@ public class IndexMethod {
 		this.line = line;
 		this.isConstructor = isConstructor;
 		this.isSync = isSync;
+		this.isAbs = isAbs;
 	}
 
 
@@ -160,12 +164,28 @@ public class IndexMethod {
 		isSync = sync;
 	}
 
+	public boolean isAbs() {
+		return isAbs;
+	}
+
+	public void setAbs(boolean abs) {
+		isAbs = abs;
+	}
+
 	public String getPackageName() {
 		return packageName;
 	}
 
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
+	}
+
+	public String getFullpackageName() {
+		return fullpackageName;
+	}
+
+	public void setFullpackageName(String fullpackageName) {
+		this.fullpackageName = fullpackageName;
 	}
 
 	@Override

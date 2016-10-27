@@ -1,9 +1,11 @@
 package PCFG.structure;
 
 import PCFG.converter.ToDot;
+import PCFG.optimization.OptimizeCFG;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.edge.IEdge;
 import PCFG.structure.edge.SyncEdge;
+import PCFG.structure.node.INode;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
 
@@ -29,7 +31,17 @@ public class PCFG implements IHasCFG {
 	 * @param edge Edge to add.
 	 */
 	public void addSyncEdge(SyncEdge edge){
-		this.ESync.add(edge);
+		INode f = edge.getFrom();
+		INode t = edge.getTo();
+		boolean flag = true;
+		for(SyncEdge e : ESync){
+			if(e.getFrom().equals(f) && e.getTo().equals(t))
+				flag = false;
+			if(e.getFrom().equals(t) && e.getTo().equals(f))
+				flag = false;
+		}
+		if(flag)
+			this.ESync.add(edge);
 	}
 
 	/**
@@ -102,6 +114,7 @@ public class PCFG implements IHasCFG {
 		for(CFG p : processes){
 			p.setStartEnd();
 		}
+		this.optimize(new OptimizeCFG());
 	}
 
 	public PCFG optimize(IOptimization optimizer){

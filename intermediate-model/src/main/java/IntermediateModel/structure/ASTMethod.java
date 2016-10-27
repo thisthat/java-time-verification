@@ -20,24 +20,30 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
 	boolean isSyncronized = false;
+	boolean isAbstract = false;
+	boolean isStatic = false;
 
 
-	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
+	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.isSyncronized = isSyncronized;
+		this.isAbstract = isAbstract;
+		this.isStatic = isStatic;
 	}
 
-	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
+	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract, boolean isStatic) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.isSyncronized = isSyncronized;
+		this.isAbstract = isAbstract;
+		this.isStatic = isStatic;
 	}
 
 	public boolean isSyncronized() {
@@ -46,6 +52,14 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 
 	public void setSyncronized(boolean syncronized) {
 		isSyncronized = syncronized;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean anAbstract) {
+		isAbstract = anAbstract;
 	}
 
 	public List<String> getExceptionsThrowed() {
@@ -148,18 +162,25 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	}
 
 	@Override
-	public boolean equalsBySignature(String name, List<Pair<String, String>> signature) {
+	public boolean equalsBySignature(String pkg, String name, List<Pair<String, String>> signature) {
 		if(!name.equals(this.name)) return false;
 		if(signature.size() != this.parameters.size()) return false;
 		boolean flag = true;
 		for(int i = 0; i < this.parameters.size(); i++){
-			if(signature.get(i) == null || signature.get(i).getValue1() == null){
+			if(signature.get(i) == null || signature.get(i).getValue0() == null){
 				return false;
 			}
-			if(!signature.get(i).getValue1().equals(this.parameters.get(i).getType())){
+			String t1 = this.parameters.get(i).getType();
+			String t2 = signature.get(i).getValue0();
+			if(!DataTreeType.checkEqualsTypes(t1,t2, pkg , signature.get(i).getValue1() )){
 				flag = false;
 			}
 		}
 		return flag;
+	}
+
+	@Override
+	public boolean isStatic() {
+		return this.isStatic;
 	}
 }

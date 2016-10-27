@@ -2,8 +2,11 @@ package IntermediateModelHelper.envirorment;
 
 
 import com.google.common.annotations.Beta;
-import intermediateModel.interfaces.*;
-import intermediateModel.structure.*;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTAttribute;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTMethod;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -77,15 +80,15 @@ public class BuildEnvironment {
 	 */
 	@Beta
 	public Env buildEnvClass(ASTClass _class) {
-		return _buildEnvClass(_class, new Env());
+		return _buildEnvClass(_class, new EnvBase());
 	}
 	@Beta
 	public Env buildEnvClass(ASTClass _class, Env old) {
-		return _buildEnvClass(_class, new Env(old));
+		return _buildEnvClass(_class, old);
 	}
 
-	private Env _buildEnvClass(ASTClass _class, Env oldEnv){
-		Env where = oldEnv;
+	private Env _buildEnvClass(ASTClass _class, Env where){
+		//Env where = oldEnv;
 		//check over attributes
 		for (ASTAttribute a : _class.getAttributes()) {
 			a.setTimeCritical(

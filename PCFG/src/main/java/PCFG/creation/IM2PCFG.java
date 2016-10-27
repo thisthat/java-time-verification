@@ -2,6 +2,7 @@ package PCFG.creation;
 
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.IndexingSyncBlock;
+import IntermediateModelHelper.indexing.IndexingSyncCalls;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.creation.helper.CalculateSyncBlock;
@@ -116,8 +117,10 @@ public class IM2PCFG extends ConvertIM {
 		lastPCFG = pcfg;
 		this.indexs.clear();
 		for(KeyValue<IASTMethod,ASTClass> k : this.classes){
+			IndexingFile indexCall = new IndexingFile();
+			indexCall.index(k.getValue(), true);
 			IndexingSyncBlock indexing = new IndexingSyncBlock();
-			List<IndexSyncBlock> blocks = indexing.index(k.getValue(), false);
+			List<IndexSyncBlock> blocks = indexing.index(k.getValue(), true);
 			List<IndexSyncBlock> toAdd = new ArrayList<>();
 			IASTMethod m = k.getKey();
 			for(IndexSyncBlock b : blocks){
@@ -304,8 +307,8 @@ public class IM2PCFG extends ConvertIM {
 
 	protected void convertIf(ASTIf stm) {
 		ASTRE ex = stm.getGuard();
-		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.NORMAL, ex.getStart(), ex.getEnd(), ex.getLine() );
-		Node end_if = new Node("_end_if", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.IF_EXPR, ex.getStart(), ex.getEnd(), ex.getLine() );
+		Node end_if = new Node("_end_if_", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState( expr );
 		this.lastLabel = "True";
 		super.dispachStm(stm.getIfBranch().getStms());

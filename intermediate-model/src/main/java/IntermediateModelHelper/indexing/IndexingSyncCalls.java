@@ -60,6 +60,7 @@ public class IndexingSyncCalls  {
 	 */
 	public List<IndexSyncCall> index(ASTClass c, boolean forceReindex) {
 		this._c = c;
+		//System.out.println(c.getPath());
 		//collect calls to a sync method
 		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, c.getMethods());
 		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();

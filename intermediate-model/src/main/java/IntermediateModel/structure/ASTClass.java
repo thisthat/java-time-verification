@@ -28,6 +28,8 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	List<ASTAttribute> attributes = new ArrayList<>();
 	String path;
 	ASTClass parent = null;
+	boolean isInterface = false;
+	boolean isAbstract = false;
 
 	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);
@@ -87,8 +89,16 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.imports = imports;
 	}
 
+	public List<IASTMethod> getAllMethods() {
+		List<IASTMethod> out = new ArrayList<>(methods);
+		if(this.parent != null){
+			out.addAll(this.parent.getAllMethods());
+		}
+		return out;
+	}
+
 	public List<IASTMethod> getMethods() {
-		return methods;
+		return this.methods;
 	}
 
 	public String getName() {
@@ -207,6 +217,14 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		return path;
 	}
 
+	public boolean isInterface() {
+		return isInterface;
+	}
+
+	public void setInterface(boolean anInterface) {
+		isInterface = anInterface;
+	}
+
 	@Override
 	public int hashCode() {
 		int result = packageName != null ? packageName.hashCode() : 0;
@@ -252,8 +270,51 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		}
 		return out;
 	}
+	public IASTMethod getFirstMethodByName(String name){
+		IASTMethod out = null;
+		for(IASTMethod m : this.methods){
+			if(!m.getName().equals(name)) continue;
+				out = m;
+		}
+		return out;
+	}
 
 	public boolean isSameClass(ASTClass _class) {
 		return this.packageName.equals(_class.getPackageName()) && this.name.equals(_class.getName());
+	}
+
+	public String getPackageMethod(IASTMethod m) {
+		for(IASTMethod localM : this.methods){
+			if(localM.equalsBySignature(m))
+				return this.packageName;
+		}
+		return this.parent != null ? this.parent.getPackageMethod(m) : this.packageName;
+	}
+
+	public String getClassNameMethod(IASTMethod m) {
+		for(IASTMethod localM : this.methods){
+			if(localM.equalsBySignature(m)) return this.name;
+		}
+		return this.parent != null ? this.parent.getClassNameMethod(m) : this.name;
+	}
+
+	public String getRealPackageName() {
+		if(this.parent == null) return this.packageName;
+		else return this.parent.getRealPackageName();
+	}
+
+	public List<String> getImportsAsString() {
+		List<String> out = new ArrayList<>();
+		for(ASTImport imp : this.imports){
+			out.add(imp.getPackagename());
+		}
+		return out;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
+	public boolean isAbstract(){
+		return this.isAbstract;
 	}
 }

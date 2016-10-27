@@ -40,8 +40,18 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 		this.accessRight = accessRight;
 	}
 
-	public String getType() {
+	@Override
+	public String getTypeNoArray() {
+		if(type.endsWith("]")) return type.substring(0, type.indexOf("["));
+		if(type.contains(".")) return type.substring(type.indexOf(".")+1);
 		return type;
+	}
+
+	public String getType() {
+		if(type.contains("<")){
+			return type.substring(0, type.indexOf("<"));
+		} else
+			return type;
 	}
 
 	public void setType(String type) {

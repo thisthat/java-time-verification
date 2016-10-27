@@ -167,7 +167,7 @@ public class MainParse {
 		protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
 			System.out.println(elm.toString());
 			System.out.println("------");
-			data.addSyncBlock(prepareOutput(elm, env));
+			//data.addSyncBlock(prepareOutput(elm, env));
 		}
 
 		@Override

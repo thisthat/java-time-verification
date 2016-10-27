@@ -106,13 +106,11 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
-		IndexingFile indexing = new IndexingFile();
 		IndexingSyncBlock indexingSyncBlock = new IndexingSyncBlock();
-		IndexData d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		List<IndexSyncBlock> i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
-		assertTrue(i.get(0).isAccessibleFromOutside());
+		assertFalse(i.get(0).isAccessibleFromOutside());
+		assertTrue(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/FirstCase_2.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -121,13 +119,11 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
-		assertTrue(i.get(0).isAccessibleFromOutside());
+		assertFalse(i.get(0).isAccessibleFromOutside());
+		assertTrue(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/FirstCase_3.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -136,13 +132,11 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertFalse(i.get(0).isAccessibleFromOutside());
+		assertFalse(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/SecondCase_1.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -151,13 +145,11 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertTrue(i.get(0).isAccessibleFromOutside());
+		assertFalse(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/SecondCase_2.java").getPath();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
@@ -166,12 +158,10 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		c = v.listOfClasses.get(0);
-		indexing = new IndexingFile();
 		indexingSyncBlock = new IndexingSyncBlock();
-		d = indexing.index(c, true);
-		assertEquals(d.getListOfSyncBlocks().size(),1);
 		i = indexingSyncBlock.index(c, true);
 		assertEquals(i.size(), 1);
 		assertFalse(i.get(0).isAccessibleFromOutside());
+		assertFalse(i.get(0).isAccessibleWritingFromOutside());
 	}
 }

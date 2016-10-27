@@ -27,6 +27,7 @@ public class TestInheritance {
 		MongoConnector.getInstance().ensureIndexes();
 
 		IndexingProject indexing = new IndexingProject();
+		indexing.setSkipTest(false);
 		indexing.indexProject(directory, false);
 
 

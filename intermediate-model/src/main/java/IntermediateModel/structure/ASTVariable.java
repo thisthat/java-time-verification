@@ -30,6 +30,16 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	}
 
 	public String getType() {
+		if(type.contains("<")){
+			return type.substring(0, type.indexOf("<"));
+		} else
+			return type;
+	}
+
+	@Override
+	public String getTypeNoArray() {
+		if(type.endsWith("]")) return type.substring(0, type.indexOf("["));
+		if(type.contains(".")) return type.substring(type.indexOf(".") +1);
 		return type;
 	}
 

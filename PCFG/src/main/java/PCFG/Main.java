@@ -1,5 +1,6 @@
 package PCFG;
 
+import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.ToDot;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
@@ -24,8 +25,10 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
+	static final String db_name = "test_paper";
 
 	public static void main(String[] args) throws Exception {
+		MongoOptions.getInstance().setDbName(db_name);
 		new Main().run2();
 	}
 
@@ -62,7 +65,7 @@ public class Main {
 	}
 
 	public void run2() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("bugs/Timer.java").getFile();
+		String f =  Main.class.getClassLoader().getResource("Thread_1.java").getFile();
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -71,7 +74,7 @@ public class Main {
 		ASTClass c = classes.get(0);
 
 		//add the second method
-		f =  Main.class.getClassLoader().getResource("bugs/LightWeightSeed.java").getFile();
+		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -79,10 +82,10 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("destroy",
+		p.addClass(c, c.getMethodBySignature("run",
 				Arrays.asList()
 		));
-		p.addClass(c1, c1.getMethodBySignature("getDescription",
+		p.addClass(c1, c1.getMethodBySignature("run",
 				Arrays.asList()
 		));
 		PCFG graph = p.buildPCFG();
@@ -100,22 +103,26 @@ public class Main {
 
 
 		//first method
-		String f =  Main.class.getClassLoader().getResource("smallSubscriptionManager.java").getFile();
+		String f =  "/Users/giovanni/repository/sources/vuze/src/main/java/com/aelitis/azureus/ui/swt/mdi/BaseMdiEntry.java";
 		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
+		ASTClass c = v.listOfClasses.get(0);
 
-		classes.addAll(v.listOfClasses);
-
-		ASTClass c = classes.get(0);
+		f =  "/Users/giovanni/repository/sources/vuze/src/main/java/org/gudy/azureus2/ui/swt/views/table/impl/TableRowSWTBase.java";
+		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		ast = a.getContextJDT();
+		v = new JDTVisitor(ast, f);
+		ast.accept(v);
+		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("preInitialise",
-				Arrays.asList()
+		p.addClass(c, c.getMethodBySignature("removeListener",
+				Arrays.asList("MdiEntryDropListener")
 		));
-		p.addClass(c, c.getMethodBySignature("initWithCore",
-				Arrays.asList("AzureusCore")
+		p.addClass(c1, c1.getMethodBySignature("locationChanged",
+				Arrays.asList("int")//, "boolean")
 		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();

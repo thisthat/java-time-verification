@@ -37,7 +37,6 @@ public class TestIndexing {
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
 			List<String> compare = new ArrayList<>();
 			for(IndexMethod i : methods){
 				compare.add(i.getName());
@@ -58,7 +57,6 @@ public class TestIndexing {
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
 			List<String> compare = new ArrayList<>();
 			for(IndexMethod i : methods){
 				compare.add(i.getName());
@@ -84,7 +82,6 @@ public class TestIndexing {
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
 			List<String> compare = new ArrayList<>();
 			for(IndexMethod i : methods){
 				compare.add(i.getName());
@@ -109,7 +106,6 @@ public class TestIndexing {
 			List<IndexMethod> methods = index.getListOfMethods();
 			List<IndexMethod> syncMethods = index.getListOfSyncMethods();
 			List<String> timedMethods = index.getListOfTimedMethods();
-			List<IndexSyncBlock> syncBlocks = index.getListOfSyncBlocks();
 			List<String> compare = new ArrayList<>();
 			for(IndexMethod i : methods){
 				compare.add(i.getName());

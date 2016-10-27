@@ -56,13 +56,13 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		g.toGraphViz(false);
+		//g.toGraphViz(false);
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 2 );
 
 	}
 
@@ -100,13 +100,13 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		//System.out.println(g.toGraphViz(false));
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 1 );
 	}
 
 	@Test(expected = AssertionError.class)
@@ -143,13 +143,13 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		//System.out.println(g.toGraphViz(false));
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
 	@Test
@@ -186,13 +186,13 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		//System.out.println(g.toGraphViz(false));
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 1 );
 	}
 
 	@Test
@@ -229,13 +229,13 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		//System.out.println(g.toGraphViz(false));
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 4 );
+		assertEquals(g.getESync().size(), 1 );
 	}
 
 	@Test
@@ -272,12 +272,12 @@ public class TestBugs {
 		// build
 		PCFG g = p.buildPCFG();
 
-		System.out.println(g.toGraphViz(false));
+		//System.out.println(g.toGraphViz(false));
 
 		assertEquals(g.getV().size(), 6);
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 2 );
+		assertEquals(g.getESync().size(), 1 );
 	}
 }

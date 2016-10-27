@@ -20,5 +20,6 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	int getStart();
 	int getEnd();
 	boolean equalsBySignature(IASTMethod c);
-	boolean equalsBySignature(String name, List<Pair<String,String>> signature);
+	boolean equalsBySignature(String pkg, String name, List<Pair<String,String>> signature);
+	boolean isStatic();
 }

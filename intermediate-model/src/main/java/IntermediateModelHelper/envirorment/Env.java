@@ -2,12 +2,10 @@ package IntermediateModelHelper.envirorment;
 
 
 import com.google.common.annotations.Beta;
-import com.google.common.primitives.SignedBytes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.structure.ASTAttribute;
+import intermediateModel.structure.ASTClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +41,8 @@ public class Env {
 		this.prev = prev;
 	}
 
+
+
 	/**
 	 * Get the list of <u>ALL</u> variables of the current Env.
 	 * It does not look in the previous ones.
@@ -58,6 +58,10 @@ public class Env {
 	 */
 	public Env getPrev() {
 		return prev;
+	}
+
+	public void setPrev(Env prev) {
+		this.prev = prev;
 	}
 
 	/**
@@ -76,6 +80,93 @@ public class Env {
 		} else {
 			return false;
 		}
+	}
+
+
+	/**
+	 * The method will search if the closest definition of the variable is in a inherited class.
+	 * @param v Name of the variable to find
+	 * @return	True if the closest definition is in a inherited class.
+	 */
+	public boolean isInherited(String v){
+		if(!existVarName(v)) return false;
+		return getCorrectEnv(v) instanceof EnvExtended;
+	}
+
+	/**
+	 * The method will search if the closest definition of the variable is an attribute of the class.
+	 * @param v Name of the variable to find
+	 * @return	True if the closest definition is an attribute of the class.
+	 */
+	public boolean isClassAttribute(String v){
+		if(!existVarName(v)) return false;
+		return getVar(v) instanceof ASTAttribute;
+	}
+
+	/**
+	 * The method will search if the closest definition of the variable is an attribute of the class.
+	 * @param v Name of the variable to find
+	 * @return	True if the closest definition is an attribute of the class.
+	 */
+	public boolean isMethodParameter(String v){
+		if(!existVarName(v)) return false;
+		return getCorrectEnv(v) instanceof EnvParameter;
+	}
+
+	/**
+	 * The method search if the variable of the form <pre>this.var_name</pre> exists in the current {@link Env}
+	 * referred by the <b>this</b> keyword.
+	 * @param v Name of the variable to search
+	 * @return True if the variable exists in the environment referred to the current <b>this</b> keyword
+	 */
+	public boolean isInThis(String v){
+		if(!existVarName(v)) return false;
+		EnvBase current = getFirstEnvBase();
+		if(current == null) return false;
+		for(IASTVar vEnv : current.getVarList()){
+			if(vEnv.getName().equals(v))
+				return true;
+		}
+		return false;
+	}
+
+
+	/**
+	 * The method search if the variable of the form <pre>super.var_name</pre> exists in a super {@link EnvBase}.
+	 * @param v Name of the variable to search
+	 * @return True if the variable exists in a <b>super</b> environment.
+	 */
+	public boolean isInSuper(String v){
+		if(!existVarName(v)) return false;
+		EnvExtended ext = getExtendedEnv(v);
+		return ext != null;
+	}
+
+
+	/**
+	 * Search for the first definition of {@link EnvBase}. It could return null
+	 * @return Null if it cannot found an EnvBase or the EnvBase.
+	 */
+	public EnvBase getFirstEnvBase(){
+		Env current = this;
+		while(!(current instanceof EnvBase) && current != null){
+			current = current.getPrev();
+		}
+		return (EnvBase) current;
+	}
+
+
+	public EnvExtended getExtendedEnv(){
+		if(this instanceof EnvExtended) return (EnvExtended) this;
+		if(this.prev == null) return null;
+		return this.prev.getExtendedEnv();
+	}
+
+	public EnvExtended getExtendedEnv(String v){
+		Env e = getCorrectEnv(v);
+		if(e instanceof EnvExtended) return (EnvExtended) e;
+		if(e.prev == null) return null;
+		return e.prev.getExtendedEnv(v);
 	}
 
 	/**
@@ -138,7 +229,7 @@ public class Env {
 
 	/**
 	 * Helper method for {@link Env#addFlag(String, Integer)}.
-	 * It retrives the Env where the particular variable was inserted.
+	 * It retrieves the Env where the particular variable was inserted.
 	 * @param v	Variable name to search
 	 * @return	Environment where the variable is defined
 	 */
@@ -298,22 +389,18 @@ public class Env {
 	}
 
 
+	@Deprecated
 	public String getExprType(IASTRE r){
-		if(r instanceof ASTLiteral){
-			String expr = ((ASTLiteral) r).getValue();
-			try{
-				Integer.parseInt(expr);
-				return "int";
-			} catch (Exception e){
-
-			}
-			if(expr.startsWith("\"") && expr.endsWith("\"")) {
-				return "String";
-			}
-		}
 		ResolveExpressionType resolver = new ResolveExpressionType(this);
 		return resolver.getType(r);
 	}
+
+	public String getExprType(IASTRE r, ASTClass c){
+		ResolveExpressionType resolver = new ResolveExpressionType(this);
+		return resolver.getType(r, c);
+	}
+
+
 
 
 	/**

@@ -1,5 +1,6 @@
 package intermediateModel.structure;
 
+import IntermediateModelHelper.types.DataTreeType;
 import intermediateModel.interfaces.*;
 import org.antlr.v4.runtime.Token;
 import org.javatuples.Pair;
@@ -92,15 +93,17 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	}
 
 	@Override
-	public boolean equalsBySignature(String name, List<Pair<String, String>> signature) {
-		if(name.equals(this.name)) return false;
+	public boolean equalsBySignature(String pkg, String name, List<Pair<String, String>> signature) {
+		if(!name.equals(this.name)) return false;
 		if(signature.size() != this.parameters.size()) return false;
 		boolean flag = true;
 		for(int i = 0; i < this.parameters.size(); i++){
 			if(signature.get(i) == null || signature.get(i).getValue1() == null){
 				return false;
 			}
-			if(!signature.get(i).getValue1().equals(this.parameters.get(i).getType())){
+			String t1 = this.parameters.get(i).getType();
+			String t2 = signature.get(i).getValue1();
+			if(!DataTreeType.checkEqualsTypes(t1,t2, pkg , signature.get(i).getValue1() )){
 				flag = false;
 			}
 		}
@@ -141,5 +144,10 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 			s.visit(visitor);
 		}
 		visitor.exitASTConstructor(this);
+	}
+
+	@Override
+	public boolean isStatic() {
+		return false;
 	}
 }

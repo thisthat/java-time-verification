@@ -1,6 +1,7 @@
 package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.CheckExpression;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
@@ -65,6 +66,7 @@ public class IndexingSyncBlock extends ParseIM {
 	 */
 	public List<IndexSyncBlock> index(ASTClass c, boolean forceReindex) {
 		this._c = c;
+		super.set_class(c);
 		if(mongo.existSyncBlockIndex(c)){
 			if(forceReindex){
 				mongo.deleteSyncBlock(c);
@@ -89,15 +91,15 @@ public class IndexingSyncBlock extends ParseIM {
 	private void processImports(ASTClass c) {
 		for(ASTImport imp : c.getImports()){
 			String pkg = imp.getPackagename();
-			List<IndexData> d = mongo.getFromImport(pkg, true);
+			List<IndexData> d = mongo.getFromImport(pkg);
 			if(d.size() > 0) imports.addAll(d);
 		}
 		//add myself as well
 		String pkg = c.getPackageName() + "." + c.getName();
-		List<IndexData> d = mongo.getFromImport(pkg, true);
+		List<IndexData> d = mongo.getFromImport(pkg);
 		if(d.size() > 0) imports.addAll(d);
 		//and my subs
-		d = mongo.getFromImport(pkg + ".*", true);
+		d = mongo.getFromImport(pkg + ".*");
 		if(d.size() > 0) imports.addAll(d);
 		if(c.getParent() != null){
 			processImports(c.getParent());
@@ -109,7 +111,7 @@ public class IndexingSyncBlock extends ParseIM {
 	 * @param c Class to analyze
 	 */
 	@Override
-	protected Env createBaseEnv(ASTClass c){
+	protected EnvBase createBaseEnv(ASTClass c){
 		super.createBaseEnv(c);
 		//check method
 		for (IASTMethod m : c.getMethods()) {
@@ -168,8 +170,13 @@ public class IndexingSyncBlock extends ParseIM {
 		sync.setExprPkg(exprType.getValue0());
 		sync.setExprType(exprType.getValue1());
 		//is accessible from outside
-		boolean startValue = (exprType.getValue0().equals("") && exprType.getValue1().equals("")); //workaround to check if is inherited!
-		boolean[] flag = {startValue};
+		boolean isInherited = env.existVarName(sync.getExpr()) && env.isInherited(sync.getExpr());
+		String pkgVar = isInherited ? env.getExtendedEnv(sync.getExpr()).getPackageName() : "";
+		String classVar = isInherited ? env.getExtendedEnv(sync.getExpr()).getClassName() : "";
+		sync.setInherited(isInherited);
+		sync.setPkgVar(pkgVar);
+		sync.setClassVar(classVar);
+		boolean[] flag = {false, false}; //read,write access
 		//check if the expression of the current variable is possible to be used outside of the class
 		// can be used only in two cases:
 		// 1. The variable is in a return statement
@@ -183,8 +190,9 @@ public class IndexingSyncBlock extends ParseIM {
 			}
 			private boolean checkIASTRE(IASTRE e, Env env){
 				if(e instanceof ASTLiteral){
-					if(((ASTLiteral) e).getValue().equals(sync.getExpr())){
-						if(((ASTLiteral) e).getCode().endsWith("]")){ //does it work like that?
+					ASTLiteral lit = (ASTLiteral) e;
+					if(lit.getValue().equals(sync.getExpr())){
+						if(lit.getCode().endsWith("]")){ //does it work like that?
 							//We should think about gettin' in touch with the concrete types of the program and do not abstract from them. At least arrays...
 							//handle cases where we store smth inside an array
 							return false;
@@ -193,14 +201,17 @@ public class IndexingSyncBlock extends ParseIM {
 					}
 				}
 				if(e instanceof ASTAttributeAccess){
-					if(((ASTAttributeAccess) e).getAttributeName().equals(sync.getExpr())){
-						if(((ASTAttributeAccess) e).getCode().endsWith("]")){ //does it work like that?
+					ASTAttributeAccess att = (ASTAttributeAccess) e;
+					if( att.getAttributeName().equals(sync.getExpr()) &&
+						att.getVariableName().getCode().equals("this")
+					){
+						if(att.getCode().endsWith("]")){ //does it work like that?
 							//handle cases where we store smth inside an array
 							return false;
 						}
 						return true;
 					} else {
-						return ((ASTAttributeAccess) e).getCode().equals(sync.getExpr());
+						return att.getCode().equals(sync.getExpr());
 					}
 
 				}
@@ -219,8 +230,8 @@ public class IndexingSyncBlock extends ParseIM {
 						public void enterASTAssignment(ASTAssignment elm) {
 							IASTRE left = elm.getLeft();
 							IASTRE right = elm.getRight();
-							if(!flag[0]) {
-								flag[0] = checkIASTRE(left, env) && !checkNew(right, env);
+							if(!flag[1]) {
+								flag[1] = checkIASTRE(left, env) && !checkNew(right, env);
 							}
 						}
 					});
@@ -238,6 +249,7 @@ public class IndexingSyncBlock extends ParseIM {
 			}
 
 			public void start(ASTClass _c){
+				super.start(_c);
 				for(IASTMethod m : _c.getMethods()){
 					for(ASTVariable v : m.getParameters()){
 						boolean tmp[] = {false};
@@ -252,7 +264,7 @@ public class IndexingSyncBlock extends ParseIM {
 							});
 						}
 						if(tmp[0]){
-							flag[0] = true;
+							flag[1] = true;
 						}
 					}
 					analyzeMethod(m);
@@ -261,6 +273,7 @@ public class IndexingSyncBlock extends ParseIM {
 		};
 		checkAccessibleFromOutside.start(_c);
 		sync.setAccessibleFromOutside(flag[0]);
+		sync.setAccessibleWritingFromOutside(flag[1]);
 		output.add(sync);
 	}
 }

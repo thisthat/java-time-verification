@@ -15,16 +15,22 @@ import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
+import org.eclipse.jdt.internal.core.index.Index;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
 public class ResolveTypes {
+
+	private static Map<Triplet<String,List<String>,String>, List<IndexData>> cacheImport = new HashMap();
 
 	public static IndexData getPackageFromImports(List<IndexData> imports, String type){
 		for(IndexData imp : imports){
@@ -36,10 +42,29 @@ public class ResolveTypes {
 			if(type == null){
 				continue;
 			}
-			if(imp.getClassPackage().endsWith(type))
+			if(imp.getClassPackage().endsWith("." + type))
 				return imp;
 		}
 		return null;
+	}
+
+	public static IndexData getPackageFromImportsString(String pkgClass, List<String> imports, String type){
+		Triplet<String,List<String>,String> p = new Triplet<>(pkgClass,imports,type);
+		if(cacheImport.containsKey(p)){
+			return getPackageFromImports( cacheImport.get(p), type);
+		}
+		MongoConnector mongo = MongoConnector.getInstance();
+		List<IndexData> out = new ArrayList<>();
+		for(String pkg : imports){
+			List<IndexData> current = mongo.getFromImport(pkg);
+			if(current.size() > 0) out.addAll(current);
+		}
+		//plus files in my package
+		String pkg = pkgClass + ".*";
+		List<IndexData> current = mongo.getFromImport(pkg);
+		if(current.size() > 0) out.addAll(current);
+		cacheImport.put(p, out);
+		return getPackageFromImports(out, type);
 	}
 
 	public static String getImportPkgFromType(List<IndexData> imports, String s) {
@@ -58,6 +83,15 @@ public class ResolveTypes {
 		return out;
 	}
 
+	public static String getExactImportPkgFromType(List<IndexData> imports, String s) {
+		String out = "";
+		for(IndexData i : imports){
+			if(i.getClassName().equals(s))
+				return i.getClassPackage();
+		}
+		return out;
+	}
+
 	/**
 	 * Resolve the type of a method call.
 	 * Possible cases:
@@ -72,7 +106,7 @@ public class ResolveTypes {
 	 * @param expr	Expression which contains the method call to resolve the type
 	 * @return		Name of the type or null if we cannot solve it
 	 */
-	public static String getTypeMethodCall(List<IndexData> imports, ASTClass _class, ASTMethodCall expr, Env e){
+	public static Pair<String,String> getTypeMethodCall(List<IndexData> imports, ASTClass _class, ASTMethodCall expr, Env e){
 		IASTRE calee = expr.getExprCallee();
 		if(calee == null){
 			//local method call
@@ -81,13 +115,14 @@ public class ResolveTypes {
 		String methodCalled = expr.getMethodName();
 		List<Pair<String,String>> actual_pars = new ArrayList<Pair<String,String>>();
 		for(IASTRE p : expr.getParameters()){
-			actual_pars.add(
-					new Pair<String, String>(
-							e.getExprType(p),
-							ResolveTypes.getImportPkgFromType(imports, e.getExprType(p))
-					)
-
-			);
+			Pair<String,String> exprType;
+			if(p instanceof ASTMethodCall){
+				exprType = ResolveTypes.getTypeMethodCall(imports, _class, (ASTMethodCall) p, e);
+			} else {
+				String type = e.getExprType(p, _class);
+				exprType = new Pair<>( type ,ResolveTypes.getImportPkgFromType(imports, type) );
+			}
+			actual_pars.add( exprType );
 		}
 		if(calee instanceof ASTAttributeAccess){
 			final String[] varTypeHelper = new String[1];
@@ -98,12 +133,55 @@ public class ResolveTypes {
 				}
 			});
 			String varType = varTypeHelper[0];
-			IndexData _class_pkg = ResolveTypes.getPackageFromImports(imports,varType);
-			if(_class_pkg != null){
-				//we have smth to work with
-				for(IndexMethod m : _class_pkg.getListOfMethods()){
-					if(m.equalBySignature(methodCalled, actual_pars)){
-						return m.getReturnType();
+			if(varType != null && (varType.equals("this") || Character.isLowerCase(varType.charAt(0))) ){
+				String varName = ((ASTAttributeAccess) calee).getAttributeName();
+				IASTVar var = e.getVar(varName);
+				if(var != null){
+					//exist smth in the env (should be always the case)
+					IndexData _classImport = ResolveTypes.getPackageFromImports(imports,var.getType());
+					if(_classImport != null){
+						//we have smth to work with
+						for(IndexMethod m : _classImport.getListOfMethods()){
+							if(m.equalBySignature(methodCalled, actual_pars)){
+								String type = m.getReturnType();
+								IndexData imp = ResolveTypes.getPackageFromImportsString(_classImport.getClassPackage(), _classImport.getImports(), type);
+								String pkg;
+								if(imp == null){
+									pkg = _classImport.getClassPackage();
+								} else {
+									pkg = imp.getClassPackage();
+								}
+								return new Pair<>(type, pkg);
+							}
+						}
+					}
+				} else {
+					//static call?
+					IndexData _classImport = ResolveTypes.getPackageFromImports(imports, varName);
+					if(_classImport != null){
+						for(IndexMethod m : _classImport.getListOfMethods()){
+							if(m.equalBySignature(methodCalled, actual_pars)){
+								String type = m.getReturnType();
+								IndexData imp = ResolveTypes.getPackageFromImports(imports, type);
+								String pkg;
+								if(imp == null){
+									pkg = _classImport.getClassPackage();
+								} else {
+									pkg = imp.getClassPackage();
+								}
+								return new Pair<>(type, pkg);
+							}
+						}
+					}
+				}
+			} else {
+				IndexData _class_pkg = ResolveTypes.getPackageFromImports(imports,varType);
+				if(_class_pkg != null){
+					//we have smth to work with
+					for(IndexMethod m : _class_pkg.getListOfMethods()){
+						if(m.equalBySignature(methodCalled, actual_pars)){
+							return new Pair<>(m.getReturnType(), _class_pkg.getClassPackage());
+						}
 					}
 				}
 			}
@@ -111,8 +189,17 @@ public class ResolveTypes {
 		if(calee instanceof ASTLiteral){
 			String varName = ((ASTLiteral) calee).getValue();
 			if(varName.equals("this")){
+				String type = localSearch(_class, methodCalled, actual_pars, imports);
+				IndexData imp = ResolveTypes.getPackageFromImports(imports, type);
+				String pkg;
 				//local search
-				return localSearch(_class, methodCalled, actual_pars);
+				if(imp == null){
+					//basic type
+					pkg = "java.lang";
+				} else {
+					pkg = imp.getClassPackage();
+				}
+				return new Pair<>(type, pkg);
 			} else {
 				//get type in env
 				IASTVar var = e.getVar(varName);
@@ -123,7 +210,15 @@ public class ResolveTypes {
 						//we have smth to work with
 						for(IndexMethod m : _classImport.getListOfMethods()){
 							if(m.equalBySignature(methodCalled, actual_pars)){
-								return m.getReturnType();
+								String type = m.getReturnType();
+								IndexData imp = ResolveTypes.getPackageFromImports(imports, type);
+								String pkg;
+								if(imp == null){
+									pkg = "";
+								} else {
+									pkg = imp.getClassPackage();
+								}
+								return new Pair<>(type, pkg);
 							}
 						}
 					}
@@ -133,7 +228,15 @@ public class ResolveTypes {
 					if(_classImport != null){
 						for(IndexMethod m : _classImport.getListOfMethods()){
 							if(m.equalBySignature(methodCalled, actual_pars)){
-								return m.getReturnType();
+								String type = m.getReturnType();
+								IndexData imp = ResolveTypes.getPackageFromImports(imports, type);
+								String pkg;
+								if(imp == null){
+									pkg = _classImport.getClassPackage();
+								} else {
+									pkg = imp.getClassPackage();
+								}
+								return new Pair<>(type, pkg);
 							}
 						}
 					}
@@ -142,37 +245,132 @@ public class ResolveTypes {
 		}
 		if(calee instanceof ASTMethodCall){
 			//recursive call
-			String previousCallReturn = getTypeMethodCall(imports, _class, ((ASTMethodCall) calee), e);
-			IndexData _classImport = ResolveTypes.getPackageFromImports(imports,previousCallReturn);
+			Pair<String,String> previousCallReturn = getTypeMethodCall(imports, _class, ((ASTMethodCall) calee), e);
+			IndexData _classImport = ResolveTypes.getPackageFromImports(imports,previousCallReturn.getValue0());
 			if(_classImport != null){
 				//we have smth to work with
 				for(IndexMethod m : _classImport.getListOfMethods()){
 					if(m.equalBySignature(methodCalled, actual_pars)){
-						return m.getReturnType();
+						String type = m.getReturnType();
+						String pkg = "";
+						IndexData d = getPackageFromImportsString(_classImport.getClassPackage(), _classImport.getImports(), type);
+						if(d == null){
+							pkg = _classImport.getClassPackage();
+						} else {
+							pkg = d.getClassPackage();
+						}
+						return new Pair<>(type, pkg);
 					}
 				}
+				//if not found search in parent
+				return searchInParent(previousCallReturn, methodCalled,actual_pars);
 			} else {
+				MongoConnector mongo = MongoConnector.getInstance();
+				//it is possible that it is in the same package of the previous method call
+				List<IndexData> src = mongo.getIndex(previousCallReturn.getValue0(), previousCallReturn.getValue1());
+				if(src.size() > 0){
+					for(IndexData d : src){
+						for(IndexMethod m :d.getListOfMethods()){
+							if(m.equalBySignature(methodCalled, actual_pars)){
+								String type = m.getReturnType();
+								String pkg = "";
+								IndexData data = getPackageFromImportsString(d.getClassPackage(), d.getImports(), type);
+								if(data == null){
+									pkg = d.getClassPackage();
+								} else {
+									pkg = data.getClassPackage();
+								}
+								return new Pair<>(type, pkg);
+							}
+						}
+					}
+				}
 				//could be a local call then
-				for(IASTMethod m : _class.getMethods()){
-					if(m.equalsBySignature(methodCalled, actual_pars)){
-						return m.getReturnType();
+				for (IASTMethod m : _class.getMethods()) {
+					if (m.equalsBySignature(_class.getPackageMethod(m), methodCalled, actual_pars)) {
+						return new Pair<>(m.getReturnType(), _class.getPackageName());
 					}
 				}
 			}
 		}
-		return "Object";
+		return new Pair<>("Object", "java.lang");
 	}
 
-	private static String localSearch(ASTClass _class, String methodCalled, List<Pair<String,String>> actual_pars){
+	private static Pair<String,String> searchInParent(Pair<String, String> previousCallReturn, String methodCalled, List<Pair<String, String>> actual_pars) {
+		MongoConnector mongo = MongoConnector.getInstance();
+		String type = previousCallReturn.getValue0();
+		String pkg = previousCallReturn.getValue1();
+		while(!type.equals("Object")) {
+			List<IndexData> src = mongo.getIndex(type, pkg);
+			if (src.size() > 0) {
+				for (IndexData d : src) {
+					for (IndexMethod m : d.getListOfMethods()) {
+						if (m.equalBySignature(methodCalled, actual_pars)) {
+							String t = m.getReturnType();
+							IndexData data = getPackageFromImportsString(d.getClassPackage(), d.getImports(), type);
+							if (data == null) {
+								pkg = d.getClassPackage();
+							} else {
+								pkg = data.getClassPackage();
+							}
+							return new Pair<>(t, pkg);
+						}
+					}
+					IndexData ext;
+					if(d.isInterface() && d.getInterfacesImplemented().size() > 0){
+						ext = getPackageFromImportsString(d.getClassPackage(), d.getImports(), d.getInterfacesImplemented().get(0));
+					} else {
+						ext = getPackageFromImportsString(d.getClassPackage(), d.getImports(), d.getExtendedType());
+					}
+					if(ext == null){
+						type = "Object";
+					} else {
+						type = ext.getClassName();
+						pkg = ext.getClassPackage();
+					}
+				}
+
+			} else {
+				type = "Object";
+			}
+		}
+		return new Pair<>("Object", "java.lang");
+	}
+
+	private static String localSearch(ASTClass _class, String methodCalled, List<Pair<String,String>> actual_pars, List<IndexData> imports){
 		for(IASTMethod m : _class.getMethods()){
-			if(m.equalsBySignature(methodCalled, actual_pars)){
+			if(m.equalsBySignature(_class.getPackageMethod(m), methodCalled, actual_pars)){
 				return m.getReturnType();
 			}
 		}
 		if(_class.getParent() != null)
-			return localSearch(_class.getParent(), methodCalled, actual_pars);
-		else
+			return localSearch(_class.getParent(), methodCalled, actual_pars, imports);
+		else {
+			//does it extends smth
+			String type = _class.getExtendClass();
+			List<IndexData> parentImports = new ArrayList<>(imports);
+			MongoConnector mongo = MongoConnector.getInstance();
+			while(!type.equals("Object")){
+				IndexData p = getPackageFromImports(imports, type);
+				if(p == null){
+					return  "";
+				}
+				for(IndexMethod m : p.getListOfMethods()){
+					if(m.equalBySignature(methodCalled, actual_pars)){
+						return m.getReturnType();
+					}
+				}
+				//go through the parent
+				parentImports.clear();
+				for (String imp : p.getImports()) {
+					parentImports.addAll(mongo.getFromImport(imp));
+				}
+				parentImports.addAll(mongo.getFromImport(p.getClassPackage() + ".*"));
+				type = p.getExtendedType();
+			}
 			return "";
+		}
+
 	}
 
 	public static Pair<String,String> getSynchronizedExprType(List<IndexData> imports, IASTRE expr, ASTClass c, Env e){
@@ -251,8 +449,8 @@ public class ResolveTypes {
 		}
 		//cases: methodCall()
 		if(expr instanceof ASTMethodCall){
-			String type = getTypeMethodCall(imports, c, (ASTMethodCall) expr, e);
-			out = new Pair<>("",type);
+			Pair<String,String> type = getTypeMethodCall(imports, c, (ASTMethodCall) expr, e);
+			out = new Pair<>(type.getValue1(), type.getValue0());
 		}
 		return out;
 	}
@@ -261,7 +459,7 @@ public class ResolveTypes {
 		List<IndexData> imports = new ArrayList<>();
 		Pair<String,String> out = new Pair<>("","");
 		for(ASTImport i : c.getImports()){
-			imports.addAll(MongoConnector.getInstance().getFromImport(i.getPackagename(), false));
+			imports.addAll(MongoConnector.getInstance().getFromImport(i.getPackagename()));
 		}
 		IndexData d = getPackageFromImports(imports, type);
 		if(d == null){
@@ -271,5 +469,27 @@ public class ResolveTypes {
 			out = new Pair<>(d.getClassPackage(), d.getClassName());
 		}
 		return out;
+	}
+
+	public static String getAttributeType(String attributeClass, String type, ASTClass c){
+		if(attributeClass.endsWith(".this"))
+			attributeClass = attributeClass.substring(0, attributeClass.lastIndexOf("."));
+		List<String> imports = new ArrayList<>();
+		for(ASTImport imp : c.getImports()){
+			String pkg = imp.getPackagename();
+			imports.add(pkg);
+		}
+		IndexData data = getPackageFromImportsString(c.getRealPackageName(), imports, attributeClass);
+		if(data != null){
+			List<ASTClass> ccList = JDTVisitor.parse(data.getPath());
+			for(ASTClass cc : ccList){
+				for(ASTAttribute a : cc.getAttributes()){
+					if(a.getName().equals(type)){
+						return a.getType();
+					}
+				}
+			}
+		}
+		return attributeClass;
 	}
 }

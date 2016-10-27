@@ -73,7 +73,7 @@ public class ThirdEvaluation {
 		}
 	}
 
-	String _NAME_ = "vuze_third";
+	String _NAME_ = "vuze";
 	boolean isIndexed = false;
 	boolean runBlocks = false;
 	boolean runCalls  = false;

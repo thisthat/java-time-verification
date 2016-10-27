@@ -14,7 +14,7 @@ import java.util.List;
  * <ul>
  *     <li>List of methods {@link IndexMethod}</li>
  *     <li>List of synchronized methods {@link IndexMethod}</li>
- *     <li>List of synchronized blocks {@link IndexSyncBlock}</li>
+ *     <!--<li>List of synchronized blocks {@link IndexSyncBlock}</li>-->
  *     <li><b>BETA</b> List of timed related methods</li>
  *     <li>Package of the class</li>
  *     <li>Class Name</li>
@@ -39,34 +39,38 @@ public class IndexData {
 	@Beta
 	List<String> listOfTimedMethods = new ArrayList<>();
 	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
-	List<IndexSyncBlock> listOfSyncBlocks = new ArrayList<>();
 	List<IndexParameter> timeAttribute = new ArrayList<>();
 	List<String> imports = new ArrayList<>();
 
 	String classPackage = "";
+	String fullclassPackage = "";
 	String name = "";
 	String extendedType = "";
 	String fullName = "";
 	String path = "";
 	List<String> interfacesImplemented = new ArrayList<>();
+	boolean isInterface;
+	boolean isAbstract;
 
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexSyncBlock> listOfSyncBlocks, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String fullclassPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented, boolean isInterface, boolean isAbstract) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
 		this.listOfSyncMethods = listOfSyncMethods;
-		this.listOfSyncBlocks = listOfSyncBlocks;
 		this.timeAttribute = timeAttribute;
 		this.imports = imports;
 		this.classPackage = classPackage;
+		this.fullclassPackage = fullclassPackage;
 		this.name = name;
 		this.extendedType = extendedType;
 		this.fullName = fullName;
 		this.path = path;
 		this.interfacesImplemented = interfacesImplemented;
+		this.isInterface = isInterface;
+		this.isAbstract = isAbstract;
 	}
 
 	public String getName() {
@@ -117,12 +121,12 @@ public class IndexData {
 		this.listOfSyncMethods = listOfSyncMethods;
 	}
 
-	public List<IndexSyncBlock> getListOfSyncBlocks() {
-		return listOfSyncBlocks;
+	public boolean isInterface() {
+		return isInterface;
 	}
 
-	public void setListOfSyncBlocks(List<IndexSyncBlock> listOfSyncBlocks) {
-		this.listOfSyncBlocks = listOfSyncBlocks;
+	public void setInterface(boolean anInterface) {
+		isInterface = anInterface;
 	}
 
 	public String getClassPackage() {
@@ -165,10 +169,6 @@ public class IndexData {
 		this.listOfSyncMethods.add(m);
 	}
 
-	public void addSyncBlock(IndexSyncBlock b) {
-		this.listOfSyncBlocks.add(b);
-	}
-
 	public List<IndexParameter> getTimeAttribute() {
 		return timeAttribute;
 	}
@@ -191,6 +191,71 @@ public class IndexData {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getFullclassPackage() {
+		return fullclassPackage;
+	}
+
+	public void setFullclassPackage(String fullclassPackage) {
+		this.fullclassPackage = fullclassPackage;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean anAbstract) {
+		isAbstract = anAbstract;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof IndexData)) return false;
+
+		IndexData data = (IndexData) o;
+
+		if (isInterface() != data.isInterface()) return false;
+		if (getId() != null ? !getId().equals(data.getId()) : data.getId() != null) return false;
+		if (getListOfMethods() != null ? !getListOfMethods().equals(data.getListOfMethods()) : data.getListOfMethods() != null)
+			return false;
+		if (getListOfTimedMethods() != null ? !getListOfTimedMethods().equals(data.getListOfTimedMethods()) : data.getListOfTimedMethods() != null)
+			return false;
+		if (getListOfSyncMethods() != null ? !getListOfSyncMethods().equals(data.getListOfSyncMethods()) : data.getListOfSyncMethods() != null)
+			return false;
+		if (getTimeAttribute() != null ? !getTimeAttribute().equals(data.getTimeAttribute()) : data.getTimeAttribute() != null)
+			return false;
+		if (getImports() != null ? !getImports().equals(data.getImports()) : data.getImports() != null) return false;
+		if (getClassPackage() != null ? !getClassPackage().equals(data.getClassPackage()) : data.getClassPackage() != null)
+			return false;
+		if (getName() != null ? !getName().equals(data.getName()) : data.getName() != null) return false;
+		if (getExtendedType() != null ? !getExtendedType().equals(data.getExtendedType()) : data.getExtendedType() != null)
+			return false;
+		if (getFullName() != null ? !getFullName().equals(data.getFullName()) : data.getFullName() != null)
+			return false;
+		if (getPath() != null ? !getPath().equals(data.getPath()) : data.getPath() != null) return false;
+		return getInterfacesImplemented() != null ? getInterfacesImplemented().equals(data.getInterfacesImplemented()) : data.getInterfacesImplemented() == null;
+
+	}
+
+
+	@Override
+	public int hashCode() {
+		int result = getId() != null ? getId().hashCode() : 0;
+		result = 31 * result + (getListOfMethods() != null ? getListOfMethods().hashCode() : 0);
+		result = 31 * result + (getListOfTimedMethods() != null ? getListOfTimedMethods().hashCode() : 0);
+		result = 31 * result + (getListOfSyncMethods() != null ? getListOfSyncMethods().hashCode() : 0);
+		result = 31 * result + (getTimeAttribute() != null ? getTimeAttribute().hashCode() : 0);
+		result = 31 * result + (getImports() != null ? getImports().hashCode() : 0);
+		result = 31 * result + (getClassPackage() != null ? getClassPackage().hashCode() : 0);
+		result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+		result = 31 * result + (getExtendedType() != null ? getExtendedType().hashCode() : 0);
+		result = 31 * result + (getFullName() != null ? getFullName().hashCode() : 0);
+		result = 31 * result + (getPath() != null ? getPath().hashCode() : 0);
+		result = 31 * result + (getInterfacesImplemented() != null ? getInterfacesImplemented().hashCode() : 0);
+		result = 31 * result + (isInterface() ? 1 : 0);
+		return result;
 	}
 
 	@Override

@@ -1,7 +1,11 @@
 package IntermediateModelHelper.envirorment;
 
+import IntermediateModelHelper.types.ResolveTypes;
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.*;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseRE;
 
 /**
@@ -13,12 +17,18 @@ class ResolveExpressionType extends ParseRE {
 	final String _boolean = "boolean";
 	final String _int = "int";
 	final String _string = "String";
+	private ASTClass _c;
 
 	protected ResolveExpressionType(Env e) {
 		super(e);
 	}
 
 	public String getType(IASTRE r){
+		return (String) analyze(r);
+	}
+
+	public String getType(IASTRE r, ASTClass c){
+		this._c	 = c;
 		return (String) analyze(r);
 	}
 
@@ -74,7 +84,33 @@ class ResolveExpressionType extends ParseRE {
 
 	@Override
 	protected Object analyze(ASTAttributeAccess r) {
-		return analyze(r.getVariableName());
+		IASTRE var = r.getVariableName();
+		if(var instanceof ASTLiteral && ((ASTLiteral) var).getValue().equals("this")){
+			IASTVar v = e.getVar(r.getAttributeName());
+			if(v == null){
+				//TODO when we add the inheritated env this will never be the case
+				return "null";
+			}
+			return v.getType();
+		}
+		final String[] t = new String[1];
+		r.getVariableName().visit(new DefualtASTREVisitor(){
+			@Override
+			public void enterASTLiteral(ASTLiteral elm) {
+				t[0] = elm.getValue();
+			}
+		});
+		if(t[0] == null){
+			t[0] = r.getAttributeName();
+		}
+		else if(t[0].equals("this")) { //search the var
+			t[0] = e.existVarName(r.getAttributeName()) ? e.getVar(r.getAttributeName()).getType() : null;
+		}
+		if(this._c != null){
+			String tAttr = ResolveTypes.getAttributeType(t[0], r.getAttributeName(), this._c);
+			return tAttr;
+		}
+		return t[0];
 	}
 
 	@Override
@@ -94,10 +130,7 @@ class ResolveExpressionType extends ParseRE {
 			case plus:
 				Object left = analyze(r.getLeft());
 				Object right = analyze(r.getRight());
-				if(left == null || right == null){
-					return null;
-				}
-				if(left.equals(_string) || right.equals(_string)){
+				if( (left != null && left.equals(_string)) || ( right != null && right.equals(_string)) ){
 					type = _string;
 				} else {
 					type = _int;
@@ -128,8 +161,19 @@ class ResolveExpressionType extends ParseRE {
 
 	@Override
 	protected Object analyze(ASTLiteral r) {
-		String var_name = r.getValue();
-		return e.getVar(var_name) == null ? null : e.getVar(var_name).getType();
+		String expr = ((ASTLiteral) r).getValue();
+		try{
+			Integer.parseInt(expr);
+			return "int";
+		} catch (Exception e){
+
+		}
+		if(expr.equals("true") || expr.equals("false")) return "boolean";
+		if(expr.startsWith("\"") && expr.endsWith("\"")) {
+			return "String";
+		}
+		if(expr.equals("this")) return "this";
+		return e.getVar(expr) == null ? null : e.getVar(expr).getType();
 	}
 
 

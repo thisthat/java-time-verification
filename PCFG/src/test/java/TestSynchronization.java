@@ -105,7 +105,6 @@ public class TestSynchronization {
 		ASTClass c = v.listOfClasses.get(0);
 
 		//add the second method
-		f =  TestSynchronization.class.getClassLoader().getResource("airavata/WorkflowEnactmentService.java").getFile();
 		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
@@ -150,7 +149,7 @@ public class TestSynchronization {
 				Arrays.asList()
 		), true);
 		p.addClass(c1, c1.getMethodBySignature("addMonitortoQueue",
-				Arrays.asList("BlockingQueue<UserMonitorData>, MonitorID, JobExecutionContext".split(", "))
+				Arrays.asList("BlockingQueue, MonitorID, JobExecutionContext".split(", "))
 		), true);
 		MongoConnector.getInstance().ensureIndexes();
 		PCFG g = p.buildPCFG();
