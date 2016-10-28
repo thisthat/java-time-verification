@@ -1,16 +1,9 @@
-import org.antlr.v4.runtime.*;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-import parser.grammar.Java8CommentSupportedLexer;
-import parser.grammar.Java8CommentSupportedParser;
+import parser.Java2AST;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -24,42 +17,6 @@ public class TestCommentOnProject {
     static int line_number = 0;
     BufferedWriter out;
 
-    public void testGrammarByName(String name) throws Exception {
-        InputStream in = null;
-        line_number = 0;
-        Path file = Paths.get(name);
-        try {
-            in = Files.newInputStream(file);
-        }
-        catch(Exception e){
-            System.out.println(name);
-        }
-        Java8CommentSupportedLexer l = new Java8CommentSupportedLexer(new ANTLRInputStream(in));
-        Java8CommentSupportedParser p = new Java8CommentSupportedParser(new CommonTokenStream(l));
-        p.addErrorListener(new BaseErrorListener() {
-            @Override
-            public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-                line_number = line;
-                throw new IllegalStateException("failed to parse at line " + line + " due to " + msg, e);
-            }
-        });
-        try {
-            ParserRuleContext t = p.compilationUnit();
-        }
-        catch(Exception e){
-            String err = "Error parsing: " + name + " -- " + line_number + "\n";
-            //errors.add(err);
-            System.err.println(err);
-            out.write(err);
-            out.flush();
-            throw e;//new Exception("Test failed for bhu reason");
-        }
-        finally {
-            l = null;
-            p = null;
-            System.gc();
-        }
-    }
 
     //@Test
     public void testAll() throws Exception {
@@ -89,7 +46,8 @@ public class TestCommentOnProject {
                 continue;
             reached = true;
             try {
-                testGrammarByName(filename);
+                Java2AST a = new Java2AST(filename, true);
+                a.getContextJDT();
                 String s = "Correctly parsed:" + filename;
                 System.out.println(s);
             } catch (Exception e) {
@@ -118,7 +76,8 @@ public class TestCommentOnProject {
                 if(getExt(filename).equals("java")){
                     //java file, let's testenvirorments.test_antrl it!
                     try {
-                        testGrammarByName(filename);
+                        Java2AST a = new Java2AST(filename, true);
+                        a.getContextJDT();
                         String s = "Correctly parsed:" + filename;
                         System.out.println(s);
                     } catch (Exception e) {

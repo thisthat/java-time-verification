@@ -31,7 +31,7 @@ public class TestAnonymousClasses {
 	@Test
 	public void TestVisitedAnonymClasses() throws Exception {
 		String f =  TestAnonymousClasses.class.getClassLoader().getResource("anonym/TagPropertyConstraintHandler.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -39,7 +39,7 @@ public class TestAnonymousClasses {
 
 		//add the second method
 		//f =  "/Users/giovanni/repository/java-xal/evaluation-vuze/src/main/resources/vuze/com/aelitis/azureus/core/dht/transport/udp/impl/DHTTransportUDPContactImpl.java";
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);

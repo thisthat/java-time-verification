@@ -62,7 +62,7 @@ public class TestEnvirorment {
 
 	public List<ASTClass> init(String filename) throws Exception {
 		Java2AST a = new Java2AST( filename );
-		a.convertToAST(Java2AST.VERSION.JDT);
+		a.convertToAST();
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);

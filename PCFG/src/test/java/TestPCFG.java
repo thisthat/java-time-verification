@@ -29,7 +29,7 @@ public class TestPCFG {
 	@Test
 	public void TestRE() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("Re.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -64,7 +64,7 @@ public class TestPCFG {
 	@Test
 	public void TestDoWhile() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("DoWhile.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -108,7 +108,7 @@ public class TestPCFG {
 	@Test
 	public void TestFor() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("For.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -159,7 +159,7 @@ public class TestPCFG {
 	@Test
 	public void TestWhile() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("While.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -202,7 +202,7 @@ public class TestPCFG {
 	@Test
 	public void TestSwitch() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("Switch.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -261,7 +261,7 @@ public class TestPCFG {
 	@Test
 	public void TestForEach() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("ForEach.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -305,7 +305,7 @@ public class TestPCFG {
 	@Test
 	public void TestSync() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("Sync.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -355,7 +355,7 @@ public class TestPCFG {
 	@Test
 	public void TestIf() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("If.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -461,7 +461,7 @@ public class TestPCFG {
 	@Test
 	public void TestTry() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("Try.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -565,7 +565,7 @@ public class TestPCFG {
 	@Test
 	public void TestTryResource() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("TryResource.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -670,7 +670,7 @@ public class TestPCFG {
 	@Test(expected = AssertionError.class)
 	public void TestGoTo() throws Exception {
 		String f =  TestPCFG.class.getClassLoader().getResource("GoTo.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);

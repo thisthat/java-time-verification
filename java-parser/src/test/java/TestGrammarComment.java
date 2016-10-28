@@ -1,7 +1,5 @@
-import org.antlr.v4.runtime.*;
 import org.junit.Test;
-import parser.grammar.Java8CommentSupportedLexer;
-import parser.grammar.Java8CommentSupportedParser;
+import parser.Java2AST;
 
 /**
  * Created by giovanni (@thisthatDC) on 18/03/16.
@@ -9,26 +7,8 @@ import parser.grammar.Java8CommentSupportedParser;
 public class TestGrammarComment {
 
     public void testGrammarByName(String name) throws Exception {
-        Java8CommentSupportedLexer l = new Java8CommentSupportedLexer(new ANTLRInputStream(getClass().getResourceAsStream(name)));
-        Java8CommentSupportedParser p = new Java8CommentSupportedParser(new CommonTokenStream(l));
-        p.addErrorListener(new BaseErrorListener() {
-            @Override
-            public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-                throw new IllegalStateException("failed to parse at line " + line + " due to " + msg, e);
-            }
-        });
-        try {
-            ParserRuleContext t = p.compilationUnit();
-            //t.inspect(p);
-            //System.out.println(t.toStringTree(p));
-        }
-        catch(Exception e){
-            System.err.println("NO CLASS");
-            StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-            System.err.println(stackTraceElements[2]);
-            System.err.println("____________");
-            throw e;//new Exception("Test failed for bhu reason");
-        }
+        Java2AST a = new Java2AST(name, true);
+        a.getContextJDT();
         //System.err.println("____________");
     }
 

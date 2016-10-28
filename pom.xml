@@ -17,6 +17,7 @@
         <module>testing</module>
         <module>PCFG</module>
         <module>evaluation</module>
+        <module>time-annotation</module>
     </modules>
 
 

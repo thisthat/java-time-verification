@@ -31,7 +31,7 @@ public class TestSyncNode {
 	@Test
 	public void ExampleFromVuze() throws Exception {
 		String f =  TestSyncNode.class.getClassLoader().getResource("basic/ThreadPool.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f,  true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -39,7 +39,7 @@ public class TestSyncNode {
 
 		//add the second method
 		f =  TestSyncNode.class.getClassLoader().getResource("basic/NetworkGlueLoopBack.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -48,10 +48,10 @@ public class TestSyncNode {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, c.getMethodBySignature("releaseManual",
 				Arrays.asList("ThreadPoolTask")
-		), true);
+		));
 		p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
 				Arrays.asList("NetworkGlueListener")
-		), true);
+		));
 		MongoConnector.getInstance().ensureIndexes();
 		PCFG g = p.buildPCFG();
 

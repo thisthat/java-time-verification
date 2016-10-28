@@ -33,7 +33,7 @@ public class TestInterface {
 	@Test
 	public void TestInterface() throws Exception {
 		String f =  TestBugs.class.getClassLoader().getResource("exprTypesSync/IXString.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);

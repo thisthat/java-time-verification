@@ -15,6 +15,8 @@ import XAL.XALStructure.XALAddState;
 import XAL.XALStructure.exception.XALMalformedException;
 import XAL.XALStructure.items.*;
 
+import java.util.Random;
+
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -24,6 +26,7 @@ public class ToXAL implements IConverter {
 	XALDocument doc = null;
 	XALAddState aut = null;
 	XALAutomaton lastAutomaton = null;
+
 	@Override
 	public String convert(PCFG pcfg) {
 		String name = "";
@@ -47,8 +50,12 @@ public class ToXAL implements IConverter {
 	}
 
 
-	private void getXAL(CFG cfg) {
-		XALAutomaton automa = new XALAutomaton(cfg.getName());
+	private void getXAL(CFG cfg){
+		getXAL(cfg, cfg.getName());
+	}
+
+	private void getXAL(CFG cfg, String name) {
+		XALAutomaton automa = new XALAutomaton(name);
 		doc.addAutomaton(automa);
 		lastAutomaton = automa;
 		aut = automa;
@@ -61,9 +68,10 @@ public class ToXAL implements IConverter {
 		for(IEdge e : cfg.getE()){
 			getXAL(e);
 		}
-		/*for(AnonymClass a : cfg.getAnonNodes()){
+		for(AnonymClass a : cfg.getAnonNodes()){
 			getXAL(a);
 		}
+		/*
 		for(AnonymEdge ae : cfg.getAnonEdge()){
 			getXAL(ae);
 		}*/
@@ -72,10 +80,13 @@ public class ToXAL implements IConverter {
 	}
 
 	private void getXAL(AnonymClass a) {
-		String className = a.getName();
-		String _id = "definition_of_" + className;
-		XALAutomaton automa = new XALAutomaton(_id);
-
+		for(CFG c : a.getCFG()){
+			XALAutomaton bck = lastAutomaton;
+			XALAddState bckAut = aut;
+			getXAL(c, c.getName() + "_" + a.hashCode());
+			lastAutomaton = bck;
+			aut = bckAut;
+		}
 	}
 
 	private void getXAL(INode s) {
