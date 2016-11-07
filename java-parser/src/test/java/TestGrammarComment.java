@@ -7,44 +7,46 @@ import timeannotation.parser.Java2AST;
 public class TestGrammarComment {
 
     public void testGrammarByName(String name) throws Exception {
-        Java2AST a = new Java2AST(name, true);
+        String f =  TestGrammarComment.class.getClassLoader().getResource(name).getFile();
+        Java2AST a = new Java2AST(f, true);
         a.getContextJDT();
         //System.err.println("____________");
     }
 
     @Test
     public void testExampleField() throws Exception {
-        testGrammarByName("/HelloWorld.java");
+        testGrammarByName("HelloWorld.java");
     }
 
     @Test
     public void testAntlr4Mojo() throws Exception {
-        testGrammarByName("/Antlr4Mojo.java");
+        testGrammarByName("Antlr4Mojo.java");
     }
 
     @Test
     public void testCalculator() throws Exception {
-        testGrammarByName("/Calculator.java");
+        testGrammarByName("Calculator.java");
     }
 
     @Test
     public void testLocalDiscovery() throws Exception {
-        testGrammarByName("/LocalDiscovery.java");
+        testGrammarByName("LocalDiscovery.java");
     }
 
-    @Test(expected=Exception.class)
+    //@Test(expected=Exception.class)
+	@Test
     public void testOnlyMethod() throws Exception {
-        testGrammarByName("/OnlyMethod.java");
+        testGrammarByName("OnlyMethod.java");
     }
 
     @Test
     public void testPredictionModule() throws Exception {
-        testGrammarByName("/PredictionModule.java");
+        testGrammarByName("PredictionModule.java");
     }
 
     @Test
     public void testSchedulerImpl() throws Exception {
-        testGrammarByName("/SchedulerImpl.java");
+        testGrammarByName("SchedulerImpl.java");
     }
 
 }
