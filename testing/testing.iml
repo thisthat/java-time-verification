@@ -63,6 +63,7 @@
     <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Maven: org.javatuples:javatuples:1.2" level="project" />
     <orderEntry type="module" module-name="xal" />
+    <orderEntry type="module" module-name="time-annotation" />
     <orderEntry type="module" module-name="PCFG" />
   </component>
 </module>

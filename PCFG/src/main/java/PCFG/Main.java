@@ -1,15 +1,13 @@
 package PCFG;
 
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.IConverter;
-import PCFG.converter.ToDot;
 import PCFG.converter.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -27,7 +25,7 @@ public class Main {
 	static final String db_name = "test_paper";
 
 	public static void main(String[] args) throws Exception {
-		MongoOptions.getInstance().setDbName(db_name);
+		//MongoOptions.getInstance().setDbName(db_name);
 		new Main().run();
 	}
 

@@ -1,5 +1,5 @@
 import org.apache.commons.io.FileUtils;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.BufferedWriter;
 import java.io.File;

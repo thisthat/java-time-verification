@@ -3,7 +3,8 @@ package intermediateModel.interfaces;
 
 import com.google.common.annotations.Beta;
 import org.javatuples.Triplet;
-import parser.ASTSrc;
+import timeannotation.definition.Annotation;
+import timeannotation.parser.ASTSrc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public abstract class IASTStm implements IASTVisitor{
 	protected int line;
 	protected int lineEnd;
 	protected Triplet<Integer,String, Class> constraint = null;
-	@Beta protected List<String> annotations = new ArrayList<>();
+	@Beta protected List<Annotation> annotations = new ArrayList<>();
 	private boolean isTimeCritical = false;
 	/**
 	 * Retrive the time constraint of the current Node
@@ -179,7 +180,7 @@ public abstract class IASTStm implements IASTVisitor{
 	 * @param annotation String that contains the annotation to add
 	 */
 	@Beta
-	public void addAnnotation(String annotation){
+	public void addAnnotation(Annotation annotation){
 		annotations.add(annotation);
 	}
 
@@ -189,8 +190,18 @@ public abstract class IASTStm implements IASTVisitor{
 	 * @return	The list of annotations
 	 */
 	@Beta
-	public List<String> getAnnotations(){
+	public List<Annotation> getAnnotations(){
 		return annotations;
+	}
+
+	/**
+	 * <b>BETA</b>.
+	 * Get all the annotation of the node
+	 * @return	The list of annotations
+	 */
+	@Beta
+	public List<Annotation> setAnnotations(List<Annotation> annotations){
+		return this.annotations = annotations;
 	}
 
 	/**

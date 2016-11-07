@@ -3,7 +3,6 @@ package PCFG.structure;
 import PCFG.converter.ToDot;
 import PCFG.optimization.OptimizeCFG;
 import PCFG.structure.edge.Edge;
-import PCFG.structure.edge.IEdge;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.INode;
 import PCFG.structure.node.Node;

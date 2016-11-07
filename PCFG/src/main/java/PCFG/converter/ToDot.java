@@ -1,6 +1,7 @@
 package PCFG.converter;
 
-import PCFG.structure.*;
+import PCFG.structure.CFG;
+import PCFG.structure.PCFG;
 import PCFG.structure.anonym.AnonymClass;
 import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;

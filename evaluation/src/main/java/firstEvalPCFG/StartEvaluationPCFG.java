@@ -10,7 +10,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.*;
 import java.util.*;
@@ -72,8 +72,8 @@ public class StartEvaluationPCFG {
 
 	private void compare(ASTClass cOut, IASTMethod mOut, ASTClass cIn, IASTMethod mIn) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(cOut, mOut, false);
-		p.addClass(cIn , mIn, false);
+		p.addClass(cOut, mOut);
+		p.addClass(cIn , mIn);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();

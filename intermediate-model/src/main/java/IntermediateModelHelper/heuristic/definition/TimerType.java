@@ -1,12 +1,12 @@
 package IntermediateModelHelper.heuristic.definition;
 
+import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
-import IntermediateModelHelper.envirorment.Env;
 
 import java.util.List;
 

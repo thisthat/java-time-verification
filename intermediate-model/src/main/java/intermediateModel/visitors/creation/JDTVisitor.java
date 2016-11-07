@@ -8,7 +8,7 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.IOException;
 import java.util.*;
@@ -317,6 +317,7 @@ public class JDTVisitor extends ASTVisitor {
 			ss = p.getStartPosition();
 			st = ss + p.getLength();
 			ASTVariable par = new ASTVariable(ss, st, p.getName().getFullyQualifiedName(), p.getType().toString());
+			par.setAnnotations( AnnotationVisitor.getAnnotationVariable(p.modifiers(), p) );
 			pars.add(par);
 		}
 		//is syncronized
@@ -655,20 +656,8 @@ public class JDTVisitor extends ASTVisitor {
 						new ASTVariableDeclaration(start, stop, type,
 								getExpr(v.getName()), getExpr(v.getInitializer()))
 						);
-				/*handle special hidden classes
-				final boolean[] found = {false};
-				final ASTHiddenClass[] obj = {null};
-				re.visit(new DefaultASTVisitor(){
-					@Override
-					public void enterASTNewObject(ASTNewObject elm) {
-						found[0] = elm.getHiddenClass() != null;
-						obj[0] = elm.getHiddenClass();
-					}
-				});
-				if(found[0]){
-					stackClasses.push(obj[0]);
-					lastClass = obj[0];
-				}*/
+				//annotation
+				re.setAnnotations( AnnotationVisitor.getAnnotationVariable(node.modifiers(), v) );
 				bck.addStms(re);
 			}
 		}

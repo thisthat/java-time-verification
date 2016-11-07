@@ -11,7 +11,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -181,8 +181,8 @@ public class EvalTopFile {
 
 	private void compare(ASTClass work_item, IASTMethod method_work_item, ASTClass aClass, IASTMethod method_class, int i) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(work_item, method_work_item, false);
-		p.addClass(aClass , method_class, false);
+		p.addClass(work_item, method_work_item);
+		p.addClass(aClass , method_class);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();

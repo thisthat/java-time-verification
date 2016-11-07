@@ -5,7 +5,6 @@ import PCFG.structure.IOptimization;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
-import PCFG.structure.node.SyncNode;
 
 import java.util.ArrayList;
 import java.util.List;

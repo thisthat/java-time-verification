@@ -15,7 +15,6 @@ import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
-import org.eclipse.jdt.internal.core.index.Index;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 

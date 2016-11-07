@@ -11,7 +11,7 @@ import intermediateModel.structure.*;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 import testing.indexing.MainSyncBlockHugeClass;
 
 import java.io.IOException;

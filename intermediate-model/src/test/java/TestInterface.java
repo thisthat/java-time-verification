@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Pair;
 import org.junit.Before;
 import org.junit.Test;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.util.ArrayList;
 import java.util.List;

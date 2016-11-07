@@ -9,7 +9,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import static org.junit.Assert.assertEquals;
 

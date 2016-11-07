@@ -6,7 +6,7 @@ import PCFG.structure.PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -51,10 +51,10 @@ public class Main {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, c.getMethodBySignature("pendingRequest",
 				Arrays.asList("BTRequest","httpRequest")
-		), false);
+		));
 		p.addClass(c1, c1.getMethodBySignature("pendingRequest",
 				Arrays.asList("BTRequest","httpRequest")
-		), false);
+		));
 		/*p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
 				Arrays.asList("NetworkGlueListener")
 		));*/

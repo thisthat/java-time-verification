@@ -8,7 +8,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.*;
 import java.util.*;

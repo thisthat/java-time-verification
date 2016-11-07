@@ -15,8 +15,6 @@ import XAL.XALStructure.XALAddState;
 import XAL.XALStructure.exception.XALMalformedException;
 import XAL.XALStructure.items.*;
 
-import java.util.Random;
-
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%

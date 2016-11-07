@@ -5,7 +5,7 @@ import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
