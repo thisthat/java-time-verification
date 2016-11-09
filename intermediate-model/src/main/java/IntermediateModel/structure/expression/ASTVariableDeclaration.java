@@ -1,10 +1,9 @@
 package intermediateModel.structure.expression;
 
+import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.ASTREVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -15,13 +14,6 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 	String type;
 	IASTRE name;
 	IASTRE expr;
-
-	public ASTVariableDeclaration(Token start, Token end, String type, IASTRE name, IASTRE expr) {
-		super(start, end);
-		this.type = type;
-		this.name = name;
-		this.expr = expr;
-	}
 
 	public ASTVariableDeclaration(int start, int end, String type, IASTRE name, IASTRE expr) {
 		super(start, end);

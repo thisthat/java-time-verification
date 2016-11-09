@@ -3,7 +3,6 @@ package IntermediateModelHelper.types;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexMethod;
 import intermediateModel.structure.ASTClass;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;

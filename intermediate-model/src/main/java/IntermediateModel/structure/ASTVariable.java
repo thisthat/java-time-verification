@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -14,11 +13,7 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
 
-	public ASTVariable(Token start, Token end, String name, String type) {
-		super(start, end);
-		this.name = name;
-		this.type = type;
-	}
+
 	public ASTVariable(int start, int end, String name, String type) {
 		super(start, end);
 		this.name = name;

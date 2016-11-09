@@ -31,8 +31,6 @@ public abstract class ParseRE {
 			return analyze((ASTLiteral) r);
 		} else if(r instanceof ASTMethodCall){
 			return analyze((ASTMethodCall) r);
-		} else if(r instanceof ASTMultipleMethodCall) {
-			return analyze((ASTMultipleMethodCall) r);
 		} else if(r instanceof ASTNewObject) {
 			return analyze((ASTNewObject) r);
 		} else if(r instanceof ASTPostOp) {
@@ -58,7 +56,6 @@ public abstract class ParseRE {
 	protected Object analyze(ASTConditional r){ return null; }
 	protected Object analyze(ASTLiteral r){ return null; }
 	protected Object analyze(ASTMethodCall r){ return null; }
-	protected Object analyze(ASTMultipleMethodCall r){ return null; }
 	protected Object analyze(ASTNewObject r){ return null; }
 	protected Object analyze(ASTPostOp r){ return null; }
 	protected Object analyze(ASTPreOp r){ return null; }

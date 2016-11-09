@@ -21,8 +21,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
-import parser.exception.ParseErrorsException;
+import timeannotation.parser.Java2AST;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,11 +36,11 @@ import java.util.List;
 public class MainTesting {
 
 
-	public static void main(String[] args) throws IOException, ParseErrorsException {
+	public static void main(String[] args) throws IOException {
 		new MainTesting().run();
 	}
 
-	public void run() throws IOException, ParseErrorsException {
+	public void run() throws IOException {
 		List<String> files = new ArrayList<>();
 		files.add( MainTesting.class.getResource("JavaTimerExampleTask.java").getFile() );
 		//files.add( Main.class.getResource("FailoverTimeoutTest.java").getFile() );
@@ -51,7 +50,7 @@ public class MainTesting {
 		for(int i = 0; i < files.size(); i ++){
 
 			String f = files.get(i);
-			Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+			Java2AST a = new Java2AST(f, true);
 			CompilationUnit ast = a.getContextJDT();
 			JDTVisitor v = new JDTVisitor(ast,f);
 			ast.accept(v);

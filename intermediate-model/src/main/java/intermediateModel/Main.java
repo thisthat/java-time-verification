@@ -7,7 +7,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class Main {
 		for(int i = 0; i < files.size(); i ++){
 
 			String f = files.get(i);
-			Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+			Java2AST a = new Java2AST(f, true);
 			CompilationUnit ast = a.getContextJDT();
 			JDTVisitor v = new JDTVisitor(ast, f);
 			ast.accept(v);

@@ -1,22 +1,17 @@
 package testing.ManualChecks;
 
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.IndexingSyncBlock;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
-import PCFG.structure.edge.SyncEdge;
+import PCFG.structure.PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +33,7 @@ public class Main {
 
 	public void run() throws Exception {
 		String f =  Main.class.getClassLoader().getResource("manual/HTTPNetworkConnection.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -47,7 +42,7 @@ public class Main {
 
 		//add the second method
 		f =  Main.class.getClassLoader().getResource("manual/HTTPNetworkConnection.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -56,10 +51,10 @@ public class Main {
 		IM2PCFG p = new IM2PCFG();
 		p.addClass(c, c.getMethodBySignature("pendingRequest",
 				Arrays.asList("BTRequest","httpRequest")
-		), false);
+		));
 		p.addClass(c1, c1.getMethodBySignature("pendingRequest",
 				Arrays.asList("BTRequest","httpRequest")
-		), false);
+		));
 		/*p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
 				Arrays.asList("NetworkGlueListener")
 		));*/
@@ -76,7 +71,7 @@ public class Main {
 
 		String f = "/Users/giovanni/repository/sources/wildfly-core/server/src/main/java/org/jboss/as/server/deployment/DeploymentUnitPhaseService.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f,  true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -84,7 +79,7 @@ public class Main {
 		ASTClass c = classes.get(0);
 
 		//add the second method
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);

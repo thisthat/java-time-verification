@@ -387,8 +387,8 @@ public class ThirdEvaluation_better {
 
 	private void compare(ASTClass class_1, IASTMethod method_1, ASTClass class_2, IASTMethod method_2, EvalType type) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(class_1, method_1, false);
-		p.addClass(class_2, method_2, false);
+		p.addClass(class_1, method_1);
+		p.addClass(class_2, method_2);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSyncBlock = 0;

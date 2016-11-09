@@ -4,15 +4,14 @@ import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
-import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
+import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
-import parser.exception.ParseErrorsException;
+import timeannotation.parser.Java2AST;
 
 import java.io.File;
 import java.io.IOException;
@@ -139,8 +138,8 @@ public class FindBugs {
 
 	private void compare(ASTClass work_item, IASTMethod method_work_item, ASTClass aClass, IASTMethod method_class, int i) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(work_item, method_work_item, false);
-		p.addClass(aClass , method_class, false);
+		p.addClass(work_item, method_work_item);
+		p.addClass(aClass , method_class);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();
@@ -199,11 +198,8 @@ public class FindBugs {
 		Java2AST a = null;
 		List<ASTClass> out = new ArrayList<>();
 		try {
-			a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			a = new Java2AST(filename, true);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return out;
-		} catch (ParseErrorsException e) {
 			e.printStackTrace();
 			return out;
 		}

@@ -15,7 +15,7 @@ public class XALState extends XALItem {
     protected String name;
     protected String nameAction = null;
     protected String nameMetric = null;
-    protected String style = "x:31; y:44; h:30; w:49";
+    protected String style = "";
     protected String timeConstraint = "";
 
     /**
@@ -68,8 +68,8 @@ public class XALState extends XALItem {
         this.style = style;
     }
 
-    public String getId() {
-        return name;
+    public int getId() {
+        return _ID;
     }
 
     public void setNumericID(int id){
@@ -78,10 +78,6 @@ public class XALState extends XALItem {
 
     public int getNumericID(){
         return this._ID;
-    }
-
-    public void setId(String name) {
-        this.name = name;
     }
 
     public String getIdAction() {
@@ -119,7 +115,7 @@ public class XALState extends XALItem {
 	@Override
     public String toString(int tab) {
         String out = "";
-        out += tab(tab) + String.format("<State Id=\"%s\" ", this.name);
+        out += tab(tab) + String.format("<State Id=\"%s\" Desc=\"%s\" ", this._ID, this.name);
         if(nameMetric != null)
             out += String.format("IdMetric=\"%s\" ", this.nameMetric);
         if(nameAction != null)

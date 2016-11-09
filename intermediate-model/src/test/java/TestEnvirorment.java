@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Before;
 import org.junit.Test;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ public class TestEnvirorment {
 
 	public List<ASTClass> init(String filename) throws Exception {
 		Java2AST a = new Java2AST( filename );
-		a.convertToAST(Java2AST.VERSION.JDT);
+		a.convertToAST();
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);

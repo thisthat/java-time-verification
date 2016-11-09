@@ -18,8 +18,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.MapperOptions;
 import org.mongodb.morphia.query.Query;
-import parser.Java2AST;
-import parser.exception.ParseErrorsException;
+import timeannotation.parser.Java2AST;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class MongoConnect {
 	MongoCollection<Document> coll;
 
 	// db.testCollection.drop() -> delete collection
-	public static void main(String[] args) throws IOException, ParseErrorsException {
+	public static void main(String[] args) throws IOException {
 
 		final Morphia morphia = new Morphia();
 		MapperOptions options = new MapperOptions();
@@ -56,7 +55,7 @@ public class MongoConnect {
 		for(int i = 0; i < files.size(); i ++){
 
 			String f = files.get(i);
-			Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+			Java2AST a = new Java2AST(f, true);
 			CompilationUnit ast = a.getContextJDT();
 			JDTVisitor v = new JDTVisitor(ast,f);
 			ast.accept(v);
@@ -73,7 +72,7 @@ public class MongoConnect {
 	}
 
 
-	public void run(String base_path) throws IOException, ParseErrorsException {
+	public void run(String base_path) throws IOException {
 		//db
 		MongoClient mongoClient = new MongoClient();
 		db = mongoClient.getDatabase("test");
@@ -90,7 +89,7 @@ public class MongoConnect {
 
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
-			Java2AST a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			Java2AST a = new Java2AST(filename, true);
 			CompilationUnit result = a.getContextJDT();
 			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);
