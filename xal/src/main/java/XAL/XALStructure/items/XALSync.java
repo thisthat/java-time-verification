@@ -65,11 +65,11 @@ public class XALSync extends XALState implements XALAddState {
      */
     @Override
     public void addState(XALState state){
-        int i  = 0;
+        /*int i  = 0;
         String id = state.getId();
         while(existState(state.getId())) {
             state.setId(id + "_" + i++);
-        }
+        }*/
         this.states.add(state);
     }
 
@@ -77,7 +77,7 @@ public class XALSync extends XALState implements XALAddState {
         return parent.existState(s.getId());
     }
 
-	public boolean existState(String s){
+	public boolean existState(int s){
         return parent.existState(s);
     }
 

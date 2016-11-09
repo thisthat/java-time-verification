@@ -12,6 +12,6 @@ public interface XALAddState {
     void addState(XALState s);
     List<XALState> getStates();
 
-    boolean existState(String s);
+    boolean existState(int s);
     boolean existState(XALState s);
 }

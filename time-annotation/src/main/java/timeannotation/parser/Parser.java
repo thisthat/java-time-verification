@@ -18,7 +18,6 @@ package timeannotation.parser;
 
 
 //#line 15 "/Users/giovanni/repository/java-xal/time-annotation/annotation-parser/parser/calc.y"
-import timeannotation.annotation.Clock;
 import timeannotation.definition.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -287,9 +286,8 @@ String s=null;
   if (ch < 0) ch=0;
   if (ch <= YYMAXTOKEN) //check index bounds
      s = yyname[ch];    //now get it
-  if (s==null) {
-      s = "illegal-symbol";
-  }
+  if (s==null)
+    s = "illegal-symbol";
   debug("state "+state+", reading "+ch+" ("+s+")");
 }
 

@@ -41,9 +41,9 @@ public class ToXAL implements IConverter {
 		for(CFG c : pcfg.getCFG()){
 			getXAL(c);
 		}
-		for(SyncEdge sEdge : pcfg.getESync()){
+		/*for(SyncEdge sEdge : pcfg.getESync()){
 
-		}
+		}*/
 		return document;
 	}
 
@@ -96,7 +96,7 @@ public class ToXAL implements IConverter {
 	}
 
 	private void getXAL(Node v) {
-		XALState s = new XALState(v.getName());
+		XALState s = new XALState(v.getNameNoID());
 		s.setNumericID(v.getID());
 		aut.addState(s);
 		if(v.getConstraint() != null){
