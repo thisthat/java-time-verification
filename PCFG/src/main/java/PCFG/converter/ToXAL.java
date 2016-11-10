@@ -60,6 +60,13 @@ public class ToXAL implements IConverter {
 		for(Node v : cfg.getV()){
 			getXAL(v);
 		}
+		if(aut.getStates().size() == 0){
+			System.err.println("[DEBUG] No state detected for " + name + ". Switch on empty strategy");
+			XALState s = new XALState("empty");
+			s.setNumericID(Node._ID);
+			aut.addState(s);
+			lastAutomaton.addFinalState(s);
+		}
 		for(SyncNode s : cfg.getSyncNodesNoSubClass()){
 			getXAL(s);
 		}
@@ -129,7 +136,6 @@ public class ToXAL implements IConverter {
 			lastAutomaton.getActionPool().addProduction(m);
 			doc.getNodeFromNumericID(from.getID()).setNameMetric(nameMetric);
 		}
-
 
 		lastAutomaton = automa;
 		aut = automa;
