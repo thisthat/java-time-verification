@@ -78,6 +78,7 @@ public class Main {
 			result.accept(v);
 			//pp filename
 			for(ASTClass c : v.listOfClasses){
+				if(c.getMethods().size() == 0) continue;
 				IM2PCFG p = new IM2PCFG();
 				for(IASTMethod m : c.getMethods()){
 					p.addClass(c, m);
