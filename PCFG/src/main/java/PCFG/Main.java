@@ -79,7 +79,7 @@ public class Main {
 				writer = new BufferedWriter(new FileWriter( c.getPackageName().replace(".","_") + "_" + c.getName() + ".xal"));
 				//else
 				//	writer = new BufferedWriter(new FileWriter( c.getName() + ".xal"));
-				IConverter toGraphViz = new ToXAL(c.getAttributes());
+				IConverter toGraphViz = new ToXAL(c);
 				writer.write(toGraphViz.convert(graph));
 				writer.close();
 			}

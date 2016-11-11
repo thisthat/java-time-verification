@@ -67,7 +67,7 @@ public class CreateCFG extends ConvertIM {
 		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//reset structure
 			visitedHidden.clear();
-			Node._ID = 0;
+			//Node._ID = 0;
 
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){
