@@ -14,6 +14,10 @@ import PCFG.structure.node.SyncNode;
 import XAL.XALStructure.XALAddState;
 import XAL.XALStructure.exception.XALMalformedException;
 import XAL.XALStructure.items.*;
+import intermediateModel.structure.ASTAttribute;
+import intermediateModel.structure.ASTClass;
+
+import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -24,6 +28,11 @@ public class ToXAL implements IConverter {
 	XALDocument doc = null;
 	XALAddState aut = null;
 	XALAutomaton lastAutomaton = null;
+	List<ASTAttribute> attribute;
+
+	public ToXAL(List<ASTAttribute> attribute) {
+		this.attribute = attribute;
+	}
 
 	@Override
 	public String convert(PCFG pcfg) {
@@ -63,7 +72,7 @@ public class ToXAL implements IConverter {
 		if(aut.getStates().size() == 0){
 			System.err.println("[DEBUG] No state detected for " + name + ". Switch on empty strategy");
 			XALState s = new XALState("empty");
-			s.setNumericID(Node._ID);
+			s.setNumericID(0);
 			aut.addState(s);
 			lastAutomaton.addFinalState(s);
 		}
@@ -81,7 +90,12 @@ public class ToXAL implements IConverter {
 			getXAL(ae);
 		}*/
 		//automa.addFinalState();
-
+		//add vars.
+		for (ASTAttribute a : attribute) {
+			lastAutomaton.getGlobalState().addVariable(
+					new XALVariable(a.getName(), a.getType(), a.getExpr() != null ? a.getExpr().getCode() : "", XALVariable.XALIO.I)
+			);
+		}
 	}
 
 	private void getXAL(AnonymClass a) {

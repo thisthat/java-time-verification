@@ -91,7 +91,7 @@ public class CreateCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		lastCfg = new CFG(c.getName() + "::" + m.getName(), c.hashCode());
+		lastCfg = new CFG(c.getPackageName() + "." +  c.getName() + "::" + m.getName(), c.hashCode());
 		lastPCFG.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispatchMethod(m, c);

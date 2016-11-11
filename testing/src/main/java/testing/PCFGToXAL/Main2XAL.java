@@ -50,11 +50,11 @@ public class Main2XAL {
 		));*/
 		/*p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
 				Arrays.asList("NetworkGlueListener")
-		));*/
+		));*
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 		ToXAL converter = new ToXAL();
 		XALDocument d = converter.getXAL(graph,"test.xal");
-		d.toFile();
+		d.toFile();*/
 	}
 }

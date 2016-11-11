@@ -60,24 +60,13 @@ public class Main {
 				true
 		);
 		Iterator i = files.iterator();
-		int n_file = 0;
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
 			System.out.println("[DEBUG] Processing file: " + filename);
-			Java2AST a = null;
-			try {
-				a = new Java2AST(filename, true);
-			} catch (IOException e) {
-				e.printStackTrace();
-				continue;
-			}
 			String fName = filename.substring( filename.lastIndexOf("/") +1 );
 			fName = fName.substring(0 , fName.indexOf("."));
-			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result, filename);
-			result.accept(v);
 			//pp filename
-			for(ASTClass c : v.listOfClasses){
+			for(ASTClass c : JDTVisitor.parse(filename)){
 				if(c.getMethods().size() == 0) continue;
 				IM2PCFG p = new IM2PCFG();
 				for(IASTMethod m : c.getMethods()){
@@ -86,15 +75,14 @@ public class Main {
 				// build
 				PCFG graph = p.buildPCFG();
 				BufferedWriter writer = null;
-				if(v.listOfClasses.size() > 1)
-					writer = new BufferedWriter(new FileWriter( fName + "_" + c.getName() + ".xal"));
-				else
-					writer = new BufferedWriter(new FileWriter( c.getName() + ".xal"));
-				IConverter toGraphViz = new ToXAL();
+				//if(v.listOfClasses.size() > 1)
+				writer = new BufferedWriter(new FileWriter( c.getPackageName().replace(".","_") + "_" + c.getName() + ".xal"));
+				//else
+				//	writer = new BufferedWriter(new FileWriter( c.getName() + ".xal"));
+				IConverter toGraphViz = new ToXAL(c.getAttributes());
 				writer.write(toGraphViz.convert(graph));
 				writer.close();
 			}
-			n_file++;
 		}
 		end = new Date().getTime();
 		System.out.println("[XAL] Creation Ended: " + (end-start)/1000 + " s");
