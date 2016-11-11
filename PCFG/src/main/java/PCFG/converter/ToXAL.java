@@ -24,6 +24,7 @@ import XAL.XALStructure.exception.XALMalformedException;
 import XAL.XALStructure.items.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefaultASTVisitor;
@@ -227,6 +228,49 @@ public class ToXAL implements IConverter {
 		}
 
 		private void literalAccess(String methodCalled, List<Pair<String, String>> actual_pars, String pkg2, ASTRE r, String varName, Env env) {
+			if(varName.endsWith("this")){ //if is this. check locally
+				localCall(methodCalled, actual_pars, pkg2, r);
+			} else if(varName.equals("super")) {
+				//search in parent class
+			} else { //search from the env
+				IASTVar var = env.getVar(varName);
+				if(var != null){ //we have smth in the env (should be always the case)
+					String varType = var.getTypeNoArray();
+					if(methods.containsKey(varType)){
+						//exists in the list
+						List<IndexMethod> ms = methods.get(varType);
+						if(containsMethod(methodCalled, actual_pars, ms)){
+							//also the call is in the list -> we gotta a match
+							IndexMethod m = getMethod(methodCalled, actual_pars, ms);
+							if(m != null) {
+								System.out.println("@" + r.getLine() + " -- " + m.getPackageName() + "." + m.getFromClass() + "::" + methodCalled);
+								methodCalls.add(new Triplet<>(
+										m.getPackageName() + "." + m.getFromClass(),
+										methodCalled,
+										r
+								));
+							}
+						}
+					}
+				} else {
+					//static call
+					IndexData c = getFromImport(varName);
+					if(c != null){
+						if(containsMethod(methodCalled, actual_pars, c.getListOfSyncMethods())){
+							//also the call is in the list -> we gotta a match
+							IndexMethod m = getMethod(methodCalled, actual_pars, c.getListOfMethods());
+							if(m != null) {
+								System.out.println("@" + r.getLine() + " -- " + m.getPackageName() + "." + m.getFromClass() + "::" + methodCalled);
+								methodCalls.add(new Triplet<>(
+										m.getPackageName() + "." + m.getFromClass(),
+										methodCalled,
+										r
+								));
+							}
+						}
+					}
+				}
+			}
 		}
 
 		private void searchInParent(String t, List<Pair<String, String>> actual_pars, String methodCalled, ASTRE r) {
@@ -236,7 +280,7 @@ public class ToXAL implements IConverter {
 		private void localCall(String methodCalled, List<Pair<String, String>> actual_pars, String pkg2, ASTRE r) {
 			for(IASTMethod m : _class.getAllMethods()){
 				if(m.equalsBySignature(pkg2, methodCalled, actual_pars)){
-					System.out.println("@" + r.getLine() + " -- " + c.getPackageName().replace(".","_") + "_" + c.getName() + "::" + methodCalled);
+					//System.out.println("@" + r.getLine() + " -- " + c.getPackageName().replace(".","_") + "_" + c.getName() + "::" + methodCalled);
 					methodCalls.add(new Triplet<>(
 							c.getPackageName() + "." + c.getName(),
 							methodCalled,
