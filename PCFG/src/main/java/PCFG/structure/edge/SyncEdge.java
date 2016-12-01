@@ -17,7 +17,8 @@ public class SyncEdge implements IEdge {
 
 	public enum TYPE {
 		SYNC_BLOCK,
-		SYNC_NODE
+		MUST_SYNC,
+		MAY_SYNC
 	}
 
 	INode from;
@@ -35,7 +36,20 @@ public class SyncEdge implements IEdge {
 		if(!from.getClass().equals(to.getClass())){
 			throw new MalformedSyncEdge("From and To nodes are not of the same kind");
 		}
-		type = from.getClass() == Node.class ? TYPE.SYNC_NODE : TYPE.SYNC_BLOCK;
+		type = from.getClass() == Node.class ? TYPE.MAY_SYNC : TYPE.SYNC_BLOCK;
+	}
+
+	public SyncEdge(INode from, INode to, TYPE t) throws MalformedSyncEdge {
+		this.from = from;
+		this.to = to;
+		if(from == null || to == null){
+			//TODO fix this null that can appears
+			System.out.println("Breakpoint");
+		}
+		if(!from.getClass().equals(to.getClass())){
+			throw new MalformedSyncEdge("From and To nodes are not of the same kind");
+		}
+		type = t;
 	}
 
 	public INode getFrom() {

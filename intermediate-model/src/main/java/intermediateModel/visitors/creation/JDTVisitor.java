@@ -35,12 +35,15 @@ public class JDTVisitor extends ASTVisitor {
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
 	public static List<ASTClass> parse(String filename){
+		return  parse(filename, "");
+	}
+	public static List<ASTClass> parse(String filename, String projectPath){
 		if(cache.containsKey(filename)){
 			return cache.get(filename);
 		}
 		Java2AST a = null;
 		try {
-			a = new Java2AST(filename, true);
+			a = new Java2AST(filename, true, projectPath);
 		} catch (IOException e) {
 		}
 		CompilationUnit result = a.getContextJDT();

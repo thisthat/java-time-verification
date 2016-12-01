@@ -340,7 +340,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 						//local call
 						String pkg = _class.getRealPackageName();
 						String name = _class.getClassNameMethod(m);
-						syncCalls.add(new SyncMethodCall(pkg, name, methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+						syncCalls.add(new SyncMethodCall(pkg, name, methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, method.isStatic()));
 					}
 				}
 			}
@@ -357,7 +357,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 						methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 						signature.add(m.getParameters().get(i).getType());
 					}
-					syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+					syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 				}
 			}
 		}
@@ -383,7 +383,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 						methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 						signature.add(m.getParameters().get(i).getType());
 					}
-					syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_MAYBE_));
+					syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 				}
 			}
 		}
@@ -416,7 +416,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							}
 							String pkg = _class.getPackageMethod(m);
 							String name = _class.getClassNameMethod(m);
-							syncCalls.add(new SyncMethodCall(pkg, name, methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+							syncCalls.add(new SyncMethodCall(pkg, name, methodCalled, m.getSignature(), r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, method.isStatic()));
 						}
 					}
 				}
@@ -444,7 +444,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 								signature.add(m.getParameters().get(i).getType());
 							}
-							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 						}
 					}
 				}
@@ -467,7 +467,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 								signature.add(m.getParameters().get(i).getType());
 							}
-							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 						}
 					}
 					if(!found){
@@ -493,7 +493,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 							signature.add(m.getParameters().get(i).getType());
 						}
-						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 					}
 				}
 			}
@@ -520,7 +520,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 							signature.add(m.getParameters().get(i).getType());
 						}
-						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 					}
 				} else {
 					searchInInterface(parentType, actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
@@ -550,7 +550,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 									methodPars.add(new Pair<>(m.getParameters().get(i).getType(), m.getPackageName()));
 									signature.add(m.getParameters().get(i).getType());
 								}
-								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+								syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 							}
 						}
 					} else {
@@ -584,7 +584,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 								methodPars.add(new Pair<>( m.getParameters().get(i).getType(), m.getPackageName() ));
 								signature.add(m.getParameters().get(i).getType());
 							}
-							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_NORMAL_));
+							syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(),  methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 						}
 					}
 				} else {
@@ -609,7 +609,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 							methodPars.add(new Pair<>(m.getParameters().get(i).getType(), m.getPackageName()));
 							signature.add(m.getParameters().get(i).getType());
 						}
-						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, SyncMethodCall._SYNC_CALL_MAYBE_));
+						syncCalls.add(new SyncMethodCall(m.getPackageName(), m.getFromClass(), methodCalled, signature, r, methodPars, inMethod, inSignature, inMethodPkg, inMethodClass, m.isStatic()));
 					}
 				}
 			}

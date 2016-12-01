@@ -69,7 +69,7 @@ public class Main {
 
 	public void run1() throws Exception {
 
-		String f = "/Users/giovanni/repository/sources/wildfly-core/server/src/main/java/org/jboss/as/server/deployment/DeploymentUnitPhaseService.java";
+		String f = "/Users/giovanni/repository/sources/activemq/activemq-broker/src/main/java/org/apache/activemq/network/jms/JmsConnector.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
 		Java2AST a = new Java2AST(f,  true);
 		CompilationUnit ast = a.getContextJDT();
@@ -86,12 +86,12 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getFirstMethodByName("start"));
+		p.addClass(c, c.getFirstMethodByName("getName"));
 		/*,
 				Arrays.asList("ThreadPool")
 		));*/
 
-		p.addClass(c, c.getFirstMethodByName("start"));
+		p.addClass(c, c.getFirstMethodByName("getName"));
 		/*
 				Arrays.asList("ThreadPool")
 		));*/

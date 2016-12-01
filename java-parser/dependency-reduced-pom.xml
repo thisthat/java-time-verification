@@ -3,15 +3,15 @@
   <parent>
     <artifactId>java-xal</artifactId>
     <groupId>java-xal</groupId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>java-xal</groupId>
   <artifactId>java-parser</artifactId>
   <name>Java-Parser</name>
-  <version>0.1-SNAPSHOT</version>
-  <description>The module creates two different parsers: Antlr4 and JDT.
-        It converts a java file into an AST.</description>
+  <version>1.0</version>
+  <description>The module creates an AST using JDT.
+        Since version 1.0 of the module Antlr4 is discontinued.</description>
   <build>
     <plugins>
       <plugin>
@@ -22,27 +22,6 @@
             <exclude>**/TestCommentOnProject.java</exclude>
             <exclude>**/TestFromAST2Java.java</exclude>
           </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.antlr</groupId>
-        <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>antlr4</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <arguments>
-            <argument>-package</argument>
-            <argument>parser.grammar</argument>
-          </arguments>
-          <listener>true</listener>
-          <visitor>true</visitor>
-          <outputDirectory>${basedir}/src/main/java/parser/grammar</outputDirectory>
         </configuration>
       </plugin>
     </plugins>

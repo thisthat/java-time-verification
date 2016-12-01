@@ -80,11 +80,13 @@ public class CalculateSyncCall {
 				to = v;
 			}
 		}
+		if(from == null || to == null){
+			return;
+		}
 		try {
-			SyncEdge e = new SyncEdge(from, to);
+			SyncEdge.TYPE t = outMethod.isStatic() && inMethod.isStatic() ? SyncEdge.TYPE.MUST_SYNC : SyncEdge.TYPE.MAY_SYNC;
+			SyncEdge e = new SyncEdge(from, to, t);
 			pcfg.addSyncEdge(e);
-		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
-			malformedSyncEdge.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("error creating link: ");
 			for(KeyValue<IASTMethod,ASTClass> c : classes){

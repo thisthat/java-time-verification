@@ -48,7 +48,15 @@ public class IM2PCFG {
 		return pcfgBuilder.getConstraints().size();
 	}
 
+	boolean forceReindex = true;
 
+	public boolean isForceReindex() {
+		return forceReindex;
+	}
+
+	public void setForceReindex(boolean forceReindex) {
+		this.forceReindex = forceReindex;
+	}
 
 	/**
 	 * Insert a class in the list of classes to process for creating the PCFG.
@@ -89,9 +97,9 @@ public class IM2PCFG {
 		List<KeyValue<IASTMethod,ASTClass>> classes = pcfgBuilder.getClasses();
 		for(KeyValue<IASTMethod,ASTClass> k : classes){
 			IndexingFile indexCall = new IndexingFile();
-			indexCall.index(k.getValue(), true);
+			indexCall.index(k.getValue(), this.forceReindex);
 			IndexingSyncBlock indexing = new IndexingSyncBlock();
-			List<IndexSyncBlock> blocks = indexing.index(k.getValue(), true);
+			List<IndexSyncBlock> blocks = indexing.index(k.getValue(), this.forceReindex);
 			List<IndexSyncBlock> toAdd = new ArrayList<>();
 			IASTMethod m = k.getKey();
 			for(IndexSyncBlock b : blocks){

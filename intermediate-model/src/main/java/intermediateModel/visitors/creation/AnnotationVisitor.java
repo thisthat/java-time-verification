@@ -15,7 +15,7 @@ import java.util.List;
 public class AnnotationVisitor {
 	private static List<Annotation> getAnnotationVariable(List modifiers, String name){
 		List<Annotation> annotations = new ArrayList<>();
-		for(Object o : modifiers){
+		/*for(Object o : modifiers){
 			if(o instanceof MarkerAnnotation ||
 				o instanceof NormalAnnotation){
 				Annotation ann = Parser.getAnnotation( o.toString() );
@@ -24,7 +24,7 @@ public class AnnotationVisitor {
 				}
 				annotations.add( ann );
 			}
-		}
+		}*/
 		return annotations;
 	}
 

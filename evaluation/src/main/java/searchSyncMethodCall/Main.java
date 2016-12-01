@@ -143,7 +143,7 @@ public class Main {
 			if(!methodsCall.contains(m1)){
 				methodsCall.add(m1);
 			}
-			if(s.getType() == SyncMethodCall._SYNC_CALL_MAYBE_){
+			if(!s.isStatic()){
 				statistics.nMaybe++;
 			}
 		}

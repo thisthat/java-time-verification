@@ -22,6 +22,7 @@ import static org.apache.commons.io.FileUtils.readFileToString;
 public class Java2AST {
 
     private String filename;
+	private String projectPath = "";
     private boolean isParsed = false;
 
     //lexer&parser
@@ -45,10 +46,15 @@ public class Java2AST {
      * @param filename      Path of the file to parse
      * @throws IOException  Exception in the case some filesystem problems will arise
      */
-    public Java2AST(String filename) throws IOException {
-        this.filename = filename;
-        initParser();
-    }
+	public Java2AST(String filename) throws IOException {
+		this.filename = filename;
+		initParser();
+	}
+	public Java2AST(String filename, String projectPath) throws IOException {
+		this.filename = filename;
+		this.projectPath = projectPath;
+		initParser();
+	}
 
     /**
      * Constructor that accept the file to parse and a flag.
@@ -68,6 +74,15 @@ public class Java2AST {
         }
     }
 
+	public Java2AST(String filename, boolean parse, String projectPath) throws IOException {
+		this.filename = filename;
+		this.projectPath = projectPath;
+		initParser();
+		if(parse){
+			convertToAST();
+		}
+	}
+
 
     /**
      * Initialization of Lexer & Parser
@@ -77,18 +92,30 @@ public class Java2AST {
      */
     private void initParser() throws IOException {
 
+		String[] sources = new String[]{"/Users/giovanni/repository/sources/activemq/activemq-amqp/src/main/java"};
+		String[] classPath = new String[]{ System.getProperty("java.home") + "/lib"};
+
 		File file1 = new File(this.filename);
 		String source = readFileToString(file1, "utf-8");
+
 		parserJDT = ASTParser.newParser(AST.JLS8);  // handles JDK 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8
 		parserJDT.setKind(ASTParser.K_COMPILATION_UNIT);
-		parserJDT.setSource(source.toCharArray());
-		parserJDT.setResolveBindings(true);
 		Map<String, String> options = JavaCore.getOptions();
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 		parserJDT.setCompilerOptions(options);
 
+		if(!this.projectPath.equals(""))
+			parserJDT.setEnvironment(classPath, sources, new String[]{"UTF-8"}, true);
+
+		parserJDT.setResolveBindings(true);
+		parserJDT.setBindingsRecovery(true);
+
+		parserJDT.setUnitName(filename.substring(filename.lastIndexOf("/")+1));
+
 		this.source = source.toCharArray();
 		ASTSrc.getInstance().setSource(this.source);
+
+		parserJDT.setSource(source.toCharArray());
     }
 
     /**
