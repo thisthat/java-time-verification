@@ -67,7 +67,8 @@
                 <version>2.19.1</version>
                 <configuration>
                     <excludes>
-                        <!-- <exclude>**/TestHeuristics.java</exclude> -->
+                        <!-- At the moment notations are skiped, not yet implemented -->
+                         <exclude>**/TestAnnotations.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
