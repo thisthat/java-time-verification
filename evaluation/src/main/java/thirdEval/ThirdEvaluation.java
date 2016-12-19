@@ -224,25 +224,26 @@ public class ThirdEvaluation {
 	}
 
 	private void evalSyncCall(List<IndexSyncCall> syncsCall) {
-		int total = syncsCall.size() * syncsCall.size();
-		int current = 0;
+		//int total = syncsCall.size() * syncsCall.size();
+		//int current = 0;
 		for(IndexSyncCall first : syncsCall){
 			for(IndexSyncCall second : syncsCall){
-				current++;
-				double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
+				//current++;
+				//double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
 				//System.out.print(String.format("\r[%s %%]", perc ));
-				compare(first,second);
+				if(first.get_inClassName().equals(second.get_inClassName()))
+					compare(first,second);
 			}
 		}
 	}
 
 	private void evalSyncBlocks(List<IndexSyncBlock> methodsBlock) {
-		int total = methodsBlock.size() * methodsBlock.size();
-		int current = 0;
+		//int total = methodsBlock.size() * methodsBlock.size();
+		//int current = 0;
 		for(IndexSyncBlock first : methodsBlock){
 			for(IndexSyncBlock second : methodsBlock){
-				current++;
-				double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
+				//current++;
+				//double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
 				//System.out.print(String.format("\r[%s %%]", perc ));
 				if(DataTreeType.checkCompatibleTypes( first.getExprType(), second.getExprType(), first.getExprPkg(), second.getExprPkg() )){
 					compare(first, second);

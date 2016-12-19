@@ -1,8 +1,11 @@
 package testing.ManualChecks;
 
+import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import IntermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -21,7 +24,7 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
-	static final String name = "wildfly-core";
+	static final String name = "activemq";
 
 	public static void main(String[] args) throws Exception {
 
@@ -69,7 +72,7 @@ public class Main {
 
 	public void run1() throws Exception {
 
-		String f = "/Users/giovanni/repository/sources/activemq/activemq-broker/src/main/java/org/apache/activemq/network/jms/JmsConnector.java";
+		String f = "/Users/giovanni/repository/sources/activemq/activemq-camel/src/main/java/org/apache/activemq/camel/CamelConnectionFactory.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
 		Java2AST a = new Java2AST(f,  true);
 		CompilationUnit ast = a.getContextJDT();
@@ -86,12 +89,17 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getFirstMethodByName("getName"));
+		//p.addClass(c, c.getFirstMethodByName("getProducerBrokerExchange"));
+
+		List<IASTMethod> list = new ArrayList<IASTMethod>();
+		list.add(c.getFirstMethodByName("createActiveMQConnection"));
+		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, list );//c.getMethods());
+		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();
 		/*,
 				Arrays.asList("ThreadPool")
 		));*/
 
-		p.addClass(c, c.getFirstMethodByName("getName"));
+		p.addClass(c, c.getFirstMethodByName("getProducerBrokerExchange"));
 		/*
 				Arrays.asList("ThreadPool")
 		));*/

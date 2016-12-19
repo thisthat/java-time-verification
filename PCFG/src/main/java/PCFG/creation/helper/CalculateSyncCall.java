@@ -59,7 +59,10 @@ public class CalculateSyncCall {
 				List<SyncMethodCall> inner  = syncCalls.get(cIn);
 				for(SyncMethodCall outMethod : outter){
 					for(SyncMethodCall inMethod : inner){
-						if(outMethod.equalsBySignature(inMethod)){
+						if(
+								outMethod.get_inClassName().equals(inMethod.get_inClassName()) &&
+								outMethod.get_inPackageName().equals(inMethod.get_inPackageName())
+						){
 							createLink(outMethod, inMethod, pcfg, classes);
 						}
 					}

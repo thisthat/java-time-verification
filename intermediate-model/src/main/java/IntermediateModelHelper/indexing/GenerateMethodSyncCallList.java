@@ -155,6 +155,16 @@ public class GenerateMethodSyncCallList extends ParseIM {
 					processImportClass(pIdx, objName);
 					processImportClass(pIdx, pIdx.getClassName());
 				}
+				if(type.length() - type.replace(".","").length() > 2) {
+					String t,p;
+					p = type.substring(0, type.lastIndexOf("."));
+					t = type.substring(type.lastIndexOf("." ) + 1);
+					parentIndex = mongo.getIndex(t, p);
+					for (IndexData pIdx : parentIndex) {
+						processImportClass(pIdx, objName);
+						processImportClass(pIdx, pIdx.getClassName());
+					}
+				}
 			}
 		}
 	}

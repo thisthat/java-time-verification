@@ -152,7 +152,13 @@ public class MongoConnector {
 	 * @return	True if it is already in the DB.
 	 */
 	public boolean existSyncCallIndex(IndexSyncCall i){
-		return existSyncCallIndex(i.getClassName(), i.getPackageName(), i.getMethodName(), i.getMethodSignature());
+		return datastore.createQuery(IndexSyncCall.class)
+				.field("line").equal(i.getLine())
+				.field("path").equal(i.getPath())
+				.field("name").equal(i.getClassName())
+				.field("methodName").equal(i.getMethodName())
+				.asList().size() > 0;
+		//return false;
 	}
 	/**
 	 * Check if a class is already in the DB in the collection of Synchronized calls.

@@ -87,7 +87,7 @@ public class CalculateSyncBlock {
 		}
 		SyncEdge sEdge = null;
 		if(outSync == null || inSync == null){
-			// we have smt in the hidden class -> How to handle?
+			// we have smt in static init -> How to handle?
 			System.err.println("Null pointer to sync block");
 			for(KeyValue<IASTMethod,ASTClass> c : classes){
 				System.err.println(c.getKey()  + " :: " + c.getValue().getPackageName() + "." + c.getValue().getName());

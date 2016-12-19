@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.container
+    div.page-header
+      h1 Search Element for Evaluation
+    div.panel.panel-default
+      div.panel-heading Search
+      div.panel-body
+      fieldset
+        div.container-fluid
+          div.row
+            div.col-md-6
+              input#className.form-control(type='text', placeholder='Class Name')
+            div.col-md-6
+              input#methodName.form-control(type='text', placeholder='Method Name')
+            div.col-md-6
+              br
+              button#search.btn.btn-default Search
+              br
+              br
+    h1#txtResult Results
+    #resultList
