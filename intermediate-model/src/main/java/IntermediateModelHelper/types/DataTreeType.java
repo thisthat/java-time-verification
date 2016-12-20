@@ -201,6 +201,8 @@ public class DataTreeType {
 		String t2 = type2.contains(".") ? type2.substring(type2.indexOf(".") +1 ) : type2;
 		if(t1.equals("Object") && t2.length() > 1) return Character.isUpperCase(t2.charAt(0));
 		if(t2.equals("Object") && t1.length() > 1) return Character.isUpperCase(t1.charAt(0));
+		if(t1.equals("Class") && t2.length() > 1) return Character.isUpperCase(t2.charAt(0));
+		if(t2.equals("Class") && t1.length() > 1) return Character.isUpperCase(t1.charAt(0));
 		//null is always compatible
 		if(type1.equals("null") && Character.isUpperCase(type2.charAt(0))) return true;
 		if(type2.equals("null") && Character.isUpperCase(type1.charAt(0))) return true;

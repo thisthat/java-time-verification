@@ -142,7 +142,10 @@ public class GenerateMethodSyncCallList extends ParseIM {
 			for(String imp : index.getImports()){
 				if(imp.endsWith(type)){
 					found = true;
-					List<IndexData> parentIndex = mongo.getIndex(type, imp);
+					String pkg = imp.replace(type, "");
+					if(pkg.endsWith("."))
+						pkg = pkg.substring(0, pkg.length()-1);
+					List<IndexData> parentIndex = mongo.getIndex(type, pkg);
 					for(IndexData pIdx : parentIndex){
 						processImportClass(pIdx, objName);
 						processImportClass(pIdx, pIdx.getClassName());
@@ -236,9 +239,9 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		if(r == null || r.getExpression() == null){
 			return;
 		}
-		if(r.getLine() == 191){
+		/*if(r.getLine() == 475){
 			System.out.println("BRK");
-		} else { return; }
+		} else { return; }*/
 		String inMethod = lastMethod;
 		String inMethodPkg = _class.getPackageName();
 		String inMethodClass = _class.getName();

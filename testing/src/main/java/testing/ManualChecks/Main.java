@@ -24,7 +24,7 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
-	static final String name = "activemq";
+	static final String name = "jetty";
 
 	public static void main(String[] args) throws Exception {
 
@@ -72,7 +72,7 @@ public class Main {
 
 	public void run1() throws Exception {
 
-		String f = "/Users/giovanni/repository/sources/activemq/activemq-client/src/main/java/org/apache/activemq/transport/udp/CommandDatagramChannel.java";
+		String f = "/Users/giovanni/repository/sources/jetty/jetty-plus/src/main/java/org/eclipse/jetty/plus/webapp/PlusDescriptorProcessor.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
 		Java2AST a = new Java2AST(f,  true);
 		CompilationUnit ast = a.getContextJDT();
@@ -92,8 +92,8 @@ public class Main {
 		//p.addClass(c, c.getFirstMethodByName("getProducerBrokerExchange"));
 
 		List<IASTMethod> list = new ArrayList<IASTMethod>();
-		list.add(c.getFirstMethodByName("write"));
-		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, list );//c.getMethods());
+		list.add(c.getFirstMethodByName("visitMessageDestinationRef"));
+		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, c.getMethods() );//c.getMethods());
 		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();
 		/*,
 				Arrays.asList("ThreadPool")
