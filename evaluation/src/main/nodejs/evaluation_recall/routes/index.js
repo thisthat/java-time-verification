@@ -5,9 +5,12 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
 router.post('/search', function(req, res, next) {
-  var db = req.activemq;
-  console.log(req.body);
+
+  //console.log(req.body);
+  var db = req.db[req.body.id];
+  //console.log(db);
   var _cn = req.body.className;
   var _mn = req.body.methodName;
   db.collection('IndexSyncCall').find({

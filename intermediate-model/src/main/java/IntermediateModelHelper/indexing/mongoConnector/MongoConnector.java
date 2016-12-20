@@ -155,8 +155,14 @@ public class MongoConnector {
 		return datastore.createQuery(IndexSyncCall.class)
 				.field("line").equal(i.getLine())
 				.field("path").equal(i.getPath())
+				.field("classPackage").equal(i.getClassPackage())
 				.field("name").equal(i.getClassName())
 				.field("methodName").equal(i.getMethodName())
+				.field("methodSignature").equal(i.getMethodSignature())
+				.field("_inClassPackage").equal(i.get_inClassPackage())
+				.field("_inClassName").equal(i.get_inClassName())
+				.field("_inMethodName").equal(i.get_inMethodName())
+				.field("_signatureInMethod").equal(i.get_signatureInMethod())
 				.asList().size() > 0;
 		//return false;
 	}

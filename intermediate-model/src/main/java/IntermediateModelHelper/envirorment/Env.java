@@ -392,12 +392,20 @@ public class Env {
 	@Deprecated
 	public String getExprType(IASTRE r){
 		ResolveExpressionType resolver = new ResolveExpressionType(this);
-		return resolver.getType(r);
+		String t =  resolver.getType(r);
+		if(t != null) {
+			t = t.replace("[]","");
+		}
+		return t;
 	}
 
 	public String getExprType(IASTRE r, ASTClass c){
 		ResolveExpressionType resolver = new ResolveExpressionType(this);
-		return resolver.getType(r, c);
+		String t = resolver.getType(r, c);
+		if(t != null) {
+			t = t.replace("[]","");
+		}
+		return t;
 	}
 
 
