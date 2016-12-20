@@ -137,6 +137,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	}
 
 	public boolean equalsBySignature(IASTMethod c) {
+		if(c == null) return false;
 		if(!c.getName().equals(this.name)) return false;
 		if(c.getParameters().size() != this.parameters.size()) return false;
 		boolean flag = true;

@@ -72,7 +72,7 @@ public class Main {
 
 	public void run1() throws Exception {
 
-		String f = "/Users/giovanni/repository/sources/jetty/jetty-plus/src/main/java/org/eclipse/jetty/plus/webapp/PlusDescriptorProcessor.java";
+		String f = "/Users/giovanni/repository/sources/jetty/jetty-ant/src/main/java/org/eclipse/jetty/ant/AntWebAppContext.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
 		Java2AST a = new Java2AST(f,  true);
 		CompilationUnit ast = a.getContextJDT();
@@ -92,8 +92,8 @@ public class Main {
 		//p.addClass(c, c.getFirstMethodByName("getProducerBrokerExchange"));
 
 		List<IASTMethod> list = new ArrayList<IASTMethod>();
-		list.add(c.getFirstMethodByName("visitMessageDestinationRef"));
-		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, c.getMethods() );//c.getMethods());
+		list.add(c.getFirstMethodByName("doStop"));
+		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, list );//c.getMethods());
 		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();
 		/*,
 				Arrays.asList("ThreadPool")

@@ -350,9 +350,9 @@ public class ResolveTypes {
 			List<IndexData> parentImports = new ArrayList<>(imports);
 			MongoConnector mongo = MongoConnector.getInstance();
 			while(!type.equals("Object")){
-				IndexData p = getPackageFromImports(imports, type);
+				IndexData p = getPackageFromImports(parentImports, type);
 				if(p == null){
-					return  "";
+					return "";
 				}
 				for(IndexMethod m : p.getListOfMethods()){
 					if(m.equalBySignature(methodCalled, actual_pars)){

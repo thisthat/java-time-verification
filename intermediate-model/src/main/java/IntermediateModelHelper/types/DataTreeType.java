@@ -197,6 +197,9 @@ public class DataTreeType {
 		//dots?
 		type1 = type1.contains("<") ? type1.substring(0, type1.indexOf("<")) : type1;
 		type2 = type2.contains("<") ? type2.substring(0, type2.indexOf("<")) : type2;
+		//arrays?
+		type1 = type1.contains("[") ? type1.substring(0, type1.indexOf("[")) : type1;
+		type2 = type2.contains("[") ? type2.substring(0, type2.indexOf("[")) : type2;
 		String t1 = type1.contains(".") ? type1.substring(type1.indexOf(".") +1 ) : type1;
 		String t2 = type2.contains(".") ? type2.substring(type2.indexOf(".") +1 ) : type2;
 		if(t1.equals("Object") && t2.length() > 1) return Character.isUpperCase(t2.charAt(0));
