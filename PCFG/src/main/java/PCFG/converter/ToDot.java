@@ -157,11 +157,11 @@ public class ToDot implements IConverter {
 			SyncNode to 	= ((SyncNode) e.getTo());
 			Node f = from.getNodes().get(0);
 			Node t = to.getNodes().get(0);
-			out.append(convert(f) + " -> " + convert(t) + " [ltail=" + SyncNode._CLUSTER_NAME + from.getID() + ",lhead=" + SyncNode._CLUSTER_NAME + to.getID() + ", color=black,penwidth=1.0,dir=\"both\", style=\"dashed\"];\n");
+			out.append(convert(f) + " -> " + convert(t) + " [ltail=" + SyncNode._CLUSTER_NAME + from.getID() + ",lhead=" + SyncNode._CLUSTER_NAME + to.getID() + ", color=black,penwidth=1.0,dir=\"both\", style=\"dashed\",constraint=false];\n");
 		} else {
 			Node from = (Node) e.getFrom();
 			Node to   = (Node) e.getTo();
-			out.append(convert(from) + " -> " + convert(to) + "[dir=both,color=black, style=bold,penwidth=1.0];\n");
+			out.append(convert(from) + " -> " + convert(to) + "[dir=both,color=black, style=bold,penwidth=1.0,constraint=false];\n");
 		}
 
 		return out.toString();

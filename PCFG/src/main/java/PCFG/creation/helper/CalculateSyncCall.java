@@ -60,8 +60,8 @@ public class CalculateSyncCall {
 				for(SyncMethodCall outMethod : outter){
 					for(SyncMethodCall inMethod : inner){
 						if(
-								outMethod.get_inClassName().equals(inMethod.get_inClassName()) &&
-								outMethod.get_inPackageName().equals(inMethod.get_inPackageName())
+								outMethod.get_className().equals(inMethod.get_className()) &&
+								outMethod.get_packageName().equals(inMethod.get_packageName())
 						){
 							createLink(outMethod, inMethod, pcfg, classes);
 						}

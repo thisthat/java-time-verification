@@ -1,6 +1,7 @@
 package PCFG;
 
 import PCFG.converter.IConverter;
+import PCFG.converter.ToDot;
 import PCFG.converter.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
@@ -48,15 +49,18 @@ public class Main {
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("example1",
+		p.addClass(c, c.getMethodBySignature("run",
+				Arrays.asList()
+		));
+		p.addClass(c1, c1.getMethodBySignature("run",
 				Arrays.asList()
 		));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 
 		BufferedWriter writer = null;
-		writer = new BufferedWriter(new FileWriter("graph.xal"));
-		IConverter toGraphViz = new ToXAL();
+		writer = new BufferedWriter(new FileWriter("graph.dot"));
+		IConverter toGraphViz = new ToDot(true);
 		writer.write(toGraphViz.convert(graph));
 		writer.close();
 	}
