@@ -223,7 +223,12 @@ public class CreateCFG extends ConvertIM {
 		Node finally_try = new Node("finally", "", Node.TYPE.FINALLY, stm.getStart(), stm.getEnd(), stm.getLine());
 		Node end_try = new Node("endtry", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState(init_try);
+		if(this.syncNode != null){
+			this.syncNode.add(finally_try);
+		}
 		this.lastCfg.addNode(finally_try);
+
+
 		//this.lastCfg.addNode(end_try);
 
 
@@ -237,7 +242,11 @@ public class CreateCFG extends ConvertIM {
 		if(stm.getCatchBranch().size() > 0){
 			Node catch_try = new Node("catch", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
 			Edge e = new Edge(init_try, catch_try);
+			if(this.syncNode != null){
+				this.syncNode.add(catch_try);
+			}
 			this.lastCfg.addNode(catch_try);
+
 			this.lastCfg.addEdge(e);
 			for(ASTTry.ASTCatchBranch c : stm.getCatchBranch()){
 				Node instance = new Node(
@@ -247,6 +256,9 @@ public class CreateCFG extends ConvertIM {
 						c.getStart(), c.getEnd(), c.getLine()
 				);
 				Edge eInstance = new Edge(catch_try, instance);
+				if(this.syncNode != null){
+					this.syncNode.add(instance);
+				}
 				this.lastCfg.addNode(instance);
 				this.lastCfg.addEdge(eInstance);
 				this.lastNode = instance;
@@ -274,6 +286,9 @@ public class CreateCFG extends ConvertIM {
 
 		this.lastNode = end_try;
 		this.lastCfg.addNode(end_try);
+		if(this.syncNode != null){
+			this.syncNode.add(end_try);
+		}
 	}
 
 	protected void convertTryResource(ASTTryResources stm) {

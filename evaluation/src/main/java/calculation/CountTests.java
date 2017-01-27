@@ -1,4 +1,4 @@
-package calculatingTestClasses;
+package calculation;
 
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;

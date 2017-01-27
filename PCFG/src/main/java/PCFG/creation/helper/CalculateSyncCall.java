@@ -54,6 +54,7 @@ public class CalculateSyncCall {
 			for(KeyValue<IASTMethod,ASTClass> cIn : classes){
 				if(cOut == cIn) continue;
 				boolean sameClass = cOut.getValue().isSameClass(cIn.getValue());
+				if(sameClass) continue;
 				if(cIn.equals(cOut) && !sameClass) continue;
 				List<SyncMethodCall> outter = syncCalls.get(cOut);
 				List<SyncMethodCall> inner  = syncCalls.get(cIn);

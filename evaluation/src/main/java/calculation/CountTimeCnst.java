@@ -1,4 +1,4 @@
-package calculatingTestClasses;
+package calculation;
 
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;

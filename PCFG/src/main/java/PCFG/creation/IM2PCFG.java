@@ -87,8 +87,12 @@ public class IM2PCFG {
 		pcfgBuilder.addMethod(k);
 		//IndexingFile indexFile = new IndexingFile();
 		//indexFile.index(c, reindex);
+	}
 
-
+	public void addClass(ASTClass c){
+		for(IASTMethod m : c.getMethods()){
+			addClass(c,m);
+		}
 	}
 
 	public PCFG buildPCFG(){

@@ -11,5 +11,6 @@ target
 *.dot
 *.png
 *.csv
+*.pdf
 project_eval/
 evaluation/src/main/nodejs/evaluation_recall/node_modules/
