@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto.digests;
 
-import org.gudy.bouncycastle.crypto.digests.GeneralDigest;
-import org.gudy.bouncycastle.crypto.digests.MD5Digest;
-
-
 /**
  * implementation of MD5 as outlined in "Handbook of Applied Cryptography", pages 346 - 347.
  */

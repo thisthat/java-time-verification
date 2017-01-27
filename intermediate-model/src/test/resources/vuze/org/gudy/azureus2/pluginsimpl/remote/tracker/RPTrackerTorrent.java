@@ -19,8 +19,8 @@
 
 package org.gudy.azureus2.pluginsimpl.remote.tracker;
 
-import org.gudy.azureus2.plugins.tracker.*;
 import org.gudy.azureus2.plugins.torrent.*;
+import org.gudy.azureus2.plugins.tracker.*;
 import org.gudy.azureus2.pluginsimpl.remote.*;
 import org.gudy.azureus2.pluginsimpl.remote.torrent.RPTorrent;
 

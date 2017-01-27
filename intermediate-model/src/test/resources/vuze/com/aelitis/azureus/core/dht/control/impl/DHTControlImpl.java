@@ -18,21 +18,6 @@
 
 package com.aelitis.azureus.core.dht.control.impl;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.security.MessageDigest;
-import java.util.*;
-import java.util.Map.Entry;
-
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.bouncycastle.crypto.CipherParameters;
-import org.gudy.bouncycastle.crypto.engines.RC4Engine;
-import org.gudy.bouncycastle.crypto.params.KeyParameter;
-
 import com.aelitis.azureus.core.dht.*;
 import com.aelitis.azureus.core.dht.control.*;
 import com.aelitis.azureus.core.dht.control.DHTControlActivity.ActivityNode;
@@ -43,13 +28,23 @@ import com.aelitis.azureus.core.dht.db.DHTDBValue;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionManager;
-import com.aelitis.azureus.core.dht.router.DHTRouter;
-import com.aelitis.azureus.core.dht.router.DHTRouterAdapter;
-import com.aelitis.azureus.core.dht.router.DHTRouterContact;
-import com.aelitis.azureus.core.dht.router.DHTRouterFactory;
-import com.aelitis.azureus.core.dht.router.DHTRouterStats;
+import com.aelitis.azureus.core.dht.router.*;
 import com.aelitis.azureus.core.dht.transport.*;
 import com.aelitis.azureus.core.dht.transport.udp.DHTTransportUDP;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.bouncycastle.crypto.CipherParameters;
+import org.gudy.bouncycastle.crypto.engines.RC4Engine;
+import org.gudy.bouncycastle.crypto.params.KeyParameter;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.security.MessageDigest;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author parg

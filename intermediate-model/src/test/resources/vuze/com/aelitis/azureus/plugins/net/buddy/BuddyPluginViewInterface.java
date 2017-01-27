@@ -22,11 +22,10 @@
 
 package com.aelitis.azureus.plugins.net.buddy;
 
-import java.util.Map;
-
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
 import org.gudy.azureus2.core3.download.DownloadManager;
 
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
+import java.util.Map;
 
 public interface 
 BuddyPluginViewInterface 

@@ -20,34 +20,6 @@
 
 package org.gudy.azureus2.core3.stats.transfer.impl;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.global.GlobalManager;
-import org.gudy.azureus2.core3.global.GlobalManagerStats;
-import org.gudy.azureus2.core3.stats.transfer.LongTermStatsListener;
-import org.gudy.azureus2.core3.stats.transfer.StatsFactory;
-import org.gudy.azureus2.core3.stats.transfer.impl.LongTermStatsWrapper.LongTermStatsWrapperHelper;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.PluginManager;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreComponent;
 import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
@@ -57,6 +29,20 @@ import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.util.average.Average;
 import com.aelitis.azureus.core.util.average.AverageFactory;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.global.GlobalManager;
+import org.gudy.azureus2.core3.global.GlobalManagerStats;
+import org.gudy.azureus2.core3.stats.transfer.LongTermStatsListener;
+import org.gudy.azureus2.core3.stats.transfer.StatsFactory;
+import org.gudy.azureus2.core3.stats.transfer.impl.LongTermStatsWrapper.LongTermStatsWrapperHelper;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.PluginManager;
+
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class 
 LongTermStatsImpl 

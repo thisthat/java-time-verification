@@ -1,8 +1,5 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import org.gudy.bouncycastle.crypto.params.IESParameters;
-
-
 public class IESWithCipherParameters
     extends IESParameters
 {

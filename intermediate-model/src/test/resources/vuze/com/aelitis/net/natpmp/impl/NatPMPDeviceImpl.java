@@ -43,11 +43,11 @@
 
 package com.aelitis.net.natpmp.impl;
 
-import java.net.*;
-
 import com.aelitis.azureus.core.util.NetUtils;
 import com.aelitis.net.natpmp.NATPMPDeviceAdapter;
 import com.aelitis.net.natpmp.NatPMPDevice;
+
+import java.net.*;
 
 /**
  *

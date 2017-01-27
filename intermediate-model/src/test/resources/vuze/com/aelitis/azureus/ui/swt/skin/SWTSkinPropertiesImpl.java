@@ -16,18 +16,16 @@
  */
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.util.Map;
-
+import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.LightHashMap;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.util.Map;
 
 /**
  * @author TuxPaper

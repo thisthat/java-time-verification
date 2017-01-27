@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto.digests;
 
-import org.gudy.bouncycastle.crypto.digests.GeneralDigest;
-import org.gudy.bouncycastle.crypto.digests.MD4Digest;
-
-
 /**
  * implementation of MD4 as RFC 1320 by R. Rivest, MIT Laboratory for
  * Computer Science and RSA Data Security, Inc.

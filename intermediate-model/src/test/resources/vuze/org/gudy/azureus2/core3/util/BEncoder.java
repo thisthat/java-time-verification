@@ -19,16 +19,17 @@
 
 package org.gudy.azureus2.core3.util;
 
-import java.io.*;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.util.JSONUtils;
 import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.aelitis.azureus.util.JSONUtils;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 /**
  * A set of utility methods to encode a Map into a bencoded array of byte.

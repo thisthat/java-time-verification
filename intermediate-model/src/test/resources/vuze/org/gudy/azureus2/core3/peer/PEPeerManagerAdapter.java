@@ -19,14 +19,13 @@
 
 package org.gudy.azureus2.core3.peer;
 
-import java.util.Map;
-
+import com.aelitis.azureus.core.peermanager.PeerManagerRegistration;
 import org.gudy.azureus2.core3.disk.DiskManagerReadRequest;
 import org.gudy.azureus2.core3.disk.DiskManagerReadRequestListener;
 import org.gudy.azureus2.core3.logging.LogRelation;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
 
-import com.aelitis.azureus.core.peermanager.PeerManagerRegistration;
+import java.util.Map;
 
 public interface 
 PEPeerManagerAdapter 

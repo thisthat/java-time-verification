@@ -18,8 +18,12 @@
 
 package com.aelitis.azureus.ui.swt.columns.torrent;
 
-import java.util.Arrays;
-
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinProperties;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
@@ -35,12 +39,7 @@ import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 import org.gudy.azureus2.ui.swt.views.FilesViewMenuUtil;
 
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinProperties;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.util.Arrays;
 
 public class ColumnTorrentFileProgress
 {

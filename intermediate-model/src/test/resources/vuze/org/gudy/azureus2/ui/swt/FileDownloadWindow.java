@@ -22,11 +22,7 @@
 
 package org.gudy.azureus2.ui.swt;
 
-import java.io.File;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.ui.UIFunctionsManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -44,7 +40,10 @@ import org.gudy.azureus2.core3.util.UrlUtils;
 import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
 import org.gudy.azureus2.ui.swt.progress.*;
 
-import com.aelitis.azureus.ui.UIFunctionsManager;
+import java.io.File;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**

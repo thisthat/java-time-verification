@@ -18,10 +18,10 @@
 
 package com.aelitis.azureus.ui.mdi;
 
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+
 import java.util.List;
 import java.util.Map;
-
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
 
 public interface MultipleDocumentInterface
 {

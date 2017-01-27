@@ -19,12 +19,11 @@
 
 package com.aelitis.azureus.core.dht.control.impl;
 
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.dht.control.DHTControlStats;
 import com.aelitis.azureus.core.dht.db.DHTDBStats;
 import com.aelitis.azureus.core.dht.router.*;
 import com.aelitis.azureus.core.dht.transport.*;
+import org.gudy.azureus2.core3.util.*;
 
 /**
  * @author parg

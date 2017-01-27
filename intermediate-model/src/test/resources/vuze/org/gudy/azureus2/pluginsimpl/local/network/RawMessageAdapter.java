@@ -19,13 +19,12 @@
 
 package org.gudy.azureus2.pluginsimpl.local.network;
 
-import java.nio.ByteBuffer;
-
+import com.aelitis.azureus.core.peermanager.messaging.Message;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.plugins.network.RawMessage;
 import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
 
-import com.aelitis.azureus.core.peermanager.messaging.Message;
+import java.nio.ByteBuffer;
 
 
 /**

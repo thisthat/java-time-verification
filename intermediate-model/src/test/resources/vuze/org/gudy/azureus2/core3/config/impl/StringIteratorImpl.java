@@ -20,9 +20,9 @@
  */
 package org.gudy.azureus2.core3.config.impl;
 
-import java.util.Iterator;
-
 import org.gudy.azureus2.core3.config.StringIterator;
+
+import java.util.Iterator;
 
 /**
  * @author Olivier Chalouhi

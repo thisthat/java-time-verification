@@ -18,6 +18,7 @@
 
 package org.gudy.azureus2.ui.swt.progress;
 
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -35,8 +36,6 @@ import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.twistie.ITwistieListener;
 import org.gudy.azureus2.ui.swt.twistie.TwistieLabel;
 import org.gudy.azureus2.ui.swt.twistie.TwistieSection;
-
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 /**
  * 

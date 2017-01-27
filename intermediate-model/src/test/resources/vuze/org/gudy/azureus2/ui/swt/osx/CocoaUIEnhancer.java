@@ -18,8 +18,11 @@
 
 package org.gudy.azureus2.ui.swt.osx;
 
-import java.lang.reflect.*;
-
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -38,11 +41,10 @@ import org.gudy.azureus2.ui.swt.mainwindow.PluginsMenuHelper;
 import org.gudy.azureus2.ui.swt.nat.NatTestWindow;
 import org.gudy.azureus2.ui.swt.speedtest.SpeedTestWizard;
 
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * You can exclude this file (or this whole path) for non OSX builds

@@ -18,36 +18,30 @@
  */
 package org.gudy.azureus2.ui.swt;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import com.aelitis.azureus.plugins.I2PHelpers;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.ui.Graphic;
 import org.gudy.azureus2.plugins.ui.GraphicURI;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemFillListener;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
 import org.gudy.azureus2.plugins.ui.menus.MenuManager;
+import org.gudy.azureus2.plugins.ui.tables.TableContextMenuItem;
 import org.gudy.azureus2.pluginsimpl.local.ui.menus.MenuItemImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.FormattersImpl;
-import org.gudy.azureus2.plugins.ui.tables.TableContextMenuItem;
 import org.gudy.azureus2.ui.swt.plugins.UISWTGraphic;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.plugins.I2PHelpers;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**

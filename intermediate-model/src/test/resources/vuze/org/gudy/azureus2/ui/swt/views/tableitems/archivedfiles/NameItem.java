@@ -18,14 +18,14 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.archivedfiles;
 
-import java.io.File;
-
-import org.gudy.azureus2.ui.swt.debug.ObfusticateCellText;
-import org.gudy.azureus2.ui.swt.views.ArchivedFilesView;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.download.DownloadStub.DownloadStubFile;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.debug.ObfusticateCellText;
+import org.gudy.azureus2.ui.swt.views.ArchivedFilesView;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+
+import java.io.File;
 
 
 

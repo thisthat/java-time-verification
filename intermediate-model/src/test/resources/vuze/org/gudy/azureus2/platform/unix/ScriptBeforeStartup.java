@@ -18,6 +18,13 @@
 
 package org.gudy.azureus2.platform.unix;
 
+import com.aelitis.azureus.core.impl.AzureusCoreSingleInstanceClient;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.FileUtil;
+import org.gudy.azureus2.plugins.PluginManager;
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -25,15 +32,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-
-import com.aelitis.azureus.core.impl.AzureusCoreSingleInstanceClient;
-
-import org.gudy.azureus2.plugins.PluginManager;
 
 public class ScriptBeforeStartup
 {

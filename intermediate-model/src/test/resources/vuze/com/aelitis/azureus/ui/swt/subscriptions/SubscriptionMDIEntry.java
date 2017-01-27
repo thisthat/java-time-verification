@@ -19,7 +19,12 @@
 package com.aelitis.azureus.ui.swt.subscriptions;
 
 
-
+import com.aelitis.azureus.core.subs.*;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
+import com.aelitis.azureus.ui.swt.mdi.BaseMdiEntry;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
@@ -27,14 +32,6 @@ import org.gudy.azureus2.plugins.ui.UIManager;
 import org.gudy.azureus2.plugins.ui.menus.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
-
-
-import com.aelitis.azureus.core.subs.*;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
-import com.aelitis.azureus.ui.swt.mdi.BaseMdiEntry;
 
 public class SubscriptionMDIEntry implements SubscriptionListener, ViewTitleInfo
 {

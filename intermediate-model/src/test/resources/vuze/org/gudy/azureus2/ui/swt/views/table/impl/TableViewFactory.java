@@ -18,10 +18,9 @@
 
 package org.gudy.azureus2.ui.swt.views.table.impl;
 
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.painted.TableViewPainted;
-
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
 
 public class TableViewFactory
 {

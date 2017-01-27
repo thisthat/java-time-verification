@@ -20,6 +20,15 @@
 
 package com.aelitis.azureus.core.pairing.impl;
 
+import com.aelitis.azureus.core.pairing.PairedServiceRequestHandler;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
+import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.URL;
@@ -27,21 +36,6 @@ import java.security.AlgorithmParameters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
-import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
-
-import com.aelitis.azureus.core.pairing.PairedServiceRequestHandler;
 
 public class 
 PairManagerTunnel 

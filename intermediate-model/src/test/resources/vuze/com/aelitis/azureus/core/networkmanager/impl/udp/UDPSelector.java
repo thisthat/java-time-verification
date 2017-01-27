@@ -19,16 +19,17 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.udp;
 
-import java.io.IOException;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.AESemaphore;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class 
 UDPSelector 

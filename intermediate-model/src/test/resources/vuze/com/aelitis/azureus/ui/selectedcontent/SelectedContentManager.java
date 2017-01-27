@@ -20,13 +20,12 @@
 
 package com.aelitis.azureus.ui.selectedcontent;
 
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.ui.common.table.TableView;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.ui.common.table.TableView;
 
 /**
  * Manages the currently selected content in the visible display

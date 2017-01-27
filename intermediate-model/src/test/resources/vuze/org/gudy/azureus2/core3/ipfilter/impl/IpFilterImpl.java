@@ -27,11 +27,7 @@ package org.gudy.azureus2.core3.ipfilter.impl;
  *
  */
 
-import java.io.*;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.ipfilter.*;
@@ -41,7 +37,13 @@ import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.tracker.protocol.PRHelpers;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.util.*;
 
 public class 
 IpFilterImpl 

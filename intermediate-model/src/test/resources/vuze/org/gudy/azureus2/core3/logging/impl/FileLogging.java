@@ -16,6 +16,12 @@
  */
 package org.gudy.azureus2.core3.logging.impl;
 
+import org.gudy.azureus2.core3.config.COConfigurationListener;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.config.impl.ConfigurationManager;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,12 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import org.gudy.azureus2.core3.config.COConfigurationListener;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.config.impl.ConfigurationManager;
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.Debug;
 
 /**
  * Log events to a file.

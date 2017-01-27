@@ -20,11 +20,10 @@
 
 package com.aelitis.azureus.ui.swt.shells.main;
 
-import org.eclipse.swt.widgets.Display;
-import org.gudy.azureus2.core3.util.AERunStateHandler;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.ui.IUIIntializer;
+import org.eclipse.swt.widgets.Display;
+import org.gudy.azureus2.core3.util.AERunStateHandler;
 
 public class 
 MainWindowFactory 

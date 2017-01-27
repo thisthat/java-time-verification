@@ -20,9 +20,8 @@
  
 package com.aelitis.azureus.ui.common.viewtitleinfo;
 
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.Debug;
 
 /**
  * @author TuxPaper

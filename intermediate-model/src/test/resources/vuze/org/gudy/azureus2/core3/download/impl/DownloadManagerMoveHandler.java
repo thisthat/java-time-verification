@@ -17,9 +17,6 @@
  */
 package org.gudy.azureus2.core3.download.impl;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
@@ -27,6 +24,9 @@ import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.savelocation.SaveLocationChange;
 import org.gudy.azureus2.plugins.download.savelocation.SaveLocationManager;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @author Allan Crooks

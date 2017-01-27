@@ -18,12 +18,11 @@
 package com.aelitis.azureus.ui.swt.columns.subscriptions;
 
 
+import com.aelitis.azureus.core.subs.Subscription;
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
 import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
 import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
 import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
-
-import com.aelitis.azureus.core.subs.Subscription;
 
 /**
  * @author Olivier Chalouhi

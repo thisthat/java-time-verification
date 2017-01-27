@@ -1,19 +1,5 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.AlgorithmParameterSpec;
-
-import org.gudy.bouncycastle.jce.provider.JDKDigestSignature;
-import org.gudy.bouncycastle.jce.provider.RSAUtil;
 import org.gudy.bouncycastle.asn1.ASN1Sequence;
 import org.gudy.bouncycastle.asn1.DERInputStream;
 import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
@@ -26,14 +12,17 @@ import org.gudy.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.gudy.bouncycastle.crypto.AsymmetricBlockCipher;
 import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.Digest;
-import org.gudy.bouncycastle.crypto.digests.MD2Digest;
-import org.gudy.bouncycastle.crypto.digests.MD5Digest;
-import org.gudy.bouncycastle.crypto.digests.RIPEMD128Digest;
-import org.gudy.bouncycastle.crypto.digests.RIPEMD160Digest;
-import org.gudy.bouncycastle.crypto.digests.RIPEMD256Digest;
-import org.gudy.bouncycastle.crypto.digests.SHA1Digest;
+import org.gudy.bouncycastle.crypto.digests.*;
 import org.gudy.bouncycastle.crypto.encodings.PKCS1Encoding;
 import org.gudy.bouncycastle.crypto.engines.RSAEngine;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.AlgorithmParameterSpec;
 
 public class JDKDigestSignature
     extends Signature implements PKCSObjectIdentifiers, X509ObjectIdentifiers

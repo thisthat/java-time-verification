@@ -27,10 +27,6 @@ package org.gudy.azureus2.pluginsimpl.remote.download;
  *
  */
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
 import org.gudy.azureus2.plugins.disk.DiskManager;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
@@ -44,6 +40,10 @@ import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.pluginsimpl.remote.*;
 import org.gudy.azureus2.pluginsimpl.remote.disk.RPDiskManagerFileInfo;
 import org.gudy.azureus2.pluginsimpl.remote.torrent.*;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 
 public class 

@@ -19,11 +19,11 @@
 
 package org.gudy.azureus2.platform.win32.access;
 
+import org.gudy.azureus2.platform.PlatformManagerPingCallback;
+
 import java.io.File;
 import java.net.InetAddress;
 import java.util.Map;
-
-import org.gudy.azureus2.platform.PlatformManagerPingCallback;
 
 /**
  * @author parg

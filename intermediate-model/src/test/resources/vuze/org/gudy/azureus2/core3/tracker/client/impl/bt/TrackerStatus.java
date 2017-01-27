@@ -17,23 +17,14 @@
  */
 package org.gudy.azureus2.core3.tracker.client.impl.bt;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-
+import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.util.MapUtils;
+import com.aelitis.net.udp.uc.PRUDPPacket;
+import com.aelitis.net.udp.uc.PRUDPPacketHandler;
+import com.aelitis.net.udp.uc.PRUDPPacketHandlerException;
+import com.aelitis.net.udp.uc.PRUDPPacketHandlerFactory;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -53,14 +44,15 @@ import org.gudy.azureus2.plugins.clientid.ClientIDException;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 
-import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.util.MapUtils;
-import com.aelitis.net.udp.uc.PRUDPPacket;
-import com.aelitis.net.udp.uc.PRUDPPacketHandler;
-import com.aelitis.net.udp.uc.PRUDPPacketHandlerException;
-import com.aelitis.net.udp.uc.PRUDPPacketHandlerFactory;
+import javax.net.ssl.*;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author Olivier

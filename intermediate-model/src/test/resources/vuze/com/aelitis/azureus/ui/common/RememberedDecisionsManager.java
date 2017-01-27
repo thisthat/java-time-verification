@@ -17,10 +17,10 @@
 
 package com.aelitis.azureus.ui.common;
 
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
 
 /**
  * Remembers Decisions (usually from message boxes)

@@ -10,22 +10,21 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.IOException;
-import java.util.*;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.log4j.Appender;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import org.apache.log4j.*;
 import org.apache.log4j.varia.DenyAllFilter;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
 import org.gudy.azureus2.plugins.logging.LoggerChannelListener;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Tobias Minich

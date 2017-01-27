@@ -18,15 +18,14 @@
 
 package com.aelitis.azureus.util;
 
+import org.gudy.azureus2.core3.util.UrlUtils;
+import org.json.simple.JSONArray;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.json.simple.JSONArray;
 
 /**
  * Note: There's a similarly defined map processing utility class called

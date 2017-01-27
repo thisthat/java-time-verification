@@ -21,14 +21,14 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.tracker.host.TRHost;
 import org.gudy.azureus2.core3.tracker.host.TRHostException;
 import org.gudy.azureus2.core3.tracker.host.TRHostTorrent;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.util.List;
 
 /**
  * console command to host a torrent.

@@ -22,14 +22,9 @@
 
 package com.aelitis.azureus.ui.swt.columns.tag;
 
-import org.gudy.azureus2.plugins.ui.tables.TableCell;
-import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnExtraInfoListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
-
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagFeatureRateLimit;
+import org.gudy.azureus2.plugins.ui.tables.*;
 
 
 

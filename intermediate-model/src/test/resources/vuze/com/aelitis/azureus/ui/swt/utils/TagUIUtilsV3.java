@@ -18,19 +18,18 @@
 
 package com.aelitis.azureus.ui.swt.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.swt.SWT;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.tag.*;
 import com.aelitis.azureus.ui.UIFunctions;
 import com.aelitis.azureus.ui.swt.skin.*;
 import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
 import com.aelitis.azureus.ui.swt.views.skin.StandardButtonsArea;
+import org.eclipse.swt.SWT;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author TuxPaper

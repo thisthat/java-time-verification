@@ -25,15 +25,17 @@ package com.aelitis.net.upnp.impl.device;
  *
  */
 
-import java.util.*;
-import java.net.*;
-
+import com.aelitis.net.upnp.*;
+import com.aelitis.net.upnp.impl.UPnPImpl;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocument;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
 
-import com.aelitis.net.upnp.*;
-import com.aelitis.net.upnp.impl.UPnPImpl;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.NetworkInterface;
+import java.net.URL;
+import java.util.*;
 
 public class 
 UPnPRootDeviceImpl 

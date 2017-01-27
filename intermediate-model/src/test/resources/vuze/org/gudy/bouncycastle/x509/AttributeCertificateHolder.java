@@ -4,12 +4,7 @@ import org.gudy.bouncycastle.asn1.ASN1Encodable;
 import org.gudy.bouncycastle.asn1.ASN1Sequence;
 import org.gudy.bouncycastle.asn1.DERInteger;
 import org.gudy.bouncycastle.asn1.DERSequence;
-import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.gudy.bouncycastle.asn1.x509.GeneralName;
-import org.gudy.bouncycastle.asn1.x509.GeneralNames;
-import org.gudy.bouncycastle.asn1.x509.Holder;
-import org.gudy.bouncycastle.asn1.x509.IssuerSerial;
-import org.gudy.bouncycastle.asn1.x509.ObjectDigestInfo;
+import org.gudy.bouncycastle.asn1.x509.*;
 import org.gudy.bouncycastle.jce.PrincipalUtil;
 import org.gudy.bouncycastle.jce.X509Principal;
 import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -17,16 +12,11 @@ import org.gudy.bouncycastle.util.Arrays;
 import org.gudy.bouncycastle.util.Selector;
 
 import javax.security.auth.x500.X500Principal;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.Principal;
-import java.security.cert.CertSelector;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateParsingException;
-import java.security.cert.X509Certificate;
+import java.security.cert.*;
 import java.util.ArrayList;
 import java.util.List;
 

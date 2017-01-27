@@ -20,21 +20,15 @@
 
 package com.aelitis.azureus.core.custom.impl;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import com.aelitis.azureus.core.custom.Customization;
+import com.aelitis.azureus.core.custom.CustomizationException;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.custom.Customization;
-import com.aelitis.azureus.core.custom.CustomizationException;
 
 public class 
 CustomizationImpl 	

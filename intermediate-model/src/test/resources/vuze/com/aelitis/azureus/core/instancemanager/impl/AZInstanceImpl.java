@@ -19,10 +19,9 @@
 
 package com.aelitis.azureus.core.instancemanager.impl;
 
-import java.util.*;
-
-
 import com.aelitis.azureus.core.instancemanager.AZInstance;
+
+import java.util.Map;
 
 public abstract class 
 AZInstanceImpl 

@@ -20,10 +20,15 @@
 
 package com.aelitis.azureus.core.vuzefile;
 
-import java.io.*;
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.BEncoder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 VuzeFileImpl

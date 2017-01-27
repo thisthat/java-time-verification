@@ -1,6 +1,12 @@
 
 package org.gudy.bouncycastle.jce.provider;
 
+import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
+import org.gudy.bouncycastle.asn1.DEROutputStream;
+import org.gudy.bouncycastle.asn1.x509.TBSCertList;
+import org.gudy.bouncycastle.asn1.x509.X509Extension;
+import org.gudy.bouncycastle.asn1.x509.X509Extensions;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -10,12 +16,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
-import org.gudy.bouncycastle.asn1.x509.TBSCertList;
-import org.gudy.bouncycastle.asn1.x509.X509Extension;
-import org.gudy.bouncycastle.asn1.x509.X509Extensions;
 
 /**
  * The following extensions are listed in RFC 2459 as relevant to CRL Entries

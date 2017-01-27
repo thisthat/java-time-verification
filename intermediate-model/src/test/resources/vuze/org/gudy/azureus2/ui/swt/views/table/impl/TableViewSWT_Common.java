@@ -18,11 +18,8 @@
 
 package org.gudy.azureus2.ui.swt.views.table.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -45,8 +42,10 @@ import org.gudy.azureus2.ui.swt.views.columnsetup.TableColumnSetupWindow;
 import org.gudy.azureus2.ui.swt.views.table.*;
 import org.gudy.azureus2.ui.swt.views.table.utils.TableContextMenuManager;
 
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class TableViewSWT_Common
 	implements MouseListener, MouseMoveListener, SelectionListener, KeyListener

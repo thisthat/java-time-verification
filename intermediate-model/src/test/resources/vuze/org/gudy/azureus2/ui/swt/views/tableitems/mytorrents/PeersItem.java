@@ -22,8 +22,8 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
-import java.util.Locale;
-
+import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.graphics.Image;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
@@ -35,18 +35,12 @@ import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemFillListener;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
-import org.gudy.azureus2.plugins.ui.tables.TableCell;
-import org.gudy.azureus2.plugins.ui.tables.TableCellAddedListener;
-import org.gudy.azureus2.plugins.ui.tables.TableCellMouseEvent;
-import org.gudy.azureus2.plugins.ui.tables.TableCellMouseListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
-import org.gudy.azureus2.plugins.ui.tables.TableContextMenuItem;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 
-import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.util.Locale;
 
 /** # of Peers
  * 

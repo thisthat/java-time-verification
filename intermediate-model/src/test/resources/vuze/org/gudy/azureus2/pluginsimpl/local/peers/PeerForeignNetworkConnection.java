@@ -20,24 +20,16 @@
 
 package org.gudy.azureus2.pluginsimpl.local.peers;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.peermanager.messaging.Message;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.plugins.peers.Peer;
 
-import com.aelitis.azureus.core.networkmanager.ConnectionEndpoint;
-import com.aelitis.azureus.core.networkmanager.EventWaiter;
-import com.aelitis.azureus.core.networkmanager.IncomingMessageQueue;
-import com.aelitis.azureus.core.networkmanager.NetworkConnectionHelper;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
-import com.aelitis.azureus.core.networkmanager.Transport;
-import com.aelitis.azureus.core.networkmanager.TransportBase;
-import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 public class 
 PeerForeignNetworkConnection

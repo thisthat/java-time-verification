@@ -19,18 +19,10 @@
 
 package org.gudy.azureus2.core3.disk.impl.resume;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerException;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.disk.DiskManagerCheckRequest;
-import org.gudy.azureus2.core3.disk.DiskManagerCheckRequestListener;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.core3.disk.DiskManagerPiece;
-import org.gudy.azureus2.core3.disk.DiskManagerReadRequest;
-import org.gudy.azureus2.core3.disk.DiskManagerReadRequestListener;
-import org.gudy.azureus2.core3.disk.DiskManagerWriteRequest;
-import org.gudy.azureus2.core3.disk.DiskManagerWriteRequestListener;
+import org.gudy.azureus2.core3.disk.*;
 import org.gudy.azureus2.core3.disk.impl.DiskManagerFileInfoImpl;
 import org.gudy.azureus2.core3.disk.impl.DiskManagerImpl;
 import org.gudy.azureus2.core3.disk.impl.DiskManagerRecheckInstance;
@@ -48,7 +40,7 @@ import org.gudy.azureus2.core3.util.ByteArrayHashMap;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerException;
+import java.util.*;
 
 /**
  * @author parg

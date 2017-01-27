@@ -20,12 +20,22 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.util.RegExUtil;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.impl.TableViewImpl;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.*;
@@ -88,22 +98,10 @@ import org.gudy.azureus2.ui.swt.views.utils.CategoryUIUtils;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.util.RegExUtil;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.impl.TableViewImpl;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /** Displays a list of torrents in a table view.
  *

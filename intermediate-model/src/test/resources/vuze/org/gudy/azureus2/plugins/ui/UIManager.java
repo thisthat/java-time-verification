@@ -19,16 +19,16 @@
 
 package org.gudy.azureus2.plugins.ui;
 
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.logging.LoggerChannel;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.plugins.ui.menus.MenuManager;
+import org.gudy.azureus2.plugins.ui.model.*;
+import org.gudy.azureus2.plugins.ui.tables.TableManager;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Map;
-
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-import org.gudy.azureus2.plugins.logging.LoggerChannel;
-import org.gudy.azureus2.plugins.ui.model.*;
-import org.gudy.azureus2.plugins.ui.menus.MenuManager;
-import org.gudy.azureus2.plugins.ui.tables.TableManager;
 
 /**
  * Management tools for the user interface.

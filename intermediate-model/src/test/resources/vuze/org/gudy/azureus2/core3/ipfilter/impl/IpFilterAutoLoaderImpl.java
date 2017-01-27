@@ -17,6 +17,19 @@
 
 package org.gudy.azureus2.core3.ipfilter.impl;
 
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.ipfilter.IpRange;
+import org.gudy.azureus2.core3.logging.LogEvent;
+import org.gudy.azureus2.core3.logging.LogIDs;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderAdapter;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
+import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,22 +41,6 @@ import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.ipfilter.IpRange;
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderAdapter;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
-
-import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
 
 /**
  * @author TuxPaper

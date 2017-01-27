@@ -20,16 +20,6 @@
 
 package com.aelitis.azureus.core.security;
 
-import java.math.BigInteger;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.spec.KeySpec;
-
 import org.gudy.bouncycastle.jce.ECNamedCurveTable;
 import org.gudy.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.gudy.bouncycastle.jce.interfaces.ECPublicKey;
@@ -39,6 +29,10 @@ import org.gudy.bouncycastle.jce.spec.ECParameterSpec;
 import org.gudy.bouncycastle.jce.spec.ECPrivateKeySpec;
 import org.gudy.bouncycastle.jce.spec.ECPublicKeySpec;
 import org.gudy.bouncycastle.math.ec.ECPoint;
+
+import java.math.BigInteger;
+import java.security.*;
+import java.security.spec.KeySpec;
 
 public class 
 CryptoECCUtils 

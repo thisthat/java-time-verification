@@ -1,12 +1,12 @@
 package org.gudy.bouncycastle.crypto.encodings;
 
-import java.security.SecureRandom;
-
 import org.gudy.bouncycastle.crypto.AsymmetricBlockCipher;
 import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.InvalidCipherTextException;
 import org.gudy.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.gudy.bouncycastle.crypto.params.ParametersWithRandom;
+
+import java.security.SecureRandom;
 
 /**
  * this does your basic PKCS 1 v1.5 padding - whether or not you should be using this

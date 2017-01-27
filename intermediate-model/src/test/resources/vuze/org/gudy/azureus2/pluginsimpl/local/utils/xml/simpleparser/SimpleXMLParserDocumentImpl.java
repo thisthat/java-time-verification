@@ -22,9 +22,7 @@
  
 package org.gudy.azureus2.pluginsimpl.local.utils.xml.simpleparser;
 
-import javax.xml.parsers.*;
-
-import org.xml.sax.*;
+import com.aelitis.azureus.core.util.UncloseableInputStream;
 import org.apache.commons.lang.Entities;
 import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.core3.util.Constants;
@@ -34,16 +32,19 @@ import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocument;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentAttribute;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentException;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.*;
 
-import com.aelitis.azureus.core.util.UncloseableInputStream;
-
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Locale;
+import java.util.Vector;
 
 public class 
 SimpleXMLParserDocumentImpl

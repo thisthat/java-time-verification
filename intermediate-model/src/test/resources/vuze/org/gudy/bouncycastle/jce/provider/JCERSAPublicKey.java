@@ -1,11 +1,5 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.RSAPublicKeySpec;
-
 import org.gudy.bouncycastle.asn1.ASN1Sequence;
 import org.gudy.bouncycastle.asn1.DERNull;
 import org.gudy.bouncycastle.asn1.DEROutputStream;
@@ -14,6 +8,12 @@ import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.gudy.bouncycastle.asn1.x509.RSAPublicKeyStructure;
 import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.gudy.bouncycastle.crypto.params.RSAKeyParameters;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPublicKeySpec;
 
 public class JCERSAPublicKey
     implements RSAPublicKey

@@ -17,8 +17,7 @@
  */
 package org.gudy.azureus2.ui.swt.minibar;
 
-import java.util.Iterator;
-
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
@@ -36,7 +35,7 @@ import org.gudy.azureus2.ui.swt.components.DoubleBufferedLabel;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory.AEShell;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.util.Iterator;
 
 /**
  * @author Allan Crooks

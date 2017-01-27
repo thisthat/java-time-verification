@@ -19,7 +19,9 @@
  */
 
 package org.gudy.azureus2.ui.swt.donations;
- 
+
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.security.CryptoManagerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.*;
 import org.eclipse.swt.events.*;
@@ -39,9 +41,6 @@ import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.security.CryptoManagerFactory;
 
 /**
  * @author TuxPaper

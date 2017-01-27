@@ -19,14 +19,11 @@
 
 package com.aelitis.azureus.ui.swt.shells.main;
 
+import com.aelitis.azureus.core.AzureusCore;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.ui.swt.mainwindow.IMainMenu;
 import org.gudy.azureus2.ui.swt.mainwindow.IMainStatusBar;
 import org.gudy.azureus2.ui.swt.mainwindow.IMainWindow;
-
-import com.aelitis.azureus.core.AzureusCore;
-
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTInstanceImpl;
 
 

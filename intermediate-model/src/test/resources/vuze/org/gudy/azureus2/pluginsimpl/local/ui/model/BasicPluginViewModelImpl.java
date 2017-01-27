@@ -24,17 +24,17 @@ package org.gudy.azureus2.pluginsimpl.local.ui.model;
  *
  */
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
 import org.gudy.azureus2.plugins.logging.LoggerChannelListener;
-import org.gudy.azureus2.plugins.ui.model.*;
 import org.gudy.azureus2.plugins.ui.components.*;
+import org.gudy.azureus2.plugins.ui.model.*;
 import org.gudy.azureus2.pluginsimpl.local.ui.UIManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.ui.components.*;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class 
 BasicPluginViewModelImpl 

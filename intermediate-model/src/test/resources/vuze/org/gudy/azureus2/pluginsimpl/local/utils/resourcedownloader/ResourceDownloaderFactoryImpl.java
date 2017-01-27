@@ -24,15 +24,15 @@ package org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader;
  *
  */
 
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
-
-import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
-import org.gudy.azureus2.core3.logging.*;
+import java.util.List;
 
 public class 
 ResourceDownloaderFactoryImpl

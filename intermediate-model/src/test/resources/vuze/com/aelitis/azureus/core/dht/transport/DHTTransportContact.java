@@ -24,11 +24,13 @@ package com.aelitis.azureus.core.dht.transport;
  *
  */
 
-import java.util.*;
-import java.io.*;
-import java.net.InetSocketAddress;
-
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
 
 public interface 
 DHTTransportContact

@@ -19,19 +19,6 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.global.GlobalManagerListener;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.networkmanager.impl.*;
 import com.aelitis.azureus.core.networkmanager.impl.http.HTTPNetworkManager;
@@ -41,6 +28,18 @@ import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
 import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
 import com.aelitis.azureus.core.peermanager.messaging.MessageStreamFactory;
 import com.aelitis.azureus.core.util.FeatureAvailability;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.global.GlobalManagerListener;
+import org.gudy.azureus2.core3.util.AddressUtils;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 

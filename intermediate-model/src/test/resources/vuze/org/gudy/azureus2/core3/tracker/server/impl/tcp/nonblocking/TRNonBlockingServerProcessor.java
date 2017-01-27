@@ -19,14 +19,7 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl.tcp.nonblocking;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
 import org.gudy.azureus2.core3.tracker.server.impl.tcp.TRTrackerServerProcessorTCP;
 import org.gudy.azureus2.core3.tracker.server.impl.tcp.TRTrackerServerTCP;
 import org.gudy.azureus2.core3.util.AESemaphore;
@@ -34,7 +27,13 @@ import org.gudy.azureus2.core3.util.AsyncController;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 /**
  * @author parg

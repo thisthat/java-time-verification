@@ -20,13 +20,12 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.net.InetAddress;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminASN;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
 import org.gudy.azureus2.core3.tracker.protocol.PRHelpers;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminASN;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
+import java.net.InetAddress;
 
 public class 
 NetworkAdminASNImpl 

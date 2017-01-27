@@ -17,27 +17,20 @@
  */
 package org.gudy.azureus2.ui.swt;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.gudy.azureus2.core3.torrent.*;
-import org.gudy.azureus2.core3.util.*;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Olivier

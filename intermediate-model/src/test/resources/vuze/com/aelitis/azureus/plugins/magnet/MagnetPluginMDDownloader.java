@@ -20,38 +20,12 @@
 
 package com.aelitis.azureus.plugins.magnet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.RandomAccessFile;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.util.PlatformTorrentUtils;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.peer.PEPeerManager;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLGroup;
-import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLSet;
-import org.gudy.azureus2.core3.torrent.TOTorrentCreator;
-import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.core3.torrent.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.disk.DiskManagerChannel;
 import org.gudy.azureus2.plugins.disk.DiskManagerEvent;
@@ -61,16 +35,16 @@ import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadManager;
 import org.gudy.azureus2.plugins.download.DownloadManagerListener;
 import org.gudy.azureus2.plugins.download.DownloadPeerListener;
-import org.gudy.azureus2.plugins.peers.Peer;
-import org.gudy.azureus2.plugins.peers.PeerEvent;
-import org.gudy.azureus2.plugins.peers.PeerListener2;
-import org.gudy.azureus2.plugins.peers.PeerManager;
-import org.gudy.azureus2.plugins.peers.PeerManagerEvent;
-import org.gudy.azureus2.plugins.peers.PeerManagerListener2;
+import org.gudy.azureus2.plugins.peers.*;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.util.PlatformTorrentUtils;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.*;
 
 public class 
 MagnetPluginMDDownloader 

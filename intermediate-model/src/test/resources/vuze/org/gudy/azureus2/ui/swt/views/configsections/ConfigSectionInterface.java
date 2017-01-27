@@ -22,19 +22,20 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
+import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.gudy.azureus2.core3.config.impl.StringListImpl;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.config.impl.StringListImpl;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.TrackersUtil;
 import org.gudy.azureus2.platform.PlatformManager;
-import org.gudy.azureus2.platform.PlatformManagerFactory;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
+import org.gudy.azureus2.platform.PlatformManagerFactory;
 import org.gudy.azureus2.plugins.platform.PlatformManagerException;
 import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.ui.swt.Messages;
@@ -42,9 +43,6 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.LinkLabel;
 import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-import org.gudy.azureus2.core3.util.TrackersUtil;
-
-import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
 
 import java.util.HashMap;
 

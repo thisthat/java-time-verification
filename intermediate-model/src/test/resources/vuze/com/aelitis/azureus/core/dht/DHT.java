@@ -19,9 +19,6 @@
 
 package com.aelitis.azureus.core.dht;
 
-import java.io.*;
-import java.util.List;
-
 import com.aelitis.azureus.core.dht.control.DHTControl;
 import com.aelitis.azureus.core.dht.db.DHTDB;
 import com.aelitis.azureus.core.dht.nat.DHTNATPuncher;
@@ -29,6 +26,11 @@ import com.aelitis.azureus.core.dht.router.DHTRouter;
 import com.aelitis.azureus.core.dht.transport.DHTTransport;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author parg

@@ -22,30 +22,28 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.files;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.aelitis.azureus.core.AzureusCoreOperation;
+import com.aelitis.azureus.core.AzureusCoreOperationTask;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.FileUtil;
+import org.gudy.azureus2.plugins.ui.menus.MenuItem;
+import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.ImageRepository;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.debug.ObfusticateCellText;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-import org.gudy.azureus2.plugins.ui.menus.MenuItem;
-import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
-import org.gudy.azureus2.plugins.ui.tables.*;
 
-import com.aelitis.azureus.core.AzureusCoreOperation;
-import com.aelitis.azureus.core.AzureusCoreOperationTask;
+import java.io.File;
+import java.io.IOException;
 
 /** Torrent name cell for My Torrents.
  *

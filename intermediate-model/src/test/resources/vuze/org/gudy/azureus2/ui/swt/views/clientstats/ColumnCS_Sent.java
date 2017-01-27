@@ -18,15 +18,14 @@
 
 package org.gudy.azureus2.ui.swt.views.clientstats;
 
-import java.util.Map;
-
+import com.aelitis.azureus.util.MapUtils;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
 import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
 import org.gudy.azureus2.plugins.ui.tables.TableColumn;
 
-import com.aelitis.azureus.util.MapUtils;
+import java.util.Map;
 
 public class ColumnCS_Sent
 	implements TableCellRefreshListener

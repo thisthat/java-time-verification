@@ -20,27 +20,6 @@
 
 package com.aelitis.azureus.plugins.net.netstatus.swt;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.URL;
-import java.util.*;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
-
-import java.security.cert.Certificate;
-
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.networkmanager.admin.*;
 import com.aelitis.azureus.core.proxy.AEProxyFactory;
@@ -49,6 +28,20 @@ import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
 import com.aelitis.azureus.plugins.net.netstatus.NetStatusPlugin;
 import com.aelitis.azureus.plugins.net.netstatus.NetStatusProtocolTesterBT;
 import com.aelitis.azureus.plugins.net.netstatus.NetStatusProtocolTesterListener;
+import org.gudy.azureus2.core3.util.BDecoder;
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.Debug;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
+import java.security.cert.Certificate;
+import java.util.*;
 
 public class 
 NetStatusPluginTester 

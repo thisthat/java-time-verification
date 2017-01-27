@@ -20,52 +20,31 @@
 
 package com.aelitis.azureus.core.subs.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.security.KeyPair;
-import java.util.*;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentCreator;
-import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.LightHashMap;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.bouncycastle.util.encoders.Base64;
-import org.json.simple.JSONObject;
-
 import com.aelitis.azureus.core.lws.LightWeightSeed;
 import com.aelitis.azureus.core.lws.LightWeightSeedAdapter;
 import com.aelitis.azureus.core.lws.LightWeightSeedManager;
 import com.aelitis.azureus.core.metasearch.Engine;
 import com.aelitis.azureus.core.metasearch.MetaSearchManagerFactory;
 import com.aelitis.azureus.core.security.CryptoECCUtils;
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.subs.SubscriptionException;
-import com.aelitis.azureus.core.subs.SubscriptionHistory;
-import com.aelitis.azureus.core.subs.SubscriptionListener;
-import com.aelitis.azureus.core.subs.SubscriptionManager;
-import com.aelitis.azureus.core.subs.SubscriptionPopularityListener;
-import com.aelitis.azureus.core.subs.SubscriptionResult;
+import com.aelitis.azureus.core.subs.*;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
 import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import com.aelitis.azureus.util.ImportExportUtils;
 import com.aelitis.azureus.util.JSONUtils;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.torrent.TOTorrentCreator;
+import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.bouncycastle.util.encoders.Base64;
+import org.json.simple.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.security.KeyPair;
+import java.util.*;
 
 public class 
 SubscriptionImpl 

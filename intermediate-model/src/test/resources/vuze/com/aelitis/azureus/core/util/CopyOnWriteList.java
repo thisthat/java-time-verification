@@ -19,14 +19,10 @@
 
 package com.aelitis.azureus.core.util;
 
+import org.gudy.azureus2.core3.util.*;
+
 import java.lang.ref.WeakReference;
 import java.util.*;
-
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.IndentWriter;
 
 public class 
 CopyOnWriteList<T> 

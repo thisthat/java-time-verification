@@ -20,13 +20,8 @@
 package org.gudy.azureus2.pluginsimpl.local.clientid;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.*;
-import java.nio.channels.UnsupportedAddressTypeException;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.util.NetUtils;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
@@ -36,8 +31,12 @@ import org.gudy.azureus2.plugins.clientid.ClientIDException;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
 import org.gudy.azureus2.plugins.clientid.ClientIDManager;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.util.NetUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.*;
+import java.nio.channels.UnsupportedAddressTypeException;
+import java.util.*;
 
 /**
  * @author parg

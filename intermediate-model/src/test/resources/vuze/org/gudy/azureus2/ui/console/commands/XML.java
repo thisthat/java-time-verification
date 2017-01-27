@@ -10,11 +10,12 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.FileOutputStream;
-import java.util.List;
 import org.gudy.azureus2.core3.stats.StatsWriterFactory;
 import org.gudy.azureus2.core3.stats.StatsWriterStreamer;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.io.FileOutputStream;
+import java.util.List;
 
 /**
  * @author tobi

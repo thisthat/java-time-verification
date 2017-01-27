@@ -20,31 +20,18 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
-
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.average.Average;
+import com.aelitis.azureus.core.util.average.AverageFactory;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.DiskManagerPiece;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.disk.DiskManager;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
@@ -55,12 +42,10 @@ import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.devices.*;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
-import com.aelitis.azureus.core.messenger.config.PlatformDevicesMessenger;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.average.Average;
-import com.aelitis.azureus.core.util.average.AverageFactory;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 public class 
 TranscodeQueueImpl 	

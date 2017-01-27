@@ -20,6 +20,12 @@
 
 package com.aelitis.azureus.ui.swt.devices;
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.devices.Device;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.plugins.net.netstatus.NetStatusPlugin;
+import com.aelitis.azureus.plugins.net.netstatus.swt.NetStatusPluginTester;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -39,13 +45,6 @@ import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT.TriggerInThread;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.devices.Device;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.plugins.net.netstatus.NetStatusPlugin;
-import com.aelitis.azureus.plugins.net.netstatus.swt.NetStatusPluginTester;
 
 public class 
 DeviceInternetView 

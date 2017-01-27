@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.CipherParameters;
-import org.gudy.bouncycastle.crypto.DataLengthException;
-
-
 /**
  * Block cipher engines are expected to conform to this interface.
  */

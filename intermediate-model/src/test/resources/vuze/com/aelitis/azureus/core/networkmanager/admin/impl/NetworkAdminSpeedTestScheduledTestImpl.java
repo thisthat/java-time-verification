@@ -20,11 +20,24 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import com.aelitis.azureus.core.networkmanager.admin.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.download.DownloadManagerListener;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import org.gudy.azureus2.pluginsimpl.local.PluginConfigImpl;
+import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -33,35 +46,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.util.AEThread;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SystemProperties;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadManagerListener;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import org.gudy.azureus2.pluginsimpl.local.PluginConfigImpl;
-import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
-
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduledTest;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduledTestListener;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduler;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTester;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterListener;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterResult;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
 
 public class 
 NetworkAdminSpeedTestScheduledTestImpl 

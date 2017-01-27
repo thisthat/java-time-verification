@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.util.bloom.impl;
 
+import com.aelitis.azureus.core.util.bloom.BloomFilter;
+
 import java.util.Arrays;
 import java.util.Map;
-
-import com.aelitis.azureus.core.util.bloom.BloomFilter;
 
 public class 
 BloomFilterAddRemove4Bit

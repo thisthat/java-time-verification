@@ -16,15 +16,14 @@
  */
 package org.gudy.azureus2.ui.swt.views.peer;
 
-import java.util.Arrays;
-
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.impl.transport.PEPeerTransportProtocol;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.views.PieceDistributionView;
 
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
+import java.util.Arrays;
 
 /**
  * @author Aaron Grunthal

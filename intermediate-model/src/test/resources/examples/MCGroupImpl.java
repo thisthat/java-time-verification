@@ -19,25 +19,15 @@
 
 package com.aelitis.net.udp.mc.impl;
 
-import java.net.*;
-import java.util.*;
+																												import com.aelitis.azureus.core.util.NetUtils;
+																												import com.aelitis.net.udp.mc.MCGroup;
+																												import com.aelitis.net.udp.mc.MCGroupAdapter;
+																												import com.aelitis.net.udp.mc.MCGroupException;
+																												import org.gudy.azureus2.core3.config.COConfigurationManager;
+																												import org.gudy.azureus2.core3.util.*;
 
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AEThread;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
-import com.aelitis.azureus.core.util.NetUtils;
-import com.aelitis.net.udp.mc.MCGroup;
-import com.aelitis.net.udp.mc.MCGroupAdapter;
-import com.aelitis.net.udp.mc.MCGroupException;
+																												import java.net.*;
+																												import java.util.*;
 
 
 /**

@@ -20,10 +20,10 @@
 
 package org.gudy.azureus2.ui.swt.views.columnsetup;
 
+import com.aelitis.azureus.ui.common.table.*;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.ui.tables.*;
@@ -33,8 +33,6 @@ import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.impl.FakeTableCell;
-
-import com.aelitis.azureus.ui.common.table.*;
 
 /**
  * @author TuxPaper

@@ -18,9 +18,8 @@
 
 package org.gudy.azureus2.ui.swt.mainwindow;
 
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -34,8 +33,7 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.*;
 
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.util.*;
 
 public class PluginsMenuHelper
 {

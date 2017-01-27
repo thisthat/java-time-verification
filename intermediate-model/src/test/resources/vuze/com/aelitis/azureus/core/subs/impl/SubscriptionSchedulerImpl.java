@@ -20,25 +20,18 @@
 
 package com.aelitis.azureus.core.subs.impl;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
+import com.aelitis.azureus.core.metasearch.Engine;
+import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.core.subs.*;
+import com.aelitis.azureus.util.ConstantsVuze;
+import com.aelitis.azureus.util.UrlFilter;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
 import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.ThreadPool;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadManager;
 import org.gudy.azureus2.plugins.torrent.Torrent;
@@ -51,21 +44,10 @@ import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.subs.SubscriptionDownloadListener;
-import com.aelitis.azureus.core.subs.SubscriptionException;
-import com.aelitis.azureus.core.subs.SubscriptionHistory;
-import com.aelitis.azureus.core.subs.SubscriptionManagerListener;
-import com.aelitis.azureus.core.subs.SubscriptionResult;
-import com.aelitis.azureus.core.subs.SubscriptionScheduler;
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
-import com.aelitis.azureus.core.metasearch.Engine;
-import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
-import com.aelitis.azureus.util.ConstantsVuze;
-import com.aelitis.azureus.util.UrlFilter;
+import java.io.InputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class 
 SubscriptionSchedulerImpl 

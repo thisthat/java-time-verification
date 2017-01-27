@@ -19,9 +19,9 @@
 
 package org.gudy.azureus2.core3.tracker.client;
 
-import java.net.URL;
-
 import org.gudy.azureus2.core3.util.HashWrapper;
+
+import java.net.URL;
 
 /**
  * @author parg

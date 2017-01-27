@@ -1,15 +1,8 @@
 package org.gudy.bouncycastle.asn1.pkcs;
 
-import java.util.Enumeration;
+import org.gudy.bouncycastle.asn1.*;
 
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.BERSequence;
-import org.gudy.bouncycastle.asn1.BERTaggedObject;
-import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DERTaggedObject;
+import java.util.Enumeration;
 
 public class ContentInfo
     implements DEREncodable, PKCSObjectIdentifiers

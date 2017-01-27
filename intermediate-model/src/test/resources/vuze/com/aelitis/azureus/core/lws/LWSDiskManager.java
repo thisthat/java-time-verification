@@ -20,49 +20,26 @@
 
 package com.aelitis.azureus.core.lws;
 
-import java.io.File;
-import java.util.List;
-
-import org.gudy.azureus2.core3.disk.DiskManager;
-import org.gudy.azureus2.core3.disk.DiskManagerCheckRequest;
-import org.gudy.azureus2.core3.disk.DiskManagerCheckRequestListener;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfoSet;
-import org.gudy.azureus2.core3.disk.DiskManagerListener;
-import org.gudy.azureus2.core3.disk.DiskManagerPiece;
-import org.gudy.azureus2.core3.disk.DiskManagerReadRequest;
-import org.gudy.azureus2.core3.disk.DiskManagerReadRequestListener;
-import org.gudy.azureus2.core3.disk.DiskManagerWriteRequest;
-import org.gudy.azureus2.core3.disk.DiskManagerWriteRequestListener;
-import org.gudy.azureus2.core3.disk.impl.DiskManagerFileInfoImpl;
-import org.gudy.azureus2.core3.disk.impl.DiskManagerHelper;
-import org.gudy.azureus2.core3.disk.impl.DiskManagerImpl;
-import org.gudy.azureus2.core3.disk.impl.DiskManagerPieceImpl;
-import org.gudy.azureus2.core3.disk.impl.DiskManagerRecheckScheduler;
-import org.gudy.azureus2.core3.disk.impl.DiskManagerUtil;
+import com.aelitis.azureus.core.diskmanager.access.DiskAccessController;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileOwner;
+import org.gudy.azureus2.core3.disk.*;
+import org.gudy.azureus2.core3.disk.impl.*;
 import org.gudy.azureus2.core3.disk.impl.access.DMAccessFactory;
 import org.gudy.azureus2.core3.disk.impl.access.DMChecker;
 import org.gudy.azureus2.core3.disk.impl.access.DMReader;
-import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceList;
-import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceMap;
-import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceMapper;
-import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceMapperFactory;
-import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceMapperFile;
+import org.gudy.azureus2.core3.disk.impl.piecemapper.*;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.internat.LocaleTorrentUtil;
 import org.gudy.azureus2.core3.internat.LocaleUtilDecoder;
-import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
 import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.diskmanager.access.DiskAccessController;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileOwner;
+import java.io.File;
 
 
 public class 

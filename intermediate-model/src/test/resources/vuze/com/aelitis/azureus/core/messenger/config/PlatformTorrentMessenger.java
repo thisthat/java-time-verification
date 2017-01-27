@@ -17,9 +17,9 @@
 
 package com.aelitis.azureus.core.messenger.config;
 
-import java.util.Map;
-
 import org.gudy.azureus2.core3.torrent.TOTorrent;
+
+import java.util.Map;
 
 /**
  * @author TuxPaper

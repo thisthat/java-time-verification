@@ -18,8 +18,9 @@
 
 package com.aelitis.azureus.ui.common.table.impl;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
 import org.gudy.azureus2.core3.config.impl.ConfigurationManager;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
@@ -28,9 +29,7 @@ import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.ui.tables.TableRow;
 import org.gudy.azureus2.plugins.ui.tables.TableRowRefreshListener;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import java.util.*;
 
 /**
  * @author TuxPaper

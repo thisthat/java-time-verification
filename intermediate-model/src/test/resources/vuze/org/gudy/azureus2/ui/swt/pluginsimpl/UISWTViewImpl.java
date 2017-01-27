@@ -22,13 +22,8 @@
 
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
-import java.awt.Frame;
-import java.awt.Panel;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -60,8 +55,11 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 import org.gudy.azureus2.ui.swt.views.IViewAlwaysInitialize;
 
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.util.MapUtils;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class creates an view that triggers {@link UISWTViewEventListener} 

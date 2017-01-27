@@ -24,12 +24,11 @@ package org.gudy.azureus2.pluginsimpl;
  *
  */
 
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.ui.UIFunctions;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
 
 public class 
 PluginUtils 

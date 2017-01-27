@@ -16,12 +16,19 @@
  */
 package org.gudy.azureus2.ui.swt.mainwindow;
 
-import java.net.URL;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.dht.DHT;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UIStatusTextClickListener;
+import com.aelitis.azureus.ui.common.updater.UIUpdatableAlways;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.*;
@@ -46,7 +53,6 @@ import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.ui.swt.*;
 import org.gudy.azureus2.ui.swt.Alerts.AlertHistoryListener;
-import org.gudy.azureus2.ui.swt.components.LinkLabel;
 import org.gudy.azureus2.ui.swt.progress.*;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
@@ -54,19 +60,11 @@ import org.gudy.azureus2.ui.swt.shells.GCStringPrinter.URLInfo;
 import org.gudy.azureus2.ui.swt.update.UpdateWindow;
 import org.gudy.azureus2.ui.swt.views.stats.StatsView;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.dht.DHT;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.plugins.dht.DHTPlugin;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UIStatusTextClickListener;
-import com.aelitis.azureus.ui.common.updater.UIUpdatableAlways;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.net.URL;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Moved from MainWindow and GUIUpdater

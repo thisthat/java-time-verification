@@ -22,10 +22,9 @@
 
 package org.gudy.azureus2.ui.console;
 
+import com.aelitis.azureus.core.AzureusCoreException;
 import org.gudy.azureus2.ui.console.util.StringEncrypter;
 import org.gudy.azureus2.ui.console.util.StringEncrypter.EncryptionException;
-
-import com.aelitis.azureus.core.AzureusCoreException;
 
 
 /**

@@ -19,17 +19,17 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
-import java.nio.channels.*;
-import java.nio.channels.spi.AbstractSelectableChannel;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.impl.tcp.VirtualChannelSelectorImpl;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
 
-
-import com.aelitis.azureus.core.networkmanager.impl.tcp.VirtualChannelSelectorImpl;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.AbstractSelectableChannel;
+import java.util.*;
 
 
 public class VirtualChannelSelector {

@@ -17,15 +17,14 @@
 
 package com.aelitis.azureus.ui.swt.columns.subscriptions;
 
-import org.gudy.azureus2.plugins.ui.tables.TableCell;
-import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-
 import com.aelitis.azureus.core.subs.Subscription;
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagManager;
 import com.aelitis.azureus.core.tag.TagManagerFactory;
+import org.gudy.azureus2.plugins.ui.tables.TableCell;
+import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
+import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 
 /**
  * @author Olivier Chalouhi

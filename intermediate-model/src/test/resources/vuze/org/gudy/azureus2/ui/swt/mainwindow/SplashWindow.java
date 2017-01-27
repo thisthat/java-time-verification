@@ -18,6 +18,10 @@
  */
 package org.gudy.azureus2.ui.swt.mainwindow;
 
+import com.aelitis.azureus.ui.IUIIntializer;
+import com.aelitis.azureus.ui.InitializerListener;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -26,15 +30,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.ui.swt.Utils;
-
-import com.aelitis.azureus.ui.IUIIntializer;
-import com.aelitis.azureus.ui.InitializerListener;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
 
 /**
  * The initial Splash Screen shown while azureus loads 

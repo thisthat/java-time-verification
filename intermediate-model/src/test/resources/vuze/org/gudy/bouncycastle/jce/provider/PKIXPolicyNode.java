@@ -1,13 +1,7 @@
 package org.gudy.bouncycastle.jce.provider;
 
 import java.security.cert.PolicyNode;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.gudy.bouncycastle.jce.provider.PKIXPolicyNode;
+import java.util.*;
 
 public class PKIXPolicyNode
     implements PolicyNode

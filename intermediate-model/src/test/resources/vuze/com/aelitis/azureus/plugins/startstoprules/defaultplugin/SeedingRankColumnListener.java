@@ -22,8 +22,6 @@
 
 package com.aelitis.azureus.plugins.startstoprules.defaultplugin;
 
-import java.util.Map;
-
 import org.gudy.azureus2.core3.config.COConfigurationListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -35,6 +33,8 @@ import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.peers.PeerManager;
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
 import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
+
+import java.util.Map;
 
 /** A "My Torrents" column for displaying Seeding Rank.
  */

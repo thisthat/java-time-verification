@@ -20,9 +20,10 @@
 
 package com.aelitis.azureus.plugins.net.netstatus.swt;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.plugins.net.netstatus.NetStatusPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -50,10 +51,8 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT.TriggerInThread;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.plugins.net.netstatus.NetStatusPlugin;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 NetStatusPluginView 

@@ -20,9 +20,8 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl;
 
-import org.gudy.azureus2.core3.util.HashWrapper;
-
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import org.gudy.azureus2.core3.util.HashWrapper;
 
 public interface 
 TRTrackerServerSimplePeer 

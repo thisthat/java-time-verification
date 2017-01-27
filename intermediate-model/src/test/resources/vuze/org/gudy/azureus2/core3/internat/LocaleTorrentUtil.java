@@ -16,17 +16,17 @@
  */
 package org.gudy.azureus2.core3.internat;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.util.*;
-
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.TorrentUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.util.*;
 
 /**
  * Locale functions specific to Torrents.

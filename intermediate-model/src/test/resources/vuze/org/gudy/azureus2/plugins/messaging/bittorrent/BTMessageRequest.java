@@ -19,9 +19,8 @@
 
 package org.gudy.azureus2.plugins.messaging.bittorrent;
 
-import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
-
 import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTRequest;
+import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
 
 /**
  *

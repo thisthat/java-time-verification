@@ -17,9 +17,8 @@
 
 package com.aelitis.azureus.plugins.net.buddy.swt.columns;
 
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
 import org.gudy.azureus2.plugins.ui.tables.*;
-
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.*;
 
 public class ColumnChatUserCount
 	implements TableCellRefreshListener, TableColumnExtraInfoListener

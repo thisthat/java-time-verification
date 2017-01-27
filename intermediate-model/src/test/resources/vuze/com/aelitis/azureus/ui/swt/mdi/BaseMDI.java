@@ -18,10 +18,22 @@
 
 package com.aelitis.azureus.ui.swt.mdi;
 
-import java.lang.reflect.Constructor;
-import java.util.*;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.skin.SkinConstants;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import com.aelitis.azureus.ui.swt.views.skin.SkinView;
+import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBarEntrySWT;
+import com.aelitis.azureus.util.ConstantsVuze;
+import com.aelitis.azureus.util.ContentNetworkUtils;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.widgets.Menu;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -47,22 +59,9 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCore;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.skin.SkinConstants;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.views.skin.SkinView;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBarEntrySWT;
-import com.aelitis.azureus.util.ConstantsVuze;
-import com.aelitis.azureus.util.ContentNetworkUtils;
-import com.aelitis.azureus.util.MapUtils;
+import java.lang.reflect.Constructor;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public abstract class BaseMDI
 	extends SkinView

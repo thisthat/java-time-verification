@@ -20,23 +20,17 @@
 
 package com.aelitis.azureus.core.download;
 
-import java.io.File;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.QTFastStartRAF;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.plugins.disk.DiskManagerChannel;
-import org.gudy.azureus2.plugins.disk.DiskManagerEvent;
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.plugins.disk.DiskManagerListener;
-import org.gudy.azureus2.plugins.disk.DiskManagerRandomReadRequest;
-import org.gudy.azureus2.plugins.disk.DiskManagerRequest;
+import org.gudy.azureus2.plugins.disk.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadException;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 import org.gudy.azureus2.pluginsimpl.local.utils.PooledByteBufferImpl;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.QTFastStartRAF;
+import java.io.File;
 
 public class 
 DiskManagerFileInfoFile

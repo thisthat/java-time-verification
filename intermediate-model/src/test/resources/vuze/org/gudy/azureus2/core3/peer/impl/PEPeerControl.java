@@ -28,12 +28,11 @@ package org.gudy.azureus2.core3.peer.impl;
  */
 
 
-import java.util.Map;
-
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.PEPeerManager;
 
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
+import java.util.Map;
 
 
 public interface

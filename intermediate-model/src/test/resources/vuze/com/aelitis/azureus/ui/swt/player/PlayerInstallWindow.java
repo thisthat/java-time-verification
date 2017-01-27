@@ -17,20 +17,17 @@
 
 package com.aelitis.azureus.ui.swt.player;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.Constants;
-
 import com.aelitis.azureus.ui.UserPrompterResultListener;
 import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
 import com.aelitis.azureus.ui.swt.skin.*;
 import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBox;
 import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBoxListener;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Shell;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.ui.swt.Utils;
 
 /**

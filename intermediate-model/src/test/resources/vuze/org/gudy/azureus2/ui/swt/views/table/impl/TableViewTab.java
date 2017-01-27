@@ -18,13 +18,14 @@
 
 package org.gudy.azureus2.ui.swt.views.table.impl;
 
-import java.util.Map;
-
+import com.aelitis.azureus.ui.common.table.TableView;
+import com.aelitis.azureus.ui.common.table.TableViewFilterCheck.TableViewFilterCheckEx;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
 import org.gudy.azureus2.core3.util.IndentWriter;
@@ -35,10 +36,7 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 
-import com.aelitis.azureus.ui.common.table.TableView;
-import com.aelitis.azureus.ui.common.table.TableViewFilterCheck.TableViewFilterCheckEx;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.util.MapUtils;
+import java.util.Map;
 
 /**
  * An {@link UISWTView} that contains a {@link TableView}.  Usually is

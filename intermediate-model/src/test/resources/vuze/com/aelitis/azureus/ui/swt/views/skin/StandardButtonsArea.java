@@ -18,19 +18,18 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.ui.swt.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class StandardButtonsArea
 {

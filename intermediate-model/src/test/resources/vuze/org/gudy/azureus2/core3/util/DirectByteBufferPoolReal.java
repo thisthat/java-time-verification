@@ -20,28 +20,17 @@
 
 package org.gudy.azureus2.core3.util;
 
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManager;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerStats;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.Logger;
 
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManager;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerStats;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public class 
 DirectByteBufferPoolReal 

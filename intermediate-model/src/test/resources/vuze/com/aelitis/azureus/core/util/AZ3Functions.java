@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.net.URL;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
+
+import java.net.URL;
 
 public class 
 AZ3Functions 

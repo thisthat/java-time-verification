@@ -1,24 +1,9 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import org.gudy.bouncycastle.asn1.ASN1OctetString;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERBitString;
-import org.gudy.bouncycastle.asn1.DERInputStream;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DEROctetString;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.gudy.bouncycastle.asn1.x9.X962NamedCurves;
-import org.gudy.bouncycastle.asn1.x9.X962Parameters;
-import org.gudy.bouncycastle.asn1.x9.X9ECParameters;
-import org.gudy.bouncycastle.asn1.x9.X9ECPoint;
-import org.gudy.bouncycastle.asn1.x9.X9ObjectIdentifiers;
+import org.gudy.bouncycastle.asn1.x9.*;
 import org.gudy.bouncycastle.crypto.params.ECDomainParameters;
 import org.gudy.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.gudy.bouncycastle.jce.interfaces.ECPublicKey;
@@ -26,6 +11,10 @@ import org.gudy.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.gudy.bouncycastle.jce.spec.ECParameterSpec;
 import org.gudy.bouncycastle.jce.spec.ECPublicKeySpec;
 import org.gudy.bouncycastle.math.ec.ECPoint;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class JCEECPublicKey
     implements ECPublicKey

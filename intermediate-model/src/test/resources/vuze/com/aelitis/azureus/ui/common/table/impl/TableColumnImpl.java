@@ -20,17 +20,12 @@
 
 package com.aelitis.azureus.ui.common.table.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.ui.UIFunctions;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.common.table.*;
-
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadTypeComplete;
@@ -42,6 +37,9 @@ import org.gudy.azureus2.plugins.ui.UIRuntimeException;
 import org.gudy.azureus2.plugins.ui.config.Parameter;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.pluginsimpl.local.ui.tables.TableContextMenuItemImpl;
+
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 /** 
  * Table Column definition and modification routines.

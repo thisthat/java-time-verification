@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.cnetwork.impl;
 
-import java.io.IOException;
-import java.util.*;
-
+import com.aelitis.azureus.core.crypto.VuzeCryptoManager;
+import com.aelitis.azureus.core.metasearch.MetaSearchManagerFactory;
+import com.aelitis.azureus.util.ImportExportUtils;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -34,9 +34,8 @@ import org.gudy.azureus2.plugins.utils.FeatureManager;
 import org.gudy.azureus2.plugins.utils.FeatureManager.FeatureDetails;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.core.crypto.VuzeCryptoManager;
-import com.aelitis.azureus.core.metasearch.MetaSearchManagerFactory;
-import com.aelitis.azureus.util.ImportExportUtils;
+import java.io.IOException;
+import java.util.*;
 
 public class 
 ContentNetworkVuzeGeneric 

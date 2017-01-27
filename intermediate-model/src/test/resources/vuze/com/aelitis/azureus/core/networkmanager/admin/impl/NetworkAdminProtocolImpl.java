@@ -21,10 +21,6 @@
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
 
-import java.net.InetAddress;
-
-import org.gudy.azureus2.plugins.PluginInterface;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminNetworkInterfaceAddress;
@@ -32,6 +28,9 @@ import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProgressListene
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProtocol;
 import com.aelitis.azureus.plugins.upnp.UPnPMapping;
 import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
+import org.gudy.azureus2.plugins.PluginInterface;
+
+import java.net.InetAddress;
 
 public class 
 NetworkAdminProtocolImpl 

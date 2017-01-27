@@ -6,11 +6,8 @@ import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
@@ -92,13 +89,6 @@ public class ApplyHeuristics extends ParseIM {
 		super.set_class(c);
 		Env base = super.createBaseEnv(c);
 		IndexingFile indexingFile = new IndexingFile();
-		IndexData data = indexingFile.index(c);
-		for(IndexParameter p : data.getTimeAttribute()){
-			if(base.existVarName(p.getName())){
-				IASTVar v = base.getVar(p.getName());
-				v.setTimeCritical(true);
-			}
-		}
 		//check method
 		for(IASTMethod m : c.getMethods()){
 			Env eMethod = new Env(base);

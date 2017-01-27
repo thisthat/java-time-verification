@@ -29,7 +29,6 @@ package org.gudy.azureus2.pluginsimpl.local.download;
 
 import org.gudy.azureus2.core3.download.*;
 import org.gudy.azureus2.core3.util.*;
-
 import org.gudy.azureus2.plugins.download.DownloadStats;
 
 public class 

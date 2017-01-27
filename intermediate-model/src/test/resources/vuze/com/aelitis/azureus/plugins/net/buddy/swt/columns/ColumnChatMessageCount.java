@@ -17,14 +17,13 @@
 
 package com.aelitis.azureus.plugins.net.buddy.swt.columns;
 
-import java.util.Map;
-
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.tables.*;
 
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.*;
+import java.util.Map;
 
 public class ColumnChatMessageCount
 	implements TableCellRefreshListener, TableColumnExtraInfoListener

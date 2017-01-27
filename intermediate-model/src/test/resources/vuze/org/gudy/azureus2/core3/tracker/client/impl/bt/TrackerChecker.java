@@ -17,11 +17,6 @@
  */
 package org.gudy.azureus2.core3.tracker.client.impl.bt;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
@@ -33,6 +28,11 @@ import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
 import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerScraperResponseImpl;
 import org.gudy.azureus2.core3.util.*;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Olivier

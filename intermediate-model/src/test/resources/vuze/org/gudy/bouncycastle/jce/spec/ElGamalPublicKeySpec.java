@@ -2,10 +2,6 @@ package org.gudy.bouncycastle.jce.spec;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.jce.spec.ElGamalKeySpec;
-import org.gudy.bouncycastle.jce.spec.ElGamalParameterSpec;
-import org.gudy.bouncycastle.jce.spec.ElGamalPrivateKeySpec;
-
 /**
  * This class specifies an ElGamal public key with its associated parameters.
  *

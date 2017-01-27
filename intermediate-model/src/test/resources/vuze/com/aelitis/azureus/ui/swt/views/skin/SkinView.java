@@ -17,15 +17,14 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
-
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.common.updater.UIUpdatable;
 import com.aelitis.azureus.ui.mdi.MdiEntry;
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
 import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
 import com.aelitis.azureus.ui.swt.skin.*;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
 
 /**
  * Converts {@link SWTSkinObjectListener} events to method calls, and

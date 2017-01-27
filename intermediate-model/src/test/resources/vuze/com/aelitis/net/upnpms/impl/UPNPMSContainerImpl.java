@@ -20,17 +20,16 @@
 
 package com.aelitis.net.upnpms.impl;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentAttribute;
-import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
-
 import com.aelitis.net.upnpms.UPNPMSContainer;
 import com.aelitis.net.upnpms.UPNPMSItem;
 import com.aelitis.net.upnpms.UPNPMSNode;
 import com.aelitis.net.upnpms.UPnPMSException;
+import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentAttribute;
+import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 UPNPMSContainerImpl 

@@ -20,28 +20,16 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
-
-
-
-
-
-
-
-
-
-
-
-
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.tag.TagFeatureProperties.*;
+import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
+import com.aelitis.azureus.core.tag.TagFeatureProperties.TagPropertyListener;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.*;
 
 
 public class 

@@ -1,6 +1,6 @@
 /*
  * File    : PluginParameter.java
- * Created : 15 déc. 2003}
+ * Created : 15 dï¿½c. 2003}
  * By      : Olivier
  *
  * Azureus - a Java Bittorrent client
@@ -21,17 +21,10 @@
  */
 package org.gudy.azureus2.ui.swt.config.plugins;
 
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.gudy.azureus2.plugins.ui.config.Parameter;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.BooleanParameterImpl;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.ColorParameter;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.DirectoryParameterImpl;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.FileParameter;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.IntParameterImpl;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.IntsParameter;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.StringParameterImpl;
-import org.gudy.azureus2.pluginsimpl.local.ui.config.StringListParameterImpl;
+import org.gudy.azureus2.pluginsimpl.local.ui.config.*;
 import org.gudy.azureus2.ui.swt.config.IAdditionalActionPerformer;
 
 /**

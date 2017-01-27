@@ -20,7 +20,7 @@
 
 package com.aelitis.azureus.core.vuzefile;
 
-import java.io.*;
+import java.io.File;
 
 public class 
 VuzeFileMerger 

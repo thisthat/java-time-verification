@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
-
 import org.gudy.azureus2.core3.util.Debug;
 
 public class CompositeMinSize

@@ -21,17 +21,6 @@
  */
 package org.gudy.azureus2.core3.stats.transfer.impl;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.gudy.azureus2.core3.global.*;
-import org.gudy.azureus2.core3.stats.transfer.OverallStats;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.PluginManager;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreComponent;
 import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
@@ -40,6 +29,16 @@ import com.aelitis.azureus.core.dht.transport.DHTTransportStats;
 import com.aelitis.azureus.core.stats.AzureusCoreStats;
 import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import org.gudy.azureus2.core3.global.*;
+import org.gudy.azureus2.core3.stats.transfer.OverallStats;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.PluginManager;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 /**

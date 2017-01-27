@@ -25,14 +25,22 @@ package org.gudy.azureus2.core3.download.impl;
  * Created on 30 juin 2003
  *
  */
- 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.*;
 
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreOperation;
+import com.aelitis.azureus.core.AzureusCoreOperationTask;
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.peermanager.control.PeerControlSchedulerFactory;
+import com.aelitis.azureus.core.tag.Taggable;
+import com.aelitis.azureus.core.tag.TaggableResolver;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.LinkFileMap;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
+import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
+import com.aelitis.azureus.plugins.tracker.local.LocalTrackerPlugin;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
@@ -61,7 +69,6 @@ import org.gudy.azureus2.core3.tracker.client.*;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
-import org.gudy.azureus2.plugins.clientid.ClientIDManager;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
 import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
@@ -71,21 +78,12 @@ import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadImpl;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreOperation;
-import com.aelitis.azureus.core.AzureusCoreOperationTask;
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.peermanager.control.PeerControlSchedulerFactory;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.tag.TaggableResolver;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.LinkFileMap;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
-import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
-import com.aelitis.azureus.plugins.tracker.local.LocalTrackerPlugin;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author Olivier

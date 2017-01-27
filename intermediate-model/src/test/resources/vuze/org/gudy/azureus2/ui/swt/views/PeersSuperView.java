@@ -19,10 +19,13 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
@@ -45,13 +48,9 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
 import org.gudy.azureus2.ui.swt.views.tableitems.peers.DownloadNameItem;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * AllPeersView

@@ -19,12 +19,12 @@
 
 package org.gudy.azureus2.core3.download;
 
-import java.io.File;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.download.impl.*;
 import org.gudy.azureus2.core3.torrent.*;
+
+import java.io.File;
 
 /**
  * @author parg

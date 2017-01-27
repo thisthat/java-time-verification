@@ -18,6 +18,7 @@
 
 package com.aelitis.azureus.plugins.startstoprules.defaultplugin.ui.swt;
 
+import com.aelitis.azureus.plugins.startstoprules.defaultplugin.DefaultRankCalculator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -27,18 +28,10 @@ import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.config.BooleanParameter;
-import org.gudy.azureus2.ui.swt.config.ChangeSelectionActionPerformer;
-import org.gudy.azureus2.ui.swt.config.IntListParameter;
-import org.gudy.azureus2.ui.swt.config.IntParameter;
-import org.gudy.azureus2.ui.swt.config.Parameter;
-import org.gudy.azureus2.ui.swt.config.ParameterChangeAdapter;
-import org.gudy.azureus2.ui.swt.config.ParameterChangeListener;
+import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-
-import com.aelitis.azureus.plugins.startstoprules.defaultplugin.DefaultRankCalculator;
 
 
 /** Seeding Automation Specific options

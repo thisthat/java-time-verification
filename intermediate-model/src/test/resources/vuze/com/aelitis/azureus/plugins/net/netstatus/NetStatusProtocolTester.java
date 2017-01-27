@@ -20,39 +20,18 @@
 
 package com.aelitis.azureus.plugins.net.netstatus;
 
-import java.net.InetSocketAddress;
-import java.util.*;
-
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseContact;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseException;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseKey;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseProgressListener;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseTransferHandler;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseTransferType;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseValue;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
 import com.aelitis.azureus.plugins.net.netstatus.NetStatusProtocolTesterBT.Session;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.ddb.*;
+
+import java.net.InetSocketAddress;
+import java.util.*;
 
 
 public class 

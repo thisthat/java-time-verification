@@ -20,22 +20,19 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.skin.SWTSkin;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.skin.SWTSkin;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Creates a dialog (shell) and fills it with a skinned layout

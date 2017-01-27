@@ -20,12 +20,12 @@
 
 package com.aelitis.azureus.core.pairing;
 
+import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
+import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
-import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
 
 public interface 
 PairingManager 

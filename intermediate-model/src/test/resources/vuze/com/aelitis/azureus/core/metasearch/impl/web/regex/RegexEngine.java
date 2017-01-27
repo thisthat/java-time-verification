@@ -19,28 +19,26 @@
 
 package com.aelitis.azureus.core.metasearch.impl.web.regex;
 
-import java.io.*;
-import java.net.URLDecoder;
-import java.util.*;
-import java.util.regex.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.TimeLimitedTask;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.json.simple.JSONObject;
-
-import com.aelitis.azureus.core.metasearch.Engine;
-import com.aelitis.azureus.core.metasearch.Result;
-import com.aelitis.azureus.core.metasearch.ResultListener;
-import com.aelitis.azureus.core.metasearch.SearchException;
-import com.aelitis.azureus.core.metasearch.SearchLoginException;
-import com.aelitis.azureus.core.metasearch.SearchParameter;
+import com.aelitis.azureus.core.metasearch.*;
 import com.aelitis.azureus.core.metasearch.impl.EngineImpl;
 import com.aelitis.azureus.core.metasearch.impl.MetaSearchImpl;
 import com.aelitis.azureus.core.metasearch.impl.web.FieldMapping;
 import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
 import com.aelitis.azureus.core.metasearch.impl.web.WebResult;
 import com.aelitis.azureus.util.ImportExportUtils;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.TimeLimitedTask;
+import org.gudy.azureus2.core3.util.UrlUtils;
+import org.json.simple.JSONObject;
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class 
 RegexEngine 

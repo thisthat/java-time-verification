@@ -9,12 +9,11 @@
  *
  */
 package org.gudy.azureus2.ui.console.commands;
-import java.io.PrintStream;
-import java.net.URI;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
 
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManager;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryManager;
 import org.gudy.azureus2.core3.disk.DiskManager;
@@ -24,10 +23,11 @@ import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.console.ConsoleInput;
 
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
+import java.io.PrintStream;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Tobias Minich

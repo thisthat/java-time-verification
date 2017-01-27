@@ -19,30 +19,6 @@
 
 package com.aelitis.azureus.core.peermanager;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.peer.PEPeer;
-import org.gudy.azureus2.core3.peer.PEPeerListener;
-import org.gudy.azureus2.core3.peer.PEPeerSource;
-import org.gudy.azureus2.core3.peer.impl.*;
-import org.gudy.azureus2.core3.peer.util.PeerIdentityManager;
-import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.AEGenericCallback;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AERunStateHandler;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.networkmanager.*;
 import com.aelitis.azureus.core.networkmanager.impl.IncomingConnectionManager;
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
@@ -53,6 +29,20 @@ import com.aelitis.azureus.core.stats.AzureusCoreStats;
 import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.peer.PEPeer;
+import org.gudy.azureus2.core3.peer.PEPeerListener;
+import org.gudy.azureus2.core3.peer.PEPeerSource;
+import org.gudy.azureus2.core3.peer.impl.*;
+import org.gudy.azureus2.core3.peer.util.PeerIdentityManager;
+import org.gudy.azureus2.core3.torrent.TOTorrentFile;
+import org.gudy.azureus2.core3.util.*;
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 /**
  *

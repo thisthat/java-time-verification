@@ -19,9 +19,9 @@
 
 package org.gudy.azureus2.plugins.network;
 
-import java.nio.ByteBuffer;
-
 import org.gudy.azureus2.plugins.messaging.Message;
+
+import java.nio.ByteBuffer;
 
 
 /**

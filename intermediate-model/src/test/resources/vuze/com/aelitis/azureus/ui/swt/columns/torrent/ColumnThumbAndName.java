@@ -22,8 +22,12 @@
 
 package com.aelitis.azureus.ui.swt.columns.torrent;
 
-import java.io.File;
-
+import com.aelitis.azureus.core.util.PlatformTorrentUtils;
+import com.aelitis.azureus.ui.common.table.TableCellCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3;
+import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3.ContentImageLoadedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -50,12 +54,7 @@ import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
 
-import com.aelitis.azureus.core.util.PlatformTorrentUtils;
-import com.aelitis.azureus.ui.common.table.TableCellCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3;
-import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3.ContentImageLoadedListener;
+import java.io.File;
 
 /** Torrent name cell for My Torrents.
  *

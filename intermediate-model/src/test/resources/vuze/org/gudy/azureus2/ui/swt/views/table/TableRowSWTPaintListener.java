@@ -20,12 +20,10 @@
 
 package org.gudy.azureus2.ui.swt.views.table;
 
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
-
-
 import com.aelitis.azureus.ui.common.table.TableColumnCore;
 import com.aelitis.azureus.ui.common.table.TableRowCore;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * @author TuxPaper

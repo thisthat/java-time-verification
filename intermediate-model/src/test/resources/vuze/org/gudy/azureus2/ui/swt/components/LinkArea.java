@@ -20,9 +20,6 @@
 
 package org.gudy.azureus2.ui.swt.components;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -35,6 +32,9 @@ import org.gudy.azureus2.core3.html.HTMLUtils;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 LinkArea 

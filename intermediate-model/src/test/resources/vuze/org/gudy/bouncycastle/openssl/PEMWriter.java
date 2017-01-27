@@ -1,10 +1,6 @@
 package org.gudy.bouncycastle.openssl;
 
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Object;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.cms.ContentInfo;
 import org.gudy.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.gudy.bouncycastle.asn1.pkcs.RSAPrivateKeyStructure;
@@ -21,11 +17,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigInteger;
-import java.security.Key;
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509CRL;

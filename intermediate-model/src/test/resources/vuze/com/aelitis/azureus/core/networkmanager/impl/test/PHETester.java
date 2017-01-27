@@ -19,27 +19,22 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.test;
 
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector.VirtualSelectorListener;
+import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelector;
+import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelectorFactory;
+import com.aelitis.azureus.core.networkmanager.impl.*;
+import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
+import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPTransportHelper;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.AEDiagnostics;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
-import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelector;
-import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelectorFactory;
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector.VirtualSelectorListener;
-import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoder;
-import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoderInitial;
-import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoderAdapter;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPTransportHelper;
 
 public class 
 PHETester 

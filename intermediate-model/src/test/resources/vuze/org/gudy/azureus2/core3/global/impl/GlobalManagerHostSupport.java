@@ -19,19 +19,16 @@
 
 package org.gudy.azureus2.core3.global.impl;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-import org.gudy.azureus2.core3.global.*;
 import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.global.*;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentException;
 import org.gudy.azureus2.core3.tracker.host.*;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.HashWrapper;
 import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadManagerImpl;
+
+import java.io.File;
 
 
 class

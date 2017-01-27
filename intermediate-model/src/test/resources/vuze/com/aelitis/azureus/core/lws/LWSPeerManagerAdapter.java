@@ -19,10 +19,9 @@
 
 package com.aelitis.azureus.core.lws;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.peermanager.PeerManagerRegistration;
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
 import org.gudy.azureus2.core3.disk.DiskManagerReadRequest;
 import org.gudy.azureus2.core3.disk.DiskManagerReadRequestListener;
 import org.gudy.azureus2.core3.logging.LogRelation;
@@ -33,10 +32,9 @@ import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
 import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.peermanager.PeerManagerRegistration;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class 

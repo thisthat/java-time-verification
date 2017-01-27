@@ -3,12 +3,7 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.text.FieldPosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.global.GlobalManagerAdapter;
@@ -19,7 +14,11 @@ import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.ui.console.ConsoleInput;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * @author TuxPaper

@@ -20,22 +20,16 @@
 
 package com.aelitis.azureus.core.subs.impl;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.global.GlobalManager;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.ByteArrayHashMap;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.metasearch.Engine;
 import com.aelitis.azureus.core.subs.SubscriptionHistory;
 import com.aelitis.azureus.core.subs.SubscriptionResult;
 import com.aelitis.azureus.util.ImportExportUtils;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.global.GlobalManager;
+import org.gudy.azureus2.core3.util.*;
+
+import java.util.*;
 
 public class 
 SubscriptionHistoryImpl

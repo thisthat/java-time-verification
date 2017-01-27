@@ -17,16 +17,13 @@
 
 package org.gudy.azureus2.ui.swt;
 
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.ui.UIInputReceiver;
-import org.gudy.azureus2.plugins.ui.UIInputReceiverListener;
-import org.gudy.azureus2.ui.swt.views.tableitems.files.FirstPieceItem;
 
 /**
  * @author TuxPaper

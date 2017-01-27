@@ -19,39 +19,22 @@
 
 package com.aelitis.azureus.plugins.dht.impl;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.Signature;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.RSAPublicKeySpec;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.dht.DHT;
-import com.aelitis.azureus.core.dht.DHTLogger;
-import com.aelitis.azureus.core.dht.DHTStorageAdapter;
-import com.aelitis.azureus.core.dht.DHTStorageBlock;
-import com.aelitis.azureus.core.dht.DHTStorageKey;
-import com.aelitis.azureus.core.dht.DHTStorageKeyStats;
+import com.aelitis.azureus.core.dht.*;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.*;
+import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.Signature;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.*;
 
 /**
  * @author parg

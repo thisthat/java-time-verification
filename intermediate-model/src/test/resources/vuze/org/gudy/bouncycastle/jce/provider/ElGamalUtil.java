@@ -1,15 +1,15 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.security.InvalidKeyException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
 import org.gudy.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.gudy.bouncycastle.crypto.params.ElGamalParameters;
 import org.gudy.bouncycastle.crypto.params.ElGamalPrivateKeyParameters;
 import org.gudy.bouncycastle.crypto.params.ElGamalPublicKeyParameters;
 import org.gudy.bouncycastle.jce.interfaces.ElGamalPrivateKey;
 import org.gudy.bouncycastle.jce.interfaces.ElGamalPublicKey;
+
+import java.security.InvalidKeyException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 /**
  * utility class for converting jce/jca ElGamal objects

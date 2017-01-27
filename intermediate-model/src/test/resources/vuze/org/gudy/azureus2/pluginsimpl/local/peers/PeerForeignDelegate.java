@@ -29,13 +29,14 @@ package org.gudy.azureus2.pluginsimpl.local.peers;
  *
  */
 
-import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.networkmanager.NetworkConnectionBase;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.peermanager.messaging.Message;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
+import com.aelitis.azureus.core.tag.TaggableResolver;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.disk.DiskManagerReadRequest;
 import org.gudy.azureus2.core3.peer.*;
@@ -51,14 +52,8 @@ import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl.PluginLimitedRateGroup;
 
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.networkmanager.NetworkConnectionBase;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
-import com.aelitis.azureus.core.tag.TaggableResolver;
+import java.net.InetAddress;
+import java.util.*;
 
 public class 
 PeerForeignDelegate

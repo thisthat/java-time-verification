@@ -18,9 +18,13 @@
 
 package org.gudy.azureus2.ui.swt.shells;
 
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
+import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
+import com.aelitis.azureus.ui.swt.UISkinnableManagerSWT;
+import com.aelitis.azureus.ui.swt.UISkinnableSWTListener;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.*;
 import org.eclipse.swt.events.*;
@@ -37,13 +41,10 @@ import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter.URLInfo;
 
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
-import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
-import com.aelitis.azureus.ui.swt.UISkinnableManagerSWT;
-import com.aelitis.azureus.ui.swt.UISkinnableSWTListener;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A messagebox that allows you config the button

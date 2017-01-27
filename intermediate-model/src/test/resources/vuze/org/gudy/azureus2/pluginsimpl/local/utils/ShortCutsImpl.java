@@ -26,10 +26,8 @@ package org.gudy.azureus2.pluginsimpl.local.utils;
 
 import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.download.*;
-
-import org.gudy.azureus2.pluginsimpl.local.download.*;
-
 import org.gudy.azureus2.plugins.utils.*;
+import org.gudy.azureus2.pluginsimpl.local.download.*;
 
 public class 
 ShortCutsImpl

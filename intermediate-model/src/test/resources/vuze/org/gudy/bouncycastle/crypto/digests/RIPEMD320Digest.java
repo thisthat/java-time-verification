@@ -1,8 +1,5 @@
 package org.gudy.bouncycastle.crypto.digests;
 
-import org.gudy.bouncycastle.crypto.digests.GeneralDigest;
-
-
 /**
  * implementation of RIPEMD 320.
  * <p>

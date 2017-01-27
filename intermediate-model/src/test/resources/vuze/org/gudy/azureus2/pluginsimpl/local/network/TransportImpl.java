@@ -19,12 +19,12 @@
 
 package org.gudy.azureus2.pluginsimpl.local.network;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
 import org.gudy.azureus2.plugins.network.Transport;
 import org.gudy.azureus2.plugins.network.TransportFilter;
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  *

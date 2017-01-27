@@ -20,11 +20,11 @@
  */
 package com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.impl;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
 import com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.*;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 
 

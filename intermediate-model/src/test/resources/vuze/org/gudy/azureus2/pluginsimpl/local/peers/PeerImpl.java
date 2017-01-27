@@ -27,8 +27,8 @@ package org.gudy.azureus2.pluginsimpl.local.peers;
  *
  */
 
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
 import org.gudy.azureus2.core3.logging.LogRelation;
 import org.gudy.azureus2.core3.peer.*;
 import org.gudy.azureus2.core3.util.Debug;
@@ -41,8 +41,8 @@ import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl.PluginLimitedRateGroup;
 
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class 

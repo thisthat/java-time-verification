@@ -1,7 +1,6 @@
 package IntermediateModelHelper.envirorment;
 
 
-import com.google.common.annotations.Beta;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTAttribute;
@@ -82,17 +81,6 @@ public class Env {
 		}
 	}
 
-
-	/**
-	 * The method will search if the closest definition of the variable is in a inherited class.
-	 * @param v Name of the variable to find
-	 * @return	True if the closest definition is in a inherited class.
-	 */
-	public boolean isInherited(String v){
-		if(!existVarName(v)) return false;
-		return getCorrectEnv(v) instanceof EnvExtended;
-	}
-
 	/**
 	 * The method will search if the closest definition of the variable is an attribute of the class.
 	 * @param v Name of the variable to find
@@ -131,17 +119,6 @@ public class Env {
 	}
 
 
-	/**
-	 * The method search if the variable of the form <pre>super.var_name</pre> exists in a super {@link EnvBase}.
-	 * @param v Name of the variable to search
-	 * @return True if the variable exists in a <b>super</b> environment.
-	 */
-	public boolean isInSuper(String v){
-		if(!existVarName(v)) return false;
-		EnvExtended ext = getExtendedEnv(v);
-		return ext != null;
-	}
-
 
 	/**
 	 * Search for the first definition of {@link EnvBase}. It could return null
@@ -153,20 +130,6 @@ public class Env {
 			current = current.getPrev();
 		}
 		return (EnvBase) current;
-	}
-
-
-	public EnvExtended getExtendedEnv(){
-		if(this instanceof EnvExtended) return (EnvExtended) this;
-		if(this.prev == null) return null;
-		return this.prev.getExtendedEnv();
-	}
-
-	public EnvExtended getExtendedEnv(String v){
-		Env e = getCorrectEnv(v);
-		if(e instanceof EnvExtended) return (EnvExtended) e;
-		if(e.prev == null) return null;
-		return e.prev.getExtendedEnv(v);
 	}
 
 	/**
@@ -215,7 +178,6 @@ public class Env {
 	 * @param v			Name of the variable
 	 * @param flag		Flag to add
 	 */
-	@Beta
 	public void addFlag(String v, Integer flag){
 		Env correct_env = getCorrectEnv(v);
 

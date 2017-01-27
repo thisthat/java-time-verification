@@ -19,23 +19,24 @@
 
 package org.gudy.azureus2.core3.util.protocol.azplug;
 
-import java.util.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
+ import com.aelitis.azureus.core.AzureusCoreFactory;
+ import com.aelitis.azureus.core.util.AZ3Functions;
+ import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+ import org.gudy.azureus2.core3.util.Debug;
+ import org.gudy.azureus2.core3.util.UrlUtils;
+ import org.gudy.azureus2.plugins.PluginInterface;
+ import org.gudy.azureus2.plugins.ipc.IPCException;
+ import org.gudy.azureus2.plugins.ipc.IPCInterface;
 
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.ipc.IPCException;
-import org.gudy.azureus2.plugins.ipc.IPCInterface;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+ import java.io.ByteArrayInputStream;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.net.HttpURLConnection;
+ import java.net.URL;
+ import java.util.ArrayList;
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.Map;
 
 /**
  * @author parg

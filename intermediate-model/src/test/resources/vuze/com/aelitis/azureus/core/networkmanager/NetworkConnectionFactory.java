@@ -19,12 +19,11 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.networkmanager.impl.NetworkConnectionImpl;
 import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
 import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.Debug;
 
 /**
  *

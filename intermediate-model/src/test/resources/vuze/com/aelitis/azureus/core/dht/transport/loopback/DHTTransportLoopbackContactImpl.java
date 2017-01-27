@@ -19,14 +19,15 @@
 
 package com.aelitis.azureus.core.dht.transport.loopback;
 
-import java.io.*;
-import java.net.InetSocketAddress;
-import java.util.List;
-import java.util.Map;
-
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
 import com.aelitis.azureus.core.dht.transport.*;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author parg

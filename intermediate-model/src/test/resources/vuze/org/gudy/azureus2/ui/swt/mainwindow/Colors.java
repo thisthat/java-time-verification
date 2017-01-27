@@ -18,9 +18,8 @@
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package org.gudy.azureus2.ui.swt.mainwindow;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -33,7 +32,8 @@ import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * @author Olivier Chalouhi
  * @author MjrTom

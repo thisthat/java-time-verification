@@ -1,12 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.X509Name;
-import org.gudy.bouncycastle.asn1.DERGeneralizedTime;
-import org.gudy.bouncycastle.asn1.DERIA5String;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DERPrintableString;
-import org.gudy.bouncycastle.asn1.DERUTF8String;
+import org.gudy.bouncycastle.asn1.*;
 
 import java.io.IOException;
 

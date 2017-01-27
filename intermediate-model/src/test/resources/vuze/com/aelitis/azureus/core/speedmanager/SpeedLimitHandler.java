@@ -20,23 +20,14 @@
 
 package com.aelitis.azureus.core.speedmanager;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.tag.impl.TagBase;
+import com.aelitis.azureus.core.tag.impl.TagTypeWithState;
+import com.aelitis.azureus.core.util.average.Average;
+import com.aelitis.azureus.core.util.average.AverageFactory;
+import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryManager;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -51,23 +42,7 @@ import org.gudy.azureus2.core3.stats.transfer.LongTermStats;
 import org.gudy.azureus2.core3.stats.transfer.LongTermStatsListener;
 import org.gudy.azureus2.core3.stats.transfer.StatsFactory;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.FrequencyLimitedDispatcher;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadAttributeListener;
@@ -86,26 +61,8 @@ import org.gudy.azureus2.plugins.ui.model.BasicPluginViewModel;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagDownload;
-import com.aelitis.azureus.core.tag.TagFeature;
-import com.aelitis.azureus.core.tag.TagFeatureExecOnAssign;
-import com.aelitis.azureus.core.tag.TagFeatureRateLimit;
-import com.aelitis.azureus.core.tag.TagFeatureRunState;
-import com.aelitis.azureus.core.tag.TagListener;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagPeer;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.tag.impl.TagBase;
-import com.aelitis.azureus.core.tag.impl.TagTypeWithState;
-import com.aelitis.azureus.core.util.average.Average;
-import com.aelitis.azureus.core.util.average.AverageFactory;
-import com.aelitis.azureus.core.util.average.MovingAverage;
-import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
+import java.net.InetAddress;
+import java.util.*;
 
 public class 
 SpeedLimitHandler 

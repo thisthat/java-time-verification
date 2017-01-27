@@ -18,10 +18,16 @@
 
 package org.gudy.azureus2.ui.swt;
 
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.speedmanager.SpeedLimitHandler;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.table.TableCellCore;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -66,16 +72,8 @@ import org.gudy.azureus2.ui.swt.views.table.utils.TableContextMenuManager;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.speedmanager.SpeedLimitHandler;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.table.TableCellCore;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author TuxPaper

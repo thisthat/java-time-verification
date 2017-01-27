@@ -20,39 +20,18 @@
 
 package com.aelitis.azureus.plugins.net.netstatus;
 
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SystemTime;
-
-import com.aelitis.azureus.core.networkmanager.ConnectionEndpoint;
-import com.aelitis.azureus.core.networkmanager.IncomingMessageQueue;
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpointFactory;
+import com.aelitis.azureus.core.networkmanager.*;
 import com.aelitis.azureus.core.peermanager.PeerManager;
 import com.aelitis.azureus.core.peermanager.PeerManagerRegistration;
 import com.aelitis.azureus.core.peermanager.PeerManagerRegistrationAdapter;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTBitfield;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHave;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTMessage;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTMessageDecoder;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTMessageEncoder;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTMessageFactory;
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.*;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.*;
+
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public class 
 NetStatusProtocolTesterBT 

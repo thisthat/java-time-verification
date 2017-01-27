@@ -20,13 +20,9 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.*;
@@ -37,6 +33,9 @@ import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.views.ViewUtils;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author TuxPaper

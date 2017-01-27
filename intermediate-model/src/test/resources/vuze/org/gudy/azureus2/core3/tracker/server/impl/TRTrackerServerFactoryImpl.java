@@ -27,14 +27,9 @@ package org.gudy.azureus2.core3.tracker.server.impl;
  *
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.nio.channels.SocketChannel;
-import java.util.*;
-
+import com.aelitis.azureus.core.stats.AzureusCoreStats;
+import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.tracker.server.*;
 import org.gudy.azureus2.core3.tracker.server.impl.dht.TRTrackerServerDHT;
@@ -48,9 +43,13 @@ import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.AsyncController;
 import org.gudy.azureus2.plugins.tracker.Tracker;
 
-import com.aelitis.azureus.core.stats.AzureusCoreStats;
-import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
+import java.util.*;
 
 public class 
 TRTrackerServerFactoryImpl 

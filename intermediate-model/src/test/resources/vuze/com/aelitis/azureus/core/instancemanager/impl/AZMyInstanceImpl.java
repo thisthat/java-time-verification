@@ -19,22 +19,21 @@
 
 package com.aelitis.azureus.core.instancemanager.impl;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationListener;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.instancemanager.AZInstanceManagerAdapter;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
 import com.aelitis.azureus.plugins.dht.DHTPluginContact;
 import com.aelitis.azureus.plugins.dht.DHTPluginListener;
 import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
+import org.gudy.azureus2.core3.config.COConfigurationListener;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class 
 AZMyInstanceImpl

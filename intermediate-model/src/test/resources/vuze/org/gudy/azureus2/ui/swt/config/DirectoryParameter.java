@@ -19,18 +19,11 @@
 
 package org.gudy.azureus2.ui.swt.config;
 
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.internat.MessageText;
-
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 /**
  * @author parg

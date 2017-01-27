@@ -20,17 +20,14 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
+import com.aelitis.net.udp.uc.PRUDPPacketReply;
+import org.gudy.azureus2.core3.util.BDecoder;
+import org.gudy.azureus2.core3.util.BEncoder;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-
-
-
-import com.aelitis.net.udp.uc.PRUDPPacketReply;
 
 public class 
 NetworkAdminNATUDPReply 

@@ -16,11 +16,14 @@
  */
 package com.aelitis.azureus.ui.swt.uiupdater;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.common.updater.UIUpdatableAlways;
+import com.aelitis.azureus.ui.common.updater.UIUpdater;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.logging.LogEvent;
@@ -29,15 +32,10 @@ import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.IMainStatusBar;
-import org.gudy.azureus2.ui.swt.mainwindow.MainStatusBar;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.common.updater.UIUpdatableAlways;
-import com.aelitis.azureus.ui.common.updater.UIUpdater;
-import com.aelitis.azureus.ui.common.updater.UIUpdater.UIUpdaterListener;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author TuxPaper

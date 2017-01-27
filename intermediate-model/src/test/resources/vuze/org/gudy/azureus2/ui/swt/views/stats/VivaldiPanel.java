@@ -20,7 +20,12 @@
  */
 package org.gudy.azureus2.ui.swt.views.stats;
 
-import java.util.List;
+import com.aelitis.azureus.core.dht.control.DHTControlContact;
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.*;
+import com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.impl.*;
+import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Color;
@@ -28,15 +33,9 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 
-import com.aelitis.azureus.core.dht.control.DHTControlContact;
-import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
-import com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.*;
-import com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.impl.*;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.util.List;
 
 public class VivaldiPanel {
   private static final int ALPHA_FOCUS = 255;

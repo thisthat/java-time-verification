@@ -20,10 +20,10 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCoreOperation;
+import com.aelitis.azureus.core.AzureusCoreOperationTask;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.common.table.TableView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -51,10 +51,8 @@ import org.gudy.azureus2.ui.swt.shells.AdvRenameWindow;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 
-import com.aelitis.azureus.core.AzureusCoreOperation;
-import com.aelitis.azureus.core.AzureusCoreOperationTask;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.common.table.TableView;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author TuxPaper

@@ -1,16 +1,9 @@
 package org.gudy.bouncycastle.asn1.x509;
 
+import org.gudy.bouncycastle.asn1.*;
+
 import java.math.BigInteger;
 import java.util.Enumeration;
-
-import org.gudy.bouncycastle.asn1.x509.RSAPublicKeyStructure;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERSequence;
 
 public class RSAPublicKeyStructure
     extends ASN1Encodable

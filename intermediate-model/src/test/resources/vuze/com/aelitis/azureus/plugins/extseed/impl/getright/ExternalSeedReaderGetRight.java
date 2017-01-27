@@ -19,18 +19,6 @@
 
 package com.aelitis.azureus.plugins.extseed.impl.getright;
 
-import java.util.*;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.peers.PeerManager;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
-
 import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
 import com.aelitis.azureus.core.peermanager.piecepicker.PiecePriorityProvider;
 import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
@@ -42,6 +30,17 @@ import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloader;
 import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderLinear;
 import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderListener;
 import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderRange;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.torrent.TOTorrentFile;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.peers.PeerManager;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
+
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Map;
 
 public class 
 ExternalSeedReaderGetRight

@@ -16,10 +16,6 @@
  */
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Rectangle;
@@ -29,6 +25,10 @@ import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.ui.swt.Utils;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author TuxPaper

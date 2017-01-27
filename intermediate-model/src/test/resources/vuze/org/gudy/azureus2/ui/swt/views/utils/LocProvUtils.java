@@ -20,9 +20,7 @@
 
 package org.gudy.azureus2.ui.swt.views.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
 import org.eclipse.swt.graphics.Image;
 import org.gudy.azureus2.core3.peer.util.PeerUtils;
 import org.gudy.azureus2.plugins.PluginEvent;
@@ -30,17 +28,14 @@ import org.gudy.azureus2.plugins.PluginEventListener;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginManager;
 import org.gudy.azureus2.plugins.peers.Peer;
-import org.gudy.azureus2.plugins.ui.tables.TableCell;
-import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
-import org.gudy.azureus2.plugins.ui.tables.TableCellToolTipListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-import org.gudy.azureus2.plugins.ui.tables.TableManager;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.plugins.utils.LocationProvider;
 import org.gudy.azureus2.plugins.utils.LocationProviderListener;
 import org.gudy.azureus2.ui.swt.ImageRepository;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 LocProvUtils 

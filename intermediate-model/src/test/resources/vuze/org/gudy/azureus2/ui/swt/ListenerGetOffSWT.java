@@ -20,7 +20,6 @@ package org.gudy.azureus2.ui.swt;
 
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 
 /**

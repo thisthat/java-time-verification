@@ -18,8 +18,10 @@
 
 package org.gudy.azureus2.ui.swt.views.table.impl;
 
-import java.util.*;
-
+import com.aelitis.azureus.ui.common.table.TableCellCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.common.table.TableView;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -33,10 +35,7 @@ import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableRowSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 
-import com.aelitis.azureus.ui.common.table.TableCellCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.common.table.TableView;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public abstract class TableRowSWTBase

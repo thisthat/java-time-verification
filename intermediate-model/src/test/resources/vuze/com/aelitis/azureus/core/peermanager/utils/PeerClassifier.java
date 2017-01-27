@@ -19,16 +19,15 @@
 
 package com.aelitis.azureus.core.peermanager.utils;
 
-import java.net.InetAddress;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.aelitis.azureus.core.util.FeatureAvailability;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.HostNameToIPResolver;
 import org.gudy.azureus2.core3.util.IPToHostNameResolver;
 
-import com.aelitis.azureus.core.util.FeatureAvailability;
+import java.net.InetAddress;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Handles peer client identification and banning.

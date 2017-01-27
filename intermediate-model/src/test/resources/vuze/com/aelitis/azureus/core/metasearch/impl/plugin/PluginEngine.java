@@ -20,9 +20,8 @@
 
 package com.aelitis.azureus.core.metasearch.impl.plugin;
 
-import java.io.IOException;
-import java.util.*;
-
+import com.aelitis.azureus.core.metasearch.*;
+import com.aelitis.azureus.core.metasearch.impl.*;
 import org.gudy.azureus2.core3.util.AESemaphore;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.utils.search.SearchInstance;
@@ -30,8 +29,11 @@ import org.gudy.azureus2.plugins.utils.search.SearchObserver;
 import org.gudy.azureus2.plugins.utils.search.SearchProvider;
 import org.gudy.azureus2.plugins.utils.search.SearchResult;
 
-import com.aelitis.azureus.core.metasearch.*;
-import com.aelitis.azureus.core.metasearch.impl.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 PluginEngine

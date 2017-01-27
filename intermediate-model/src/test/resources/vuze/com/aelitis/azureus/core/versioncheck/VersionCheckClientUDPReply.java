@@ -20,14 +20,13 @@
 
 package com.aelitis.azureus.core.versioncheck;
 
-import java.io.*;
-import java.util.Map;
-
+import com.aelitis.net.udp.uc.PRUDPPacketReply;
 import org.gudy.azureus2.core3.util.*;
 
-
-
-import com.aelitis.net.udp.uc.PRUDPPacketReply;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Map;
 
 public class 
 VersionCheckClientUDPReply 

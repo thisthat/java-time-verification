@@ -22,6 +22,7 @@
 
 package org.gudy.azureus2.ui.swt.views.file;
 
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.*;
@@ -50,8 +51,6 @@ import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
-
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
 
 
 

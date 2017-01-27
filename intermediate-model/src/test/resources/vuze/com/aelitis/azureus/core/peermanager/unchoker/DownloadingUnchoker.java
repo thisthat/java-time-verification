@@ -19,11 +19,11 @@
 
 package com.aelitis.azureus.core.peermanager.unchoker;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.peer.PEPeer;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**

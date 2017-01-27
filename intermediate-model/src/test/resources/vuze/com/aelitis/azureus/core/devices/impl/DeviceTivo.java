@@ -20,18 +20,7 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.*;
-
-
+import com.aelitis.azureus.core.devices.TranscodeFile;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.IndentWriter;
@@ -40,7 +29,11 @@ import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
 import org.gudy.azureus2.pluginsimpl.local.utils.FormattersImpl;
 
-import com.aelitis.azureus.core.devices.TranscodeFile;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.*;
+import java.util.*;
 
 public class 
 DeviceTivo

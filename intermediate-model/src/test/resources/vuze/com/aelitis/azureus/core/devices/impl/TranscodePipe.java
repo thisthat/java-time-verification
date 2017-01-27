@@ -20,6 +20,10 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
+import org.gudy.azureus2.core3.util.AEThread2;
+import org.gudy.azureus2.core3.util.Average;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,10 +35,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Average;
-import org.gudy.azureus2.core3.util.Debug;
 
 public abstract class 
 TranscodePipe 

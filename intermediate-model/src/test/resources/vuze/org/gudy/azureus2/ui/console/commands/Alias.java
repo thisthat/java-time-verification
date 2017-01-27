@@ -22,12 +22,12 @@
 
 package org.gudy.azureus2.ui.console.commands;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * the alias command will add/remove/modify aliases to the CLI input reader.

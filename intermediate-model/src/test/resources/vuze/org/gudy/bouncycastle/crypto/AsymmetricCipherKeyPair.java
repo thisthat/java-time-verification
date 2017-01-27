@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.CipherParameters;
-
 /**
  * a holding class for public/private parameter pairs.
  */

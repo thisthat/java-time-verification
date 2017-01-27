@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.jce.spec;
 
-import org.gudy.bouncycastle.jce.spec.ECKeySpec;
-import org.gudy.bouncycastle.jce.spec.ECParameterSpec;
 import org.gudy.bouncycastle.math.ec.ECPoint;
 
 /**

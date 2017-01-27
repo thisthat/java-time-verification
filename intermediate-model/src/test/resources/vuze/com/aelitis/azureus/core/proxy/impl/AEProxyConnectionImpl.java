@@ -19,15 +19,16 @@
 
 package com.aelitis.azureus.core.proxy.impl;
 
-import java.util.*;
-
-import java.io.EOFException;
-import java.nio.channels.*;
-
+import com.aelitis.azureus.core.proxy.*;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.proxy.*;
+import java.io.EOFException;
+import java.nio.channels.AsynchronousCloseException;
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author parg

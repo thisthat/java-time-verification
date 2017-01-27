@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.dht.nat;
 
+import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
+
 import java.net.InetSocketAddress;
 import java.util.Map;
-
-import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 
 public interface 
 DHTNATPuncher 

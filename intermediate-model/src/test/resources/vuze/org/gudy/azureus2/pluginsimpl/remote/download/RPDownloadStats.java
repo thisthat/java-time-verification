@@ -26,8 +26,8 @@ package org.gudy.azureus2.pluginsimpl.remote.download;
  * @author parg
  *
  */
-import org.gudy.azureus2.plugins.download.*;
 
+import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.pluginsimpl.remote.*;
 
 

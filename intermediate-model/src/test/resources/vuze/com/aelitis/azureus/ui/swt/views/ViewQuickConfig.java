@@ -17,6 +17,9 @@
 
 package com.aelitis.azureus.ui.swt.views;
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,10 +32,6 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.azureus2.ui.swt.views.configsections.ConfigSectionStartShutdown;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.AzureusCoreFactory;
 
 /**
  * @author TuxPaper

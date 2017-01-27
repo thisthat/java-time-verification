@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto.encodings;
 
-import java.security.SecureRandom;
-
 import org.gudy.bouncycastle.crypto.AsymmetricBlockCipher;
 import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.Digest;
@@ -9,6 +7,8 @@ import org.gudy.bouncycastle.crypto.InvalidCipherTextException;
 import org.gudy.bouncycastle.crypto.digests.SHA1Digest;
 import org.gudy.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.gudy.bouncycastle.crypto.params.ParametersWithRandom;
+
+import java.security.SecureRandom;
 
 /**
  * Optimal Asymmetric Encryption Padding (OAEP) - see PKCS 1 V 2.

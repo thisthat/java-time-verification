@@ -18,9 +18,15 @@
 
 package com.aelitis.azureus.ui.swt.mdi;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.common.updater.UIUpdater;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
+import com.aelitis.azureus.ui.swt.skin.SWTSkin;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectContainer;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.DisposeEvent;
@@ -43,15 +49,8 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListenerEx;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewEventCancelledException;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewImpl;
 
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.common.updater.UIUpdater;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
-import com.aelitis.azureus.ui.swt.skin.SWTSkin;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectContainer;
-import com.aelitis.azureus.util.MapUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * MDI Entry that is a {@link CTabItem} and belongs wo {@link TabbedMDI}

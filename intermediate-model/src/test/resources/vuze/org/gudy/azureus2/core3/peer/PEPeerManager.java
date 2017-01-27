@@ -29,8 +29,10 @@ package org.gudy.azureus2.core3.peer;
  *
  */
 
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerExchangerItem;
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
 import org.gudy.azureus2.core3.disk.*;
 import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
 import org.gudy.azureus2.core3.peer.util.PeerIdentityDataID;
@@ -39,10 +41,8 @@ import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.core3.util.IndentWriter;
 import org.gudy.azureus2.plugins.peers.PeerDescriptor;
 
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerExchangerItem;
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import java.util.List;
+import java.util.Map;
 
 
 public interface 

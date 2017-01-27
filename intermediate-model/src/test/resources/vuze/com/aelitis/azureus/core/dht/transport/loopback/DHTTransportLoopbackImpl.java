@@ -19,15 +19,16 @@
 
 package com.aelitis.azureus.core.dht.transport.loopback;
 
-import java.util.*;
-import java.io.*;
-
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.transport.*;
 import com.aelitis.azureus.core.dht.transport.util.DHTTransportRequestCounter;
 import com.aelitis.azureus.core.dht.transport.util.DHTTransportStatsImpl;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author parg

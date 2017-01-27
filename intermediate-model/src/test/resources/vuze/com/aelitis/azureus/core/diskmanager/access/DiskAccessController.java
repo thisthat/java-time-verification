@@ -19,9 +19,8 @@
 
 package com.aelitis.azureus.core.diskmanager.access;
 
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-
 import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
 
 public interface 
 DiskAccessController 

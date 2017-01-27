@@ -21,6 +21,7 @@
 package org.gudy.azureus2.ui.swt.update;
 
 
+import com.aelitis.azureus.ui.UIFunctions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.*;
 import org.eclipse.swt.events.DisposeEvent;
@@ -34,8 +35,6 @@ import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
-
-import com.aelitis.azureus.ui.UIFunctions;
 
 
 public class FullUpdateWindow

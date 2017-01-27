@@ -19,15 +19,15 @@
 
 package com.aelitis.azureus.core.peermanager.peerdb;
 
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-
 import org.gudy.azureus2.core3.peer.PEPeerSource;
 import org.gudy.azureus2.core3.peer.util.PeerUtils;
 import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.plugins.peers.PeerDescriptor;
+
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 
 
 

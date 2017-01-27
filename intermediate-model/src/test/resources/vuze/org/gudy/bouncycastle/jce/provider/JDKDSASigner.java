@@ -1,28 +1,6 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.interfaces.DSAKey;
-import java.security.spec.AlgorithmParameterSpec;
-
-//import org.gudy.bouncycastle.crypto.signers.DSASigner;
-import org.gudy.bouncycastle.jce.provider.DSAUtil;
-import org.gudy.bouncycastle.jce.provider.ECUtil;
-import org.gudy.bouncycastle.jce.provider.JDKDSASigner;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERInputStream;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.gudy.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.gudy.bouncycastle.crypto.CipherParameters;
@@ -32,6 +10,16 @@ import org.gudy.bouncycastle.crypto.digests.SHA1Digest;
 import org.gudy.bouncycastle.crypto.params.ParametersWithRandom;
 import org.gudy.bouncycastle.crypto.signers.ECDSASigner;
 import org.gudy.bouncycastle.jce.interfaces.ECKey;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.interfaces.DSAKey;
+import java.security.spec.AlgorithmParameterSpec;
+
+//import org.gudy.bouncycastle.crypto.signers.DSASigner;
 
 public class JDKDSASigner
     extends Signature implements PKCSObjectIdentifiers, X509ObjectIdentifiers

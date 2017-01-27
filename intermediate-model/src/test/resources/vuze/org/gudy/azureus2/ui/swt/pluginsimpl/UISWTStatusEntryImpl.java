@@ -18,18 +18,17 @@
 
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
-import java.util.Iterator;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.plugins.ui.menus.MenuContext;
+import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.pluginsimpl.local.ui.menus.MenuContextImpl;
 import org.gudy.azureus2.ui.common.util.MenuItemManager;
 import org.gudy.azureus2.ui.swt.MenuBuildUtils;
@@ -39,10 +38,8 @@ import org.gudy.azureus2.ui.swt.mainwindow.MainStatusBar.CLabelPadding;
 import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntry;
 import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntryListener;
 
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
-import org.gudy.azureus2.plugins.ui.menus.MenuContext;
-import org.gudy.azureus2.plugins.ui.menus.MenuItem;
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Allan Crooks

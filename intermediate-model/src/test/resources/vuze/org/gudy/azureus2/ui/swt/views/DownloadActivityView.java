@@ -19,15 +19,17 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.GeneralUtils;
+import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerStats;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -49,11 +51,7 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListenerEx;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewEventImpl;
 
-import com.aelitis.azureus.core.util.GeneralUtils;
-import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import java.util.Map;
 
 
 /**

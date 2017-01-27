@@ -19,20 +19,22 @@
 
 package org.gudy.azureus2.core3.download.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.net.InetSocketAddress;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.peermanager.PeerManager;
+import com.aelitis.azureus.core.peermanager.PeerManagerRegistration;
+import com.aelitis.azureus.core.peermanager.PeerManagerRegistrationAdapter;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
+import com.aelitis.azureus.core.util.bloom.BloomFilter;
+import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedPeer;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.*;
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.download.DownloadManagerDiskListener;
-import org.gudy.azureus2.core3.download.DownloadManagerState;
-import org.gudy.azureus2.core3.download.DownloadManagerStateAttributeListener;
-import org.gudy.azureus2.core3.download.ForceRecheckListener;
+import org.gudy.azureus2.core3.download.*;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.global.GlobalManagerStats;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -50,19 +52,11 @@ import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.network.ConnectionManager;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.peermanager.PeerManager;
-import com.aelitis.azureus.core.peermanager.PeerManagerRegistration;
-import com.aelitis.azureus.core.peermanager.PeerManagerRegistrationAdapter;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
-import com.aelitis.azureus.core.util.bloom.BloomFilter;
-import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPeer;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
+import java.io.File;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 public class 
 DownloadManagerController 

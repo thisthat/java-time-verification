@@ -19,10 +19,10 @@
 
 package org.gudy.azureus2.pluginsimpl.local.utils.security;
 
-import java.util.Arrays;
-
 import org.gudy.azureus2.core3.util.HashWrapper;
 import org.gudy.azureus2.plugins.utils.security.SEPublicKey;
+
+import java.util.Arrays;
 
 public class 
 SEPublicKeyImpl

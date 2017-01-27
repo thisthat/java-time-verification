@@ -22,12 +22,12 @@
 
 package org.gudy.azureus2.ui.swt.maketorrent;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManager;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -52,12 +52,11 @@ import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Olivier

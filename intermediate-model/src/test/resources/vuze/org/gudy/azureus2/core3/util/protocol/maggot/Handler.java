@@ -27,16 +27,17 @@ package org.gudy.azureus2.core3.util.protocol.maggot;
  *
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.*;
-
+import com.aelitis.net.magneturi.MagnetURIHandler;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.gudy.azureus2.core3.util.protocol.magnet.MagnetConnection2;
 
-import com.aelitis.net.magneturi.MagnetURIHandler;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
 
 public class 

@@ -19,9 +19,8 @@
 
 package com.aelitis.net.udp.uc.impl;
 
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.net.udp.uc.PRUDPPacketHandlerStats;
+import org.gudy.azureus2.core3.util.Debug;
 
 /**
  * @author parg

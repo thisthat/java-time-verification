@@ -1,22 +1,21 @@
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-import org.gudy.azureus2.ui.swt.config.*;
-import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
-import org.gudy.azureus2.core3.config.impl.ConfigurationDefaults;
-import org.gudy.azureus2.core3.config.impl.ConfigurationParameterNotFoundException;
-
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.SWT;
 import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerImpl;
 import com.aelitis.azureus.core.speedmanager.impl.v2.SpeedLimitMonitor;
 import com.aelitis.azureus.core.speedmanager.impl.v2.SpeedManagerAlgorithmProviderV2;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.impl.ConfigurationDefaults;
+import org.gudy.azureus2.core3.config.impl.ConfigurationParameterNotFoundException;
+import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
+import org.gudy.azureus2.core3.util.AEDiagnostics;
+import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
+import org.gudy.azureus2.ui.swt.Messages;
+import org.gudy.azureus2.ui.swt.config.*;
+import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
 
 /**
  * Created on May 15, 2007

@@ -19,6 +19,11 @@
 
 package com.aelitis.azureus.util;
 
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.logging.LoggerChannel;
+import org.gudy.azureus2.plugins.tracker.Tracker;
+import org.gudy.azureus2.plugins.tracker.web.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -26,11 +31,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.logging.LoggerChannel;
-import org.gudy.azureus2.plugins.tracker.Tracker;
-import org.gudy.azureus2.plugins.tracker.web.*;
 
 public class LocalResourceHTTPServer
 	implements TrackerWebPageGenerator

@@ -21,18 +21,17 @@
 
 package org.gudy.azureus2.core3.util.spi;
 
-import java.io.IOException;
-import java.lang.reflect.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.gudy.azureus2.core3.config.COConfigurationListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.core3.util.TorrentUtils;
+import sun.net.spi.nameservice.NameService;
+import sun.net.spi.nameservice.NameServiceDescriptor;
+import sun.net.spi.nameservice.dns.DNSNameService;
 
-import sun.net.spi.nameservice.*;
-import sun.net.spi.nameservice.dns.*;
+import java.lang.reflect.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /*
  * This proxy is controlled by the setting in ConfigurationManager

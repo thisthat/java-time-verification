@@ -1,17 +1,11 @@
 package com.aelitis.azureus.core.metasearch.impl.web.rss;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.metasearch.*;
+import com.aelitis.azureus.core.metasearch.impl.EngineImpl;
+import com.aelitis.azureus.core.metasearch.impl.MetaSearchImpl;
+import com.aelitis.azureus.core.metasearch.impl.web.FieldMapping;
+import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
+import com.aelitis.azureus.core.metasearch.impl.web.WebResult;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.core3.util.UrlUtils;
@@ -23,16 +17,13 @@ import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentA
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
 import org.json.simple.JSONObject;
 
-import com.aelitis.azureus.core.metasearch.Engine;
-import com.aelitis.azureus.core.metasearch.Result;
-import com.aelitis.azureus.core.metasearch.ResultListener;
-import com.aelitis.azureus.core.metasearch.SearchException;
-import com.aelitis.azureus.core.metasearch.SearchParameter;
-import com.aelitis.azureus.core.metasearch.impl.EngineImpl;
-import com.aelitis.azureus.core.metasearch.impl.MetaSearchImpl;
-import com.aelitis.azureus.core.metasearch.impl.web.FieldMapping;
-import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
-import com.aelitis.azureus.core.metasearch.impl.web.WebResult;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class 
 RSSEngine 

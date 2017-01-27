@@ -30,15 +30,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.PasswordParameter;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-
-import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 
 public class ConfigSectionInterfacePassword implements UISWTConfigSection
 {

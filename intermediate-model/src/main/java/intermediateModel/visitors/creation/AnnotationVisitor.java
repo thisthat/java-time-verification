@@ -1,9 +1,8 @@
 package intermediateModel.visitors.creation;
 
-import org.eclipse.jdt.core.dom.*;
-import timeannotation.definition.Annotation;
-import timeannotation.definition.ClockAnnotation;
-import timeannotation.parser.Parser;
+import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import java.util.ArrayList;
 import java.util.List;

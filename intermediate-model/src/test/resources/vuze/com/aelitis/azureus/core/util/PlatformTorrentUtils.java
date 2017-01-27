@@ -17,16 +17,17 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.io.UnsupportedEncodingException;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PlatformTorrentUtils

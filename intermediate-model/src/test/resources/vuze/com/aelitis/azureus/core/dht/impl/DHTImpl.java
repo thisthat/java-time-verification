@@ -19,18 +19,7 @@
 
 package com.aelitis.azureus.core.dht.impl;
 
-import java.io.*;
-import java.util.List;
-import java.util.Properties;
-
-import org.gudy.azureus2.core3.util.AERunStateHandler;
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.dht.DHT;
-import com.aelitis.azureus.core.dht.DHTListener;
-import com.aelitis.azureus.core.dht.DHTLogger;
-import com.aelitis.azureus.core.dht.DHTOperationListener;
-import com.aelitis.azureus.core.dht.DHTStorageAdapter;
+import com.aelitis.azureus.core.dht.*;
 import com.aelitis.azureus.core.dht.control.*;
 import com.aelitis.azureus.core.dht.db.DHTDB;
 import com.aelitis.azureus.core.dht.nat.DHTNATPuncher;
@@ -42,6 +31,14 @@ import com.aelitis.azureus.core.dht.speed.DHTSpeedTester;
 import com.aelitis.azureus.core.dht.speed.DHTSpeedTesterFactory;
 import com.aelitis.azureus.core.dht.transport.*;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.AERunStateHandler;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * @author parg

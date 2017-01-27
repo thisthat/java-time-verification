@@ -19,14 +19,14 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import com.aelitis.azureus.core.dht.transport.DHTTransportException;
 import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
 import com.aelitis.azureus.core.dht.transport.udp.DHTTransportUDP;
 import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketNetworkHandler;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 
 /**

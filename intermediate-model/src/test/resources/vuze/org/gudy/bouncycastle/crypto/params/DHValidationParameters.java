@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import org.gudy.bouncycastle.crypto.params.DHValidationParameters;
-
 public class DHValidationParameters
 {
     private byte[]  seed;

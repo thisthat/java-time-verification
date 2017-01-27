@@ -20,12 +20,18 @@
 
 package com.aelitis.azureus.ui.swt.shells;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.pairing.*;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
+import com.aelitis.azureus.util.StringCompareUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -33,7 +39,6 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginException;
@@ -47,18 +52,11 @@ import org.gudy.azureus2.ui.swt.shells.*;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT.TriggerInThread;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter.URLInfo;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.pairing.*;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
-import com.aelitis.azureus.util.StringCompareUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author TuxPaper

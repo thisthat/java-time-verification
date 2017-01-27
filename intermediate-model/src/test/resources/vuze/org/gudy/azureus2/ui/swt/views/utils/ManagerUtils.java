@@ -22,14 +22,18 @@
 package org.gudy.azureus2.ui.swt.views.utils;
 
 
-import java.io.*;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManager;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
+import com.aelitis.azureus.core.util.AZ3Functions;
+import com.aelitis.azureus.core.util.HTTPUtils;
+import com.aelitis.azureus.core.util.LaunchManager;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -85,18 +89,13 @@ import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT.TriggerInThread;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.webplugin.WebPlugin;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.core.util.HTTPUtils;
-import com.aelitis.azureus.core.util.LaunchManager;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Olivier

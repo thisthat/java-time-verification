@@ -19,12 +19,10 @@
 
 package com.aelitis.azureus.core.diskmanager.file.impl;
 
-import java.io.RandomAccessFile;
-
+import com.aelitis.azureus.core.diskmanager.file.FMFileManagerException;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 
-import com.aelitis.azureus.core.diskmanager.file.FMFile;
-import com.aelitis.azureus.core.diskmanager.file.FMFileManagerException;
+import java.io.RandomAccessFile;
 
 public interface 
 FMFileAccess 

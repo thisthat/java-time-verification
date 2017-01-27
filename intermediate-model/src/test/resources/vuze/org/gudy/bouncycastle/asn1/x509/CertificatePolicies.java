@@ -1,16 +1,9 @@
 package org.gudy.bouncycastle.asn1.x509;
 
+import org.gudy.bouncycastle.asn1.*;
+
 import java.util.Enumeration;
 import java.util.Vector;
-
-import org.gudy.bouncycastle.asn1.x509.CertificatePolicies;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DERSequence;
 
 public class CertificatePolicies
     extends ASN1Encodable

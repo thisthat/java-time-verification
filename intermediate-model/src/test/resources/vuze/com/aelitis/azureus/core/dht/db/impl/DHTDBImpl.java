@@ -19,38 +19,11 @@
 
 package com.aelitis.azureus.core.dht.db.impl;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.util.*;
-
-import org.gudy.azureus2.core3.ipfilter.IpFilter;
-import org.gudy.azureus2.core3.ipfilter.IpFilterManagerFactory;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.ByteArrayHashMap;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-
-import com.aelitis.azureus.core.dht.DHT;
-import com.aelitis.azureus.core.dht.DHTLogger;
-import com.aelitis.azureus.core.dht.DHTOperationAdapter;
-import com.aelitis.azureus.core.dht.DHTStorageAdapter;
-import com.aelitis.azureus.core.dht.DHTStorageBlock;
-import com.aelitis.azureus.core.dht.DHTStorageKey;
-import com.aelitis.azureus.core.dht.DHTStorageKeyStats;
+import com.aelitis.azureus.core.dht.*;
+import com.aelitis.azureus.core.dht.control.DHTControl;
 import com.aelitis.azureus.core.dht.db.*;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.router.DHTRouter;
-import com.aelitis.azureus.core.dht.control.DHTControl;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportQueryStoreReply;
 import com.aelitis.azureus.core.dht.transport.DHTTransportReplyHandlerAdapter;
@@ -59,6 +32,13 @@ import com.aelitis.azureus.core.dht.transport.udp.DHTTransportUDP;
 import com.aelitis.azureus.core.util.FeatureAvailability;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.ipfilter.IpFilter;
+import org.gudy.azureus2.core3.ipfilter.IpFilterManagerFactory;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author parg

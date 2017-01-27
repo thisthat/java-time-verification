@@ -22,11 +22,6 @@
 
 package org.gudy.azureus2.ui.console.multiuser.commands;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.gudy.azureus2.ui.console.ConsoleInput;
@@ -35,6 +30,11 @@ import org.gudy.azureus2.ui.console.commands.CommandCollection;
 import org.gudy.azureus2.ui.console.commands.IConsoleCommand;
 import org.gudy.azureus2.ui.console.commands.OptionsConsoleCommand;
 import org.gudy.azureus2.ui.console.multiuser.UserManager;
+
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * container command for commands that deal with the add/modify/delete of users

@@ -1,18 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.GeneralName;
-import org.gudy.bouncycastle.asn1.x509.X509Name;
-import org.gudy.bouncycastle.asn1.ASN1Choice;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1OctetString;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERIA5String;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DEROctetString;
-import org.gudy.bouncycastle.asn1.DERTaggedObject;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.util.IPAddress;
 import org.gudy.bouncycastle.util.Strings;
 

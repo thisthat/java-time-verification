@@ -19,14 +19,13 @@
 
 package org.gudy.azureus2.pluginsimpl.local.utils.xml.rss;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
-
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.utils.xml.rss.RSSItem;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentAttribute;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
+
+import java.net.URL;
+import java.util.Date;
 
 /**
  * @author parg

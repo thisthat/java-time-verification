@@ -1,13 +1,9 @@
 package org.gudy.bouncycastle.asn1.x509;
 
+import org.gudy.bouncycastle.asn1.*;
+
 import java.util.Enumeration;
 import java.util.Vector;
-
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERSequence;
 
 /**
  * This extension may contain further X.500 attributes of the subject. See also

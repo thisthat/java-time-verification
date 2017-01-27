@@ -27,13 +27,16 @@ package org.gudy.azureus2.pluginsimpl.local.sharing;
  *
  */
 
-import java.io.*;
-import java.util.*;
-
+import org.gudy.azureus2.core3.internat.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.sharing.*;
 import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.internat.*;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class 
 ShareResourceDirContentsImpl

@@ -19,17 +19,17 @@
 
 package com.aelitis.net.natpmp.upnp.impl;
 
-import java.util.*;
-
+import com.aelitis.net.natpmp.NatPMPDevice;
+import com.aelitis.net.natpmp.upnp.NatPMPUPnP;
+import com.aelitis.net.upnp.UPnP;
+import com.aelitis.net.upnp.UPnPListener;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SimpleTimer;
 import org.gudy.azureus2.core3.util.TimerEvent;
 import org.gudy.azureus2.core3.util.TimerEventPerformer;
 
-import com.aelitis.net.natpmp.NatPMPDevice;
-import com.aelitis.net.natpmp.upnp.NatPMPUPnP;
-import com.aelitis.net.upnp.UPnP;
-import com.aelitis.net.upnp.UPnPListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 NatPMPUPnPImpl 

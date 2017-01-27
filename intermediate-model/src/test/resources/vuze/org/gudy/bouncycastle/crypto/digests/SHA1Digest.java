@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto.digests;
 
-import org.gudy.bouncycastle.crypto.digests.GeneralDigest;
-import org.gudy.bouncycastle.crypto.digests.SHA1Digest;
-
-
 /**
  * implementation of SHA-1 as outlined in "Handbook of Applied Cryptography", pages 346 - 349.
  *

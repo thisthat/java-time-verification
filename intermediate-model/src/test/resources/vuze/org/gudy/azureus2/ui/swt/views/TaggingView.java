@@ -18,10 +18,9 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.ui.UIFunctions.TagReturner;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.*;
@@ -43,9 +42,9 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
 
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.ui.UIFunctions.TagReturner;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * View showing tags set on selected taggable item(s).  Sometimes easier than

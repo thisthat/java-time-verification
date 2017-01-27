@@ -22,11 +22,11 @@
 
 package org.gudy.azureus2.core3.ipfilter.impl;
 
-import java.net.UnknownHostException;
-
 import org.gudy.azureus2.core3.ipfilter.IpFilterManagerFactory;
 import org.gudy.azureus2.core3.ipfilter.IpRange;
 import org.gudy.azureus2.core3.tracker.protocol.PRHelpers;
+
+import java.net.UnknownHostException;
 
 /**
  * @author Olivier

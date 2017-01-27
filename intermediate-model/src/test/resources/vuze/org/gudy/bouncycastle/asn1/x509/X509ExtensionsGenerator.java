@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.X509Extension;
-import org.gudy.bouncycastle.asn1.x509.X509Extensions;
 import org.gudy.bouncycastle.asn1.DEREncodable;
 import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
 import org.gudy.bouncycastle.asn1.DEROctetString;

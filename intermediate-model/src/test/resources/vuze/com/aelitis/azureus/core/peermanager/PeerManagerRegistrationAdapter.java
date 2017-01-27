@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.peermanager;
 
-import java.net.InetSocketAddress;
-
 import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+
+import java.net.InetSocketAddress;
 
 public interface 
 PeerManagerRegistrationAdapter 

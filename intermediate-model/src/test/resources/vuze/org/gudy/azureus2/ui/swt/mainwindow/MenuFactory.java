@@ -18,19 +18,16 @@
 
 package org.gudy.azureus2.ui.swt.mainwindow;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-
+import com.aelitis.azureus.core.*;
+import com.aelitis.azureus.core.speedmanager.SpeedLimitHandler;
+import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
+import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
@@ -50,6 +47,14 @@ import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLSet;
 import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
 import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.ui.UIInputReceiver;
+import org.gudy.azureus2.plugins.ui.UIInputReceiverListener;
+import org.gudy.azureus2.plugins.ui.menus.MenuManager;
+import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.plugins.update.Update;
+import org.gudy.azureus2.plugins.update.UpdateCheckInstance;
+import org.gudy.azureus2.plugins.update.UpdateCheckInstanceListener;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadManagerImpl;
 import org.gudy.azureus2.ui.common.util.MenuItemManager;
@@ -81,25 +86,9 @@ import org.gudy.azureus2.ui.swt.views.table.utils.TableContextMenuManager;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 import org.gudy.azureus2.ui.swt.welcome.WelcomeWindow;
 
-import com.aelitis.azureus.core.*;
-import com.aelitis.azureus.core.speedmanager.SpeedLimitHandler;
-import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.ui.UIInputReceiver;
-import org.gudy.azureus2.plugins.ui.UIInputReceiverListener;
-import org.gudy.azureus2.plugins.ui.menus.MenuManager;
-import org.gudy.azureus2.plugins.ui.tables.*;
-import org.gudy.azureus2.plugins.update.Update;
-import org.gudy.azureus2.plugins.update.UpdateCheckInstance;
-import org.gudy.azureus2.plugins.update.UpdateCheckInstanceListener;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
 
 public class MenuFactory
 	implements IMenuConstants

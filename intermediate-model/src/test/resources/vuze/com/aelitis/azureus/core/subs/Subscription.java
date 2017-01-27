@@ -20,10 +20,9 @@
 
 package com.aelitis.azureus.core.subs;
 
-import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
-
 import com.aelitis.azureus.core.metasearch.Engine;
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
 public interface 
 Subscription 

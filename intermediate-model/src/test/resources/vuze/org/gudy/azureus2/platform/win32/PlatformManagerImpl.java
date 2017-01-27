@@ -24,10 +24,7 @@ package org.gudy.azureus2.platform.win32;
  *
  */
 
-import java.io.*;
-import java.net.InetAddress;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.LogAlert;
@@ -36,20 +33,16 @@ import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.*;
 import org.gudy.azureus2.platform.win32.access.*;
 import org.gudy.azureus2.platform.win32.access.impl.AEWin32AccessInterface;
-
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.platform.PlatformManagerException;
 import org.gudy.azureus2.plugins.ui.UIManager;
 import org.gudy.azureus2.plugins.ui.UIManagerEvent;
-import org.gudy.azureus2.plugins.update.UpdateCheckInstance;
-import org.gudy.azureus2.plugins.update.UpdateException;
-import org.gudy.azureus2.plugins.update.UpdateInstaller;
-import org.gudy.azureus2.plugins.update.UpdateInstallerListener;
-import org.gudy.azureus2.plugins.update.UpdateManager;
-import org.gudy.azureus2.plugins.update.UpdateManagerListener;
+import org.gudy.azureus2.plugins.update.*;
 import org.gudy.azureus2.plugins.utils.StaticUtilities;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.io.*;
+import java.net.InetAddress;
+import java.util.*;
 
 public class 
 PlatformManagerImpl

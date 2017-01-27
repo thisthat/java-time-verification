@@ -19,12 +19,11 @@
 
 package com.aelitis.azureus.core.peermanager.uploadslots;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.unchoker.UnchokerUtil;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.peer.PEPeer;
 
-import com.aelitis.azureus.core.peermanager.unchoker.UnchokerUtil;
+import java.util.ArrayList;
 
 
 /**

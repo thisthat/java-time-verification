@@ -18,20 +18,18 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadTypeComplete;
 import org.gudy.azureus2.plugins.download.DownloadTypeIncomplete;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.views.MyTorrentsView;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
 
 public class MyTorrentsView_Big
 	extends MyTorrentsView

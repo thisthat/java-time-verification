@@ -18,11 +18,20 @@
 
 package com.aelitis.azureus.ui.swt.feature;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.activities.*;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.skin.SWTSkin;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import com.aelitis.azureus.ui.swt.views.skin.*;
+import com.aelitis.azureus.util.FeatureUtils;
 import org.eclipse.swt.SWT;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginException;
@@ -39,19 +48,8 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 
-import com.aelitis.azureus.activities.*;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.skin.SWTSkin;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.views.skin.*;
-import com.aelitis.azureus.util.FeatureUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FeatureManagerUIListener
 	implements FeatureManagerListener

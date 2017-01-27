@@ -19,11 +19,10 @@
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
 
+import com.aelitis.azureus.ui.common.ToolBarItem;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarManager;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarManagerImpl.ToolBarManagerListener;
-
-import com.aelitis.azureus.ui.common.ToolBarItem;
 
 public interface UIToolBarManagerCore
 	extends UIToolBarManager

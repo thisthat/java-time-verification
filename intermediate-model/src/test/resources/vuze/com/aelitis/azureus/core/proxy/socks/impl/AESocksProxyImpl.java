@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.proxy.socks.impl;
 
-import java.io.IOException;
-
-import com.aelitis.azureus.core.proxy.socks.*;
 import com.aelitis.azureus.core.proxy.*;
+import com.aelitis.azureus.core.proxy.socks.*;
+
+import java.io.IOException;
 
 /**
  * @author parg

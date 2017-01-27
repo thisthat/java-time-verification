@@ -22,16 +22,15 @@
 
 package org.gudy.azureus2.ui.swt.config.wizard;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
@@ -42,9 +41,8 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Olivier

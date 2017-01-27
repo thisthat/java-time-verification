@@ -20,10 +20,9 @@
 
 package org.gudy.azureus2.ui.swt.mainwindow;
 
+import com.aelitis.azureus.ui.UIStatusTextClickListener;
 import org.gudy.azureus2.ui.swt.mainwindow.MainStatusBar.CLabelPadding;
 import org.gudy.azureus2.ui.swt.update.UpdateWindow;
-
-import com.aelitis.azureus.ui.UIStatusTextClickListener;
 
 
 public interface 

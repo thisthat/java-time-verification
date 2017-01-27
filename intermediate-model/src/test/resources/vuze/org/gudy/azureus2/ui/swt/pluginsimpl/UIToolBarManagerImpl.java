@@ -18,15 +18,14 @@
 
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
-import java.util.*;
-
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarManager;
-
 import com.aelitis.azureus.ui.common.ToolBarItem;
 import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
 import com.aelitis.azureus.ui.selectedcontent.SelectedContentListener;
 import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarManager;
+
+import java.util.*;
 
 /**
  * @author TuxPaper

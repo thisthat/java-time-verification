@@ -18,12 +18,11 @@
 
 package org.gudy.azureus2.ui.swt.views.clientstats;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.util.MapUtils;
 import org.gudy.azureus2.core3.util.BEncodableObject;
 
-import com.aelitis.azureus.util.MapUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientStatsDataSource
 	implements BEncodableObject

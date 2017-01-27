@@ -17,20 +17,17 @@
  */
 package org.gudy.azureus2.pluginsimpl.local.ui.menus;
 
-import java.util.Iterator;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ui.Graphic;
-import org.gudy.azureus2.plugins.ui.UIManager;
 import org.gudy.azureus2.plugins.ui.UIManagerEvent;
 import org.gudy.azureus2.plugins.ui.menus.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.ui.UIManagerImpl;
+
+import java.util.Iterator;
 
 /**
  * amc1: This class was largely derived from TableContextMenuImpl.

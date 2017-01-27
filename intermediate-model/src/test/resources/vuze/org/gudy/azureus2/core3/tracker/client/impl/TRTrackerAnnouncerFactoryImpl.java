@@ -27,12 +27,12 @@ package org.gudy.azureus2.core3.tracker.client.impl;
  *
  */
 
-import java.util.*;
-
-
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.tracker.client.*;
 import org.gudy.azureus2.core3.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 TRTrackerAnnouncerFactoryImpl 

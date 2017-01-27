@@ -1,15 +1,16 @@
 package org.gudy.azureus2.ui.console.commands;
 
+import com.aelitis.azureus.core.subs.*;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.ui.console.ConsoleInput;
+
 import java.io.PrintStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.TimeFormatter;
-import org.gudy.azureus2.ui.console.ConsoleInput;
-
-import com.aelitis.azureus.core.subs.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Subscriptions extends IConsoleCommand {

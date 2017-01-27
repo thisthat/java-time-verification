@@ -27,9 +27,8 @@ package org.gudy.azureus2.core3.global;
  *
  */
 
-import org.gudy.azureus2.core3.global.impl.*;
-
 import com.aelitis.azureus.core.AzureusCore;
+import org.gudy.azureus2.core3.global.impl.*;
 
 
 public class 

@@ -22,6 +22,10 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.graphics.Image;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
@@ -30,12 +34,6 @@ import org.gudy.azureus2.core3.download.DownloadManagerListener;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.global.GlobalManagerListener;
 import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemFillListener;

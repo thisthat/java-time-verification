@@ -22,10 +22,8 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,8 +44,9 @@ import org.gudy.azureus2.ui.swt.components.LinkLabel;
 import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
 
 
 public class ConfigSectionInterfaceDisplay implements UISWTConfigSection {

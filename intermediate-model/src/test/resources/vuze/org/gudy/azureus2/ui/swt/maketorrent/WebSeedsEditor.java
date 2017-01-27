@@ -34,11 +34,7 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.*;
 
 
 /**

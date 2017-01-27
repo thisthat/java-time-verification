@@ -17,10 +17,9 @@
 
 package org.gudy.azureus2.ui.swt.views.table.utils;
 
-import java.lang.reflect.Constructor;
-import java.util.Iterator;
-import java.util.Map;
-
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableColumnCoreCreationListener;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.LightHashMap;
 import org.gudy.azureus2.plugins.download.DownloadTypeComplete;
@@ -31,9 +30,9 @@ import org.gudy.azureus2.ui.swt.views.columnsetup.ColumnTC_NameInfo;
 import org.gudy.azureus2.ui.swt.views.columnsetup.ColumnTC_Sample;
 import org.gudy.azureus2.ui.swt.views.tableitems.mytorrents.*;
 
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableColumnCoreCreationListener;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author TuxPaper

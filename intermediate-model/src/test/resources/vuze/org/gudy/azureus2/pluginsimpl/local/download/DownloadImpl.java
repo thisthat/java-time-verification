@@ -27,10 +27,12 @@ package org.gudy.azureus2.pluginsimpl.local.download;
  *
  */
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.CopyOnWriteMap;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryManager;
 import org.gudy.azureus2.core3.download.*;
@@ -52,7 +54,6 @@ import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.BEncoder;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
 import org.gudy.azureus2.plugins.disk.DiskManager;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
@@ -71,12 +72,9 @@ import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.CopyOnWriteMap;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 public class 
 DownloadImpl

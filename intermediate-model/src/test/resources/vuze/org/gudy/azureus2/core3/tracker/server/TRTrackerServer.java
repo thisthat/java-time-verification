@@ -22,10 +22,10 @@
 
 package org.gudy.azureus2.core3.tracker.server;
 
+import org.gudy.azureus2.core3.util.Constants;
+
 import java.net.InetAddress;
 import java.util.Set;
-
-import org.gudy.azureus2.core3.util.Constants;
 
 public interface 
 TRTrackerServer 

@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
-import java.nio.channels.SocketChannel;
-
 import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
 import com.aelitis.azureus.core.networkmanager.TransportEndpoint;
+
+import java.nio.channels.SocketChannel;
 
 public class 
 TransportEndpointTCP 

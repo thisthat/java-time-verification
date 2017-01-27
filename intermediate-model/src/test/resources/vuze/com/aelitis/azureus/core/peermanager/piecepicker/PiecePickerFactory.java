@@ -20,9 +20,8 @@
 package com.aelitis.azureus.core.peermanager.piecepicker;
 
 
-import org.gudy.azureus2.core3.peer.impl.PEPeerControl;
-
 import com.aelitis.azureus.core.peermanager.piecepicker.impl.PiecePickerImpl;
+import org.gudy.azureus2.core3.peer.impl.PEPeerControl;
 
 /**
  * @author MjrTom

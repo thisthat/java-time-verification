@@ -1,17 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.DistributionPoint;
-import org.gudy.bouncycastle.asn1.x509.DistributionPointName;
-import org.gudy.bouncycastle.asn1.x509.GeneralNames;
-import org.gudy.bouncycastle.asn1.x509.ReasonFlags;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERBitString;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERSequence;
-import org.gudy.bouncycastle.asn1.DERTaggedObject;
+import org.gudy.bouncycastle.asn1.*;
 
 /**
  * The DistributionPoint object.

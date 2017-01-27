@@ -19,15 +19,11 @@
 
 package org.gudy.azureus2.pluginsimpl.local.ddb;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
-
 import org.gudy.azureus2.core3.util.HashWrapper;
 import org.gudy.azureus2.core3.util.SHA1Simple;
 import org.gudy.azureus2.plugins.ddb.DistributedDatabaseException;
+
+import java.io.*;
 
 /**
  * @author parg

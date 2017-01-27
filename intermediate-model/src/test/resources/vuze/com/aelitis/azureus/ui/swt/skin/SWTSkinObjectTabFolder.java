@@ -21,7 +21,6 @@ package com.aelitis.azureus.ui.swt.skin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
-
 import org.gudy.azureus2.core3.util.Constants;
 
 public class SWTSkinObjectTabFolder

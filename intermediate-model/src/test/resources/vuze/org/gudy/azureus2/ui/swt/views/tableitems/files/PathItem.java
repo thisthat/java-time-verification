@@ -18,18 +18,16 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.files;
 
-import java.io.File;
-import java.io.IOException;
-
-
-import org.gudy.azureus2.plugins.ui.tables.*;
-
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.FilesView;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+
+import java.io.File;
+import java.io.IOException;
 
 
 

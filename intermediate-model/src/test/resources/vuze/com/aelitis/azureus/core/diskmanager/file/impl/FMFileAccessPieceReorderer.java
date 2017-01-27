@@ -19,20 +19,19 @@
 
 package com.aelitis.azureus.core.diskmanager.file.impl;
 
-import java.util.*;
-import java.io.*;
-import java.nio.ByteBuffer;
-
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.DirectByteBufferPool;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.diskmanager.file.FMFile;
 import com.aelitis.azureus.core.diskmanager.file.FMFileManagerException;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.torrent.TOTorrentFile;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 FMFileAccessPieceReorderer

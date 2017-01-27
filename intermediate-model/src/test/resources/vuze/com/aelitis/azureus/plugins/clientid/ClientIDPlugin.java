@@ -19,22 +19,19 @@
 
 package com.aelitis.azureus.plugins.clientid;
 
-import java.util.Properties;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.global.GlobalManager;
-import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 import org.gudy.azureus2.core3.peer.util.PeerUtils;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.HashWrapper;
+import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
+import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
+import java.util.Properties;
 
 /**
  * @author parg

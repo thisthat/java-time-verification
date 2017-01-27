@@ -24,10 +24,10 @@ package com.aelitis.net.upnp;
  *
  */
 
+import com.aelitis.net.upnp.services.*;
+
 import java.net.URL;
 import java.util.List;
-
-import com.aelitis.net.upnp.services.*;
 
 public interface 
 UPnPService 

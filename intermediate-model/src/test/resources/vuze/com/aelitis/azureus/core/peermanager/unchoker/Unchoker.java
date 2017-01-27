@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.peermanager.unchoker;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.peer.PEPeer;
+
+import java.util.ArrayList;
 
 /**
  * Performs peer choke/unchoke calculations.

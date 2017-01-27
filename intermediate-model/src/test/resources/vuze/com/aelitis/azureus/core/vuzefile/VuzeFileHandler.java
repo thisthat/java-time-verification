@@ -20,22 +20,18 @@
 
 package com.aelitis.azureus.core.vuzefile;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.util.BDecoder;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.FileUtil;
 import org.gudy.azureus2.plugins.utils.StaticUtilities;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class 

@@ -18,10 +18,17 @@
 
 package com.aelitis.azureus.ui.swt.columns.torrent;
 
+import com.aelitis.azureus.core.download.DownloadManagerEnhancer;
+import com.aelitis.azureus.core.download.EnhancedDownloadManager;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinProperties;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
@@ -43,15 +50,6 @@ import org.gudy.azureus2.ui.swt.views.ViewUtils;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
-import com.aelitis.azureus.core.download.DownloadManagerEnhancer;
-import com.aelitis.azureus.core.download.EnhancedDownloadManager;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinProperties;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
 
 /**
  * @author TuxPaper

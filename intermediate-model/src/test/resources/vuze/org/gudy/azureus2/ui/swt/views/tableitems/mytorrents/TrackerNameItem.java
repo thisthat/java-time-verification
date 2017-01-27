@@ -22,18 +22,18 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
-import java.net.URL;
-import java.util.Set;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLSet;
 import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.core3.util.StringInterner;
-import org.gudy.azureus2.ui.swt.views.MyTorrentsView;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.views.MyTorrentsView;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+
+import java.net.URL;
+import java.util.Set;
 
 /**
  * @author Olivier

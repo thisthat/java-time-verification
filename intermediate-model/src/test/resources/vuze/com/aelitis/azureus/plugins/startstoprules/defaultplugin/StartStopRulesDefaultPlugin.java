@@ -22,8 +22,8 @@
 
 package com.aelitis.azureus.plugins.startstoprules.defaultplugin;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.average.AverageFactory;
 import org.gudy.azureus2.core3.config.COConfigurationListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.*;
@@ -41,15 +41,10 @@ import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
-import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-import org.gudy.azureus2.plugins.ui.tables.TableContextMenuItem;
-import org.gudy.azureus2.plugins.ui.tables.TableManager;
-import org.gudy.azureus2.plugins.ui.tables.TableRow;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.average.AverageFactory;
+import java.util.*;
 
 /** Handles Starting and Stopping of torrents.
  *

@@ -12,12 +12,12 @@
     </properties>
     <modules>
         <module>java-parser</module>
-        <module>xal</module>
+        <!--<module>xal</module>-->
         <module>intermediate-model</module>
-        <module>testing</module>
-        <module>PCFG</module>
-        <module>evaluation</module>
-        <module>time-annotation</module>
+        <!--<module>testing</module>-->
+        <!--<module>PCFG</module>-->
+        <!--<module>evaluation</module>-->
+        <!--<module>time-annotation</module>-->
     </modules>
 
 

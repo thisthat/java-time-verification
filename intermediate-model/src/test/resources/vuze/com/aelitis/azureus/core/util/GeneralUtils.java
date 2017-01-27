@@ -20,17 +20,16 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.util.average.AverageFactory;
+import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.Constants;
 
-import com.aelitis.azureus.core.util.average.AverageFactory;
-import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class 
 GeneralUtils 

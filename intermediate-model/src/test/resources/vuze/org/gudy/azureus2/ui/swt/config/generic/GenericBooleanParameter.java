@@ -17,19 +17,15 @@
  */
 package org.gudy.azureus2.ui.swt.config.generic;
 
-import java.util.*;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.IAdditionalActionPerformer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Olivier

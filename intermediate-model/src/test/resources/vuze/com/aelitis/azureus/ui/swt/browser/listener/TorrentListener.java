@@ -18,18 +18,9 @@
 
 package com.aelitis.azureus.ui.swt.browser.listener;
 
-import java.io.File;
-import java.util.Map;
-
-import org.eclipse.swt.widgets.Shell;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.bouncycastle.util.encoders.Base64;
-
 import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
 import com.aelitis.azureus.core.messenger.ClientMessageContext;
 import com.aelitis.azureus.core.messenger.ClientMessageContext.torrentURLHandler;
@@ -40,6 +31,14 @@ import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfo;
 import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfoContentNetwork;
 import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3;
 import com.aelitis.azureus.util.MapUtils;
+import org.eclipse.swt.widgets.Shell;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.bouncycastle.util.encoders.Base64;
+
+import java.io.File;
+import java.util.Map;
 
 public class TorrentListener
 	extends AbstractBrowserMessageListener

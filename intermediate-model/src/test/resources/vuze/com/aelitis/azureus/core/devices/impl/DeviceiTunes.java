@@ -20,6 +20,13 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.ipc.IPCInterface;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,20 +36,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.ipc.IPCInterface;
-
-import com.aelitis.azureus.core.devices.*;
-import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
 
 public class 
 DeviceiTunes

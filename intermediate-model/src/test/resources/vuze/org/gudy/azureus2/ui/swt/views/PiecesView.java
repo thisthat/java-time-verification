@@ -19,8 +19,15 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.util.List;
-
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableDataSourceChangedListener;
+import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -50,15 +57,7 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableViewSWT_TabsCommon;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
 import org.gudy.azureus2.ui.swt.views.tableitems.pieces.*;
 
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableDataSourceChangedListener;
-import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.util.List;
 
 /**
  * @author Olivier

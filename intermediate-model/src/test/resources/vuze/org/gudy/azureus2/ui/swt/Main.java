@@ -17,18 +17,17 @@
  */
 package org.gudy.azureus2.ui.swt;
 
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreException;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.launcher.Launcher;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @author Olivier

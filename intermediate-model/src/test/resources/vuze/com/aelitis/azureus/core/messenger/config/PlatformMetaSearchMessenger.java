@@ -20,12 +20,14 @@
 
 package com.aelitis.azureus.core.messenger.config;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.messenger.PlatformMessenger;
 import com.aelitis.azureus.core.messenger.PlatformMessengerException;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 PlatformMetaSearchMessenger 

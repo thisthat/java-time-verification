@@ -17,11 +17,9 @@
 
 package com.aelitis.azureus.core.torrent;
 
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.global.GlobalManager;
@@ -33,9 +31,10 @@ import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author TuxPaper

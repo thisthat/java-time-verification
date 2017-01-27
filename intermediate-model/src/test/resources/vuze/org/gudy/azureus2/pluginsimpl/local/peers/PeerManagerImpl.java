@@ -27,8 +27,8 @@ package org.gudy.azureus2.pluginsimpl.local.peers;
  *
  */
 
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.disk.DiskManagerListener;
 import org.gudy.azureus2.core3.disk.DiskManagerPiece;
@@ -47,8 +47,7 @@ import org.gudy.azureus2.pluginsimpl.local.disk.DiskManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.PooledByteBufferImpl;
 
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
+import java.util.*;
 
 public class 
 PeerManagerImpl

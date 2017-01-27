@@ -27,16 +27,14 @@ package com.aelitis.azureus.core.diskmanager.file.impl;
  *
  */
 
-import java.util.*;
-import java.io.File;
-
+import com.aelitis.azureus.core.diskmanager.file.*;
+import com.aelitis.azureus.core.util.LinkFileMap;
+import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.config.*;
 
-import com.aelitis.azureus.core.diskmanager.file.*;
-import com.aelitis.azureus.core.util.CaseSensitiveFileMap;
-import com.aelitis.azureus.core.util.LinkFileMap;
+import java.io.File;
+import java.util.*;
 
 public class 
 FMFileManagerImpl

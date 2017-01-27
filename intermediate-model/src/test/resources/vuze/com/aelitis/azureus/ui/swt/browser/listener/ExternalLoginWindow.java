@@ -18,9 +18,10 @@
 
 package com.aelitis.azureus.ui.swt.browser.listener;
 
-import java.util.*;
-import java.net.URL;
-
+import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
+import com.aelitis.azureus.core.util.http.HTTPAuthHelper;
+import com.aelitis.azureus.core.util.http.HTTPAuthHelperListener;
+import com.aelitis.azureus.ui.swt.browser.CookiesListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
@@ -29,12 +30,7 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.BrowserWrapper;
@@ -42,10 +38,8 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.progress.ProgressWindow;
 
-import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
-import com.aelitis.azureus.core.util.http.HTTPAuthHelper;
-import com.aelitis.azureus.core.util.http.HTTPAuthHelperListener;
-import com.aelitis.azureus.ui.swt.browser.CookiesListener;
+import java.net.URL;
+import java.util.*;
 
 public class ExternalLoginWindow {
 	

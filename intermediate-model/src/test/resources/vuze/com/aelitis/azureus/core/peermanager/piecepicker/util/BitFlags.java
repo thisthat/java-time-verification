@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.peermanager.piecepicker.util;
 
-import java.util.Arrays;
-
 import com.aelitis.azureus.core.util.HashCodeUtils;
+
+import java.util.Arrays;
 
 /**
  * @author MjrTom

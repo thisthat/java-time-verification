@@ -22,38 +22,21 @@
 
 package org.gudy.azureus2.ui.swt;
 
-import java.util.*;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
-import org.eclipse.swt.browser.CloseWindowListener;
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.browser.OpenWindowListener;
-import org.eclipse.swt.browser.ProgressEvent;
-import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.browser.StatusTextListener;
-import org.eclipse.swt.browser.TitleEvent;
-import org.eclipse.swt.browser.TitleListener;
-import org.eclipse.swt.browser.WindowEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.browser.*;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class 

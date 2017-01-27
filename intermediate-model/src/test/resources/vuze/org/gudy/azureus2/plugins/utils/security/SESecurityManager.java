@@ -24,14 +24,13 @@ package org.gudy.azureus2.plugins.utils.security;
  *
  */
 
+import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnection;
+
+import javax.net.ssl.SSLSocketFactory;
 import java.net.Authenticator;
 import java.net.URL;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
-
-import javax.net.ssl.SSLSocketFactory;
-
-import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnection;
 
 public interface 
 SESecurityManager 

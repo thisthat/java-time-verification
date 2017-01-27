@@ -17,15 +17,14 @@
 
 package com.aelitis.azureus.ui.swt.views;
 
-import java.util.*;
-
+import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.disk.DiskManagerPiece;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -41,8 +40,10 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 
-import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinProperties;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @author TuxPaper

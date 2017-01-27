@@ -24,11 +24,11 @@ package org.gudy.azureus2.ui.swt.config;
  *
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.widgets.Control;
 import org.gudy.azureus2.core3.util.AEMonitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class 
 Parameter 

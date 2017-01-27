@@ -22,11 +22,11 @@
 
 package org.gudy.azureus2.plugins.utils;
 
+import org.gudy.azureus2.core3.util.Constants;
+
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Constants;
 
 /**
  * @author parg

@@ -20,41 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.devices;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.category.Category;
-import org.gudy.azureus2.core3.category.CategoryManager;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.ui.UIManager;
-import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnCreationListener;
-import org.gudy.azureus2.plugins.ui.tables.TableManager;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-import org.gudy.azureus2.ui.swt.*;
-import org.gudy.azureus2.ui.swt.URLTransfer;
-import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
-import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableViewSWTMenuFillListener;
-import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
-import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
-import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
@@ -83,6 +48,38 @@ import com.aelitis.azureus.ui.swt.views.skin.InfoBarUtil;
 import com.aelitis.azureus.ui.swt.views.skin.SkinView;
 import com.aelitis.azureus.ui.swt.views.skin.TorrentListViewsUtils;
 import com.aelitis.azureus.util.PlayUtils;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.category.Category;
+import org.gudy.azureus2.core3.category.CategoryManager;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.ui.UIManager;
+import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
+import org.gudy.azureus2.plugins.ui.tables.TableColumn;
+import org.gudy.azureus2.plugins.ui.tables.TableColumnCreationListener;
+import org.gudy.azureus2.plugins.ui.tables.TableManager;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+import org.gudy.azureus2.ui.swt.*;
+import org.gudy.azureus2.ui.swt.URLTransfer;
+import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
+import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
+import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableViewSWTMenuFillListener;
+import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
+import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
+import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
+
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author TuxPaper

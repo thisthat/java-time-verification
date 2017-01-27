@@ -17,8 +17,26 @@
  */
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.TableView;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentListener;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.mdi.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
+import com.aelitis.azureus.util.DataSourceUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
@@ -44,26 +62,7 @@ import org.gudy.azureus2.ui.swt.views.MyTorrentsView;
 import org.gudy.azureus2.ui.swt.views.PeersView;
 import org.gudy.azureus2.ui.swt.views.piece.PieceInfoView;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.TableView;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentListener;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.mdi.*;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
-import com.aelitis.azureus.util.DataSourceUtils;
+import java.util.Map;
 
 /**
  * Torrent download view, consisting of several information tabs

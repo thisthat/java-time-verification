@@ -16,9 +16,9 @@
  */
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.util.ResourceBundle;
-
 import org.eclipse.swt.graphics.Color;
+
+import java.util.ResourceBundle;
 
 /**
  * SWTSkinProperties delegator that always passes a set of parameters

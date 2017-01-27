@@ -3,8 +3,6 @@ package org.gudy.bouncycastle.jce.interfaces;
 import java.math.BigInteger;
 import java.security.PrivateKey;
 
-import org.gudy.bouncycastle.jce.interfaces.ECKey;
-
 /**
  * interface for Elliptic Curve Private keys.
  */

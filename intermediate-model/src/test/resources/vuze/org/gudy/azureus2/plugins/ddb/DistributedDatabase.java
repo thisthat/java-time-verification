@@ -19,11 +19,11 @@
 
 package org.gudy.azureus2.plugins.ddb;
 
+import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
+
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-
-import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
 
 /**
  * @author parg

@@ -20,26 +20,24 @@
 
 package org.gudy.azureus2.core3.util.jman;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryPoolMXBean;
-import java.lang.management.MemoryType;
-import java.util.List;
-
-import javax.management.Notification;
-import javax.management.NotificationEmitter;
-import javax.management.NotificationListener;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
 
-import org.gudy.azureus2.core3.util.*;
+import javax.management.Notification;
+import javax.management.NotificationEmitter;
+import javax.management.NotificationListener;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryType;
+import java.util.List;
 
 public class 
 AEMemoryMonitor 

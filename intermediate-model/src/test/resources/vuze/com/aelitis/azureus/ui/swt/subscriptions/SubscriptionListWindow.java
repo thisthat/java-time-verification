@@ -18,26 +18,15 @@
 
 package com.aelitis.azureus.ui.swt.subscriptions;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
+import com.aelitis.azureus.core.subs.*;
+import com.aelitis.azureus.ui.swt.widgets.AnimatedImage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -45,14 +34,8 @@ import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.subs.SubscriptionAssociationLookup;
-import com.aelitis.azureus.core.subs.SubscriptionException;
-import com.aelitis.azureus.core.subs.SubscriptionLookupListener;
-import com.aelitis.azureus.core.subs.SubscriptionManager;
-import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
-import com.aelitis.azureus.core.subs.SubscriptionPopularityListener;
-import com.aelitis.azureus.ui.swt.widgets.AnimatedImage;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class SubscriptionListWindow implements SubscriptionLookupListener {
 	

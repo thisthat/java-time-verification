@@ -17,9 +17,11 @@
 
 package com.aelitis.azureus.core.messenger.config;
 
-import java.util.*;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.messenger.PlatformMessage;
+import com.aelitis.azureus.core.messenger.PlatformMessenger;
+import com.aelitis.azureus.core.messenger.PlatformMessengerListener;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.util.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
@@ -27,12 +29,11 @@ import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
 
-import com.aelitis.azureus.core.messenger.PlatformMessage;
-import com.aelitis.azureus.core.messenger.PlatformMessenger;
-import com.aelitis.azureus.core.messenger.PlatformMessengerListener;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author TuxPaper

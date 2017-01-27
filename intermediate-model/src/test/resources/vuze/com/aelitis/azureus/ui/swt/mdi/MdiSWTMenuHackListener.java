@@ -20,9 +20,8 @@
  
 package com.aelitis.azureus.ui.swt.mdi;
 
-import org.eclipse.swt.widgets.Menu;
-
 import com.aelitis.azureus.ui.mdi.MdiEntry;
+import org.eclipse.swt.widgets.Menu;
 
 
 /**

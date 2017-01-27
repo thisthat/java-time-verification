@@ -19,9 +19,6 @@
 
 package org.gudy.azureus2.plugins.utils;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import org.gudy.azureus2.core3.util.AESemaphore;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.ui.*;
@@ -33,7 +30,8 @@ import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.resourceuploader.ResourceUploaderFactoryImpl;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Plugin utility class for easy access to static helper methods,

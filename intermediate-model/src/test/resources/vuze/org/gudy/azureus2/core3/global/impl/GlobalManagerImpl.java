@@ -27,13 +27,18 @@ package org.gudy.azureus2.core3.global.impl;
  *
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.helpers.TorrentFolderWatcher;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
+import com.aelitis.azureus.core.peermanager.control.PeerControlSchedulerFactory;
+import com.aelitis.azureus.core.speedmanager.SpeedManager;
+import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerImpl;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.tag.impl.TagDownloadWithState;
+import com.aelitis.azureus.core.tag.impl.TagTypeWithState;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryManager;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -54,28 +59,15 @@ import org.gudy.azureus2.core3.tracker.client.*;
 import org.gudy.azureus2.core3.tracker.util.TRTrackerUtils;
 import org.gudy.azureus2.core3.tracker.util.TRTrackerUtilsListener;
 import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.helpers.TorrentFolderWatcher;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
-import com.aelitis.azureus.core.peermanager.control.PeerControlSchedulerFactory;
-import com.aelitis.azureus.core.speedmanager.SpeedManager;
-import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerImpl;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagDownload;
-import com.aelitis.azureus.core.tag.TagFeatureRunState;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.tag.TaggableLifecycleHandler;
-import com.aelitis.azureus.core.tag.impl.TagDownloadWithState;
-import com.aelitis.azureus.core.tag.impl.TagTypeWithState;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-
-import org.gudy.azureus2.plugins.network.ConnectionManager;
 import org.gudy.azureus2.plugins.dht.mainline.MainlineDHTProvider;
+import org.gudy.azureus2.plugins.network.ConnectionManager;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 
 
 /**

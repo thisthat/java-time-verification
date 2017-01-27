@@ -19,21 +19,6 @@
 package org.gudy.azureus2.ui.swt.views.stats;
 
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.components.graphics.SpeedGraphic;
-import org.gudy.azureus2.ui.swt.plugins.UISWTView;
-import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
-import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
@@ -49,6 +34,19 @@ import com.aelitis.azureus.core.dht.transport.DHTTransport;
 import com.aelitis.azureus.core.dht.transport.DHTTransportFullStats;
 import com.aelitis.azureus.core.dht.transport.DHTTransportStats;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.ui.swt.Messages;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.components.graphics.SpeedGraphic;
+import org.gudy.azureus2.ui.swt.plugins.UISWTView;
+import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
+import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 
 /**
  * 

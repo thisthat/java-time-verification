@@ -22,11 +22,11 @@
 
 package org.gudy.azureus2.ui.swt.views.peer;
 
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.PaintEvent;
@@ -35,7 +35,6 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.disk.DiskManagerPiece;
@@ -62,11 +61,10 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
-import com.aelitis.azureus.util.MapUtils;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Piece Map subview for Peers View.

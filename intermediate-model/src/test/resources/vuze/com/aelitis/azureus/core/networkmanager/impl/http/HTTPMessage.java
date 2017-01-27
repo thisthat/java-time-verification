@@ -19,14 +19,13 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.http;
 
-import java.nio.ByteBuffer;
-
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-
 import com.aelitis.azureus.core.networkmanager.RawMessage;
 import com.aelitis.azureus.core.networkmanager.impl.RawMessageImpl;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.MessageException;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
+
+import java.nio.ByteBuffer;
 
 public class 
 HTTPMessage

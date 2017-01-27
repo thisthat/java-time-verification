@@ -19,13 +19,13 @@
 
 package org.gudy.azureus2.core3.torrentdownloader.impl;
 
-import java.util.ArrayList;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloader;
 import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloaderCallBackInterface;
 import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloaderFactory;
+
+import java.util.ArrayList;
 
 /**
  *

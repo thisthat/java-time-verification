@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.CipherParameters;
-import org.gudy.bouncycastle.crypto.DataLengthException;
-
-
 /**
  * The base interface for implementations of message authentication codes (MACs).
  */

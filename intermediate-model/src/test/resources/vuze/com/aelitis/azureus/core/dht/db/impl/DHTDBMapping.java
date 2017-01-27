@@ -19,21 +19,21 @@
 
 package com.aelitis.azureus.core.dht.db.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.SystemTime;
-// import org.gudy.azureus2.core3.util.SHA1Hasher;
-
 import com.aelitis.azureus.core.dht.*;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.util.ByteFormatter;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.HashWrapper;
+import org.gudy.azureus2.core3.util.SystemTime;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.util.*;
+
+// import org.gudy.azureus2.core3.util.SHA1Hasher;
 
 /**
  * @author parg

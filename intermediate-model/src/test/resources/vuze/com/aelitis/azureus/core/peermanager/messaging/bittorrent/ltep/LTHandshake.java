@@ -1,16 +1,15 @@
 package com.aelitis.azureus.core.peermanager.messaging.bittorrent.ltep;
 
+import com.aelitis.azureus.core.peermanager.messaging.Message;
+import com.aelitis.azureus.core.peermanager.messaging.MessageException;
+import com.aelitis.azureus.core.peermanager.messaging.MessagingUtil;
+import org.gudy.azureus2.core3.util.*;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.peermanager.messaging.MessageException;
-import com.aelitis.azureus.core.peermanager.messaging.MessagingUtil;
 
 public class LTHandshake implements LTMessage {
 	

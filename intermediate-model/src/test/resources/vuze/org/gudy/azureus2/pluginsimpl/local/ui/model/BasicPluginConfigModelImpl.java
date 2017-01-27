@@ -24,21 +24,17 @@ package org.gudy.azureus2.pluginsimpl.local.ui.model;
  *
  */
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.ui.components.UITextArea;
-import org.gudy.azureus2.plugins.ui.config.ActionParameter;
-import org.gudy.azureus2.plugins.ui.config.InfoParameter;
-import org.gudy.azureus2.plugins.ui.config.LabelParameter;
-import org.gudy.azureus2.plugins.ui.config.Parameter;
-import org.gudy.azureus2.plugins.ui.config.ParameterGroup;
-import org.gudy.azureus2.plugins.ui.config.ParameterTabFolder;
+import org.gudy.azureus2.plugins.ui.config.*;
+import org.gudy.azureus2.plugins.ui.model.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginConfigImpl;
 import org.gudy.azureus2.pluginsimpl.local.ui.UIManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.ui.config.*;
-import org.gudy.azureus2.plugins.*;
-import org.gudy.azureus2.plugins.ui.model.*;
+
+import java.util.ArrayList;
+import java.util.Properties;
 
 public class 
 BasicPluginConfigModelImpl

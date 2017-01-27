@@ -27,17 +27,15 @@
 package org.gudy.azureus2.core3.peer;
 
 
-import java.net.InetAddress;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.disk.DiskManagerReadRequest;
-import org.gudy.azureus2.plugins.network.Connection;
-
 import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
 import com.aelitis.azureus.core.tag.Taggable;
+import org.gudy.azureus2.core3.disk.DiskManagerReadRequest;
+import org.gudy.azureus2.plugins.network.Connection;
+
+import java.net.InetAddress;
+import java.util.Map;
 
 
 /**

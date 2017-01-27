@@ -19,6 +19,17 @@
 
 package org.gudy.azureus2.pluginsimpl.local.utils.security;
 
+import com.aelitis.azureus.core.AzureusCore;
+import org.gudy.azureus2.core3.security.*;
+import org.gudy.azureus2.core3.util.SHA1Hasher;
+import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnection;
+import org.gudy.azureus2.plugins.utils.security.CertificateListener;
+import org.gudy.azureus2.plugins.utils.security.PasswordListener;
+import org.gudy.azureus2.plugins.utils.security.SEPublicKey;
+import org.gudy.azureus2.plugins.utils.security.SEPublicKeyLocator;
+import org.gudy.azureus2.pluginsimpl.local.messaging.GenericMessageConnectionImpl;
+
+import javax.net.ssl.SSLSocketFactory;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
@@ -28,24 +39,9 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.net.ssl.SSLSocketFactory;
-
-import org.gudy.azureus2.core3.util.SHA1Hasher;
-
 /**
  * @author parg
- *
  */
-
-import org.gudy.azureus2.core3.security.*;
-import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnection;
-import org.gudy.azureus2.plugins.utils.security.CertificateListener;
-import org.gudy.azureus2.plugins.utils.security.PasswordListener;
-import org.gudy.azureus2.plugins.utils.security.SEPublicKey;
-import org.gudy.azureus2.plugins.utils.security.SEPublicKeyLocator;
-import org.gudy.azureus2.pluginsimpl.local.messaging.GenericMessageConnectionImpl;
-
-import com.aelitis.azureus.core.AzureusCore;
 
 
 public class 

@@ -18,6 +18,7 @@
 
 package com.aelitis.azureus.plugins.startstoprules.defaultplugin.ui.swt;
 
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -28,8 +29,6 @@ import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 /** Seeding Automation Specific options
  * @author TuxPaper

@@ -22,12 +22,14 @@
 
 package org.gudy.azureus2.ui.swt.config.wizard;
 
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.speedmanager.SpeedManager;
+import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -36,10 +38,6 @@ import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.speedmanager.SpeedManager;
-import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
 
 /**
  * @author Olivier

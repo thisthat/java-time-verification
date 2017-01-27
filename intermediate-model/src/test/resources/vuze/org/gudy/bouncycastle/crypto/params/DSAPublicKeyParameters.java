@@ -2,9 +2,6 @@ package org.gudy.bouncycastle.crypto.params;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.crypto.params.DSAKeyParameters;
-import org.gudy.bouncycastle.crypto.params.DSAParameters;
-
 public class DSAPublicKeyParameters
     extends DSAKeyParameters
 {

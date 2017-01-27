@@ -20,16 +20,15 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-
-import org.gudy.azureus2.core3.ipchecker.natchecker.NatChecker;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProgressListener;
 import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import org.gudy.azureus2.core3.ipchecker.natchecker.NatChecker;
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 public class 
 NetworkAdminTCPTester 

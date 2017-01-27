@@ -3,9 +3,6 @@ package org.gudy.bouncycastle.math.ec;
 import java.math.BigInteger;
 import java.util.Random;
 
-import org.gudy.bouncycastle.math.ec.ECConstants;
-import org.gudy.bouncycastle.math.ec.ECFieldElement;
-
 public abstract class ECFieldElement
     implements ECConstants
 {

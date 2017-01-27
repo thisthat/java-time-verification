@@ -19,19 +19,18 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.http;
 
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.peer.impl.PEPeerControl;
+import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.peer.impl.PEPeerControl;
-import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
 
 public class 
 HTTPNetworkConnectionWebSeed

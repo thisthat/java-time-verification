@@ -22,20 +22,34 @@
  
 package org.gudy.azureus2.pluginsimpl.local;
 
-import java.util.*;
-import java.io.File;
-import java.net.URL; 
-
+import com.aelitis.azureus.core.AzureusCoreComponent;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
 import org.gudy.azureus2.plugins.*;
+import org.gudy.azureus2.plugins.clientid.ClientIDManager;
+import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
 import org.gudy.azureus2.plugins.dht.mainline.*;
+import org.gudy.azureus2.plugins.download.*;
+import org.gudy.azureus2.plugins.ipfilter.IPFilter;
 import org.gudy.azureus2.plugins.logging.Logger;
 import org.gudy.azureus2.plugins.messaging.MessageManager;
 import org.gudy.azureus2.plugins.network.ConnectionManager;
-import org.gudy.azureus2.pluginsimpl.local.deprecate.PluginDeprecation;
-import org.gudy.azureus2.pluginsimpl.local.dht.mainline.*;
+import org.gudy.azureus2.plugins.platform.PlatformManager;
+import org.gudy.azureus2.plugins.sharing.*;
+import org.gudy.azureus2.plugins.torrent.*;
+import org.gudy.azureus2.plugins.tracker.Tracker;
+import org.gudy.azureus2.plugins.ui.*;
+import org.gudy.azureus2.plugins.ui.config.ConfigSection;
+import org.gudy.azureus2.plugins.ui.config.Parameter;
+import org.gudy.azureus2.plugins.ui.config.PluginConfigUIFactory;
+import org.gudy.azureus2.plugins.update.*;
+import org.gudy.azureus2.plugins.utils.*;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.ddb.DDBaseImpl;
+import org.gudy.azureus2.pluginsimpl.local.deprecate.PluginDeprecation;
+import org.gudy.azureus2.pluginsimpl.local.dht.mainline.*;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.ipc.IPCInterfaceImpl;
 import org.gudy.azureus2.pluginsimpl.local.ipfilter.IPFilterImpl;
@@ -47,29 +61,12 @@ import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.tracker.*;
 import org.gudy.azureus2.pluginsimpl.local.ui.*;
 import org.gudy.azureus2.pluginsimpl.local.ui.config.*;
-import org.gudy.azureus2.pluginsimpl.local.utils.*;
 import org.gudy.azureus2.pluginsimpl.local.update.*;
-import org.gudy.azureus2.plugins.ipc.IPCInterface;
-import org.gudy.azureus2.plugins.ipfilter.IPFilter;
-import org.gudy.azureus2.plugins.tracker.Tracker;
-import org.gudy.azureus2.plugins.ui.config.Parameter;
-import org.gudy.azureus2.plugins.ui.config.PluginConfigUIFactory;
-import org.gudy.azureus2.plugins.platform.PlatformManager;
-import org.gudy.azureus2.plugins.sharing.*;
-import org.gudy.azureus2.plugins.clientid.ClientIDManager;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
-import org.gudy.azureus2.plugins.download.*;
-import org.gudy.azureus2.plugins.torrent.*;
-import org.gudy.azureus2.plugins.ui.*;
-import org.gudy.azureus2.plugins.ui.config.ConfigSection;
-import org.gudy.azureus2.plugins.utils.*;
-import org.gudy.azureus2.plugins.update.*;
+import org.gudy.azureus2.pluginsimpl.local.utils.*;
 
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.logging.*;
-
-import com.aelitis.azureus.core.AzureusCoreComponent;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 
 

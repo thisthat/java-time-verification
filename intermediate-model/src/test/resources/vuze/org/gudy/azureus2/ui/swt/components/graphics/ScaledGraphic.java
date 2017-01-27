@@ -1,6 +1,6 @@
 /*
  * File    : ScaledGraphic.java
- * Created : 15 déc. 2003}
+ * Created : 15 dï¿½c. 2003}
  * By      : Olivier
  *
  * Azureus - a Java Bittorrent client
@@ -24,7 +24,6 @@ package org.gudy.azureus2.ui.swt.components.graphics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 

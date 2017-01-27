@@ -19,16 +19,15 @@
 
 package com.aelitis.azureus.core.peermanager.messaging.bittorrent;
 
-import java.util.HashMap;
-
+import com.aelitis.azureus.core.networkmanager.RawMessage;
+import com.aelitis.azureus.core.networkmanager.impl.RawMessageImpl;
+import com.aelitis.azureus.core.peermanager.messaging.*;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.core3.util.DirectByteBufferPool;
 
-import com.aelitis.azureus.core.networkmanager.RawMessage;
-import com.aelitis.azureus.core.networkmanager.impl.RawMessageImpl;
-import com.aelitis.azureus.core.peermanager.messaging.*;
+import java.util.HashMap;
 
 
 /**

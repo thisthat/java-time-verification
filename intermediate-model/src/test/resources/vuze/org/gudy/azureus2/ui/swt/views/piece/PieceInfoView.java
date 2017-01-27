@@ -17,18 +17,11 @@
 
 package org.gudy.azureus2.ui.swt.views.piece;
 
-import java.util.Iterator;
-import java.util.Map;
-
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -61,8 +54,8 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListenerEx;
 import org.gudy.azureus2.ui.swt.views.PiecesView;
 import org.gudy.azureus2.ui.swt.views.ViewUtils;
 
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
-import com.aelitis.azureus.util.MapUtils;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Piece Map View.

@@ -24,19 +24,18 @@ package com.aelitis.azureus.core;
  *
  */
 
-import java.io.File;
-
-import org.gudy.azureus2.core3.tracker.host.TRHost;
-import org.gudy.azureus2.core3.global.GlobalManager;
-import org.gudy.azureus2.core3.ipfilter.IpFilterManager;
-import org.gudy.azureus2.core3.internat.LocaleUtil;
-import org.gudy.azureus2.plugins.*;
-import org.gudy.azureus2.plugins.utils.PowerManagementListener;
-
 import com.aelitis.azureus.core.instancemanager.AZInstanceManager;
 import com.aelitis.azureus.core.nat.NATTraverser;
 import com.aelitis.azureus.core.security.CryptoManager;
 import com.aelitis.azureus.core.speedmanager.SpeedManager;
+import org.gudy.azureus2.core3.global.GlobalManager;
+import org.gudy.azureus2.core3.internat.LocaleUtil;
+import org.gudy.azureus2.core3.ipfilter.IpFilterManager;
+import org.gudy.azureus2.core3.tracker.host.TRHost;
+import org.gudy.azureus2.plugins.*;
+import org.gudy.azureus2.plugins.utils.PowerManagementListener;
+
+import java.io.File;
 
 public interface 
 AzureusCore 

@@ -17,11 +17,10 @@
 
 package com.aelitis.azureus.ui.swt.columns.tagdiscovery;
 
+import com.aelitis.azureus.core.tag.TagDiscovery;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
 import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
-
-import com.aelitis.azureus.core.tag.TagDiscovery;
 
 public class ColumnTagDiscoveryAddedOn
 	implements TableColumnExtraInfoListener, TableCellRefreshListener

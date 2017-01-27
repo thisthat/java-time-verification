@@ -22,27 +22,26 @@
 
 package org.gudy.azureus2.ui.swt;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.util.GeneralUtils;
+import com.aelitis.azureus.core.util.LaunchManager;
+import com.aelitis.azureus.plugins.I2PHelpers;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -70,16 +69,13 @@ import org.gudy.azureus2.ui.swt.mainwindow.SWTThread;
 import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.util.GeneralUtils;
-import com.aelitis.azureus.core.util.LaunchManager;
-import com.aelitis.azureus.plugins.I2PHelpers;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 /**
  * @author Olivier

@@ -1,8 +1,8 @@
 package org.gudy.bouncycastle.crypto.agreement.srp;
 
-import java.math.BigInteger;
-
 import org.gudy.bouncycastle.crypto.Digest;
+
+import java.math.BigInteger;
 
 /**
  * Generates new SRP verifier for user

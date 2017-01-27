@@ -17,12 +17,11 @@
 
 package com.aelitis.azureus.ui.swt.columns.tag;
 
-import java.io.File;
-
-import org.gudy.azureus2.plugins.ui.tables.*;
-
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagFeatureFileLocation;
+import org.gudy.azureus2.plugins.ui.tables.*;
+
+import java.io.File;
 
 public class ColumnTagCopyOnComp
 	implements TableCellRefreshListener, TableColumnExtraInfoListener

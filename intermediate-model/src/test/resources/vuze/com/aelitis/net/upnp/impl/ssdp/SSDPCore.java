@@ -19,23 +19,17 @@
 
 package com.aelitis.net.upnp.impl.ssdp;
 
-import java.net.*;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimeFormatter;
-import org.gudy.azureus2.plugins.utils.UTTimer;
-import org.gudy.azureus2.plugins.utils.UTTimerEvent;
-import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
-
 import com.aelitis.net.udp.mc.MCGroup;
 import com.aelitis.net.udp.mc.MCGroupAdapter;
 import com.aelitis.net.udp.mc.MCGroupFactory;
 import com.aelitis.net.upnp.*;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.utils.UTTimer;
+import org.gudy.azureus2.plugins.utils.UTTimerEvent;
+import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
+
+import java.net.*;
+import java.util.*;
 
 /**
  * @author parg

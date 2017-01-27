@@ -20,34 +20,10 @@
 package com.aelitis.azureus.core.versioncheck;
 
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.*;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.download.impl.DownloadManagerStateImpl;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.stats.transfer.*;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.clientid.ClientIDException;
-import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
-import org.gudy.azureus2.plugins.utils.DelayedTask;
-import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
-import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.impl.AzureusCoreImpl;
 import com.aelitis.azureus.core.clientmessageservice.*;
+import com.aelitis.azureus.core.impl.AzureusCoreImpl;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminASN;
 import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
@@ -58,6 +34,23 @@ import com.aelitis.azureus.core.util.DNSUtils;
 import com.aelitis.net.udp.uc.PRUDPPacketHandler;
 import com.aelitis.net.udp.uc.PRUDPPacketHandlerFactory;
 import com.aelitis.net.udp.uc.PRUDPReleasablePacketHandler;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.download.impl.DownloadManagerStateImpl;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.stats.transfer.*;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
+import org.gudy.azureus2.plugins.utils.DelayedTask;
+import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
+import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
+
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.net.*;
+import java.util.*;
 
 
 

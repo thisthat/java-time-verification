@@ -17,14 +17,13 @@
 
 package com.aelitis.azureus.ui.swt.columns.tagdiscovery;
 
-import org.gudy.azureus2.plugins.ui.menus.MenuItem;
-import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
-import org.gudy.azureus2.plugins.ui.tables.*;
-
 import com.aelitis.azureus.core.tag.TagDiscovery;
 import com.aelitis.azureus.ui.UIFunctions;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import org.gudy.azureus2.plugins.ui.menus.MenuItem;
+import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
+import org.gudy.azureus2.plugins.ui.tables.*;
 
 public class ColumnTagDiscoveryTorrent
 	implements TableCellRefreshListener, TableColumnExtraInfoListener

@@ -20,36 +20,23 @@
 
 package com.aelitis.azureus.core.lws;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginManager;
-import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
 import org.gudy.azureus2.pluginsimpl.local.ddb.DDBaseImpl;
 import org.gudy.azureus2.pluginsimpl.local.ddb.DDBaseTTTorrent;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 
 public class 

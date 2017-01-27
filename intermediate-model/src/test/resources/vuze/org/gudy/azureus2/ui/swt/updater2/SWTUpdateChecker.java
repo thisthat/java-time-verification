@@ -20,6 +20,22 @@
  */
 package org.gudy.azureus2.ui.swt.updater2;
 
+import org.eclipse.swt.SWT;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.update.UpdatableComponent;
+import org.gudy.azureus2.plugins.update.Update;
+import org.gudy.azureus2.plugins.update.UpdateChecker;
+import org.gudy.azureus2.plugins.update.UpdateInstaller;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderAdapter;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
+
 import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -28,26 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.eclipse.swt.SWT;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SystemProperties;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.plugins.update.UpdatableComponent;
-import org.gudy.azureus2.plugins.update.Update;
-import org.gudy.azureus2.plugins.update.UpdateChecker;
-import org.gudy.azureus2.plugins.update.UpdateInstaller;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderAdapter;
-import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
 /**
  * @author Olivier Chalouhi

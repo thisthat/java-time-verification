@@ -20,10 +20,10 @@
 
 package org.gudy.azureus2.pluginsimpl.local.ui.config;
 
-import java.lang.ref.WeakReference;
-
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ui.config.ConfigSection;
+
+import java.lang.ref.WeakReference;
 
 public class 
 ConfigSectionHolder

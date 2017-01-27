@@ -28,7 +28,10 @@ package org.gudy.azureus2.core3.util.protocol.tor;
  */
 
 import java.io.IOException;
-import java.net.*;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
 
 public class 

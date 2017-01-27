@@ -20,14 +20,9 @@
 
 package org.gudy.azureus2.ui.swt.maketorrent;
 
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.torrent.TOTorrentCreator;
 import org.gudy.azureus2.core3.util.TorrentUtils;
@@ -36,6 +31,12 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.Wizard;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Olivier

@@ -16,6 +16,7 @@
  */
 package org.gudy.azureus2.ui.swt.shells;
 
+import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
@@ -28,8 +29,6 @@ import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
-
-import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
 
 /**
  * @author TuxPaper

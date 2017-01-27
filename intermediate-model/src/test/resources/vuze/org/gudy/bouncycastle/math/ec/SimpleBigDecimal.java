@@ -2,8 +2,6 @@ package org.gudy.bouncycastle.math.ec;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.math.ec.ECConstants;
-
 /**
  * Class representing a simple version of a big decimal. A
  * <code>SimpleBigDecimal</code> is basically a

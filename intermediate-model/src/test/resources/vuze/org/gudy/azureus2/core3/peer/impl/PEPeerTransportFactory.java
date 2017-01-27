@@ -28,11 +28,13 @@ package org.gudy.azureus2.core3.peer.impl;
  */
 
 
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
 import org.gudy.azureus2.core3.peer.impl.transport.PEPeerTransportProtocol;
 
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class 

@@ -22,15 +22,11 @@
 
 package org.gudy.azureus2.ui.console.commands;
 
+import org.gudy.azureus2.ui.console.ConsoleInput;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.ui.console.ConsoleInput;
+import java.util.*;
 
 /**
  * this class represents a collection of commands. it can be used by

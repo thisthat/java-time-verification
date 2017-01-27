@@ -22,20 +22,12 @@
 
 package com.aelitis.azureus.ui.swt.columns;
 
-import org.eclipse.swt.graphics.Rectangle;
-
-import org.gudy.azureus2.ui.swt.plugins.UISWTGraphic;
-import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
-import org.gudy.azureus2.plugins.ui.tables.TableCell;
-import org.gudy.azureus2.plugins.ui.tables.TableCellMouseEvent;
-import org.gudy.azureus2.plugins.ui.tables.TableCellMouseListener;
-import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnExtraInfoListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
-
 import com.aelitis.azureus.ui.common.table.TableCellCore;
 import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import org.eclipse.swt.graphics.Rectangle;
+import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.plugins.UISWTGraphic;
+import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
 
 
 public abstract class 

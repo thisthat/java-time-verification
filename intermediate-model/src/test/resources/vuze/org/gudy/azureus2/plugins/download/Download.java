@@ -22,22 +22,22 @@
 
 package org.gudy.azureus2.plugins.download;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
+import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
+import org.gudy.azureus2.plugins.disk.DiskManager;
+import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.download.savelocation.DefaultSaveLocationManager;
 import org.gudy.azureus2.plugins.download.savelocation.SaveLocationChange;
 import org.gudy.azureus2.plugins.download.savelocation.SaveLocationManager;
+import org.gudy.azureus2.plugins.network.RateLimiter;
+import org.gudy.azureus2.plugins.peers.PeerManager;
 import org.gudy.azureus2.plugins.tag.Tag;
 import org.gudy.azureus2.plugins.tag.Taggable;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
-import org.gudy.azureus2.plugins.disk.DiskManager;
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.plugins.network.RateLimiter;
-import org.gudy.azureus2.plugins.peers.PeerManager;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Management of a Torrent's activity.

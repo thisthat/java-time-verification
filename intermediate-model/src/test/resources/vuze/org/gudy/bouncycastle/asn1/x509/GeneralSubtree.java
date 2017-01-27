@@ -1,15 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.GeneralName;
-import org.gudy.bouncycastle.asn1.x509.GeneralSubtree;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERSequence;
-import org.gudy.bouncycastle.asn1.DERTaggedObject;
+import org.gudy.bouncycastle.asn1.*;
 
 import java.math.BigInteger;
 

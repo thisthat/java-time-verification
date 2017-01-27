@@ -19,40 +19,25 @@
 
 package com.aelitis.azureus.plugins.extseed.impl;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteSet;
+import com.aelitis.azureus.plugins.extseed.*;
+import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.SystemTime;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
-import org.gudy.azureus2.plugins.peers.Peer;
-import org.gudy.azureus2.plugins.peers.PeerManager;
-import org.gudy.azureus2.plugins.peers.PeerManagerEvent;
-import org.gudy.azureus2.plugins.peers.PeerManagerListener2;
-import org.gudy.azureus2.plugins.peers.PeerReadRequest;
-import org.gudy.azureus2.plugins.peers.PeerStats;
-import org.gudy.azureus2.plugins.peers.Piece;
+import org.gudy.azureus2.plugins.peers.*;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.utils.Monitor;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 import org.gudy.azureus2.plugins.utils.Semaphore;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.util.CopyOnWriteSet;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPeer;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedReader;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedReaderListener;
-import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderListener;
+import java.util.*;
 
 public abstract class 
 ExternalSeedReaderImpl 

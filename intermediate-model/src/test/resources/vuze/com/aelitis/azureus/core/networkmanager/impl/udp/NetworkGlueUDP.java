@@ -19,12 +19,10 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.udp;
 
-import java.util.*;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetSocketAddress;
-
+import com.aelitis.azureus.core.util.AEPriorityMixin;
+import com.aelitis.net.udp.uc.PRUDPPacketHandler;
+import com.aelitis.net.udp.uc.PRUDPPacketHandlerFactory;
+import com.aelitis.net.udp.uc.PRUDPPrimordialHandler;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.logging.LogEvent;
@@ -34,10 +32,10 @@ import org.gudy.azureus2.core3.util.AESemaphore;
 import org.gudy.azureus2.core3.util.AEThread;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.util.AEPriorityMixin;
-import com.aelitis.net.udp.uc.PRUDPPacketHandler;
-import com.aelitis.net.udp.uc.PRUDPPacketHandlerFactory;
-import com.aelitis.net.udp.uc.PRUDPPrimordialHandler;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetSocketAddress;
+import java.util.LinkedList;
 
 public class 
 NetworkGlueUDP

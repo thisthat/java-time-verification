@@ -1,48 +1,25 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.Principal;
-import java.security.Provider;
-import java.security.PublicKey;
-import java.security.Security;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
-import java.security.cert.X509Certificate;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
-import java.util.Vector;
-
-import javax.security.auth.x500.X500Principal;
-
-import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.gudy.bouncycastle.jce.provider.JDKKeyFactory;
 import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.misc.MiscObjectIdentifiers;
 import org.gudy.bouncycastle.asn1.misc.NetscapeCertType;
 import org.gudy.bouncycastle.asn1.misc.NetscapeRevocationURL;
 import org.gudy.bouncycastle.asn1.misc.VerisignCzagExtension;
 import org.gudy.bouncycastle.asn1.util.ASN1Dump;
-import org.gudy.bouncycastle.asn1.x509.BasicConstraints;
-import org.gudy.bouncycastle.asn1.x509.KeyUsage;
-import org.gudy.bouncycastle.asn1.x509.X509CertificateStructure;
+import org.gudy.bouncycastle.asn1.x509.*;
 import org.gudy.bouncycastle.asn1.x509.X509Extension;
-import org.gudy.bouncycastle.asn1.x509.X509Extensions;
 import org.gudy.bouncycastle.jce.X509Principal;
 import org.gudy.bouncycastle.jce.interfaces.PKCS12BagAttributeCarrier;
 import org.gudy.bouncycastle.util.encoders.Hex;
+
+import javax.security.auth.x500.X500Principal;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.cert.*;
+import java.util.*;
 
 public class X509CertificateObject
     extends X509Certificate

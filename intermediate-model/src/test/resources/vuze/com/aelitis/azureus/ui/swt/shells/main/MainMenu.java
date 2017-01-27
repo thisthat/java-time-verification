@@ -18,26 +18,6 @@
 
 package com.aelitis.azureus.ui.swt.shells.main;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.config.impl.ConfigurationDefaults;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemProperties;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarActivationListener;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarManager;
-import org.gudy.azureus2.ui.swt.KeyBindings;
-import org.gudy.azureus2.ui.swt.MenuBuildUtils;
-import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.mainwindow.*;
-import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarManagerImpl;
-
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.core.util.FeatureAvailability;
 import com.aelitis.azureus.ui.UIFunctionsManager;
@@ -55,6 +35,24 @@ import com.aelitis.azureus.ui.swt.views.skin.ToolBarView;
 import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
 import com.aelitis.azureus.util.ConstantsVuze;
 import com.aelitis.azureus.util.ContentNetworkUtils;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.config.impl.ConfigurationDefaults;
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.SystemProperties;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarActivationListener;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarManager;
+import org.gudy.azureus2.ui.swt.KeyBindings;
+import org.gudy.azureus2.ui.swt.MenuBuildUtils;
+import org.gudy.azureus2.ui.swt.Messages;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.mainwindow.*;
+import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarManagerImpl;
 
 public class MainMenu
 	implements IMainMenu, IMenuConstants

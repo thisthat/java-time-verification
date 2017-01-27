@@ -22,22 +22,19 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.plugins.startstoprules.defaultplugin.DefaultRankCalculator;
+import com.aelitis.azureus.plugins.startstoprules.defaultplugin.StartStopRulesDefaultPlugin;
 import org.eclipse.swt.graphics.Color;
-
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.mainwindow.Colors;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-
-import com.aelitis.azureus.plugins.startstoprules.defaultplugin.DefaultRankCalculator;
-import com.aelitis.azureus.plugins.startstoprules.defaultplugin.StartStopRulesDefaultPlugin;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadTypeIncomplete;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.mainwindow.Colors;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 
 
 /** Download Speed column

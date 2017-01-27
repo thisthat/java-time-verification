@@ -22,14 +22,11 @@
 
 package org.gudy.azureus2.pluginsimpl.local;
 
-import java.io.File;
-import java.util.*;
-
+import com.aelitis.net.magneturi.MagnetURIHandler;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.config.impl.*;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.FileUtil;
-
 import org.gudy.azureus2.plugins.PluginConfig;
 import org.gudy.azureus2.plugins.PluginConfigListener;
 import org.gudy.azureus2.plugins.PluginInterface;
@@ -37,7 +34,8 @@ import org.gudy.azureus2.plugins.config.ConfigParameter;
 import org.gudy.azureus2.plugins.config.PluginConfigSource;
 import org.gudy.azureus2.pluginsimpl.local.config.*;
 
-import com.aelitis.net.magneturi.MagnetURIHandler;
+import java.io.File;
+import java.util.*;
 
 public class 
 PluginConfigImpl

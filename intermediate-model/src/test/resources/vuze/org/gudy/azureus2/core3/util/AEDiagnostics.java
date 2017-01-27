@@ -27,17 +27,15 @@ import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author parg
- *
  */
-
-
-
-
-import java.io.*;
-import java.util.*;
 
 public class 
 AEDiagnostics 

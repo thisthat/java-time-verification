@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
+import com.aelitis.azureus.core.networkmanager.Transport.ConnectListener;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-
-import com.aelitis.azureus.core.networkmanager.Transport.ConnectListener;
 
 public interface 
 ProtocolEndpoint 

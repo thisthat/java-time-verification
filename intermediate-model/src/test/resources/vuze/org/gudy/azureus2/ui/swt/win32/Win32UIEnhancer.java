@@ -17,12 +17,9 @@
 
 package org.gudy.azureus2.ui.swt.win32;
 
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Map;
-
+import com.aelitis.azureus.core.drivedetector.DriveDetectedInfo;
+import com.aelitis.azureus.core.drivedetector.DriveDetector;
+import com.aelitis.azureus.core.drivedetector.DriveDetectorFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
@@ -32,9 +29,11 @@ import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.platform.win32.access.AEWin32Manager;
 import org.gudy.azureus2.platform.win32.access.impl.AEWin32AccessInterface;
 
-import com.aelitis.azureus.core.drivedetector.DriveDetectedInfo;
-import com.aelitis.azureus.core.drivedetector.DriveDetector;
-import com.aelitis.azureus.core.drivedetector.DriveDetectorFactory;
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * @author TuxPaper

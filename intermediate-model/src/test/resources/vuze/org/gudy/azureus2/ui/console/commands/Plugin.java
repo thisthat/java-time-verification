@@ -17,13 +17,6 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.File;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
 import org.gudy.azureus2.core3.util.AESemaphore;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.core3.util.Debug;
@@ -45,6 +38,13 @@ import org.gudy.azureus2.pluginsimpl.update.sf.SFPluginDetails;
 import org.gudy.azureus2.pluginsimpl.update.sf.SFPluginDetailsLoaderFactory;
 import org.gudy.azureus2.ui.console.ConsoleInput;
 import org.gudy.azureus2.ui.console.util.TextWrap;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
 public class Plugin extends IConsoleCommand {
 

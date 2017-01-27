@@ -22,7 +22,6 @@ package org.gudy.azureus2.ui.swt.plugins;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.UIInstance;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;

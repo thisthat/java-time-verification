@@ -24,11 +24,11 @@ package org.gudy.azureus2.pluginsimpl.local.utils.xml.simpleparser;
  *
  */
 
+import org.gudy.azureus2.plugins.utils.xml.simpleparser.*;
+
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-
-import org.gudy.azureus2.plugins.utils.xml.simpleparser.*;
 
 public class 
 SimpleXMLParserDocumentFactoryImpl 

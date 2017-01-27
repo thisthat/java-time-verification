@@ -20,35 +20,17 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.ListenerManager;
-import org.gudy.azureus2.core3.util.ListenerManagerDispatcher;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagException;
-import com.aelitis.azureus.core.tag.TagFeatureExecOnAssign;
-import com.aelitis.azureus.core.tag.TagFeatureFileLocation;
-import com.aelitis.azureus.core.tag.TagFeatureLimits;
-import com.aelitis.azureus.core.tag.TagFeatureProperties;
-import com.aelitis.azureus.core.tag.TagFeatureRSSFeed;
-import com.aelitis.azureus.core.tag.TagFeatureRateLimit;
-import com.aelitis.azureus.core.tag.TagListener;
-import com.aelitis.azureus.core.tag.Taggable;
+import com.aelitis.azureus.core.tag.*;
 import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
 import com.aelitis.azureus.core.tag.TagFeatureProperties.TagPropertyListener;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.io.File;
+import java.util.*;
 
 public abstract class 
 TagBase

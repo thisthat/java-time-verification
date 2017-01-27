@@ -2,10 +2,6 @@ package org.gudy.bouncycastle.crypto.params;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.crypto.params.DHKeyParameters;
-import org.gudy.bouncycastle.crypto.params.DHParameters;
-import org.gudy.bouncycastle.crypto.params.DHPublicKeyParameters;
-
 public class DHPublicKeyParameters
     extends DHKeyParameters
 {

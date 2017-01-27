@@ -6,12 +6,19 @@
 
 package org.gudy.azureus2.ui.common;
 
-import java.io.FileReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringReader;
+import com.aelitis.azureus.core.*;
+import com.aelitis.azureus.core.impl.AzureusCoreSingleInstanceClient;
+import com.aelitis.azureus.launcher.Launcher;
+import org.apache.commons.cli.*;
+import org.apache.log4j.Appender;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.varia.DenyAllFilter;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.Constants;
+
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.Socket;
@@ -20,28 +27,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
-import org.apache.log4j.Appender;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.varia.DenyAllFilter;
-
-import com.aelitis.azureus.core.*;
-import com.aelitis.azureus.core.impl.AzureusCoreSingleInstanceClient;
-import com.aelitis.azureus.launcher.Launcher;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.ui.common.IUserInterface;
-import org.gudy.azureus2.ui.common.UserInterfaceFactory;
 /**
  *
  * @author  Tobias Minich

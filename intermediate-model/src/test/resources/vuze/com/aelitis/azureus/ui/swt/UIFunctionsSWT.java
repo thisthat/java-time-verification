@@ -16,8 +16,9 @@
  */
 package com.aelitis.azureus.ui.swt;
 
-import java.util.Map;
-
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.mdi.TabbedMdiInterface;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarManager;
@@ -29,9 +30,7 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCore;
 
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.mdi.TabbedMdiInterface;
+import java.util.Map;
 
 /**
  * @author TuxPaper

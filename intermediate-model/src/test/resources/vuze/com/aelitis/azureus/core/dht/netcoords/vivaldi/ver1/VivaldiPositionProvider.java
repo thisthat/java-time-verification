@@ -19,12 +19,12 @@
 
 package com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1;
 
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionProvider;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionProvider;
 
 public class 
 VivaldiPositionProvider

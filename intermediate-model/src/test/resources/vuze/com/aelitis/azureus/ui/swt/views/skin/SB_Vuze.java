@@ -18,13 +18,13 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.ArrayList;
-
 import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
 import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoListener;
 import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
 import com.aelitis.azureus.ui.mdi.*;
 import com.aelitis.azureus.ui.swt.views.ViewTitleInfoBetaP;
+
+import java.util.ArrayList;
 
 public class SB_Vuze
 {

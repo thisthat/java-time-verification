@@ -18,13 +18,12 @@
 
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.azureus.ui.common.ToolBarItem;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarActivationListener;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarManager;
 
-import com.aelitis.azureus.ui.common.ToolBarItem;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 

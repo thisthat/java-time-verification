@@ -19,9 +19,9 @@
 
 package org.gudy.azureus2.pluginsimpl.local.disk;
 
-import java.io.IOException;
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
+import com.aelitis.azureus.core.peermanager.piecepicker.PieceRTAProvider;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfoListener;
@@ -31,25 +31,16 @@ import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.PEPeerManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.Average;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.plugins.disk.DiskManagerChannel;
-import org.gudy.azureus2.plugins.disk.DiskManagerEvent;
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.plugins.disk.DiskManagerListener;
-import org.gudy.azureus2.plugins.disk.DiskManagerRequest;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.disk.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadException;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.PooledByteBufferImpl;
 
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
-import com.aelitis.azureus.core.peermanager.piecepicker.PieceRTAProvider;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.IOException;
+import java.util.*;
 
 public class 
 DiskManagerChannelImpl 

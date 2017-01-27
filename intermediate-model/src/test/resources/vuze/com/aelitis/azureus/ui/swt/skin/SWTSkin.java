@@ -16,10 +16,10 @@
  */
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.ui.IUIIntializer;
+import com.aelitis.azureus.ui.skin.SkinProperties;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
@@ -29,7 +29,6 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Constants;
@@ -37,10 +36,8 @@ import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory.AEShell;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.ui.IUIIntializer;
-import com.aelitis.azureus.ui.skin.SkinProperties;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author TuxPaper

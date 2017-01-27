@@ -19,21 +19,16 @@
 
 package com.aelitis.azureus.core.dht.netcoords;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import com.aelitis.azureus.core.dht.DHTStorageAdapter;
+import com.aelitis.azureus.core.dht.impl.DHTLog;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.dht.DHTStorageAdapter;
-import com.aelitis.azureus.core.dht.impl.DHTLog;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
 
 public class 
 DHTNetworkPositionManager 

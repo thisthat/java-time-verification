@@ -19,18 +19,17 @@
 
 package com.aelitis.azureus.core.proxy.socks.impl;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-
+import com.aelitis.azureus.core.proxy.*;
+import com.aelitis.azureus.core.proxy.socks.*;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.HostNameToIPResolver;
 import org.gudy.azureus2.core3.util.HostNameToIPResolverListener;
 
-import com.aelitis.azureus.core.proxy.*;
-import com.aelitis.azureus.core.proxy.socks.*;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 /**
  * @author parg

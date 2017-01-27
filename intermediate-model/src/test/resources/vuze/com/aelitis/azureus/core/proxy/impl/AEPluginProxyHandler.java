@@ -20,20 +20,16 @@
 
 package com.aelitis.azureus.core.proxy.impl;
 
-import java.lang.ref.WeakReference;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginHTTPProxy;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginAdapter;
 import org.gudy.azureus2.plugins.PluginEvent;
 import org.gudy.azureus2.plugins.PluginEventListener;
@@ -41,13 +37,11 @@ import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginHTTPProxy;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
+import java.lang.ref.WeakReference;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.*;
 
 public class 
 AEPluginProxyHandler 

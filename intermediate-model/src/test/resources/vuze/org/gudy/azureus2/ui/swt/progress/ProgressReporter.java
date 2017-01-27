@@ -18,15 +18,14 @@
 
 package org.gudy.azureus2.ui.swt.progress;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.eclipse.swt.graphics.Image;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A implementation of <code>IProgressReporter</code>

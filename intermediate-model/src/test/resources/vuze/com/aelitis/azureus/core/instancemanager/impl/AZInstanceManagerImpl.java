@@ -19,13 +19,13 @@
 
 package com.aelitis.azureus.core.instancemanager.impl;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
+import com.aelitis.azureus.core.instancemanager.*;
+import com.aelitis.azureus.core.util.NetUtils;
+import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import com.aelitis.net.udp.mc.MCGroup;
+import com.aelitis.net.udp.mc.MCGroupAdapter;
+import com.aelitis.net.udp.mc.MCGroupException;
+import com.aelitis.net.udp.mc.MCGroupFactory;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.logging.LogEvent;
@@ -33,18 +33,12 @@ import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.*;
 
-
-import com.aelitis.azureus.core.instancemanager.AZInstance;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManager;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManagerAdapter;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManagerListener;
-import com.aelitis.azureus.core.instancemanager.AZInstanceTracked;
-import com.aelitis.azureus.core.util.NetUtils;
-import com.aelitis.azureus.plugins.dht.DHTPlugin;
-import com.aelitis.net.udp.mc.MCGroup;
-import com.aelitis.net.udp.mc.MCGroupAdapter;
-import com.aelitis.net.udp.mc.MCGroupException;
-import com.aelitis.net.udp.mc.MCGroupFactory;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class 
 AZInstanceManagerImpl 

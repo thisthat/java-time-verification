@@ -20,12 +20,15 @@
  */
 package org.gudy.azureus2.ui.swt.views.stats;
 
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.dht.DHT;
+import com.aelitis.azureus.core.dht.control.DHTControlContact;
+import com.aelitis.azureus.plugins.dht.DHTPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.PluginInterface;
@@ -34,12 +37,7 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.dht.DHT;
-import com.aelitis.azureus.core.dht.control.DHTControlContact;
-import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import java.util.List;
 
 public class VivaldiView 
 	implements UISWTViewEventListener

@@ -24,11 +24,6 @@ package org.gudy.azureus2.core3.ipfilter.impl;
  *
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.ipfilter.BadIps;
@@ -36,6 +31,11 @@ import org.gudy.azureus2.core3.ipfilter.IpFilter;
 import org.gudy.azureus2.core3.ipfilter.IpFilterManager;
 import org.gudy.azureus2.core3.ipfilter.IpRange;
 import org.gudy.azureus2.core3.util.FileUtil;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 public class 
 IpFilterManagerImpl

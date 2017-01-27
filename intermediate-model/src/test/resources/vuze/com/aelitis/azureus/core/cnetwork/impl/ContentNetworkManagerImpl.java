@@ -20,24 +20,6 @@
 
 package com.aelitis.azureus.core.cnetwork.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkException;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkListener;
@@ -45,12 +27,18 @@ import com.aelitis.azureus.core.cnetwork.ContentNetworkManager;
 import com.aelitis.azureus.core.custom.Customization;
 import com.aelitis.azureus.core.custom.CustomizationManager;
 import com.aelitis.azureus.core.custom.CustomizationManagerFactory;
-
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
 import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
 import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import com.aelitis.azureus.core.vuzefile.VuzeFileProcessor;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
 
 public class 
 ContentNetworkManagerImpl 

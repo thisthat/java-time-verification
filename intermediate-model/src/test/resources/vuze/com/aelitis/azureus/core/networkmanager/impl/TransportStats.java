@@ -19,11 +19,13 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.Timer;
 import org.gudy.azureus2.core3.util.TimerEvent;
 import org.gudy.azureus2.core3.util.TimerEventPerformer;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class TransportStats {
 

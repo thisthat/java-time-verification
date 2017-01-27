@@ -19,14 +19,16 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
-import java.net.*;
-import java.nio.channels.*;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelector;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelector;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 
 

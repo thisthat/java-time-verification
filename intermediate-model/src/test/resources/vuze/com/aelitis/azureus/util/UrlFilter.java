@@ -20,15 +20,14 @@
 
 package com.aelitis.azureus.util;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.cnetwork.*;
+import com.aelitis.azureus.core.messenger.PlatformMessenger;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.cnetwork.*;
-import com.aelitis.azureus.core.messenger.PlatformMessenger;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.util.Iterator;
 
 /**
  * @author TuxPaper

@@ -13,9 +13,10 @@ package org.pf.file ;
 // ===========================================================================
 // IMPORTS
 // ===========================================================================
-import java.io.* ;
 
 import org.pf.text.StringUtil;
+
+import java.io.*;
 
 /**
  * This class provides helper methods for file and stream handling.

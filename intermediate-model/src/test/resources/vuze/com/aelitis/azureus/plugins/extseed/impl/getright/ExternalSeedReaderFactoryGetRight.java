@@ -19,16 +19,15 @@
 
 package com.aelitis.azureus.plugins.extseed.impl.getright;
 
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedReader;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedReaderFactory;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedReader;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedReaderFactory;
+import java.net.URL;
+import java.util.*;
 
 public class 
 ExternalSeedReaderFactoryGetRight

@@ -1,17 +1,8 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import java.util.Enumeration;
+import org.gudy.bouncycastle.asn1.*;
 
-import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.gudy.bouncycastle.asn1.x509.DigestInfo;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1OctetString;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DEROctetString;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import java.util.Enumeration;
 
 /**
  * The DigestInfo object.

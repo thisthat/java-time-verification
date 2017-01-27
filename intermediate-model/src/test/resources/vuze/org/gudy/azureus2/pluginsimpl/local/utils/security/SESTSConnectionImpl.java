@@ -19,28 +19,16 @@
 
 package org.gudy.azureus2.pluginsimpl.local.utils.security;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.*;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.security.CryptoManagerException;
+import com.aelitis.azureus.core.security.CryptoSTSEngine;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.bloom.BloomFilter;
+import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.messaging.MessageException;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnection;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnectionListener;
@@ -53,12 +41,15 @@ import org.gudy.azureus2.plugins.utils.security.SESecurityManager;
 import org.gudy.azureus2.pluginsimpl.local.messaging.GenericMessageConnectionImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.PooledByteBufferImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.security.CryptoManagerException;
-import com.aelitis.azureus.core.security.CryptoSTSEngine;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.bloom.BloomFilter;
-import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.security.spec.AlgorithmParameterSpec;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 SESTSConnectionImpl

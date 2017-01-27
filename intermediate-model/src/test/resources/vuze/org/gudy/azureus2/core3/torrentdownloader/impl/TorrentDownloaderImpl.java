@@ -21,44 +21,33 @@
 
 package org.gudy.azureus2.core3.torrentdownloader.impl;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.InflaterInputStream;
-
-import javax.net.ssl.*;
-
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.security.SESecurityManager;
-import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloaderCallBackInterface;
+import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloader;
+import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloaderCallBackInterface;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.util.protocol.magnet.MagnetConnection;
 import org.gudy.azureus2.core3.util.protocol.magnet.MagnetConnection2;
-import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.xml.rss.RSSUtils;
 
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
 
 
 /**

@@ -20,26 +20,19 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
+import com.aelitis.azureus.core.devices.DeviceManagerException;
+import com.aelitis.azureus.core.devices.TranscodeException;
+import com.aelitis.azureus.core.devices.TranscodeFile;
+import com.aelitis.azureus.core.devices.TranscodeTargetListener;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
-
-import com.aelitis.azureus.core.devices.DeviceManagerException;
-import com.aelitis.azureus.core.devices.TranscodeException;
-import com.aelitis.azureus.core.devices.TranscodeFile;
-import com.aelitis.azureus.core.devices.TranscodeTargetListener;
 
 
 public class 

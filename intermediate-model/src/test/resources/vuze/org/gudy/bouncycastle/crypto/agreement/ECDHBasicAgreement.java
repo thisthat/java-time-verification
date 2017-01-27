@@ -1,12 +1,12 @@
 package org.gudy.bouncycastle.crypto.agreement;
 
-import java.math.BigInteger;
-
 import org.gudy.bouncycastle.crypto.BasicAgreement;
 import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.params.ECPrivateKeyParameters;
 import org.gudy.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.gudy.bouncycastle.math.ec.ECPoint;
+
+import java.math.BigInteger;
 
 /**
  * P1363 7.2.1 ECSVDP-DH

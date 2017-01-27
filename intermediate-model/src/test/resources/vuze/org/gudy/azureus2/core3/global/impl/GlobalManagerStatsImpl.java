@@ -27,13 +27,12 @@ package org.gudy.azureus2.core3.global.impl;
  *
  */
 
+import com.aelitis.azureus.core.util.GeneralUtils;
+import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.global.*;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.util.SimpleTimer.TimerTickReceiver;
-
-import com.aelitis.azureus.core.util.GeneralUtils;
-import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
 
 
 public class 

@@ -1,12 +1,11 @@
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.PrintStream;
-import java.util.*;
-
+import com.aelitis.azureus.core.pairing.*;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.console.ConsoleInput;
 
-import com.aelitis.azureus.core.pairing.*;
+import java.io.PrintStream;
+import java.util.List;
 
 
 public class Pairing extends IConsoleCommand {

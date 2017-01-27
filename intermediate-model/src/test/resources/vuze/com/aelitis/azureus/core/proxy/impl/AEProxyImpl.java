@@ -19,22 +19,24 @@
 
 package com.aelitis.azureus.core.proxy.impl;
 
-import java.util.*;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.SocketTimeoutException;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import com.aelitis.azureus.core.proxy.*;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
-import com.aelitis.azureus.core.proxy.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.SocketTimeoutException;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author parg

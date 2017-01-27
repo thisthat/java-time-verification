@@ -19,14 +19,6 @@
 
 package com.aelitis.azureus.plugins.extseed.impl.webseed;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-
 import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
 import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
 import com.aelitis.azureus.plugins.extseed.ExternalSeedReader;
@@ -34,6 +26,13 @@ import com.aelitis.azureus.plugins.extseed.impl.ExternalSeedReaderImpl;
 import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloader;
 import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderListener;
 import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderRange;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Map;
 
 public class 
 ExternalSeedReaderWebSeed

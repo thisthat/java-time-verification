@@ -17,13 +17,12 @@
 
 package com.aelitis.azureus.core.messenger;
 
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.messenger.browser.BrowserMessageDispatcher;
 import com.aelitis.azureus.core.messenger.browser.listeners.BrowserMessageListener;
 import com.aelitis.azureus.util.ConstantsVuze;
+import org.gudy.azureus2.core3.util.AEDiagnostics;
+import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
+import org.gudy.azureus2.core3.util.Debug;
 
 /**
  * @author TuxPaper

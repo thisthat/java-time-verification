@@ -17,10 +17,9 @@
 
 package org.gudy.azureus2.ui.swt.views.table.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -28,7 +27,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -36,6 +34,14 @@ import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.PEPiece;
 import org.gudy.azureus2.core3.tracker.host.TRHostTorrent;
 import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.download.DownloadException;
+import org.gudy.azureus2.plugins.ui.Graphic;
+import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.plugins.ui.tables.TableColumn;
+import org.gudy.azureus2.pluginsimpl.local.disk.DiskManagerFileInfoImpl;
+import org.gudy.azureus2.pluginsimpl.local.download.DownloadManagerImpl;
+import org.gudy.azureus2.pluginsimpl.local.peers.PeerManagerImpl;
+import org.gudy.azureus2.pluginsimpl.local.tracker.TrackerTorrentImpl;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTGraphic;
@@ -44,23 +50,11 @@ import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
 import org.gudy.azureus2.ui.swt.views.table.TableRowSWT;
-import org.gudy.azureus2.ui.swt.views.table.painted.TableCellPainted;
 import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnSWTUtils;
 
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.common.table.impl.CoreTableColumn;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-
-import org.gudy.azureus2.plugins.download.DownloadException;
-import org.gudy.azureus2.plugins.ui.Graphic;
-import org.gudy.azureus2.plugins.ui.tables.*;
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-
-import org.gudy.azureus2.pluginsimpl.local.disk.DiskManagerFileInfoImpl;
-import org.gudy.azureus2.pluginsimpl.local.download.DownloadManagerImpl;
-import org.gudy.azureus2.pluginsimpl.local.peers.PeerManagerImpl;
-import org.gudy.azureus2.pluginsimpl.local.tracker.TrackerTorrentImpl;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author TuxPaper

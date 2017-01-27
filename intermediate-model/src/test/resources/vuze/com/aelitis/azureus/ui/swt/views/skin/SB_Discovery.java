@@ -20,13 +20,6 @@
  
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.ArrayList;
-
-import org.eclipse.swt.graphics.Image;
-
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkManager;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
@@ -37,6 +30,11 @@ import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import com.aelitis.azureus.ui.swt.mdi.BaseMdiEntry;
 import com.aelitis.azureus.util.ConstantsVuze;
 import com.aelitis.azureus.util.ContentNetworkUtils;
+import org.eclipse.swt.graphics.Image;
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.ArrayList;
 
 /**
  * @author TuxPaper

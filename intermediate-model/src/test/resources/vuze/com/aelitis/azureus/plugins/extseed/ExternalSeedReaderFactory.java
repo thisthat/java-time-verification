@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.plugins.extseed;
 
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.torrent.Torrent;
+
+import java.util.Map;
 
 public interface 
 ExternalSeedReaderFactory 

@@ -19,10 +19,6 @@
 
 package org.gudy.azureus2.pluginsimpl.local.utils.xml.rss;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.utils.Utilities;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
@@ -32,6 +28,11 @@ import org.gudy.azureus2.plugins.utils.xml.rss.RSSFeed;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocument;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentException;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author parg

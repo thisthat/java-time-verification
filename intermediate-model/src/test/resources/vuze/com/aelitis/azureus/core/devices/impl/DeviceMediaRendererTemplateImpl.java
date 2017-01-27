@@ -20,13 +20,10 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.util.*;
+import com.aelitis.azureus.core.devices.*;
 
-import com.aelitis.azureus.core.devices.Device;
-import com.aelitis.azureus.core.devices.DeviceManagerException;
-import com.aelitis.azureus.core.devices.DeviceMediaRenderer;
-import com.aelitis.azureus.core.devices.DeviceMediaRendererTemplate;
-import com.aelitis.azureus.core.devices.TranscodeProfile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 DeviceMediaRendererTemplateImpl

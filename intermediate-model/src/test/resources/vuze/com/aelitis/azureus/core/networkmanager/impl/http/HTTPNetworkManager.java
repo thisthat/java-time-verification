@@ -19,26 +19,6 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.http;
 
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
-import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.networkmanager.NetworkConnection;
 import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import com.aelitis.azureus.core.networkmanager.Transport;
@@ -53,6 +33,21 @@ import com.aelitis.azureus.core.peermanager.messaging.MessageStreamFactory;
 import com.aelitis.azureus.core.stats.AzureusCoreStats;
 import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.logging.LogEvent;
+import org.gudy.azureus2.core3.logging.LogIDs;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
+import org.gudy.azureus2.core3.torrent.TOTorrentFile;
+import org.gudy.azureus2.core3.util.BEncoder;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public class 
 HTTPNetworkManager 

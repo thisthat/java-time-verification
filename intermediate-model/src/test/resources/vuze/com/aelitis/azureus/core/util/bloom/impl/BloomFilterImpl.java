@@ -19,16 +19,15 @@
 
 package com.aelitis.azureus.core.util.bloom.impl;
 
+import com.aelitis.azureus.core.util.bloom.BloomFilter;
+import com.aelitis.azureus.util.MapUtils;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.SystemTime;
+
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-
-import com.aelitis.azureus.core.util.bloom.BloomFilter;
-import com.aelitis.azureus.util.MapUtils;
 
 
 public abstract class 

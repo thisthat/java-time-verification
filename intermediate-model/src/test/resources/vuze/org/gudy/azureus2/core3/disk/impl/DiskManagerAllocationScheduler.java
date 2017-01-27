@@ -19,10 +19,10 @@
 
 package org.gudy.azureus2.core3.disk.impl;
 
+import org.gudy.azureus2.core3.util.AEMonitor;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
 
 public class 
 DiskManagerAllocationScheduler 

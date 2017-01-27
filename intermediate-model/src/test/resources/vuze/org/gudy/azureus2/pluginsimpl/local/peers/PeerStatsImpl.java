@@ -28,7 +28,6 @@ package org.gudy.azureus2.pluginsimpl.local.peers;
  */
 
 import org.gudy.azureus2.core3.peer.*;
-
 import org.gudy.azureus2.plugins.peers.*;
 
 public class 

@@ -19,11 +19,12 @@
 package org.gudy.azureus2.ui.swt.views.stats;
 
 
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerStats;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
@@ -33,9 +34,6 @@ import org.gudy.azureus2.ui.swt.components.graphics.SpeedGraphic;
 import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
-
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerStats;
 
 /**
  * 

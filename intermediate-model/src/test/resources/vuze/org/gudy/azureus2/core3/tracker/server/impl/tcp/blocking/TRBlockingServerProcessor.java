@@ -19,17 +19,6 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl.tcp.blocking;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.tracker.server.TRTrackerServerException;
 import org.gudy.azureus2.core3.tracker.server.impl.tcp.TRTrackerServerProcessorTCP;
@@ -37,6 +26,10 @@ import org.gudy.azureus2.core3.tracker.server.impl.tcp.TRTrackerServerTCP;
 import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  * @author parg

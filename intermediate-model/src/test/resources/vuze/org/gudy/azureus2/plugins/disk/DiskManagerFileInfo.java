@@ -20,9 +20,9 @@
 
 package org.gudy.azureus2.plugins.disk;
 
-import java.io.File;
-
 import org.gudy.azureus2.plugins.download.*;
+
+import java.io.File;
 
 /**
  * @author TuxPaper

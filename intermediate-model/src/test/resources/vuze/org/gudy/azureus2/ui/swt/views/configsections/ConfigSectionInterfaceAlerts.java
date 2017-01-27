@@ -22,9 +22,7 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import java.applet.Applet;
-import java.io.File;
-
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -40,7 +38,8 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
 
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.applet.Applet;
+import java.io.File;
 
 public class ConfigSectionInterfaceAlerts
 	implements UISWTConfigSection

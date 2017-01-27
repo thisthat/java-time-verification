@@ -20,14 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.devices.add;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.ui.swt.Utils;
-
 import com.aelitis.azureus.core.devices.*;
 import com.aelitis.azureus.core.devices.DeviceManager.DeviceManufacturer;
 import com.aelitis.azureus.ui.swt.skin.SWTSkin;
@@ -35,6 +27,12 @@ import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectContainer;
 import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
 import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.ui.swt.Utils;
 
 /**
  * @author TuxPaper

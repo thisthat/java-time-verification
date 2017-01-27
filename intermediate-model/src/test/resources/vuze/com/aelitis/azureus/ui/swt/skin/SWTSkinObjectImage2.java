@@ -18,17 +18,15 @@
 
 package com.aelitis.azureus.ui.swt.skin;
 
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader.ImageDownloaderListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Utils;
-
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader.ImageDownloaderListener;
 
 /**
  * @author TuxPaper

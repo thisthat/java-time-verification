@@ -27,11 +27,10 @@ package org.gudy.azureus2.pluginsimpl.local.ipfilter;
  *
  */
 
-import java.io.File;
-
+import org.gudy.azureus2.core3.ipfilter.*;
 import org.gudy.azureus2.plugins.ipfilter.*;
 
-import org.gudy.azureus2.core3.ipfilter.*;
+import java.io.File;
 
 public class 
 IPFilterImpl

@@ -27,13 +27,13 @@ package org.gudy.azureus2.plugins.peers;
  *
  */
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.plugins.messaging.Message;
 import org.gudy.azureus2.plugins.network.Connection;
 import org.gudy.azureus2.plugins.network.ConnectionStub;
 import org.gudy.azureus2.plugins.network.RateLimiter;
+
+import java.util.List;
 
 
 public interface 

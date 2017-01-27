@@ -19,11 +19,8 @@
 
 package org.gudy.azureus2.core3.torrentdownloader;
 
-import java.io.File;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.torrentdownloader.impl.TorrentDownloaderImpl;
 import org.gudy.azureus2.core3.torrentdownloader.impl.TorrentDownloaderManager;
@@ -32,8 +29,10 @@ import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.core3.util.UrlUtils;
 
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import java.io.File;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *

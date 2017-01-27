@@ -20,11 +20,20 @@
 
 package com.aelitis.azureus.ui.swt.subscriptions;
 
-import java.io.File;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.aelitis.azureus.core.metasearch.Engine;
+import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
+import com.aelitis.azureus.core.subs.*;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.utils.TagUIUtilsV3;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -58,20 +67,10 @@ import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
 
-import com.aelitis.azureus.core.metasearch.Engine;
-import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
-import com.aelitis.azureus.core.subs.*;
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.utils.TagUIUtilsV3;
+import java.io.File;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class 
 SubscriptionManagerUI 

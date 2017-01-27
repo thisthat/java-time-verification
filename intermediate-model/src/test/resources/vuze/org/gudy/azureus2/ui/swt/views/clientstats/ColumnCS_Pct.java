@@ -19,7 +19,6 @@
 package org.gudy.azureus2.ui.swt.views.clientstats;
 
 import org.gudy.azureus2.core3.util.DisplayFormatters;
-
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
 import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
 import org.gudy.azureus2.plugins.ui.tables.TableColumn;

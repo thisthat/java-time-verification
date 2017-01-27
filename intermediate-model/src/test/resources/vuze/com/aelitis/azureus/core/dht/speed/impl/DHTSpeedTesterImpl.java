@@ -19,15 +19,6 @@
 
 package com.aelitis.azureus.core.dht.speed.impl;
 
-import java.net.InetSocketAddress;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.utils.UTTimer;
-import org.gudy.azureus2.plugins.utils.UTTimerEvent;
-import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionManager;
 import com.aelitis.azureus.core.dht.speed.DHTSpeedTester;
@@ -39,6 +30,14 @@ import com.aelitis.azureus.core.dht.transport.DHTTransportReplyHandlerAdapter;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.utils.UTTimer;
+import org.gudy.azureus2.plugins.utils.UTTimerEvent;
+import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
+
+import java.net.InetSocketAddress;
+import java.util.*;
 
 public class 
 DHTSpeedTesterImpl 

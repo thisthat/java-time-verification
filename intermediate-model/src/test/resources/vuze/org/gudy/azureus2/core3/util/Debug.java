@@ -19,9 +19,11 @@
 package org.gudy.azureus2.core3.util;
 
 import java.io.*;
-import java.net.UnknownHostException;
 import java.net.ConnectException;
-import java.util.*;
+import java.net.UnknownHostException;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * Debug-assisting class.

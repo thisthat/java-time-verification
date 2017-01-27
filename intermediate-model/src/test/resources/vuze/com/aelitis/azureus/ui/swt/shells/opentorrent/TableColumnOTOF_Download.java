@@ -17,10 +17,9 @@
 
 package com.aelitis.azureus.ui.swt.shells.opentorrent;
 
+import com.aelitis.azureus.ui.swt.columns.ColumnCheckBox;
 import org.gudy.azureus2.core3.torrent.impl.TorrentOpenFileOptions;
 import org.gudy.azureus2.plugins.ui.tables.*;
-
-import com.aelitis.azureus.ui.swt.columns.ColumnCheckBox;
 
 public class TableColumnOTOF_Download
 	extends ColumnCheckBox

@@ -21,28 +21,28 @@
 package com.aelitis.azureus.ui.swt.views.skin;
 
 
-import java.io.File;
-import java.util.*;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.util.RegExUtil;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.columns.archivedls.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectTextbox;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadException;
-import org.gudy.azureus2.plugins.download.DownloadStub;
+import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.plugins.download.DownloadStub.DownloadStubFile;
-import org.gudy.azureus2.plugins.download.DownloadStubEvent;
-import org.gudy.azureus2.plugins.download.DownloadStubListener;
 import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
 import org.gudy.azureus2.plugins.ui.tables.TableColumn;
 import org.gudy.azureus2.plugins.ui.tables.TableColumnCreationListener;
@@ -62,19 +62,12 @@ import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils.ArchiveCallback;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.util.RegExUtil;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.columns.archivedls.*;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectTextbox;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 
 public class SBC_ArchivedDownloadsView

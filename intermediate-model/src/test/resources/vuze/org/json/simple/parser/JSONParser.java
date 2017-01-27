@@ -4,12 +4,11 @@
  */
 package org.json.simple.parser;
 
-import java.io.Reader;
-import java.util.Stack;
-
-import org.gudy.azureus2.core3.util.LightHashMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.io.Reader;
+import java.util.Stack;
 
 
 /**

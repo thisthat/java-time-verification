@@ -20,14 +20,25 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.*;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.UnsupportedAddressTypeException;
-import java.util.*;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.instancemanager.AZInstance;
+import com.aelitis.azureus.core.instancemanager.AZInstanceManager;
+import com.aelitis.azureus.core.instancemanager.AZInstanceManagerListener;
+import com.aelitis.azureus.core.instancemanager.AZInstanceTracked;
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.networkmanager.admin.*;
+import com.aelitis.azureus.core.networkmanager.impl.http.HTTPNetworkManager;
+import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
+import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
+import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
+import com.aelitis.azureus.core.proxy.socks.AESocksProxy;
+import com.aelitis.azureus.core.proxy.socks.AESocksProxyFactory;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.NetUtils;
+import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
+import com.aelitis.azureus.plugins.upnp.UPnPPluginService;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -48,29 +59,13 @@ import org.gudy.azureus2.plugins.utils.StaticUtilities;
 import org.gudy.azureus2.plugins.utils.Utilities;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.instancemanager.AZInstance;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManager;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManagerListener;
-import com.aelitis.azureus.core.instancemanager.AZInstanceTracked;
-import com.aelitis.azureus.core.networkmanager.NetworkConnectionBase;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.Transport;
-import com.aelitis.azureus.core.networkmanager.TransportBase;
-import com.aelitis.azureus.core.networkmanager.TransportStartpoint;
-import com.aelitis.azureus.core.networkmanager.admin.*;
-import com.aelitis.azureus.core.networkmanager.impl.http.HTTPNetworkManager;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
-import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
-import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
-import com.aelitis.azureus.core.proxy.socks.AESocksProxy;
-import com.aelitis.azureus.core.proxy.socks.AESocksProxyFactory;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.NetUtils;
-import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
-import com.aelitis.azureus.plugins.upnp.UPnPPluginService;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.*;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.UnsupportedAddressTypeException;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class 
 NetworkAdminImpl

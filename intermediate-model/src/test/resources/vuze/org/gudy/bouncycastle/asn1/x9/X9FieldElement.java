@@ -1,12 +1,12 @@
 package org.gudy.bouncycastle.asn1.x9;
 
-import java.math.BigInteger;
-
 import org.gudy.bouncycastle.asn1.ASN1OctetString;
 import org.gudy.bouncycastle.asn1.DEREncodable;
 import org.gudy.bouncycastle.asn1.DERObject;
 import org.gudy.bouncycastle.asn1.DEROctetString;
 import org.gudy.bouncycastle.math.ec.ECFieldElement;
+
+import java.math.BigInteger;
 
 /**
  * class for processing an FieldElement as a DER object.

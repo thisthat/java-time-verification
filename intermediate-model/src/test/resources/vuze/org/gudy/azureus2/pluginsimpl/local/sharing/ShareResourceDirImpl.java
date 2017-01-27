@@ -27,10 +27,10 @@ package org.gudy.azureus2.pluginsimpl.local.sharing;
  *
  */
 
+import org.gudy.azureus2.plugins.sharing.*;
+
 import java.io.File;
 import java.util.Map;
-
-import org.gudy.azureus2.plugins.sharing.*;
 
 public class 
 ShareResourceDirImpl

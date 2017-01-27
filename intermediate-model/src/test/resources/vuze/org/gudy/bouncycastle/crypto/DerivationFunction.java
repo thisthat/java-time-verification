@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.DataLengthException;
-import org.gudy.bouncycastle.crypto.DerivationParameters;
-import org.gudy.bouncycastle.crypto.Digest;
-
 /**
  * base interface for general purpose byte derivation functions.
  */

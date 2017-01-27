@@ -20,21 +20,19 @@
 
 package com.aelitis.azureus.ui.swt.views.skin.sidebar;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author TuxPaper

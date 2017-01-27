@@ -26,14 +26,10 @@ package org.gudy.azureus2.core3.xml.util;
  * @author parg
  */
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.gudy.azureus2.core3.util.*;
+
+import java.io.*;
+import java.util.*;
 
 public class 
 XUXmlWriter 

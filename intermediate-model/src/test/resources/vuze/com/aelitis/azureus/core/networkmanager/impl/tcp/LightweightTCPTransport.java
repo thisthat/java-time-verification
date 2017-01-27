@@ -18,18 +18,13 @@
  */
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-
-import com.aelitis.azureus.core.networkmanager.EventWaiter;
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
-import com.aelitis.azureus.core.networkmanager.Transport;
-import com.aelitis.azureus.core.networkmanager.TransportEndpoint;
-import com.aelitis.azureus.core.networkmanager.TransportStartpoint;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
 
 
 /**

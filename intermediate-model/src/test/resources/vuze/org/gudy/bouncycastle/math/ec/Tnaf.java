@@ -2,11 +2,6 @@ package org.gudy.bouncycastle.math.ec;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.math.ec.ECConstants;
-import org.gudy.bouncycastle.math.ec.ECCurve;
-import org.gudy.bouncycastle.math.ec.ECFieldElement;
-import org.gudy.bouncycastle.math.ec.ECPoint;
-
 /**
  * Class holding methods for point multiplication based on the window
  * &tau;-adic nonadjacent form (WTNAF). The algorithms are based on the

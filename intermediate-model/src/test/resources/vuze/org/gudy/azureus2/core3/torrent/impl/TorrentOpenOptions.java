@@ -17,9 +17,10 @@
 
 package org.gudy.azureus2.core3.torrent.impl;
 
-import java.io.File;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.plugins.I2PHelpers;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
@@ -27,16 +28,10 @@ import org.gudy.azureus2.core3.internat.LocaleTorrentUtil;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.TorrentUtils;
+import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.plugins.I2PHelpers;
+import java.io.File;
+import java.util.*;
 
 
 /**

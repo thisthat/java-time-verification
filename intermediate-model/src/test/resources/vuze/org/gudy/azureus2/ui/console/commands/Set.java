@@ -10,18 +10,14 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.SHA1Hasher;
 import org.gudy.azureus2.ui.common.ExternalUIConst;
 import org.gudy.azureus2.ui.console.ConsoleInput;
 import org.pf.text.StringPattern;
+
+import java.io.PrintStream;
+import java.util.*;
 
 /**
  * command that allows manipulation of Azureus' runtime properties.

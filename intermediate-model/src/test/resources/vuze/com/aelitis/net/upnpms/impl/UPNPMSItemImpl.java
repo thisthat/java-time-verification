@@ -20,9 +20,9 @@
 
 package com.aelitis.net.upnpms.impl;
 
-import java.net.URL;
-
 import com.aelitis.net.upnpms.UPNPMSItem;
+
+import java.net.URL;
 
 public class 
 UPNPMSItemImpl

@@ -20,12 +20,7 @@
 package org.gudy.azureus2.pluginsimpl.local.ddb;
 
 
-import java.util.*;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.aelitis.azureus.plugins.dht.DHTPluginProgressListener;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.Logger;
@@ -39,7 +34,10 @@ import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.plugins.dht.DHTPluginProgressListener;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.*;
 
 /**
  * @author parg

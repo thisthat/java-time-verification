@@ -19,20 +19,18 @@
 
 package org.gudy.azureus2.core3.util.jman;
 
+import com.aelitis.azureus.core.util.average.AverageFactory;
+import com.aelitis.azureus.core.util.average.MovingAverage;
+import org.gudy.azureus2.core3.logging.LogAlert;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.util.*;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.logging.LogAlert;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.util.average.AverageFactory;
-import com.aelitis.azureus.core.util.average.MovingAverage;
 
 public class 
 AEThreadMonitor 

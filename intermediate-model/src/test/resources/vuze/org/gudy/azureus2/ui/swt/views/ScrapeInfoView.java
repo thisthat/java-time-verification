@@ -16,9 +16,6 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.net.URL;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -27,7 +24,6 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
@@ -46,6 +42,9 @@ import org.gudy.azureus2.ui.swt.maketorrent.TrackerEditorListener;
 import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
+
+import java.net.URL;
+import java.util.List;
 
 /**
  * aka "Primary Tracker" view in "Sources" View

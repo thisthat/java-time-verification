@@ -22,19 +22,18 @@
 
 package org.gudy.azureus2.ui.console.multiuser;
 
+import com.aelitis.azureus.core.AzureusCore;
+import org.gudy.azureus2.ui.console.ConsoleInput;
+import org.gudy.azureus2.ui.console.UserProfile;
+import org.gudy.azureus2.ui.console.commands.IConsoleCommand;
+import org.gudy.azureus2.ui.console.multiuser.commands.Show;
+
 import java.io.PrintStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.gudy.azureus2.ui.console.ConsoleInput;
-import org.gudy.azureus2.ui.console.UserProfile;
-import org.gudy.azureus2.ui.console.commands.IConsoleCommand;
-import org.gudy.azureus2.ui.console.multiuser.commands.Show;
-
-import com.aelitis.azureus.core.AzureusCore;
 
 /**
  * subclass of the ConsoleInput object that is used for multi users.

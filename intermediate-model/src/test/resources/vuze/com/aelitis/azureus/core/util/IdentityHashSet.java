@@ -21,7 +21,10 @@
 package com.aelitis.azureus.core.util;
 
 
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
 
 public class 
 IdentityHashSet<E> 

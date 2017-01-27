@@ -1,16 +1,16 @@
 package org.gudy.bouncycastle.jce;
 
+import org.gudy.bouncycastle.asn1.ASN1InputStream;
+import org.gudy.bouncycastle.asn1.ASN1Sequence;
+import org.gudy.bouncycastle.asn1.DEROutputStream;
+import org.gudy.bouncycastle.asn1.x509.X509Name;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Hashtable;
 import java.util.Vector;
-
-import org.gudy.bouncycastle.asn1.ASN1InputStream;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
-import org.gudy.bouncycastle.asn1.x509.X509Name;
 
 public class X509Principal
     extends X509Name

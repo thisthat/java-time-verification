@@ -18,23 +18,19 @@
  */
 package org.gudy.azureus2.core3.peer.util;
 
-import java.net.InetAddress;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.peer.PEPeer;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.CRC32C;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.SystemTime;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.peers.Peer;
 import org.gudy.azureus2.plugins.utils.LocationProvider;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import java.net.InetAddress;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 
 /**

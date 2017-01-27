@@ -1,34 +1,19 @@
 package org.gudy.bouncycastle.jce;
 
+import org.gudy.bouncycastle.asn1.*;
+import org.gudy.bouncycastle.asn1.x509.*;
+import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.gudy.bouncycastle.jce.provider.X509CertificateObject;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.Signature;
-import java.security.SignatureException;
+import java.security.*;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
-
-import org.gudy.bouncycastle.asn1.*;
-import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.gudy.bouncycastle.asn1.x509.TBSCertificateStructure;
-import org.gudy.bouncycastle.asn1.x509.Time;
-import org.gudy.bouncycastle.asn1.x509.V3TBSCertificateGenerator;
-import org.gudy.bouncycastle.asn1.x509.X509CertificateStructure;
-import org.gudy.bouncycastle.asn1.x509.X509Extension;
-import org.gudy.bouncycastle.asn1.x509.X509Extensions;
-import org.gudy.bouncycastle.asn1.x509.X509Name;
-import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.gudy.bouncycastle.jce.provider.X509CertificateObject;
 
 /**
  * class to produce an X.509 Version 3 certificate.

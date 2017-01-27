@@ -1,8 +1,6 @@
 package intermediateModel.structure;
 
-import IntermediateModelHelper.types.DataTreeType;
 import intermediateModel.interfaces.*;
-import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,23 +148,6 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 		return flag;
 	}
 
-	@Override
-	public boolean equalsBySignature(String pkg, String name, List<Pair<String, String>> signature) {
-		if(!name.equals(this.name)) return false;
-		if(signature.size() != this.parameters.size()) return false;
-		boolean flag = true;
-		for(int i = 0; i < this.parameters.size(); i++){
-			if(signature.get(i) == null || signature.get(i).getValue0() == null){
-				return false;
-			}
-			String t1 = this.parameters.get(i).getType();
-			String t2 = signature.get(i).getValue0();
-			if(!DataTreeType.checkEqualsTypes(t1,t2, pkg , signature.get(i).getValue1() )){
-				flag = false;
-			}
-		}
-		return flag;
-	}
 
 	@Override
 	public boolean isStatic() {

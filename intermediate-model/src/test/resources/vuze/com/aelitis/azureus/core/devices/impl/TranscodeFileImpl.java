@@ -23,6 +23,19 @@
  */
 package com.aelitis.azureus.core.devices.impl;
 
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoDelegate;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoFile;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManager;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.util.ImportExportUtils;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.download.DownloadException;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -30,25 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadException;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-
-import com.aelitis.azureus.core.devices.Device;
-import com.aelitis.azureus.core.devices.TranscodeException;
-import com.aelitis.azureus.core.devices.TranscodeFile;
-import com.aelitis.azureus.core.devices.TranscodeJob;
-import com.aelitis.azureus.core.devices.TranscodeProviderAnalysis;
-import com.aelitis.azureus.core.devices.TranscodeTargetListener;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoDelegate;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoFile;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.util.ImportExportUtils;
 
 class
 TranscodeFileImpl

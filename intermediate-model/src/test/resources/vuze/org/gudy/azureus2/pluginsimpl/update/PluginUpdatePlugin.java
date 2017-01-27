@@ -24,32 +24,31 @@ package org.gudy.azureus2.pluginsimpl.update;
  *
  */
 
-import java.util.*;
-import java.util.zip.*;
-import java.net.URL;
-import java.io.*;
-
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
 import org.gudy.azureus2.core3.html.HTMLUtils;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
-
 import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.installer.InstallablePlugin;
 import org.gudy.azureus2.plugins.installer.PluginInstallationListener;
 import org.gudy.azureus2.plugins.installer.PluginInstaller;
 import org.gudy.azureus2.plugins.installer.StandardPlugin;
 import org.gudy.azureus2.plugins.logging.*;
-import org.gudy.azureus2.plugins.update.*;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
 import org.gudy.azureus2.plugins.ui.*;
 import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.plugins.ui.model.*;
+import org.gudy.azureus2.plugins.update.*;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
 import org.gudy.azureus2.pluginsimpl.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.update.sf.*;
 import org.gudy.azureus2.update.CorePatchChecker;
 
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class 
 PluginUpdatePlugin

@@ -20,31 +20,12 @@
 
 package com.aelitis.azureus.core.lws;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-
 import org.gudy.azureus2.core3.peer.PEPeerSource;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadActivationEvent;
-import org.gudy.azureus2.plugins.download.DownloadActivationListener;
-import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
-import org.gudy.azureus2.plugins.download.DownloadAttributeListener;
-import org.gudy.azureus2.plugins.download.DownloadCompletionListener;
-import org.gudy.azureus2.plugins.download.DownloadException;
-import org.gudy.azureus2.plugins.download.DownloadListener;
-import org.gudy.azureus2.plugins.download.DownloadPeerListener;
-import org.gudy.azureus2.plugins.download.DownloadPropertyListener;
-import org.gudy.azureus2.plugins.download.DownloadRemovalVetoException;
-import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
-import org.gudy.azureus2.plugins.download.DownloadStats;
-import org.gudy.azureus2.plugins.download.DownloadStub;
-import org.gudy.azureus2.plugins.download.DownloadTrackerListener;
-import org.gudy.azureus2.plugins.download.DownloadWillBeRemovedListener;
+import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.plugins.download.savelocation.SaveLocationChange;
 import org.gudy.azureus2.plugins.network.RateLimiter;
 import org.gudy.azureus2.plugins.tag.Tag;
@@ -54,6 +35,13 @@ import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.ddb.DDBaseImpl;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadAnnounceResultImpl;
+
+import java.io.File;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class 

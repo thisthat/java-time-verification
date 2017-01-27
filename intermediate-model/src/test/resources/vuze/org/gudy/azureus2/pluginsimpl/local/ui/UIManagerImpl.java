@@ -19,17 +19,14 @@
 
 package org.gudy.azureus2.pluginsimpl.local.ui;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.ui.IUIIntializer;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentListener;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.PluginConfig;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
 import org.gudy.azureus2.plugins.torrent.Torrent;
@@ -46,11 +43,12 @@ import org.gudy.azureus2.pluginsimpl.local.ui.model.BasicPluginViewModelImpl;
 import org.gudy.azureus2.pluginsimpl.local.ui.tables.TableManagerImpl;
 import org.gudy.azureus2.ui.common.UIInstanceBase;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.ui.IUIIntializer;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentListener;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 

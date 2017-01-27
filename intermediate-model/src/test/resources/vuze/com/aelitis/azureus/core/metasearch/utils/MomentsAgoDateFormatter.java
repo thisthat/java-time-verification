@@ -20,11 +20,7 @@
 package com.aelitis.azureus.core.metasearch.utils;
 
 import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SimpleTimeZone;
+import java.util.*;
 
 /**
 * Improvement based on AZWEB-318.

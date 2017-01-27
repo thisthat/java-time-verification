@@ -27,14 +27,14 @@ package org.gudy.azureus2.pluginsimpl.local.sharing;
  *
  */
 
-import java.util.*;
-import java.io.*;
-
+import org.gudy.azureus2.core3.internat.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.sharing.*;
 import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentManagerImpl;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.internat.*;
+
+import java.io.File;
+import java.util.*;
 
 public abstract class 
 ShareResourceImpl

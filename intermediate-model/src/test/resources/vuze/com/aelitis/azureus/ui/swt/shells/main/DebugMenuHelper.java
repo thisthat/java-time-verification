@@ -18,19 +18,6 @@
 
 package com.aelitis.azureus.ui.swt.shells.main;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.swt.debug.ObfusticateShell;
-import org.gudy.azureus2.ui.swt.donations.DonationWindow;
-import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
-import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
@@ -39,6 +26,17 @@ import com.aelitis.azureus.ui.swt.skin.SWTSkin;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectContainer;
 import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBox;
 import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBoxListener;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.ui.swt.debug.ObfusticateShell;
+import org.gudy.azureus2.ui.swt.donations.DonationWindow;
+import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
+import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 
 /**
  * A convenience class for creating the Debug menu

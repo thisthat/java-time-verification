@@ -18,17 +18,15 @@
 
 package org.gudy.azureus2.ui.swt.shells;
 
-import org.eclipse.swt.widgets.Shell;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.swt.Utils;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import org.eclipse.swt.widgets.Shell;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.AEThread2;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.ui.swt.Utils;
 
 public class CoreWaiterSWT
 {

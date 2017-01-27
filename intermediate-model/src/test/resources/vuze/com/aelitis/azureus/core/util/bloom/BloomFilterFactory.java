@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.util.bloom;
 
-import java.util.Map;
-
 import com.aelitis.azureus.core.util.bloom.impl.*;
+
+import java.util.Map;
 
 public class 
 BloomFilterFactory 

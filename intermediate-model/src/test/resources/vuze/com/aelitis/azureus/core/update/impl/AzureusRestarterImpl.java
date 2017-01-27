@@ -18,9 +18,9 @@
  */
 package com.aelitis.azureus.core.update.impl;
 
-import java.io.*;
-import java.util.Properties;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreException;
+import com.aelitis.azureus.core.update.AzureusRestarter;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.*;
@@ -34,9 +34,11 @@ import org.gudy.azureus2.plugins.platform.PlatformManagerException;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.update.UpdaterUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreException;
-import com.aelitis.azureus.core.update.AzureusRestarter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.Properties;
 
 public class 
 AzureusRestarterImpl 

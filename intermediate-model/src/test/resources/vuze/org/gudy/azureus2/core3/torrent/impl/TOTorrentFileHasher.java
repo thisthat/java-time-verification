@@ -21,11 +21,14 @@
 package org.gudy.azureus2.core3.torrent.impl;
 
 
-import java.io.*;
-import java.util.*;
-
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.*;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Vector;
 
 public class 
 TOTorrentFileHasher 

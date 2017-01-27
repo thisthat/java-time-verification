@@ -19,15 +19,15 @@
 
 package com.aelitis.azureus.plugins.dht.impl;
 
-import java.net.InetSocketAddress;
-import java.util.Map;
-
 import com.aelitis.azureus.core.dht.nat.DHTNATPuncher;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportReplyHandlerAdapter;
 import com.aelitis.azureus.plugins.dht.DHTPluginContact;
 import com.aelitis.azureus.plugins.dht.DHTPluginOperationListener;
 import com.aelitis.azureus.plugins.dht.DHTPluginProgressListener;
+
+import java.net.InetSocketAddress;
+import java.util.Map;
 
 public class
 DHTPluginContactImpl

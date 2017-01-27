@@ -1,16 +1,10 @@
 package org.gudy.bouncycastle.asn1.x9;
 
-import java.math.BigInteger;
-
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1OctetString;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.math.ec.ECCurve;
 import org.gudy.bouncycastle.math.ec.ECPoint;
+
+import java.math.BigInteger;
 
 /**
  * ASN.1 def for Elliptic-Curve ECParameters structure. See

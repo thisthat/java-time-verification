@@ -19,11 +19,10 @@
 
 package com.aelitis.azureus.plugins.extseed;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.*;
-
-import org.gudy.azureus2.core3.torrent.TOTorrent;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
+import com.aelitis.azureus.plugins.extseed.impl.getright.ExternalSeedReaderFactoryGetRight;
+import com.aelitis.azureus.plugins.extseed.impl.webseed.ExternalSeedReaderFactoryWebSeed;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.plugins.Plugin;
@@ -41,10 +40,9 @@ import org.gudy.azureus2.plugins.ui.components.UITextField;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginViewModel;
 import org.gudy.azureus2.plugins.utils.*;
 
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
-import com.aelitis.azureus.plugins.extseed.impl.getright.ExternalSeedReaderFactoryGetRight;
-import com.aelitis.azureus.plugins.extseed.impl.webseed.ExternalSeedReaderFactoryWebSeed;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.*;
 
 public class 
 ExternalSeedPlugin

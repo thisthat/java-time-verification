@@ -20,7 +20,7 @@
 
 package com.aelitis.azureus.core.vuzefile;
 
-import java.util.*;
+import java.util.Map;
 
 public interface 
 VuzeFileComponent 

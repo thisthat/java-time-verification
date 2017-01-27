@@ -20,13 +20,17 @@
 
 package org.gudy.azureus2.ui.swt.views.utils;
 
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.util.AZ3Functions;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPlugin;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBuddy;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryManager;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -43,13 +47,7 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.views.ViewUtils;
 import org.gudy.azureus2.ui.swt.views.ViewUtils.SpeedAdapter;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPlugin;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBuddy;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import java.util.List;
 
 /**
  * @author TuxPaper

@@ -26,11 +26,11 @@ package org.gudy.azureus2.pluginsimpl.remote.download;
  * @author parg
  *
  */
-import java.net.URL;
 
 import org.gudy.azureus2.plugins.download.*;
-
 import org.gudy.azureus2.pluginsimpl.remote.*;
+
+import java.net.URL;
 
 
 public class 

@@ -19,15 +19,14 @@
 
 package com.aelitis.azureus.core.peermanager.messaging.azureus;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.messaging.*;
+import com.aelitis.azureus.core.peermanager.peerdb.*;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.peermanager.messaging.*;
-import com.aelitis.azureus.core.peermanager.peerdb.*;
+import java.util.*;
 
 
 

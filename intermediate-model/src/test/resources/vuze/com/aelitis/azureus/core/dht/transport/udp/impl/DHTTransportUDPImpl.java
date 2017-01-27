@@ -19,30 +19,6 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl;
 
-import java.io.*;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.ipfilter.IpFilter;
-import org.gudy.azureus2.core3.ipfilter.IpFilterManagerFactory;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Average;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.DHTLogger;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
@@ -51,21 +27,30 @@ import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionProvider;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionProviderListener;
 import com.aelitis.azureus.core.dht.transport.*;
 import com.aelitis.azureus.core.dht.transport.udp.*;
-import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketHandler;
-import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketHandlerException;
-import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketHandlerFactory;
-import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketHandlerStub;
-import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketReceiver;
-import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPRequestHandler;
+import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.*;
 import com.aelitis.azureus.core.dht.transport.util.DHTTransferHandler;
-import com.aelitis.azureus.core.dht.transport.util.DHTTransportRequestCounter;
 import com.aelitis.azureus.core.dht.transport.util.DHTTransferHandler.Packet;
+import com.aelitis.azureus.core.dht.transport.util.DHTTransportRequestCounter;
 import com.aelitis.azureus.core.util.average.AverageFactory;
 import com.aelitis.azureus.core.util.average.MovingImmediateAverage;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
 import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
 import com.aelitis.net.udp.uc.PRUDPPacketHandler;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.ipfilter.IpFilter;
+import org.gudy.azureus2.core3.ipfilter.IpFilterManagerFactory;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 /**
  * @author parg

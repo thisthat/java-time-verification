@@ -1,8 +1,5 @@
 package org.gudy.bouncycastle.crypto.signers;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
 import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.DSA;
 import org.gudy.bouncycastle.crypto.params.ECKeyParameters;
@@ -11,6 +8,9 @@ import org.gudy.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.gudy.bouncycastle.crypto.params.ParametersWithRandom;
 import org.gudy.bouncycastle.math.ec.ECConstants;
 import org.gudy.bouncycastle.math.ec.ECPoint;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 /**
  * EC-DSA as described in X9.62

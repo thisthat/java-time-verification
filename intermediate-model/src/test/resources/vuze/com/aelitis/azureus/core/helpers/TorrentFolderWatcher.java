@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.helpers;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.*;
-
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManager;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -32,10 +32,10 @@ import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Watches a folder for new torrents and imports them.

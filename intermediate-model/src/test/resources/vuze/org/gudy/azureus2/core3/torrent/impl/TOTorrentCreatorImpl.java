@@ -24,16 +24,19 @@ package org.gudy.azureus2.core3.torrent.impl;
  *
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
 import org.gudy.azureus2.core3.util.BDecoder;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.FileUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class
 TOTorrentCreatorImpl

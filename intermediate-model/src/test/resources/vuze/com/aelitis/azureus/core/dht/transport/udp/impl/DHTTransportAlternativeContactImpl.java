@@ -20,14 +20,13 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeContact;
 import org.gudy.azureus2.core3.util.BDecoder;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeContact;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 DHTTransportAlternativeContactImpl

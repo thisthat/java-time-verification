@@ -18,10 +18,24 @@
 
 package com.aelitis.azureus.ui.swt.subscriptions;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-
+import com.aelitis.azureus.core.metasearch.Engine;
+import com.aelitis.azureus.core.subs.Subscription;
+import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
+import com.aelitis.azureus.core.subs.SubscriptionManagerListener;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
+import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.columns.subscriptions.*;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -54,24 +68,9 @@ import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 
-import com.aelitis.azureus.core.metasearch.Engine;
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
-import com.aelitis.azureus.core.subs.SubscriptionManagerListener;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.columns.subscriptions.*;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class SubscriptionsView
 	implements SubscriptionManagerListener, UIPluginViewToolBarListener,

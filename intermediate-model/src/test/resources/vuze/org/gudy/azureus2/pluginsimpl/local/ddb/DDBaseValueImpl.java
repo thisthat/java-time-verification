@@ -19,9 +19,8 @@
 
 package org.gudy.azureus2.pluginsimpl.local.ddb;
 
-import org.gudy.azureus2.plugins.ddb.*;
-
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import org.gudy.azureus2.plugins.ddb.*;
 
 /**
  * @author parg

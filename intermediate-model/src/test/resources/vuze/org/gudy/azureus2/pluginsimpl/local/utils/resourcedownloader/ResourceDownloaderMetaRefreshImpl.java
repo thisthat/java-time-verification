@@ -24,12 +24,12 @@ package org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader;
  *
  */
 
-import java.io.*;
-import java.net.URL;
-
-import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.html.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
+
+import java.io.InputStream;
+import java.net.URL;
 
 public class 
 ResourceDownloaderMetaRefreshImpl 	

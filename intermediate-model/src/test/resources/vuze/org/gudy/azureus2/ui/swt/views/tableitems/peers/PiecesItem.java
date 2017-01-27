@@ -22,18 +22,17 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.peers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-
 import org.gudy.azureus2.core3.disk.*;
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.ui.Graphic;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.mainwindow.SWTThread;
@@ -42,10 +41,8 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
-
-import org.gudy.azureus2.plugins.ui.Graphic;
-import org.gudy.azureus2.plugins.ui.tables.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

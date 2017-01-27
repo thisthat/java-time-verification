@@ -17,14 +17,13 @@
 
 package com.aelitis.azureus.ui.swt.columns.subscriptions;
 
+import com.aelitis.azureus.core.subs.Subscription;
+import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
 import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
 import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
 
 public class ColumnSubscriptionMaxResults
 	extends CoreTableColumnSWT

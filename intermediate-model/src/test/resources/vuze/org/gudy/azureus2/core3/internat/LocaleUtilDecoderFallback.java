@@ -19,9 +19,10 @@
 
 package org.gudy.azureus2.core3.internat;
 
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import org.gudy.azureus2.core3.util.*;
 
 /**
  * @author parg

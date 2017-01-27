@@ -17,15 +17,14 @@
 
 package com.aelitis.azureus.ui.swt;
 
-import java.io.File;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.impl.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
+import java.io.File;
+import java.util.Map;
 
 /**
  * @author TuxPaper

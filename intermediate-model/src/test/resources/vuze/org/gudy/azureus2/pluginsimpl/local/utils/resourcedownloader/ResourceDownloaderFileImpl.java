@@ -19,18 +19,15 @@
 
 package org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader;
 
-import java.io.*;
-
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.TorrentUtils;
+import com.aelitis.azureus.core.util.HTTPUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderCancelledException;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
 
-import com.aelitis.azureus.core.util.HTTPUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * @author parg

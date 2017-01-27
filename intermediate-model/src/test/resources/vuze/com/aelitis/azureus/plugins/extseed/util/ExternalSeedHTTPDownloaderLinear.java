@@ -20,29 +20,22 @@
 
 package com.aelitis.azureus.plugins.extseed.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.URL;
-import java.util.*;
-
-import org.gudy.azureus2.core3.security.SEPasswordListener;
-import org.gudy.azureus2.core3.security.SESecurityManager;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import com.aelitis.azureus.core.proxy.AEProxyFactory;
 import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
 import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
+import org.gudy.azureus2.core3.security.SEPasswordListener;
+import org.gudy.azureus2.core3.security.SESecurityManager;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class 
 ExternalSeedHTTPDownloaderLinear 

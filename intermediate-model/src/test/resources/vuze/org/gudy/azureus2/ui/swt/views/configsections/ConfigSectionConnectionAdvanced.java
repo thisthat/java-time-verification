@@ -18,9 +18,7 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
@@ -43,7 +41,8 @@ import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 public class ConfigSectionConnectionAdvanced implements UISWTConfigSection {
 

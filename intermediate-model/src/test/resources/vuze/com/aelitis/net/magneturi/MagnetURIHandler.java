@@ -19,12 +19,12 @@
 
 package com.aelitis.net.magneturi;
 
+import com.aelitis.net.magneturi.impl.MagnetURIHandlerImpl;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-
-import com.aelitis.net.magneturi.impl.MagnetURIHandlerImpl;
 
 /**
  * @author parg

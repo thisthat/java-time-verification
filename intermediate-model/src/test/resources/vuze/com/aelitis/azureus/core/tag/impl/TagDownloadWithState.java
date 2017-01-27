@@ -20,40 +20,19 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.tag.*;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerPeerListener;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.download.DownloadManagerStats;
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.PEPeerManager;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TorrentUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagDownload;
-import com.aelitis.azureus.core.tag.TagFeature;
-import com.aelitis.azureus.core.tag.TagFeatureExecOnAssign;
-import com.aelitis.azureus.core.tag.TagFeatureProperties;
-import com.aelitis.azureus.core.tag.TagFeatureRateLimit;
-import com.aelitis.azureus.core.tag.TagFeatureRunState;
-import com.aelitis.azureus.core.tag.TagListener;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.Taggable;
+import java.util.*;
 
 public class 
 TagDownloadWithState

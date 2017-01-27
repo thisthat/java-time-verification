@@ -1,9 +1,8 @@
 package org.gudy.bouncycastle.crypto.paddings;
 
-import java.security.SecureRandom;
-
-import org.gudy.bouncycastle.crypto.paddings.BlockCipherPadding;
 import org.gudy.bouncycastle.crypto.InvalidCipherTextException;
+
+import java.security.SecureRandom;
 
 /**
  * A padder that adds PKCS7/PKCS5 padding to a block.

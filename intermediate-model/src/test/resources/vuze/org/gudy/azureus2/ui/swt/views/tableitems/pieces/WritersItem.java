@@ -18,11 +18,12 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.pieces;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.peer.PEPiece;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *

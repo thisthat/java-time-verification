@@ -27,23 +27,22 @@ package org.gudy.azureus2.ui.swt.auth;
  *
  */
 
-import java.util.Arrays;
-
+import com.aelitis.azureus.core.security.CryptoManagerFactory;
+import com.aelitis.azureus.core.security.CryptoManagerPasswordHandler;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.*;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.mainwindow.SWTThread;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.security.CryptoManagerFactory;
-import com.aelitis.azureus.core.security.CryptoManagerPasswordHandler;
+import java.util.Arrays;
 
 public class 
 CryptoWindow 

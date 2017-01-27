@@ -27,10 +27,10 @@ package org.gudy.azureus2.core3.tracker.host.impl;
  *
  */
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.tracker.host.*;
 import org.gudy.azureus2.core3.tracker.server.*;
+
+import java.util.Map;
 
 public class 
 TRHostTorrentRequestImpl

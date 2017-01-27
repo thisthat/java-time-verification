@@ -16,12 +16,37 @@
  */
 package com.aelitis.azureus.ui.swt.shells.main;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.activities.VuzeActivitiesManager;
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
+import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger.PlatformLoginCompleteListener;
+import com.aelitis.azureus.core.metasearch.MetaSearchManagerFactory;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.core.util.FeatureAvailability;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import com.aelitis.azureus.ui.IUIIntializer;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.skin.SkinConstants;
+import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
+import com.aelitis.azureus.ui.swt.*;
+import com.aelitis.azureus.ui.swt.columns.utils.TableColumnCreatorV3;
+import com.aelitis.azureus.ui.swt.extlistener.StimulusRPC;
+import com.aelitis.azureus.ui.swt.mdi.BaseMDI;
+import com.aelitis.azureus.ui.swt.mdi.TabbedMDI;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
+import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import com.aelitis.azureus.ui.swt.views.skin.WelcomeView;
+import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
+import com.aelitis.azureus.util.MapUtils;
+import com.aelitis.azureus.util.NavigationHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -64,39 +89,10 @@ import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 import org.gudy.azureus2.ui.swt.welcome.WelcomeWindow;
 import org.gudy.azureus2.ui.systray.SystemTraySWT;
 
-import com.aelitis.azureus.activities.VuzeActivitiesManager;
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
-import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger.PlatformLoginCompleteListener;
-import com.aelitis.azureus.core.messenger.config.PlatformDevicesMessenger;
-import com.aelitis.azureus.core.metasearch.MetaSearchManagerFactory;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.FeatureAvailability;
-import com.aelitis.azureus.core.util.GeneralUtils;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
-import com.aelitis.azureus.ui.IUIIntializer;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.skin.SkinConstants;
-import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
-import com.aelitis.azureus.ui.swt.*;
-import com.aelitis.azureus.ui.swt.columns.utils.TableColumnCreatorV3;
-import com.aelitis.azureus.ui.swt.extlistener.StimulusRPC;
-import com.aelitis.azureus.ui.swt.mdi.BaseMDI;
-import com.aelitis.azureus.ui.swt.mdi.TabbedMDI;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
-import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
-import com.aelitis.azureus.ui.swt.views.skin.WelcomeView;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
-import com.aelitis.azureus.util.MapUtils;
-import com.aelitis.azureus.util.NavigationHelper;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /** 
  * @author TuxPaper

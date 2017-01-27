@@ -20,10 +20,11 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
@@ -34,27 +35,7 @@ import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.config.DualChangeSelectionActionPerformer;
-import org.gudy.azureus2.ui.swt.config.IAdditionalActionPerformer;
-import org.gudy.azureus2.ui.swt.config.plugins.PluginParameter;
-import org.gudy.azureus2.ui.swt.mainwindow.Colors;
-import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-import org.gudy.azureus2.ui.swt.pluginsinstaller.InstallPluginWizard;
-import org.gudy.azureus2.ui.swt.views.ConfigView;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginException;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.installer.PluginInstallationListener;
@@ -65,6 +46,18 @@ import org.gudy.azureus2.plugins.ui.model.PluginConfigModel;
 import org.gudy.azureus2.pluginsimpl.local.PluginInterfaceImpl;
 import org.gudy.azureus2.pluginsimpl.local.ui.config.BooleanParameterImpl;
 import org.gudy.azureus2.pluginsimpl.local.ui.config.ParameterRepository;
+import org.gudy.azureus2.ui.swt.Messages;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.config.DualChangeSelectionActionPerformer;
+import org.gudy.azureus2.ui.swt.config.IAdditionalActionPerformer;
+import org.gudy.azureus2.ui.swt.config.plugins.PluginParameter;
+import org.gudy.azureus2.ui.swt.mainwindow.Colors;
+import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
+import org.gudy.azureus2.ui.swt.pluginsinstaller.InstallPluginWizard;
+import org.gudy.azureus2.ui.swt.views.ConfigView;
+
+import java.io.File;
+import java.util.*;
 
 /**
  * Configuration Section that lists all the plugins and sets up

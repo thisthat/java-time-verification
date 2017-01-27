@@ -27,9 +27,9 @@ package org.gudy.azureus2.core3.util.protocol.tcp;
  *
  */
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.io.*;
 
 
 class 

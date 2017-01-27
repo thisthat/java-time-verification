@@ -20,21 +20,31 @@
 
 package com.aelitis.azureus.plugins.net.buddy.swt;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatManagerListener;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
+import com.aelitis.azureus.plugins.net.buddy.swt.columns.*;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.common.table.TableSelectionListener;
+import com.aelitis.azureus.ui.common.table.TableViewFilterCheck;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MdiEntryCreationListener2;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import com.aelitis.azureus.ui.swt.views.skin.InfoBarUtil;
+import com.aelitis.azureus.ui.swt.views.skin.SkinView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.Debug;
@@ -53,27 +63,7 @@ import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWTMenuFillListener;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.common.table.TableSelectionListener;
-import com.aelitis.azureus.ui.common.table.TableViewFilterCheck;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MdiEntryCreationListener2;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.views.skin.InfoBarUtil;
-import com.aelitis.azureus.ui.swt.views.skin.SkinView;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.*;
-import com.aelitis.azureus.plugins.net.buddy.swt.columns.*;
+import java.util.*;
 
 /**
  * @author TuxPaper

@@ -27,15 +27,15 @@ package org.gudy.azureus2.pluginsimpl.remote.download;
  *
  */
 
-import java.io.*;
-import java.net.*;
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.plugins.download.savelocation.*;
 import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.pluginsimpl.remote.*;
 import org.gudy.azureus2.pluginsimpl.remote.torrent.*;
+
+import java.io.File;
+import java.net.URL;
+import java.util.Map;
 
 public class 
 RPDownloadManager

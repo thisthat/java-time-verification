@@ -21,10 +21,9 @@
  */
 package com.aelitis.azureus.core.peermanager.uploadslots;
 
+import com.aelitis.azureus.core.peermanager.unchoker.UnchokerUtil;
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
-
-import com.aelitis.azureus.core.peermanager.unchoker.UnchokerUtil;
 
 /**
  * 

@@ -22,15 +22,14 @@
 
 package org.gudy.azureus2.ui.console.commands;
 
+import com.aelitis.azureus.core.AzureusCoreException;
+import org.gudy.azureus2.core3.download.DownloadManager;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
-
-import com.aelitis.azureus.core.AzureusCoreException;
 
 public class TorrentFilter {
 

@@ -21,13 +21,7 @@
 package org.gudy.azureus2.ui.swt;
 
 import org.eclipse.swt.SWTError;
-import org.eclipse.swt.browser.CloseWindowListener;
-import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.browser.OpenWindowListener;
-import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.browser.StatusTextListener;
-import org.eclipse.swt.browser.TitleListener;
-import org.eclipse.swt.browser.WindowEvent;
+import org.eclipse.swt.browser.*;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;

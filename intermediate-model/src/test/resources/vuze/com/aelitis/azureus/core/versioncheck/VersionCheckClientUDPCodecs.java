@@ -20,11 +20,13 @@
 
 package com.aelitis.azureus.core.versioncheck;
 
-import java.io.*;
-import java.net.InetSocketAddress;
-import java.util.*;
-
 import com.aelitis.net.udp.uc.*;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class 

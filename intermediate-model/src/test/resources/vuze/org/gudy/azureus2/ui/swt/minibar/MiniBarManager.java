@@ -17,16 +17,15 @@
  */
 package org.gudy.azureus2.ui.swt.minibar;
 
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.ArrayList;
-
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.components.shell.ShellManager;
 
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  * @author Allan Crooks

@@ -19,7 +19,6 @@
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
 import org.eclipse.swt.widgets.Composite;
-
 import org.gudy.azureus2.ui.swt.plugins.PluginUISWTSkinObject;
 import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;

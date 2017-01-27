@@ -20,20 +20,10 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
+import com.aelitis.azureus.core.devices.Device;
+import com.aelitis.azureus.core.devices.DeviceManager;
+import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.Debug;
@@ -44,13 +34,17 @@ import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
-
-import com.aelitis.azureus.core.devices.Device;
-import com.aelitis.azureus.core.devices.DeviceManager;
-import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.*;
 
 public class 
 DeviceManagerRSSFeed 

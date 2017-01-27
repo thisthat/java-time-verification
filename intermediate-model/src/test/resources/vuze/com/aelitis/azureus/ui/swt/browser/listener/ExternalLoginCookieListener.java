@@ -18,18 +18,11 @@
 
 package com.aelitis.azureus.ui.swt.browser.listener;
 
-import java.net.URLDecoder;
-
-
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.browser.ProgressEvent;
-import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.browser.StatusTextEvent;
-import org.eclipse.swt.browser.StatusTextListener;
-
-import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import com.aelitis.azureus.ui.swt.browser.CookiesListener;
+import org.eclipse.swt.browser.*;
+import org.gudy.azureus2.ui.swt.BrowserWrapper;
+
+import java.net.URLDecoder;
 
 public class ExternalLoginCookieListener
 implements StatusTextListener,LocationListener,ProgressListener

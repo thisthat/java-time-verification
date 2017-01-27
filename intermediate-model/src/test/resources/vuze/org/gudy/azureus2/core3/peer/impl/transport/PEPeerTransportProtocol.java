@@ -22,11 +22,26 @@
 package org.gudy.azureus2.core3.peer.impl.transport;
 
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.core.impl.AzureusCoreImpl;
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
+import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
+import com.aelitis.azureus.core.peermanager.messaging.Message;
+import com.aelitis.azureus.core.peermanager.messaging.MessageManager;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
+import com.aelitis.azureus.core.peermanager.messaging.azureus.*;
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.*;
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.ltep.*;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerExchangerItem;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
+import com.aelitis.azureus.core.peermanager.utils.*;
+import com.aelitis.azureus.core.proxy.AEProxyAddressMapper;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.tag.TaggableResolver;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.DiskManager;
@@ -48,26 +63,10 @@ import org.gudy.azureus2.plugins.peers.Peer;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.network.ConnectionImpl;
 
-import com.aelitis.azureus.core.impl.AzureusCoreImpl;
-import com.aelitis.azureus.core.networkmanager.*;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
-import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
-import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.peermanager.messaging.MessageManager;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
-import com.aelitis.azureus.core.peermanager.messaging.azureus.*;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.*;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.ltep.*;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerExchangerItem;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
-import com.aelitis.azureus.core.peermanager.utils.*;
-import com.aelitis.azureus.core.proxy.AEProxyAddressMapper;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.tag.TaggableResolver;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 
 public class 

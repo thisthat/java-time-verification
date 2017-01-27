@@ -20,7 +20,8 @@ package org.pf.text;
 // ===========================================================================
 // IMPORTS
 // ===========================================================================
-import java.io.Serializable ;
+
+import java.io.Serializable;
 
 /** 
  * This class provides services for checking strings against string-patterns.

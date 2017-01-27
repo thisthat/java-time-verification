@@ -17,14 +17,14 @@
  */
 package org.gudy.azureus2.ui.common.util;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.ui.menus.MenuContext;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuManager;
 import org.gudy.azureus2.pluginsimpl.local.ui.menus.MenuContextImpl;
+
+import java.util.*;
 
 /**
  * Similar to TableContextMenuManager - this keeps references to created menu

@@ -27,9 +27,10 @@ package org.gudy.azureus2.core3.tracker.protocol;
  *
  */
 
-import java.net.*;
-
 import org.gudy.azureus2.core3.util.*;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class 
 PRHelpers 

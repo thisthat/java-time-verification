@@ -19,39 +19,23 @@
 
 package com.aelitis.azureus.core.security.impl;
 
-import java.util.*;
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
+import com.aelitis.azureus.core.security.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.security.SESecurityManager;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.bouncycastle.crypto.CipherParameters;
+import org.gudy.bouncycastle.crypto.engines.RC4Engine;
+import org.gudy.bouncycastle.crypto.params.KeyParameter;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.security.SESecurityManager;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SHA1;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.bouncycastle.crypto.CipherParameters;
-import org.gudy.bouncycastle.crypto.engines.RC4Engine;
-import org.gudy.bouncycastle.crypto.params.KeyParameter;
-
-import com.aelitis.azureus.core.security.CryptoHandler;
-import com.aelitis.azureus.core.security.CryptoManager;
-import com.aelitis.azureus.core.security.CryptoManagerException;
-import com.aelitis.azureus.core.security.CryptoManagerKeyListener;
-import com.aelitis.azureus.core.security.CryptoManagerPasswordException;
-import com.aelitis.azureus.core.security.CryptoManagerPasswordHandler;
-import com.aelitis.azureus.core.security.CryptoManager.SRPParameters;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public class 
 CryptoManagerImpl 

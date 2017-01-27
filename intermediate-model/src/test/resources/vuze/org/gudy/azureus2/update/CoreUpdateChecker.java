@@ -24,17 +24,14 @@ package org.gudy.azureus2.update;
  *
  */
 
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.net.*;
-import java.io.*;
-
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.logging.*;
+import com.aelitis.azureus.core.util.GeneralUtils;
+import com.aelitis.azureus.core.versioncheck.*;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.internat.MessageText;
-
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.win32.access.AEWin32Access;
 import org.gudy.azureus2.platform.win32.access.AEWin32Manager;
 import org.gudy.azureus2.plugins.*;
@@ -45,10 +42,12 @@ import org.gudy.azureus2.plugins.update.*;
 import org.gudy.azureus2.plugins.utils.StaticUtilities;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
 
-import com.aelitis.azureus.core.util.GeneralUtils;
-import com.aelitis.azureus.core.versioncheck.*;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
+import java.io.*;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 
 public class 

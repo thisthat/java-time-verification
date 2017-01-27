@@ -17,15 +17,14 @@
 
 package com.aelitis.azureus.ui.swt.shells;
 
+import com.aelitis.azureus.core.messenger.ClientMessageContext;
+import com.aelitis.azureus.ui.swt.browser.BrowserContext;
+import com.aelitis.azureus.ui.swt.browser.listener.ConfigListener;
+import com.aelitis.azureus.ui.swt.browser.listener.DisplayListener;
+import com.aelitis.azureus.ui.swt.browser.listener.TorrentListener;
+import com.aelitis.azureus.ui.swt.browser.listener.VuzeListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.TitleListener;
-import org.eclipse.swt.browser.TitleEvent;
-import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.browser.ProgressEvent;
-import org.eclipse.swt.browser.StatusTextListener;
-import org.eclipse.swt.browser.StatusTextEvent;
-import org.eclipse.swt.browser.CloseWindowListener;
-import org.eclipse.swt.browser.WindowEvent;
+import org.eclipse.swt.browser.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -35,13 +34,6 @@ import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-
-import com.aelitis.azureus.core.messenger.ClientMessageContext;
-import com.aelitis.azureus.ui.swt.browser.BrowserContext;
-import com.aelitis.azureus.ui.swt.browser.listener.ConfigListener;
-import com.aelitis.azureus.ui.swt.browser.listener.DisplayListener;
-import com.aelitis.azureus.ui.swt.browser.listener.TorrentListener;
-import com.aelitis.azureus.ui.swt.browser.listener.VuzeListener;
 
 /**
  * @author TuxPaper

@@ -19,7 +19,8 @@
 
 package com.aelitis.net.udp.uc;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /**

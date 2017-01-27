@@ -21,19 +21,15 @@
  
 package org.gudy.azureus2.ui.console;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentCreator;
 import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
 import org.gudy.azureus2.core3.torrent.TOTorrentProgressListener;
+import org.gudy.azureus2.core3.util.TorrentUtils;
+
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author Olivier

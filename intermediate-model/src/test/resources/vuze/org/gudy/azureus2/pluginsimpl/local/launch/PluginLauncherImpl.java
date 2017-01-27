@@ -19,12 +19,10 @@
 
 package org.gudy.azureus2.pluginsimpl.local.launch;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.launcher.Launcher;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.FileUtil;
 import org.gudy.azureus2.core3.util.SystemProperties;
 import org.gudy.azureus2.plugins.LaunchablePlugin;
@@ -33,9 +31,10 @@ import org.gudy.azureus2.plugins.logging.LoggerChannel;
 import org.gudy.azureus2.plugins.logging.LoggerChannelListener;
 import org.gudy.azureus2.pluginsimpl.PluginUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.launcher.Launcher;
+import java.io.*;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
 
 public class 
 PluginLauncherImpl 

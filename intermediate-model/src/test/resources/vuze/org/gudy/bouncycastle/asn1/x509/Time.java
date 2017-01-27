@@ -1,12 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.Time;
-import org.gudy.bouncycastle.asn1.ASN1Choice;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERGeneralizedTime;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERUTCTime;
+import org.gudy.bouncycastle.asn1.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

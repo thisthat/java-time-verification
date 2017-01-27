@@ -19,10 +19,10 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import java.nio.ByteBuffer;
-
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.plugins.messaging.*;
+
+import java.nio.ByteBuffer;
 
 /**
  *

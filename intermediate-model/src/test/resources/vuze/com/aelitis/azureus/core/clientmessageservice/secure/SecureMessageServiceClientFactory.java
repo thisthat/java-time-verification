@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.clientmessageservice.secure;
 
-import java.security.interfaces.RSAPublicKey;
-
 import com.aelitis.azureus.core.clientmessageservice.secure.impl.SecureMessageServiceClientImpl;
+
+import java.security.interfaces.RSAPublicKey;
 
 
 public class 

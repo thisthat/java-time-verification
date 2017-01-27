@@ -17,8 +17,6 @@
  */
 package org.gudy.azureus2.pluginsimpl.local.deprecate;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.impl.StringListImpl;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -30,6 +28,8 @@ import org.gudy.azureus2.plugins.ui.UIInstance;
 import org.gudy.azureus2.plugins.ui.UIManagerListener;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginViewModel;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+
+import java.util.*;
 
 /**
  * @author Allan Crooks

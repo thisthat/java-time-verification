@@ -22,14 +22,13 @@
 
 package com.aelitis.azureus.ui.common.table;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Olivier

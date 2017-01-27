@@ -17,9 +17,9 @@
  */
 package org.gudy.azureus2.core3.util;
 
-import java.util.Arrays;
-
 import org.gudy.azureus2.plugins.utils.ByteArrayWrapper;
+
+import java.util.Arrays;
 
 /**
  * @author Olivier

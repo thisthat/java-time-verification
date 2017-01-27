@@ -1,12 +1,8 @@
 package org.gudy.bouncycastle.math.ec;
 
-import java.math.BigInteger;
-
-import org.gudy.bouncycastle.math.ec.ECConstants;
-import org.gudy.bouncycastle.math.ec.ECCurve;
-import org.gudy.bouncycastle.math.ec.ECFieldElement;
-import org.gudy.bouncycastle.math.ec.ECPoint;
 import org.gudy.bouncycastle.asn1.x9.X9IntegerConverter;
+
+import java.math.BigInteger;
 
 /**
  * base class for points on elliptic curves.

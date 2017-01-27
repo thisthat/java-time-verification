@@ -20,10 +20,13 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.io.*;
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * The original code by Mike Melanson (melanson@pcisys.net) was placed in the

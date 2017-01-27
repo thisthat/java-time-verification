@@ -18,9 +18,9 @@
 
 package com.aelitis.azureus.ui.common.table.impl;
 
-import java.util.Comparator;
-
 import com.aelitis.azureus.ui.common.table.TableRowCore;
+
+import java.util.Comparator;
 
 public class TableRowCoreSorter
 	implements Comparator<TableRowCore>

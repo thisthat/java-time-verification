@@ -19,6 +19,9 @@
 
 package com.aelitis.azureus.core.util;
 
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.FileUtil;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,9 +31,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.FileUtil;
 
 public class HTTPUtils {
 	public static final String	NL				= "\r\n";

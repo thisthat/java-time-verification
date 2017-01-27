@@ -19,12 +19,11 @@
 
 package com.aelitis.azureus.plugins.extseed.impl;
 
-import java.util.List;
-
-import org.gudy.azureus2.plugins.peers.PeerReadRequest;
-
 import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
 import com.aelitis.azureus.plugins.extseed.util.ExternalSeedHTTPDownloaderListener;
+import org.gudy.azureus2.plugins.peers.PeerReadRequest;
+
+import java.util.List;
 
 public class 
 ExternalSeedReaderRequest 

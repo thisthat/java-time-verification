@@ -19,12 +19,10 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.io.File;
-import java.net.URL;
-import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduler;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTester;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterResult;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.disk.DiskManagerPiece;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -47,10 +45,11 @@ import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
 
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduler;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTester;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterResult;
+import java.io.File;
+import java.net.URL;
+import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 public class NetworkAdminSpeedTesterBTImpl 

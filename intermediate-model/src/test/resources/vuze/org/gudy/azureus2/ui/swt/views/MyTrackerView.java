@@ -22,14 +22,14 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.*;
@@ -63,14 +63,13 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
 import org.gudy.azureus2.ui.swt.views.tableitems.mytracker.*;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**

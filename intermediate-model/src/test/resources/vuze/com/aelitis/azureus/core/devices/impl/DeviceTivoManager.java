@@ -20,24 +20,11 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.util.*;
-import java.io.IOException;
-import java.net.*;
-
+import com.aelitis.azureus.core.devices.Device;
+import com.aelitis.azureus.core.devices.DeviceManagerException;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.platform.PlatformManagerFactory;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.tracker.Tracker;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebContext;
@@ -46,9 +33,10 @@ import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.core.devices.Device;
-import com.aelitis.azureus.core.devices.DeviceManagerException;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import java.io.IOException;
+import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class 

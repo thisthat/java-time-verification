@@ -24,35 +24,29 @@ package org.gudy.azureus2.pluginsimpl.update.sf.impl2;
  *
  */
 
-import java.util.*;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginState;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
-import org.gudy.azureus2.pluginsimpl.update.sf.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.*;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemProperties;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.pluginsimpl.update.sf.*;
 
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
 
 public class 
 SFPluginDetailsLoaderImpl 

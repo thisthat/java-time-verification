@@ -16,6 +16,7 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -23,7 +24,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.disk.DiskManagerPiece;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.peer.PEPeerManager;
@@ -35,8 +35,6 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.azureus2.ui.swt.views.utils.CoordinateTransform;
-
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
 
 /**
  * @author Aaron Grunthal

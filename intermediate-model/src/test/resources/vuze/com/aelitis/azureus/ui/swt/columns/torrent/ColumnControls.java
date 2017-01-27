@@ -20,15 +20,16 @@
 
 package com.aelitis.azureus.ui.swt.columns.torrent;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.swt.columns.utils.ColumnImageClickArea;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.ui.Graphic;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.mainwindow.SWTThread;
 import org.gudy.azureus2.ui.swt.plugins.UISWTGraphic;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
@@ -36,13 +37,9 @@ import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.swt.columns.utils.ColumnImageClickArea;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.ui.Graphic;
-import org.gudy.azureus2.plugins.ui.tables.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author TuxPaper

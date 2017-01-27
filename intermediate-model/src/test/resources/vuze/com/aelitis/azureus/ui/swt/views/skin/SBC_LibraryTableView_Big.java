@@ -20,7 +20,6 @@ package com.aelitis.azureus.ui.swt.views.skin;
 
 import com.aelitis.azureus.ui.common.table.TableColumnCore;
 import com.aelitis.azureus.ui.swt.columns.utils.TableColumnCreatorV3;
-
 import org.gudy.azureus2.plugins.ui.tables.TableManager;
 
 public class SBC_LibraryTableView_Big

@@ -18,12 +18,10 @@
 
 package com.aelitis.azureus.ui.swt.plugininstall;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.UIFunctions;
 import org.gudy.azureus2.core3.util.AESemaphore;
 import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.PluginException;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.installer.InstallablePlugin;
@@ -36,8 +34,8 @@ import org.gudy.azureus2.plugins.update.UpdateCheckInstanceListener;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderAdapter;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.UIFunctions;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 SimplePluginInstaller 

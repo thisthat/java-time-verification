@@ -17,12 +17,14 @@
 
 package com.aelitis.azureus.core.messenger;
 
-import java.util.*;
-
+import com.aelitis.azureus.util.JSONUtils;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.util.JSONUtils;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author TuxPaper

@@ -19,13 +19,12 @@
 
 package com.aelitis.azureus.core.dht;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-
-import org.gudy.azureus2.core3.util.HashWrapper;
-
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
+import org.gudy.azureus2.core3.util.HashWrapper;
+
+import java.io.DataInputStream;
+import java.io.IOException;
 
 /**
  * @author parg

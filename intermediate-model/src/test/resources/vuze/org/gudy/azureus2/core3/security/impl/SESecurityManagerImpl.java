@@ -27,29 +27,8 @@ package org.gudy.azureus2.core3.security.impl;
  *
  */
 
-import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.net.Authenticator;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
-import java.net.Socket;
-import java.net.URL;
-import java.security.Key;
-import java.security.KeyStore;
-import java.security.Permission;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.*;
-
-import javax.net.ssl.*;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.logging.LogAlert;
@@ -60,15 +39,19 @@ import org.gudy.azureus2.core3.security.SECertificateListener;
 import org.gudy.azureus2.core3.security.SEKeyDetails;
 import org.gudy.azureus2.core3.security.SEPasswordListener;
 import org.gudy.azureus2.core3.security.SESecurityManager;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.RandomUtils;
+import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import javax.net.ssl.*;
+import java.io.*;
+import java.lang.reflect.Constructor;
+import java.net.*;
+import java.security.Key;
+import java.security.KeyStore;
+import java.security.Permission;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.*;
 
 public class 
 SESecurityManagerImpl 

@@ -1,11 +1,11 @@
 package org.gudy.bouncycastle.crypto.generators;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
 import org.gudy.bouncycastle.crypto.digests.SHA1Digest;
 import org.gudy.bouncycastle.crypto.params.DSAParameters;
 import org.gudy.bouncycastle.crypto.params.DSAValidationParameters;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 /**
  * generate suitable parameters for DSA, in line with FIPS 186-2.

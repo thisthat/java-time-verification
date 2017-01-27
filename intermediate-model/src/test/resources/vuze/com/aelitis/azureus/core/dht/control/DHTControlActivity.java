@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.dht.control;
 
-import java.util.List;
-
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
+
+import java.util.List;
 
 /**
  * @author parg

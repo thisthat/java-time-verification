@@ -20,23 +20,23 @@
 
 package com.aelitis.azureus.core.util.http;
 
-import java.net.*;
-import java.nio.charset.Charset;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.InflaterInputStream;
-import java.io.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.security.SESecurityManager;
+import org.gudy.azureus2.core3.util.*;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import org.gudy.azureus2.core3.security.SESecurityManager;
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.*;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
 
 public class 
 HTTPAuthHelper 

@@ -19,11 +19,11 @@
 
 package com.aelitis.azureus.core.peermanager.piecepicker;
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.PEPiece;
 import org.gudy.azureus2.core3.util.IndentWriter;
+
+import java.util.List;
 
 
 /**

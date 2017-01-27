@@ -19,13 +19,22 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.TableView;
+import com.aelitis.azureus.ui.selectedcontent.*;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
+import com.aelitis.azureus.ui.swt.toolbar.ToolBarItemSO;
+import com.aelitis.azureus.util.DLReferals;
+import com.aelitis.azureus.util.PlayUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Control;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -43,18 +52,7 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarManagerCore;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarManagerImpl;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarManagerImpl.ToolBarManagerListener;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.TableView;
-import com.aelitis.azureus.ui.selectedcontent.*;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
-import com.aelitis.azureus.ui.swt.toolbar.ToolBarItemSO;
-import com.aelitis.azureus.util.DLReferals;
-import com.aelitis.azureus.util.PlayUtils;
+import java.util.*;
 
 /**
  * @author TuxPaper

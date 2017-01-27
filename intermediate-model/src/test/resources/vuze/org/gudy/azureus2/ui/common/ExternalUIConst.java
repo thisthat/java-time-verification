@@ -6,12 +6,12 @@
  */
 package org.gudy.azureus2.ui.common;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.SystemProperties;
 import org.gudy.azureus2.ui.common.util.LegacyHashtable;
+
+import java.util.HashMap;
+import java.util.Hashtable;
 
 /**
  * @author Tobias Minich

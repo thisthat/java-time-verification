@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl.packethandler;
 
-import java.net.InetSocketAddress;
-
 import com.aelitis.azureus.core.dht.transport.udp.impl.DHTUDPPacketReply;
+
+import java.net.InetSocketAddress;
 
 public interface 
 DHTUDPPacketReceiver 

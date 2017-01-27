@@ -3,11 +3,6 @@ package org.gudy.bouncycastle.math.ec;
 import java.math.BigInteger;
 import java.util.Random;
 
-import org.gudy.bouncycastle.math.ec.ECConstants;
-import org.gudy.bouncycastle.math.ec.ECCurve;
-import org.gudy.bouncycastle.math.ec.ECFieldElement;
-import org.gudy.bouncycastle.math.ec.ECPoint;
-
 /**
  * base class for an elliptic curve
  */

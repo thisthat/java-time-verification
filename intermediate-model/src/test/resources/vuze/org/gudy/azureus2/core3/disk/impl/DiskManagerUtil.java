@@ -20,15 +20,9 @@
 
 package org.gudy.azureus2.core3.disk.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileOwner;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.*;
@@ -48,9 +42,14 @@ import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileOwner;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class 
 DiskManagerUtil 

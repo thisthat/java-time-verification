@@ -20,15 +20,12 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -39,12 +36,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerPeerListener;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -69,12 +61,8 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListenerEx;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewEventListenerHolder;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import java.net.InetAddress;
+import java.util.*;
 
 /**
  * This is the "Swarm" View

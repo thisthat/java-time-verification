@@ -24,12 +24,14 @@ package org.gudy.azureus2.core3.internat;
  *
  */
 
-import java.util.*;
-import java.io.*;
-import java.nio.*;
-import java.nio.charset.*;
-
 import org.gudy.azureus2.core3.util.*;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
+import java.util.Arrays;
 
 
 public class 

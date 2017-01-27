@@ -20,41 +20,27 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.PluginManager;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.sharing.ShareManager;
-import org.gudy.azureus2.plugins.sharing.ShareResourceDir;
-import org.gudy.azureus2.plugins.sharing.ShareResourceFile;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-
 import com.aelitis.azureus.core.devices.*;
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagManager;
 import com.aelitis.azureus.core.tag.TagManagerFactory;
 import com.aelitis.azureus.core.tag.Taggable;
 import com.aelitis.net.upnp.UPnPDevice;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.sharing.ShareManager;
+import org.gudy.azureus2.plugins.sharing.ShareResourceFile;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.*;
 
 public class 
 DeviceMediaRendererImpl

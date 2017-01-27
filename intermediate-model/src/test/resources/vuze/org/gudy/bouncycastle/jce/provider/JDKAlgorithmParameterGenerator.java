@@ -1,19 +1,5 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.security.AlgorithmParameterGeneratorSpi;
-import java.security.AlgorithmParameters;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.SecureRandom;
-import java.security.spec.AlgorithmParameterSpec;
-import java.security.spec.DSAParameterSpec;
-
-import javax.crypto.spec.DHGenParameterSpec;
-import javax.crypto.spec.DHParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.RC2ParameterSpec;
-
-import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.gudy.bouncycastle.jce.provider.JDKAlgorithmParameterGenerator;
 import org.gudy.bouncycastle.crypto.generators.DHParametersGenerator;
 import org.gudy.bouncycastle.crypto.generators.DSAParametersGenerator;
 import org.gudy.bouncycastle.crypto.generators.ElGamalParametersGenerator;
@@ -21,6 +7,17 @@ import org.gudy.bouncycastle.crypto.params.DHParameters;
 import org.gudy.bouncycastle.crypto.params.DSAParameters;
 import org.gudy.bouncycastle.crypto.params.ElGamalParameters;
 import org.gudy.bouncycastle.jce.spec.ElGamalParameterSpec;
+
+import javax.crypto.spec.DHGenParameterSpec;
+import javax.crypto.spec.DHParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.RC2ParameterSpec;
+import java.security.AlgorithmParameterGeneratorSpi;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.SecureRandom;
+import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.DSAParameterSpec;
 
 public abstract class JDKAlgorithmParameterGenerator
     extends AlgorithmParameterGeneratorSpi

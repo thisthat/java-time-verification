@@ -1,10 +1,10 @@
 package org.gudy.bouncycastle.jce;
 
-import java.util.Enumeration;
-
 import org.gudy.bouncycastle.asn1.x9.X962NamedCurves;
 import org.gudy.bouncycastle.asn1.x9.X9ECParameters;
 import org.gudy.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
+
+import java.util.Enumeration;
 
 /**
  * a table of locally supported named curves.

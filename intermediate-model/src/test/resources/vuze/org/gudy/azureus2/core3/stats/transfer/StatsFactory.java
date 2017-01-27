@@ -21,14 +21,13 @@
  */
 package org.gudy.azureus2.core3.stats.transfer;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCore;
 import org.gudy.azureus2.core3.global.GlobalManagerStats;
 import org.gudy.azureus2.core3.stats.transfer.impl.LongTermStatsWrapper;
 import org.gudy.azureus2.core3.stats.transfer.impl.OverallStatsImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Olivier

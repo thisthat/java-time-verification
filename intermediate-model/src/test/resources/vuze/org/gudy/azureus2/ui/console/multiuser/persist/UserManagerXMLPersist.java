@@ -22,6 +22,10 @@
 
 package org.gudy.azureus2.ui.console.multiuser.persist;
 
+import org.gudy.azureus2.ui.console.UserProfile;
+import org.gudy.azureus2.ui.console.multiuser.UserManager.UserManagerConfig;
+import org.gudy.azureus2.ui.console.multiuser.UserManagerPersister;
+
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
@@ -31,10 +35,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.ui.console.UserProfile;
-import org.gudy.azureus2.ui.console.multiuser.UserManagerPersister;
-import org.gudy.azureus2.ui.console.multiuser.UserManager.UserManagerConfig;
 
 public class 
 UserManagerXMLPersist 

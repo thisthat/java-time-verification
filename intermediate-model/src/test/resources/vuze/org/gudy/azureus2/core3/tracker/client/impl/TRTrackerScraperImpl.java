@@ -27,14 +27,14 @@ package org.gudy.azureus2.core3.tracker.client.impl;
  *
  */
 
-import java.net.URL;
-
+import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.tracker.client.*;
 import org.gudy.azureus2.core3.tracker.client.impl.bt.TRTrackerBTScraperImpl;
 import org.gudy.azureus2.core3.tracker.client.impl.dht.TRTrackerDHTScraperImpl;
-import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
+
+import java.net.URL;
 
 public class 
 TRTrackerScraperImpl

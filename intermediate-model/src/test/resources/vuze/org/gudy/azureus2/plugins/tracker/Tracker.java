@@ -27,11 +27,11 @@ package org.gudy.azureus2.plugins.tracker;
  *
  */
 
-import java.net.InetAddress;
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebContext;
+
+import java.net.InetAddress;
+import java.util.Map;
 
 public interface 
 Tracker 

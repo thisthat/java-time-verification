@@ -1,9 +1,9 @@
 package org.gudy.bouncycastle.crypto.generators;
 
+import org.gudy.bouncycastle.crypto.params.DHParameters;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
-
-import org.gudy.bouncycastle.crypto.params.DHParameters;
 
 public class DHParametersGenerator
 {

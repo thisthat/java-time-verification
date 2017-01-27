@@ -19,12 +19,12 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import java.nio.ByteBuffer;
-
 import org.gudy.azureus2.plugins.messaging.MessageException;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageEndpoint;
 import org.gudy.azureus2.plugins.network.RateLimiter;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
+
+import java.nio.ByteBuffer;
 
 public interface 
 GenericMessageConnectionAdapter 

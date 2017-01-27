@@ -1,9 +1,8 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import java.security.SecureRandom;
-
-import org.gudy.bouncycastle.crypto.params.DSAParameters;
 import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
+
+import java.security.SecureRandom;
 
 public class DSAKeyGenerationParameters
     extends KeyGenerationParameters

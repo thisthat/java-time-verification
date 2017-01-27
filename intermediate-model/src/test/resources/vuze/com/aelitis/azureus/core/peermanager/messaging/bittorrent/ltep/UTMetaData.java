@@ -20,18 +20,17 @@
 
 package com.aelitis.azureus.core.peermanager.messaging.bittorrent.ltep;
 
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.MessageException;
 import com.aelitis.azureus.core.peermanager.messaging.MessagingUtil;
 import com.aelitis.azureus.core.peermanager.messaging.azureus.AZUTMetaData;
+import org.gudy.azureus2.core3.util.BDecoder;
+import org.gudy.azureus2.core3.util.BEncoder;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
+
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 UTMetaData 

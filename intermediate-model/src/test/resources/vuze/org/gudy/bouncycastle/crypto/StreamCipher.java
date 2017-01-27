@@ -1,8 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.CipherParameters;
-import org.gudy.bouncycastle.crypto.DataLengthException;
-
 /**
  * the interface stream ciphers conform to.
  */

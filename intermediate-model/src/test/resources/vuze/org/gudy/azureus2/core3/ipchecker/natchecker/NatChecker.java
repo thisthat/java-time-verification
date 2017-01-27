@@ -22,21 +22,10 @@
 
 package org.gudy.azureus2.core3.ipchecker.natchecker;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
-import java.util.Map;
-import java.util.Properties;
-
 import com.aelitis.azureus.core.*;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminASN;
-
+import com.aelitis.azureus.plugins.upnp.*;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.tracker.util.TRTrackerUtils;
@@ -49,7 +38,16 @@ import org.gudy.azureus2.plugins.clientid.ClientIDException;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 
-import com.aelitis.azureus.plugins.upnp.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Olivier

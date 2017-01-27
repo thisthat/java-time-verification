@@ -28,15 +28,13 @@ package org.gudy.azureus2.core3.disk;
  */
 
 
+import com.aelitis.azureus.core.util.LinkFileMap;
 import org.gudy.azureus2.core3.disk.impl.DiskManagerImpl;
 import org.gudy.azureus2.core3.disk.impl.DiskManagerUtil;
 import org.gudy.azureus2.core3.disk.impl.resume.RDResumeHandler;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
-
-import com.aelitis.azureus.core.util.CaseSensitiveFileMap;
-import com.aelitis.azureus.core.util.LinkFileMap;
 
 public class 
 DiskManagerFactory 

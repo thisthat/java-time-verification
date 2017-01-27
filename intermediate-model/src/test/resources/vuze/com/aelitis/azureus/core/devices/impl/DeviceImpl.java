@@ -20,6 +20,15 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.util.ImportExportUtils;
+import com.aelitis.azureus.util.StringCompareUtils;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -29,24 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
-
-import com.aelitis.azureus.core.devices.Device;
-import com.aelitis.azureus.core.devices.DeviceListener;
-import com.aelitis.azureus.core.devices.DeviceMediaRenderer;
-import com.aelitis.azureus.core.devices.TranscodeException;
-import com.aelitis.azureus.core.devices.TranscodeFile;
-import com.aelitis.azureus.core.devices.TranscodeProfile;
-import com.aelitis.azureus.core.devices.TranscodeProvider;
-import com.aelitis.azureus.core.devices.TranscodeTarget;
-import com.aelitis.azureus.core.devices.TranscodeTargetListener;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.util.ImportExportUtils;
-import com.aelitis.azureus.util.StringCompareUtils;
 
 public abstract class 
 DeviceImpl

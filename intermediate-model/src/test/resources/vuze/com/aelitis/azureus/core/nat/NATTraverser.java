@@ -19,23 +19,21 @@
 
 package com.aelitis.azureus.core.nat;
 
-import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.ThreadPool;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.nat.DHTNATPuncher;
 import com.aelitis.azureus.core.dht.nat.DHTNATPuncherAdapter;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.ThreadPool;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 NATTraverser 

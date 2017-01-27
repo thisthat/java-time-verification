@@ -20,37 +20,21 @@
 package com.aelitis.azureus.plugins.tracker.dht;
 
 
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
+import com.aelitis.azureus.plugins.I2PHelpers;
+import com.aelitis.azureus.plugins.dht.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.peer.PEPeerManager;
 import org.gudy.azureus2.core3.peer.PEPeerSource;
 import org.gudy.azureus2.core3.tracker.protocol.PRHelpers;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimeFormatter;
-import org.gudy.azureus2.core3.util.TorrentUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.Plugin;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginListener;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
-import org.gudy.azureus2.plugins.download.DownloadAnnounceResultPeer;
-import org.gudy.azureus2.plugins.download.DownloadAttributeListener;
-import org.gudy.azureus2.plugins.download.DownloadListener;
-import org.gudy.azureus2.plugins.download.DownloadManagerListener;
-import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
-import org.gudy.azureus2.plugins.download.DownloadTrackerListener;
+import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
 import org.gudy.azureus2.plugins.logging.LoggerChannelListener;
 import org.gudy.azureus2.plugins.peers.Peer;
@@ -58,11 +42,7 @@ import org.gudy.azureus2.plugins.peers.PeerManager;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.plugins.ui.UIManager;
-import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
-import org.gudy.azureus2.plugins.ui.config.ConfigSection;
-import org.gudy.azureus2.plugins.ui.config.IntParameter;
-import org.gudy.azureus2.plugins.ui.config.Parameter;
-import org.gudy.azureus2.plugins.ui.config.ParameterListener;
+import org.gudy.azureus2.plugins.ui.config.*;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginViewModel;
 import org.gudy.azureus2.plugins.utils.DelayedTask;
@@ -70,11 +50,10 @@ import org.gudy.azureus2.plugins.utils.UTTimerEvent;
 import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
-import com.aelitis.azureus.plugins.I2PHelpers;
-import com.aelitis.azureus.plugins.dht.*;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.*;
 
 /**
  * @author parg

@@ -21,10 +21,13 @@
 package com.aelitis.azureus.core.proxy.impl.swt;
 
 
-import java.net.InetAddress;
-import java.net.Proxy;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.proxy.impl.AEProxySelectorImpl;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdater;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.graphics.Image;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
@@ -47,13 +50,9 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntry;
 import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntryListener;
 import org.gudy.azureus2.ui.swt.views.stats.StatsView;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.proxy.impl.AEProxySelectorImpl;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdater;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.net.InetAddress;
+import java.net.Proxy;
+import java.util.List;
 
 public class 
 AEProxySelectorSWTImpl 

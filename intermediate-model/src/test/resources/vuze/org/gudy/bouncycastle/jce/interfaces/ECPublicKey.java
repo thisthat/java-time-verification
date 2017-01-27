@@ -1,9 +1,8 @@
 package org.gudy.bouncycastle.jce.interfaces;
 
-import java.security.PublicKey;
-
-import org.gudy.bouncycastle.jce.interfaces.ECKey;
 import org.gudy.bouncycastle.math.ec.ECPoint;
+
+import java.security.PublicKey;
 
 /**
  * interface for elliptic curve public keys.

@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.RuntimeCryptoException;
-
 /**
  * this exception is thrown if a buffer that is meant to have output
  * copied into it turns out to be too short, or if we've been given 

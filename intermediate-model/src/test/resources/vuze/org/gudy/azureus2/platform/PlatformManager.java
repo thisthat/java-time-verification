@@ -19,12 +19,11 @@
 
 package org.gudy.azureus2.platform;
 
-import java.io.File;
-import java.net.InetAddress;
-
+import com.aelitis.azureus.core.AzureusCore;
 import org.gudy.azureus2.plugins.platform.PlatformManagerException;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.io.File;
+import java.net.InetAddress;
 
 /**
  * @author parg

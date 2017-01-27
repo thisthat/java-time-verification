@@ -19,18 +19,17 @@
 
 package com.aelitis.azureus.core.metasearch.impl.web;
 
-import java.util.Date;
-import java.util.StringTokenizer;
-
+import com.aelitis.azureus.core.metasearch.Engine;
+import com.aelitis.azureus.core.metasearch.Result;
+import com.aelitis.azureus.core.metasearch.impl.DateParser;
 import org.apache.commons.lang.*;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.UrlUtils;
 
-import com.aelitis.azureus.core.metasearch.Engine;
-import com.aelitis.azureus.core.metasearch.Result;
-import com.aelitis.azureus.core.metasearch.impl.DateParser;
+import java.util.Date;
+import java.util.StringTokenizer;
 
 public class WebResult extends Result {
 	

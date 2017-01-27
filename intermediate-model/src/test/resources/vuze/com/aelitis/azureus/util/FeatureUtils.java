@@ -20,10 +20,9 @@
 
 package com.aelitis.azureus.util;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeMap;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.plugins.PluginInterface;
@@ -33,9 +32,9 @@ import org.gudy.azureus2.plugins.utils.FeatureManager.Licence;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class 
 FeatureUtils 

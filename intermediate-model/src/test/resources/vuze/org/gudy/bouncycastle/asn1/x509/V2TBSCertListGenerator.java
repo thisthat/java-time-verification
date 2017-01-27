@@ -1,24 +1,10 @@
 package org.gudy.bouncycastle.asn1.x509;
 
+import org.gudy.bouncycastle.asn1.*;
+
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
-
-import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.gudy.bouncycastle.asn1.x509.CRLReason;
-import org.gudy.bouncycastle.asn1.x509.TBSCertList;
-import org.gudy.bouncycastle.asn1.x509.Time;
-import org.gudy.bouncycastle.asn1.x509.X509Extension;
-import org.gudy.bouncycastle.asn1.x509.X509Extensions;
-import org.gudy.bouncycastle.asn1.x509.X509Name;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERGeneralizedTime;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DEROctetString;
-import org.gudy.bouncycastle.asn1.DERSequence;
-import org.gudy.bouncycastle.asn1.DERTaggedObject;
-import org.gudy.bouncycastle.asn1.DERUTCTime;
 
 /**
  * Generator for Version 2 TBSCertList structures.

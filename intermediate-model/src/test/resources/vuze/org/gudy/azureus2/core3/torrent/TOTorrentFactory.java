@@ -23,11 +23,12 @@
 package org.gudy.azureus2.core3.torrent;
 
 
-import java.util.*;
-import java.io.*;
-import java.net.*;
-
 import org.gudy.azureus2.core3.torrent.impl.*;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
 
 public class 
 TOTorrentFactory 

@@ -19,34 +19,23 @@
 
 package org.gudy.azureus2.pluginsimpl.local.ddb;
 
-import java.net.InetSocketAddress;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.ddb.*;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.proxy.AEProxyFactory;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.plugins.dht.DHTPlugin;
-import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
-import com.aelitis.azureus.plugins.dht.DHTPluginContact;
-import com.aelitis.azureus.plugins.dht.DHTPluginKeyStats;
-import com.aelitis.azureus.plugins.dht.DHTPluginListener;
-import com.aelitis.azureus.plugins.dht.DHTPluginOperationListener;
-import com.aelitis.azureus.plugins.dht.DHTPluginProgressListener;
-import com.aelitis.azureus.plugins.dht.DHTPluginTransferHandler;
-import com.aelitis.azureus.plugins.dht.DHTPluginValue;
+import com.aelitis.azureus.plugins.dht.*;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.ddb.*;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author parg

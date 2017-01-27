@@ -20,14 +20,13 @@
 
 package com.aelitis.azureus.core.networkmanager.admin;
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.networkmanager.admin.impl.NetworkAdminImpl;
+import org.gudy.azureus2.core3.util.IndentWriter;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.channels.UnsupportedAddressTypeException;
-
-import org.gudy.azureus2.core3.util.IndentWriter;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.networkmanager.admin.impl.NetworkAdminImpl;
 
 public abstract class 
 NetworkAdmin 

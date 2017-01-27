@@ -19,10 +19,10 @@
 
 package org.gudy.azureus2.core3.disk.impl.piecemapper;
 
-import java.io.File;
-
 import org.gudy.azureus2.core3.disk.impl.DiskManagerFileInfoImpl;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
+
+import java.io.File;
 
 public interface 
 DMPieceMapperFile 

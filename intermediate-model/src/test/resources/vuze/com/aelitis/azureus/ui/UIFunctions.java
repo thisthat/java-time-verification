@@ -17,15 +17,14 @@
 package com.aelitis.azureus.ui;
 
 
-import java.util.Map;
-
-import org.gudy.azureus2.core3.torrent.impl.TorrentOpenOptions;
-import org.gudy.azureus2.core3.util.Constants;
-
 import com.aelitis.azureus.core.AzureusCoreComponent;
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.ui.common.updater.UIUpdater;
 import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import org.gudy.azureus2.core3.torrent.impl.TorrentOpenOptions;
+import org.gudy.azureus2.core3.util.Constants;
+
+import java.util.Map;
 
 /**
  * @author TuxPaper

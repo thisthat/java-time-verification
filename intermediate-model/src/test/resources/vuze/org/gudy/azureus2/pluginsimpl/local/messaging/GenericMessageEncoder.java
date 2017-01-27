@@ -19,13 +19,12 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.DirectByteBufferPool;
-
 import com.aelitis.azureus.core.networkmanager.RawMessage;
 import com.aelitis.azureus.core.networkmanager.impl.RawMessageImpl;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
+import org.gudy.azureus2.core3.util.DirectByteBufferPool;
 
 public class 
 GenericMessageEncoder

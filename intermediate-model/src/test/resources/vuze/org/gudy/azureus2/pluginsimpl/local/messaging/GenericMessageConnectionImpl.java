@@ -19,13 +19,8 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.nat.NATTraversalObserver;
+import com.aelitis.azureus.core.nat.NATTraverser;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.plugins.messaging.MessageException;
@@ -36,8 +31,12 @@ import org.gudy.azureus2.plugins.network.RateLimiter;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 import org.gudy.azureus2.pluginsimpl.local.utils.PooledByteBufferImpl;
 
-import com.aelitis.azureus.core.nat.NATTraversalObserver;
-import com.aelitis.azureus.core.nat.NATTraverser;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 GenericMessageConnectionImpl

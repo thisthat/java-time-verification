@@ -29,14 +29,15 @@ package org.gudy.azureus2.core3.peer.impl;
  *			2006/Jan/02: refactoring piece picking to elsewhere, and consolidations
  */
 
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
 import org.gudy.azureus2.core3.disk.*;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.peer.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class PEPieceImpl

@@ -27,7 +27,8 @@ package org.gudy.azureus2.core3.peer.impl;
  *
  */
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public interface 
 PEPeerTransportExtensionHandler 

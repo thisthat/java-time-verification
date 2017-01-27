@@ -19,51 +19,22 @@
 
 package com.aelitis.azureus.plugins.magnet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.NoRouteToHostException;
-import java.net.Proxy;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.net.InetSocketAddress;
-
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.FeatureAvailability;
+import com.aelitis.net.magneturi.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLGroup;
 import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLSet;
 import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.ByteArrayHashMap;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.*;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseContact;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseEvent;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseListener;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseProgressListener;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseTransferType;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseValue;
+import org.gudy.azureus2.plugins.ddb.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadException;
 import org.gudy.azureus2.plugins.sharing.ShareException;
@@ -76,7 +47,6 @@ import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
 import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.plugins.ui.config.IntParameter;
 import org.gudy.azureus2.plugins.ui.config.Parameter;
-import org.gudy.azureus2.plugins.ui.config.ParameterListener;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
@@ -89,14 +59,13 @@ import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderExce
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.FeatureAvailability;
-import com.aelitis.net.magneturi.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.NoRouteToHostException;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author parg

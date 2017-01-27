@@ -21,13 +21,12 @@
 
 package org.gudy.azureus2.core3.category;
 
-import java.util.List;
-
+import com.aelitis.azureus.core.tag.Tag;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.util.IndentWriter;
 
-import com.aelitis.azureus.core.tag.Tag;
+import java.util.List;
 
 /** A Category for grouping torrents (DownloadManagers)
  * @author TuxPaper

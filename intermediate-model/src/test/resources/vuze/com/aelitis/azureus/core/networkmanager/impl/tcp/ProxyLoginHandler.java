@@ -19,6 +19,14 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxySelector;
+import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
+import org.gudy.azureus2.core3.config.COConfigurationListener;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -27,15 +35,6 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-
-import org.gudy.azureus2.core3.config.COConfigurationListener;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.networkmanager.*;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxySelector;
-import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
 
 
 /**

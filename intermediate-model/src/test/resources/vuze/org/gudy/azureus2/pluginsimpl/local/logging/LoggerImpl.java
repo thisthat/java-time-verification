@@ -27,19 +27,15 @@ package org.gudy.azureus2.pluginsimpl.local.logging;
  *
  */
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.logging.ILogAlertListener;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.impl.FileLogging;
 import org.gudy.azureus2.core3.logging.impl.FileLoggingAdapter;
 import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.logging.FileLoggerAdapter;
-import org.gudy.azureus2.plugins.logging.LogAlertListener;
-import org.gudy.azureus2.plugins.logging.Logger;
-import org.gudy.azureus2.plugins.logging.LoggerAlertListener;
-import org.gudy.azureus2.plugins.logging.LoggerChannel;
+import org.gudy.azureus2.plugins.logging.*;
+
+import java.util.*;
 
 public class 
 LoggerImpl

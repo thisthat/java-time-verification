@@ -20,12 +20,37 @@
 package com.aelitis.azureus.ui.swt.devices;
 
 
-import java.io.File;
-import java.net.InetAddress;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.devices.DeviceManager.DeviceManufacturer;
+import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoFile;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
+import com.aelitis.azureus.core.download.StreamManager;
+import com.aelitis.azureus.core.messenger.config.PlatformDevicesMessenger;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.devices.add.DeviceTemplateChooser;
+import com.aelitis.azureus.ui.swt.devices.add.DeviceTemplateChooser.DeviceTemplateClosedListener;
+import com.aelitis.azureus.ui.swt.devices.add.ManufacturerChooser;
+import com.aelitis.azureus.ui.swt.devices.add.ManufacturerChooser.ClosedListener;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader.ImageDownloaderListener;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.views.skin.SkinView;
+import com.aelitis.azureus.ui.swt.views.skin.SkinViewManager;
+import com.aelitis.azureus.ui.swt.views.skin.SkinViewManager.SkinViewManagerListener;
+import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
+import com.aelitis.azureus.util.PlayUtils;
+import com.aelitis.net.upnpms.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -37,7 +62,6 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
@@ -71,37 +95,10 @@ import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.devices.*;
-import com.aelitis.azureus.core.devices.DeviceManager.DeviceManufacturer;
-import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoFile;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
-import com.aelitis.azureus.core.download.StreamManager;
-import com.aelitis.azureus.core.messenger.config.PlatformDevicesMessenger;
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.devices.add.DeviceTemplateChooser;
-import com.aelitis.azureus.ui.swt.devices.add.DeviceTemplateChooser.DeviceTemplateClosedListener;
-import com.aelitis.azureus.ui.swt.devices.add.ManufacturerChooser;
-import com.aelitis.azureus.ui.swt.devices.add.ManufacturerChooser.ClosedListener;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader.ImageDownloaderListener;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.views.skin.SkinView;
-import com.aelitis.azureus.ui.swt.views.skin.SkinViewManager;
-import com.aelitis.azureus.ui.swt.views.skin.SkinViewManager.SkinViewManagerListener;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
-import com.aelitis.azureus.util.PlayUtils;
-import com.aelitis.net.upnpms.*;
+import java.io.File;
+import java.net.InetAddress;
+import java.net.URL;
+import java.util.*;
 
 public class 
 DeviceManagerUI 

@@ -19,29 +19,15 @@
 
 package com.aelitis.azureus.plugins.startstoprules.always;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.plugins.Plugin;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.PluginListener;
-import org.gudy.azureus2.plugins.PluginManager;
-import org.gudy.azureus2.plugins.PluginManagerDefaults;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
-import org.gudy.azureus2.plugins.download.DownloadException;
-import org.gudy.azureus2.plugins.download.DownloadListener;
-import org.gudy.azureus2.plugins.download.DownloadManagerListener;
-import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
-import org.gudy.azureus2.plugins.download.DownloadTrackerListener;
+import org.gudy.azureus2.plugins.*;
+import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
 import org.gudy.azureus2.plugins.utils.Monitor;
 import org.gudy.azureus2.plugins.utils.Semaphore;
 import org.gudy.azureus2.plugins.utils.UTTimerEvent;
 import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
+
+import java.util.*;
 
 public class 
 RunEverythingPlugin 

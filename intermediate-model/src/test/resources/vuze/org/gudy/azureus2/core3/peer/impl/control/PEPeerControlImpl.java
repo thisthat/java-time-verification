@@ -20,37 +20,6 @@
 package org.gudy.azureus2.core3.peer.impl.control;
 
 
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.disk.*;
-import org.gudy.azureus2.core3.disk.DiskManager.GettingThere;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.ipfilter.*;
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.peer.*;
-import org.gudy.azureus2.core3.peer.impl.*;
-import org.gudy.azureus2.core3.peer.util.PeerIdentityDataID;
-import org.gudy.azureus2.core3.peer.util.PeerIdentityManager;
-import org.gudy.azureus2.core3.peer.util.PeerUtils;
-import org.gudy.azureus2.core3.torrent.TOTorrentException;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponse;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponsePeer;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.download.DownloadAnnounceResultPeer;
-import org.gudy.azureus2.plugins.network.Connection;
-import org.gudy.azureus2.plugins.network.OutgoingMessageQueue;
-import org.gudy.azureus2.plugins.peers.Peer;
-import org.gudy.azureus2.plugins.peers.PeerDescriptor;
-
 import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPConnectionManager;
@@ -76,6 +45,36 @@ import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
 import com.aelitis.azureus.core.util.FeatureAvailability;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.disk.*;
+import org.gudy.azureus2.core3.disk.DiskManager.GettingThere;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.ipfilter.*;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.peer.*;
+import org.gudy.azureus2.core3.peer.impl.*;
+import org.gudy.azureus2.core3.peer.util.PeerIdentityDataID;
+import org.gudy.azureus2.core3.peer.util.PeerIdentityManager;
+import org.gudy.azureus2.core3.peer.util.PeerUtils;
+import org.gudy.azureus2.core3.torrent.TOTorrentException;
+import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
+import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponse;
+import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponsePeer;
+import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.download.DownloadAnnounceResultPeer;
+import org.gudy.azureus2.plugins.network.Connection;
+import org.gudy.azureus2.plugins.network.OutgoingMessageQueue;
+import org.gudy.azureus2.plugins.peers.Peer;
+import org.gudy.azureus2.plugins.peers.PeerDescriptor;
+
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 /**
  * manages all peer transports for a torrent

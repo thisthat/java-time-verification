@@ -17,6 +17,11 @@
  */
 package org.gudy.azureus2.ui.swt.minibar;
 
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerStats;
 import org.gudy.azureus2.core3.global.GlobalManagerEvent;
@@ -29,17 +34,6 @@ import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.DoubleBufferedLabel;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
-
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 
 /**
  * @author Allan Crooks

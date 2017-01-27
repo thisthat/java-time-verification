@@ -18,7 +18,6 @@
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
 import org.eclipse.swt.SWT;
-
 import org.gudy.azureus2.pluginsimpl.local.ui.AbstractUIMessage;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;

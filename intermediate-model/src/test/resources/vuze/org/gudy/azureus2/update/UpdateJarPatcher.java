@@ -24,11 +24,15 @@ package org.gudy.azureus2.update;
  *
  */
 
-import java.io.*;
-import java.util.*;
-import java.util.jar.*;
-
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
 public class 
 UpdateJarPatcher 

@@ -22,21 +22,23 @@
  
 package org.gudy.azureus2.core3.ipchecker.natchecker;
 
-import java.io.IOException;
-import java.net.*;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.networkmanager.*;
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
 import com.aelitis.azureus.core.networkmanager.impl.http.HTTPNetworkManager;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
 import com.aelitis.azureus.core.peermanager.messaging.*;
 import com.aelitis.azureus.core.peermanager.messaging.azureus.*;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 
 

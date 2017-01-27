@@ -19,9 +19,11 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import java.io.*;
-import java.util.ArrayList;
-
+import com.aelitis.azureus.core.security.*;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -37,6 +39,7 @@ import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.security.SESecurityManager;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.auth.CertificateCreatorWindow;
@@ -46,13 +49,11 @@ import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 
-import com.aelitis.azureus.core.security.*;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
-import org.gudy.azureus2.plugins.ui.config.ConfigSection;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.LineNumberReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 /**
  * @author parg

@@ -22,10 +22,6 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -42,6 +38,10 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ConfigSectionInterfaceTables
 	implements UISWTConfigSection

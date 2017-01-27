@@ -19,21 +19,18 @@
 
 package com.aelitis.net.upnp.impl.device;
 
-import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
-
-/**
- * @author parg
- *
- */
-
-import java.net.InetAddress;
-import java.net.URL;
-import java.util.*;
-
-
 import com.aelitis.net.upnp.*;
 import com.aelitis.net.upnp.impl.*;
 import com.aelitis.net.upnp.impl.services.UPnPServiceImpl;
+import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
+
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author parg
+ */
 
 public class 
 UPnPDeviceImpl

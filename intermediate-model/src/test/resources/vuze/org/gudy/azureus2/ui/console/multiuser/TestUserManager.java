@@ -22,14 +22,13 @@
 
 package org.gudy.azureus2.ui.console.multiuser;
 
+import junit.framework.TestCase;
+import org.gudy.azureus2.ui.console.UserProfile;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import junit.framework.TestCase;
-
-import org.gudy.azureus2.ui.console.UserProfile;
 
 /**
  * test class for the UserManager object

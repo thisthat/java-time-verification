@@ -1,10 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.CipherParameters;
-import org.gudy.bouncycastle.crypto.DataLengthException;
-import org.gudy.bouncycastle.crypto.InvalidCipherTextException;
-
-
 /**
  * base interface that a public/private key block cipher needs
  * to conform to.

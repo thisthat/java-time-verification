@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.clientmessageservice.secure.impl;
 
-import java.util.Map;
-
 import com.aelitis.azureus.core.clientmessageservice.secure.SecureMessageServiceClientMessage;
+
+import java.util.Map;
 
 public class 
 SecureMessageServiceClientMessageImpl

@@ -19,15 +19,15 @@
 package org.gudy.azureus2.ui.swt.speedtest;
 
 
-
-import java.util.HashMap;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
 import org.eclipse.swt.SWT;
-
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
@@ -35,18 +35,11 @@ import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ipc.IPCException;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
 import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.ui.swt.config.wizard.ConfigureWizard;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
-import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
+import java.util.HashMap;
 
 public class 
 SpeedTestSelector

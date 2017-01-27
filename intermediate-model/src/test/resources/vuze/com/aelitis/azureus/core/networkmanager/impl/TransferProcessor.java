@@ -19,15 +19,16 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
 import com.aelitis.azureus.core.networkmanager.NetworkConnectionBase;
 import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import com.aelitis.azureus.core.networkmanager.RateHandler;
+import org.gudy.azureus2.core3.util.AEMonitor;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 

@@ -20,10 +20,10 @@
 
 package com.aelitis.azureus.core.subs;
 
+import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
+
 import java.net.URL;
 import java.util.Map;
-
-import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
 public interface 
 SubscriptionManager

@@ -19,12 +19,6 @@
 
 package com.aelitis.azureus.util;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
 import com.aelitis.azureus.core.content.AzureusPlatformContentDirectory;
@@ -49,7 +43,6 @@ import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUI;
 import com.aelitis.azureus.ui.UIFunctions;
 import com.aelitis.azureus.ui.UIFunctionsManager;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
@@ -65,6 +58,12 @@ import org.gudy.azureus2.plugins.download.DownloadWillBeAddedListener;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class InitialisationFunctions
 {

@@ -19,18 +19,13 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.networkmanager.Transport.ConnectListener;
+import org.gudy.azureus2.core3.util.AddressUtils;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-
-import org.gudy.azureus2.core3.util.AddressUtils;
-
-import com.aelitis.azureus.core.networkmanager.ConnectionEndpoint;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpointHandler;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpointFactory;
-import com.aelitis.azureus.core.networkmanager.Transport;
-import com.aelitis.azureus.core.networkmanager.Transport.ConnectListener;
 
 public class 
 ProtocolEndpointTCP 

@@ -19,22 +19,21 @@
 
 package com.aelitis.net.natpmp.upnp.impl;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.ThreadPool;
-
 import com.aelitis.net.natpmp.NatPMPDevice;
 import com.aelitis.net.upnp.*;
 import com.aelitis.net.upnp.services.UPnPSpecificService;
 import com.aelitis.net.upnp.services.UPnPWANConnection;
 import com.aelitis.net.upnp.services.UPnPWANConnectionListener;
 import com.aelitis.net.upnp.services.UPnPWANConnectionPortMapping;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.ThreadPool;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class 
 NatPMPUPnPRootDeviceImpl

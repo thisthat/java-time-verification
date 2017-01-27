@@ -18,10 +18,11 @@
 
 package org.gudy.azureus2.ui.swt.views.table.painted;
 
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
@@ -33,9 +34,6 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
 import org.gudy.azureus2.ui.swt.views.table.TableRowSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableCellSWTBase;
-
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
 
 public class TableCellPainted
 	extends TableCellSWTBase

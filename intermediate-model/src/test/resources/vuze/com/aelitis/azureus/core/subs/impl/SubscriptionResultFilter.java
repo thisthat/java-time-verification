@@ -1,14 +1,14 @@
 package com.aelitis.azureus.core.subs.impl;
 
+import com.aelitis.azureus.core.metasearch.Result;
+import com.aelitis.azureus.util.ImportExportUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
-
-import com.aelitis.azureus.core.metasearch.Result;
-import com.aelitis.azureus.util.ImportExportUtils;
 
 public class 
 SubscriptionResultFilter

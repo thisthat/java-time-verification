@@ -2,10 +2,6 @@ package org.gudy.bouncycastle.crypto.params;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.crypto.params.ElGamalKeyParameters;
-import org.gudy.bouncycastle.crypto.params.ElGamalParameters;
-import org.gudy.bouncycastle.crypto.params.ElGamalPrivateKeyParameters;
-
 public class ElGamalPrivateKeyParameters
     extends ElGamalKeyParameters
 {

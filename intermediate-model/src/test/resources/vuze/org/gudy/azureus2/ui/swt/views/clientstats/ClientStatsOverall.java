@@ -20,10 +20,10 @@
  
 package org.gudy.azureus2.ui.swt.views.clientstats;
 
+import com.aelitis.azureus.util.MapUtils;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.aelitis.azureus.util.MapUtils;
 
 /**
  * @author TuxPaper

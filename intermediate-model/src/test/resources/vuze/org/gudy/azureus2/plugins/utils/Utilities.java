@@ -27,15 +27,6 @@ package org.gudy.azureus2.plugins.utils;
  *
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.PluginException;
 import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
 import org.gudy.azureus2.plugins.tag.Tag;
@@ -49,8 +40,17 @@ import org.gudy.azureus2.plugins.utils.search.SearchProvider;
 import org.gudy.azureus2.plugins.utils.security.*;
 import org.gudy.azureus2.plugins.utils.subscriptions.SubscriptionException;
 import org.gudy.azureus2.plugins.utils.subscriptions.SubscriptionManager;
-import org.gudy.azureus2.plugins.utils.xml.simpleparser.*;
 import org.gudy.azureus2.plugins.utils.xml.rss.*;
+import org.gudy.azureus2.plugins.utils.xml.simpleparser.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.Map;
 
 public interface 
 Utilities 

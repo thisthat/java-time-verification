@@ -20,10 +20,10 @@
 
 package com.aelitis.azureus.core.devices;
 
+import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
+
 import java.io.File;
 import java.net.URL;
-
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 
 public interface 
 TranscodeProvider 

@@ -19,15 +19,14 @@
 
 package com.aelitis.azureus.core.peermanager.utils;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-
 import com.aelitis.azureus.core.networkmanager.*;
 import com.aelitis.azureus.core.peermanager.messaging.*;
 import com.aelitis.azureus.core.peermanager.messaging.azureus.AZHave;
 import com.aelitis.azureus.core.peermanager.messaging.azureus.AZMessage;
 import com.aelitis.azureus.core.peermanager.messaging.bittorrent.*;
+import org.gudy.azureus2.core3.util.AEMonitor;
+
+import java.util.ArrayList;
 
 
 /**

@@ -20,23 +20,25 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.PluginInterface;
-
 import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.devices.*;
 import com.aelitis.azureus.plugins.upnp.UPnPMapping;
 import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
 import com.aelitis.azureus.plugins.upnp.UPnPPluginService;
 import com.aelitis.net.upnp.UPnPDevice;
 import com.aelitis.net.upnp.services.UPnPWANConnection;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.PluginInterface;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class 
 DeviceInternetGatewayImpl

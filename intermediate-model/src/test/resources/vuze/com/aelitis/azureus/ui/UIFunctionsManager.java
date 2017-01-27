@@ -16,9 +16,10 @@
  */
 package com.aelitis.azureus.ui;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author TuxPaper

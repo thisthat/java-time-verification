@@ -28,11 +28,10 @@ package org.gudy.azureus2.pluginsimpl.remote.ipfilter;
  *
  */
 
-import java.io.*;
-
 import org.gudy.azureus2.plugins.ipfilter.*;
-
 import org.gudy.azureus2.pluginsimpl.remote.*;
+
+import java.io.File;
 
 
 public class 

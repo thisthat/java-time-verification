@@ -28,46 +28,26 @@ package org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader;
  */
 
 import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
 import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-
-import java.io.*;
-import java.net.*;
-
-import javax.net.ssl.*;
-
-import java.net.PasswordAuthentication;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.InflaterInputStream;
-import java.util.zip.ZipException;
-
-import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.core3.util.protocol.magnet.MagnetConnection2;
+import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
+import com.aelitis.azureus.core.util.DeleteFileOnCloseInputStream;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.security.*;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.core3.util.protocol.magnet.MagnetConnection2;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 
-import com.aelitis.azureus.core.util.DeleteFileOnCloseInputStream;
+import javax.net.ssl.*;
+import java.io.*;
+import java.net.*;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
+import java.util.zip.ZipException;
 
 public class 
 ResourceDownloaderURLImpl

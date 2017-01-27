@@ -20,21 +20,12 @@
 
 package com.aelitis.azureus.core.subs.impl;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.util.Date;
-
+import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
-
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.TimeFormatter;
 import org.gudy.azureus2.core3.util.UrlUtils;
 import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
-
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
@@ -43,7 +34,13 @@ import org.gudy.azureus2.plugins.utils.subscriptions.Subscription;
 import org.gudy.azureus2.plugins.utils.subscriptions.SubscriptionManager;
 import org.gudy.azureus2.plugins.utils.subscriptions.SubscriptionResult;
 
-import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.Date;
 
 public class 
 SubscriptionRSSFeed 

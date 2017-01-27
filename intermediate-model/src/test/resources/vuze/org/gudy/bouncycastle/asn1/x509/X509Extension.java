@@ -1,6 +1,5 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.X509Extension;
 import org.gudy.bouncycastle.asn1.ASN1Object;
 import org.gudy.bouncycastle.asn1.ASN1OctetString;
 import org.gudy.bouncycastle.asn1.DERBoolean;

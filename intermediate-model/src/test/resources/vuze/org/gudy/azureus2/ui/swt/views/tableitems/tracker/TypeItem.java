@@ -22,14 +22,13 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.tracker;
 
-import java.util.Locale;
-
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.internat.MessageText.MessageTextListener;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import java.util.Locale;
 
 
 public class 

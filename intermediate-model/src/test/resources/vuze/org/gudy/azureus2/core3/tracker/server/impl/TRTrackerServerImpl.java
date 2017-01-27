@@ -28,17 +28,16 @@ package org.gudy.azureus2.core3.tracker.server.impl;
  */
 
 
-import java.util.*;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.net.URLDecoder;
-
-import org.gudy.azureus2.core3.util.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.ipfilter.*;
 import org.gudy.azureus2.core3.tracker.server.*;
+import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.*;
 
 public abstract class 
 TRTrackerServerImpl 

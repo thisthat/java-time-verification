@@ -24,15 +24,13 @@ package org.gudy.azureus2.pluginsimpl.local.update;
  *
  */
 
-import java.io.InputStream;
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.update.*;
-
 import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.InputStream;
+import java.util.Iterator;
 
 public class 
 UpdateImpl 

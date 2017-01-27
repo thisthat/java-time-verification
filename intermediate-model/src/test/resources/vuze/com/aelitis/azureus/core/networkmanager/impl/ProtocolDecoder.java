@@ -19,10 +19,11 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class 
 ProtocolDecoder 

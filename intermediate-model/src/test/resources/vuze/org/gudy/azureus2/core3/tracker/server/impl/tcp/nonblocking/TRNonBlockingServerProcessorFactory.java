@@ -20,9 +20,9 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl.tcp.nonblocking;
 
-import java.nio.channels.SocketChannel;
-
 import org.gudy.azureus2.core3.tracker.server.impl.tcp.TRTrackerServerTCP;
+
+import java.nio.channels.SocketChannel;
 
 public interface 
 TRNonBlockingServerProcessorFactory 

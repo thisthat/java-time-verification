@@ -19,11 +19,7 @@
 
 package com.aelitis.azureus.core.lws;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.util.LinkFileMap;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -33,8 +29,10 @@ import org.gudy.azureus2.core3.download.DownloadManagerStateListener;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.IndentWriter;
 
-import com.aelitis.azureus.core.util.CaseSensitiveFileMap;
-import com.aelitis.azureus.core.util.LinkFileMap;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 LWSDiskManagerState

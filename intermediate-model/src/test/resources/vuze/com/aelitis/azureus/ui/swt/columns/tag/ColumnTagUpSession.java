@@ -17,11 +17,10 @@
 
 package com.aelitis.azureus.ui.swt.columns.tag;
 
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.plugins.ui.tables.*;
-
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagFeatureRateLimit;
+import org.gudy.azureus2.core3.util.DisplayFormatters;
+import org.gudy.azureus2.plugins.ui.tables.*;
 
 public class ColumnTagUpSession
 	implements TableCellRefreshListener, TableColumnExtraInfoListener

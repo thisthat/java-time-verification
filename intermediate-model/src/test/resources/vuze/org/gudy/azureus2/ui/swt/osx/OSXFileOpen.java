@@ -18,20 +18,18 @@
 
 package org.gudy.azureus2.ui.swt.osx;
 
-import java.lang.reflect.Field;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-
-import org.gudy.azureus2.platform.macosx.access.jnilib.OSXAccess;
-import org.gudy.azureus2.ui.swt.Utils;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.gudy.azureus2.platform.macosx.access.jnilib.OSXAccess;
+import org.gudy.azureus2.ui.swt.Utils;
+
+import java.lang.reflect.Field;
 
 public class OSXFileOpen
 {

@@ -27,11 +27,12 @@ package com.aelitis.net.udp.uc;
  *
  */
 
-import java.io.*;
-import java.net.InetSocketAddress;
-
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.RandomUtils;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 public abstract class 
 PRUDPPacket 

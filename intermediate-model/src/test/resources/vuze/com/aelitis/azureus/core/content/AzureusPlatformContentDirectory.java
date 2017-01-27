@@ -20,12 +20,10 @@
 
 package com.aelitis.azureus.core.content;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.util.ConstantsVuze;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
 import org.gudy.azureus2.core3.util.Base32;
@@ -41,14 +39,11 @@ import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
 
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagListener;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.util.ConstantsVuze;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Used in UPnP for something

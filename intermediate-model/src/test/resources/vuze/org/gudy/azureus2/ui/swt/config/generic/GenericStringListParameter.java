@@ -26,7 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.ui.swt.Utils;
 

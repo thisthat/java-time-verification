@@ -20,23 +20,20 @@
 
 package com.aelitis.azureus.ui.swt.columns.vuzeactivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import com.aelitis.azureus.activities.VuzeActivitiesEntry;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader.ImageDownloaderListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-
+import org.gudy.azureus2.plugins.ui.tables.TableCell;
+import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
 
-import com.aelitis.azureus.activities.VuzeActivitiesEntry;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader.ImageDownloaderListener;
-
-import org.gudy.azureus2.plugins.ui.tables.TableCell;
-import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author TuxPaper

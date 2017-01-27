@@ -27,15 +27,14 @@ package org.gudy.azureus2.pluginsimpl.local.download;
  *
  */
 
-import java.net.URL;
-import java.util.Map;
-
 import org.gudy.azureus2.core3.tracker.client.*;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResultPeer;
 import org.gudy.azureus2.plugins.peers.PeerManager;
+
+import java.net.URL;
+import java.util.Map;
 
 public class 
 DownloadAnnounceResultImpl 

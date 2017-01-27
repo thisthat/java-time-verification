@@ -19,13 +19,12 @@
 
 package com.aelitis.azureus.core.dht.db.impl;
 
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.db.DHTDBValue;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
+import org.gudy.azureus2.core3.util.SystemTime;
 
 /**
  * @author parg

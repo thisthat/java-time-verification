@@ -24,9 +24,10 @@ package com.aelitis.azureus.plugins.upnp;
  *
  */
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.internat.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 UPnPMapping 

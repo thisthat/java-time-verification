@@ -19,9 +19,7 @@
 
 package com.aelitis.azureus.plugins.startstoprules.defaultplugin.ui.swt;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
+import com.aelitis.azureus.plugins.startstoprules.defaultplugin.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -31,10 +29,10 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
-import com.aelitis.azureus.plugins.startstoprules.defaultplugin.*;
-
 import org.gudy.azureus2.plugins.PluginInterface;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class 
 StartStopRulesDefaultPluginSWTUI

@@ -24,9 +24,9 @@ package com.aelitis.azureus.core.diskmanager.cache;
  *
  */
 
-import java.io.File;
-
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
+
+import java.io.File;
 
 public interface 
 CacheFileOwner 

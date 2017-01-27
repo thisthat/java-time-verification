@@ -19,24 +19,19 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.networkmanager.impl.*;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.networkmanager.*;
-import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoder;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
-import com.aelitis.azureus.core.networkmanager.impl.TransportCryptoManager;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
-import com.aelitis.azureus.core.networkmanager.impl.TransportImpl;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
 
 
 

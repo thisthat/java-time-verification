@@ -16,13 +16,14 @@
  */
 package com.aelitis.azureus.core.drivedetector.impl;
 
-import java.io.File;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.drivedetector.*;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author TuxPaper

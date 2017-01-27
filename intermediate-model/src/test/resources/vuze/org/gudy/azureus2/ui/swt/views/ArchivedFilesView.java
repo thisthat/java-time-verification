@@ -20,10 +20,8 @@
 package org.gudy.azureus2.ui.swt.views;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -41,8 +39,9 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
 import org.gudy.azureus2.ui.swt.views.tableitems.archivedfiles.*;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 

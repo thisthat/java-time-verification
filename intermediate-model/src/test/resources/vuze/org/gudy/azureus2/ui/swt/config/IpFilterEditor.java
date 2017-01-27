@@ -22,19 +22,17 @@
 
 package org.gudy.azureus2.ui.swt.config;
 
+import com.aelitis.azureus.core.AzureusCore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.ipfilter.IpRange;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
-
-import com.aelitis.azureus.core.AzureusCore;
 
 /**
  * @author Olivier

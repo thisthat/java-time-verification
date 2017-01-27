@@ -18,10 +18,10 @@
  */
 package org.gudy.azureus2.core3.util;
 
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+
 import java.security.SecureRandom;
 import java.util.Random;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
 
 /**
  *	@author MjrTom

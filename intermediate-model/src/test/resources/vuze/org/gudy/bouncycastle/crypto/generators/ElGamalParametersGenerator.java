@@ -1,9 +1,9 @@
 package org.gudy.bouncycastle.crypto.generators;
 
+import org.gudy.bouncycastle.crypto.params.ElGamalParameters;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
-
-import org.gudy.bouncycastle.crypto.params.ElGamalParameters;
 
 public class ElGamalParametersGenerator
 {

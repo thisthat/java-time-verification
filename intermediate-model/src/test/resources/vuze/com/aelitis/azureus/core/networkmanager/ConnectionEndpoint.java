@@ -19,20 +19,15 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
+import com.aelitis.azureus.core.networkmanager.Transport.ConnectListener;
+import org.gudy.azureus2.core3.util.*;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
-import com.aelitis.azureus.core.networkmanager.Transport.ConnectListener;
 
 
 public class 

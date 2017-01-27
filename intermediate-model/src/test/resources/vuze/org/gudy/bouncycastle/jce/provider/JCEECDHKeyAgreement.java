@@ -1,27 +1,20 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.spec.AlgorithmParameterSpec;
-
-import javax.crypto.KeyAgreementSpi;
-import javax.crypto.SecretKey;
-import javax.crypto.ShortBufferException;
-import javax.crypto.spec.SecretKeySpec;
-
-//import org.gudy.bouncycastle.crypto.agreement.ECDHCBasicAgreement;
-import org.gudy.bouncycastle.jce.provider.ECUtil;
-import org.gudy.bouncycastle.jce.provider.JCEECDHKeyAgreement;
 import org.gudy.bouncycastle.crypto.BasicAgreement;
 import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.agreement.ECDHBasicAgreement;
 import org.gudy.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.gudy.bouncycastle.jce.interfaces.ECPublicKey;
+
+import javax.crypto.KeyAgreementSpi;
+import javax.crypto.SecretKey;
+import javax.crypto.ShortBufferException;
+import javax.crypto.spec.SecretKeySpec;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.spec.AlgorithmParameterSpec;
+
+//import org.gudy.bouncycastle.crypto.agreement.ECDHCBasicAgreement;
 
 /**
  * Diffie-Hellman key agreement using elliptic curve keys, ala IEEE P1363

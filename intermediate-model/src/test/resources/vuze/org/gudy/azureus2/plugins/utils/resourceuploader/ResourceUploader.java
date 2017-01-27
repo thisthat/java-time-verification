@@ -19,9 +19,9 @@
 
 package org.gudy.azureus2.plugins.utils.resourceuploader;
 
-import java.io.InputStream;
-
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
+
+import java.io.InputStream;
 
 public interface 
 ResourceUploader 

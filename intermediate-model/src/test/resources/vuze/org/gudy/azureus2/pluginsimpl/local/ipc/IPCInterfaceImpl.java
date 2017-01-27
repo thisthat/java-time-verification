@@ -19,14 +19,14 @@
 
 package org.gudy.azureus2.pluginsimpl.local.ipc;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.gudy.azureus2.plugins.Plugin;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ipc.IPCException;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * @author Damokles

@@ -22,28 +22,25 @@
 
 package com.aelitis.azureus.ui.swt.columns.torrent;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
 import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
 import com.aelitis.azureus.ui.common.table.impl.TableColumnImpl;
 import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3;
 import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3.ContentImageLoadedListener;
 import com.aelitis.azureus.util.DataSourceUtils;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A non-interactive (no click no hover) thumbnail column

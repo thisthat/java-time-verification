@@ -17,15 +17,14 @@
  */
 package org.gudy.azureus2.core3.config.impl;
 
-import java.io.*;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
+import com.aelitis.azureus.core.security.CryptoManager;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager.ParameterVerifier;
 import org.gudy.azureus2.core3.config.COConfigurationManager.ResetToDefaultsListener;
+import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.security.CryptoManager;
+import java.io.*;
+import java.util.*;
 
 /**
  * A singleton used to store configuration into a bencoded file.

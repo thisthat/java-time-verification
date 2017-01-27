@@ -1,14 +1,9 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import java.util.Hashtable;
-import java.util.Enumeration;
+import org.gudy.bouncycastle.asn1.*;
 
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /**
  * PolicyMappings V3 extension, described in RFC3280.

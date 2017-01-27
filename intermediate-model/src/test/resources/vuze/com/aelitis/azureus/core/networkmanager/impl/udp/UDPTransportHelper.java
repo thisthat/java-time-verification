@@ -19,15 +19,14 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.udp;
 
+import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
 
 public class 
 UDPTransportHelper 

@@ -22,10 +22,9 @@
 
 package com.aelitis.azureus.plugins.net.buddy.swt.columns;
 
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-
 import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
 import com.aelitis.azureus.ui.swt.columns.ColumnCheckBox;
+import org.gudy.azureus2.plugins.ui.tables.TableColumn;
 
 
 

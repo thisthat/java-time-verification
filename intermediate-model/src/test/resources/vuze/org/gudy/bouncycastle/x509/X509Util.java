@@ -4,9 +4,9 @@ package org.gudy.bouncycastle.x509;
 //import org.gudy.bouncycastle.asn1.nist.NISTObjectIdentifiers;
 //import org.gudy.bouncycastle.asn1.oiw.OIWObjectIdentifiers;
 //import org.gudy.bouncycastle.asn1.pkcs.RSASSAPSSparams;
+
 import org.gudy.bouncycastle.asn1.ASN1Encodable;
 import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERInteger;
 import org.gudy.bouncycastle.asn1.DERNull;
 import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
 import org.gudy.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
@@ -17,24 +17,9 @@ import org.gudy.bouncycastle.jce.X509Principal;
 import org.gudy.bouncycastle.util.Strings;
 
 import javax.security.auth.x500.X500Principal;
-
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.SecureRandom;
-import java.security.Security;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.security.*;
+import java.util.*;
 
 class X509Util
 {

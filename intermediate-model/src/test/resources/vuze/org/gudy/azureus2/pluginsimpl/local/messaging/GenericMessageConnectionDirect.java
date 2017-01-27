@@ -19,9 +19,8 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.peermanager.messaging.Message;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.plugins.messaging.MessageException;
@@ -33,15 +32,9 @@ import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 import org.gudy.azureus2.pluginsimpl.local.utils.PooledByteBufferImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.networkmanager.ConnectionEndpoint;
-import com.aelitis.azureus.core.networkmanager.IncomingMessageQueue;
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
-import com.aelitis.azureus.core.networkmanager.Transport;
-import com.aelitis.azureus.core.peermanager.messaging.Message;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 GenericMessageConnectionDirect 

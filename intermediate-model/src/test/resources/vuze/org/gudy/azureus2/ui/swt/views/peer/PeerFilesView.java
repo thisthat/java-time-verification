@@ -17,8 +17,10 @@
  
 package org.gudy.azureus2.ui.swt.views.peer;
 
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
@@ -29,10 +31,6 @@ import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
-
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
 
 
 

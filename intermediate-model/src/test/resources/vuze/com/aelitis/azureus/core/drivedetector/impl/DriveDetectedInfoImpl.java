@@ -16,11 +16,11 @@
  */
 package com.aelitis.azureus.core.drivedetector.impl;
 
+import com.aelitis.azureus.core.drivedetector.DriveDetectedInfo;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.Map;
-
-import com.aelitis.azureus.core.drivedetector.DriveDetectedInfo;
 
 /**
  * @author TuxPaper

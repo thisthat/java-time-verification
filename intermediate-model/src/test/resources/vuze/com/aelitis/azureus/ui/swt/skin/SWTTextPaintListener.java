@@ -23,7 +23,6 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 
 /**

@@ -10,11 +10,6 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.File;
-import java.io.PrintStream;
-import java.util.*;
-
-
 import org.gudy.azureus2.core3.util.AEThread;
 import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.gudy.azureus2.core3.util.Debug;
@@ -22,6 +17,10 @@ import org.gudy.azureus2.plugins.sharing.*;
 import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.util.*;
 
 /**
  * @author tobi

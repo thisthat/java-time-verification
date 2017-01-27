@@ -20,9 +20,7 @@
 
 package org.gudy.azureus2.pluginsimpl.local;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfoListener;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -42,7 +40,6 @@ import org.gudy.azureus2.plugins.peers.Peer;
 import org.gudy.azureus2.plugins.peers.PeerManager;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.tracker.TrackerTorrent;
-
 import org.gudy.azureus2.pluginsimpl.local.disk.DiskManagerFileInfoImpl;
 import org.gudy.azureus2.pluginsimpl.local.disk.DiskManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadImpl;
@@ -53,7 +50,8 @@ import org.gudy.azureus2.pluginsimpl.local.peers.PeerManagerImpl;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
 import org.gudy.azureus2.pluginsimpl.local.tracker.TrackerTorrentImpl;
 
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import java.io.File;
+import java.io.IOException;
 
 public class 
 PluginCoreUtils 

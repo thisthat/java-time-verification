@@ -20,17 +20,18 @@
 
 package com.aelitis.azureus.core.messenger.config;
 
-import java.security.Signature;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.messenger.PlatformMessengerException;
+import com.aelitis.azureus.core.security.CryptoECCUtils;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.json.simple.JSONArray;
 
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.messenger.PlatformMessengerException;
-import com.aelitis.azureus.core.security.CryptoECCUtils;
+import java.security.Signature;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 PlatformSubscriptionsMessenger 

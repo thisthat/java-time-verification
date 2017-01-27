@@ -19,12 +19,11 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
-import java.net.InetSocketAddress;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-
 import com.aelitis.azureus.core.networkmanager.impl.tcp.VirtualBlockingServerChannelSelector;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.VirtualNonBlockingServerChannelSelector;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+
+import java.net.InetSocketAddress;
 
 public class 
 VirtualServerChannelSelectorFactory 

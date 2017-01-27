@@ -19,11 +19,11 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.core3.util.DirectByteBufferPool;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 
 

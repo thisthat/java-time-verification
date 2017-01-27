@@ -17,14 +17,6 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.io.PrintStream;
-import java.text.FieldPosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
@@ -50,6 +42,14 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.BasicPluginViewImpl;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListenerEx;
+
+import java.io.PrintStream;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * @author TuxPaper

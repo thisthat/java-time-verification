@@ -19,16 +19,15 @@
 
 package org.gudy.azureus2.plugins.messaging.bittorrent;
 
-import java.nio.ByteBuffer;
-
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.plugins.messaging.*;
-import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
-
 import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTCancel;
 import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTMessage;
 import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTPiece;
 import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTRequest;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
+import org.gudy.azureus2.plugins.messaging.*;
+import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
+
+import java.nio.ByteBuffer;
 
 
 

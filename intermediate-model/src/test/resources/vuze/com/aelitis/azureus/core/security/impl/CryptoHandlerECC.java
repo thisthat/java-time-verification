@@ -19,21 +19,7 @@
 
 package com.aelitis.azureus.core.security.impl;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.Signature;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.Arrays;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-
+import com.aelitis.azureus.core.security.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.Debug;
@@ -43,13 +29,12 @@ import org.gudy.bouncycastle.jce.provider.JCEIESCipher;
 import org.gudy.bouncycastle.jce.spec.IEKeySpec;
 import org.gudy.bouncycastle.jce.spec.IESParameterSpec;
 
-import com.aelitis.azureus.core.security.CryptoECCUtils;
-import com.aelitis.azureus.core.security.CryptoHandler;
-import com.aelitis.azureus.core.security.CryptoManager;
-import com.aelitis.azureus.core.security.CryptoManagerException;
-import com.aelitis.azureus.core.security.CryptoManagerPasswordException;
-import com.aelitis.azureus.core.security.CryptoManagerPasswordHandler;
-import com.aelitis.azureus.core.security.CryptoSTSEngine;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import java.security.*;
+import java.security.spec.AlgorithmParameterSpec;
+import java.util.Arrays;
 
 public class 
 CryptoHandlerECC

@@ -17,6 +17,23 @@
  */
 package org.gudy.azureus2.ui.swt;
 
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.skin.SkinProperties;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.program.Program;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.peer.PEPeer;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.peers.Peer;
+import org.gudy.azureus2.plugins.utils.LocationProvider;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,30 +43,6 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.program.Program;
-import org.eclipse.swt.widgets.*;
-import org.gudy.azureus2.core3.peer.PEPeer;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.plugins.peers.Peer;
-import org.gudy.azureus2.plugins.utils.LocationProvider;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.skin.SkinProperties;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 /**
  * @author Olivier

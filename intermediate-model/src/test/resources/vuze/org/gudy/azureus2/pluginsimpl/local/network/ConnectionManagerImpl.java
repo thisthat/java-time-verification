@@ -19,23 +19,6 @@
 
 package org.gudy.azureus2.pluginsimpl.local.network;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.security.spec.AlgorithmParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.gudy.azureus2.plugins.messaging.MessageStreamDecoder;
-import org.gudy.azureus2.plugins.messaging.MessageStreamEncoder;
-import org.gudy.azureus2.plugins.network.Connection;
-import org.gudy.azureus2.plugins.network.ConnectionManager;
-import org.gudy.azureus2.plugins.network.RateLimiter;
-import org.gudy.azureus2.plugins.network.Transport;
-import org.gudy.azureus2.plugins.network.TransportCipher;
-import org.gudy.azureus2.plugins.network.TransportException;
-import org.gudy.azureus2.plugins.network.TransportFilter;
-import org.gudy.azureus2.pluginsimpl.local.messaging.MessageStreamDecoderAdapter;
-import org.gudy.azureus2.pluginsimpl.local.messaging.MessageStreamEncoderAdapter;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.networkmanager.ConnectionEndpoint;
 import com.aelitis.azureus.core.networkmanager.NetworkManager;
@@ -43,13 +26,22 @@ import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
 import com.aelitis.azureus.core.networkmanager.ProtocolEndpointFactory;
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
-import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilterStreamCipher;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.ProtocolEndpointTCP;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPTransportHelper;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPTransportImpl;
+import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
 import com.aelitis.azureus.core.networkmanager.impl.udp.UDPTransport;
 import com.aelitis.azureus.core.networkmanager.impl.udp.UDPTransportHelper;
+import org.gudy.azureus2.plugins.messaging.MessageStreamDecoder;
+import org.gudy.azureus2.plugins.messaging.MessageStreamEncoder;
+import org.gudy.azureus2.plugins.network.*;
+import org.gudy.azureus2.pluginsimpl.local.messaging.MessageStreamDecoderAdapter;
+import org.gudy.azureus2.pluginsimpl.local.messaging.MessageStreamEncoderAdapter;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.security.spec.AlgorithmParameterSpec;
 
 
 /**

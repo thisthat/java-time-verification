@@ -20,14 +20,13 @@
 package org.gudy.azureus2.plugins.ui.model;
 
 import org.gudy.azureus2.plugins.logging.*;
+import org.gudy.azureus2.plugins.ui.components.*;
 
 /**
  * @author parg
- *
+ * <p>
  * <p><b>Note:</b> Only for implementation by Azureus, not plugins.</p>
  */
-
-import org.gudy.azureus2.plugins.ui.components.*;
 
 public interface
 BasicPluginViewModel

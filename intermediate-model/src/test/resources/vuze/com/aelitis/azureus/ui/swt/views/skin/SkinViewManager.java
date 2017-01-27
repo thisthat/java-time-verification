@@ -17,12 +17,14 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.*;
-
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
 import org.gudy.azureus2.core3.util.AEMonitor2;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Manages a list of SkinViews currently in use by the app

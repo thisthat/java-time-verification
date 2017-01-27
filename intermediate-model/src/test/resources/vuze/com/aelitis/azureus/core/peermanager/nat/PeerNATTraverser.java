@@ -19,21 +19,6 @@
 
 package com.aelitis.azureus.core.peermanager.nat;
 
-import java.net.InetSocketAddress;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.Average;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.nat.NATTraversal;
 import com.aelitis.azureus.core.nat.NATTraversalHandler;
@@ -41,6 +26,15 @@ import com.aelitis.azureus.core.nat.NATTraversalObserver;
 import com.aelitis.azureus.core.nat.NATTraverser;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.logging.LogEvent;
+import org.gudy.azureus2.core3.logging.LogIDs;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.*;
+
+import java.net.InetSocketAddress;
+import java.util.*;
 
 public class 
 PeerNATTraverser 

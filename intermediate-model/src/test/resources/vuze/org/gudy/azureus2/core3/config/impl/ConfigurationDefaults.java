@@ -21,9 +21,8 @@
 
 package org.gudy.azureus2.core3.config.impl;
 
-import java.io.File;
-import java.util.*;
-
+import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerImpl;
+import com.aelitis.azureus.core.speedmanager.impl.v2.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.stats.StatsWriterPeriodic;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
@@ -32,8 +31,8 @@ import org.gudy.azureus2.core3.tracker.host.TRHost;
 import org.gudy.azureus2.core3.tracker.server.TRTrackerServer;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerImpl;
-import com.aelitis.azureus.core.speedmanager.impl.v2.*;
+import java.io.File;
+import java.util.*;
 
 /**
  *

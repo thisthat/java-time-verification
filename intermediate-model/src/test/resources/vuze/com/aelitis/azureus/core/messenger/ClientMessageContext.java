@@ -17,11 +17,11 @@
 
 package com.aelitis.azureus.core.messenger;
 
-import java.util.Collection;
-import java.util.Map;
-
 import com.aelitis.azureus.core.messenger.browser.BrowserMessageDispatcher;
 import com.aelitis.azureus.core.messenger.browser.listeners.BrowserMessageListener;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author TuxPaper

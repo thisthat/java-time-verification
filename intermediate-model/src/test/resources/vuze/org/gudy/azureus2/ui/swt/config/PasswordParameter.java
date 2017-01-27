@@ -17,19 +17,15 @@
  */
 package org.gudy.azureus2.ui.swt.config;
 
-import java.security.MessageDigest;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SHA1Hasher;
 import org.gudy.azureus2.ui.swt.Utils;
+
+import java.security.MessageDigest;
 
 /**
  * @author Olivier

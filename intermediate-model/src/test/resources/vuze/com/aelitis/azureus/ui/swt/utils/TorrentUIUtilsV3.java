@@ -17,16 +17,23 @@
 
 package com.aelitis.azureus.ui.swt.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfo;
+import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfoContentNetwork;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.browser.listener.DownloadUrlInfoSWT;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.views.skin.TorrentListViewsUtils;
+import com.aelitis.azureus.util.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -45,19 +52,10 @@ import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfo;
-import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfoContentNetwork;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.browser.listener.DownloadUrlInfoSWT;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.views.skin.TorrentListViewsUtils;
-import com.aelitis.azureus.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author TuxPaper

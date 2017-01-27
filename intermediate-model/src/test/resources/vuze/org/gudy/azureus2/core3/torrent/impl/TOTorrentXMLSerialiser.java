@@ -27,12 +27,15 @@ package org.gudy.azureus2.core3.torrent.impl;
  *
  */
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.xml.util.*;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 public class 
 TOTorrentXMLSerialiser

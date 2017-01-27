@@ -27,18 +27,19 @@ package org.gudy.azureus2.core3.util.protocol.vuze;
  *
  */
 
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import org.gudy.azureus2.core3.util.Constants;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.*;
-
-import org.gudy.azureus2.core3.util.Constants;
-
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 
 
 class 

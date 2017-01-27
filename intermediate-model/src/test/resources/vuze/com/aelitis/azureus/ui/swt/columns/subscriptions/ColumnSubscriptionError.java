@@ -19,7 +19,6 @@ package com.aelitis.azureus.ui.swt.columns.subscriptions;
 
 
 import com.aelitis.azureus.core.subs.Subscription;
-
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 

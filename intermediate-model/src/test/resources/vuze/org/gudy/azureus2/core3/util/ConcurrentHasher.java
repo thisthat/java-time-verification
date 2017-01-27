@@ -24,11 +24,13 @@ package org.gudy.azureus2.core3.util;
  *
  */
 
-import java.util.*;
-import java.nio.ByteBuffer;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
+
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class 
 ConcurrentHasher 

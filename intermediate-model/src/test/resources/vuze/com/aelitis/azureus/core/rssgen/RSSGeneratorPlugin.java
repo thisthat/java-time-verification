@@ -20,15 +20,6 @@
 
 package com.aelitis.azureus.core.rssgen;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.URLEncoder;
-import java.util.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.SystemProperties;
 import org.gudy.azureus2.plugins.PluginException;
@@ -42,7 +33,12 @@ import org.gudy.azureus2.plugins.ui.config.HyperlinkParameter;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
 import org.gudy.azureus2.ui.webplugin.WebPlugin;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.Properties;
+import java.util.TreeMap;
 
 
 public class 

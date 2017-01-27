@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
-import java.io.IOException;
-
 import com.aelitis.azureus.core.peermanager.messaging.*;
+
+import java.io.IOException;
 
 
 

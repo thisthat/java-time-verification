@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.CipherParameters;
-
 /**
  * super class for all Password Based Encyrption (PBE) parameter generator classes.
  */

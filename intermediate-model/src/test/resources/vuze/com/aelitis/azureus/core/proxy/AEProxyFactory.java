@@ -19,15 +19,14 @@
 
 package com.aelitis.azureus.core.proxy;
 
+import com.aelitis.azureus.core.proxy.impl.*;
+import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
+import org.gudy.azureus2.plugins.PluginInterface;
+
 import java.net.Proxy;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.plugins.PluginInterface;
-
-import com.aelitis.azureus.core.proxy.impl.*;
-import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
 
 /**
  * @author parg

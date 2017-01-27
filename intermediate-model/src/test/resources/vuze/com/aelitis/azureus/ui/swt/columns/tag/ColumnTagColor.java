@@ -17,16 +17,14 @@
 
 package com.aelitis.azureus.ui.swt.columns.tag;
 
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
-
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
 
 public class ColumnTagColor
 	implements TableCellRefreshListener, TableCellSWTPaintListener, TableColumnExtraInfoListener

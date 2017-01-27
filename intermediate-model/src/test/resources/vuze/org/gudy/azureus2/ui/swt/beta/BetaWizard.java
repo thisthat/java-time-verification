@@ -20,6 +20,7 @@
 
 package org.gudy.azureus2.ui.swt.beta;
 
+import com.aelitis.azureus.core.AzureusCoreFactory;
 import org.eclipse.swt.SWT;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -29,8 +30,6 @@ import org.gudy.azureus2.plugins.update.UpdateCheckInstanceListener;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.update.UpdateMonitor;
 import org.gudy.azureus2.ui.swt.wizard.Wizard;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
 
 public class 
 BetaWizard

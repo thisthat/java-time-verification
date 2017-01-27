@@ -21,9 +21,9 @@
  */
 package com.aelitis.azureus.core.peermanager.uploadslots;
 
-import java.util.ArrayList;
-
 import org.gudy.azureus2.core3.peer.PEPeer;
+
+import java.util.ArrayList;
 
 /**
  * 

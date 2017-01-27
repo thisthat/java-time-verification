@@ -18,15 +18,13 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.graphics.Image;
-
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 /**
  * @author TuxPaper

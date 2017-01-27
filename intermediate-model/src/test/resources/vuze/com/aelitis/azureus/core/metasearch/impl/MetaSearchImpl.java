@@ -20,34 +20,6 @@
 
 package com.aelitis.azureus.core.metasearch.impl;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.plugins.utils.StaticUtilities;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
-import org.gudy.azureus2.plugins.utils.search.SearchProvider;
-
 import com.aelitis.azureus.core.messenger.config.PlatformMetaSearchMessenger;
 import com.aelitis.azureus.core.metasearch.*;
 import com.aelitis.azureus.core.metasearch.impl.plugin.PluginEngine;
@@ -57,6 +29,19 @@ import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
 import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
 import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.utils.StaticUtilities;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
+import org.gudy.azureus2.plugins.utils.search.SearchProvider;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
 
 public class 
 MetaSearchImpl

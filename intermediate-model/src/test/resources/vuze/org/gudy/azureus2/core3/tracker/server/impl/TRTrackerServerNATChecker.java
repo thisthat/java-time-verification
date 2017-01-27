@@ -24,16 +24,16 @@ package org.gudy.azureus2.core3.tracker.server.impl;
  *
  */
 
-import java.util.*;
-import java.net.*;
-
-import org.gudy.azureus2.core3.tracker.server.*;
-
-import org.gudy.azureus2.core3.config.*;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.logging.*;
-
 import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import org.gudy.azureus2.core3.config.*;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.tracker.server.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 TRTrackerServerNATChecker 

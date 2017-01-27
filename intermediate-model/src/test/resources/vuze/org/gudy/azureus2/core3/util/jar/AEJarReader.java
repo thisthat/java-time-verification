@@ -27,9 +27,13 @@ package org.gudy.azureus2.core3.util.jar;
  *
  */
 
-import java.util.*;
-import java.io.*;
-import java.util.jar.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 public class 
 AEJarReader 

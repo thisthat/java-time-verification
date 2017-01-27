@@ -19,12 +19,18 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.util.List;
-
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableDataSourceChangedListener;
+import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerTPSListener;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
@@ -48,15 +54,7 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableViewSWT_TabsCommon;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
 import org.gudy.azureus2.ui.swt.views.tableitems.tracker.*;
 
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableDataSourceChangedListener;
-import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.util.List;
 
 
 /**

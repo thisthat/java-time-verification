@@ -23,11 +23,10 @@
 package org.gudy.azureus2.ui.swt.views.tableitems.peers;
 
 import org.gudy.azureus2.core3.peer.PEPeer;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-
-import org.gudy.azureus2.plugins.ui.tables.*;
 
 /**
  *

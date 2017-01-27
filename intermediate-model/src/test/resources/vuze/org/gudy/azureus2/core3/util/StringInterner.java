@@ -21,6 +21,8 @@
 
 package org.gudy.azureus2.core3.util;
 
+import com.aelitis.azureus.core.util.HashCodeUtils;
+
 import java.io.File;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -28,8 +30,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import com.aelitis.azureus.core.util.HashCodeUtils;
 
 
 public class 

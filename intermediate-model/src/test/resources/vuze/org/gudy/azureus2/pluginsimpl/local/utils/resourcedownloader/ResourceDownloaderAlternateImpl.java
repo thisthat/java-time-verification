@@ -24,11 +24,13 @@ package org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader;
  *
  */
 
-import java.io.*;
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class 
 ResourceDownloaderAlternateImpl 	

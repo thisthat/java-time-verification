@@ -20,49 +20,11 @@
 
 package com.aelitis.azureus.core.metasearch.impl;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
-
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.PluginListener;
-import org.gudy.azureus2.plugins.ui.UIManager;
-import org.gudy.azureus2.plugins.ui.UIManagerEvent;
-import org.gudy.azureus2.plugins.utils.FeatureManager;
-import org.gudy.azureus2.plugins.utils.StaticUtilities;
-import org.gudy.azureus2.plugins.utils.FeatureManager.FeatureDetails;
-import org.gudy.azureus2.plugins.utils.FeatureManager.Licence;
-import org.gudy.azureus2.plugins.utils.search.Search;
-import org.gudy.azureus2.plugins.utils.search.SearchException;
-import org.gudy.azureus2.plugins.utils.search.SearchInitiator;
-import org.gudy.azureus2.plugins.utils.search.SearchInstance;
-import org.gudy.azureus2.plugins.utils.search.SearchListener;
-import org.gudy.azureus2.plugins.utils.search.SearchObserver;
-import org.gudy.azureus2.plugins.utils.search.SearchProvider;
-import org.gudy.azureus2.plugins.utils.search.SearchProviderResults;
-import org.gudy.azureus2.plugins.utils.search.SearchResult;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
-
 import com.aelitis.azureus.core.custom.Customization;
 import com.aelitis.azureus.core.custom.CustomizationManager;
 import com.aelitis.azureus.core.custom.CustomizationManagerFactory;
 import com.aelitis.azureus.core.messenger.config.PlatformMetaSearchMessenger;
-import com.aelitis.azureus.core.metasearch.Engine;
-import com.aelitis.azureus.core.metasearch.MetaSearch;
-import com.aelitis.azureus.core.metasearch.MetaSearchException;
-import com.aelitis.azureus.core.metasearch.MetaSearchManager;
-import com.aelitis.azureus.core.metasearch.MetaSearchManagerListener;
-import com.aelitis.azureus.core.metasearch.Result;
-import com.aelitis.azureus.core.metasearch.ResultListener;
-import com.aelitis.azureus.core.metasearch.SearchParameter;
+import com.aelitis.azureus.core.metasearch.*;
 import com.aelitis.azureus.core.metasearch.impl.plugin.PluginEngine;
 import com.aelitis.azureus.core.subs.Subscription;
 import com.aelitis.azureus.core.subs.SubscriptionManager;
@@ -73,6 +35,28 @@ import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import com.aelitis.azureus.core.vuzefile.VuzeFileProcessor;
 import com.aelitis.azureus.util.ConstantsVuze;
 import com.aelitis.azureus.util.ImportExportUtils;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.PluginListener;
+import org.gudy.azureus2.plugins.ui.UIManager;
+import org.gudy.azureus2.plugins.ui.UIManagerEvent;
+import org.gudy.azureus2.plugins.utils.FeatureManager;
+import org.gudy.azureus2.plugins.utils.FeatureManager.FeatureDetails;
+import org.gudy.azureus2.plugins.utils.FeatureManager.Licence;
+import org.gudy.azureus2.plugins.utils.StaticUtilities;
+import org.gudy.azureus2.plugins.utils.search.*;
+import org.gudy.azureus2.plugins.utils.search.SearchException;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
 
 public class 
 MetaSearchManagerImpl

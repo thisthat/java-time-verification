@@ -19,11 +19,11 @@
 
 package org.gudy.azureus2.plugins.network;
 
+import org.gudy.azureus2.plugins.messaging.*;
+
+import javax.crypto.spec.SecretKeySpec;
 import java.net.InetSocketAddress;
 import java.security.spec.AlgorithmParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.gudy.azureus2.plugins.messaging.*;
 
 
 /**

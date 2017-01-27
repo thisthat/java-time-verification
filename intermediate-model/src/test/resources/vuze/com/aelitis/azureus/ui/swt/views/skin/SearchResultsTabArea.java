@@ -17,32 +17,6 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.io.File;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.TitleListener;
-import org.eclipse.swt.browser.TitleEvent;
-import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.browser.ProgressEvent;
-import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.widgets.*;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-import org.gudy.azureus2.ui.swt.PropertiesWindow;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
-import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
-
 import com.aelitis.azureus.core.*;
 import com.aelitis.azureus.core.metasearch.Engine;
 import com.aelitis.azureus.core.metasearch.MetaSearchManagerFactory;
@@ -53,7 +27,6 @@ import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
 import com.aelitis.azureus.ui.mdi.*;
 import com.aelitis.azureus.ui.skin.SkinConstants;
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import com.aelitis.azureus.ui.swt.browser.*;
 import com.aelitis.azureus.ui.swt.browser.BrowserContext.loadingListener;
 import com.aelitis.azureus.ui.swt.browser.listener.ExternalLoginCookieListener;
@@ -61,11 +34,30 @@ import com.aelitis.azureus.ui.swt.browser.listener.MetaSearchListener;
 import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
 import com.aelitis.azureus.ui.swt.skin.*;
 import com.aelitis.azureus.util.*;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.*;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ui.UIManager;
 import org.gudy.azureus2.plugins.ui.menus.*;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+import org.gudy.azureus2.ui.swt.BrowserWrapper;
+import org.gudy.azureus2.ui.swt.PropertiesWindow;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
+import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
+
+import java.io.File;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author TuxPaper

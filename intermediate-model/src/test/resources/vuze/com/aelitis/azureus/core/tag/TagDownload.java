@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.tag;
 
-import java.util.Set;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
+
+import java.util.Set;
 
 public interface 
 TagDownload 

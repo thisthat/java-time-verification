@@ -22,14 +22,14 @@
 
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.PrintStream;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.commons.cli.CommandLine;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * the priority command changes the priority of files within a torrent

@@ -20,35 +20,18 @@
 
 package com.aelitis.net.udp.uc.impl;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.Socket;
-
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxySelector;
+import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
+import com.aelitis.net.udp.uc.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.AddressUtils;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.HostNameToIPResolver;
 
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxySelector;
-import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
-import com.aelitis.net.udp.uc.PRUDPPacket;
-import com.aelitis.net.udp.uc.PRUDPPacketHandler;
-import com.aelitis.net.udp.uc.PRUDPPacketHandlerException;
-import com.aelitis.net.udp.uc.PRUDPPacketHandlerStats;
-import com.aelitis.net.udp.uc.PRUDPPacketReceiver;
-import com.aelitis.net.udp.uc.PRUDPPrimordialHandler;
-import com.aelitis.net.udp.uc.PRUDPRequestHandler;
+import java.io.*;
+import java.net.*;
 
 public class 
 PRUDPPacketHandlerSocks 

@@ -21,6 +21,7 @@
  */
 package org.gudy.azureus2.ui.swt.maketorrent;
 
+import com.aelitis.azureus.ui.UserPrompterResultListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TreeEditor;
 import org.eclipse.swt.events.*;
@@ -39,8 +40,6 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-
-import com.aelitis.azureus.ui.UserPrompterResultListener;
 
 import java.net.URL;
 import java.util.ArrayList;

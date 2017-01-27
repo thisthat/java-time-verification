@@ -22,7 +22,6 @@ package com.aelitis.azureus.ui.swt.devices.columns;
 
 
 import com.aelitis.azureus.core.devices.DeviceOfflineDownload;
-
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.ui.tables.*;
 

@@ -20,8 +20,12 @@
 
 package com.aelitis.azureus.core.download;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.util.ExternalStimulusHandler;
+import com.aelitis.azureus.util.ExternalStimulusListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -29,22 +33,12 @@ import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.global.GlobalManagerListener;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.disk.DiskManagerChannel;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.disk.DiskManagerChannelImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.TagTypeAdapter;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.util.ExternalStimulusHandler;
-import com.aelitis.azureus.util.ExternalStimulusListener;
-
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.disk.DiskManagerChannel;
+import java.util.*;
 
 public class 
 DownloadManagerEnhancer 

@@ -19,11 +19,11 @@
 
 package com.aelitis.net.upnp;
 
-import java.util.Comparator;
-
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocument;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentException;
+
+import java.util.Comparator;
 
 public interface 
 UPnPAdapter 

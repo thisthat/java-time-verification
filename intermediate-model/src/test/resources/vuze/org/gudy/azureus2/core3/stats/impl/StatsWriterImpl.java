@@ -27,20 +27,23 @@ package org.gudy.azureus2.core3.stats.impl;
  *
  */
 
-import java.util.*;
-import java.io.*;
-
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.config.*;
-import org.gudy.azureus2.core3.xml.util.*;
-import org.gudy.azureus2.core3.global.*;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.core3.download.*;
-import org.gudy.azureus2.core3.peer.*;
-import org.gudy.azureus2.core3.torrent.*;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.peermanager.utils.PeerClassifier;
+import org.gudy.azureus2.core3.config.*;
+import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
+import org.gudy.azureus2.core3.download.*;
+import org.gudy.azureus2.core3.global.*;
+import org.gudy.azureus2.core3.peer.*;
+import org.gudy.azureus2.core3.torrent.*;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.core3.xml.util.*;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class 

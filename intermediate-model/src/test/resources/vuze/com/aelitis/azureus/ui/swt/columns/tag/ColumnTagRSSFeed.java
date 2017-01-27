@@ -22,11 +22,10 @@
 
 package com.aelitis.azureus.ui.swt.columns.tag;
 
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagFeatureRSSFeed;
 import com.aelitis.azureus.ui.swt.columns.ColumnCheckBox;
+import org.gudy.azureus2.plugins.ui.tables.TableColumn;
 
 public class 
 ColumnTagRSSFeed

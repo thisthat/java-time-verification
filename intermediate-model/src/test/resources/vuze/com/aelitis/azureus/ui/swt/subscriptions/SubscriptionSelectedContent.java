@@ -20,10 +20,11 @@
 
 package com.aelitis.azureus.ui.swt.subscriptions;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Map;
-
+import com.aelitis.azureus.core.subs.Subscription;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfo;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedVuzeFileContent;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
@@ -32,11 +33,9 @@ import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
 import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfo;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedVuzeFileContent;
+import java.io.File;
+import java.net.URL;
+import java.util.Map;
 
 public class 
 SubscriptionSelectedContent 

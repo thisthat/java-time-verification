@@ -27,11 +27,10 @@ package org.gudy.azureus2.core3.peer.impl;
  *
  */
 
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import org.gudy.azureus2.core3.peer.*;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.pluginsimpl.local.network.ConnectionImpl;
-
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
 
 public class 
 PEPeerStatsImpl 

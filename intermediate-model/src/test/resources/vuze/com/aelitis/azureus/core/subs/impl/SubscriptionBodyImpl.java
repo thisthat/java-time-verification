@@ -20,21 +20,22 @@
 
 package com.aelitis.azureus.core.subs.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.Signature;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-
 import com.aelitis.azureus.core.security.CryptoECCUtils;
 import com.aelitis.azureus.core.subs.Subscription;
 import com.aelitis.azureus.core.subs.SubscriptionException;
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
 import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
 import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import org.gudy.azureus2.core3.util.BEncoder;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.SHA1Simple;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.Signature;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 SubscriptionBodyImpl 

@@ -22,26 +22,23 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
-import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
+import org.gudy.azureus2.plugins.download.DownloadTypeIncomplete;
+import org.gudy.azureus2.plugins.ui.Graphic;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.plugins.UISWTGraphic;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
 
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-
-import org.gudy.azureus2.plugins.download.DownloadTypeIncomplete;
-import org.gudy.azureus2.plugins.ui.Graphic;
-import org.gudy.azureus2.plugins.ui.tables.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Torrent Completion Level Graphic Cell for My Torrents.
  *

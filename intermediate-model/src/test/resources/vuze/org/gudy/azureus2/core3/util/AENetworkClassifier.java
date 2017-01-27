@@ -19,12 +19,14 @@
 
 package org.gudy.azureus2.core3.util;
 
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.util.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.torrent.*;
+
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author parg

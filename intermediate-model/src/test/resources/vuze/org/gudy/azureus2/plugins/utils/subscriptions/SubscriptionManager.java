@@ -20,10 +20,10 @@
 
 package org.gudy.azureus2.plugins.utils.subscriptions;
 
+import org.gudy.azureus2.plugins.utils.search.SearchProvider;
+
 import java.net.URL;
 import java.util.Map;
-
-import org.gudy.azureus2.plugins.utils.search.SearchProvider;
 
 public interface 
 SubscriptionManager 

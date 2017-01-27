@@ -19,11 +19,10 @@
 
 package com.aelitis.azureus.core.peermanager.messaging.azureus;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.messaging.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.peermanager.messaging.*;
+import java.util.Map;
 
 
 

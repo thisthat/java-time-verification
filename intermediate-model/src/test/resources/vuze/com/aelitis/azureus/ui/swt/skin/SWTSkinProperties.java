@@ -16,9 +16,8 @@
  */
 package com.aelitis.azureus.ui.swt.skin;
 
-import org.eclipse.swt.graphics.Color;
-
 import com.aelitis.azureus.ui.skin.SkinProperties;
+import org.eclipse.swt.graphics.Color;
 
 /**
  * Extends SkinProperties with SWT specific methods

@@ -22,7 +22,7 @@
 
 package org.gudy.azureus2.plugins.tag;
 
-import java.util.*;
+import java.util.List;
 
 public interface 
 Tag 

@@ -20,8 +20,12 @@
  */
 package org.gudy.azureus2.ui.swt.nat;
 
-import java.net.InetAddress;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProgressListener;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProtocol;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridData;
@@ -38,13 +42,6 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT.TriggerInThread;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProgressListener;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProtocol;
 
 public class NatTestWindow {
   

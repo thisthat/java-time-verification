@@ -19,27 +19,18 @@
 
 package com.aelitis.azureus.plugins.extseed;
 
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.messaging.Message;
 import org.gudy.azureus2.plugins.messaging.MessageStreamEncoder;
-import org.gudy.azureus2.plugins.network.Connection;
-import org.gudy.azureus2.plugins.network.ConnectionListener;
-import org.gudy.azureus2.plugins.network.ConnectionStub;
-import org.gudy.azureus2.plugins.network.IncomingMessageQueue;
-import org.gudy.azureus2.plugins.network.IncomingMessageQueueListener;
-import org.gudy.azureus2.plugins.network.OutgoingMessageQueue;
-import org.gudy.azureus2.plugins.network.OutgoingMessageQueueListener;
-import org.gudy.azureus2.plugins.network.RateLimiter;
-import org.gudy.azureus2.plugins.network.Transport;
+import org.gudy.azureus2.plugins.network.*;
 import org.gudy.azureus2.plugins.peers.*;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.utils.*;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.net.URL;
+import java.util.*;
 
 
 public class 

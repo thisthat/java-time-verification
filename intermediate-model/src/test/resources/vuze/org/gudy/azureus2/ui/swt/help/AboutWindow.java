@@ -21,6 +21,7 @@
  */
 package org.gudy.azureus2.ui.swt.help;
 
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.*;
@@ -28,7 +29,6 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
@@ -37,8 +37,6 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.mainwindow.*;
 import org.gudy.azureus2.update.CorePatchLevel;
-
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 /**
  * @author Olivier

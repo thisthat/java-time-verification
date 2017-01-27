@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import org.gudy.bouncycastle.crypto.params.DESParameters;
-
 public class DESedeParameters
     extends DESParameters
 {

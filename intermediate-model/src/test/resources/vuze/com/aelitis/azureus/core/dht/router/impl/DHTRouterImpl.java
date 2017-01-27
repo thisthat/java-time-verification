@@ -19,36 +19,16 @@
 
 package com.aelitis.azureus.core.dht.router.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-
 import com.aelitis.azureus.core.dht.DHTLogger;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
-import com.aelitis.azureus.core.dht.router.DHTRouter;
-import com.aelitis.azureus.core.dht.router.DHTRouterAdapter;
-import com.aelitis.azureus.core.dht.router.DHTRouterContact;
-import com.aelitis.azureus.core.dht.router.DHTRouterContactAttachment;
-import com.aelitis.azureus.core.dht.router.DHTRouterObserver;
-import com.aelitis.azureus.core.dht.router.DHTRouterStats;
+import com.aelitis.azureus.core.dht.router.*;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.util.bloom.BloomFilter;
 import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+
+import java.util.*;
 
 /**
  * @author parg

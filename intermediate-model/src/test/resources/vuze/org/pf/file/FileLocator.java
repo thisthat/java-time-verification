@@ -15,6 +15,9 @@ package org.pf.file ;
 // ===========================================================================
 // IMPORTS
 // ===========================================================================
+
+import org.pf.text.StringUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,8 +26,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import org.pf.text.StringUtil; 
 
 /**
  * This class mainly supports access to files which can be in the normal

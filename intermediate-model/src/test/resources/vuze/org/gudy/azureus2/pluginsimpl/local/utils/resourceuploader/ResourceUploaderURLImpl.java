@@ -19,19 +19,9 @@
 
 package org.gudy.azureus2.pluginsimpl.local.utils.resourceuploader;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-
 import org.gudy.azureus2.core3.security.SEPasswordListener;
 import org.gudy.azureus2.core3.security.SESecurityManager;
 import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.UrlUtils;
 import org.gudy.azureus2.plugins.clientid.ClientIDGenerator;
@@ -39,6 +29,21 @@ import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
 import org.gudy.azureus2.plugins.utils.resourceuploader.*;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
 public class 
 ResourceUploaderURLImpl

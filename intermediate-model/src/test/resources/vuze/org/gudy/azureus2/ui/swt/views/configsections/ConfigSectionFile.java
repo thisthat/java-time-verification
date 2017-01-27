@@ -22,8 +22,7 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
-import java.util.ArrayList;
-
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -42,15 +41,14 @@ import org.gudy.azureus2.core3.util.SystemProperties;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
+import org.gudy.azureus2.plugins.ui.config.ConfigSection;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.LinkLabel;
 import org.gudy.azureus2.ui.swt.config.*;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
 
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
-import org.gudy.azureus2.plugins.ui.config.ConfigSection;
+import java.util.ArrayList;
 
 public class ConfigSectionFile
 	implements UISWTConfigSection

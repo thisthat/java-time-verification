@@ -27,13 +27,15 @@ package com.aelitis.net.udp.uc;
  *
  */
 
-import java.io.*;
+import org.gudy.azureus2.core3.util.AEMonitor;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Debug;
 
 public abstract class 
 PRUDPPacketRequest

@@ -18,22 +18,23 @@
  */
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector.VirtualSelectorListener;
+import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
+import com.aelitis.azureus.core.proxy.AEProxyAddressMapper;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.*;
-
-import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.*;
-
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector.VirtualSelectorListener;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
-import com.aelitis.azureus.core.proxy.AEProxyAddressMapper;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 
 

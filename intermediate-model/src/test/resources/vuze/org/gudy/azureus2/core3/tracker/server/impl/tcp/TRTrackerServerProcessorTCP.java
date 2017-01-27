@@ -23,20 +23,19 @@
 package org.gudy.azureus2.core3.tracker.server.impl.tcp;
 
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.zip.GZIPOutputStream;
-
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionManager;
+import com.aelitis.azureus.core.util.HTTPUtils;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.tracker.server.*;
 import org.gudy.azureus2.core3.tracker.server.impl.*;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.bouncycastle.util.encoders.Base64;
 
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionManager;
-import com.aelitis.azureus.core.util.HTTPUtils;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 public abstract class 
 TRTrackerServerProcessorTCP

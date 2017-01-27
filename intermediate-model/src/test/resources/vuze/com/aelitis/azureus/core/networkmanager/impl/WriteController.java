@@ -19,16 +19,15 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.networkmanager.EventWaiter;
 import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import com.aelitis.azureus.core.stats.AzureusCoreStats;
 import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.util.*;
+
+import java.util.*;
 
 
 /**

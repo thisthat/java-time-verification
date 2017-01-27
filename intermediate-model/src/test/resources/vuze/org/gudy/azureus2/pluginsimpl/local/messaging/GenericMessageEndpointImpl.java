@@ -19,15 +19,14 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import java.net.InetSocketAddress;
-
-import org.gudy.azureus2.plugins.messaging.generic.GenericMessageEndpoint;
-
 import com.aelitis.azureus.core.networkmanager.ConnectionEndpoint;
 import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
 import com.aelitis.azureus.core.networkmanager.ProtocolEndpointFactory;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.ProtocolEndpointTCP;
 import com.aelitis.azureus.core.networkmanager.impl.udp.ProtocolEndpointUDP;
+import org.gudy.azureus2.plugins.messaging.generic.GenericMessageEndpoint;
+
+import java.net.InetSocketAddress;
 
 public class 
 GenericMessageEndpointImpl 

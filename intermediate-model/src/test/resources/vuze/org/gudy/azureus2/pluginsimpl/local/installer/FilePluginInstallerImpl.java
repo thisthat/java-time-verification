@@ -19,13 +19,6 @@
 
 package org.gudy.azureus2.pluginsimpl.local.installer;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.Plugin;
@@ -41,6 +34,13 @@ import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.update.PluginUpdatePlugin;
 import org.gudy.azureus2.pluginsimpl.update.sf.SFPluginDetailsLoader;
 import org.gudy.azureus2.pluginsimpl.update.sf.SFPluginDetailsLoaderFactory;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author parg

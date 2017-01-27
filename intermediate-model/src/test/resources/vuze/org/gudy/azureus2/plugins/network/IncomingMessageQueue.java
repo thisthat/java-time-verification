@@ -19,9 +19,9 @@
 
 package org.gudy.azureus2.plugins.network;
 
-import java.io.IOException;
-
 import org.gudy.azureus2.plugins.messaging.*;
+
+import java.io.IOException;
 
 
 /**

@@ -24,9 +24,9 @@ package org.gudy.azureus2.update;
  *
  */
 
-import java.util.*;
-	
 import org.gudy.azureus2.plugins.*;
+
+import java.util.Properties;
 
 	// Note this is unloadable because it shouldn't be loaded in the first place
 	// Hence, on upgrade, a restart isn't required

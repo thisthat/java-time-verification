@@ -22,9 +22,6 @@
  
 package org.gudy.azureus2.ui.swt.maketorrent;
 
-import java.io.File;
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -40,6 +37,9 @@ import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
+
+import java.io.File;
+import java.util.Map;
 
 /**
  * @author Olivier

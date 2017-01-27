@@ -1,34 +1,21 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.cert.CRL;
-import java.security.cert.CRLException;
-import java.security.cert.CertPath;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactorySpi;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import org.gudy.bouncycastle.jce.provider.PKIXCertPath;
-import org.gudy.bouncycastle.jce.provider.X509CRLObject;
-import org.gudy.bouncycastle.jce.provider.X509CertificateObject;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.BERInputStream;
-import org.gudy.bouncycastle.asn1.DERInputStream;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.gudy.bouncycastle.asn1.pkcs.SignedData;
 import org.gudy.bouncycastle.asn1.x509.CertificateList;
 import org.gudy.bouncycastle.asn1.x509.X509CertificateStructure;
 import org.gudy.bouncycastle.util.encoders.Base64;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.cert.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * class for dealing with X509 certificates.

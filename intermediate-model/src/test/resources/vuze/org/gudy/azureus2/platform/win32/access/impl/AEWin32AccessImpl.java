@@ -24,20 +24,19 @@ package org.gudy.azureus2.platform.win32.access.impl;
  *
  */
 
-import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.*;
-
-// don't use any core stuff in here as we need this access stub to be able to run in isolation
-
+import com.aelitis.azureus.util.MapUtils;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.platform.PlatformManagerPingCallback;
 import org.gudy.azureus2.platform.win32.access.*;
 
-import com.aelitis.azureus.util.MapUtils;
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
+
+// don't use any core stuff in here as we need this access stub to be able to run in isolation
 
 public class 
 AEWin32AccessImpl

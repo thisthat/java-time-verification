@@ -1,27 +1,19 @@
 package org.gudy.azureus2.core3.download.impl;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagFeature;
+import com.aelitis.azureus.core.tag.TagFeatureFileLocation;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.util.FileUtil;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.savelocation.DefaultSaveLocationManager;
 import org.gudy.azureus2.plugins.download.savelocation.SaveLocationChange;
 import org.gudy.azureus2.pluginsimpl.local.download.DownloadImpl;
 
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagFeature;
-import com.aelitis.azureus.core.tag.TagFeatureFileLocation;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
+import java.io.File;
+import java.util.*;
 
 
 public class DownloadManagerDefaultPaths extends DownloadManagerMoveHandlerUtils {

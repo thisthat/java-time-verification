@@ -24,11 +24,10 @@ package org.gudy.azureus2.pluginsimpl.local.ui.components;
  *
  */
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.plugins.ui.components.*;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.util.Properties;
 
 public class 
 UIComponentImpl

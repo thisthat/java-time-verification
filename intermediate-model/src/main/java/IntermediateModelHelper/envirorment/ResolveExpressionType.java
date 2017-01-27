@@ -1,6 +1,5 @@
 package IntermediateModelHelper.envirorment;
 
-import IntermediateModelHelper.types.ResolveTypes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
@@ -105,10 +104,6 @@ class ResolveExpressionType extends ParseRE {
 		}
 		else if(t[0].equals("this")) { //search the var
 			t[0] = e.existVarName(r.getAttributeName()) ? e.getVar(r.getAttributeName()).getType() : null;
-		}
-		if(this._c != null){
-			String tAttr = ResolveTypes.getAttributeType(t[0], r.getAttributeName(), this._c);
-			return tAttr;
 		}
 		return t[0];
 	}

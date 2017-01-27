@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.KeyPurposeId;
-import org.gudy.bouncycastle.asn1.x509.X509Extensions;
 import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
 
 /**

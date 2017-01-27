@@ -22,22 +22,16 @@
 
 package org.gudy.azureus2.core3.tracker.client.impl.bt;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionManager;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
+import com.aelitis.azureus.core.peermanager.utils.PeerClassifier;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.net.udp.uc.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -63,16 +57,14 @@ import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResultPeer;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionManager;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.networkmanager.impl.udp.UDPNetworkManager;
-import com.aelitis.azureus.core.peermanager.utils.PeerClassifier;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.net.udp.uc.*;
+import javax.net.ssl.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
 
 
 /**

@@ -17,10 +17,10 @@
  
 package org.gudy.azureus2.core3.disk.impl.piecemapper.impl;
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceList;
 import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceMapEntry;
+
+import java.util.List;
 
 /**
  * @author Moti

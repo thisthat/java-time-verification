@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.net.InetAddress;
-
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
+
+import java.net.InetAddress;
 
 
 public interface 

@@ -19,9 +19,9 @@
 
 package org.gudy.azureus2.plugins.messaging.generic;
 
-import java.net.InetSocketAddress;
-
 import org.gudy.azureus2.plugins.messaging.MessageException;
+
+import java.net.InetSocketAddress;
 
 public interface 
 GenericMessageRegistration 

@@ -18,11 +18,18 @@
 
 package org.gudy.azureus2.ui.swt.views.clientstats;
 
-import java.net.InetAddress;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
+import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
+import com.aelitis.azureus.core.util.bloom.BloomFilter;
+import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
@@ -46,18 +53,9 @@ import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
-import com.aelitis.azureus.core.peermanager.piecepicker.util.BitFlags;
-import com.aelitis.azureus.core.util.bloom.BloomFilter;
-import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableLifeCycleListener;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.util.MapUtils;
+import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ClientStatsView
 	extends TableViewTab<ClientStatsDataSource>

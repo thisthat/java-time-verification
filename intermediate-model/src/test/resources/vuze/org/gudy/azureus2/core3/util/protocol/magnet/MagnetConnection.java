@@ -19,16 +19,14 @@
 
 package org.gudy.azureus2.core3.util.protocol.magnet;
 
+import com.aelitis.net.magneturi.MagnetURIHandler;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
-
-
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.net.magneturi.MagnetURIHandler;
 
 /**
  * @author parg

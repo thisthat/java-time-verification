@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.dht.transport;
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.List;
 
 /**
  * @author parg

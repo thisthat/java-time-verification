@@ -19,15 +19,14 @@
 
 package com.aelitis.azureus.core.instancemanager.impl;
 
-import java.net.InetAddress;
-
+import com.aelitis.azureus.core.instancemanager.AZInstance;
+import com.aelitis.azureus.core.instancemanager.AZInstanceManagerListener;
+import com.aelitis.azureus.core.instancemanager.AZInstanceTracked;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.RandomUtils;
 
-import com.aelitis.azureus.core.instancemanager.AZInstance;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManagerListener;
-import com.aelitis.azureus.core.instancemanager.AZInstanceTracked;
+import java.net.InetAddress;
 
 public class 
 AZPortClashHandler 

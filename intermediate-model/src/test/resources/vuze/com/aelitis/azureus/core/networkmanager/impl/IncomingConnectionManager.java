@@ -19,15 +19,17 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.networkmanager.Transport;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.Transport;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class 
 IncomingConnectionManager 

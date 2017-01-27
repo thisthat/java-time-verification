@@ -1,13 +1,9 @@
 package org.gudy.bouncycastle.asn1.pkcs;
 
-import java.util.Enumeration;
-
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
+
+import java.util.Enumeration;
 
 /**
  * @deprecated - use AlgorithmIdentifier and PBES2Params

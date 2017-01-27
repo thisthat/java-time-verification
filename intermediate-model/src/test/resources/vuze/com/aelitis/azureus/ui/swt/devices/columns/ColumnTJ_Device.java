@@ -21,7 +21,6 @@
 package com.aelitis.azureus.ui.swt.devices.columns;
 
 import com.aelitis.azureus.core.devices.*;
-
 import org.gudy.azureus2.plugins.ui.tables.*;
 
 /**

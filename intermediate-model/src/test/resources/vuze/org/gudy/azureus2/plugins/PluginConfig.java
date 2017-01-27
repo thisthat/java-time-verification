@@ -27,12 +27,12 @@ package org.gudy.azureus2.plugins;
  *
  */
 
+import org.gudy.azureus2.plugins.config.*;
+
 import java.io.File;
 import java.net.NetworkInterface;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.plugins.config.*;
 
 /**
  * This class provides a way for a plugin to get and set configuration settings - both for the plugin

@@ -20,11 +20,7 @@
 
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Locale;
-
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -39,7 +35,10 @@ import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.BubbleTextBox;
 
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Native checkbox

@@ -1,10 +1,8 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import java.math.BigInteger;
-
-import org.gudy.bouncycastle.crypto.params.DSAParameters;
-import org.gudy.bouncycastle.crypto.params.DSAValidationParameters;
 import org.gudy.bouncycastle.crypto.CipherParameters;
+
+import java.math.BigInteger;
 
 public class DSAParameters
     implements CipherParameters

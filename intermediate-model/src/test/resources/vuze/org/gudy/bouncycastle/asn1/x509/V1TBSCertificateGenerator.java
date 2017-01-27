@@ -1,15 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.gudy.bouncycastle.asn1.x509.TBSCertificateStructure;
-import org.gudy.bouncycastle.asn1.x509.Time;
-import org.gudy.bouncycastle.asn1.x509.X509Name;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERSequence;
-import org.gudy.bouncycastle.asn1.DERTaggedObject;
-import org.gudy.bouncycastle.asn1.DERUTCTime;
+import org.gudy.bouncycastle.asn1.*;
 
 /**
  * Generator for Version 1 TBSCertificateStructures.

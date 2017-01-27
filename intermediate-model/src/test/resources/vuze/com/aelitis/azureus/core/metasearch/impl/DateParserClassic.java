@@ -19,15 +19,11 @@
 
 package com.aelitis.azureus.core.metasearch.impl;
 
+import org.gudy.azureus2.pluginsimpl.local.utils.xml.rss.RSSUtils;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.StringTokenizer;
-import java.util.TimeZone;
-
-import org.gudy.azureus2.pluginsimpl.local.utils.xml.rss.RSSUtils;
+import java.util.*;
 
 public class DateParserClassic extends DateParser {
 	

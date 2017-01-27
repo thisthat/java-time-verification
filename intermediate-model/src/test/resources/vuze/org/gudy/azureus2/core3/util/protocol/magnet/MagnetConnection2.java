@@ -19,20 +19,16 @@
 
 package org.gudy.azureus2.core3.util.protocol.magnet;
 
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**

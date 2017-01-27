@@ -20,19 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.search;
 
-import java.util.Locale;
-
-import org.eclipse.swt.SWT;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.debug.ObfusticateTab;
-import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-import org.gudy.azureus2.ui.webplugin.WebPlugin;
-
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.ui.UIFunctionsManager;
@@ -44,6 +31,18 @@ import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import com.aelitis.azureus.ui.swt.views.skin.SearchResultsTabArea;
 import com.aelitis.azureus.ui.swt.views.skin.SkinViewManager;
 import com.aelitis.azureus.util.ConstantsVuze;
+import org.eclipse.swt.SWT;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.debug.ObfusticateTab;
+import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
+import org.gudy.azureus2.ui.webplugin.WebPlugin;
+
+import java.util.Locale;
 
 public class 
 SearchHandler 

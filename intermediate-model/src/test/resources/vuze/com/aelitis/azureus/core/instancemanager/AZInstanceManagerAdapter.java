@@ -20,10 +20,10 @@
 
 package com.aelitis.azureus.core.instancemanager;
 
-import java.net.InetAddress;
-
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
 import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
+
+import java.net.InetAddress;
 
 public interface 
 AZInstanceManagerAdapter 

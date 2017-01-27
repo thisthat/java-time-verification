@@ -20,14 +20,9 @@
 
 package com.aelitis.azureus.core.util.dns;
 
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import com.aelitis.azureus.core.util.DNSUtils;
+import com.aelitis.azureus.core.util.DNSUtils.DNSUtilsIntf;
+import org.gudy.azureus2.core3.util.Debug;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -36,11 +31,10 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
-
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.util.DNSUtils;
-import com.aelitis.azureus.core.util.DNSUtils.DNSUtilsIntf;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 public class 
 DNSUtilsImpl 

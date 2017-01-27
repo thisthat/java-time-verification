@@ -2,8 +2,6 @@ package org.gudy.bouncycastle.crypto;
 
 import java.security.SecureRandom;
 
-import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
-
 /**
  * The base class for symmetric, or secret, cipher key generators.
  */

@@ -22,13 +22,26 @@
 
 package com.aelitis.azureus.plugins.net.buddy;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import com.aelitis.azureus.core.proxy.impl.AEPluginProxyHandler;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
+import org.gudy.azureus2.plugins.PluginEvent;
+import org.gudy.azureus2.plugins.PluginEventListener;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.ipc.IPCException;
+import org.gudy.azureus2.plugins.sharing.*;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.io.*;
 import java.lang.ref.WeakReference;
 import java.net.InetSocketAddress;
 import java.text.SimpleDateFormat;
@@ -36,52 +49,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.ByteArrayHashMap;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimeFormatter;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
-import org.gudy.azureus2.plugins.PluginEvent;
-import org.gudy.azureus2.plugins.PluginEventListener;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.ipc.IPCException;
-import org.gudy.azureus2.plugins.sharing.ShareManager;
-import org.gudy.azureus2.plugins.sharing.ShareManagerListener;
-import org.gudy.azureus2.plugins.sharing.ShareResource;
-import org.gudy.azureus2.plugins.sharing.ShareResourceDir;
-import org.gudy.azureus2.plugins.sharing.ShareResourceFile;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-
-import com.aelitis.azureus.core.proxy.impl.AEPluginProxyHandler;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
 
 public class
 BuddyPluginBeta 

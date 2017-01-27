@@ -17,15 +17,14 @@
 
 package org.gudy.azureus2.platform;
 
-import java.util.Properties;
-
 import org.gudy.azureus2.platform.unix.PlatformManagerUnixPlugin;
-
 import org.gudy.azureus2.plugins.Plugin;
 import org.gudy.azureus2.plugins.PluginException;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.update.UpdatableComponent;
 import org.gudy.azureus2.plugins.update.UpdateChecker;
+
+import java.util.Properties;
 
 /**
  * @author TuxPaper

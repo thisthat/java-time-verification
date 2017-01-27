@@ -19,38 +19,22 @@
 
 package org.gudy.azureus2.core3.tracker.client.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.peer.PEPeerSource;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerException;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerListener;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponse;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponsePeer;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.LightHashMap;
-import org.gudy.azureus2.core3.util.ListenerManager;
-import org.gudy.azureus2.core3.util.ListenerManagerDispatcher;
-import org.gudy.azureus2.core3.util.RandomUtils;
+import org.gudy.azureus2.core3.tracker.client.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.clientid.ClientIDException;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResultPeer;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author parg

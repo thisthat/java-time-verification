@@ -19,18 +19,17 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
+import com.aelitis.azureus.core.networkmanager.EventWaiter;
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import com.aelitis.azureus.core.networkmanager.Transport;
+import com.aelitis.azureus.core.networkmanager.TransportStartpoint;
 import org.gudy.azureus2.core3.util.AEDiagnostics;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.core3.util.TimeFormatter;
 
-import com.aelitis.azureus.core.networkmanager.EventWaiter;
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.networkmanager.Transport;
-import com.aelitis.azureus.core.networkmanager.TransportStartpoint;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public abstract class 
 TransportImpl 

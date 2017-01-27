@@ -24,21 +24,14 @@ package org.gudy.azureus2.pluginsimpl.local.installer;
  *
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
+import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import com.aelitis.azureus.core.vuzefile.VuzeFileProcessor;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.installer.*;
 import org.gudy.azureus2.plugins.ui.UIManager;
@@ -52,14 +45,13 @@ import org.gudy.azureus2.pluginsimpl.local.FailedPlugin;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.update.UpdateCheckInstanceImpl;
 import org.gudy.azureus2.pluginsimpl.local.update.UpdateManagerImpl;
-import org.gudy.azureus2.pluginsimpl.update.sf.*;
 import org.gudy.azureus2.pluginsimpl.update.PluginUpdatePlugin;
+import org.gudy.azureus2.pluginsimpl.update.sf.*;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
-import com.aelitis.azureus.core.vuzefile.VuzeFileProcessor;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.util.*;
 
 public class 
 PluginInstallerImpl

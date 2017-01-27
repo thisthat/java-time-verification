@@ -10,18 +10,17 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import com.aelitis.azureus.core.AzureusCoreException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
 import org.gudy.azureus2.ui.console.ConsoleInput;
 import org.pf.file.FileFinder;
 import org.pf.text.StringUtil;
 
-import com.aelitis.azureus.core.AzureusCoreException;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * this class allows the user to add and find torrents.

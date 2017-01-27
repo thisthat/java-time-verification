@@ -1,32 +1,20 @@
 package org.gudy.bouncycastle.jce;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Hashtable;
-
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1Set;
-import org.gudy.bouncycastle.asn1.DERBitString;
-import org.gudy.bouncycastle.asn1.DERInputStream;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.pkcs.CertificationRequest;
 import org.gudy.bouncycastle.asn1.pkcs.CertificationRequestInfo;
 import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.gudy.bouncycastle.asn1.x509.X509Name;
 import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Hashtable;
 
 /**
  * A class for verifying and creating PKCS10 Certification requests. 

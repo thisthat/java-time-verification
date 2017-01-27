@@ -19,6 +19,9 @@
 
 package com.aelitis.azureus.core.diskmanager.file.impl;
 
+import com.aelitis.azureus.core.diskmanager.file.FMFileManagerException;
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -26,15 +29,6 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.util.Locale;
-
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SystemTime;
-
-import com.aelitis.azureus.core.diskmanager.file.FMFileManagerException;
 
 public class 
 FMFileAccessLinear

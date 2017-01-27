@@ -16,20 +16,17 @@
  */
 package com.aelitis.azureus.ui.swt.browser;
 
-import java.net.*;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.messenger.ClientMessageContextImpl;
+import com.aelitis.azureus.core.messenger.browser.listeners.BrowserMessageListener;
+import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import com.aelitis.azureus.ui.swt.browser.msg.MessageDispatcherSWT;
+import com.aelitis.azureus.util.ConstantsVuze;
+import com.aelitis.azureus.util.JSONUtils;
+import com.aelitis.azureus.util.UrlFilter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.TitleListener;
-import org.eclipse.swt.browser.TitleEvent;
-import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.browser.ProgressEvent;
-import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.browser.OpenWindowListener;
-import org.eclipse.swt.browser.CloseWindowListener;
-import org.eclipse.swt.browser.WindowEvent;
+import org.eclipse.swt.browser.*;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
@@ -46,15 +43,10 @@ import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 
-import com.aelitis.azureus.core.messenger.ClientMessageContextImpl;
-import com.aelitis.azureus.core.messenger.browser.listeners.BrowserMessageListener;
-import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
-import com.aelitis.azureus.ui.swt.browser.msg.MessageDispatcherSWT;
-import com.aelitis.azureus.util.ConstantsVuze;
-import com.aelitis.azureus.util.JSONUtils;
-import com.aelitis.azureus.util.UrlFilter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 /**
  * Manages the context for a single SWT {@link Browser} component,

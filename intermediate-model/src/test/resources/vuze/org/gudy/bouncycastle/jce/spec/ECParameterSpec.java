@@ -1,10 +1,10 @@
 package org.gudy.bouncycastle.jce.spec;
 
-import java.math.BigInteger;
-import java.security.spec.AlgorithmParameterSpec;
-
 import org.gudy.bouncycastle.math.ec.ECCurve;
 import org.gudy.bouncycastle.math.ec.ECPoint;
+
+import java.math.BigInteger;
+import java.security.spec.AlgorithmParameterSpec;
 
 /**
  * basic domain parameters for an Elliptic Curve public or private key.

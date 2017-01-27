@@ -19,8 +19,6 @@
 
 package org.gudy.azureus2.pluginsimpl.remote.disk;
 
-import java.io.File;
-
 import org.gudy.azureus2.plugins.disk.DiskManagerChannel;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.disk.DiskManagerListener;
@@ -31,6 +29,8 @@ import org.gudy.azureus2.pluginsimpl.remote.RPException;
 import org.gudy.azureus2.pluginsimpl.remote.RPObject;
 import org.gudy.azureus2.pluginsimpl.remote.RPReply;
 import org.gudy.azureus2.pluginsimpl.remote.RPRequest;
+
+import java.io.File;
 
 public class 
 RPDiskManagerFileInfo 

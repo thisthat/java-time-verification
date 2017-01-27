@@ -27,9 +27,11 @@ package org.gudy.azureus2.core3.tracker.protocol.udp;
  *
  */
 
-import java.io.*;
-
 import com.aelitis.net.udp.uc.PRUDPPacketReply;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class 
 PRUDPPacketReplyScrape2

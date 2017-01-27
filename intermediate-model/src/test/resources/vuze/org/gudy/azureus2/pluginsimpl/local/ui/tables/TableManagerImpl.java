@@ -20,10 +20,8 @@ package org.gudy.azureus2.pluginsimpl.local.ui.tables;
 
 import com.aelitis.azureus.ui.common.table.TableColumnCore;
 import com.aelitis.azureus.ui.common.table.impl.TableColumnImpl;
-
 import org.gudy.azureus2.plugins.ui.*;
 import org.gudy.azureus2.plugins.ui.tables.*;
-
 import org.gudy.azureus2.pluginsimpl.local.ui.UIManagerEventAdapter;
 import org.gudy.azureus2.pluginsimpl.local.ui.UIManagerImpl;
 

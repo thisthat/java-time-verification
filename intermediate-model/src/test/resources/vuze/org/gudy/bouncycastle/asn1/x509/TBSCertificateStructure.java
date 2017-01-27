@@ -1,19 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.gudy.bouncycastle.asn1.x509.TBSCertificateStructure;
-import org.gudy.bouncycastle.asn1.x509.Time;
-import org.gudy.bouncycastle.asn1.x509.X509Extensions;
-import org.gudy.bouncycastle.asn1.x509.X509Name;
-import org.gudy.bouncycastle.asn1.x509.X509ObjectIdentifiers;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERBitString;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERTaggedObject;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 
 /**

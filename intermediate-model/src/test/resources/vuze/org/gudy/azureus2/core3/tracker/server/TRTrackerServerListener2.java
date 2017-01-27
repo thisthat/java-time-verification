@@ -20,13 +20,13 @@
 
 package org.gudy.azureus2.core3.tracker.server;
 
+import org.gudy.azureus2.core3.util.AsyncController;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URL;
-
-import org.gudy.azureus2.core3.util.AsyncController;
 
 public interface 
 TRTrackerServerListener2 

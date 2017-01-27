@@ -2,11 +2,10 @@ package com.aelitis.azureus.core.speedmanager.impl.v2;
 
 import com.aelitis.azureus.core.speedmanager.SpeedManagerPingSource;
 import com.aelitis.azureus.core.util.average.Average;
-
-import java.util.Map;
-import java.util.HashMap;
-
 import org.gudy.azureus2.core3.util.SystemTime;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created on May 31, 2007

@@ -27,12 +27,12 @@ package org.gudy.azureus2.plugins.tracker.web;
  *
  */
 
+import org.gudy.azureus2.plugins.tracker.*;
+
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.Map;
-
-import org.gudy.azureus2.plugins.tracker.*;
 
 public interface 
 TrackerWebPageRequest

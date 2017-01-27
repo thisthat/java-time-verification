@@ -17,6 +17,7 @@
 
 package org.gudy.azureus2.ui.swt.views.table;
 
+import com.aelitis.azureus.ui.common.table.*;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -24,14 +25,11 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-
 import org.gudy.azureus2.plugins.ui.tables.TableRowMouseEvent;
 import org.gudy.azureus2.plugins.ui.tables.TableRowMouseListener;
 import org.gudy.azureus2.plugins.ui.tables.TableRowRefreshListener;
 import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewSWT_TabsCommon;
-
-import com.aelitis.azureus.ui.common.table.*;
 
 /**
  * @author TuxPaper

@@ -20,10 +20,10 @@
 
 package org.gudy.azureus2.plugins.download;
 
-import java.io.File;
-
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
+
+import java.io.File;
 
 public interface 
 DownloadStub 

@@ -19,13 +19,10 @@
 
 package org.gudy.azureus2.core3.download.impl;
 
-import java.io.*;
-import java.lang.ref.WeakReference;
-import java.net.URL;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.CopyOnWriteMap;
+import com.aelitis.azureus.core.util.LinkFileMap;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryManager;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -43,11 +40,12 @@ import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.util.CaseSensitiveFileMap;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.CopyOnWriteMap;
-import com.aelitis.azureus.core.util.LinkFileMap;
+import java.io.*;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * @author parg

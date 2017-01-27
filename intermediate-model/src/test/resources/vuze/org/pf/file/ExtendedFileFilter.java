@@ -13,13 +13,14 @@ package org.pf.file;
 // ===========================================================================
 // IMPORTS
 // ===========================================================================
+
+import org.pf.text.StringPattern;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
-import org.pf.text.StringPattern;
 
 /**
  * This filter implements the standard pattern matching on UNIX and Windows

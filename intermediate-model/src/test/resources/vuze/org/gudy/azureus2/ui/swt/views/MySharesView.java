@@ -23,10 +23,17 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo2;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MdiEntryDropListener;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.widgets.*;
@@ -62,17 +69,11 @@ import org.gudy.azureus2.ui.swt.views.tableitems.myshares.NameItem;
 import org.gudy.azureus2.ui.swt.views.tableitems.myshares.PersistentItem;
 import org.gudy.azureus2.ui.swt.views.tableitems.myshares.TypeItem;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo2;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MdiEntryDropListener;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author parg

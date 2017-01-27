@@ -24,16 +24,15 @@ package org.gudy.azureus2.core3.ipfilter.impl;
  *
  */
 
-import java.util.*;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.gudy.azureus2.core3.ipfilter.IpFilterManagerFactory;
 import org.gudy.azureus2.core3.ipfilter.IpRange;
 import org.gudy.azureus2.core3.logging.*;
-import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.tracker.protocol.PRHelpers;
+import org.gudy.azureus2.core3.util.*;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 public class 
 IPAddressRangeManager 

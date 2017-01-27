@@ -20,15 +20,14 @@
 
 package com.aelitis.azureus.plugins.net.buddy;
 
-import java.io.File;
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.util.BDecoder;
 import org.gudy.azureus2.core3.util.BEncoder;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.File;
+import java.util.*;
 
 public class 
 BuddyPluginBuddyMessageHandler 

@@ -20,26 +20,13 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.util.TorrentUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagFeatureProperties;
-import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.TagTypeAdapter;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.tag.TaggableLifecycleAdapter;
-import com.aelitis.azureus.core.tag.TaggableLifecycleListener;
+import java.util.*;
 
 public class 
 TagPropertyTrackerHandler 

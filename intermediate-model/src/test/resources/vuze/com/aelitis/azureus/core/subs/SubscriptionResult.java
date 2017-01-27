@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.subs;
 
-import java.util.Map;
-
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
+
+import java.util.Map;
 
 public interface 
 SubscriptionResult 

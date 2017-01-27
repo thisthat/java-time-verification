@@ -24,12 +24,12 @@ package org.gudy.azureus2.platform.win32.access.impl;
  *
  */
 
+import org.gudy.azureus2.platform.win32.*;
+import org.gudy.azureus2.platform.win32.access.*;
+import org.gudy.azureus2.update.UpdaterUtils;
+
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.platform.win32.access.*;
-import org.gudy.azureus2.platform.win32.*;
-import org.gudy.azureus2.update.UpdaterUtils;
 
 public class 
 AEWin32AccessInterface 

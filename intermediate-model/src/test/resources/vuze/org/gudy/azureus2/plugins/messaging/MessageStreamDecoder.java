@@ -19,10 +19,10 @@
 
 package org.gudy.azureus2.plugins.messaging;
 
+import org.gudy.azureus2.plugins.network.Transport;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
-
-import org.gudy.azureus2.plugins.network.Transport;
 
 
 /**

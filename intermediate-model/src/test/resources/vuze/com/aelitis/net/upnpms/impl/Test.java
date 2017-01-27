@@ -20,11 +20,11 @@
 
 package com.aelitis.net.upnpms.impl;
 
+import com.aelitis.net.upnpms.*;
+
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-
-import com.aelitis.net.upnpms.*;
 
 public class 
 Test 

@@ -17,27 +17,15 @@
  */
 package org.gudy.azureus2.pluginsimpl.local.download;
 
-import java.util.*;
 import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadActivationEvent;
-import org.gudy.azureus2.plugins.download.DownloadActivationListener;
-import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
-import org.gudy.azureus2.plugins.download.DownloadAttributeListener;
-import org.gudy.azureus2.plugins.download.DownloadCompletionListener;
-import org.gudy.azureus2.plugins.download.DownloadEventNotifier;
-import org.gudy.azureus2.plugins.download.DownloadListener;
-import org.gudy.azureus2.plugins.download.DownloadManager;
-import org.gudy.azureus2.plugins.download.DownloadManagerListener;
-import org.gudy.azureus2.plugins.download.DownloadPeerListener;
-import org.gudy.azureus2.plugins.download.DownloadPropertyEvent;
-import org.gudy.azureus2.plugins.download.DownloadPropertyListener;
-import org.gudy.azureus2.plugins.download.DownloadRemovalVetoException;
-import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
-import org.gudy.azureus2.plugins.download.DownloadTrackerListener;
-import org.gudy.azureus2.plugins.download.DownloadWillBeRemovedListener;
-import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
+import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.plugins.peers.PeerManager;
+import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This is an implementation of DownloadEventNotifier to be simplify life for

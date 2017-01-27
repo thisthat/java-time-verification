@@ -20,21 +20,6 @@
 
 package org.gudy.azureus2.core3.download.impl;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.peer.PEPeerManager;
-import org.gudy.azureus2.core3.peer.PEPeerManagerStats;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
@@ -42,6 +27,14 @@ import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import com.aelitis.azureus.core.speedmanager.SpeedManager;
 import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
 import com.aelitis.azureus.core.speedmanager.SpeedManagerPingMapper;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.peer.PEPeerManager;
+import org.gudy.azureus2.core3.peer.PEPeerManagerStats;
+import org.gudy.azureus2.core3.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class 

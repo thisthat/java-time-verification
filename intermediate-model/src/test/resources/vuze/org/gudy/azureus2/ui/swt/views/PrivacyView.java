@@ -18,13 +18,16 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.proxy.AEProxySelector;
+import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.plugins.I2PHelpers;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedReader;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.*;
@@ -47,13 +50,7 @@ import org.gudy.azureus2.core3.peer.util.PeerUtils;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLGroup;
 import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLSet;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TorrentUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ipc.IPCException;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
@@ -68,16 +65,11 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.proxy.AEProxySelector;
-import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.plugins.I2PHelpers;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedReader;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.*;
 
 
 

@@ -2,8 +2,6 @@ package org.gudy.bouncycastle.crypto.params;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.crypto.params.AsymmetricKeyParameter;
-
 public class RSAKeyParameters
     extends AsymmetricKeyParameter
 {

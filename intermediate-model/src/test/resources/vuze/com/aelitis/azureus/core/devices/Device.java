@@ -20,11 +20,11 @@
 
 package com.aelitis.azureus.core.devices;
 
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
-
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
 
 public interface 
 Device 

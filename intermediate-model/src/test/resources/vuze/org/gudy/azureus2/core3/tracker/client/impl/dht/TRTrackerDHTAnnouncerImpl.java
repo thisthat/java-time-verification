@@ -19,36 +19,25 @@
 
 package org.gudy.azureus2.core3.tracker.client.impl.dht;
 
-import java.net.URL;
-import java.util.*;
-
-
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLSet;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerDataProvider;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerException;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerListener;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponse;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponsePeer;
+import org.gudy.azureus2.core3.tracker.client.*;
 import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerAnnouncerHelper;
 import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerAnnouncerImpl;
 import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerAnnouncerResponseImpl;
 import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerAnnouncerResponsePeerImpl;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TorrentUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.clientid.ClientIDException;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResultPeer;
 import org.gudy.azureus2.pluginsimpl.local.clientid.ClientIDManagerImpl;
 
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author parg

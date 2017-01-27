@@ -19,11 +19,10 @@
 
 package org.gudy.azureus2.pluginsimpl.local.network;
 
-import java.nio.ByteBuffer;
-
+import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
 import org.gudy.azureus2.plugins.network.*;
 
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
+import java.nio.ByteBuffer;
 
 
 

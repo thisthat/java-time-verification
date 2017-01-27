@@ -20,10 +20,18 @@
 
 package org.gudy.azureus2.ui.swt.views.utils;
 
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
+import com.aelitis.azureus.core.util.AZ3Functions;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPlugin;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBuddy;
+import com.aelitis.azureus.ui.*;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -52,18 +60,8 @@ import org.gudy.azureus2.ui.swt.views.ViewUtils;
 import org.gudy.azureus2.ui.swt.views.ViewUtils.SpeedAdapter;
 import org.gudy.azureus2.ui.swt.views.stats.StatsView;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPlugin;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBuddy;
-import com.aelitis.azureus.ui.*;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author TuxPaper

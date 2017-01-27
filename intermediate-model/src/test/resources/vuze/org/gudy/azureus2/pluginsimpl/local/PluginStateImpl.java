@@ -20,9 +20,6 @@
  */
 package org.gudy.azureus2.pluginsimpl.local;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.FileUtil;
@@ -32,6 +29,9 @@ import org.gudy.azureus2.plugins.PluginState;
 import org.gudy.azureus2.plugins.UnloadablePlugin;
 import org.gudy.azureus2.pluginsimpl.local.installer.PluginInstallerImpl;
 import org.gudy.azureus2.update.UpdaterUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PluginStateImpl implements PluginState {
 

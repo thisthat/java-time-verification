@@ -19,14 +19,27 @@
 
 package com.aelitis.azureus.ui.swt.browser.listener;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
+import com.aelitis.azureus.core.custom.CustomizationManagerFactory;
+import com.aelitis.azureus.core.messenger.browser.BrowserMessage;
+import com.aelitis.azureus.core.messenger.browser.listeners.AbstractBrowserMessageListener;
+import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
+import com.aelitis.azureus.core.metasearch.*;
+import com.aelitis.azureus.core.metasearch.impl.web.CookieParser;
+import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
+import com.aelitis.azureus.core.subs.*;
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
+import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
+import com.aelitis.azureus.ui.swt.browser.OpenCloseSearchDetailsListener;
+import com.aelitis.azureus.ui.swt.views.skin.TorrentListViewsUtils;
+import com.aelitis.azureus.util.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.global.GlobalManagerAdapter;
@@ -40,29 +53,9 @@ import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
-import com.aelitis.azureus.core.custom.CustomizationManagerFactory;
-import com.aelitis.azureus.core.messenger.browser.BrowserMessage;
-import com.aelitis.azureus.core.messenger.browser.listeners.AbstractBrowserMessageListener;
-import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
-import com.aelitis.azureus.core.metasearch.*;
-import com.aelitis.azureus.core.metasearch.impl.web.CookieParser;
-import com.aelitis.azureus.core.metasearch.impl.web.WebEngine;
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.subs.SubscriptionDownloadListener;
-import com.aelitis.azureus.core.subs.SubscriptionException;
-import com.aelitis.azureus.core.subs.SubscriptionHistory;
-import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
-import com.aelitis.azureus.core.subs.SubscriptionResult;
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
-import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
-import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
-import com.aelitis.azureus.ui.swt.browser.OpenCloseSearchDetailsListener;
-import com.aelitis.azureus.ui.swt.views.skin.TorrentListViewsUtils;
-import com.aelitis.azureus.util.*;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 public class MetaSearchListener extends AbstractBrowserMessageListener {
 	

@@ -27,9 +27,10 @@ package org.gudy.azureus2.core3.util.protocol.wss;
  *
  */
 
-import java.io.IOException;
-import java.net.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.core3.util.Constants;
@@ -37,12 +38,11 @@ import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ipc.IPCException;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
-import org.gudy.azureus2.pluginsimpl.PluginUtils;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
 public class 
 Handler 

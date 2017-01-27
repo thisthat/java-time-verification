@@ -19,8 +19,7 @@
 
 package org.gudy.azureus2.core3.disk.impl.access.impl;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.*;
@@ -33,7 +32,8 @@ import org.gudy.azureus2.core3.disk.impl.piecemapper.DMPieceMapEntry;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author parg

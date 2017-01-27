@@ -22,12 +22,13 @@
  
 package org.gudy.azureus2.core3.xml.simpleparser;
 
-import java.io.*;
-import java.net.URL;
-
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocument;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentException;
 import org.gudy.azureus2.pluginsimpl.local.utils.xml.simpleparser.SimpleXMLParserDocumentImpl;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 
 public class 
 SimpleXMLParserDocumentFactory

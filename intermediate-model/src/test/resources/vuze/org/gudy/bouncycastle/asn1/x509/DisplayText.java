@@ -1,16 +1,7 @@
 
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.PolicyInformation;
-import org.gudy.bouncycastle.asn1.ASN1Choice;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERBMPString;
-import org.gudy.bouncycastle.asn1.DERIA5String;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERString;
-import org.gudy.bouncycastle.asn1.DERUTF8String;
-import org.gudy.bouncycastle.asn1.DERVisibleString;
+import org.gudy.bouncycastle.asn1.*;
 
 /**
  * <code>DisplayText</code> class, used in

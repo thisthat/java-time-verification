@@ -22,23 +22,20 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.tracker.host.TRHost;
 import org.gudy.azureus2.core3.tracker.host.TRHostTorrent;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.ui.tables.*;
 
 /**
  *

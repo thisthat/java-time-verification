@@ -25,15 +25,17 @@ package com.aelitis.azureus.core.dht.impl;
  *
  */
 
-import java.util.*;
-
+import com.aelitis.azureus.core.dht.DHTLogger;
+import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
+import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
 import org.gudy.azureus2.core3.util.ByteArrayHashMap;
 import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.gudy.azureus2.core3.util.HashWrapper;
 
-import com.aelitis.azureus.core.dht.DHTLogger;
-import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
-import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class 
 DHTLog 

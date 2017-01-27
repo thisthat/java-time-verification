@@ -25,10 +25,9 @@ package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponse;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 
 /**
  * @author Olivier

@@ -24,21 +24,23 @@ package org.gudy.azureus2.platform.macosx;
  *
  */
 
-import java.io.*;
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.net.*;
-
-import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.html.HTMLUtils;
 import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.*;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
-import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.*;
 import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.update.*;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
+import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.*;
 import org.gudy.azureus2.pluginsimpl.update.sf.*;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class 
 PlatformManagerUpdateChecker

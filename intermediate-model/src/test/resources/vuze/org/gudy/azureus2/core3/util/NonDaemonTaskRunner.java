@@ -27,11 +27,13 @@ package org.gudy.azureus2.core3.util;
  *
  */
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public class 
 NonDaemonTaskRunner 

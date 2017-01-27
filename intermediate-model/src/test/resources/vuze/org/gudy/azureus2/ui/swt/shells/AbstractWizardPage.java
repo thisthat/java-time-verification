@@ -18,9 +18,6 @@
 
 package org.gudy.azureus2.ui.swt.shells;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -33,6 +30,9 @@ import org.eclipse.swt.widgets.Label;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 abstract public class AbstractWizardPage
 	implements IWizardPage

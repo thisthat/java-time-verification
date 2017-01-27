@@ -27,13 +27,13 @@ package org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader;
  *
  */
 
-import java.util.*;
-import java.io.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
+
+import java.io.InputStream;
+import java.util.*;
 
 public abstract class 
 ResourceDownloaderBaseImpl

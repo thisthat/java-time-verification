@@ -19,33 +19,6 @@
 
 package com.aelitis.azureus.core.metasearch.impl.web;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.plugins.utils.StaticUtilities;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import com.aelitis.azureus.core.metasearch.SearchException;
 import com.aelitis.azureus.core.metasearch.SearchLoginException;
 import com.aelitis.azureus.core.metasearch.SearchParameter;
@@ -58,6 +31,20 @@ import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
 import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import com.aelitis.azureus.util.ImportExportUtils;
 import com.aelitis.azureus.util.UrlFilter;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.utils.StaticUtilities;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.*;
+import java.net.*;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class 
 WebEngine 

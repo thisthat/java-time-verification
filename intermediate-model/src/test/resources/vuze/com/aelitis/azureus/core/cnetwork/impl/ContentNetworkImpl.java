@@ -20,13 +20,6 @@
 
 package com.aelitis.azureus.core.cnetwork.impl;
 
-import java.io.IOException;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.cnetwork.*;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
@@ -34,6 +27,15 @@ import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
 import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import com.aelitis.azureus.util.ImportExportUtils;
 import com.aelitis.azureus.util.MapUtils;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.BEncoder;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public abstract class 
 ContentNetworkImpl

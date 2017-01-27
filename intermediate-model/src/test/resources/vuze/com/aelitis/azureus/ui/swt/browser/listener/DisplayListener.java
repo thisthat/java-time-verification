@@ -18,23 +18,6 @@
 
 package com.aelitis.azureus.ui.swt.browser.listener;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.swt.dnd.*;
-import org.eclipse.swt.widgets.Display;
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-import org.gudy.azureus2.ui.swt.BrowserWrapper;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.donations.DonationWindow;
-import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
-import org.gudy.azureus2.ui.swt.plugins.UISWTView;
-
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
 import com.aelitis.azureus.core.messenger.browser.BrowserMessage;
@@ -57,10 +40,25 @@ import com.aelitis.azureus.ui.swt.skin.*;
 import com.aelitis.azureus.ui.swt.views.skin.SBC_BurnFTUX;
 import com.aelitis.azureus.ui.swt.views.skin.SBC_PlusFTUX;
 import com.aelitis.azureus.util.*;
-import org.gudy.azureus2.ui.swt.BrowserWrapper;
+import org.eclipse.swt.dnd.*;
+import org.eclipse.swt.widgets.Display;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginManager;
 import org.gudy.azureus2.plugins.ui.*;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+import org.gudy.azureus2.ui.swt.BrowserWrapper;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.donations.DonationWindow;
+import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
+import org.gudy.azureus2.ui.swt.plugins.UISWTView;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DisplayListener
 	extends AbstractBrowserMessageListener

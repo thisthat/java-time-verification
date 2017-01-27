@@ -20,14 +20,13 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.util.Iterator;
-
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTester;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterListener;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterResult;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.Iterator;
 
 public abstract class 
 NetworkAdminSpeedTesterImpl 

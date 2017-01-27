@@ -19,13 +19,13 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
-
 import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
 import com.aelitis.azureus.core.networkmanager.ProtocolStartpoint;
 import com.aelitis.azureus.core.networkmanager.TransportStartpoint;
+
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 public class 
 TransportStartpointTCP 

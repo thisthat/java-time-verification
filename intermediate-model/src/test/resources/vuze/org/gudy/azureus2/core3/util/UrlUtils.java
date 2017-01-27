@@ -16,27 +16,7 @@
  */
 package org.gudy.azureus2.core3.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.security.SESecurityManager;
@@ -50,7 +30,14 @@ import org.gudy.azureus2.plugins.utils.resourceuploader.ResourceUploader;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.bouncycastle.util.encoders.Base64;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import javax.net.ssl.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**

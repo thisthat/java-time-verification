@@ -20,17 +20,17 @@
 
 package com.aelitis.azureus.core.messenger.config;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.messenger.PlatformMessage;
+import com.aelitis.azureus.core.messenger.PlatformMessenger;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginManager;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.devices.*;
-import com.aelitis.azureus.core.messenger.PlatformMessage;
-import com.aelitis.azureus.core.messenger.PlatformMessenger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author TuxPaper

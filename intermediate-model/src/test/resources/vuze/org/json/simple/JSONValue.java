@@ -4,13 +4,12 @@
  */
 package org.json.simple;
 
+import com.aelitis.azureus.util.JSONUtils;
+import org.json.simple.parser.JSONParser;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
-
-import org.json.simple.parser.JSONParser;
-
-import com.aelitis.azureus.util.JSONUtils;
 
 
 /**

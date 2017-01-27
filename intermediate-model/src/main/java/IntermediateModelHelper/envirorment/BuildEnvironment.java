@@ -1,7 +1,6 @@
 package IntermediateModelHelper.envirorment;
 
 
-import com.google.common.annotations.Beta;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTAttribute;
@@ -78,11 +77,9 @@ public class BuildEnvironment {
 	 * @param _class The class to analyze
 	 *
 	 */
-	@Beta
 	public Env buildEnvClass(ASTClass _class) {
 		return _buildEnvClass(_class, new EnvBase());
 	}
-	@Beta
 	public Env buildEnvClass(ASTClass _class, Env old) {
 		return _buildEnvClass(_class, old);
 	}

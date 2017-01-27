@@ -22,6 +22,7 @@
 
 package org.gudy.azureus2.ui.swt.views.configsections;
 
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -35,8 +36,6 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.ColorParameter;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
 
 public class ConfigSectionInterfaceColor implements UISWTConfigSection {
 	private static final String[] sColorsToOverride = { "progressBar", "error",

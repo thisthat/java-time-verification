@@ -20,20 +20,14 @@
 
 package com.aelitis.azureus.core.stats;
 
-import java.util.*;
-import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.Timer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.util.average.Average;
 import com.aelitis.azureus.core.util.average.AverageFactory;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.core3.util.Timer;
+
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class 
 AzureusCoreStats 

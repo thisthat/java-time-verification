@@ -17,17 +17,16 @@
 
 package org.gudy.azureus2.ui.swt.shells;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Utils;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * Cheap ugly slider shell

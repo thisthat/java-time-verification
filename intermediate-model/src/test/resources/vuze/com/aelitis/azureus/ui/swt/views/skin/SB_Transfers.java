@@ -20,8 +20,22 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.torrent.HasBeenOpenedListener;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.mdi.MdiSWTMenuHackListener;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
+import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBarEntrySWT;
 import org.eclipse.swt.widgets.Menu;
 import org.gudy.azureus2.core3.category.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -47,22 +61,10 @@ import org.gudy.azureus2.ui.swt.views.PeersGeneralView;
 import org.gudy.azureus2.ui.swt.views.utils.CategoryUIUtils;
 import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.torrent.HasBeenOpenedListener;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.mdi.MdiSWTMenuHackListener;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBarEntrySWT;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Transfers Sidebar aka "My Torrents" aka "Files"

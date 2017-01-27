@@ -20,15 +20,14 @@
 
 package com.aelitis.azureus.core.peermanager.control.impl;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.control.PeerControlInstance;
+import com.aelitis.azureus.core.peermanager.control.SpeedTokenDispenser;
+import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.peermanager.control.PeerControlInstance;
-import com.aelitis.azureus.core.peermanager.control.SpeedTokenDispenser;
-import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
+import java.util.*;
 
 public class 
 PeerControlSchedulerPrioritised

@@ -20,13 +20,10 @@
 package com.aelitis.azureus.core.peermanager.utils;
 
 import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.*;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 
 

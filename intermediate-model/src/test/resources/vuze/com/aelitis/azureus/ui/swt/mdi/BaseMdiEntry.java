@@ -18,9 +18,15 @@
 
 package com.aelitis.azureus.ui.swt.mdi;
 
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.ui.common.viewtitleinfo.*;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectContainer;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -37,15 +43,9 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.*;
 
-import com.aelitis.azureus.ui.common.viewtitleinfo.*;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectContainer;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class BaseMdiEntry
 	extends UISWTViewImpl

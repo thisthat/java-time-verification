@@ -19,12 +19,11 @@
 
 package com.aelitis.azureus.core.proxy.socks.impl;
 
-import java.net.InetAddress;
-
+import com.aelitis.azureus.core.proxy.socks.AESocksProxyAddress;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.HostNameToIPResolver;
 
-import com.aelitis.azureus.core.proxy.socks.AESocksProxyAddress;
+import java.net.InetAddress;
 
 
 /**

@@ -27,24 +27,19 @@ package org.gudy.azureus2.core3.tracker.util;
  *
  */
 
-import java.util.*;
-import java.net.*;
-import java.io.*;
-
-import org.gudy.azureus2.core3.config.*;
-import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerAnnouncerImpl;
-import org.gudy.azureus2.core3.tracker.client.impl.bt.TRTrackerBTAnnouncerImpl;
-import org.gudy.azureus2.core3.tracker.host.TRHost;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.UrlUtils;
-
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminPropertyChangeListener;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.config.*;
+import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerAnnouncerImpl;
+import org.gudy.azureus2.core3.tracker.host.TRHost;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 
 public class 

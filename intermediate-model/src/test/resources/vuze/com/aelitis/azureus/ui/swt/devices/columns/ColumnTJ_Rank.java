@@ -22,7 +22,6 @@ package com.aelitis.azureus.ui.swt.devices.columns;
 
 import com.aelitis.azureus.core.devices.TranscodeFile;
 import com.aelitis.azureus.core.devices.TranscodeJob;
-
 import org.gudy.azureus2.plugins.ui.tables.*;
 
 /**

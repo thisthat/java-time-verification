@@ -21,7 +21,6 @@
 package com.aelitis.azureus.ui.common.table.impl;
 
 import com.aelitis.azureus.ui.common.table.TableColumnCore;
-
 import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
 
 /**

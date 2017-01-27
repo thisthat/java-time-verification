@@ -22,23 +22,18 @@
 
 package org.gudy.azureus2.ui.telnet;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import org.gudy.azureus2.core3.util.AEThread2;
+import org.gudy.azureus2.ui.common.UIConst;
+import org.gudy.azureus2.ui.console.UserProfile;
+import org.gudy.azureus2.ui.console.multiuser.UserManager;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.ui.common.UIConst;
-import org.gudy.azureus2.ui.console.UserProfile;
-import org.gudy.azureus2.ui.console.multiuser.UserManager;
 
 /**
  * this class is used to receive incoming connections for the telnet UI and

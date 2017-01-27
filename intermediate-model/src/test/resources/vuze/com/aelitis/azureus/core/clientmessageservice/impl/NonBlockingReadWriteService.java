@@ -18,14 +18,13 @@
  */
 package com.aelitis.azureus.core.clientmessageservice.impl;
 
-import java.nio.channels.SocketChannel;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.azureus.AZGenericMapPayload;
+import org.gudy.azureus2.core3.util.*;
+
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 
 
 /**

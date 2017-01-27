@@ -27,13 +27,12 @@ package org.gudy.azureus2.pluginsimpl.remote.torrent;
  *
  */
 
-import java.net.URL;
+import org.gudy.azureus2.plugins.torrent.*;
+import org.gudy.azureus2.pluginsimpl.remote.*;
+
 import java.io.File;
 import java.io.InputStream;
-
-import org.gudy.azureus2.plugins.torrent.*;
-
-import org.gudy.azureus2.pluginsimpl.remote.*;
+import java.net.URL;
 
 public class
 RPTorrentManager

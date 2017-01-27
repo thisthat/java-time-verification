@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.devices;
 
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
+
+import java.util.Map;
 
 public interface 
 DeviceManagerDiscoveryListener 

@@ -24,49 +24,29 @@ package org.gudy.bouncycastle.jce.provider;
  *
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.KeyFactorySpi;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.interfaces.DSAPrivateKey;
-import java.security.interfaces.DSAPublicKey;
-import java.security.interfaces.RSAPrivateCrtKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPrivateCrtKeySpec;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-
-import javax.crypto.interfaces.DHPrivateKey;
-import javax.crypto.interfaces.DHPublicKey;
-
-import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
-import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.gudy.bouncycastle.asn1.x509.X509ObjectIdentifiers;
-import org.gudy.bouncycastle.jce.provider.JCEECPrivateKey;
-import org.gudy.bouncycastle.jce.provider.JCEECPublicKey;
-import org.gudy.bouncycastle.jce.provider.JCERSAPublicKey;
-import org.gudy.bouncycastle.jce.provider.JDKKeyFactory;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.bouncycastle.asn1.ASN1Sequence;
 import org.gudy.bouncycastle.asn1.DERInputStream;
 import org.gudy.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.gudy.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.gudy.bouncycastle.asn1.x509.*;
+import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.gudy.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.gudy.bouncycastle.asn1.x9.X9ObjectIdentifiers;
 import org.gudy.bouncycastle.jce.interfaces.ElGamalPrivateKey;
 import org.gudy.bouncycastle.jce.interfaces.ElGamalPublicKey;
 import org.gudy.bouncycastle.jce.spec.ECPrivateKeySpec;
 import org.gudy.bouncycastle.jce.spec.ECPublicKeySpec;
+
+import javax.crypto.interfaces.DHPrivateKey;
+import javax.crypto.interfaces.DHPublicKey;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.*;
+import java.security.interfaces.*;
+import java.security.spec.*;
 
 public abstract class 
 JDKKeyFactory 

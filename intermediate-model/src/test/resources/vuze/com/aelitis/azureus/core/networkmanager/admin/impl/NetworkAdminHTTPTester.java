@@ -20,16 +20,15 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.URLConnection;
-
-import org.gudy.azureus2.core3.ipchecker.natchecker.NatChecker;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProgressListener;
 import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import org.gudy.azureus2.core3.ipchecker.natchecker.NatChecker;
+
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class 
 NetworkAdminHTTPTester 

@@ -19,11 +19,10 @@ package org.gudy.azureus2.core3.config.impl;
  *
  */
 
-import org.gudy.azureus2.core3.config.*;
-import org.gudy.azureus2.core3.global.GlobalManager;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.speedmanager.SpeedManager;
+import org.gudy.azureus2.core3.config.*;
+import org.gudy.azureus2.core3.global.GlobalManager;
 
 /**
  * Provides validation for transfer speed settings

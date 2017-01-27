@@ -20,29 +20,24 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
+import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
+import com.aelitis.azureus.core.networkmanager.ProtocolEndpointFactory;
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminHTTPProxy;
+import com.aelitis.azureus.core.networkmanager.impl.tcp.*;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.AESemaphore;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.SystemTime;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.StringTokenizer;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpointFactory;
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminException;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminHTTPProxy;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPConnectionManager;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.ProtocolEndpointTCP;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPNetworkManager;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPTransportHelperFilterFactory;
-import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPTransportImpl;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
 
 public class 
 NetworkAdminHTTPProxyImpl 

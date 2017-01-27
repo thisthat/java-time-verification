@@ -21,42 +21,23 @@
 package org.gudy.azureus2.ui.swt.speedtest;
 
 
+import com.aelitis.azureus.core.networkmanager.admin.*;
+import com.aelitis.azureus.core.networkmanager.admin.impl.NetworkAdminSpeedTestSchedulerImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AEThread;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.WizardListener;
-
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduledTest;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduledTestListener;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTestScheduler;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTester;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterListener;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterResult;
-import com.aelitis.azureus.core.networkmanager.admin.impl.NetworkAdminSpeedTestSchedulerImpl;
 
 public class 
 SpeedTestPanel

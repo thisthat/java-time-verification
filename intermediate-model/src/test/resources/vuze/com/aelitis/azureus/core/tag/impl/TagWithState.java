@@ -20,19 +20,13 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.tag.TagException;
 import com.aelitis.azureus.core.tag.Taggable;
 import com.aelitis.azureus.core.util.CopyOnWriteSet;
 import com.aelitis.azureus.util.MapUtils;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.*;
 
 public abstract class 
 TagWithState 

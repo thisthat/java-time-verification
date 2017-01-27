@@ -2,8 +2,6 @@ package org.gudy.bouncycastle.jce.spec;
 
 import java.security.spec.KeySpec;
 
-import org.gudy.bouncycastle.jce.spec.ECParameterSpec;
-
 /**
  * base class for an Elliptic Curve Key Spec
  */

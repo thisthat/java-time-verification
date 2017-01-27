@@ -22,25 +22,6 @@
 
 package com.aelitis.azureus.core.dht.transport.util;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.dht.DHTLogger;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
@@ -48,6 +29,10 @@ import com.aelitis.azureus.core.dht.transport.DHTTransportException;
 import com.aelitis.azureus.core.dht.transport.DHTTransportProgressListener;
 import com.aelitis.azureus.core.dht.transport.DHTTransportTransferHandler;
 import com.aelitis.azureus.core.dht.transport.udp.impl.DHTUDPPacketData;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+
+import java.util.*;
 
 
 

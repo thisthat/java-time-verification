@@ -19,11 +19,10 @@
 
 package com.aelitis.azureus.core.dht.router.impl;
 
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.router.DHTRouterContact;
 import com.aelitis.azureus.core.dht.router.DHTRouterContactAttachment;
+import org.gudy.azureus2.core3.util.SystemTime;
 
 /**
  * @author parg

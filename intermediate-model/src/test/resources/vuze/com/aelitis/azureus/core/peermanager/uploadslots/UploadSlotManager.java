@@ -21,12 +21,12 @@
  */
 package com.aelitis.azureus.core.peermanager.uploadslots;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.peermanager.control.*;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 

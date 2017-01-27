@@ -20,18 +20,18 @@
 
 package com.aelitis.azureus.core.speedmanager.impl;
 
-import java.net.InetSocketAddress;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
 import com.aelitis.azureus.core.dht.speed.DHTSpeedTester;
 import com.aelitis.azureus.core.dht.speed.DHTSpeedTesterContact;
 import com.aelitis.azureus.core.dht.speed.DHTSpeedTesterContactListener;
 import com.aelitis.azureus.core.dht.speed.DHTSpeedTesterListener;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.SimpleTimer;
+import org.gudy.azureus2.core3.util.TimerEvent;
+import org.gudy.azureus2.core3.util.TimerEventPerformer;
+
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class 
 TestPingSourceImpl 

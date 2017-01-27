@@ -20,24 +20,21 @@
 package com.aelitis.azureus.plugins.dht.impl;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.SystemTime;
+import com.aelitis.azureus.core.dht.*;
+import com.aelitis.azureus.core.dht.control.DHTControlStats;
+import com.aelitis.azureus.core.dht.db.DHTDB;
+import com.aelitis.azureus.core.dht.db.DHTDBStats;
+import com.aelitis.azureus.core.dht.db.DHTDBValue;
+import com.aelitis.azureus.core.dht.nat.DHTNATPuncher;
+import com.aelitis.azureus.core.dht.nat.DHTNATPuncherAdapter;
+import com.aelitis.azureus.core.dht.router.DHTRouterStats;
+import com.aelitis.azureus.core.dht.transport.*;
+import com.aelitis.azureus.core.dht.transport.udp.DHTTransportUDP;
+import com.aelitis.azureus.core.util.DNSUtils;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import com.aelitis.azureus.plugins.dht.*;
+import com.aelitis.azureus.plugins.dht.DHTPluginInterface.DHTInterface;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
@@ -48,38 +45,12 @@ import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
 import org.gudy.azureus2.plugins.utils.UTTimerEvent;
 import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
 
-import com.aelitis.azureus.core.dht.DHT;
-import com.aelitis.azureus.core.dht.DHTFactory;
-import com.aelitis.azureus.core.dht.DHTLogger;
-import com.aelitis.azureus.core.dht.DHTOperationListener;
-import com.aelitis.azureus.core.dht.DHTStorageKeyStats;
-import com.aelitis.azureus.core.dht.control.DHTControlStats;
-import com.aelitis.azureus.core.dht.db.DHTDB;
-import com.aelitis.azureus.core.dht.db.DHTDBStats;
-import com.aelitis.azureus.core.dht.db.DHTDBValue;
-import com.aelitis.azureus.core.dht.nat.DHTNATPuncher;
-import com.aelitis.azureus.core.dht.nat.DHTNATPuncherAdapter;
-import com.aelitis.azureus.core.dht.router.DHTRouterStats;
-import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
-import com.aelitis.azureus.core.dht.transport.DHTTransportException;
-import com.aelitis.azureus.core.dht.transport.DHTTransportFactory;
-import com.aelitis.azureus.core.dht.transport.DHTTransportListener;
-import com.aelitis.azureus.core.dht.transport.DHTTransportProgressListener;
-import com.aelitis.azureus.core.dht.transport.DHTTransportStats;
-import com.aelitis.azureus.core.dht.transport.DHTTransportTransferHandler;
-import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
-import com.aelitis.azureus.core.dht.transport.udp.DHTTransportUDP;
-import com.aelitis.azureus.core.util.DNSUtils;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
-import com.aelitis.azureus.plugins.dht.DHTPlugin;
-import com.aelitis.azureus.plugins.dht.DHTPluginContact;
-import com.aelitis.azureus.plugins.dht.DHTPluginKeyStats;
-import com.aelitis.azureus.plugins.dht.DHTPluginOperationListener;
-import com.aelitis.azureus.plugins.dht.DHTPluginProgressListener;
-import com.aelitis.azureus.plugins.dht.DHTPluginTransferHandler;
-import com.aelitis.azureus.plugins.dht.DHTPluginValue;
-import com.aelitis.azureus.plugins.dht.DHTPluginInterface.DHTInterface;
-import com.aelitis.azureus.plugins.dht.impl.DHTPluginStorageManager;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 
 /**

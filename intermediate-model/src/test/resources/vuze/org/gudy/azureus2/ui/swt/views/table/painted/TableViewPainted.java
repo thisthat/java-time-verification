@@ -18,9 +18,18 @@
 
 package org.gudy.azureus2.ui.swt.views.table.painted;
 
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.TableViewFilterCheck;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.common.table.impl.TableRowCoreSorter;
+import com.aelitis.azureus.ui.common.table.impl.TableViewImpl;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentListener;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.*;
@@ -50,18 +59,7 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableTooltips;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewSWT_Common;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewSWT_TabsCommon;
 
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.TableViewFilterCheck;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.common.table.impl.TableRowCoreSorter;
-import com.aelitis.azureus.ui.common.table.impl.TableViewImpl;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentListener;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.util.*;
 
 /**
  * A TableView implemented by painting on a canvas

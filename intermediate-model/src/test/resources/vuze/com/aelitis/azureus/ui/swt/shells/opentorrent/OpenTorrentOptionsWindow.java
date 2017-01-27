@@ -17,13 +17,36 @@
 
 package com.aelitis.azureus.ui.swt.shells.opentorrent;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.content.ContentException;
+import com.aelitis.azureus.core.content.RelatedAttributeLookupListener;
+import com.aelitis.azureus.core.content.RelatedContentManager;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.RegExUtil;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginViewInterface;
+import com.aelitis.azureus.ui.IUIIntializer;
+import com.aelitis.azureus.ui.InitializerListener;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.common.table.TableSelectionListener;
+import com.aelitis.azureus.ui.common.table.TableViewFilterCheck;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.shells.main.UIFunctionsImpl;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
+import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
+import com.aelitis.azureus.ui.swt.utils.TagUIUtilsV3;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
+import com.aelitis.azureus.ui.swt.views.skin.StandardButtonsArea;
+import com.aelitis.azureus.util.ImportExportUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.*;
@@ -76,37 +99,11 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 import org.gudy.azureus2.ui.swt.views.tableitems.mytorrents.TrackerNameItem;
 import org.gudy.azureus2.ui.swt.views.utils.TagUIUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.content.ContentException;
-import com.aelitis.azureus.core.content.RelatedAttributeLookupListener;
-import com.aelitis.azureus.core.content.RelatedContentManager;
-import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.RegExUtil;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginViewInterface;
-import com.aelitis.azureus.ui.IUIIntializer;
-import com.aelitis.azureus.ui.InitializerListener;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.common.table.TableSelectionListener;
-import com.aelitis.azureus.ui.common.table.TableViewFilterCheck;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.shells.main.UIFunctionsImpl;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
-import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
-import com.aelitis.azureus.ui.swt.utils.TagUIUtilsV3;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
-import com.aelitis.azureus.ui.swt.views.skin.StandardButtonsArea;
-import com.aelitis.azureus.util.ImportExportUtils;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 @SuppressWarnings({
 	"unchecked",

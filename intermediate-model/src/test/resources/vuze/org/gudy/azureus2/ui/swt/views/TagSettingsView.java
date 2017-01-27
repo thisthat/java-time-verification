@@ -18,11 +18,11 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
+import com.aelitis.azureus.core.util.GeneralUtils;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.KeyEvent;
@@ -44,22 +44,15 @@ import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.ColorParameter;
-import org.gudy.azureus2.ui.swt.config.StringListParameter;
-import org.gudy.azureus2.ui.swt.config.generic.GenericBooleanParameter;
-import org.gudy.azureus2.ui.swt.config.generic.GenericFloatParameter;
-import org.gudy.azureus2.ui.swt.config.generic.GenericIntParameter;
-import org.gudy.azureus2.ui.swt.config.generic.GenericParameterAdapter;
-import org.gudy.azureus2.ui.swt.config.generic.GenericStringListParameter;
+import org.gudy.azureus2.ui.swt.config.generic.*;
 import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 import org.gudy.bouncycastle.util.Arrays;
 
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.tag.TagFeatureProperties.TagProperty;
-import com.aelitis.azureus.core.util.GeneralUtils;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author TuxPaper

@@ -20,9 +20,9 @@
 
 package org.gudy.azureus2.core3.download;
 
-import java.util.List;
-
 import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+
+import java.util.List;
 
 public interface 
 DownloadManagerAvailability 

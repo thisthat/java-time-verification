@@ -22,13 +22,14 @@
 
 package org.gudy.azureus2.core3.stats.transfer.impl;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
 import org.gudy.azureus2.core3.global.GlobalManagerStats;
 import org.gudy.azureus2.core3.stats.transfer.LongTermStats;
 import org.gudy.azureus2.core3.stats.transfer.LongTermStatsListener;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.util.Date;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 public class 
 LongTermStatsWrapper 

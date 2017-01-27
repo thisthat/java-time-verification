@@ -17,15 +17,6 @@
  */
 package com.aelitis.azureus.core.peermanager.messaging.bittorrent.ltep;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-
 import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.MessageException;
@@ -33,6 +24,14 @@ import com.aelitis.azureus.core.peermanager.messaging.MessagingUtil;
 import com.aelitis.azureus.core.peermanager.messaging.azureus.AZStylePeerExchange;
 import com.aelitis.azureus.core.peermanager.peerdb.PeerItem;
 import com.aelitis.azureus.core.peermanager.peerdb.PeerItemFactory;
+import org.gudy.azureus2.core3.logging.LogEvent;
+import org.gudy.azureus2.core3.logging.LogIDs;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.AENetworkClassifier;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
+
+import java.util.*;
 
 /**
  * @author Allan Crooks

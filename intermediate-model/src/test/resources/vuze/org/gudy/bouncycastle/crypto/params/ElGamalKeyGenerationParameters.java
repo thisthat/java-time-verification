@@ -1,9 +1,8 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import java.security.SecureRandom;
-
-import org.gudy.bouncycastle.crypto.params.ElGamalParameters;
 import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
+
+import java.security.SecureRandom;
 
 public class ElGamalKeyGenerationParameters
     extends KeyGenerationParameters

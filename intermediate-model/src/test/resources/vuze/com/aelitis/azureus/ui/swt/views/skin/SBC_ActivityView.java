@@ -20,12 +20,8 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.ui.swt.Utils;
-
 import com.aelitis.azureus.activities.VuzeActivitiesEntry;
 import com.aelitis.azureus.activities.VuzeActivitiesManager;
-import com.aelitis.azureus.core.messenger.config.PlatformVuzeActivitiesMessenger;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.mdi.MdiEntry;
 import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
@@ -33,6 +29,8 @@ import com.aelitis.azureus.ui.skin.SkinConstants;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
 import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.ui.swt.Utils;
 
 /**
  * @author TuxPaper

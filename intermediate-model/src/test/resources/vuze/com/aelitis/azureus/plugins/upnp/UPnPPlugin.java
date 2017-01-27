@@ -24,15 +24,20 @@ package com.aelitis.azureus.plugins.upnp;
  *
  */
 
-import java.util.*;
-import java.net.URL;
-
+import com.aelitis.net.natpmp.NATPMPDeviceAdapter;
+import com.aelitis.net.natpmp.NatPMPDeviceFactory;
+import com.aelitis.net.natpmp.upnp.NatPMPUPnP;
+import com.aelitis.net.natpmp.upnp.NatPMPUPnPFactory;
+import com.aelitis.net.upnp.*;
+import com.aelitis.net.upnp.services.*;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.logging.*;
 import org.gudy.azureus2.plugins.network.*;
 import org.gudy.azureus2.plugins.ui.*;
-import org.gudy.azureus2.plugins.ui.model.*;
 import org.gudy.azureus2.plugins.ui.config.*;
+import org.gudy.azureus2.plugins.ui.model.*;
 import org.gudy.azureus2.plugins.utils.DelayedTask;
 import org.gudy.azureus2.plugins.utils.UTTimer;
 import org.gudy.azureus2.plugins.utils.UTTimerEvent;
@@ -40,20 +45,9 @@ import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocument;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentException;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.IndentWriter;
 
-import com.aelitis.net.natpmp.NATPMPDeviceAdapter;
-import com.aelitis.net.natpmp.NatPMPDeviceFactory;
-import com.aelitis.net.natpmp.upnp.NatPMPUPnP;
-import com.aelitis.net.natpmp.upnp.NatPMPUPnPFactory;
-import com.aelitis.net.upnp.*;
-import com.aelitis.net.upnp.services.*;
+import java.net.URL;
+import java.util.*;
 
 public class 
 UPnPPlugin

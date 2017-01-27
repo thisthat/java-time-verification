@@ -19,7 +19,6 @@ package org.gudy.azureus2.ui.swt.config;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.ui.swt.Utils;

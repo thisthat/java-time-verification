@@ -22,18 +22,16 @@
 
 package org.gudy.azureus2.core3.global;
 
-import java.util.List;
-import java.util.Map;
-
 import com.aelitis.azureus.core.AzureusCoreComponent;
 import com.aelitis.azureus.core.tag.TaggableResolver;
-
+import org.gudy.azureus2.core3.download.*;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.tracker.client.*;
 import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.download.*;
-
 import org.gudy.azureus2.plugins.dht.mainline.MainlineDHTProvider;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * The GlobalManager contains a list of all the downloads

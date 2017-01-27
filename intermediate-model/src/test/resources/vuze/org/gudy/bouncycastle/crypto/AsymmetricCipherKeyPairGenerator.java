@@ -1,8 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
-
 /**
  * interface that a public/private key pair generator should conform to.
  */

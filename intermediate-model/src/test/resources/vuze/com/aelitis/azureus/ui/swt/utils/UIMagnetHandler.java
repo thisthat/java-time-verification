@@ -20,11 +20,10 @@
 
 package com.aelitis.azureus.ui.swt.utils;
 
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.Constants;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.net.magneturi.MagnetURIHandler;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.Constants;
 
 /**
  * @author TuxPaper

@@ -2,8 +2,6 @@ package org.gudy.bouncycastle.crypto;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.crypto.CipherParameters;
-
 /**
  * interface for classes implementing the Digital Signature Algorithm
  */

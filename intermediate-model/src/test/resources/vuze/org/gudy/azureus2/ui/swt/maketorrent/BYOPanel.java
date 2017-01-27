@@ -20,10 +20,7 @@
 
 package org.gudy.azureus2.ui.swt.maketorrent;
 
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.*;
@@ -40,7 +37,8 @@ import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 
-import com.aelitis.azureus.util.MapUtils;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author Olivier

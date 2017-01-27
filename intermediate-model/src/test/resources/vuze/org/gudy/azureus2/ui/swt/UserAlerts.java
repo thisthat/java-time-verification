@@ -17,12 +17,9 @@
  */
 package org.gudy.azureus2.ui.swt;
 
-import java.applet.Applet;
-import java.applet.AudioClip;
-import java.io.File;
-import java.net.URL;
-import java.util.Map;
-
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.*;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -41,9 +38,11 @@ import org.gudy.azureus2.platform.PlatformManagerFactory;
 import org.gudy.azureus2.plugins.platform.PlatformManagerException;
 import org.gudy.azureus2.ui.swt.minibar.DownloadBar;
 
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.io.File;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * Contains methods to alert the user of certain events.

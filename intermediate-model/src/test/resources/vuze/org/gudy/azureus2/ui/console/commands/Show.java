@@ -10,39 +10,6 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.FileWriter;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.category.Category;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.download.DownloadManagerStats;
-import org.gudy.azureus2.core3.global.GlobalManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.peer.PEPeer;
-import org.gudy.azureus2.core3.peer.PEPeerManager;
-import org.gudy.azureus2.core3.peer.PEPeerManagerStats;
-import org.gudy.azureus2.core3.peer.PEPeerStats;
-import org.gudy.azureus2.core3.peer.PEPiece;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
-import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.ui.console.ConsoleInput;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.control.DHTControlStats;
 import com.aelitis.azureus.core.dht.db.DHTDBStats;
@@ -56,6 +23,26 @@ import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagManagerFactory;
 import com.aelitis.azureus.core.tag.TagType;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
+import org.gudy.azureus2.core3.category.Category;
+import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.download.DownloadManagerStats;
+import org.gudy.azureus2.core3.global.GlobalManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.peer.*;
+import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
+import org.gudy.azureus2.core3.util.AEDiagnostics;
+import org.gudy.azureus2.core3.util.DisplayFormatters;
+import org.gudy.azureus2.core3.util.IndentWriter;
+import org.gudy.azureus2.core3.util.TorrentUtils;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.io.FileWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /**
  * @author Tobias Minich

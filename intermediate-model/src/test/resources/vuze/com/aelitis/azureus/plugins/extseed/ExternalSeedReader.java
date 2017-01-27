@@ -19,13 +19,13 @@
 
 package com.aelitis.azureus.plugins.extseed;
 
-import java.net.URL;
-import java.util.List;
-
 import org.gudy.azureus2.plugins.peers.Peer;
 import org.gudy.azureus2.plugins.peers.PeerManager;
 import org.gudy.azureus2.plugins.peers.PeerReadRequest;
 import org.gudy.azureus2.plugins.torrent.Torrent;
+
+import java.net.URL;
+import java.util.List;
 
 public interface 
 ExternalSeedReader 

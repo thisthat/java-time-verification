@@ -1,14 +1,14 @@
 package org.gudy.bouncycastle.asn1.x9;
 
+import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
+import org.gudy.bouncycastle.math.ec.ECCurve;
+import org.gudy.bouncycastle.util.encoders.Hex;
+
 import java.math.BigInteger;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
-
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.math.ec.ECCurve;
-import org.gudy.bouncycastle.util.encoders.Hex;
 
 
 /**

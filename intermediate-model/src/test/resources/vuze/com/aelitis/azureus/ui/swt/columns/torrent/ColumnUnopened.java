@@ -21,20 +21,17 @@
 package com.aelitis.azureus.ui.swt.columns.torrent;
 
 
-import org.eclipse.swt.graphics.Image;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-
 import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
 import com.aelitis.azureus.ui.common.table.TableRowCore;
 import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
+import org.eclipse.swt.graphics.Image;
+import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 
 /**
  * @author TuxPaper

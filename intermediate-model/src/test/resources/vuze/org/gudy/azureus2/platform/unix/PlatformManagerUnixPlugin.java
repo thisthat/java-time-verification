@@ -17,29 +17,27 @@
 
 package org.gudy.azureus2.platform.unix;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
-import org.gudy.azureus2.update.UpdaterUtils;
-
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-
 import org.gudy.azureus2.plugins.Plugin;
 import org.gudy.azureus2.plugins.PluginException;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ui.UIInstance;
 import org.gudy.azureus2.plugins.ui.UIManagerListener;
+import org.gudy.azureus2.update.UpdaterUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author TuxPaper

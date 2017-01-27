@@ -20,6 +20,12 @@
 
 package com.aelitis.azureus.plugins.tracker.dht;
 
+import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeContact;
+import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeNetwork;
+import com.aelitis.azureus.core.dht.transport.udp.impl.DHTUDPUtils;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import org.gudy.azureus2.core3.util.*;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -27,29 +33,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.*;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.ByteArrayHashMap;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
-
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-
-import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeContact;
-import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeNetwork;
-import com.aelitis.azureus.core.dht.transport.udp.impl.DHTUDPUtils;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 
 public class 
 DHTTrackerPluginAlt 

@@ -18,12 +18,12 @@
  */
 package org.gudy.azureus2.ui.swt.osx;
 
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
 
 
 public class Start {

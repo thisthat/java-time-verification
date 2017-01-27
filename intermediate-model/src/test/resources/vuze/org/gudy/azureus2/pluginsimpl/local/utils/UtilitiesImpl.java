@@ -27,16 +27,24 @@ package org.gudy.azureus2.pluginsimpl.local.utils;
  *
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPChecker;
+import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPCheckerFactory;
+import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPCheckerService;
+import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPCheckerServiceListener;
+import org.gudy.azureus2.core3.logging.LogEvent;
+import org.gudy.azureus2.core3.logging.LogIDs;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.core3.util.Timer;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
@@ -71,41 +79,16 @@ import org.gudy.azureus2.pluginsimpl.local.utils.resourceuploader.ResourceUpload
 import org.gudy.azureus2.pluginsimpl.local.utils.security.*;
 import org.gudy.azureus2.pluginsimpl.local.utils.xml.rss.RSSFeedImpl;
 import org.gudy.azureus2.pluginsimpl.local.utils.xml.simpleparser.*;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPChecker;
-import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPCheckerFactory;
-import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPCheckerService;
-import org.gudy.azureus2.core3.ipchecker.extipchecker.ExternalIPCheckerServiceListener;
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.IPToHostNameResolver;
-import org.gudy.azureus2.core3.util.IPToHostNameResolverListener;
-import org.gudy.azureus2.core3.util.SystemProperties;
-import org.gudy.azureus2.core3.util.DirectByteBufferPool;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.Timer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public class 
 UtilitiesImpl

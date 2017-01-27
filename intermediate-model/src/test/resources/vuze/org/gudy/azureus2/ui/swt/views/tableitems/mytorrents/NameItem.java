@@ -22,8 +22,8 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.ui.common.table.TableRowCore;
 import org.eclipse.swt.graphics.Image;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
@@ -40,8 +40,6 @@ import org.gudy.azureus2.ui.swt.SimpleTextEntryWindow;
 import org.gudy.azureus2.ui.swt.debug.ObfusticateCellText;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-
-import com.aelitis.azureus.ui.common.table.TableRowCore;
 
 /** Torrent name cell for My Torrents.
  *

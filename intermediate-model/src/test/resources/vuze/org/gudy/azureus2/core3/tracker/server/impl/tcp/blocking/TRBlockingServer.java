@@ -19,13 +19,7 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl.tcp.blocking;
 
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import javax.net.ssl.SSLServerSocket;
-import javax.net.ssl.SSLServerSocketFactory;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.security.SESecurityManager;
@@ -34,7 +28,11 @@ import org.gudy.azureus2.core3.tracker.server.impl.tcp.TRTrackerServerTCP;
 import org.gudy.azureus2.core3.util.AEThread;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 
 /**

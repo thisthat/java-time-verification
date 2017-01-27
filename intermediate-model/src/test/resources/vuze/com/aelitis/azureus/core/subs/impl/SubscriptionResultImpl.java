@@ -20,19 +20,17 @@
 
 package com.aelitis.azureus.core.subs.impl;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.plugins.utils.search.SearchResult;
-
 import com.aelitis.azureus.core.metasearch.Result;
 import com.aelitis.azureus.core.subs.SubscriptionResult;
 import com.aelitis.azureus.util.JSONUtils;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.utils.search.SearchResult;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class 
 SubscriptionResultImpl 

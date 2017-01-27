@@ -10,10 +10,12 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.AERunStateHandler;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Tobias Minich

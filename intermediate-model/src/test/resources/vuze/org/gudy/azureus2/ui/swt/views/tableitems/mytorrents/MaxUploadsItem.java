@@ -22,17 +22,16 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.ui.common.table.TableRowCore;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.UIManager;
 import org.gudy.azureus2.plugins.ui.menus.*;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-
-import com.aelitis.azureus.ui.common.table.TableRowCore;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 
 public class MaxUploadsItem
        extends CoreTableColumnSWT 

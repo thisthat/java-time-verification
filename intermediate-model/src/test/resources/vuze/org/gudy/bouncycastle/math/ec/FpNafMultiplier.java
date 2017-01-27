@@ -2,8 +2,6 @@ package org.gudy.bouncycastle.math.ec;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.math.ec.ECPoint;
-
 /**
  * Class implementing the NAF (Non-Adjacent Form) multiplication algorithm.
  */

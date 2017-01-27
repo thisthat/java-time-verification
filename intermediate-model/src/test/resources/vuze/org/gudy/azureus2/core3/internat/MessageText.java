@@ -16,6 +16,14 @@
  */
 package org.gudy.azureus2.core3.internat;
 
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.logging.LogAlert;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.FileUtil;
+import org.gudy.azureus2.core3.util.SystemProperties;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URI;
@@ -26,14 +34,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.logging.LogAlert;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SystemProperties;
 
 
 /**

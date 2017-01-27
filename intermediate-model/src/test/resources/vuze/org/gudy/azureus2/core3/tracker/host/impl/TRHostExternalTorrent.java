@@ -27,13 +27,16 @@ package org.gudy.azureus2.core3.tracker.host.impl;
  *
  */
 
-import java.util.*;
-import java.net.*;
-import java.io.*;
-
 import org.gudy.azureus2.core3.internat.*;
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.*;
+
+import java.io.File;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 TRHostExternalTorrent 

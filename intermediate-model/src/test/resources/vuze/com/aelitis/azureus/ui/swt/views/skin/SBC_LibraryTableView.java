@@ -20,40 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.Locale;
-import java.util.Map;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentFile;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
-import org.gudy.azureus2.plugins.ui.tables.TableManager;
-import org.gudy.azureus2.plugins.ui.tables.TableRow;
-import org.gudy.azureus2.plugins.ui.tables.TableRowRefreshListener;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
-import org.gudy.azureus2.ui.swt.TorrentUtil;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.debug.ObfusticateImage;
-import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
-import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
-import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
-import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewImpl;
-import org.gudy.azureus2.ui.swt.views.MyTorrentsSuperView;
-import org.gudy.azureus2.ui.swt.views.MyTorrentsView;
-import org.gudy.azureus2.ui.swt.views.table.TableRowSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
-import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
-import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
@@ -76,6 +42,37 @@ import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectTextbox;
 import com.aelitis.azureus.util.DLReferals;
 import com.aelitis.azureus.util.DataSourceUtils;
 import com.aelitis.azureus.util.PlayUtils;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
+import org.gudy.azureus2.plugins.ui.tables.TableManager;
+import org.gudy.azureus2.plugins.ui.tables.TableRow;
+import org.gudy.azureus2.plugins.ui.tables.TableRowRefreshListener;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
+import org.gudy.azureus2.ui.swt.TorrentUtil;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.debug.ObfusticateImage;
+import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
+import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
+import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
+import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewImpl;
+import org.gudy.azureus2.ui.swt.views.MyTorrentsSuperView;
+import org.gudy.azureus2.ui.swt.views.MyTorrentsView;
+import org.gudy.azureus2.ui.swt.views.table.TableRowSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
+import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
+import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
+
+import java.util.Map;
 
 /**
  * Classic My Torrents view wrapped in a SkinView

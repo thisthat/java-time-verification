@@ -1,15 +1,13 @@
 package org.gudy.azureus2.ui.swt.speedtest;
 
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterResult;
+import com.aelitis.azureus.core.speedmanager.SpeedManager;
+import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -20,11 +18,6 @@ import org.gudy.azureus2.ui.swt.views.stats.TransferStatsView;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.Wizard;
-
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminSpeedTesterResult;
-import com.aelitis.azureus.core.speedmanager.SpeedManager;
-import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
 
 /**
  * Created on May 1, 2007

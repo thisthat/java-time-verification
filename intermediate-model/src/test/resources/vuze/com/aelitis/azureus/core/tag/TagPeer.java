@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.tag;
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.peer.PEPeer;
+
+import java.util.List;
 
 public interface 
 TagPeer

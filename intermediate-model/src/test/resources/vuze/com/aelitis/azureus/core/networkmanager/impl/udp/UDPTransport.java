@@ -19,15 +19,14 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.udp;
 
-import java.nio.ByteBuffer;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.logging.LogIDs;
-
 import com.aelitis.azureus.core.networkmanager.TransportEndpoint;
 import com.aelitis.azureus.core.networkmanager.TransportStartpoint;
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
 import com.aelitis.azureus.core.networkmanager.impl.TransportImpl;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.logging.LogIDs;
+
+import java.nio.ByteBuffer;
 
 public class 
 UDPTransport

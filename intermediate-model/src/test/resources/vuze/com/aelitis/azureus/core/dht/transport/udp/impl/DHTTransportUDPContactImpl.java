@@ -19,15 +19,6 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.List;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.AERunStateHandler;
-import org.gudy.azureus2.core3.util.AESemaphore;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
@@ -36,6 +27,14 @@ import com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.VivaldiPositionProvid
 import com.aelitis.azureus.core.dht.transport.*;
 import com.aelitis.azureus.core.dht.transport.udp.*;
 import com.aelitis.net.udp.uc.PRUDPPacketHandler;
+import org.gudy.azureus2.core3.util.AERunStateHandler;
+import org.gudy.azureus2.core3.util.AESemaphore;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
 
 
 /**

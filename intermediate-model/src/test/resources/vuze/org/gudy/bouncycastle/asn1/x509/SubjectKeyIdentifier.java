@@ -1,13 +1,6 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.SubjectKeyIdentifier;
-import org.gudy.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.gudy.bouncycastle.asn1.x509.X509Extension;
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1OctetString;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DEROctetString;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.crypto.Digest;
 import org.gudy.bouncycastle.crypto.digests.SHA1Digest;
 

@@ -20,12 +20,12 @@
  */
 package org.gudy.azureus2.core3.disk;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Olivier

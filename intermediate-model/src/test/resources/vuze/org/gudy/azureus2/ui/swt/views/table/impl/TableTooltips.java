@@ -17,17 +17,15 @@
 
 package org.gudy.azureus2.ui.swt.views.table.impl;
 
+import com.aelitis.azureus.ui.common.table.TableCellCore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
-
-import com.aelitis.azureus.ui.common.table.TableCellCore;
 
 /**
  * @author TuxPaper

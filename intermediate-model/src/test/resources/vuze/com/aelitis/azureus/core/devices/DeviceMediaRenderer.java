@@ -20,10 +20,10 @@
 
 package com.aelitis.azureus.core.devices;
 
+import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
+
 import java.io.File;
 import java.net.InetAddress;
-
-import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
 
 
 public interface 

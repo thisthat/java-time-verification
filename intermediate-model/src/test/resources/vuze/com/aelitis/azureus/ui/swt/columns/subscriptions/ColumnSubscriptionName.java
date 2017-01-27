@@ -17,23 +17,20 @@
 
 package com.aelitis.azureus.ui.swt.columns.subscriptions;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-
-import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
 import com.aelitis.azureus.core.subs.Subscription;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
 
 /**
  * @author Olivier Chalouhi

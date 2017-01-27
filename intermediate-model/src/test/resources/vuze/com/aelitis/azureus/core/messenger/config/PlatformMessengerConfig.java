@@ -20,14 +20,13 @@
 
 package com.aelitis.azureus.core.messenger.config;
 
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.AESemaphore;
-
 import com.aelitis.azureus.core.messenger.PlatformMessage;
 import com.aelitis.azureus.core.messenger.PlatformMessenger;
 import com.aelitis.azureus.core.messenger.PlatformMessengerException;
 import com.aelitis.azureus.core.messenger.PlatformMessengerListener;
+import org.gudy.azureus2.core3.util.AESemaphore;
+
+import java.util.Map;
 
 public class 
 PlatformMessengerConfig 

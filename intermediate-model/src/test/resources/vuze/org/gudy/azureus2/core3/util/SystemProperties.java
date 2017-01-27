@@ -19,18 +19,17 @@
  */
 package org.gudy.azureus2.core3.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.util.Properties;
-
 import org.gudy.azureus2.core3.internat.LocaleUtil;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
-import org.gudy.azureus2.plugins.platform.PlatformManagerException;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
 /**
  * Utility class to manage system-dependant information.

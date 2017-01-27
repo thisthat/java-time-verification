@@ -20,16 +20,16 @@
 
 package com.aelitis.azureus.core.messenger.config;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import com.aelitis.azureus.activities.VuzeActivitiesEntry;
 import com.aelitis.azureus.activities.VuzeActivitiesManager;
 import com.aelitis.azureus.core.messenger.PlatformMessage;
 import com.aelitis.azureus.core.messenger.PlatformMessenger;
 import com.aelitis.azureus.core.messenger.PlatformMessengerListener;
 import com.aelitis.azureus.util.MapUtils;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author TuxPaper

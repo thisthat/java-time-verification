@@ -7,21 +7,16 @@
 
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.PrintStream;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.io.PrintStream;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.Set;
 
 /**
  * base interface for all console commands

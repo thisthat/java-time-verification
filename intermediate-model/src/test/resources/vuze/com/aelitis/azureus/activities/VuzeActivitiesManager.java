@@ -20,16 +20,15 @@
 
 package com.aelitis.azureus.activities;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
 import com.aelitis.azureus.core.cnetwork.*;
 import com.aelitis.azureus.core.messenger.config.PlatformVuzeActivitiesMessenger;
 import com.aelitis.azureus.util.ConstantsVuze;
 import com.aelitis.azureus.util.MapUtils;
+import org.gudy.azureus2.core3.util.*;
+
+import java.util.*;
 
 /**
  * Manage Vuze News Entries.  Loads, Saves, and expires them

@@ -19,17 +19,17 @@
 
 package com.aelitis.net.upnp.impl.services;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
-
-
 import com.aelitis.net.upnp.*;
 import com.aelitis.net.upnp.impl.UPnPImpl;
 import com.aelitis.net.upnp.impl.device.UPnPRootDeviceImpl;
 import com.aelitis.net.upnp.services.UPnPWANConnection;
 import com.aelitis.net.upnp.services.UPnPWANConnectionListener;
 import com.aelitis.net.upnp.services.UPnPWANConnectionPortMapping;
+import org.gudy.azureus2.core3.util.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author parg

@@ -22,12 +22,14 @@
 
 package org.gudy.azureus2.core3.category.impl;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.tag.TagDownload;
+import com.aelitis.azureus.core.tag.TagFeatureRunState;
+import com.aelitis.azureus.core.tag.Taggable;
+import com.aelitis.azureus.core.tag.impl.TagBase;
+import com.aelitis.azureus.core.util.IdentityHashSet;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryListener;
 import org.gudy.azureus2.core3.download.*;
@@ -37,14 +39,11 @@ import org.gudy.azureus2.core3.util.IndentWriter;
 import org.gudy.azureus2.core3.util.ListenerManager;
 import org.gudy.azureus2.core3.util.ListenerManagerDispatcher;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.tag.TagDownload;
-import com.aelitis.azureus.core.tag.TagFeatureRunState;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.tag.impl.TagBase;
-import com.aelitis.azureus.core.util.IdentityHashSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class 
 CategoryImpl 

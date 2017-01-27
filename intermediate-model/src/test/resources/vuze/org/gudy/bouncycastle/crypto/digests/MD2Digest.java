@@ -1,6 +1,5 @@
 package org.gudy.bouncycastle.crypto.digests;
 
-import org.gudy.bouncycastle.crypto.digests.MD2Digest;
 import org.gudy.bouncycastle.crypto.Digest;
 /**
  * implementation of MD2
@@ -14,11 +13,15 @@ public class MD2Digest
     /* X buffer */
     private byte[]   X = new byte[48];
     private int     xOff;
-    /* M buffer */
-    private byte[]   M = new byte[16];
+
+    /* M buffer */
+
+    private byte[]   M = new byte[16];
     private int     mOff;
-    /* check sum */
-    private byte[]   C = new byte[16];
+
+    /* check sum */
+
+    private byte[]   C = new byte[16];
     private int COff;
 
     public MD2Digest()

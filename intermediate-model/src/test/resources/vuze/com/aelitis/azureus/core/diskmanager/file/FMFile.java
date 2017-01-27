@@ -27,9 +27,9 @@ package com.aelitis.azureus.core.diskmanager.file;
  *
  */
 
-import java.io.File;
-
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
+
+import java.io.File;
 
 
 public interface 

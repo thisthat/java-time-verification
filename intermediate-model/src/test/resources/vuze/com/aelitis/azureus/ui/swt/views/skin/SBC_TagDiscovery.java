@@ -20,33 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.global.GlobalManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentException;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
-import org.gudy.azureus2.plugins.ui.tables.TableColumn;
-import org.gudy.azureus2.plugins.ui.tables.TableColumnCreationListener;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
-import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.views.table.TableSelectedRowsListener;
-import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableViewSWTMenuFillListener;
-import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
-import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
-import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
@@ -67,8 +40,33 @@ import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
 import com.aelitis.azureus.ui.swt.columns.tag.ColumnTagName;
 import com.aelitis.azureus.ui.swt.columns.tagdiscovery.*;
 import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
 import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.global.GlobalManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.torrent.TOTorrentException;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
+import org.gudy.azureus2.plugins.ui.tables.TableColumn;
+import org.gudy.azureus2.plugins.ui.tables.TableColumnCreationListener;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
+import org.gudy.azureus2.ui.swt.Messages;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.views.table.TableSelectedRowsListener;
+import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableViewSWTMenuFillListener;
+import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
+import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
+import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author TuxPaper

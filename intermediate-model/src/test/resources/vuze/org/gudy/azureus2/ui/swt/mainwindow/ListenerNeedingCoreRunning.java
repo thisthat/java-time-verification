@@ -18,12 +18,11 @@
 
 package org.gudy.azureus2.ui.swt.mainwindow;
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
 
 /**
  * SWT Listener that, when fired, waits for AzureusCore to be available

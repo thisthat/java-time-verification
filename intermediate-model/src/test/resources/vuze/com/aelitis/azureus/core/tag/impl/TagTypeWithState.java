@@ -20,12 +20,12 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.util.List;
-
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.Taggable;
 import com.aelitis.azureus.core.tag.TaggableResolver;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+
+import java.util.List;
 
 public class 
 TagTypeWithState

@@ -25,7 +25,6 @@ package org.gudy.azureus2.pluginsimpl.remote.ipfilter;
  */
 
 import org.gudy.azureus2.plugins.ipfilter.*;
-
 import org.gudy.azureus2.pluginsimpl.remote.*;
 
 

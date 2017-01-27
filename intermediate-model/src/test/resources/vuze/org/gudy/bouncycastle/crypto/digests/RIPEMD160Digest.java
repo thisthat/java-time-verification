@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto.digests;
 
-import org.gudy.bouncycastle.crypto.digests.GeneralDigest;
-import org.gudy.bouncycastle.crypto.digests.RIPEMD160Digest;
-
-
 /**
  * implementation of RIPEMD see,
  * http://www.esat.kuleuven.ac.be/~bosselae/ripemd160.html

@@ -1,13 +1,13 @@
 package com.aelitis.azureus.core.speedmanager.impl.v2;
 
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.RealTimeInfo;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.speedmanager.SpeedManager;
 import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
 import com.aelitis.azureus.core.speedmanager.SpeedManagerPingMapper;
-import com.aelitis.azureus.core.speedmanager.SpeedManager;
 import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerAlgorithmProviderAdapter;
-import com.aelitis.azureus.core.AzureusCoreFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.RealTimeInfo;
+import org.gudy.azureus2.core3.util.SystemTime;
 
 /**
  * Created on May 23, 2007

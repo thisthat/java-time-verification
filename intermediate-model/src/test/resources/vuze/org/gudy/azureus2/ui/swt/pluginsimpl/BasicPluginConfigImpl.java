@@ -24,10 +24,6 @@ package org.gudy.azureus2.ui.swt.pluginsimpl;
  *
  */
 
-import java.lang.ref.WeakReference;
-import java.util.*;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -46,17 +42,12 @@ import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.LinkLabel;
 import org.gudy.azureus2.ui.swt.config.*;
-import org.gudy.azureus2.ui.swt.config.BooleanParameter;
-import org.gudy.azureus2.ui.swt.config.DirectoryParameter;
-import org.gudy.azureus2.ui.swt.config.InfoParameter;
-import org.gudy.azureus2.ui.swt.config.IntParameter;
-import org.gudy.azureus2.ui.swt.config.Parameter;
-import org.gudy.azureus2.ui.swt.config.PasswordParameter;
-import org.gudy.azureus2.ui.swt.config.StringListParameter;
-import org.gudy.azureus2.ui.swt.config.StringParameter;
 import org.gudy.azureus2.ui.swt.mainwindow.ClipboardCopy;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
 import org.gudy.azureus2.ui.swt.plugins.UISWTParameterContext;
+
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 public class 
 BasicPluginConfigImpl

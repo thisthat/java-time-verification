@@ -19,12 +19,12 @@
 
 package com.aelitis.azureus.core.peermanager.unchoker;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
 import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.core3.util.RandomUtils;
+
+import java.util.*;
 
 /**
  * Utility collection for unchokers.

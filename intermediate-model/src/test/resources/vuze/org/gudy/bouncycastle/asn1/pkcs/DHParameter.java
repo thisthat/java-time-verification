@@ -1,14 +1,9 @@
 package org.gudy.bouncycastle.asn1.pkcs;
 
+import org.gudy.bouncycastle.asn1.*;
+
 import java.math.BigInteger;
 import java.util.Enumeration;
-
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERSequence;
 
 public class DHParameter
     implements DEREncodable

@@ -20,9 +20,19 @@
 
 package com.aelitis.azureus.core.pairing.impl.swt;
 
-import java.net.InetAddress;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminNetworkInterface;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminNetworkInterfaceAddress;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminPropertyChangeListener;
+import com.aelitis.azureus.core.pairing.PairingManager;
+import com.aelitis.azureus.core.pairing.impl.PairingManagerImpl;
+import com.aelitis.azureus.core.security.CryptoManagerPasswordHandler;
+import com.aelitis.azureus.core.util.AZ3Functions;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdater;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.graphics.Image;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.AERunnable;
@@ -37,24 +47,13 @@ import org.gudy.azureus2.plugins.ui.config.ParameterListener;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
 import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.auth.CryptoWindow;
 import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
 import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntry;
 import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntryListener;
-import org.gudy.azureus2.ui.swt.auth.CryptoWindow;
 
-import com.aelitis.azureus.core.pairing.PairingManager;
-import com.aelitis.azureus.core.pairing.impl.PairingManagerImpl;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminNetworkInterface;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminNetworkInterfaceAddress;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminPropertyChangeListener;
-import com.aelitis.azureus.core.security.CryptoManagerPasswordHandler;
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdater;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.net.InetAddress;
+import java.util.*;
 
 public class 
 PMSWTImpl 

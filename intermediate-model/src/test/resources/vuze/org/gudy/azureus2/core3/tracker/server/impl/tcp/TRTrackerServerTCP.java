@@ -23,15 +23,18 @@
 package org.gudy.azureus2.core3.tracker.server.impl.tcp;
 
 
-import java.net.*;
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.tracker.server.*;
 import org.gudy.azureus2.core3.tracker.server.impl.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 public abstract class 
@@ -81,7 +84,8 @@ TRTrackerServerTCP
 		ssl						= _ssl;
 		apply_ip_filter			= _apply_ip_filter;
 
-		thread_pool = new ThreadPool( "TrackerServer:TCP:"+port, THREAD_POOL_SIZE );			
+		thread_pool = new ThreadPool( "TrackerServer:TCP:"+port, THREAD_POOL_SIZE );
+			
 		if ( PROCESSING_GET_LIMIT > 0 ){
 			
 			thread_pool.setExecutionLimit( PROCESSING_GET_LIMIT );

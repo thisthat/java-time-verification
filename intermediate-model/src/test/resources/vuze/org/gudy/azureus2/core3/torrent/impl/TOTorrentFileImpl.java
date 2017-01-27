@@ -23,12 +23,13 @@
 package org.gudy.azureus2.core3.torrent.impl;
 
 
-import java.io.*;
-import java.util.*;
-
 import org.gudy.azureus2.core3.internat.*;
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.*;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 public class 
 TOTorrentFileImpl

@@ -22,13 +22,13 @@
  
 package org.gudy.azureus2.pluginsimpl.local.utils.xml.simpleparser;
 
-import java.io.PrintWriter;
-import java.util.*;
-
-import org.w3c.dom.*;
-
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentAttribute;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
+import java.io.PrintWriter;
+import java.util.Vector;
 
 
 public class 
@@ -133,11 +133,15 @@ SimpleXMLParserDocumentNodeImpl
 		
 		if ( node.getNodeType() == Node.ELEMENT_NODE ){
 			
-			NamedNodeMap atts = node.getAttributes();			
-            for (int i = 0; i < atts.getLength(); i++){				
-                Node child = atts.item(i);				
+			NamedNodeMap atts = node.getAttributes();
+			
+            for (int i = 0; i < atts.getLength(); i++){
+				
+                Node child = atts.item(i);
+				
 				v.addElement( new SimpleXMLParserDocumentAttributeImpl( child.getNodeName(), child.getNodeValue()));
-            }		}
+            }
+		}
 
         for (Node child = node.getFirstChild(); child != null;child = child.getNextSibling()){
 			

@@ -16,12 +16,12 @@
  */
 package org.gudy.azureus2.core3.logging;
 
-import java.io.PrintStream;
-
 import org.gudy.azureus2.core3.logging.impl.FileLogging;
 import org.gudy.azureus2.core3.logging.impl.LoggerImpl;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.PrintStream;
 
 /**
  * A static implementation of the LoggerImpl class.

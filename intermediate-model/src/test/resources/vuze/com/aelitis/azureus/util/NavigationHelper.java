@@ -20,16 +20,15 @@
 
 package com.aelitis.azureus.util;
 
-import java.io.File;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
 import com.aelitis.azureus.core.vuzefile.VuzeFileComponent;
 import com.aelitis.azureus.core.vuzefile.VuzeFileHandler;
 import com.aelitis.azureus.core.vuzefile.VuzeFileProcessor;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.File;
+import java.util.*;
 
 public class 
 NavigationHelper 

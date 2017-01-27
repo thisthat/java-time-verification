@@ -22,14 +22,13 @@
 
 package org.gudy.azureus2.core3.tracker.client;
 
-import java.util.Map;
-import java.net.URL;
-
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.IndentWriter;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
 
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import java.net.URL;
+import java.util.Map;
 
 public interface 
 TRTrackerAnnouncer 

@@ -27,11 +27,12 @@ package org.gudy.azureus2.pluginsimpl.local.download;
  *
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagManager;
+import com.aelitis.azureus.core.tag.TagManagerFactory;
+import com.aelitis.azureus.core.tag.TagType;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -58,12 +59,10 @@ import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
 import org.gudy.azureus2.pluginsimpl.local.ui.UIManagerImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
 
 public class 

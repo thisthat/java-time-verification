@@ -19,11 +19,14 @@
 
 package com.aelitis.azureus.core.peermanager.unchoker;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.peer.PEPeer;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 
 
 

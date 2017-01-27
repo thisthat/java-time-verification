@@ -24,9 +24,8 @@ package org.gudy.azureus2.pluginsimpl.remote.utils;
  *
  */
 
-import org.gudy.azureus2.plugins.utils.*;
 import org.gudy.azureus2.plugins.download.*;
-
+import org.gudy.azureus2.plugins.utils.*;
 import org.gudy.azureus2.pluginsimpl.remote.*;
 import org.gudy.azureus2.pluginsimpl.remote.download.*;
 

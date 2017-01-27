@@ -1,18 +1,6 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
-
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.gudy.bouncycastle.asn1.sec.ECPrivateKeyStructure;
 import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
@@ -27,6 +15,13 @@ import org.gudy.bouncycastle.jce.interfaces.PKCS12BagAttributeCarrier;
 import org.gudy.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.gudy.bouncycastle.jce.spec.ECParameterSpec;
 import org.gudy.bouncycastle.jce.spec.ECPrivateKeySpec;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 public class JCEECPrivateKey
     implements ECPrivateKey, PKCS12BagAttributeCarrier

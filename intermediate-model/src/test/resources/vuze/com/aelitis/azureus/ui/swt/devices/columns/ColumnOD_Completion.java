@@ -20,24 +20,21 @@
  
 package com.aelitis.azureus.ui.swt.devices.columns;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.*;
-
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
 import com.aelitis.azureus.core.devices.DeviceOfflineDownload;
 import com.aelitis.azureus.ui.common.table.impl.TableColumnImpl;
 import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import com.aelitis.azureus.ui.swt.utils.FontUtils;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.*;
+import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author TuxPaper

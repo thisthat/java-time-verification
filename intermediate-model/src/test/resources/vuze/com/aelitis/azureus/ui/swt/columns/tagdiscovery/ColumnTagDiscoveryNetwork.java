@@ -17,9 +17,8 @@
 
 package com.aelitis.azureus.ui.swt.columns.tagdiscovery;
 
-import org.gudy.azureus2.plugins.ui.tables.*;
-
 import com.aelitis.azureus.core.tag.TagDiscovery;
+import org.gudy.azureus2.plugins.ui.tables.*;
 
 public class ColumnTagDiscoveryNetwork
 	implements TableCellRefreshListener, TableColumnExtraInfoListener

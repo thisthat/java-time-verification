@@ -19,15 +19,15 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.http;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.networkmanager.Transport;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 HTTPMessageDecoder 

@@ -20,21 +20,20 @@
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
 
-import java.net.InetAddress;
-import java.nio.channels.CancelledKeyException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import com.aelitis.azureus.core.stats.AzureusCoreStats;
+import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
-import com.aelitis.azureus.core.stats.AzureusCoreStats;
-import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
+import java.net.InetAddress;
+import java.nio.channels.CancelledKeyException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class 
 TCPNetworkManager 

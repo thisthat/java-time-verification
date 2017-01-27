@@ -19,30 +19,6 @@
 
 package com.aelitis.azureus.core.dht.nat.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.lang.reflect.Method;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.security.*;
-import java.security.spec.RSAPublicKeySpec;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.utils.*;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.DHTLogger;
 import com.aelitis.azureus.core.dht.DHTOperationAdapter;
@@ -51,6 +27,22 @@ import com.aelitis.azureus.core.dht.nat.*;
 import com.aelitis.azureus.core.dht.transport.*;
 import com.aelitis.azureus.core.dht.transport.udp.*;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.utils.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.lang.reflect.Method;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.security.KeyFactory;
+import java.security.Signature;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.*;
 
 public class 
 DHTNATPuncherImpl

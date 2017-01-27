@@ -19,27 +19,13 @@
 
 package com.aelitis.azureus.core.speedmanager.impl;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Random;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
 import com.aelitis.azureus.core.speedmanager.SpeedManagerPingMapper;
 import com.aelitis.azureus.core.speedmanager.SpeedManagerPingZone;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.File;
+import java.util.*;
 
 class
 SpeedManagerPingMapperImpl

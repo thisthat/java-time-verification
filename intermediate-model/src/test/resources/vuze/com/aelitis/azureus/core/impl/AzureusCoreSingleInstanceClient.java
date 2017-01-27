@@ -19,10 +19,11 @@
 
 package com.aelitis.azureus.core.impl;
 
-import java.net.*;
-import java.io.*;
-
 import org.gudy.azureus2.core3.util.Constants;
+
+import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 
 /**

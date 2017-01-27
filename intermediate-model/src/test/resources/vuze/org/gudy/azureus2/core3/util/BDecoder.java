@@ -19,18 +19,13 @@
 
 package org.gudy.azureus2.core3.util;
 
+import com.aelitis.azureus.util.JSONUtils;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharsetDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import com.aelitis.azureus.util.JSONUtils;
+import java.util.*;
 
 /**
  * A set of utility methods to decode a bencoded array of byte into a Map.

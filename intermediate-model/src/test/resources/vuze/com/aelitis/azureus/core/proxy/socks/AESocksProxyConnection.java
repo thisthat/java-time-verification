@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.proxy.socks;
 
-import java.io.IOException;
-
 import com.aelitis.azureus.core.proxy.AEProxyConnection;
+
+import java.io.IOException;
 
 /**
  * @author parg

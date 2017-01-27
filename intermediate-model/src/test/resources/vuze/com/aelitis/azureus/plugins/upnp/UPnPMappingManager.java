@@ -24,8 +24,8 @@ package com.aelitis.azureus.plugins.upnp;
  *
  */
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.net.upnp.services.UPnPWANConnection;
 import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.AsyncDispatcher;
@@ -33,8 +33,9 @@ import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.RandomUtils;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.net.upnp.services.UPnPWANConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class 
 UPnPMappingManager 

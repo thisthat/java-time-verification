@@ -20,15 +20,10 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
+import com.aelitis.azureus.core.tag.*;
+
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagDownload;
-import com.aelitis.azureus.core.tag.TagException;
-import com.aelitis.azureus.core.tag.TagFeatureRunState;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.TaggableResolver;
 
 public class 
 TagTypeDownloadManual

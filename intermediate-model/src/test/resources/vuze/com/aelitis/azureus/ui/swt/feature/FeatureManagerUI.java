@@ -18,11 +18,21 @@
 
 package com.aelitis.azureus.ui.swt.feature;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.views.skin.SBC_PlusFTUX;
+import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBox;
+import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBoxListener;
+import com.aelitis.azureus.util.ConstantsVuze;
+import com.aelitis.azureus.util.FeatureUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.config.impl.ConfigurationChecker;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.LogAlert;
@@ -40,22 +50,8 @@ import org.gudy.azureus2.plugins.utils.FeatureManager.Licence;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
-import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter.URLInfo;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.views.skin.SBC_PlusFTUX;
-import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBox;
-import com.aelitis.azureus.ui.swt.views.skin.VuzeMessageBoxListener;
-import com.aelitis.azureus.util.ConstantsVuze;
-import com.aelitis.azureus.util.FeatureUtils;
+import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 
 public class FeatureManagerUI
 {

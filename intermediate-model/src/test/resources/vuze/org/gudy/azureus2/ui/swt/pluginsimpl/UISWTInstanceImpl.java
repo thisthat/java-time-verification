@@ -19,20 +19,20 @@
 
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.ui.IUIIntializer;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableStructureEventDispatcher;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnImpl;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -66,14 +66,12 @@ import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.views.table.utils.TableContextMenuManager;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 
-import com.aelitis.azureus.ui.IUIIntializer;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableStructureEventDispatcher;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnImpl;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+import java.util.*;
 
 public class 
 UISWTInstanceImpl

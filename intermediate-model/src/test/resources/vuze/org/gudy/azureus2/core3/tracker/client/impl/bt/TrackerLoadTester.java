@@ -1,5 +1,5 @@
 /*
- * Created on 1 févr. 2005
+ * Created on 1 fï¿½vr. 2005
  * Created by Olivier Chalouhi
  * 
  * Copyright (C) Azureus Software, Inc, All Rights Reserved.
@@ -20,10 +20,11 @@
  */
 package org.gudy.azureus2.core3.tracker.client.impl.bt;
 
+import org.gudy.azureus2.core3.util.Constants;
+
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import org.gudy.azureus2.core3.util.Constants;
 
 /**
  * @author Olivier Chalouhi

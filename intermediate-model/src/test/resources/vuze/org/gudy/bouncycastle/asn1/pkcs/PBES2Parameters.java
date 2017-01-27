@@ -1,12 +1,8 @@
 package org.gudy.bouncycastle.asn1.pkcs;
 
-import java.util.Enumeration;
+import org.gudy.bouncycastle.asn1.*;
 
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import java.util.Enumeration;
 
 public class PBES2Parameters
     implements PKCSObjectIdentifiers, DEREncodable

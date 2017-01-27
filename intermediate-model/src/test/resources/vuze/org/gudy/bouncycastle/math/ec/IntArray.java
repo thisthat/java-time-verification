@@ -1,6 +1,5 @@
 package org.gudy.bouncycastle.math.ec;
 
-import org.gudy.bouncycastle.math.ec.ECConstants;
 import org.gudy.bouncycastle.util.Arrays;
 
 import java.math.BigInteger;

@@ -27,16 +27,19 @@ package org.gudy.azureus2.core3.util.jar;
  *
  */
 
-import java.io.*;
-import java.net.URL;
-import java.net.URI;
-import java.util.jar.*;
-import java.util.*;
-
+import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.security.SEKeyDetails;
 import org.gudy.azureus2.core3.security.SESecurityManager;
 import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.logging.*;
+
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
 
 public class 
 AEJarBuilder 

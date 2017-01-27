@@ -19,8 +19,6 @@
 
 package org.gudy.azureus2.core3.tracker.client.impl.bt;
 
-import java.net.URL;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncer;
@@ -30,6 +28,8 @@ import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerScraperResponseImpl;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
+
+import java.net.URL;
 
 /**
  * @author parg

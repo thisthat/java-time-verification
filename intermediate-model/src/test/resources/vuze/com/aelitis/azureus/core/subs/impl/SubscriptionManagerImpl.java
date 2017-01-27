@@ -20,49 +20,9 @@
 
 package com.aelitis.azureus.core.subs.impl;
 
-import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.security.KeyPair;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.download.DownloadManagerState;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.PluginException;
-import org.gudy.azureus2.plugins.utils.Utilities;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
-import org.gudy.azureus2.plugins.download.*;
-import org.gudy.azureus2.plugins.peers.PeerManager;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
-import org.gudy.azureus2.plugins.torrent.TorrentManager;
-import org.gudy.azureus2.plugins.ui.UIManager;
-import org.gudy.azureus2.plugins.ui.UIManagerEvent;
-import org.gudy.azureus2.plugins.utils.DelayedTask;
-import org.gudy.azureus2.plugins.utils.StaticUtilities;
-import org.gudy.azureus2.plugins.utils.search.SearchException;
-import org.gudy.azureus2.plugins.utils.search.SearchInstance;
-import org.gudy.azureus2.plugins.utils.search.SearchObserver;
-import org.gudy.azureus2.plugins.utils.search.SearchProvider;
-import org.gudy.azureus2.plugins.utils.search.SearchResult;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
-import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
-import org.gudy.bouncycastle.util.encoders.Base64;
-
 import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.custom.Customization;
 import com.aelitis.azureus.core.custom.CustomizationManager;
 import com.aelitis.azureus.core.custom.CustomizationManagerFactory;
@@ -89,6 +49,41 @@ import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
 import com.aelitis.azureus.util.ImportExportUtils;
 import com.aelitis.azureus.util.UrlFilter;
 import com.aelitis.net.magneturi.MagnetURIHandler;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.download.DownloadManagerState;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginException;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
+import org.gudy.azureus2.plugins.download.*;
+import org.gudy.azureus2.plugins.peers.PeerManager;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
+import org.gudy.azureus2.plugins.torrent.TorrentManager;
+import org.gudy.azureus2.plugins.ui.UIManager;
+import org.gudy.azureus2.plugins.ui.UIManagerEvent;
+import org.gudy.azureus2.plugins.utils.DelayedTask;
+import org.gudy.azureus2.plugins.utils.StaticUtilities;
+import org.gudy.azureus2.plugins.utils.Utilities;
+import org.gudy.azureus2.plugins.utils.search.*;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
+import org.gudy.azureus2.pluginsimpl.local.torrent.TorrentImpl;
+import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
+import org.gudy.bouncycastle.util.encoders.Base64;
+
+import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.security.KeyPair;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 
 public class 

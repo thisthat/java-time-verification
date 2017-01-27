@@ -18,24 +18,24 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import java.util.*;
-
+import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.AESemaphore2;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class VuzeMessageBox
 	implements UIFunctionsUserPrompter, SkinnedDialogClosedListener

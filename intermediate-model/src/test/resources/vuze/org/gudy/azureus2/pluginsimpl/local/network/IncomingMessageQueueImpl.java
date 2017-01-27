@@ -19,15 +19,14 @@
 
 package org.gudy.azureus2.pluginsimpl.local.network;
 
-import java.io.IOException;
-import java.util.HashMap;
-
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTMessage;
 import org.gudy.azureus2.plugins.messaging.*;
 import org.gudy.azureus2.plugins.messaging.bittorrent.BTMessageManager;
 import org.gudy.azureus2.plugins.network.*;
 import org.gudy.azureus2.pluginsimpl.local.messaging.MessageAdapter;
 
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTMessage;
+import java.io.IOException;
+import java.util.HashMap;
 
 
 

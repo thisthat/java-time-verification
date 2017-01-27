@@ -16,11 +16,23 @@
  */
 package com.aelitis.azureus.ui.swt;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-
+import com.aelitis.azureus.core.*;
+import com.aelitis.azureus.core.messenger.ClientMessageContext;
+import com.aelitis.azureus.core.messenger.PlatformMessenger;
+import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClientListener;
+import com.aelitis.azureus.ui.*;
+import com.aelitis.azureus.ui.swt.browser.listener.*;
+import com.aelitis.azureus.ui.swt.browser.msg.MessageDispatcherSWT;
+import com.aelitis.azureus.ui.swt.devices.DeviceManagerUI;
+import com.aelitis.azureus.ui.swt.feature.FeatureManagerUI;
+import com.aelitis.azureus.ui.swt.shells.main.MainWindowFactory;
+import com.aelitis.azureus.ui.swt.subscriptions.SubscriptionManagerUI;
+import com.aelitis.azureus.ui.swt.utils.UIMagnetHandler;
+import com.aelitis.azureus.util.InitialisationFunctions;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -50,27 +62,10 @@ import org.gudy.azureus2.ui.swt.update.UpdateMonitor;
 import org.gudy.azureus2.ui.swt.updater2.PreUpdateChecker;
 import org.gudy.azureus2.ui.swt.updater2.SWTUpdateChecker;
 
-import com.aelitis.azureus.core.*;
-import com.aelitis.azureus.core.messenger.ClientMessageContext;
-import com.aelitis.azureus.core.messenger.PlatformMessenger;
-import com.aelitis.azureus.core.messenger.config.PlatformConfigMessenger;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClientListener;
-import com.aelitis.azureus.ui.IUIIntializer;
-import com.aelitis.azureus.ui.InitializerListener;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
-import com.aelitis.azureus.ui.swt.browser.listener.*;
-import com.aelitis.azureus.ui.swt.browser.msg.MessageDispatcherSWT;
-import com.aelitis.azureus.ui.swt.devices.DeviceManagerUI;
-import com.aelitis.azureus.ui.swt.feature.FeatureManagerUI;
-import com.aelitis.azureus.ui.swt.shells.main.MainWindowFactory;
-import com.aelitis.azureus.ui.swt.subscriptions.SubscriptionManagerUI;
-import com.aelitis.azureus.ui.swt.utils.UIMagnetHandler;
-import com.aelitis.azureus.util.InitialisationFunctions;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author TuxPaper

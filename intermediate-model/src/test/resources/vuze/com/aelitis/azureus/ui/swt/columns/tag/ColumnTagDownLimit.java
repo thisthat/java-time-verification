@@ -17,13 +17,12 @@
 
 package com.aelitis.azureus.ui.swt.columns.tag;
 
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagFeatureRateLimit;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.ui.tables.*;
-
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagFeatureRateLimit;
 
 public class ColumnTagDownLimit
 	implements TableCellRefreshListener, TableColumnExtraInfoListener

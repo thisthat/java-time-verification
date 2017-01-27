@@ -21,6 +21,13 @@
 package com.aelitis.azureus.core.networkmanager.admin.impl.swt;
 
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.networkmanager.admin.impl.NetworkAdminImpl;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdater;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.graphics.Image;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
@@ -38,14 +45,6 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTInstance;
 import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntry;
 import org.gudy.azureus2.ui.swt.plugins.UISWTStatusEntryListener;
 import org.gudy.azureus2.ui.swt.views.stats.StatsView;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.networkmanager.admin.impl.NetworkAdminImpl;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdater;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 public class 
 NetworkAdminSWTImpl 

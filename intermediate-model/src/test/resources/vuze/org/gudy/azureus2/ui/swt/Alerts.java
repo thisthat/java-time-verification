@@ -18,8 +18,8 @@
  */
 package org.gudy.azureus2.ui.swt;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -31,8 +31,7 @@ import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.mainwindow.SWTThread;
 import org.gudy.azureus2.ui.swt.shells.MessageSlideShell;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.util.MapUtils;
+import java.util.*;
 
 /**
  * Utility methods to display popup window

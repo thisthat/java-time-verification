@@ -23,15 +23,14 @@
 package org.gudy.azureus2.core3.torrent.impl;
 
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
 import org.gudy.azureus2.core3.logging.LogRelation;
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
 
 public class 
 TOTorrentImpl

@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.crypto.digests;
 
-import org.gudy.bouncycastle.crypto.digests.LongDigest;
-import org.gudy.bouncycastle.crypto.digests.SHA384Digest;
-
-
 /**
  * Draft FIPS 180-2 implementation of SHA-384. <b>Note:</b> As this is
  * based on a draft this implementation is subject to change.

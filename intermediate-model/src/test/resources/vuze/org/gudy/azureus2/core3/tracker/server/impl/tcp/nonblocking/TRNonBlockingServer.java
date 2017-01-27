@@ -19,13 +19,10 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl.tcp.nonblocking;
 
-import java.util.*;
-
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelector;
+import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelectorFactory;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.logging.*;
@@ -36,10 +33,12 @@ import org.gudy.azureus2.core3.util.AEThread;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
-import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelector;
-import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelectorFactory;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author parg

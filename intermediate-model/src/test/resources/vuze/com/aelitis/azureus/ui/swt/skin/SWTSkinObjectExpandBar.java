@@ -18,9 +18,7 @@
 
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -29,7 +27,8 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Container that hold ExpandItems

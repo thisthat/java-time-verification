@@ -18,14 +18,16 @@
 
 package org.gudy.azureus2.ui.swt.progress;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.mainwindow.MainStatusBar;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A manager that aggregates and forward progress information for long running operations

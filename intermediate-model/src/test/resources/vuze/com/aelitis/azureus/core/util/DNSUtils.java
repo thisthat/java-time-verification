@@ -20,13 +20,12 @@
 
 package com.aelitis.azureus.core.util;
 
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-
-
-import org.gudy.azureus2.core3.util.Debug;
 
 
 public class 

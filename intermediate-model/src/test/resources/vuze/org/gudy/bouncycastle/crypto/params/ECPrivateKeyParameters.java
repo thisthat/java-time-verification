@@ -2,9 +2,6 @@ package org.gudy.bouncycastle.crypto.params;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.crypto.params.ECDomainParameters;
-import org.gudy.bouncycastle.crypto.params.ECKeyParameters;
-
 public class ECPrivateKeyParameters
     extends ECKeyParameters
 {

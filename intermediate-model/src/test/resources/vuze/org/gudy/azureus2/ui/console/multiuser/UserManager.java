@@ -22,13 +22,12 @@
 
 package org.gudy.azureus2.ui.console.multiuser;
 
-import java.io.*;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreException;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.ui.console.UserProfile;
 
-import com.aelitis.azureus.core.AzureusCoreException;
+import java.io.*;
+import java.util.*;
 
 /**
  * The usermanager is responsible for reading the users configuration

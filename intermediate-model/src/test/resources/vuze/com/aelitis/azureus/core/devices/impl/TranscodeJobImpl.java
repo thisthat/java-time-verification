@@ -20,15 +20,14 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoFile;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.util.ImportExportUtils;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
-
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadException;
@@ -39,17 +38,11 @@ import org.gudy.azureus2.plugins.peers.PeerManagerStats;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.devices.TranscodeAnalysisListener;
-import com.aelitis.azureus.core.devices.TranscodeJob;
-import com.aelitis.azureus.core.devices.TranscodeProfile;
-import com.aelitis.azureus.core.devices.TranscodeException;
-import com.aelitis.azureus.core.devices.TranscodeActionVetoException;
-import com.aelitis.azureus.core.devices.TranscodeTarget;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoFile;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.util.ImportExportUtils;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 TranscodeJobImpl 

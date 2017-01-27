@@ -17,9 +17,17 @@
 
 package com.aelitis.azureus.ui.swt.shells.opentorrent;
 
-import java.io.*;
-import java.net.URL;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.swt.shells.main.UIFunctionsImpl;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
+import com.aelitis.azureus.ui.swt.views.skin.StandardButtonsArea;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -46,17 +54,11 @@ import org.gudy.azureus2.ui.swt.*;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.mainwindow.TorrentOpener;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.swt.shells.main.UIFunctionsImpl;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
-import com.aelitis.azureus.ui.swt.views.skin.StandardButtonsArea;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 
 public class OpenTorrentWindow
 	implements TorrentDownloaderCallBackInterface, UIUpdatable

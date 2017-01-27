@@ -19,18 +19,17 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.transport.DHTTransportException;
 import com.aelitis.azureus.core.dht.transport.udp.DHTTransportUDP;
 import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketNetworkHandler;
 import com.aelitis.net.udp.uc.PRUDPPacketRequest;
+import org.gudy.azureus2.core3.util.SystemTime;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 /**
  * @author parg

@@ -20,9 +20,19 @@
 
 package com.aelitis.azureus.ui.swt.views.skin.sidebar;
 
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.common.updater.UIUpdater;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
+import com.aelitis.azureus.ui.skin.SkinConstants;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.mdi.BaseMdiEntry;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import com.aelitis.azureus.ui.swt.views.skin.InfoBarUtil;
+import com.aelitis.azureus.util.MapUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
@@ -47,19 +57,7 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListenerEx;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewImpl;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.common.updater.UIUpdater;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
-import com.aelitis.azureus.ui.skin.SkinConstants;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.mdi.BaseMdiEntry;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-import com.aelitis.azureus.ui.swt.views.skin.InfoBarUtil;
-import com.aelitis.azureus.util.MapUtils;
+import java.util.*;
 
 /**
  * @author TuxPaper

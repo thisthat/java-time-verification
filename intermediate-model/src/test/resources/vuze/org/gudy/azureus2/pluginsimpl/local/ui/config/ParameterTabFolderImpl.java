@@ -22,10 +22,11 @@
 
 package org.gudy.azureus2.pluginsimpl.local.ui.config;
 
-import java.util.*;
-
 import org.gudy.azureus2.plugins.ui.config.ParameterGroup;
 import org.gudy.azureus2.plugins.ui.config.ParameterTabFolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 ParameterTabFolderImpl 

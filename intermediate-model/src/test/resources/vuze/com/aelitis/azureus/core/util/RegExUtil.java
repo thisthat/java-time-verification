@@ -20,10 +20,12 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.util.*;
-import java.util.regex.Pattern;
-
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+import java.util.regex.Pattern;
 
 public class 
 RegExUtil 

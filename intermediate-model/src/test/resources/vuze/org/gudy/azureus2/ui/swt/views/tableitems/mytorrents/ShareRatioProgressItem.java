@@ -20,9 +20,6 @@
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
 
-import org.gudy.azureus2.ui.swt.SimpleTextEntryWindow;
-import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
-import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
@@ -31,6 +28,9 @@ import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.menus.MenuItem;
 import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.SimpleTextEntryWindow;
+import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
+import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
 
 
 

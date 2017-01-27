@@ -20,16 +20,15 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.net.upnp.UPnPDevice;
+import com.aelitis.net.upnp.UPnPService;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Debug;
-
-import com.aelitis.azureus.core.devices.*;
-import com.aelitis.net.upnp.UPnPDevice;
-import com.aelitis.net.upnp.UPnPService;
 
 public class 
 DeviceContentDirectoryImpl

@@ -27,9 +27,9 @@ package org.gudy.azureus2.plugins.sharing;
  *
  */
 
-import java.io.File;
-
 import org.gudy.azureus2.plugins.torrent.Torrent;
+
+import java.io.File;
 
 public interface 
 ShareItem 

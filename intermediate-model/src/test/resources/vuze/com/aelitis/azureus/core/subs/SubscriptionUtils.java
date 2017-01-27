@@ -20,13 +20,12 @@
 
 package com.aelitis.azureus.core.subs;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.azureus.core.AzureusCore;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 SubscriptionUtils 

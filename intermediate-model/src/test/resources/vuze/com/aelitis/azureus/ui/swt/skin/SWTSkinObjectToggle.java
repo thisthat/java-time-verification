@@ -20,18 +20,17 @@
 
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Native Toggle

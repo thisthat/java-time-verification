@@ -18,17 +18,16 @@
 
 package org.gudy.azureus2.plugins.ui.tables;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnImpl;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.plugins.ui.UIInstance;
 
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnImpl;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**

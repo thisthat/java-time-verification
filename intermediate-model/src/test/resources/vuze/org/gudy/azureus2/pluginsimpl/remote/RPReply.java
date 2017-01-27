@@ -22,15 +22,15 @@
 
 package org.gudy.azureus2.pluginsimpl.remote;
 
-import java.io.Serializable;
 import org.gudy.azureus2.pluginsimpl.remote.rpexceptions.*;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author parg
- *
  */
-
-import java.util.*;
 
 public class
 RPReply

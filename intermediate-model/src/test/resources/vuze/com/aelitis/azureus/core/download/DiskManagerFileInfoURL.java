@@ -20,38 +20,30 @@
 
 package com.aelitis.azureus.core.download;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
-import java.net.URL;
-import java.util.*;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
 import org.gudy.azureus2.core3.security.SEPasswordListener;
 import org.gudy.azureus2.core3.security.SESecurityManager;
-import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.plugins.disk.DiskManagerChannel;
-import org.gudy.azureus2.plugins.disk.DiskManagerEvent;
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.plugins.disk.DiskManagerListener;
-import org.gudy.azureus2.plugins.disk.DiskManagerRandomReadRequest;
-import org.gudy.azureus2.plugins.disk.DiskManagerRequest;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.disk.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadException;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 import org.gudy.azureus2.pluginsimpl.local.utils.PooledByteBufferImpl;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 public class 
 DiskManagerFileInfoURL

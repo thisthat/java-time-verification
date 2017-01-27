@@ -19,12 +19,13 @@
 
 package org.gudy.azureus2.core3.util.jar;
 
-import java.net.*;
-import java.io.*;
-
-import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.*;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 /**
  * @author parg

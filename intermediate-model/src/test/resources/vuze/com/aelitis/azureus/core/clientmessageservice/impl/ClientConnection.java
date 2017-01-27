@@ -18,16 +18,6 @@
  */
 package com.aelitis.azureus.core.clientmessageservice.impl;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.networkmanager.*;
 import com.aelitis.azureus.core.networkmanager.impl.OutgoingMessageQueueImpl;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.ProtocolEndpointTCP;
@@ -35,6 +25,15 @@ import com.aelitis.azureus.core.networkmanager.impl.tcp.TCPTransportImpl;
 import com.aelitis.azureus.core.networkmanager.impl.tcp.TransportEndpointTCP;
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.azureus.*;
+import org.gudy.azureus2.core3.util.AEMonitor;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**

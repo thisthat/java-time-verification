@@ -23,17 +23,18 @@
 package org.gudy.azureus2.core3.torrent.impl;
 
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
-
 import org.gudy.azureus2.core3.html.HTMLUtils;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.*;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
 
 public class 
 TOTorrentDeserialiseImpl

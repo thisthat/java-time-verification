@@ -20,6 +20,14 @@
 
 package com.aelitis.azureus.util;
 
+import com.aelitis.azureus.activities.VuzeActivitiesEntry;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.devices.DeviceOfflineDownload;
+import com.aelitis.azureus.core.devices.TranscodeFile;
+import com.aelitis.azureus.core.devices.TranscodeJob;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfo;
+import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.global.GlobalManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
@@ -29,15 +37,6 @@ import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadException;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-
-import com.aelitis.azureus.activities.VuzeActivitiesEntry;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.devices.DeviceOfflineDownload;
-import com.aelitis.azureus.core.devices.TranscodeFile;
-import com.aelitis.azureus.core.devices.TranscodeJob;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.ui.selectedcontent.DownloadUrlInfo;
-import com.aelitis.azureus.ui.selectedcontent.ISelectedContent;
 
 /**
  * @author TuxPaper

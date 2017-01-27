@@ -16,17 +16,19 @@
  */
 package com.aelitis.azureus.core.messenger.browser;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-
+import com.aelitis.azureus.core.messenger.browser.listeners.BrowserMessageListener;
+import com.aelitis.azureus.core.messenger.browser.listeners.MessageCompletionListener;
+import com.aelitis.azureus.util.ConstantsVuze;
 import org.gudy.azureus2.core3.util.AEDiagnostics;
 import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.messenger.browser.listeners.BrowserMessageListener;
-import com.aelitis.azureus.core.messenger.browser.listeners.MessageCompletionListener;
-import com.aelitis.azureus.util.ConstantsVuze;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Holds a message being dispatched to a {@link BrowserMessageListener}.

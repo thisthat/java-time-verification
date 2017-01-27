@@ -15,16 +15,17 @@
  */
 package com.aelitis.azureus.core.peermanager.control.impl;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.peermanager.control.PeerControlScheduler;
+import com.aelitis.azureus.core.stats.AzureusCoreStats;
+import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.peermanager.control.PeerControlScheduler;
-import com.aelitis.azureus.core.stats.AzureusCoreStats;
-import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class 
 PeerControlSchedulerImpl

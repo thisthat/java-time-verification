@@ -20,18 +20,16 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
+import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Control;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.ui.swt.Utils;
-
-import com.aelitis.azureus.ui.common.RememberedDecisionsManager;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapter;
 
 /**
  * @author TuxPaper

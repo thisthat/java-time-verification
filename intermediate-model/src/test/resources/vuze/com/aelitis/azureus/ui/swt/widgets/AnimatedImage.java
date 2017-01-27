@@ -18,14 +18,12 @@
 
 package com.aelitis.azureus.ui.swt.widgets;
 
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.util.AEThread2;
 import org.gudy.azureus2.ui.swt.Utils;
-
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 
 public class AnimatedImage {
 	

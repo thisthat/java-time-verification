@@ -20,10 +20,10 @@
 
 package com.aelitis.azureus.core.devices;
 
+import com.aelitis.net.upnp.UPnPDevice;
+
 import java.io.File;
 import java.net.InetAddress;
-
-import com.aelitis.net.upnp.UPnPDevice;
 
 public interface 
 DeviceManager 

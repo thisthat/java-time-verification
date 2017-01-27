@@ -24,9 +24,9 @@ package com.aelitis.azureus.core.diskmanager.cache.impl;
  *
  */
 
-import java.io.File;
-import java.util.*;
-
+import com.aelitis.azureus.core.diskmanager.cache.*;
+import com.aelitis.azureus.core.diskmanager.file.*;
+import com.aelitis.azureus.core.util.LinkFileMap;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
@@ -35,10 +35,8 @@ import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.diskmanager.cache.*;
-import com.aelitis.azureus.core.diskmanager.file.*;
-import com.aelitis.azureus.core.util.CaseSensitiveFileMap;
-import com.aelitis.azureus.core.util.LinkFileMap;
+import java.io.File;
+import java.util.*;
 
 public class 
 CacheFileManagerImpl 

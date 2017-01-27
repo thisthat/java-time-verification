@@ -20,17 +20,16 @@
 
 package com.aelitis.azureus.core.speedmanager.impl.v1;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-
 import com.aelitis.azureus.core.speedmanager.SpeedManagerPingSource;
 import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerAlgorithmProvider;
 import com.aelitis.azureus.core.speedmanager.impl.SpeedManagerAlgorithmProviderAdapter;
 import com.aelitis.azureus.core.util.average.Average;
 import com.aelitis.azureus.core.util.average.AverageFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 SpeedManagerAlgorithmProviderV1 

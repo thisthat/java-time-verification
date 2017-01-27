@@ -2,9 +2,6 @@ package org.gudy.bouncycastle.jce.spec;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.jce.spec.ECKeySpec;
-import org.gudy.bouncycastle.jce.spec.ECParameterSpec;
-
 /**
  * Elliptic Curve private key specification.
  */

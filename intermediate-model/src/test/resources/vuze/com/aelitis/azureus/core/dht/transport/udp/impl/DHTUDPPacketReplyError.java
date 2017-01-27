@@ -27,14 +27,15 @@ package com.aelitis.azureus.core.dht.transport.udp.impl;
  *
  */
 
-import java.io.*;
-import java.net.InetSocketAddress;
-
-import org.gudy.azureus2.core3.util.Debug;
-
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportException;
 import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketNetworkHandler;
+import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 public class 
 DHTUDPPacketReplyError

@@ -19,17 +19,19 @@
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.nio.channels.*;
-import java.nio.channels.spi.AbstractSelectableChannel;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.networkmanager.VirtualChannelSelector;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.channels.CancelledKeyException;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.AbstractSelectableChannel;
+import java.util.*;
 
 
 

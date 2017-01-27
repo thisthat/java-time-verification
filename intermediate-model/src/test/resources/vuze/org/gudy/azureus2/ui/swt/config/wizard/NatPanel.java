@@ -23,12 +23,16 @@
 package org.gudy.azureus2.ui.swt.config.wizard;
 
 
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProgressListener;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProtocol;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.ipchecker.natchecker.NatChecker;
 import org.gudy.azureus2.core3.util.AERunnable;
@@ -39,12 +43,6 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
 import org.gudy.azureus2.ui.swt.wizard.AbstractWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProgressListener;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminProtocol;
 
 /**
  * @author Olivier

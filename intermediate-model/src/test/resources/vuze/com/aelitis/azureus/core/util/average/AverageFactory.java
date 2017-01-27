@@ -18,11 +18,10 @@
  */
 package com.aelitis.azureus.core.util.average;
 
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.SimpleTimer.TimerTickReceiver;
-
 import com.aelitis.azureus.core.util.GeneralUtils;
+import org.gudy.azureus2.core3.util.SimpleTimer;
+import org.gudy.azureus2.core3.util.SimpleTimer.TimerTickReceiver;
+import org.gudy.azureus2.core3.util.SystemTime;
 
 
 /**

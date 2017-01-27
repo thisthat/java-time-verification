@@ -2,8 +2,6 @@ package org.gudy.bouncycastle.math.ec;
 
 import java.math.BigInteger;
 
-import org.gudy.bouncycastle.math.ec.ECPoint;
-
 /**
  * Interface for classes encapsulating a point multiplication algorithm
  * for <code>ECPoint</code>s.

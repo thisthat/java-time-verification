@@ -19,16 +19,15 @@
 
 package com.aelitis.azureus.core.dht.transport.udp;
 
-import java.net.InetSocketAddress;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-
 import com.aelitis.azureus.core.dht.transport.DHTTransport;
 import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeNetwork;
 import com.aelitis.azureus.core.dht.transport.DHTTransportException;
 import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPPacketHandler;
 import com.aelitis.azureus.core.dht.transport.udp.impl.packethandler.DHTUDPRequestHandler;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+
+import java.net.InetSocketAddress;
+import java.util.Map;
 
 /**
  * @author parg

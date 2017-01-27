@@ -19,26 +19,17 @@
 
 package org.gudy.azureus2.core3.util;
 
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.bouncycastle.util.encoders.Base64;
-
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.instancemanager.AZInstance;
 import com.aelitis.azureus.core.instancemanager.AZInstanceManager;
 import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.bouncycastle.util.encoders.Base64;
+
+import java.net.*;
+import java.security.MessageDigest;
+import java.util.*;
 
 public class 
 AddressUtils 

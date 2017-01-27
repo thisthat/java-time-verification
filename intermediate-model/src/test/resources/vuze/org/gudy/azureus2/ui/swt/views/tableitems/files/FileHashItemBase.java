@@ -22,6 +22,18 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.files;
 
+import com.aelitis.azureus.ui.common.table.TableCellCore;
+import org.eclipse.swt.SWT;
+import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
+import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.core3.download.DownloadManagerState;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.ui.menus.MenuItem;
+import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
+import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
@@ -30,25 +42,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.CRC32;
-
-import org.eclipse.swt.SWT;
-
-import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
-import org.gudy.azureus2.core3.download.DownloadManager;
-import org.gudy.azureus2.core3.download.DownloadManagerState;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.plugins.ui.menus.MenuItem;
-import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
-import org.gudy.azureus2.plugins.ui.tables.*;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-
-import com.aelitis.azureus.ui.common.table.TableCellCore;
 
 
 public class 

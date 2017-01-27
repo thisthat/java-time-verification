@@ -27,9 +27,9 @@ package org.gudy.azureus2.plugins.torrent;
  *
  */
 
-import java.net.URL;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 
 public interface
 TorrentManager

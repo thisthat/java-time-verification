@@ -16,24 +16,22 @@
  */
 package com.aelitis.azureus.ui.swt.imageloader;
 
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import com.aelitis.azureus.ui.skin.SkinProperties;
+import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
+import com.aelitis.azureus.ui.utils.ImageBytesDownloader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.ImageRepository;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.skin.SkinProperties;
-import com.aelitis.azureus.ui.skin.SkinPropertiesImpl;
-import com.aelitis.azureus.ui.utils.ImageBytesDownloader;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Loads images from a skinProperty object.  

@@ -22,17 +22,16 @@
 
 package com.aelitis.azureus.plugins.net.buddy.swt;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
+import com.aelitis.azureus.plugins.net.buddy.BuddyPluginViewInterface;
 import org.eclipse.swt.widgets.Composite;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginUtils;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginViewInterface;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 ChatView

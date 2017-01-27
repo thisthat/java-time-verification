@@ -20,10 +20,10 @@
 
 package com.aelitis.azureus.core.lws;
 
+import org.gudy.azureus2.core3.torrent.TOTorrent;
+
 import java.io.File;
 import java.net.URL;
-
-import org.gudy.azureus2.core3.torrent.TOTorrent;
 
 public interface 
 LightWeightSeedAdapter 

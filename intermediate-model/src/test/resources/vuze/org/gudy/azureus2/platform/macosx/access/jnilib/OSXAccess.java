@@ -16,17 +16,16 @@
  */
 package org.gudy.azureus2.platform.macosx.access.jnilib;
 
+import com.aelitis.azureus.core.drivedetector.DriveDetectedInfo;
+import com.aelitis.azureus.core.drivedetector.DriveDetectorFactory;
+import com.aelitis.azureus.util.MapUtils;
+import org.gudy.azureus2.core3.util.Constants;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Constants;
-
-import com.aelitis.azureus.core.drivedetector.DriveDetectedInfo;
-import com.aelitis.azureus.core.drivedetector.DriveDetectorFactory;
-import com.aelitis.azureus.util.MapUtils;
 
 /**
  * @author TuxPaper

@@ -24,8 +24,8 @@ package org.gudy.azureus2.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
-import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Constants;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

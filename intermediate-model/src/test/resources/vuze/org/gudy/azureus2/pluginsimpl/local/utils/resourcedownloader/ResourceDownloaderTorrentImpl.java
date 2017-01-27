@@ -24,19 +24,20 @@ package org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader;
  *
  */
 
-import java.io.*;
-
+import com.aelitis.azureus.core.util.HTTPUtils;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
 import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
 import org.gudy.azureus2.core3.util.*;
-
-import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
 import org.gudy.azureus2.plugins.download.*;
-import org.gudy.azureus2.pluginsimpl.local.torrent.*;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.*;
 import org.gudy.azureus2.pluginsimpl.local.*;
+import org.gudy.azureus2.pluginsimpl.local.torrent.*;
 
-import com.aelitis.azureus.core.util.HTTPUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class 
 ResourceDownloaderTorrentImpl 	

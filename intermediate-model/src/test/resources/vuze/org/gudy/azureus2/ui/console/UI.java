@@ -11,11 +11,6 @@
 package org.gudy.azureus2.ui.console;
 
 
-import java.io.File;
-import java.io.PrintStream;
-import java.net.URL;
-import java.util.Locale;
-
 import org.apache.log4j.Logger;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloaderFactory;
@@ -29,6 +24,11 @@ import org.gudy.azureus2.ui.common.UIConst;
 import org.gudy.azureus2.ui.common.UIInstanceBase;
 import org.gudy.azureus2.ui.console.multiuser.UserManager;
 import org.gudy.azureus2.ui.console.multiuser.commands.UserCommand;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.net.URL;
+import java.util.Locale;
 
 /**
  *

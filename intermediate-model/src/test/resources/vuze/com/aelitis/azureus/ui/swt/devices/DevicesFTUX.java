@@ -20,29 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.devices;
 
-import java.util.*;
-import java.util.List;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.PluginException;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.installer.*;
-import org.gudy.azureus2.plugins.update.UpdateCheckInstance;
-import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
-import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
@@ -52,13 +29,36 @@ import com.aelitis.azureus.core.devices.DeviceManagerFactory;
 import com.aelitis.azureus.core.messenger.config.PlatformDevicesMessenger;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import com.aelitis.azureus.ui.swt.browser.BrowserContext;
-import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import com.aelitis.azureus.ui.swt.browser.listener.*;
 import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
 import com.aelitis.azureus.util.ConstantsVuze;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.PluginException;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.installer.*;
+import org.gudy.azureus2.plugins.update.UpdateCheckInstance;
+import org.gudy.azureus2.ui.swt.BrowserWrapper;
+import org.gudy.azureus2.ui.swt.Messages;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
+import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author TuxPaper

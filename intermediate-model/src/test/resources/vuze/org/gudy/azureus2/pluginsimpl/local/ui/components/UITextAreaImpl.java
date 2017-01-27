@@ -24,16 +24,16 @@ package org.gudy.azureus2.pluginsimpl.local.ui.components;
  *
  */
 
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.ui.components.UIPropertyChangeListener;
+import org.gudy.azureus2.plugins.ui.components.UITextArea;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.ui.components.UIPropertyChangeListener;
-import org.gudy.azureus2.plugins.ui.components.UITextArea;
 
 
 public class 

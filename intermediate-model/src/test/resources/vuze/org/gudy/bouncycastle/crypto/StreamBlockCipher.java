@@ -1,10 +1,5 @@
 package org.gudy.bouncycastle.crypto;
 
-import org.gudy.bouncycastle.crypto.BlockCipher;
-import org.gudy.bouncycastle.crypto.CipherParameters;
-import org.gudy.bouncycastle.crypto.DataLengthException;
-import org.gudy.bouncycastle.crypto.StreamCipher;
-
 /**
  * a wrapper for block ciphers with a single byte block size, so that they
  * can be treated like stream ciphers.

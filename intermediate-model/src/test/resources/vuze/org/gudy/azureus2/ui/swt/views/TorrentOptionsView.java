@@ -19,9 +19,7 @@
 
 package org.gudy.azureus2.ui.swt.views;
 
-import java.util.*;
-import java.util.Map.Entry;
-
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -51,7 +49,10 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCoreEventListener;
 
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class 
 TorrentOptionsView

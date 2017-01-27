@@ -27,17 +27,16 @@ package org.gudy.azureus2.core3.tracker.server.impl;
  *
  */
 
-import java.util.*;
-import java.io.*;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
-
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
 import org.gudy.azureus2.core3.logging.*;
 import org.gudy.azureus2.core3.tracker.server.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.*;
 
 
 public class 

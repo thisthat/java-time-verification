@@ -19,15 +19,13 @@
 
 package com.aelitis.azureus.core.metasearch.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.util.AEThread2;
-
 import com.aelitis.azureus.core.metasearch.Engine;
 import com.aelitis.azureus.core.metasearch.ResultListener;
 import com.aelitis.azureus.core.metasearch.SearchException;
 import com.aelitis.azureus.core.metasearch.SearchParameter;
+import org.gudy.azureus2.core3.util.AEThread2;
+
+import java.util.Map;
 
 
 public class 

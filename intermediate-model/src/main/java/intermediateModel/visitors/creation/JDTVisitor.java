@@ -8,7 +8,7 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.io.IOException;
 import java.util.*;
@@ -320,7 +320,7 @@ public class JDTVisitor extends ASTVisitor {
 			ss = p.getStartPosition();
 			st = ss + p.getLength();
 			ASTVariable par = new ASTVariable(ss, st, p.getName().getFullyQualifiedName(), p.getType().toString());
-			par.setAnnotations( AnnotationVisitor.getAnnotationVariable(p.modifiers(), p) );
+			//par.setAnnotations( AnnotationVisitor.getAnnotationVariable(p.modifiers(), p) );
 			pars.add(par);
 		}
 		//is syncronized
@@ -660,7 +660,7 @@ public class JDTVisitor extends ASTVisitor {
 								getExpr(v.getName()), getExpr(v.getInitializer()))
 						);
 				//annotation
-				re.setAnnotations( AnnotationVisitor.getAnnotationVariable(node.modifiers(), v) );
+				//re.setAnnotations( AnnotationVisitor.getAnnotationVariable(node.modifiers(), v) );
 				bck.addStms(re);
 			}
 		}

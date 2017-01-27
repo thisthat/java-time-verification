@@ -27,10 +27,10 @@ package org.gudy.azureus2.pluginsimpl.local.sharing;
  *
  */
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.sharing.*;
+
+import java.util.*;
 
 public class 
 ShareConfigImpl 

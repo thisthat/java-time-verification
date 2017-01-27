@@ -20,9 +20,11 @@
 
 package org.gudy.azureus2.ui.swt.views.columnsetup;
 
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.*;
@@ -45,12 +47,7 @@ import org.gudy.azureus2.ui.swt.views.table.TableRowSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableViewSWT;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.util.*;
 
 /**
  * @author TuxPaper

@@ -20,11 +20,10 @@
 
 package org.gudy.azureus2.core3.util;
 
-import java.util.Iterator;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.util.Iterator;
 
 public class 
 AERunStateHandler 

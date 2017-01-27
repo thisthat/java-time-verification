@@ -18,8 +18,8 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.files;
 
-import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
+import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 

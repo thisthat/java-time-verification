@@ -19,6 +19,23 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.util.bloom.BloomFilter;
+import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.logging.LogAlert;
+import org.gudy.azureus2.core3.logging.LogEvent;
+import org.gudy.azureus2.core3.logging.LogIDs;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.*;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyAgreement;
+import javax.crypto.interfaces.DHPublicKey;
+import javax.crypto.spec.DHParameterSpec;
+import javax.crypto.spec.DHPublicKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
@@ -27,35 +44,8 @@ import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.util.*;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyAgreement;
-import javax.crypto.interfaces.DHPublicKey;
-import javax.crypto.spec.DHParameterSpec;
-import javax.crypto.spec.DHPublicKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.logging.LogAlert;
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.LightHashMap;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SHA1Hasher;
-import org.gudy.azureus2.core3.util.SystemTime;
-
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.util.bloom.BloomFilter;
-import com.aelitis.azureus.core.util.bloom.BloomFilterFactory;
+import java.util.Map;
+import java.util.Random;
 
 public class 
 ProtocolDecoderPHE 

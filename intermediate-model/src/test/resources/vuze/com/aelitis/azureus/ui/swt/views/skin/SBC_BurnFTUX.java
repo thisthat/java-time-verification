@@ -17,8 +17,6 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.mdi.MdiEntry;
 import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
@@ -29,6 +27,7 @@ import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectBrowser;
 import com.aelitis.azureus.util.ConstantsVuze;
+import org.gudy.azureus2.core3.util.*;
 
 /**
  * @author TuxPaper

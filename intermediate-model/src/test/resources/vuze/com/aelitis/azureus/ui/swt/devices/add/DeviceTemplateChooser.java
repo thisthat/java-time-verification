@@ -20,26 +20,24 @@
  
 package com.aelitis.azureus.ui.swt.devices.add;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-
-import com.aelitis.azureus.core.devices.DeviceTemplate;
 import com.aelitis.azureus.core.devices.DeviceManager.DeviceManufacturer;
+import com.aelitis.azureus.core.devices.DeviceTemplate;
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
 import com.aelitis.azureus.ui.swt.devices.TranscodeChooser;
 import com.aelitis.azureus.ui.swt.skin.*;
 import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
 import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog.SkinnedDialogClosedListener;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
+
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * @author TuxPaper

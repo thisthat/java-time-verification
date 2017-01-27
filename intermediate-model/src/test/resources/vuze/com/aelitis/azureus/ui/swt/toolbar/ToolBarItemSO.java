@@ -20,14 +20,13 @@
 
 package com.aelitis.azureus.ui.swt.toolbar;
 
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
-import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarItemImpl;
-
 import com.aelitis.azureus.ui.common.ToolBarItem;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectText;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
+import org.gudy.azureus2.ui.swt.pluginsimpl.UIToolBarItemImpl;
 
 /**
  * @author TuxPaper

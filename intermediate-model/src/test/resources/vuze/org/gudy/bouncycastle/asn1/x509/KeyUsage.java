@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.asn1.x509;
 
-import org.gudy.bouncycastle.asn1.x509.KeyUsage;
-import org.gudy.bouncycastle.asn1.x509.X509Extension;
 import org.gudy.bouncycastle.asn1.DERBitString;
 
 /**

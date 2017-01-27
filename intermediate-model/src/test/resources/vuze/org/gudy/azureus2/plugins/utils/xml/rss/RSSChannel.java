@@ -19,10 +19,10 @@
 
 package org.gudy.azureus2.plugins.utils.xml.rss;
 
+import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
+
 import java.net.URL;
 import java.util.Date;
-
-import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentNode;
 
 /**
  * @author parg

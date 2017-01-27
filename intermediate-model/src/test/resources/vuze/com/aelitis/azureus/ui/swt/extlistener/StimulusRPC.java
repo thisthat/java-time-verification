@@ -17,13 +17,6 @@
 
 package com.aelitis.azureus.ui.swt.extlistener;
 
-import java.util.Collections;
-import java.util.Map;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.swt.donations.DonationWindow;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
@@ -42,10 +35,13 @@ import com.aelitis.azureus.ui.swt.browser.listener.DisplayListener;
 import com.aelitis.azureus.ui.swt.browser.listener.TorrentListener;
 import com.aelitis.azureus.ui.swt.shells.main.MainWindow;
 import com.aelitis.azureus.ui.swt.utils.TorrentUIUtilsV3;
-import com.aelitis.azureus.ui.swt.views.skin.SkinViewManager;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
-import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBarEntrySWT;
 import com.aelitis.azureus.util.*;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.ui.swt.donations.DonationWindow;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author TuxPaper

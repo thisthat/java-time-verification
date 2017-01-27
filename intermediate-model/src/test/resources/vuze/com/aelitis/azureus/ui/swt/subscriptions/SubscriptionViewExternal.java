@@ -19,12 +19,15 @@
 package com.aelitis.azureus.ui.swt.subscriptions;
 
 
-import java.util.Locale;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.subs.Subscription;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.util.ConstantsVuze;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -37,13 +40,7 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.webplugin.WebPlugin;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.util.ConstantsVuze;
+import java.util.Locale;
 
 
 

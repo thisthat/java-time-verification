@@ -27,9 +27,10 @@
 
 package com.aelitis.azureus.core.peer.cache.cachelogic;
 
-import java.io.File;
-import java.net.*;
-
+import com.aelitis.azureus.core.peer.cache.CacheDiscoverer;
+import com.aelitis.azureus.core.peer.cache.CacheDiscovery;
+import com.aelitis.azureus.core.peer.cache.CachePeer;
+import com.aelitis.azureus.core.peermanager.utils.PeerClassifier;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
 import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
@@ -37,10 +38,8 @@ import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SHA1Hasher;
 
-import com.aelitis.azureus.core.peer.cache.CacheDiscoverer;
-import com.aelitis.azureus.core.peer.cache.CacheDiscovery;
-import com.aelitis.azureus.core.peer.cache.CachePeer;
-import com.aelitis.azureus.core.peermanager.utils.PeerClassifier;
+import java.io.File;
+import java.net.*;
 
 public class 
 CLCacheDiscovery 

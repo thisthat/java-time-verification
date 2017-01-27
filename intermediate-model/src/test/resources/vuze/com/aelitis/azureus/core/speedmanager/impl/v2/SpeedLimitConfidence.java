@@ -1,7 +1,7 @@
 package com.aelitis.azureus.core.speedmanager.impl.v2;
 
-import org.gudy.azureus2.core3.internat.MessageText;
 import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
+import org.gudy.azureus2.core3.internat.MessageText;
 
 /**
  * Created on Jun 5, 2007

@@ -16,23 +16,18 @@
  */
 package org.gudy.azureus2.core3.logging.impl;
 
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.config.impl.ConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.AEDiagnostics;
+import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
+import org.gudy.azureus2.core3.util.Debug;
+
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.config.impl.ConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.logging.ILogAlertListener;
-import org.gudy.azureus2.core3.logging.ILogEventListener;
-import org.gudy.azureus2.core3.logging.LogAlert;
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
-import org.gudy.azureus2.core3.util.Debug;
 
 /**
  * Logging tool

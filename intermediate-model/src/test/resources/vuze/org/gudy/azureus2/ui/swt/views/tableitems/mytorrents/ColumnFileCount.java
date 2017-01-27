@@ -16,6 +16,9 @@
  */
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.ui.common.table.TableCellCore;
+import com.aelitis.azureus.ui.common.updater.UIUpdatable;
+import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -24,9 +27,10 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
@@ -34,13 +38,6 @@ import org.gudy.azureus2.ui.swt.views.FilesView;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.ui.tables.*;
-
-import com.aelitis.azureus.ui.common.table.TableCellCore;
-import com.aelitis.azureus.ui.common.updater.UIUpdatable;
-import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
 
 /**
  * @author TuxPaper

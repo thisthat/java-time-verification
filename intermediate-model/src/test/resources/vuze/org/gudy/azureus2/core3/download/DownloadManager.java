@@ -22,9 +22,9 @@
 
 package org.gudy.azureus2.core3.download;
 
-import java.io.File;
-import java.util.List;
-
+import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
+import com.aelitis.azureus.core.tag.Taggable;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfoSet;
@@ -39,9 +39,8 @@ import org.gudy.azureus2.core3.util.IndentWriter;
 import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
 import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
 
-import com.aelitis.azureus.core.networkmanager.LimitedRateGroup;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import java.io.File;
+import java.util.List;
 
 public interface
 DownloadManager

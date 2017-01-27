@@ -19,27 +19,6 @@
 
 package com.aelitis.azureus.core.speedmanager.impl;
 
-import java.io.File;
-import java.net.InetSocketAddress;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.AEDiagnosticsLogger;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemProperties;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
 import com.aelitis.azureus.core.dht.speed.DHTSpeedTester;
@@ -49,16 +28,20 @@ import com.aelitis.azureus.core.dht.speed.DHTSpeedTesterListener;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminASN;
 import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminPropertyChangeListener;
-import com.aelitis.azureus.core.speedmanager.SpeedManager;
-import com.aelitis.azureus.core.speedmanager.SpeedManagerAdapter;
-import com.aelitis.azureus.core.speedmanager.SpeedManagerLimitEstimate;
-import com.aelitis.azureus.core.speedmanager.SpeedManagerListener;
-import com.aelitis.azureus.core.speedmanager.SpeedManagerPingMapper;
-import com.aelitis.azureus.core.speedmanager.SpeedManagerPingSource;
+import com.aelitis.azureus.core.speedmanager.*;
 import com.aelitis.azureus.core.speedmanager.impl.v1.SpeedManagerAlgorithmProviderV1;
 import com.aelitis.azureus.core.speedmanager.impl.v2.SpeedManagerAlgorithmProviderV2;
 import com.aelitis.azureus.core.speedmanager.impl.v3.SpeedManagerAlgorithmProviderV3;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.File;
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class 

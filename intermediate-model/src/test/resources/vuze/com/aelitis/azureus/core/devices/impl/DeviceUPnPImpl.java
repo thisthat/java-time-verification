@@ -20,13 +20,22 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import com.aelitis.azureus.core.content.AzureusContentDownload;
+import com.aelitis.azureus.core.content.AzureusContentFile;
+import com.aelitis.azureus.core.content.AzureusPlatformContentDirectory;
+import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoStream;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.core.util.UUIDGenerator;
+import com.aelitis.azureus.util.PlayUtils;
+import com.aelitis.net.upnp.UPnPDevice;
+import com.aelitis.net.upnp.UPnPDeviceImage;
+import com.aelitis.net.upnp.UPnPRootDevice;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.IndentWriter;
@@ -38,36 +47,16 @@ import org.gudy.azureus2.plugins.download.DownloadManager;
 import org.gudy.azureus2.plugins.download.DownloadManagerListener;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
 import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
-import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.content.AzureusContentDownload;
-import com.aelitis.azureus.core.content.AzureusContentFile;
-import com.aelitis.azureus.core.content.AzureusPlatformContentDirectory;
-import com.aelitis.azureus.core.devices.DeviceUPnP;
-import com.aelitis.azureus.core.devices.TranscodeException;
-import com.aelitis.azureus.core.devices.TranscodeFile;
-import com.aelitis.azureus.core.devices.TranscodeJob;
-import com.aelitis.azureus.core.devices.TranscodeProfile;
-import com.aelitis.azureus.core.devices.TranscodeTarget;
-import com.aelitis.azureus.core.devices.TranscodeTargetListener;
-import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoStream;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagListener;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.UUIDGenerator;
-import com.aelitis.azureus.util.PlayUtils;
-import com.aelitis.net.upnp.UPnPDevice;
-import com.aelitis.net.upnp.UPnPDeviceImage;
-import com.aelitis.net.upnp.UPnPRootDevice;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class 
 DeviceUPnPImpl

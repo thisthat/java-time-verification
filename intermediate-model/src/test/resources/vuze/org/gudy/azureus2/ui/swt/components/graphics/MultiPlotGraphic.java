@@ -21,12 +21,7 @@
  */
 package org.gudy.azureus2.ui.swt.components.graphics;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.*;
@@ -35,12 +30,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Utils;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Olivier

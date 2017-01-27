@@ -19,10 +19,15 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.nat.NATTraversalHandler;
+import com.aelitis.azureus.core.nat.NATTraverser;
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamFactory;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SHA1Simple;
 import org.gudy.azureus2.plugins.PluginInterface;
@@ -34,15 +39,11 @@ import org.gudy.azureus2.plugins.messaging.generic.GenericMessageHandler;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageRegistration;
 import org.gudy.azureus2.plugins.peers.*;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.nat.NATTraversalHandler;
-import com.aelitis.azureus.core.nat.NATTraverser;
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelper;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamFactory;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 

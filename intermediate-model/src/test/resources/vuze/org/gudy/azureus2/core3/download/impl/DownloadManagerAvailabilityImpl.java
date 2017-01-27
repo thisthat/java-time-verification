@@ -20,9 +20,12 @@
 
 package org.gudy.azureus2.core3.download.impl;
 
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
+import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
 import org.gudy.azureus2.core3.download.DownloadManagerAvailability;
 import org.gudy.azureus2.core3.peer.PEPeerSource;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
@@ -40,12 +43,8 @@ import org.gudy.azureus2.plugins.ipc.IPCInterface;
 import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedPlugin;
-import com.aelitis.azureus.plugins.tracker.dht.DHTTrackerPlugin;
+import java.net.URL;
+import java.util.*;
 
 public class 
 DownloadManagerAvailabilityImpl

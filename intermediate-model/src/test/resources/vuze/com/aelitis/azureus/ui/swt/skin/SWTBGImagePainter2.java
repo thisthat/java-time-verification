@@ -18,8 +18,7 @@
 
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.util.ArrayList;
-
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -27,12 +26,11 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.util.ArrayList;
 
 /**
  * @author TuxPaper

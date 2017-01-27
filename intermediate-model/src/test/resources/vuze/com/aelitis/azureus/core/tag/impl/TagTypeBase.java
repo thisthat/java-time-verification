@@ -20,18 +20,17 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.tag.*;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.IndentWriter;
 import org.gudy.azureus2.core3.util.ListenerManager;
 import org.gudy.azureus2.core3.util.ListenerManagerDispatcher;
 
-import com.aelitis.azureus.core.tag.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class 
 TagTypeBase

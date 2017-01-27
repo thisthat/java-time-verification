@@ -27,12 +27,13 @@ package org.gudy.azureus2.pluginsimpl.remote;
  *
  */
 
-import java.util.*;
-
 import org.gudy.azureus2.plugins.*;
-import org.gudy.azureus2.plugins.logging.*;
 import org.gudy.azureus2.plugins.ipfilter.*;
+import org.gudy.azureus2.plugins.logging.*;
 import org.gudy.azureus2.pluginsimpl.remote.rpexceptions.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class
 RPRequestHandler

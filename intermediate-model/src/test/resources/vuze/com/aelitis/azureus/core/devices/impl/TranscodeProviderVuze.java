@@ -20,23 +20,20 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.ipc.IPCException;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
 
-import com.aelitis.azureus.core.devices.TranscodeProfile;
-import com.aelitis.azureus.core.devices.TranscodeProvider;
-import com.aelitis.azureus.core.devices.TranscodeProviderAdapter;
-import com.aelitis.azureus.core.devices.TranscodeException;
-import com.aelitis.azureus.core.devices.TranscodeProviderAnalysis;
-import com.aelitis.azureus.core.devices.TranscodeProviderJob;
-import com.aelitis.azureus.core.download.DiskManagerFileInfoURL;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 TranscodeProviderVuze 

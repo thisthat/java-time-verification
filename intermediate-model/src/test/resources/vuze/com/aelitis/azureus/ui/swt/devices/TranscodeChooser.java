@@ -20,24 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.devices;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.swt.Messages;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
-import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
-
 import com.aelitis.azureus.core.devices.*;
 import com.aelitis.azureus.core.devices.Device;
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
@@ -48,6 +30,22 @@ import com.aelitis.azureus.ui.swt.skin.SWTSkinButtonUtility.ButtonListenerAdapte
 import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.ui.swt.Messages;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
+import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * @author TuxPaper

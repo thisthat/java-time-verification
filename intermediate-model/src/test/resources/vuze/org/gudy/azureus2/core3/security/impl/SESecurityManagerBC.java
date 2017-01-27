@@ -24,6 +24,15 @@ package org.gudy.azureus2.core3.security.impl;
  *
  */
 
+import org.gudy.azureus2.core3.util.Constants;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.RandomUtils;
+import org.gudy.azureus2.core3.util.SystemTime;
+import org.gudy.bouncycastle.asn1.x509.X509Name;
+import org.gudy.bouncycastle.jce.*;
+import org.gudy.bouncycastle.jce.X509V3CertificateGenerator;
+import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -32,15 +41,6 @@ import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
-
-import org.gudy.bouncycastle.jce.X509V3CertificateGenerator;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.bouncycastle.asn1.x509.X509Name;
-import org.gudy.bouncycastle.jce.*;
-import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class 
 SESecurityManagerBC 

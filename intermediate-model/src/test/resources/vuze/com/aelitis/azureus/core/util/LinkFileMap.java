@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.util.*;
-import java.io.*;
-
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.File;
+import java.util.*;
 
 public class 
 LinkFileMap 

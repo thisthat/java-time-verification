@@ -24,8 +24,8 @@ package org.gudy.azureus2.core3.ipfilter.impl;
  *
  */
 
-import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.ipfilter.*;
+import org.gudy.azureus2.core3.util.*;
 
 public class 
 BadIpImpl

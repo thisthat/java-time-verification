@@ -18,16 +18,17 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.pieces;
 
-import java.util.Arrays;
-
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
+import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerStats;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.peer.PEPiece;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.plugins.ui.Graphic;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.mainwindow.SWTThread;
@@ -36,11 +37,7 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerFactory;
-import com.aelitis.azureus.core.diskmanager.cache.CacheFileManagerStats;
-
-import org.gudy.azureus2.plugins.ui.Graphic;
-import org.gudy.azureus2.plugins.ui.tables.*;
+import java.util.Arrays;
 
 /**
  *

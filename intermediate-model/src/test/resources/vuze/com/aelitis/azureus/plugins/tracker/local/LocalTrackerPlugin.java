@@ -19,18 +19,15 @@
 
 package com.aelitis.azureus.plugins.tracker.local;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.InetAddress;
-import java.util.*;
-
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.instancemanager.AZInstance;
+import com.aelitis.azureus.core.instancemanager.AZInstanceManager;
+import com.aelitis.azureus.core.instancemanager.AZInstanceManagerListener;
+import com.aelitis.azureus.core.instancemanager.AZInstanceTracked;
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
 import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TorrentUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadListener;
@@ -49,13 +46,10 @@ import org.gudy.azureus2.plugins.ui.model.BasicPluginViewModel;
 import org.gudy.azureus2.plugins.utils.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.instancemanager.AZInstance;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManager;
-import com.aelitis.azureus.core.instancemanager.AZInstanceManagerListener;
-import com.aelitis.azureus.core.instancemanager.AZInstanceTracked;
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.core.tracker.TrackerPeerSourceAdapter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.InetAddress;
+import java.util.*;
 
 public class 
 LocalTrackerPlugin

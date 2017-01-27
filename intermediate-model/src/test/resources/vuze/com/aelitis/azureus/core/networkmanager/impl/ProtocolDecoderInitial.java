@@ -19,10 +19,7 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
@@ -30,7 +27,9 @@ import org.gudy.azureus2.core3.util.AENetworkClassifier;
 import org.gudy.azureus2.core3.util.AddressUtils;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 
 public class 
 ProtocolDecoderInitial 

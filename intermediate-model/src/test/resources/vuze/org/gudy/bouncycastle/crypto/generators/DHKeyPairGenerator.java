@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto.generators;
 
-import java.math.BigInteger;
-
 import org.gudy.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.gudy.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
@@ -9,6 +7,8 @@ import org.gudy.bouncycastle.crypto.params.DHKeyGenerationParameters;
 import org.gudy.bouncycastle.crypto.params.DHParameters;
 import org.gudy.bouncycastle.crypto.params.DHPrivateKeyParameters;
 import org.gudy.bouncycastle.crypto.params.DHPublicKeyParameters;
+
+import java.math.BigInteger;
 
 /**
  * a Diffie-Helman key pair generator.

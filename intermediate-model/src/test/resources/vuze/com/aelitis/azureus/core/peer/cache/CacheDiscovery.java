@@ -20,24 +20,17 @@
 
 package com.aelitis.azureus.core.peer.cache;
 
-import java.net.InetAddress;
-import java.util.*;
-
+import com.aelitis.azureus.core.download.DownloadManagerEnhancer;
+import com.aelitis.azureus.core.download.EnhancedDownloadManager;
 import org.gudy.azureus2.core3.ipfilter.BannedIp;
 import org.gudy.azureus2.core3.ipfilter.IPFilterListener;
 import org.gudy.azureus2.core3.ipfilter.IpFilter;
 import org.gudy.azureus2.core3.ipfilter.IpFilterManagerFactory;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.IPToHostNameResolver;
-import org.gudy.azureus2.core3.util.IPToHostNameResolverListener;
-import org.gudy.azureus2.core3.util.SystemTime;
+import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.download.DownloadManagerEnhancer;
-import com.aelitis.azureus.core.download.EnhancedDownloadManager;
+import java.net.InetAddress;
+import java.util.*;
 // import com.aelitis.azureus.core.peer.cache.cachelogic.CLCacheDiscovery;
 
 public class 

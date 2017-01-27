@@ -24,18 +24,19 @@ package com.aelitis.azureus.plugins.removerules;
  *
  */
 
-import java.net.InetAddress;
-import java.util.*;
-
-import org.gudy.azureus2.plugins.torrent.*;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.*;
 import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.download.*;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
+import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.plugins.ui.config.*;
 import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
-import org.gudy.azureus2.plugins.*;
 
-import org.gudy.azureus2.core3.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 DownloadRemoveRulesPlugin 

@@ -22,18 +22,9 @@
 
 package org.gudy.azureus2.ui.telnet;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.apache.log4j.Logger;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.torrentdownloader.TorrentDownloaderFactory;
-import org.gudy.azureus2.core3.util.FileUtil;
 import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.ui.common.IUserInterface;
 import org.gudy.azureus2.ui.common.UIConst;
@@ -43,7 +34,13 @@ import org.gudy.azureus2.ui.console.multiuser.MultiUserConsoleInput;
 import org.gudy.azureus2.ui.console.multiuser.UserManager;
 import org.gudy.azureus2.ui.console.multiuser.commands.UserCommand;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * this is a telnet UI that starts up a server socket that listens for new connections 

@@ -1,35 +1,7 @@
 package org.gudy.bouncycastle.jce;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.cert.CRL;
-import java.security.cert.CRLException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.X509CRL;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.gudy.bouncycastle.jce.X509Principal;
 import org.gudy.bouncycastle.asn1.*;
-import org.gudy.bouncycastle.asn1.pkcs.ContentInfo;
-import org.gudy.bouncycastle.asn1.pkcs.IssuerAndSerialNumber;
-import org.gudy.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
-import org.gudy.bouncycastle.asn1.pkcs.SignedData;
-import org.gudy.bouncycastle.asn1.pkcs.SignerInfo;
+import org.gudy.bouncycastle.asn1.pkcs.*;
 import org.gudy.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.gudy.bouncycastle.asn1.x509.CertificateList;
 import org.gudy.bouncycastle.asn1.x509.X509CertificateStructure;
@@ -37,6 +9,15 @@ import org.gudy.bouncycastle.asn1.x509.X509Name;
 import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.gudy.bouncycastle.jce.provider.X509CRLObject;
 import org.gudy.bouncycastle.jce.provider.X509CertificateObject;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.cert.*;
+import java.security.cert.Certificate;
+import java.util.*;
 
 /**
  * Represents a PKCS#7 object - specifically the "Signed Data"

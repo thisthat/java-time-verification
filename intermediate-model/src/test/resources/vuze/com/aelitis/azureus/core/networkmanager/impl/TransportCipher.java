@@ -19,17 +19,16 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.security.spec.AlgorithmParameterSpec;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.engines.RC4Engine;
 import org.gudy.bouncycastle.crypto.params.KeyParameter;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.security.spec.AlgorithmParameterSpec;
 
 public class 
 TransportCipher 

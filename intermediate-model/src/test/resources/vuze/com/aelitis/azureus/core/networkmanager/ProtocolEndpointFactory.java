@@ -20,11 +20,12 @@
 
 package com.aelitis.azureus.core.networkmanager;
 
-import java.net.InetSocketAddress;
-import java.util.*;
-
 import com.aelitis.azureus.core.networkmanager.impl.tcp.ProtocolEndpointTCP;
 import com.aelitis.azureus.core.networkmanager.impl.udp.ProtocolEndpointUDP;
+
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 ProtocolEndpointFactory 

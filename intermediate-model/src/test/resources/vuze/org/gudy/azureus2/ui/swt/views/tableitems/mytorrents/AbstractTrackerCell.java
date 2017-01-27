@@ -15,15 +15,14 @@
   */
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
-import java.net.URL;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerTrackerListener;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerAnnouncerResponse;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
-
 import org.gudy.azureus2.plugins.ui.tables.*;
+
+import java.net.URL;
 
 /**
  * Base cell class for cells listening to the tracker listener

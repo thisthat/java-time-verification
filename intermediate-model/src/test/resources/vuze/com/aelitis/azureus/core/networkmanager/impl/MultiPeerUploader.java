@@ -19,13 +19,12 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.io.IOException;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.networkmanager.*;
 import com.aelitis.azureus.core.peermanager.messaging.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.IOException;
+import java.util.*;
 
 
 

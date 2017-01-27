@@ -18,11 +18,14 @@
 
 package com.aelitis.azureus.ui.swt.mdi;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.events.*;
@@ -52,18 +55,10 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewEventCancelledException;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 import org.gudy.azureus2.ui.swt.views.IViewAlwaysInitialize;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MdiEntryVitalityImage;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
-import com.aelitis.azureus.ui.swt.skin.SWTSkin;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObject;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectContainer;
-import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectTabFolder;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-import com.aelitis.azureus.ui.swt.views.skin.SkinnedDialog;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class TabbedMDI
 	extends BaseMDI

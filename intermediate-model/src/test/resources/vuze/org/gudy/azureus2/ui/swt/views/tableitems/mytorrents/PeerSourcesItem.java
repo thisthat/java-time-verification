@@ -23,7 +23,6 @@
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
 import org.gudy.azureus2.core3.download.DownloadManager;
-
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
 import org.gudy.azureus2.plugins.ui.tables.TableCellRefreshListener;

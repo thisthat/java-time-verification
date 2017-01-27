@@ -1,8 +1,5 @@
 package org.gudy.bouncycastle.util.encoders;
 
-import org.gudy.bouncycastle.util.encoders.Translator;
-
-
 /**
  * a buffering class to allow translation from one format to another to
  * be done in discrete chunks.

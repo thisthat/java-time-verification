@@ -21,18 +21,18 @@
  */
 
 package org.gudy.azureus2.pluginsimpl.local.sharing;
+
 import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.sharing.*;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * @author parg
- *
  */
-
-import java.util.Map;
-import java.io.*;
-
-import org.gudy.azureus2.plugins.sharing.*;
-import org.gudy.azureus2.plugins.torrent.Torrent;
 
 public class 
 ShareItemImpl

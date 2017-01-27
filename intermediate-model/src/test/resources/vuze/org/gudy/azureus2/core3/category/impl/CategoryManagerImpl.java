@@ -22,27 +22,12 @@
 
 package org.gudy.azureus2.core3.category.impl;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
+import com.aelitis.azureus.core.tag.Tag;
+import com.aelitis.azureus.core.tag.TagDownload;
+import com.aelitis.azureus.core.tag.TagType;
+import com.aelitis.azureus.core.tag.impl.TagTypeBase;
 import org.gudy.azureus2.core3.category.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -59,12 +44,11 @@ import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
 import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagDownload;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.impl.TagTypeBase;
+import java.io.*;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.*;
 
 public class 
 CategoryManagerImpl 

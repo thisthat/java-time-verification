@@ -20,8 +20,15 @@
 
 package com.aelitis.azureus.ui.swt.shells.main;
 
-import java.util.Map;
-
+import com.aelitis.azureus.core.*;
+import com.aelitis.azureus.ui.*;
+import com.aelitis.azureus.ui.common.updater.UIUpdater;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.mdi.TabbedMdiInterface;
+import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -43,16 +50,7 @@ import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTInstanceImpl;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCore;
 import org.gudy.azureus2.ui.systray.SystemTraySWT;
 
-import com.aelitis.azureus.core.*;
-import com.aelitis.azureus.ui.*;
-import com.aelitis.azureus.ui.common.updater.UIUpdater;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.mdi.TabbedMDI;
-import com.aelitis.azureus.ui.swt.mdi.TabbedMdiInterface;
-import com.aelitis.azureus.ui.swt.uiupdater.UIUpdaterSWT;
+import java.util.Map;
 
 public class 
 MainWindowDelayStub 

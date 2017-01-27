@@ -22,26 +22,14 @@
  
 package org.gudy.azureus2.ui.swt.config;
 
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.ColorDialog;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.ui.swt.ImageRepository;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
-
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
 
 
 /**

@@ -17,10 +17,9 @@
  
 package com.aelitis.azureus.ui.swt.shells.opentorrent;
 
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
 import org.gudy.azureus2.core3.torrent.impl.TorrentOpenFileOptions;
 import org.gudy.azureus2.plugins.ui.tables.*;
-
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
 
 public class TableColumnOTOF_Name
 implements TableCellRefreshListener, TableColumnExtraInfoListener

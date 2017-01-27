@@ -19,9 +19,7 @@
 
 package org.gudy.azureus2.ui.swt;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import com.aelitis.azureus.core.AzureusCore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -35,7 +33,8 @@ import org.gudy.azureus2.core3.internat.*;
 import org.gudy.azureus2.core3.util.AERunnable;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *

@@ -19,9 +19,8 @@
 
 package com.aelitis.azureus.core.diskmanager.file.impl;
 
-import java.io.File;
-import java.io.RandomAccessFile;
-
+import com.aelitis.azureus.core.diskmanager.file.FMFile;
+import com.aelitis.azureus.core.diskmanager.file.FMFileManagerException;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
 import org.gudy.azureus2.core3.util.Debug;
@@ -29,8 +28,8 @@ import org.gudy.azureus2.core3.util.DirectByteBuffer;
 import org.gudy.azureus2.core3.util.DirectByteBufferPool;
 import org.gudy.azureus2.core3.util.StringInterner;
 
-import com.aelitis.azureus.core.diskmanager.file.FMFile;
-import com.aelitis.azureus.core.diskmanager.file.FMFileManagerException;
+import java.io.File;
+import java.io.RandomAccessFile;
 
 public class 
 FMFileAccessController

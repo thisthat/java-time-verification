@@ -1,9 +1,8 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import java.security.SecureRandom;
-
-import org.gudy.bouncycastle.crypto.params.ECDomainParameters;
 import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
+
+import java.security.SecureRandom;
 
 public class ECKeyGenerationParameters
     extends KeyGenerationParameters

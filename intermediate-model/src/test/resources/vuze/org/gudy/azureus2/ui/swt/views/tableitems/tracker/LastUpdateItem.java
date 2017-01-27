@@ -19,13 +19,11 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.tracker;
 
-import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
-import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
-
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
 import org.gudy.azureus2.plugins.ui.tables.TableColumnInfo;
-
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
+import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
 
 public class LastUpdateItem
 	extends ColumnDateSizer

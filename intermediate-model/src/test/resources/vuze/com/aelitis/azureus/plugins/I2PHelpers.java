@@ -22,15 +22,13 @@
 
 package com.aelitis.azureus.plugins;
 
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.PluginManager;
-
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.ui.UIFunctions;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.UIFunctionsUserPrompter;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.PluginManager;
 
 public class 
 I2PHelpers 

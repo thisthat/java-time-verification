@@ -1,13 +1,13 @@
 package org.gudy.bouncycastle.crypto.generators;
 
-import java.math.BigInteger;
-
 import org.gudy.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.gudy.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
 import org.gudy.bouncycastle.crypto.params.RSAKeyGenerationParameters;
 import org.gudy.bouncycastle.crypto.params.RSAKeyParameters;
 import org.gudy.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;
+
+import java.math.BigInteger;
 
 /**
  * an RSA key pair generator.

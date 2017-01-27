@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto.params;
 
-import org.gudy.bouncycastle.crypto.params.ECDomainParameters;
-import org.gudy.bouncycastle.crypto.params.ECKeyParameters;
 import org.gudy.bouncycastle.math.ec.ECPoint;
 
 public class ECPublicKeyParameters

@@ -24,9 +24,7 @@ package com.aelitis.azureus.plugins.upnp;
  *
  */
 
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.net.upnp.services.*;
 import org.gudy.azureus2.core3.internat.*;
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
@@ -34,7 +32,9 @@ import org.gudy.azureus2.plugins.logging.*;
 import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
 import org.gudy.azureus2.plugins.ui.config.StringParameter;
 
-import com.aelitis.net.upnp.services.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 UPnPPluginService 

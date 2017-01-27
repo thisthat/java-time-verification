@@ -22,9 +22,9 @@
 
 package org.gudy.azureus2.plugins.torrent;
 
-import java.util.List;
-
 import org.gudy.azureus2.plugins.tag.Tag;
+
+import java.util.List;
 
 public interface 
 TorrentOptions 

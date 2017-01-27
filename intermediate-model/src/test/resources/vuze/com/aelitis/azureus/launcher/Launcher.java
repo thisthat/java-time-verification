@@ -16,10 +16,10 @@
  */
 package com.aelitis.azureus.launcher;
 
+import com.aelitis.azureus.launcher.classloading.*;
+
 import java.lang.reflect.Method;
 import java.net.URL;
-
-import com.aelitis.azureus.launcher.classloading.*;
 
 /**
  * This will (hopefully) become a unified launching pathway covering everything

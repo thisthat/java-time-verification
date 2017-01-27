@@ -19,11 +19,13 @@
  
 package com.aelitis.net.natpmp.upnp.impl;
 
-import java.util.*;
-
 import com.aelitis.net.natpmp.NatPMPDevice;
 import com.aelitis.net.upnp.UPnPException;
 import com.aelitis.net.upnp.services.UPnPWANConnectionPortMapping;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class NatPMPImpl {
     /* NatPMP stuff */

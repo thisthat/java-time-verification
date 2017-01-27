@@ -20,17 +20,13 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
+import com.aelitis.net.udp.uc.*;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.aelitis.net.udp.uc.PRUDPPacketHandler;
-import com.aelitis.net.udp.uc.PRUDPPacketReply;
-import com.aelitis.net.udp.uc.PRUDPPacketReplyDecoder;
-import com.aelitis.net.udp.uc.PRUDPPacketRequest;
-import com.aelitis.net.udp.uc.PRUDPPacketRequestDecoder;
 
 public class 
 NetworkAdminNATUDPCodecs 

@@ -20,14 +20,16 @@
 
 package com.aelitis.azureus.core.tag.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.lang.ref.WeakReference;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreComponent;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
+import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.IdentityHashSet;
+import com.aelitis.azureus.core.util.PlatformTorrentUtils;
+import com.aelitis.azureus.util.MapUtils;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
@@ -38,26 +40,7 @@ import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.FrequencyLimitedDispatcher;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimeFormatter;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.xml.util.XMLEscapeWriter;
 import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
 import org.gudy.azureus2.plugins.PluginInterface;
@@ -73,16 +56,13 @@ import org.gudy.azureus2.plugins.utils.ScriptProvider;
 import org.gudy.azureus2.pluginsimpl.PluginUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreComponent;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
-import com.aelitis.azureus.core.rssgen.RSSGeneratorPlugin;
-import com.aelitis.azureus.core.tag.*;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.IdentityHashSet;
-import com.aelitis.azureus.core.util.PlatformTorrentUtils;
-import com.aelitis.azureus.util.MapUtils;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+import java.util.*;
 
 public class 
 TagManagerImpl

@@ -17,11 +17,10 @@
 
 package org.gudy.azureus2.ui.swt;
 
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.impl.ConfigurationDefaults;
 import org.gudy.azureus2.core3.util.Constants;
-
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 
 /**
  * @author TuxPaper

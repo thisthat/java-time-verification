@@ -17,10 +17,10 @@
  
 package com.aelitis.azureus.ui.swt.shells.opentorrent;
 
-import java.io.File;
-
 import org.gudy.azureus2.core3.torrent.impl.TorrentOpenFileOptions;
 import org.gudy.azureus2.plugins.ui.tables.*;
+
+import java.io.File;
 
 public class TableColumnOTOF_Path
 implements TableCellRefreshListener, TableColumnExtraInfoListener

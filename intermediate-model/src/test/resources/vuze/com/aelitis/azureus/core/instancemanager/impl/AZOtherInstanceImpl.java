@@ -19,13 +19,15 @@
 
 package com.aelitis.azureus.core.instancemanager.impl;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemProperties;
 import org.gudy.azureus2.core3.util.SystemTime;
+
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class 

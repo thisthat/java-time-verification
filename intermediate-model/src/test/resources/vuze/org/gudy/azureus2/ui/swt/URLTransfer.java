@@ -17,6 +17,11 @@
  */
 package org.gudy.azureus2.ui.swt;
 
+import org.eclipse.swt.dnd.ByteArrayTransfer;
+import org.eclipse.swt.dnd.TransferData;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.UrlUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,11 +29,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.eclipse.swt.dnd.ByteArrayTransfer;
-import org.eclipse.swt.dnd.TransferData;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.UrlUtils;
 
 /**
  * URL Transfer type for Drag and Drop of URLs

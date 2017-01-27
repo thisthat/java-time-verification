@@ -22,15 +22,8 @@
  
 package org.gudy.azureus2.pluginsimpl.local;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLConnection;
-import java.util.*;
-
+import com.aelitis.azureus.core.*;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.global.GlobalManager;
@@ -50,9 +43,14 @@ import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl.runnableWithExcep
 import org.gudy.azureus2.update.UpdaterUpdateChecker;
 import org.gudy.azureus2.update.UpdaterUtils;
 
-
-import com.aelitis.azureus.core.*;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLConnection;
+import java.util.*;
 
 
 

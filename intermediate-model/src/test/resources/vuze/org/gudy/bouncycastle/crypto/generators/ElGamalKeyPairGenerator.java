@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.crypto.generators;
 
-import java.math.BigInteger;
-
 import org.gudy.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.gudy.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.gudy.bouncycastle.crypto.KeyGenerationParameters;
@@ -9,6 +7,8 @@ import org.gudy.bouncycastle.crypto.params.ElGamalKeyGenerationParameters;
 import org.gudy.bouncycastle.crypto.params.ElGamalParameters;
 import org.gudy.bouncycastle.crypto.params.ElGamalPrivateKeyParameters;
 import org.gudy.bouncycastle.crypto.params.ElGamalPublicKeyParameters;
+
+import java.math.BigInteger;
 
 /**
  * a ElGamal key pair generator.

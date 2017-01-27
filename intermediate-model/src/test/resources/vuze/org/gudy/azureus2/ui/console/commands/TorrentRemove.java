@@ -21,11 +21,11 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.global.GlobalManagerDownloadRemovalVetoException;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.util.List;
 
 /**
  * console command to remove a torrent.

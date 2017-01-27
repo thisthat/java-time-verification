@@ -18,21 +18,19 @@
 
 package com.aelitis.azureus.plugins.startstoprules.defaultplugin.ui.swt;
 
+import com.aelitis.azureus.plugins.startstoprules.defaultplugin.DefaultRankCalculator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.config.BooleanParameter;
 import org.gudy.azureus2.ui.swt.config.IntListParameter;
 import org.gudy.azureus2.ui.swt.plugins.UISWTConfigSection;
-
-import com.aelitis.azureus.plugins.startstoprules.defaultplugin.DefaultRankCalculator;
 
 /** First Priority Specific options.
  * @author TuxPaper

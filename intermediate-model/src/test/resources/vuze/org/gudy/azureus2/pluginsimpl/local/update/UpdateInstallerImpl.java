@@ -24,19 +24,17 @@ package org.gudy.azureus2.pluginsimpl.local.update;
  *
  */
 
-import java.io.*;
-
+import com.aelitis.azureus.core.update.AzureusRestarter;
+import com.aelitis.azureus.core.update.AzureusRestarterFactory;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.logging.*;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
 import org.gudy.azureus2.plugins.update.*;
 
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.logging.*;
-
-import com.aelitis.azureus.core.update.AzureusRestarter;
-import com.aelitis.azureus.core.update.AzureusRestarterFactory;
+import java.io.*;
 
 public class 
 UpdateInstallerImpl

@@ -27,7 +27,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.ui.swt.components.BufferedLabel;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;

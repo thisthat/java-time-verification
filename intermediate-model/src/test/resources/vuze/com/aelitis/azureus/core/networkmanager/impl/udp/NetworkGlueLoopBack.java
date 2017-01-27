@@ -19,13 +19,14 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.udp;
 
-import java.util.*;
+import org.gudy.azureus2.core3.util.AEThread;
+import org.gudy.azureus2.core3.util.SystemTime;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-
-import org.gudy.azureus2.core3.util.AEThread;
-import org.gudy.azureus2.core3.util.SystemTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class 
 NetworkGlueLoopBack

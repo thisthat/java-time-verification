@@ -20,16 +20,10 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeContact;
 import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeNetwork;
+
+import java.util.*;
 
 public class 
 DHTTransportAlternativeNetworkImpl 

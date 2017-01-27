@@ -20,17 +20,16 @@
 package com.aelitis.azureus.core.networkmanager.impl;
 
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.Map;
-
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
+import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
 import org.gudy.azureus2.core3.util.AddressUtils;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.LightHashMap;
 
-import com.aelitis.azureus.core.networkmanager.*;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamDecoder;
-import com.aelitis.azureus.core.peermanager.messaging.MessageStreamEncoder;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Map;
 
 
 

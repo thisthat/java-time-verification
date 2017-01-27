@@ -17,10 +17,6 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Constants;
-
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.mdi.*;
@@ -31,6 +27,9 @@ import com.aelitis.azureus.ui.swt.skin.SWTSkinObjectBrowser;
 import com.aelitis.azureus.ui.swt.views.skin.sidebar.SideBar;
 import com.aelitis.azureus.util.ConstantsVuze;
 import com.aelitis.azureus.util.ContentNetworkUtils;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.Constants;
 
 
 /**

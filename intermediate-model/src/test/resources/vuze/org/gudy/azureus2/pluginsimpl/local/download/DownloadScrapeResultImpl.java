@@ -27,12 +27,11 @@ package org.gudy.azureus2.pluginsimpl.local.download;
  *
  */
 
-import java.net.URL;
-
+import org.gudy.azureus2.core3.tracker.client.*;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
 
-import org.gudy.azureus2.core3.tracker.client.*;
+import java.net.URL;
 
 public class 
 DownloadScrapeResultImpl

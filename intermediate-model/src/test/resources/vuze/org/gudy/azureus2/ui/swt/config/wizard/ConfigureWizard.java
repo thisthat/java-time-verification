@@ -22,13 +22,12 @@
  
 package org.gudy.azureus2.ui.swt.config.wizard;
 
+import com.aelitis.azureus.ui.UserPrompterResultListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.azureus2.ui.swt.wizard.IWizardPanel;
 import org.gudy.azureus2.ui.swt.wizard.Wizard;
-
-import com.aelitis.azureus.ui.UserPrompterResultListener;
 
 /**
  * @author Olivier

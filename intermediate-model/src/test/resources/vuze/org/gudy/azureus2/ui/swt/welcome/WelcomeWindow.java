@@ -20,14 +20,8 @@
  */
 package org.gudy.azureus2.ui.swt.welcome;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Locale;
-
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
@@ -38,16 +32,19 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
 import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
 import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
-
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Locale;
 
 /**
  * This is the What's New window

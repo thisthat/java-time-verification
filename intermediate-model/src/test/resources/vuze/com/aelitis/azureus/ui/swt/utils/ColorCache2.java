@@ -20,13 +20,13 @@
 
 package com.aelitis.azureus.ui.swt.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.RGB;
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 ColorCache2 

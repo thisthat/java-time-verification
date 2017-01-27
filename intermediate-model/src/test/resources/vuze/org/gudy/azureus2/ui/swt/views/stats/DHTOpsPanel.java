@@ -20,12 +20,12 @@
  */
 package org.gudy.azureus2.ui.swt.views.stats;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.dht.DHT;
+import com.aelitis.azureus.core.dht.control.DHTControlActivity;
+import com.aelitis.azureus.core.dht.control.DHTControlActivity.ActivityNode;
+import com.aelitis.azureus.core.dht.control.DHTControlActivity.ActivityState;
+import com.aelitis.azureus.core.dht.control.DHTControlListener;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Color;
@@ -33,21 +33,11 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.*;
-
 import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.core.dht.DHT;
-import com.aelitis.azureus.core.dht.control.DHTControlActivity;
-import com.aelitis.azureus.core.dht.control.DHTControlListener;
-import com.aelitis.azureus.core.dht.control.DHTControlActivity.ActivityNode;
-import com.aelitis.azureus.core.dht.control.DHTControlActivity.ActivityState;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.util.*;
 
 public class 
 DHTOpsPanel

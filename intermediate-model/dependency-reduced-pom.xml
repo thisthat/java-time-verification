@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>intermediate-model</artifactId>
   <name>Intermediate-Model</name>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.2.1-SNAPSHOT</version>
   <description>The following module encapsulate all the structure of a Java source code file in an intermediate stucture that
         allows us to keep track of the information in the file and perform evaluation over it.</description>
   <build>

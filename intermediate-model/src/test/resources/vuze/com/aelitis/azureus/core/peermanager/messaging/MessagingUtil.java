@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.peermanager.messaging;
 
-import java.util.Map;
-
 import org.gudy.azureus2.core3.util.*;
+
+import java.util.Map;
 
 
 public class MessagingUtil {

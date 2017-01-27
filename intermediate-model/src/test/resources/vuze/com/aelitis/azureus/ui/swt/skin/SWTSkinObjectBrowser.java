@@ -17,31 +17,26 @@
 
 package com.aelitis.azureus.ui.swt.skin;
 
-import java.net.InetSocketAddress;
-import java.net.URL;
-
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.browser.BrowserContext;
+import com.aelitis.azureus.ui.swt.browser.BrowserContext.loadingListener;
+import com.aelitis.azureus.ui.swt.browser.listener.*;
+import com.aelitis.azureus.util.UrlFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.*;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.UrlUtils;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.browser.BrowserContext;
-import org.gudy.azureus2.ui.swt.BrowserWrapper;
-import com.aelitis.azureus.ui.swt.browser.BrowserContext.loadingListener;
-import com.aelitis.azureus.ui.swt.browser.listener.*;
-import com.aelitis.azureus.util.UrlFilter;
+import java.net.InetSocketAddress;
+import java.net.URL;
 
 /**
  * @author TuxPaper

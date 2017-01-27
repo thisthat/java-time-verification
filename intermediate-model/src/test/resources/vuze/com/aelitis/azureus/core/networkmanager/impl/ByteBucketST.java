@@ -20,10 +20,9 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
+import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
-
-import com.aelitis.azureus.core.networkmanager.NetworkManager;
 
 public class 
 ByteBucketST 

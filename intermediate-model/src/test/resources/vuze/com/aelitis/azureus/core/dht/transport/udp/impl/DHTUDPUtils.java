@@ -19,37 +19,22 @@
 
 package com.aelitis.azureus.core.dht.transport.udp.impl;
 
-import java.io.*;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeSet;
-
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SHA1Simple;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.impl.DHTLog;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPositionManager;
 import com.aelitis.azureus.core.dht.netcoords.vivaldi.ver1.VivaldiPositionFactory;
-import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeContact;
-import com.aelitis.azureus.core.dht.transport.DHTTransportAlternativeNetwork;
-import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
-import com.aelitis.azureus.core.dht.transport.DHTTransportException;
-import com.aelitis.azureus.core.dht.transport.DHTTransportFullStats;
-import com.aelitis.azureus.core.dht.transport.DHTTransportValue;
+import com.aelitis.azureus.core.dht.transport.*;
 import com.aelitis.azureus.core.dht.transport.udp.DHTTransportUDP;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 /**
  * @author parg

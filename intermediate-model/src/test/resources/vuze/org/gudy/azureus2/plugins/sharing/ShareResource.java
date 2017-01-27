@@ -22,9 +22,9 @@
 
 package org.gudy.azureus2.plugins.sharing;
 
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
+
+import java.util.Map;
 
 /**
  * @author parg

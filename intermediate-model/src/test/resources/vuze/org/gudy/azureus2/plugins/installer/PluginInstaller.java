@@ -19,12 +19,12 @@
 
 package org.gudy.azureus2.plugins.installer;
 
-import java.io.File;
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.PluginException;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.update.UpdateCheckInstance;
+
+import java.io.File;
+import java.util.Map;
 
 /**
  * @author parg

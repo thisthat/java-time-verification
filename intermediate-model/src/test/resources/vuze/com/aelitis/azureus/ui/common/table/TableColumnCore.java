@@ -18,12 +18,12 @@
 
 package com.aelitis.azureus.ui.common.table;
 
+import org.gudy.azureus2.core3.util.IndentWriter;
+import org.gudy.azureus2.plugins.ui.tables.*;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.plugins.ui.tables.*;
 
 /** 
  * Core Table Column functions are those available to plugins plus

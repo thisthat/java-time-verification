@@ -26,10 +26,10 @@ package org.gudy.azureus2.core3.tracker.host;
  * @author parg
  */
 
-import java.net.InetAddress;
-
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.tracker.server.*;
+
+import java.net.InetAddress;
 
 public interface 
 TRHost

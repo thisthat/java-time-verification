@@ -20,21 +20,13 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl.runnableWithException;
+
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl.runnableWithException;
 
 public class 
 NetUtils 

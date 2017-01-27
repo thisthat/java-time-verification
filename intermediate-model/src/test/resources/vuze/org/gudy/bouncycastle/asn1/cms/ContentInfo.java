@@ -1,16 +1,8 @@
 package org.gudy.bouncycastle.asn1.cms;
 
-import java.util.Enumeration;
+import org.gudy.bouncycastle.asn1.*;
 
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.ASN1TaggedObject;
-import org.gudy.bouncycastle.asn1.BERSequence;
-import org.gudy.bouncycastle.asn1.BERTaggedObject;
-import org.gudy.bouncycastle.asn1.DEREncodable;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
+import java.util.Enumeration;
 
 public class ContentInfo
     extends ASN1Encodable

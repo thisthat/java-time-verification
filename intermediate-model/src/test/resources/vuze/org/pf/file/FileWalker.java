@@ -14,10 +14,11 @@ package org.pf.file;
 // ===========================================================================
 // IMPORTS
 // ===========================================================================
-import java.io.File;
-import java.io.FilenameFilter;
 
 import org.pf.text.StringUtil;
+
+import java.io.File;
+import java.io.FilenameFilter;
 
 /**
  * This class provides services to navigate through a file directory and

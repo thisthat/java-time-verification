@@ -24,7 +24,7 @@ package com.aelitis.azureus.core.dht.router;
  *
  */
 
-import java.util.*;
+import java.util.List;
 
 public interface 
 DHTRouter 

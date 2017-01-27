@@ -19,10 +19,11 @@
 
 package com.aelitis.azureus.core.metasearch;
 
-import java.io.*;
-import java.util.Map;
-
 import com.aelitis.azureus.core.vuzefile.VuzeFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 
 public interface 

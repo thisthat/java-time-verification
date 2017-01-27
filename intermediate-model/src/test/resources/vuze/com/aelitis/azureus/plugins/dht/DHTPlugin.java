@@ -20,31 +20,6 @@
 package com.aelitis.azureus.plugins.dht;
 
 
-
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.plugins.*;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseEvent;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseKey;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseListener;
-import org.gudy.azureus2.plugins.logging.LoggerChannel;
-import org.gudy.azureus2.plugins.logging.LoggerChannelListener;
-import org.gudy.azureus2.plugins.ui.UIManager;
-import org.gudy.azureus2.plugins.ui.components.UITextField;
-import org.gudy.azureus2.plugins.ui.config.*;
-import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
-import org.gudy.azureus2.plugins.ui.model.BasicPluginViewModel;
-import org.gudy.azureus2.plugins.utils.DelayedTask;
-import org.gudy.azureus2.plugins.utils.UTTimerEvent;
-import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
-
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.DHTLogger;
@@ -64,6 +39,29 @@ import com.aelitis.azureus.plugins.dht.impl.DHTPluginImpl;
 import com.aelitis.azureus.plugins.dht.impl.DHTPluginImplAdapter;
 import com.aelitis.azureus.plugins.upnp.UPnPMapping;
 import com.aelitis.azureus.plugins.upnp.UPnPPlugin;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.*;
+import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
+import org.gudy.azureus2.plugins.ddb.DistributedDatabaseEvent;
+import org.gudy.azureus2.plugins.ddb.DistributedDatabaseKey;
+import org.gudy.azureus2.plugins.ddb.DistributedDatabaseListener;
+import org.gudy.azureus2.plugins.logging.LoggerChannel;
+import org.gudy.azureus2.plugins.logging.LoggerChannelListener;
+import org.gudy.azureus2.plugins.ui.UIManager;
+import org.gudy.azureus2.plugins.ui.components.UITextField;
+import org.gudy.azureus2.plugins.ui.config.*;
+import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
+import org.gudy.azureus2.plugins.ui.model.BasicPluginViewModel;
+import org.gudy.azureus2.plugins.utils.DelayedTask;
+import org.gudy.azureus2.plugins.utils.UTTimerEvent;
+import org.gudy.azureus2.plugins.utils.UTTimerEventPerformer;
+
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 /**
  * @author parg

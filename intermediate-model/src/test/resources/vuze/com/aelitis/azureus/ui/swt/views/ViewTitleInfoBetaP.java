@@ -18,21 +18,20 @@
 
 package com.aelitis.azureus.ui.swt.views;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Map;
-
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.util.JSONUtils;
+import com.aelitis.azureus.util.MapUtils;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.util.JSONUtils;
-import com.aelitis.azureus.util.MapUtils;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
 
 public class ViewTitleInfoBetaP
 	implements ViewTitleInfo

@@ -20,11 +20,10 @@
 
 package com.aelitis.azureus.core.metasearch;
 
-import java.util.Map;
-
+import com.aelitis.azureus.core.vuzefile.VuzeFile;
 import org.gudy.azureus2.plugins.utils.search.SearchProvider;
 
-import com.aelitis.azureus.core.vuzefile.VuzeFile;
+import java.util.Map;
 
 public interface 
 MetaSearchManager 

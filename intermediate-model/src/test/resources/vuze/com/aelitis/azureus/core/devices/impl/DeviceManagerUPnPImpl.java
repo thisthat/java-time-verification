@@ -20,12 +20,16 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.URL;
-import java.util.*;
-
+import com.aelitis.azureus.core.content.AzureusContentDownload;
+import com.aelitis.azureus.core.content.AzureusContentFile;
+import com.aelitis.azureus.core.content.AzureusContentFilter;
+import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
+import com.aelitis.azureus.core.devices.DeviceMediaRenderer;
+import com.aelitis.azureus.core.devices.TranscodeTarget;
+import com.aelitis.azureus.core.util.UUIDGenerator;
+import com.aelitis.net.upnp.*;
+import com.aelitis.net.upnp.services.UPnPOfflineDownloader;
+import com.aelitis.net.upnp.services.UPnPWANConnection;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginEvent;
@@ -42,24 +46,11 @@ import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentE
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.ipc.IPCInterfaceImpl;
 
-import com.aelitis.azureus.core.content.AzureusContentDownload;
-import com.aelitis.azureus.core.content.AzureusContentFile;
-import com.aelitis.azureus.core.content.AzureusContentFilter;
-import com.aelitis.azureus.core.devices.DeviceMediaRenderer;
-import com.aelitis.azureus.core.devices.TranscodeTarget;
-import com.aelitis.azureus.core.devices.DeviceManager.UnassociatedDevice;
-import com.aelitis.azureus.core.util.UUIDGenerator;
-import com.aelitis.net.upnp.UPnP;
-import com.aelitis.net.upnp.UPnPAdapter;
-import com.aelitis.net.upnp.UPnPDevice;
-import com.aelitis.net.upnp.UPnPFactory;
-import com.aelitis.net.upnp.UPnPListener;
-import com.aelitis.net.upnp.UPnPRootDevice;
-import com.aelitis.net.upnp.UPnPRootDeviceListener;
-import com.aelitis.net.upnp.UPnPSSDPListener;
-import com.aelitis.net.upnp.UPnPService;
-import com.aelitis.net.upnp.services.UPnPOfflineDownloader;
-import com.aelitis.net.upnp.services.UPnPWANConnection;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.net.URL;
+import java.util.*;
 
 public class 
 DeviceManagerUPnPImpl 

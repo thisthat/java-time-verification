@@ -20,14 +20,12 @@
 
 package com.aelitis.azureus.ui.swt.columns.vuzeactivity;
 
+import com.aelitis.azureus.activities.VuzeActivitiesEntry;
+import org.gudy.azureus2.plugins.ui.tables.TableCell;
+import org.gudy.azureus2.plugins.ui.tables.TableCellAddedListener;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
 import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnCreator;
 import org.gudy.azureus2.ui.swt.views.tableitems.ColumnDateSizer;
-
-import com.aelitis.azureus.activities.VuzeActivitiesEntry;
-
-import org.gudy.azureus2.plugins.ui.tables.TableCell;
-import org.gudy.azureus2.plugins.ui.tables.TableCellAddedListener;
 
 /**
  * @author TuxPaper

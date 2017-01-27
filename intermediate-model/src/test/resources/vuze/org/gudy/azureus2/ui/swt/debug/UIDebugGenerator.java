@@ -16,11 +16,9 @@
  */
 package org.gudy.azureus2.ui.swt.debug;
 
-import java.io.*;
-import java.net.URL;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
+import com.aelitis.azureus.core.*;
+import com.aelitis.azureus.core.util.AZ3Functions;
+import com.aelitis.azureus.ui.UserPrompterResultListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
@@ -42,13 +40,13 @@ import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.components.shell.ShellFactory;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT;
 import org.gudy.azureus2.ui.swt.shells.CoreWaiterSWT.TriggerInThread;
-import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
 import org.gudy.azureus2.ui.swt.shells.MessageBoxShell;
 import org.gudy.bouncycastle.util.encoders.Base64;
 
-import com.aelitis.azureus.core.*;
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.ui.UserPrompterResultListener;
+import java.io.*;
+import java.net.URL;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author TuxPaper

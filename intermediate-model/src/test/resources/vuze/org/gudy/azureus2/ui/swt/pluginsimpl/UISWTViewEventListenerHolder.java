@@ -20,18 +20,18 @@
 
 package org.gudy.azureus2.ui.swt.pluginsimpl;
 
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+import org.gudy.azureus2.ui.swt.plugins.UISWTInstance.UISWTViewEventListenerWrapper;
+import org.gudy.azureus2.ui.swt.plugins.UISWTView;
+import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
+import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
+
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-import org.gudy.azureus2.ui.swt.plugins.UISWTView;
-import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
-import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
-import org.gudy.azureus2.ui.swt.plugins.UISWTInstance.UISWTViewEventListenerWrapper;
 
 /**
  * Holds information to create a real {@link UISWTViewEventListener} from

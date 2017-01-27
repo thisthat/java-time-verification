@@ -22,16 +22,14 @@
  
 package org.gudy.azureus2.ui.swt.views.tableitems.mytorrents;
 
+import com.aelitis.azureus.core.util.PlatformTorrentUtils;
 import org.eclipse.swt.SWT;
 import org.gudy.azureus2.core3.download.DownloadManager;
+import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.TorrentUtil;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-
-import com.aelitis.azureus.core.util.PlatformTorrentUtils;
-
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.ui.tables.*;
 
 /**
  * @author amc1

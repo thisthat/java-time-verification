@@ -24,10 +24,10 @@ package org.gudy.azureus2.core3.html.impl;
  *
  */
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.html.*;
 import org.gudy.azureus2.core3.internat.MessageText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class 

@@ -1,10 +1,6 @@
 package org.gudy.bouncycastle.openssl;
 
-import org.gudy.bouncycastle.asn1.ASN1InputStream;
-import org.gudy.bouncycastle.asn1.ASN1Object;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERInteger;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.cms.ContentInfo;
 import org.gudy.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.gudy.bouncycastle.asn1.sec.ECPrivateKeyStructure;
@@ -21,27 +17,12 @@ import org.gudy.bouncycastle.util.encoders.Hex;
 import org.gudy.bouncycastle.x509.X509AttributeCertificate;
 import org.gudy.bouncycastle.x509.X509V2AttributeCertificate;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PublicKey;
+import java.io.*;
+import java.security.*;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.security.spec.DSAPrivateKeySpec;
-import java.security.spec.DSAPublicKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPrivateCrtKeySpec;
-import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.spec.*;
 import java.util.StringTokenizer;
 
 /**

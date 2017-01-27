@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.core.peer.cache;
 
-import java.net.InetAddress;
-
 import org.gudy.azureus2.core3.torrent.TOTorrent;
+
+import java.net.InetAddress;
 
 public interface 
 CacheDiscoverer 

@@ -21,13 +21,13 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadRemovalVetoException;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.ui.console.ConsoleInput;
+
+import java.util.List;
 
 public class TorrentArchive extends TorrentCommand {
 

@@ -16,16 +16,12 @@
  */
 package com.aelitis.azureus.plugins.startstoprules.defaultplugin;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.gudy.azureus2.core3.config.COConfigurationListener;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.download.DownloadManagerStateAttributeListener;
 import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.ByteFormatter;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.core3.util.TimeFormatter;
@@ -36,6 +32,9 @@ import org.gudy.azureus2.plugins.download.DownloadStats;
 import org.gudy.azureus2.plugins.logging.LoggerChannel;
 import org.gudy.azureus2.plugins.peers.PeerManager;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author TuxPaper

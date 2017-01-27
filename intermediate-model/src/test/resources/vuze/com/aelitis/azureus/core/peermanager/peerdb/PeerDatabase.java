@@ -19,12 +19,11 @@
 
 package com.aelitis.azureus.core.peermanager.peerdb;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.util.bloom.*;
 import org.gudy.azureus2.core3.peer.util.PeerUtils;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.util.bloom.*;
+import java.util.*;
 
 
 /**

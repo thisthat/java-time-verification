@@ -20,16 +20,15 @@
  
 package com.aelitis.azureus.ui.swt.devices.columns;
 
-import java.util.Locale;
-
 import com.aelitis.azureus.core.devices.Device;
 import com.aelitis.azureus.core.devices.DeviceMediaRenderer;
 import com.aelitis.azureus.core.devices.TranscodeFile;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.internat.MessageText.MessageTextListener;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.ui.tables.*;
+
+import java.util.Locale;
 
 /**
  * @author TuxPaper

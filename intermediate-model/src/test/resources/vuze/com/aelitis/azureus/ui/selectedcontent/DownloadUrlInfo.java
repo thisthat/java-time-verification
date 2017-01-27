@@ -20,9 +20,9 @@
 
 package com.aelitis.azureus.ui.selectedcontent;
 
-import java.util.Map;
-
 import org.gudy.azureus2.core3.util.LightHashMap;
+
+import java.util.Map;
 
 /**
  * @author TuxPaper

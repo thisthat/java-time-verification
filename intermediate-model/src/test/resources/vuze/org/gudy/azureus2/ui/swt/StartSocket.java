@@ -18,14 +18,13 @@
  */
 package org.gudy.azureus2.ui.swt;
 
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
-
+import com.aelitis.azureus.core.impl.AzureusCoreSingleInstanceClient;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.impl.AzureusCoreSingleInstanceClient;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 
 public class StartSocket {

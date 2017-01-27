@@ -16,17 +16,16 @@
  */
 package com.aelitis.azureus.ui.swt.utils;
 
-import java.lang.reflect.Method;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.swt.Utils;
+
+import java.lang.reflect.Method;
 
 /**
  * @author TuxPaper

@@ -17,13 +17,11 @@
 
 package com.aelitis.azureus.core.messenger;
 
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.*;
-
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.util.*;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.core3.util.Timer;
 import org.gudy.azureus2.plugins.utils.StaticUtilities;
@@ -31,11 +29,12 @@ import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFactory;
 
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.util.*;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
 
 /**
  * @author TuxPaper

@@ -19,10 +19,10 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl.dht;
 
-import java.net.InetAddress;
-
 import org.gudy.azureus2.core3.tracker.server.TRTrackerServerRequestListener;
 import org.gudy.azureus2.core3.tracker.server.impl.TRTrackerServerImpl;
+
+import java.net.InetAddress;
 
 /**
  * @author parg

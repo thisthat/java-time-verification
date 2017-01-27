@@ -20,17 +20,16 @@
 
 package com.aelitis.net.upnpms.impl;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.aelitis.net.upnpms.*;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.xml.simpleparser.SimpleXMLParserDocumentFactory;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.*;
 import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.*;
 
-import com.aelitis.net.upnpms.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 UPNPMSBrowserImpl 

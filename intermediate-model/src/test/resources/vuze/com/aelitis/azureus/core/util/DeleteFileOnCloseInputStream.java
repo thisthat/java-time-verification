@@ -20,13 +20,9 @@
 
 package com.aelitis.azureus.core.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.gudy.azureus2.core3.util.Debug;
+
+import java.io.*;
 
 public class 
 DeleteFileOnCloseInputStream

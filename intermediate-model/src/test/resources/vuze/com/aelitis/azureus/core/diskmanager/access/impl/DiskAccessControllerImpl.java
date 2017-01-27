@@ -19,11 +19,6 @@
 
 package com.aelitis.azureus.core.diskmanager.access.impl;
 
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-
 import com.aelitis.azureus.core.diskmanager.access.DiskAccessController;
 import com.aelitis.azureus.core.diskmanager.access.DiskAccessControllerStats;
 import com.aelitis.azureus.core.diskmanager.access.DiskAccessRequest;
@@ -31,6 +26,12 @@ import com.aelitis.azureus.core.diskmanager.access.DiskAccessRequestListener;
 import com.aelitis.azureus.core.diskmanager.cache.CacheFile;
 import com.aelitis.azureus.core.stats.AzureusCoreStats;
 import com.aelitis.azureus.core.stats.AzureusCoreStatsProvider;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class 
 DiskAccessControllerImpl

@@ -20,8 +20,10 @@
  */
 package org.gudy.azureus2.ui.swt.update;
 
-import java.io.File;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
+import com.aelitis.azureus.ui.*;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
@@ -30,26 +32,18 @@ import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.components.StringListChooser;
-import org.gudy.azureus2.ui.swt.progress.IProgressReport;
-import org.gudy.azureus2.ui.swt.progress.IProgressReportConstants;
-import org.gudy.azureus2.ui.swt.progress.IProgressReporter;
-import org.gudy.azureus2.ui.swt.progress.IProgressReporterListener;
-import org.gudy.azureus2.ui.swt.progress.ProgressReportingManager;
-import org.gudy.azureus2.update.CoreUpdateChecker;
-
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.versioncheck.VersionCheckClient;
-import com.aelitis.azureus.ui.*;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.update.*;
 import org.gudy.azureus2.plugins.utils.DelayedTask;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.components.StringListChooser;
+import org.gudy.azureus2.ui.swt.progress.*;
+import org.gudy.azureus2.update.CoreUpdateChecker;
+
+import java.io.File;
 
 /**
  * @author Olivier Chalouhi

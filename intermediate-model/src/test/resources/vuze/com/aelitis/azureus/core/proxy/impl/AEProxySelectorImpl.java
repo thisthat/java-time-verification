@@ -20,24 +20,22 @@
 
 package com.aelitis.azureus.core.proxy.impl;
 
-import java.io.IOException;
-import java.net.*;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationListener;
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.proxy.*;
 import com.aelitis.azureus.core.util.CopyOnWriteMap;
 import com.aelitis.azureus.core.util.DNSUtils;
+import org.gudy.azureus2.core3.config.COConfigurationListener;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.util.AddressUtils;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.HostNameToIPResolver;
+import org.gudy.azureus2.core3.util.SystemTime;
+
+import java.io.IOException;
+import java.net.*;
+import java.util.*;
 
 public class 
 AEProxySelectorImpl 

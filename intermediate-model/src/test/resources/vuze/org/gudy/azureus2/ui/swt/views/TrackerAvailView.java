@@ -19,8 +19,8 @@
  */
 package org.gudy.azureus2.ui.swt.views;
 
-import java.util.List;
-
+import com.aelitis.azureus.core.tracker.TrackerPeerSource;
+import com.aelitis.azureus.ui.common.table.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 import org.gudy.azureus2.core3.download.DownloadManagerAvailability;
@@ -30,8 +30,7 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableViewFactory;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableViewTab;
 import org.gudy.azureus2.ui.swt.views.tableitems.tracker.*;
 
-import com.aelitis.azureus.core.tracker.TrackerPeerSource;
-import com.aelitis.azureus.ui.common.table.*;
+import java.util.List;
 
 
 

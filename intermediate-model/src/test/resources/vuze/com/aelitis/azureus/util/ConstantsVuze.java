@@ -20,11 +20,10 @@
 
 package com.aelitis.azureus.util;
 
-import org.gudy.azureus2.core3.util.Base32;
-
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
 import com.aelitis.azureus.core.crypto.VuzeCryptoManager;
+import org.gudy.azureus2.core3.util.Base32;
 
 /**
  * @author TuxPaper

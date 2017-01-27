@@ -19,20 +19,18 @@
 
 package com.aelitis.azureus.core.clientmessageservice.secure.impl;
 
-import java.security.interfaces.RSAPublicKey;
-
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread;
-import org.gudy.azureus2.core3.util.SystemTime;
-
 import com.aelitis.azureus.core.clientmessageservice.ClientMessageService;
 import com.aelitis.azureus.core.clientmessageservice.secure.SecureMessageServiceClient;
 import com.aelitis.azureus.core.clientmessageservice.secure.SecureMessageServiceClientAdapter;
 import com.aelitis.azureus.core.clientmessageservice.secure.SecureMessageServiceClientListener;
 import com.aelitis.azureus.core.clientmessageservice.secure.SecureMessageServiceClientMessage;
+import org.gudy.azureus2.core3.util.AEMonitor;
+import org.gudy.azureus2.core3.util.AESemaphore;
+import org.gudy.azureus2.core3.util.AEThread;
+import org.gudy.azureus2.core3.util.SystemTime;
+
+import java.security.interfaces.RSAPublicKey;
+import java.util.*;
 
 public class 
 SecureMessageServiceClientImpl

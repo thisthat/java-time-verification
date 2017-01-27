@@ -19,12 +19,10 @@
 
 package com.aelitis.azureus.core.diskmanager.cache;
 
-import java.io.File;
-
+import com.aelitis.azureus.core.util.LinkFileMap;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 
-import com.aelitis.azureus.core.util.CaseSensitiveFileMap;
-import com.aelitis.azureus.core.util.LinkFileMap;
+import java.io.File;
 
 
 /**

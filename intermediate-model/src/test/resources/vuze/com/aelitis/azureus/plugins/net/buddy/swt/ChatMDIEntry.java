@@ -19,11 +19,8 @@
 package com.aelitis.azureus.plugins.net.buddy.swt;
 
 
-import java.util.List;
-
 import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatAdapter;
 import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatInstance;
-import com.aelitis.azureus.plugins.net.buddy.BuddyPluginBeta.ChatMessage;
 import com.aelitis.azureus.ui.UIFunctionsManager;
 import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
 import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfoManager;

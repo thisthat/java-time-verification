@@ -20,13 +20,12 @@
 
 package com.aelitis.azureus.core.networkmanager.admin.impl;
 
-import java.net.InetAddress;
-
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminNATDevice;
+import com.aelitis.azureus.plugins.upnp.UPnPPluginService;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
 
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminNATDevice;
-import com.aelitis.azureus.plugins.upnp.UPnPPluginService;
+import java.net.InetAddress;
 
 public class 
 NetworkAdminNATDeviceImpl 

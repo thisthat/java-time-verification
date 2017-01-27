@@ -19,6 +19,8 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.udp;
 
+import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoderPHE;
+import com.aelitis.net.udp.uc.PRUDPPacket;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.logging.LogAlert;
@@ -26,9 +28,6 @@ import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.Constants;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.RandomUtils;
-
-import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoderPHE;
-import com.aelitis.net.udp.uc.PRUDPPacket;
 
 public class 
 UDPNetworkManager 

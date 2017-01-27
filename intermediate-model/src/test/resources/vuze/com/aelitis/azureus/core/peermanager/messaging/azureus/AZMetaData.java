@@ -20,17 +20,16 @@
 
 package com.aelitis.azureus.core.peermanager.messaging.azureus;
 
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aelitis.azureus.core.peermanager.messaging.Message;
+import com.aelitis.azureus.core.peermanager.messaging.MessageException;
+import com.aelitis.azureus.core.peermanager.messaging.MessagingUtil;
 import org.gudy.azureus2.core3.util.BDecoder;
 import org.gudy.azureus2.core3.util.BEncoder;
 import org.gudy.azureus2.core3.util.DirectByteBuffer;
 
-import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.peermanager.messaging.MessageException;
-import com.aelitis.azureus.core.peermanager.messaging.MessagingUtil;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 AZMetaData 

@@ -18,12 +18,24 @@
 
 package com.aelitis.azureus.ui.swt.subscriptions;
 
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
+import com.aelitis.azureus.core.messenger.ClientMessageContext;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.subs.Subscription;
+import com.aelitis.azureus.core.subs.SubscriptionListener;
+import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
+import com.aelitis.azureus.ui.common.ToolBarItem;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.browser.BrowserContext;
+import com.aelitis.azureus.ui.swt.browser.CookiesListener;
+import com.aelitis.azureus.ui.swt.browser.OpenCloseSearchDetailsListener;
+import com.aelitis.azureus.ui.swt.browser.listener.*;
+import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.util.ConstantsVuze;
+import com.aelitis.azureus.util.MapUtils;
+import com.aelitis.azureus.util.UrlFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
@@ -38,31 +50,18 @@ import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.ui.UIPluginViewToolBarListener;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarItem;
+import org.gudy.azureus2.ui.swt.BrowserWrapper;
 import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.Utils;
 import org.gudy.azureus2.ui.swt.plugins.UISWTView;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEvent;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.core.cnetwork.ContentNetworkManagerFactory;
-import com.aelitis.azureus.core.messenger.ClientMessageContext;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.subs.Subscription;
-import com.aelitis.azureus.core.subs.SubscriptionListener;
-import com.aelitis.azureus.core.subs.SubscriptionManagerFactory;
-import com.aelitis.azureus.ui.common.ToolBarItem;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.browser.BrowserContext;
-import org.gudy.azureus2.ui.swt.BrowserWrapper;
-import com.aelitis.azureus.ui.swt.browser.CookiesListener;
-import com.aelitis.azureus.ui.swt.browser.OpenCloseSearchDetailsListener;
-import com.aelitis.azureus.ui.swt.browser.listener.*;
-import com.aelitis.azureus.ui.swt.mdi.MdiEntrySWT;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.util.ConstantsVuze;
-import com.aelitis.azureus.util.MapUtils;
-import com.aelitis.azureus.util.UrlFilter;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class
 SubscriptionViewInternal

@@ -18,10 +18,10 @@
 
 package org.gudy.azureus2.plugins.ui;
 
-import java.util.Map;
-
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarActivationListener;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarEnablerBase;
+
+import java.util.Map;
 
 /**
  * 

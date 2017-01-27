@@ -20,49 +20,25 @@
 
 package com.aelitis.azureus.plugins.net.buddy.tracker;
 
-import java.net.InetAddress;
-import java.nio.ByteBuffer;
-import java.util.*;
-
-import org.gudy.azureus2.core3.global.GlobalManager;
-import org.gudy.azureus2.core3.global.GlobalManagerAdapter;
-import org.gudy.azureus2.core3.peer.PEPeerManager;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Average;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HashWrapper;
-import org.gudy.azureus2.core3.util.LightHashMap;
-import org.gudy.azureus2.core3.util.SHA1;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.TimerEventPeriodic;
-import org.gudy.azureus2.plugins.download.Download;
-import org.gudy.azureus2.plugins.download.DownloadAnnounceResult;
-import org.gudy.azureus2.plugins.download.DownloadListener;
-import org.gudy.azureus2.plugins.download.DownloadManagerListener;
-import org.gudy.azureus2.plugins.download.DownloadPeerListener;
-import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
-import org.gudy.azureus2.plugins.download.DownloadTrackerListener;
-import org.gudy.azureus2.plugins.peers.Peer;
-import org.gudy.azureus2.plugins.peers.PeerEvent;
-import org.gudy.azureus2.plugins.peers.PeerListener2;
-import org.gudy.azureus2.plugins.peers.PeerManager;
-import org.gudy.azureus2.plugins.peers.PeerManagerListener;
-import org.gudy.azureus2.plugins.peers.PeerStats;
-import org.gudy.azureus2.plugins.torrent.Torrent;
-import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
-import org.gudy.azureus2.plugins.ui.config.Parameter;
-import org.gudy.azureus2.plugins.ui.config.ParameterListener;
-import org.gudy.azureus2.plugins.ui.model.BasicPluginConfigModel;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-
 import com.aelitis.azureus.core.AzureusCoreFactory;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.util.CopyOnWriteSet;
 import com.aelitis.azureus.plugins.net.buddy.*;
+import org.gudy.azureus2.core3.global.GlobalManager;
+import org.gudy.azureus2.core3.global.GlobalManagerAdapter;
+import org.gudy.azureus2.core3.peer.PEPeerManager;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.download.*;
+import org.gudy.azureus2.plugins.peers.*;
+import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.plugins.ui.config.BooleanParameter;
+import org.gudy.azureus2.plugins.ui.config.Parameter;
+import org.gudy.azureus2.plugins.ui.config.ParameterListener;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public class 
 BuddyPluginTracker 

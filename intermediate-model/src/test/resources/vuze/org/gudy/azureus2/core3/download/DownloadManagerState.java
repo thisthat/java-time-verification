@@ -19,17 +19,16 @@
 
 package org.gudy.azureus2.core3.download;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.util.LinkFileMap;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.IndentWriter;
 import org.gudy.azureus2.plugins.download.Download;
 
-import com.aelitis.azureus.core.util.LinkFileMap;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author parg

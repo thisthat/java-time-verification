@@ -15,12 +15,11 @@
  */
 package com.aelitis.azureus.ui.swt.mdi;
 
+import com.aelitis.azureus.ui.mdi.MdiEntry;
+import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 import org.gudy.azureus2.ui.swt.plugins.PluginUISWTSkinObject;
 import org.gudy.azureus2.ui.swt.plugins.UISWTViewEventListener;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTViewCore;
-
-import com.aelitis.azureus.ui.mdi.MdiEntry;
-import com.aelitis.azureus.ui.mdi.MultipleDocumentInterface;
 
 /**
  * @author TuxPaper

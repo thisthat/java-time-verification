@@ -20,25 +20,8 @@
 
 package com.aelitis.azureus.plugins.net.buddy;
 
-import java.io.File;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.LightHashMap;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SystemTime;
+import com.aelitis.azureus.core.util.AZ3Functions;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.messaging.MessageException;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnection;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnectionListener;
@@ -49,7 +32,12 @@ import org.gudy.azureus2.plugins.utils.security.SEPublicKey;
 import org.gudy.azureus2.plugins.utils.security.SEPublicKeyLocator;
 import org.gudy.azureus2.plugins.utils.security.SESecurityManager;
 
-import com.aelitis.azureus.core.util.AZ3Functions;
+import java.io.File;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
 
 
 public class 

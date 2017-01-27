@@ -22,11 +22,11 @@
 
 package com.aelitis.azureus.plugins.dht;
 
+import com.aelitis.azureus.core.dht.DHT;
+
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-
-import com.aelitis.azureus.core.dht.DHT;
 
 public interface 
 DHTPluginInterface 

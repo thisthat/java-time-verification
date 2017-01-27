@@ -20,12 +20,11 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.core.tag.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
 import org.gudy.azureus2.core3.category.Category;
 import org.gudy.azureus2.core3.category.CategoryListener;
 import org.gudy.azureus2.core3.category.CategoryManager;
@@ -41,20 +40,7 @@ import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.devices.*;
-import com.aelitis.azureus.core.tag.Tag;
-import com.aelitis.azureus.core.tag.TagDownload;
-import com.aelitis.azureus.core.tag.TagFeature;
-import com.aelitis.azureus.core.tag.TagFeatureListener;
-import com.aelitis.azureus.core.tag.TagFeatureTranscode;
-import com.aelitis.azureus.core.tag.TagListener;
-import com.aelitis.azureus.core.tag.TagManager;
-import com.aelitis.azureus.core.tag.TagManagerFactory;
-import com.aelitis.azureus.core.tag.TagType;
-import com.aelitis.azureus.core.tag.Taggable;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.util.*;
 
 public class 
 TranscodeManagerImpl

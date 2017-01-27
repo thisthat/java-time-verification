@@ -27,25 +27,19 @@ package org.gudy.azureus2.pluginsimpl.local.torrent;
  *
  */
 
-import java.util.*;
-import java.net.URL;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import org.gudy.azureus2.core3.internat.*;
+import org.gudy.azureus2.core3.torrent.*;
+import org.gudy.azureus2.core3.torrent.impl.TorrentOpenOptions;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.tag.Tag;
 import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.internat.*;
-import org.gudy.azureus2.core3.torrent.*;
-import org.gudy.azureus2.core3.torrent.impl.TorrentOpenOptions;
 
-import com.aelitis.azureus.core.util.CopyOnWriteList;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
 
 public class
 TorrentManagerImpl

@@ -22,14 +22,7 @@
  
 package org.gudy.azureus2.ui.swt.views;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.aelitis.azureus.ui.common.table.impl.CoreTableColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -54,7 +47,8 @@ import org.gudy.azureus2.ui.swt.Messages;
 import org.gudy.azureus2.ui.swt.SimpleTextEntryWindow;
 import org.gudy.azureus2.ui.swt.Utils;
 
-import com.aelitis.azureus.ui.common.table.impl.CoreTableColumn;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author parg

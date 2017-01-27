@@ -19,12 +19,12 @@
 
 package org.gudy.azureus2.core3.tracker.client.impl.bt;
 
-import java.net.URL;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.tracker.client.TRTrackerScraperResponse;
 import org.gudy.azureus2.core3.tracker.client.impl.TRTrackerScraperResponseImpl;
 import org.gudy.azureus2.core3.util.HashWrapper;
+
+import java.net.URL;
 
 /**
  * @author parg

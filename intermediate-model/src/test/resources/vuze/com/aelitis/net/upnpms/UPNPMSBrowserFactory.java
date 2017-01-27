@@ -20,10 +20,10 @@
 
 package com.aelitis.net.upnpms;
 
+import com.aelitis.net.upnpms.impl.UPNPMSBrowserImpl;
+
 import java.net.URL;
 import java.util.List;
-
-import com.aelitis.net.upnpms.impl.UPNPMSBrowserImpl;
 
 public class 
 UPNPMSBrowserFactory 

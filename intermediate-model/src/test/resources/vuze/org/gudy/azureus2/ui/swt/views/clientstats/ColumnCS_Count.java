@@ -18,12 +18,11 @@
 
 package org.gudy.azureus2.ui.swt.views.clientstats;
 
-import java.util.Map;
-
+import com.aelitis.azureus.util.MapUtils;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.plugins.ui.tables.*;
 
-import com.aelitis.azureus.util.MapUtils;
+import java.util.Map;
 
 public class ColumnCS_Count
 	implements TableCellRefreshListener

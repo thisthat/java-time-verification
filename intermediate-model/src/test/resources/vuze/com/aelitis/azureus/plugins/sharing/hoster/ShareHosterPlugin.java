@@ -27,25 +27,23 @@ package com.aelitis.azureus.plugins.sharing.hoster;
  *
  */
 
-import java.io.File;
-import java.util.*;
-
-import org.gudy.azureus2.plugins.*;
-import org.gudy.azureus2.plugins.logging.*;
-import org.gudy.azureus2.plugins.torrent.*;
-import org.gudy.azureus2.plugins.tracker.*;
-import org.gudy.azureus2.plugins.utils.DelayedTask;
-import org.gudy.azureus2.plugins.sharing.*;
-import org.gudy.azureus2.plugins.download.*;
-import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.TorrentUtils;
-
 import com.aelitis.azureus.core.tag.Tag;
 import com.aelitis.azureus.core.tag.TagManager;
 import com.aelitis.azureus.core.tag.TagManagerFactory;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.AENetworkClassifier;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.plugins.*;
+import org.gudy.azureus2.plugins.download.*;
+import org.gudy.azureus2.plugins.logging.*;
+import org.gudy.azureus2.plugins.sharing.*;
+import org.gudy.azureus2.plugins.torrent.*;
+import org.gudy.azureus2.plugins.tracker.*;
+import org.gudy.azureus2.plugins.utils.DelayedTask;
+import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
+
+import java.io.File;
+import java.util.*;
 
 public class 
 ShareHosterPlugin

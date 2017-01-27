@@ -21,11 +21,14 @@
  
 package org.gudy.azureus2.ui.swt.views.table.utils;
 
-import java.util.*;
-
 import org.gudy.azureus2.core3.util.AEMonitor;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.ui.tables.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**

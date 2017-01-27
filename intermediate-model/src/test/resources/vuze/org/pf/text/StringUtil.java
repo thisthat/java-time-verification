@@ -27,16 +27,12 @@ package org.pf.text;
 // ===========================================================================
 // IMPORT
 // ===========================================================================
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
+import java.util.*;
 
 /**
  * The sole instance of this class provides several convienience methods

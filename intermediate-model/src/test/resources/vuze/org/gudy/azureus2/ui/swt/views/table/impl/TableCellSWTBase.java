@@ -18,15 +18,11 @@
 
 package org.gudy.azureus2.ui.swt.views.table.impl;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
-
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.swt.utils.ColorCache;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
@@ -41,8 +37,10 @@ import org.gudy.azureus2.ui.swt.plugins.UISWTGraphic;
 import org.gudy.azureus2.ui.swt.pluginsimpl.UISWTGraphicImpl;
 import org.gudy.azureus2.ui.swt.views.table.*;
 
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.swt.utils.ColorCache;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
 
 public abstract class TableCellSWTBase
 	implements TableCellSWT

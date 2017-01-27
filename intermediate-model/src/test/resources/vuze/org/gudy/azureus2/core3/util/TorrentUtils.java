@@ -27,29 +27,29 @@ package org.gudy.azureus2.core3.util;
  *
  */
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.GZIPInputStream;
-
 import com.aelitis.azureus.core.*;
 import com.aelitis.azureus.core.proxy.AEProxyFactory;
 import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.util.DNSUtils;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
+import org.gudy.azureus2.core3.disk.*;
+import org.gudy.azureus2.core3.download.*;
 import org.gudy.azureus2.core3.internat.*;
 import org.gudy.azureus2.core3.logging.LogRelation;
 import org.gudy.azureus2.core3.torrent.*;
-import org.gudy.azureus2.core3.disk.*;
-import org.gudy.azureus2.core3.download.*;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.pluginsimpl.local.utils.resourcedownloader.ResourceDownloaderFactoryImpl;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
 
 public class 

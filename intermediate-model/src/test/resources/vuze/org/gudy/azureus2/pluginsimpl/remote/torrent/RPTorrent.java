@@ -22,12 +22,12 @@
 
 package org.gudy.azureus2.pluginsimpl.remote.torrent;
 
-import java.net.*;
-import java.util.Map;
-import java.io.File;
-
 import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.pluginsimpl.remote.*;
+
+import java.io.File;
+import java.net.URL;
+import java.util.Map;
 
 
 public class 

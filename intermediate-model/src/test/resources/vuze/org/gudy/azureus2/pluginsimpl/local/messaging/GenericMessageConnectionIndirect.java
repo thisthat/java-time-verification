@@ -19,25 +19,11 @@
 
 package org.gudy.azureus2.pluginsimpl.local.messaging;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.core.nat.NATTraverser;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DelayedEvent;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.ThreadPool;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.messaging.MessageException;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageConnection;
 import org.gudy.azureus2.plugins.messaging.generic.GenericMessageEndpoint;
@@ -45,7 +31,10 @@ import org.gudy.azureus2.plugins.messaging.generic.GenericMessageHandler;
 import org.gudy.azureus2.plugins.network.RateLimiter;
 import org.gudy.azureus2.plugins.utils.PooledByteBuffer;
 
-import com.aelitis.azureus.core.nat.NATTraverser;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 
 public class 

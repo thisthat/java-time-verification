@@ -17,10 +17,11 @@
  */
 package com.aelitis.azureus.core.peermanager.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.util.Constants;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BTPeerIDByteDecoderDefinitions {
 

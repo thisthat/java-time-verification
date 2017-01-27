@@ -10,21 +10,15 @@
  */
 package org.gudy.azureus2.ui.console.commands;
 
+import org.gudy.azureus2.core3.torrent.*;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.ui.console.ConsoleInput;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.net.URL;
-import java.util.*;
-
-
-
-import org.gudy.azureus2.core3.torrent.TOTorrent;
-import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLGroup;
-import org.gudy.azureus2.core3.torrent.TOTorrentAnnounceURLSet;
-import org.gudy.azureus2.core3.torrent.TOTorrentCreator;
-import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
-import org.gudy.azureus2.core3.torrent.TOTorrentProgressListener;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.console.ConsoleInput;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author tobi

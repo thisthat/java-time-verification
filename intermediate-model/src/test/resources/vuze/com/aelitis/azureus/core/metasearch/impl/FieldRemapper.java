@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.metasearch.impl;
 
-import java.util.regex.Matcher;
-
-import com.aelitis.azureus.core.metasearch.Result;
 import com.aelitis.azureus.core.metasearch.Engine;
+import com.aelitis.azureus.core.metasearch.Result;
+
+import java.util.regex.Matcher;
 
 public class FieldRemapper {
 	

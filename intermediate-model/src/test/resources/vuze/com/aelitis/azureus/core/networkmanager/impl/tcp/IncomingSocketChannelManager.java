@@ -19,19 +19,15 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
-import java.net.Inet6Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.aelitis.azureus.core.networkmanager.*;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminPropertyChangeListener;
+import com.aelitis.azureus.core.networkmanager.impl.IncomingConnectionManager;
+import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoder;
+import com.aelitis.azureus.core.networkmanager.impl.TransportCryptoManager;
+import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
+import com.aelitis.azureus.core.proxy.AEProxyAddressMapper;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -41,20 +37,14 @@ import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.networkmanager.ConnectionEndpoint;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpoint;
-import com.aelitis.azureus.core.networkmanager.ProtocolEndpointFactory;
-import com.aelitis.azureus.core.networkmanager.Transport;
-import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelector;
-import com.aelitis.azureus.core.networkmanager.VirtualServerChannelSelectorFactory;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdminPropertyChangeListener;
-import com.aelitis.azureus.core.networkmanager.impl.IncomingConnectionManager;
-import com.aelitis.azureus.core.networkmanager.impl.ProtocolDecoder;
-import com.aelitis.azureus.core.networkmanager.impl.TransportCryptoManager;
-import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
-import com.aelitis.azureus.core.proxy.AEProxyAddressMapper;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.*;
 
 
 /**

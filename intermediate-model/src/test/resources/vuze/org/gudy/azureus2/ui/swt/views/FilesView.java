@@ -20,14 +20,15 @@
 package org.gudy.azureus2.ui.swt.views;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
+import com.aelitis.azureus.core.util.AZ3Functions;
+import com.aelitis.azureus.core.util.RegExUtil;
+import com.aelitis.azureus.ui.common.table.*;
+import com.aelitis.azureus.ui.common.table.TableViewFilterCheck.TableViewFilterCheckEx;
+import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
+import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.KeyEvent;
@@ -66,15 +67,9 @@ import org.gudy.azureus2.ui.swt.views.tableitems.files.*;
 import org.gudy.azureus2.ui.swt.views.tableitems.mytorrents.AlertsItem;
 import org.gudy.azureus2.ui.swt.views.utils.ManagerUtils;
 
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.core.util.RegExUtil;
-import com.aelitis.azureus.ui.common.table.*;
-import com.aelitis.azureus.ui.common.table.TableViewFilterCheck.TableViewFilterCheckEx;
-import com.aelitis.azureus.ui.common.table.impl.TableColumnManager;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContent;
-import com.aelitis.azureus.ui.selectedcontent.SelectedContentManager;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import java.io.File;
+import java.util.*;
+import java.util.regex.Pattern;
 
 
 /**

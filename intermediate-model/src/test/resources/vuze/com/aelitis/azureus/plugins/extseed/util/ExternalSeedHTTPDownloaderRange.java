@@ -19,35 +19,27 @@
 
 package com.aelitis.azureus.plugins.extseed.util;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.Socket;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
+import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
+import com.aelitis.azureus.core.proxy.AEProxyFactory;
+import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
+import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
+import org.gudy.azureus2.core3.security.SEPasswordListener;
+import org.gudy.azureus2.core3.security.SESecurityManager;
+import org.gudy.azureus2.core3.util.AENetworkClassifier;
+import org.gudy.azureus2.core3.util.Debug;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
-
-import org.gudy.azureus2.core3.security.SEPasswordListener;
-import org.gudy.azureus2.core3.security.SESecurityManager;
-import org.gudy.azureus2.core3.util.AENetworkClassifier;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
-
-import com.aelitis.azureus.core.networkmanager.admin.NetworkAdmin;
-import com.aelitis.azureus.core.proxy.AEProxyFactory;
-import com.aelitis.azureus.core.proxy.AEProxyFactory.PluginProxy;
-import com.aelitis.azureus.plugins.extseed.ExternalSeedException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 public class 
 ExternalSeedHTTPDownloaderRange 

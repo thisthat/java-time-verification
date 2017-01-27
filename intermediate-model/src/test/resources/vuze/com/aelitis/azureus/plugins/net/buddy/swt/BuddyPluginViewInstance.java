@@ -20,11 +20,12 @@
 
 package com.aelitis.azureus.plugins.net.buddy.swt;
 
-import java.net.InetAddress;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
-
+import com.aelitis.azureus.core.security.*;
+import com.aelitis.azureus.core.util.AZ3Functions;
+import com.aelitis.azureus.plugins.net.buddy.*;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
+import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -58,12 +59,9 @@ import org.gudy.azureus2.ui.swt.config.ParameterChangeAdapter;
 import org.gudy.azureus2.ui.swt.mainwindow.Colors;
 import org.gudy.azureus2.ui.swt.mainwindow.SWTThread;
 
-import com.aelitis.azureus.core.security.*;
-import com.aelitis.azureus.core.util.AZ3Functions;
-import com.aelitis.azureus.plugins.net.buddy.*;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
-import com.aelitis.azureus.ui.swt.imageloader.ImageLoader;
+import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class 
 BuddyPluginViewInstance 

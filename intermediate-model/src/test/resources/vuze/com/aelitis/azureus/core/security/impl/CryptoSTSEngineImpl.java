@@ -19,22 +19,13 @@
 
 package com.aelitis.azureus.core.security.impl;
 
-import java.nio.ByteBuffer;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.Signature;
-
-import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.gudy.bouncycastle.jce.provider.JCEECDHKeyAgreement;
-
 import com.aelitis.azureus.core.security.CryptoECCUtils;
 import com.aelitis.azureus.core.security.CryptoManagerException;
 import com.aelitis.azureus.core.security.CryptoSTSEngine;
+import org.gudy.bouncycastle.jce.provider.JCEECDHKeyAgreement;
+
+import java.nio.ByteBuffer;
+import java.security.*;
 
 
 

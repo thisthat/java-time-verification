@@ -1,13 +1,12 @@
 package com.aelitis.azureus.core.peermanager.control.impl;
 
+import com.aelitis.azureus.core.peermanager.control.SpeedTokenDispenser;
+import com.aelitis.azureus.core.util.FeatureAvailability;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.SystemTime;
-
-import com.aelitis.azureus.core.peermanager.control.SpeedTokenDispenser;
-import com.aelitis.azureus.core.util.FeatureAvailability;
 
 public class 
 SpeedTokenDispenserPrioritised 

@@ -20,18 +20,20 @@
 
 package com.aelitis.azureus.core.networkmanager.impl;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.nio.ByteBuffer;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
-
 import com.aelitis.azureus.core.networkmanager.NetworkManager;
 import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
 import com.aelitis.azureus.core.networkmanager.RawMessage;
 import com.aelitis.azureus.core.networkmanager.Transport;
 import com.aelitis.azureus.core.peermanager.messaging.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 

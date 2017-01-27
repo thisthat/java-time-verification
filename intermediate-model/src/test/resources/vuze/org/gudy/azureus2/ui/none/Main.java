@@ -20,15 +20,14 @@
 
 package org.gudy.azureus2.ui.none;
 
-import java.io.File;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreFactory;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
 import org.gudy.azureus2.plugins.PluginManager;
 import org.gudy.azureus2.plugins.PluginManagerDefaults;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreFactory;
+import java.io.File;
 
 public class 
 Main 

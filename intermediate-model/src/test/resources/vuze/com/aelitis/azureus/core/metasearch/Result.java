@@ -19,19 +19,13 @@
 
 package com.aelitis.azureus.core.metasearch;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-
+import com.aelitis.azureus.core.metasearch.utils.MomentsAgoDateFormatter;
 import org.apache.commons.lang.Entities;
 import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.json.simple.JSONObject;
 
-import com.aelitis.azureus.core.metasearch.utils.MomentsAgoDateFormatter;
+import java.util.*;
 
 public abstract class Result {
 	private static final String HTML_TAGS = "(\\<(/?[^\\>]+)\\>)" ;

@@ -28,12 +28,8 @@ package org.gudy.azureus2.ui.swt.importtorrent.wizard;
  *
  */
 
-import java.io.File;
-import java.io.IOException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
@@ -41,6 +37,9 @@ import org.gudy.azureus2.core3.torrent.TOTorrentFactory;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.ui.swt.wizard.Wizard;
+
+import java.io.File;
+import java.io.IOException;
 
 public class 
 ImportTorrentWizard 

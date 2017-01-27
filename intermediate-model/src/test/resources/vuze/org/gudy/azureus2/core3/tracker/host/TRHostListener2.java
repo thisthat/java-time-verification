@@ -20,9 +20,9 @@
 
 package org.gudy.azureus2.core3.tracker.host;
 
-import java.io.IOException;
-
 import org.gudy.azureus2.core3.tracker.server.TRTrackerServerListener2;
+
+import java.io.IOException;
 
 public interface 
 TRHostListener2 

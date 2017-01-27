@@ -18,14 +18,14 @@
 
 package org.gudy.azureus2.ui.swt.views.table.painted;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
+import com.aelitis.azureus.ui.common.table.TableCellCore;
+import com.aelitis.azureus.ui.common.table.TableColumnCore;
+import com.aelitis.azureus.ui.common.table.TableRowCore;
+import com.aelitis.azureus.ui.swt.utils.FontUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.ui.tables.TableCell;
@@ -39,10 +39,8 @@ import org.gudy.azureus2.ui.swt.views.table.impl.TableCellSWTBase;
 import org.gudy.azureus2.ui.swt.views.table.impl.TableRowSWTBase;
 import org.gudy.azureus2.ui.swt.views.table.utils.TableColumnSWTUtils;
 
-import com.aelitis.azureus.ui.common.table.TableCellCore;
-import com.aelitis.azureus.ui.common.table.TableColumnCore;
-import com.aelitis.azureus.ui.common.table.TableRowCore;
-import com.aelitis.azureus.ui.swt.utils.FontUtils;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class TableRowPainted
 	extends TableRowSWTBase

@@ -1,29 +1,14 @@
 package org.gudy.bouncycastle.jce.provider;
 
+import org.gudy.bouncycastle.asn1.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchProviderException;
-import java.security.cert.CertPath;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-import org.gudy.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.gudy.bouncycastle.asn1.ASN1EncodableVector;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERInputStream;
-import org.gudy.bouncycastle.asn1.DERObject;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
-import org.gudy.bouncycastle.asn1.DERSequence;
+import java.security.cert.*;
+import java.util.*;
 
 /**
  * CertPath implementation for X.509 certificates.

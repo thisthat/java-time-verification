@@ -27,18 +27,19 @@ package org.gudy.azureus2.core3.tracker.server.impl;
  *
  */
 
-import java.io.UnsupportedEncodingException;
-import java.util.*;
-
+import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.tracker.server.*;
 import org.gudy.azureus2.core3.tracker.util.TRTrackerUtils;
-import org.gudy.azureus2.core3.config.*;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class 
 TRTrackerServerProcessor 

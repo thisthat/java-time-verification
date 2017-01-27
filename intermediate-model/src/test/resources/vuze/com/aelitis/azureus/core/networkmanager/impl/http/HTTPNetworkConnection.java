@@ -19,10 +19,14 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.http;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
+import com.aelitis.azureus.core.networkmanager.RawMessage;
+import com.aelitis.azureus.core.networkmanager.impl.RawMessageImpl;
+import com.aelitis.azureus.core.peermanager.messaging.Message;
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.*;
+import com.aelitis.azureus.core.util.CopyOnWriteList;
+import com.aelitis.azureus.core.util.HTTPUtils;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.disk.DiskManager;
@@ -32,29 +36,11 @@ import org.gudy.azureus2.core3.logging.Logger;
 import org.gudy.azureus2.core3.peer.impl.PEPeerControl;
 import org.gudy.azureus2.core3.peer.impl.PEPeerTransport;
 import org.gudy.azureus2.core3.peer.util.PeerUtils;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimeFormatter;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
+import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
-import com.aelitis.azureus.core.networkmanager.RawMessage;
-import com.aelitis.azureus.core.networkmanager.impl.RawMessageImpl;
-import com.aelitis.azureus.core.peermanager.messaging.Message;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTBitfield;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHandshake;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTHave;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTInterested;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTPiece;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.BTRequest;
-import com.aelitis.azureus.core.util.CopyOnWriteList;
-import com.aelitis.azureus.core.util.HTTPUtils;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public abstract class 
 HTTPNetworkConnection 

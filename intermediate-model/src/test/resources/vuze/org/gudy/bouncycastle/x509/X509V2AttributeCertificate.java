@@ -1,11 +1,6 @@
 package org.gudy.bouncycastle.x509;
 
-import org.gudy.bouncycastle.asn1.ASN1Encodable;
-import org.gudy.bouncycastle.asn1.ASN1InputStream;
-import org.gudy.bouncycastle.asn1.ASN1Sequence;
-import org.gudy.bouncycastle.asn1.DERBitString;
-import org.gudy.bouncycastle.asn1.DERObjectIdentifier;
-import org.gudy.bouncycastle.asn1.DEROutputStream;
+import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.asn1.x509.AttributeCertificate;
 import org.gudy.bouncycastle.asn1.x509.X509Extension;
 import org.gudy.bouncycastle.asn1.x509.X509Extensions;
@@ -16,22 +11,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * An implementation of a version 2 X.509 Attribute Certificate.

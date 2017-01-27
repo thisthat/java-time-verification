@@ -22,13 +22,14 @@
 
 package org.gudy.azureus2.core3.tracker.server.impl;
 
-import java.net.*;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.azureus2.core3.tracker.server.*;
-
 import com.aelitis.azureus.core.dht.netcoords.DHTNetworkPosition;
+import org.gudy.azureus2.core3.tracker.server.*;
+import org.gudy.azureus2.core3.util.*;
+
+import java.net.InetAddress;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 
 TRTrackerServerPeerImpl

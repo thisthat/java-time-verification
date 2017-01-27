@@ -1,9 +1,5 @@
 package org.gudy.bouncycastle.jce.provider;
 
-import java.security.InvalidKeyException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
 import org.gudy.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.gudy.bouncycastle.crypto.params.ECDomainParameters;
 import org.gudy.bouncycastle.crypto.params.ECPrivateKeyParameters;
@@ -11,6 +7,10 @@ import org.gudy.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.gudy.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.gudy.bouncycastle.jce.interfaces.ECPublicKey;
 import org.gudy.bouncycastle.jce.spec.ECParameterSpec;
+
+import java.security.InvalidKeyException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 /**
  * utility class for converting jce/jca ECDSA, ECDH, and ECDHC

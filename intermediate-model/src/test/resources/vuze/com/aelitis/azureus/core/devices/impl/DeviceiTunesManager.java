@@ -20,15 +20,10 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import org.gudy.azureus2.plugins.PluginEvent;
-import org.gudy.azureus2.plugins.PluginEventListener;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.PluginListener;
-import org.gudy.azureus2.plugins.PluginManager;
-
 import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreRunningListener;
 import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.AzureusCoreRunningListener;
+import org.gudy.azureus2.plugins.*;
 
 public class 
 DeviceiTunesManager 

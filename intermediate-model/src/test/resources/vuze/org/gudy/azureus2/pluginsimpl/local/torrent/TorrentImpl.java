@@ -22,10 +22,8 @@
 
 package org.gudy.azureus2.pluginsimpl.local.torrent;
 
-import java.net.*;
-import java.util.Map;
-import java.io.File;
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.plugins.magnet.MagnetPlugin;
 import org.gudy.azureus2.core3.download.DownloadManagerState;
 import org.gudy.azureus2.core3.download.DownloadManagerStateFactory;
 import org.gudy.azureus2.core3.internat.*;
@@ -33,13 +31,14 @@ import org.gudy.azureus2.core3.logging.LogRelation;
 import org.gudy.azureus2.core3.torrent.*;
 import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.plugins.download.*;
+import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.pluginsimpl.local.download.*;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.plugins.magnet.MagnetPlugin;
+import java.io.File;
+import java.net.URL;
+import java.util.Map;
 
 public class 
 TorrentImpl

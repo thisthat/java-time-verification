@@ -19,13 +19,8 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.http;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
-
+import com.aelitis.azureus.core.networkmanager.NetworkConnection;
+import com.aelitis.azureus.core.util.HTTPUtils;
 import org.gudy.azureus2.core3.disk.DiskManager;
 import org.gudy.azureus2.core3.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.core3.internat.MessageText;
@@ -35,8 +30,12 @@ import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentFile;
 import org.gudy.azureus2.core3.util.Debug;
 
-import com.aelitis.azureus.core.networkmanager.NetworkConnection;
-import com.aelitis.azureus.core.util.HTTPUtils;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class 

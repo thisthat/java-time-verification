@@ -20,10 +20,9 @@
 
 package com.aelitis.azureus.ui.swt.shells.main;
 
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-
 import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
 import com.aelitis.azureus.ui.swt.UIFunctionsSWT;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
 
 public class 
 MainHelpers 

@@ -20,11 +20,10 @@
 
 package com.aelitis.azureus.core.peermanager.messaging.bittorrent.ltep;
 
-import org.gudy.azureus2.core3.util.DirectByteBuffer;
-import org.gudy.azureus2.core3.util.DirectByteBufferPool;
-
 import com.aelitis.azureus.core.peermanager.messaging.Message;
 import com.aelitis.azureus.core.peermanager.messaging.MessageException;
+import org.gudy.azureus2.core3.util.DirectByteBuffer;
+import org.gudy.azureus2.core3.util.DirectByteBufferPool;
 
 public class 
 UTUploadOnly 

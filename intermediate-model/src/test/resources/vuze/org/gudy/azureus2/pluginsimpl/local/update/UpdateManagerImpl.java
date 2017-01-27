@@ -24,23 +24,17 @@ package org.gudy.azureus2.pluginsimpl.local.update;
  *
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AETemporaryFileHandler;
-import org.gudy.azureus2.core3.util.AEVerifier;
-import org.gudy.azureus2.core3.util.AEVerifierException;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.SystemProperties;
+import com.aelitis.azureus.core.AzureusCore;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.PlatformManagerFactory;
 import org.gudy.azureus2.plugins.update.*;
 import org.gudy.azureus2.pluginsimpl.local.utils.UtilitiesImpl;
 
-import com.aelitis.azureus.core.AzureusCore;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class 
 UpdateManagerImpl

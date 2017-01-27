@@ -1,7 +1,5 @@
 package org.gudy.bouncycastle.util.encoders;
 
-import org.gudy.bouncycastle.util.encoders.Translator;
-
 /**
  * Converters for going from hex to binary and back. Note: this class assumes ASCII processing.
  */

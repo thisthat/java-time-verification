@@ -19,19 +19,11 @@
 
 package org.gudy.azureus2.core3.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.TimeZone;
-
 import org.gudy.azureus2.core3.logging.Logger;
+
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author parg

@@ -19,16 +19,8 @@
 
 package com.aelitis.azureus.core.clientmessageservice.secure.impl;
 
-import java.io.IOException;
-import java.security.SecureRandom;
-import java.security.interfaces.RSAPublicKey;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
+import com.aelitis.azureus.core.clientmessageservice.ClientMessageService;
+import com.aelitis.azureus.core.clientmessageservice.ClientMessageServiceClient;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.RandomUtils;
 import org.gudy.azureus2.plugins.utils.StaticUtilities;
@@ -38,8 +30,13 @@ import org.gudy.bouncycastle.crypto.engines.RSAEngine;
 import org.gudy.bouncycastle.crypto.params.ParametersWithRandom;
 import org.gudy.bouncycastle.jce.provider.RSAUtil;
 
-import com.aelitis.azureus.core.clientmessageservice.ClientMessageService;
-import com.aelitis.azureus.core.clientmessageservice.ClientMessageServiceClient;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.io.IOException;
+import java.security.interfaces.RSAPublicKey;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class 

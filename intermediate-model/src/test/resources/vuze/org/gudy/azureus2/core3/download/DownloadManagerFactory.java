@@ -27,11 +27,11 @@ package org.gudy.azureus2.core3.download;
  *
  */
 
-import java.util.List;
-
 import org.gudy.azureus2.core3.download.impl.*;
 import org.gudy.azureus2.core3.global.*;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
+
+import java.util.List;
 
 public class 
 DownloadManagerFactory 

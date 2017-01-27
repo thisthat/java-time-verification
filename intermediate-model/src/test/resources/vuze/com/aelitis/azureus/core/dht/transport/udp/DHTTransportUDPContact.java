@@ -19,9 +19,9 @@
 
 package com.aelitis.azureus.core.dht.transport.udp;
 
-import java.net.InetSocketAddress;
-
 import com.aelitis.azureus.core.dht.transport.DHTTransportContact;
+
+import java.net.InetSocketAddress;
 
 /**
  * @author parg

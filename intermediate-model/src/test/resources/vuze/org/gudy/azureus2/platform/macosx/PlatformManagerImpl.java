@@ -19,25 +19,15 @@
 
 package org.gudy.azureus2.platform.macosx;
 
-import java.io.*;
-import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.text.MessageFormat;
-import java.util.*;
-
+import com.aelitis.azureus.core.AzureusCore;
+import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.logging.LogAlert;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.AEDiagnostics;
-import org.gudy.azureus2.core3.util.AEDiagnosticsEvidenceGenerator;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.SystemProperties;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.platform.PlatformManager;
 import org.gudy.azureus2.platform.PlatformManagerCapabilities;
 import org.gudy.azureus2.platform.PlatformManagerListener;
@@ -45,8 +35,10 @@ import org.gudy.azureus2.platform.PlatformManagerPingCallback;
 import org.gudy.azureus2.platform.macosx.access.jnilib.OSXAccess;
 import org.gudy.azureus2.plugins.platform.PlatformManagerException;
 
-import com.aelitis.azureus.core.AzureusCore;
-import com.aelitis.azureus.core.AzureusCoreLifecycleAdapter;
+import java.io.*;
+import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.util.*;
 
 
 /**

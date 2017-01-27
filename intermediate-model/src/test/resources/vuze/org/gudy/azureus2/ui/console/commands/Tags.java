@@ -1,13 +1,14 @@
 package org.gudy.azureus2.ui.console.commands;
 
-import java.io.PrintStream;
-import java.util.*;
-
+import com.aelitis.azureus.core.tag.*;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.ui.console.ConsoleInput;
 
-import com.aelitis.azureus.core.tag.*;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class Tags extends IConsoleCommand {

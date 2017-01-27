@@ -20,12 +20,6 @@
 
 package com.aelitis.azureus.core.devices.impl;
 
-import java.io.*;
-import java.util.*;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-
 import com.aelitis.azureus.core.devices.Device;
 import com.aelitis.azureus.core.devices.DeviceManagerListener;
 import com.aelitis.azureus.core.devices.DeviceMediaRenderer;
@@ -34,6 +28,11 @@ import com.aelitis.azureus.core.drivedetector.DriveDetectedInfo;
 import com.aelitis.azureus.core.drivedetector.DriveDetectedListener;
 import com.aelitis.azureus.core.drivedetector.DriveDetectorFactory;
 import com.aelitis.azureus.util.MapUtils;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.AsyncDispatcher;
+
+import java.io.File;
+import java.util.*;
 
 public class 
 DeviceDriveManager 

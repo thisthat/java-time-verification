@@ -1,9 +1,9 @@
 package org.gudy.bouncycastle.asn1.util;
 
-import java.util.Enumeration;
-
 import org.gudy.bouncycastle.asn1.*;
 import org.gudy.bouncycastle.util.encoders.Hex;
+
+import java.util.Enumeration;
 
 public class ASN1Dump
 {

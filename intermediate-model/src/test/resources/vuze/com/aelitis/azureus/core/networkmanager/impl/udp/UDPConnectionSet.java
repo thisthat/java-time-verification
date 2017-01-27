@@ -19,13 +19,7 @@
 
 package com.aelitis.azureus.core.networkmanager.impl.udp;
 
-import java.util.*;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-
-import javax.crypto.spec.SecretKeySpec;
-
+import com.aelitis.net.udp.uc.PRUDPPacketReply;
 import org.gudy.azureus2.core3.logging.LogEvent;
 import org.gudy.azureus2.core3.logging.LogIDs;
 import org.gudy.azureus2.core3.logging.Logger;
@@ -37,7 +31,11 @@ import org.gudy.bouncycastle.crypto.CipherParameters;
 import org.gudy.bouncycastle.crypto.engines.RC4Engine;
 import org.gudy.bouncycastle.crypto.params.KeyParameter;
 
-import com.aelitis.net.udp.uc.PRUDPPacketReply;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 public class 
 UDPConnectionSet 

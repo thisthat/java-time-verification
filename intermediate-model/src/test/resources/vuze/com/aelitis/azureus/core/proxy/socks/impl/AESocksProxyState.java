@@ -19,14 +19,13 @@
 
 package com.aelitis.azureus.core.proxy.socks.impl;
 
+import com.aelitis.azureus.core.proxy.*;
+import com.aelitis.azureus.core.proxy.socks.*;
+import org.gudy.azureus2.core3.logging.*;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-
-import org.gudy.azureus2.core3.logging.*;
-
-import com.aelitis.azureus.core.proxy.*;
-import com.aelitis.azureus.core.proxy.socks.*;
 
 /**
  * @author parg

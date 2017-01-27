@@ -19,13 +19,13 @@
 
 package com.aelitis.azureus.core.dht;
 
-import java.util.Properties;
-
 import com.aelitis.azureus.core.dht.db.DHTDB;
 import com.aelitis.azureus.core.dht.impl.DHTImpl;
 import com.aelitis.azureus.core.dht.nat.DHTNATPuncherAdapter;
 import com.aelitis.azureus.core.dht.router.DHTRouter;
 import com.aelitis.azureus.core.dht.transport.DHTTransport;
+
+import java.util.Properties;
 
 /**
  * @author parg

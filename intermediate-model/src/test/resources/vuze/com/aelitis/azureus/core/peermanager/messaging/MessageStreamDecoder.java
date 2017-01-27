@@ -19,10 +19,10 @@
 
 package com.aelitis.azureus.core.peermanager.messaging;
 
+import com.aelitis.azureus.core.networkmanager.Transport;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
-
-import com.aelitis.azureus.core.networkmanager.Transport;
 
 /**
  * Decodes a message stream into separate messages.

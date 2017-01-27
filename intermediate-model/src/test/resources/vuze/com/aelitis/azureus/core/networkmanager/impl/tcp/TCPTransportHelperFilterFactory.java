@@ -18,10 +18,10 @@
  */
 package com.aelitis.azureus.core.networkmanager.impl.tcp;
 
-import java.nio.channels.SocketChannel;
-
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilter;
 import com.aelitis.azureus.core.networkmanager.impl.TransportHelperFilterTransparent;
+
+import java.nio.channels.SocketChannel;
 
 /**
  * 

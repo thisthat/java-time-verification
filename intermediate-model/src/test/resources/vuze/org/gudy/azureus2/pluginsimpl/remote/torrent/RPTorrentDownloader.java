@@ -26,8 +26,8 @@ package org.gudy.azureus2.pluginsimpl.remote.torrent;
  * @author parg
  *
  */
-import org.gudy.azureus2.plugins.torrent.*;
 
+import org.gudy.azureus2.plugins.torrent.*;
 import org.gudy.azureus2.pluginsimpl.remote.*;
 
 public class 

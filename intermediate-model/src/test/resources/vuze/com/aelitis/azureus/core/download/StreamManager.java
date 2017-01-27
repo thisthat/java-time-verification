@@ -20,24 +20,15 @@
 
 package com.aelitis.azureus.core.download;
 
-import java.util.*;
-import java.lang.reflect.Method;
-import java.net.URL;
-
-
+import com.aelitis.azureus.core.AzureusCoreFactory;
+import com.aelitis.azureus.core.devices.*;
+import com.aelitis.azureus.ui.UIFunctions;
+import com.aelitis.azureus.ui.UIFunctionsManager;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.download.DownloadManager;
 import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimeFormatter;
+import org.gudy.azureus2.core3.util.*;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginListener;
 import org.gudy.azureus2.plugins.PluginManager;
@@ -48,20 +39,12 @@ import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.pluginsimpl.local.PluginCoreUtils;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 
-import com.aelitis.azureus.core.AzureusCoreFactory;
-import com.aelitis.azureus.core.devices.Device;
-import com.aelitis.azureus.core.devices.DeviceManager;
-import com.aelitis.azureus.core.devices.DeviceManagerFactory;
-import com.aelitis.azureus.core.devices.DeviceMediaRenderer;
-import com.aelitis.azureus.core.devices.TranscodeAnalysisListener;
-import com.aelitis.azureus.core.devices.TranscodeException;
-import com.aelitis.azureus.core.devices.TranscodeJob;
-import com.aelitis.azureus.core.devices.TranscodeManager;
-import com.aelitis.azureus.core.devices.TranscodeProfile;
-import com.aelitis.azureus.core.devices.TranscodeProviderAnalysis;
-import com.aelitis.azureus.core.devices.TranscodeQueue;
-import com.aelitis.azureus.ui.UIFunctions;
-import com.aelitis.azureus.ui.UIFunctionsManager;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class 
 StreamManager 

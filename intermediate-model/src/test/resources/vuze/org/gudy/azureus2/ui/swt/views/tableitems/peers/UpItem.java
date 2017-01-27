@@ -22,11 +22,10 @@
 
 package org.gudy.azureus2.ui.swt.views.tableitems.peers;
 
-import org.gudy.azureus2.core3.util.DisplayFormatters;
-
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.peer.PEPeer;
+import org.gudy.azureus2.core3.util.DisplayFormatters;
 import org.gudy.azureus2.plugins.ui.tables.*;
 import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
 

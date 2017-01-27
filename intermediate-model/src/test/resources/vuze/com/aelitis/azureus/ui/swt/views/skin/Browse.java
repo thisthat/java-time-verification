@@ -17,6 +17,14 @@
 
 package com.aelitis.azureus.ui.swt.views.skin;
 
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
+import com.aelitis.azureus.ui.mdi.*;
+import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
+import com.aelitis.azureus.ui.swt.browser.BrowserContext;
+import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
+import com.aelitis.azureus.ui.swt.skin.*;
+import com.aelitis.azureus.util.ConstantsVuze;
+import com.aelitis.azureus.util.ContentNetworkUtils;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.ui.UIInputReceiver;
@@ -27,15 +35,6 @@ import org.gudy.azureus2.plugins.ui.menus.MenuItemListener;
 import org.gudy.azureus2.plugins.ui.menus.MenuManager;
 import org.gudy.azureus2.pluginsimpl.local.PluginInitializer;
 import org.gudy.azureus2.ui.swt.SimpleTextEntryWindow;
-
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
-import com.aelitis.azureus.ui.mdi.*;
-import com.aelitis.azureus.ui.swt.UIFunctionsManagerSWT;
-import com.aelitis.azureus.ui.swt.browser.BrowserContext;
-import com.aelitis.azureus.ui.swt.mdi.MultipleDocumentInterfaceSWT;
-import com.aelitis.azureus.ui.swt.skin.*;
-import com.aelitis.azureus.util.ConstantsVuze;
-import com.aelitis.azureus.util.ContentNetworkUtils;
 
 /**
  * @author TuxPaper

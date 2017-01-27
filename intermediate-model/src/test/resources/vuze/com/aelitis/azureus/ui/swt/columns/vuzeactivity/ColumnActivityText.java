@@ -20,21 +20,6 @@
 
 package com.aelitis.azureus.ui.swt.columns.vuzeactivity;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.Display;
-
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.ui.swt.Utils;
-import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
-import org.gudy.azureus2.ui.swt.shells.GCStringPrinter.URLInfo;
-import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
-import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
-
 import com.aelitis.azureus.activities.VuzeActivitiesEntry;
 import com.aelitis.azureus.core.util.GeneralUtils;
 import com.aelitis.azureus.ui.skin.SkinConstants;
@@ -44,8 +29,20 @@ import com.aelitis.azureus.ui.swt.skin.SWTSkinFactory;
 import com.aelitis.azureus.ui.swt.skin.SWTSkinProperties;
 import com.aelitis.azureus.util.StringCompareUtils;
 import com.aelitis.azureus.util.UrlFilter;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.widgets.Display;
+import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.plugins.ui.tables.*;
+import org.gudy.azureus2.ui.swt.Utils;
+import org.gudy.azureus2.ui.swt.shells.GCStringPrinter;
+import org.gudy.azureus2.ui.swt.shells.GCStringPrinter.URLInfo;
+import org.gudy.azureus2.ui.swt.views.table.CoreTableColumnSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWT;
+import org.gudy.azureus2.ui.swt.views.table.TableCellSWTPaintListener;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * @author TuxPaper

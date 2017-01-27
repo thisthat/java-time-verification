@@ -20,15 +20,14 @@
 
 package com.aelitis.azureus.core.metasearch.impl.plugin;
 
-import java.util.Date;
-import java.util.Map;
-
+import com.aelitis.azureus.core.metasearch.*;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.LightHashMap;
 import org.gudy.azureus2.plugins.utils.search.SearchResult;
 
-import com.aelitis.azureus.core.metasearch.*;
+import java.util.Date;
+import java.util.Map;
 
 public class 
 PluginResult 

@@ -19,9 +19,6 @@
 
 package org.gudy.azureus2.core3.tracker.client.impl.dht;
 
-import java.util.*;
-import java.net.URL;
-
 import org.gudy.azureus2.core3.internat.MessageText;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.torrent.TOTorrentException;
@@ -34,6 +31,10 @@ import org.gudy.azureus2.core3.util.Debug;
 import org.gudy.azureus2.core3.util.HashWrapper;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.plugins.download.DownloadScrapeResult;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author parg

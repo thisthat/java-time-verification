@@ -20,12 +20,11 @@
  
 package com.aelitis.azureus.ui.mdi;
 
-import java.util.Map;
-
+import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
 import org.gudy.azureus2.plugins.ui.UIPluginView;
 import org.gudy.azureus2.plugins.ui.toolbar.UIToolBarEnablerBase;
 
-import com.aelitis.azureus.ui.common.viewtitleinfo.ViewTitleInfo;
+import java.util.Map;
 
 
 /**

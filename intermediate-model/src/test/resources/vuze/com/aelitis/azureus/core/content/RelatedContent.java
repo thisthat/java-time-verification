@@ -20,11 +20,10 @@
 
 package com.aelitis.azureus.core.content;
 
+import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import org.gudy.azureus2.core3.util.Base32;
 import org.gudy.azureus2.core3.util.SystemTime;
 import org.gudy.azureus2.plugins.download.Download;
-
-import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 
 public abstract class 
 RelatedContent 

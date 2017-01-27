@@ -1,15 +1,15 @@
 package org.gudy.bouncycastle.jce.provider;
 
+import org.gudy.bouncycastle.crypto.params.AsymmetricKeyParameter;
+import org.gudy.bouncycastle.crypto.params.DSAParameters;
+import org.gudy.bouncycastle.crypto.params.DSAPrivateKeyParameters;
+import org.gudy.bouncycastle.crypto.params.DSAPublicKeyParameters;
+
 import java.security.InvalidKeyException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
-
-import org.gudy.bouncycastle.crypto.params.AsymmetricKeyParameter;
-import org.gudy.bouncycastle.crypto.params.DSAParameters;
-import org.gudy.bouncycastle.crypto.params.DSAPrivateKeyParameters;
-import org.gudy.bouncycastle.crypto.params.DSAPublicKeyParameters;
 
 /**
  * utility class for converting jce/jca DSA objects

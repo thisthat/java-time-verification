@@ -20,8 +20,12 @@
 
 package com.aelitis.azureus.core.download;
 
-import java.util.List;
-
+import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
+import com.aelitis.azureus.core.peermanager.piecepicker.PieceRTAProvider;
+import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
+import com.aelitis.azureus.core.util.average.Average;
+import com.aelitis.azureus.core.util.average.AverageFactory;
+import com.aelitis.azureus.util.ConstantsVuze;
 import org.gudy.azureus2.core3.config.COConfigurationManager;
 import org.gudy.azureus2.core3.config.ParameterListener;
 import org.gudy.azureus2.core3.config.impl.TransferSpeedValidator;
@@ -38,12 +42,7 @@ import org.gudy.azureus2.core3.peer.PEPeerManager;
 import org.gudy.azureus2.core3.torrent.TOTorrent;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.peermanager.piecepicker.PiecePicker;
-import com.aelitis.azureus.core.peermanager.piecepicker.PieceRTAProvider;
-import com.aelitis.azureus.core.torrent.PlatformTorrentUtils;
-import com.aelitis.azureus.core.util.average.Average;
-import com.aelitis.azureus.core.util.average.AverageFactory;
-import com.aelitis.azureus.util.ConstantsVuze;
+import java.util.List;
 
 
 public class 

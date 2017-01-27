@@ -19,13 +19,13 @@
 
 package org.gudy.azureus2.core3.html;
 
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.xml.util.XUXmlWriter;
 
 /**
  * @author parg

@@ -19,15 +19,14 @@
 
 package com.aelitis.azureus.core.peermanager.utils;
 
-import java.util.*;
-
+import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
+import com.aelitis.azureus.core.peermanager.messaging.*;
+import com.aelitis.azureus.core.peermanager.messaging.bittorrent.*;
 import org.gudy.azureus2.core3.disk.*;
 import org.gudy.azureus2.core3.peer.PEPeer;
 import org.gudy.azureus2.core3.util.*;
 
-import com.aelitis.azureus.core.networkmanager.OutgoingMessageQueue;
-import com.aelitis.azureus.core.peermanager.messaging.*;
-import com.aelitis.azureus.core.peermanager.messaging.bittorrent.*;
+import java.util.*;
 
 
 /**
