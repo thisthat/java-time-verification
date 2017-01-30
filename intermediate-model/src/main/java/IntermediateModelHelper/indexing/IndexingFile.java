@@ -7,6 +7,7 @@ import intermediateModel.structure.ASTRE;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -27,7 +28,7 @@ public class IndexingFile extends ParseIM {
 	Stack<String> stackAnonymousClasses = new Stack<>();
 	ASTClass _c = null;
 
-	public static MTMetric getMetrics(){
+	public static MTMetric getMetrics(File _old, File _new, List<SourceCodeChange> changes){
 		return new MTMetric();
 	}
 
