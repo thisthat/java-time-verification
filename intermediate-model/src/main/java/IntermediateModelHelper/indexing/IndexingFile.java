@@ -1,12 +1,8 @@
 package IntermediateModelHelper.indexing;
 
-import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.envirorment.EnvBase;
-import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTImport;
-import intermediateModel.structure.ASTVariable;
+import intermediateModel.structure.ASTRE;
 import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
@@ -42,44 +38,14 @@ public class IndexingFile extends ParseIM {
 	 */
 	public MTMetric index(ASTClass c) {
 		this._c = c;
-		super.set_class(c);
 		data = new MTMetric();
+		data.setMethods(c.getName(), c.getMethods().size());
+		super.start(c);
 		return data;
 	}
 
-	private List<String> convertImports(List<ASTImport> imports) {
-		List<String> out = new ArrayList<>();
-		for(ASTImport i : imports){
-			out.add(i.getPackagename());
-		}
-		return out;
-	}
-
-	/**
-	 * The following method creates the basic environment for a class.
-	 * It goes through the def of all stms and set if variables are time related.
-	 * At the end of the execution of the method we know if an attribute is time reletad or not.
-	 * <hr>
-	 * <b>Efficency Tips</b>: Since we parse the IM we also collect the sync block and time related methods here.
-	 * @param c Class to analyze
-	 */
 	@Override
-	protected EnvBase createBaseEnv(ASTClass c){
-		super.createBaseEnv(c);
-		//check method
-		for (IASTMethod m : c.getMethods()) {
-			lastMethodName = m.getName();
-			signatureLastMethodName = new ArrayList<>();
-			for(ASTVariable p : m.getParameters()){
-				signatureLastMethodName.add(p.getType());
-			}
-			Env eMethod = new Env(base_env);
-			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
-			super.analyze(m.getStms(), eMethod);
-		}
-		return base_env;
+	protected void analyzeASTRE(ASTRE r, Env env) {
+
 	}
-
-
-
 }
