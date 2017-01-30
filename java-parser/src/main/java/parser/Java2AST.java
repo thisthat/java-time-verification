@@ -82,6 +82,14 @@ public class Java2AST {
 			convertToAST();
 		}
 	}
+	public Java2AST(File file, boolean parse, String projectPath) throws IOException {
+		this.filename = file.getName();
+		this.projectPath = projectPath;
+		initParser(file);
+		if(parse){
+			convertToAST();
+		}
+	}
 
 
     /**
@@ -116,7 +124,35 @@ public class Java2AST {
 		ASTSrc.getInstance().setSource(this.source);
 
 		parserJDT.setSource(source.toCharArray());
-    }
+	}
+
+
+	private void initParser(File file) throws IOException {
+
+		String[] sources = new String[]{"/Users/giovanni/repository/sources/activemq/activemq-amqp/src/main/java"};
+		String[] classPath = new String[]{ System.getProperty("java.home") + "/lib"};
+
+		String source = readFileToString(file, "utf-8");
+
+		parserJDT = ASTParser.newParser(AST.JLS8);  // handles JDK 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8
+		parserJDT.setKind(ASTParser.K_COMPILATION_UNIT);
+		Map<String, String> options = JavaCore.getOptions();
+		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
+		parserJDT.setCompilerOptions(options);
+
+		if(!this.projectPath.equals(""))
+			parserJDT.setEnvironment(classPath, sources, new String[]{"UTF-8"}, true);
+
+		parserJDT.setResolveBindings(true);
+		parserJDT.setBindingsRecovery(true);
+
+		parserJDT.setUnitName(filename.substring(filename.lastIndexOf("/")+1));
+
+		this.source = source.toCharArray();
+		ASTSrc.getInstance().setSource(this.source);
+
+		parserJDT.setSource(source.toCharArray());
+	}
 
     /**
      * It converts the java source file into the AST representation.

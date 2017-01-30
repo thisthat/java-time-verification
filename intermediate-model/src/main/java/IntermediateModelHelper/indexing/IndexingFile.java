@@ -1,8 +1,10 @@
 package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.envirorment.Env;
+import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTRE;
+import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
@@ -25,8 +27,8 @@ public class IndexingFile extends ParseIM {
 	Stack<String> stackAnonymousClasses = new Stack<>();
 	ASTClass _c = null;
 
-	public IndexingFile() {
-
+	public static MTMetric getMetrics(){
+		return new MTMetric();
 	}
 
 

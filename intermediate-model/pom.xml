@@ -33,21 +33,16 @@
             <version>1.2</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>ch.uzh.ifi.seal</groupId>
+            <artifactId>changedistiller</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>/Users/giovanni/repository/java-xal/3rdPartyLibraries/changedistiller-0.0.1-SNAPSHOT-jar-with-dependencies.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <excludes>
-                        <!-- At the moment notations are skiped, not yet implemented -->
-                         <exclude>**/TestAnnotations.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

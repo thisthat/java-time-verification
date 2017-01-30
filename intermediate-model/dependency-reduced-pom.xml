@@ -14,15 +14,6 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19.1</version>
-        <configuration>
-          <excludes>
-            <exclude>**/TestAnnotations.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
         <configuration>
@@ -32,5 +23,14 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>ch.uzh.ifi.seal</groupId>
+      <artifactId>changedistiller</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>/Users/giovanni/repository/java-xal/3rdPartyLibraries/changedistiller-0.0.1-SNAPSHOT-jar-with-dependencies.jar</systemPath>
+    </dependency>
+  </dependencies>
 </project>
 

@@ -10,6 +10,7 @@ import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import parser.Java2AST;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -37,6 +38,9 @@ public class JDTVisitor extends ASTVisitor {
 	public static List<ASTClass> parse(String filename){
 		return  parse(filename, "");
 	}
+	public static List<ASTClass> parse(File file){
+		return  parse(file, "");
+	}
 	public static List<ASTClass> parse(String filename, String projectPath){
 		if(cache.containsKey(filename)){
 			return cache.get(filename);
@@ -50,6 +54,21 @@ public class JDTVisitor extends ASTVisitor {
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
 		cache.put(filename, v.listOfClasses);
+		return v.listOfClasses;
+	}
+	public static List<ASTClass> parse(File file, String projectPath){
+		if(cache.containsKey(file.getPath())){
+			return cache.get(file.getPath());
+		}
+		Java2AST a = null;
+		try {
+			a = new Java2AST(file, true, projectPath);
+		} catch (IOException e) {
+		}
+		CompilationUnit result = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(result, file.getPath());
+		result.accept(v);
+		cache.put(file.getPath(), v.listOfClasses);
 		return v.listOfClasses;
 	}
 
