@@ -1,14 +1,10 @@
 package intermediateModel.interfaces;
 
 
-import com.google.common.annotations.Beta;
 import org.javatuples.Triplet;
-import timeannotation.definition.Annotation;
 import timeannotation.parser.ASTSrc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -60,7 +56,7 @@ public abstract class IASTStm implements IASTVisitor{
 	protected int line;
 	protected int lineEnd;
 	protected Triplet<Integer,String, Class> constraint = null;
-	@Beta protected List<Annotation> annotations = new ArrayList<>();
+	//@Beta protected List<Annotation> annotations = new ArrayList<>();
 	private boolean isTimeCritical = false;
 	/**
 	 * Retrive the time constraint of the current Node
@@ -178,7 +174,7 @@ public abstract class IASTStm implements IASTVisitor{
 	 * <b>BETA</b>.
 	 * Add annotation to the node
 	 * @param annotation String that contains the annotation to add
-	 */
+	 *
 	@Beta
 	public void addAnnotation(Annotation annotation){
 		annotations.add(annotation);
@@ -188,7 +184,7 @@ public abstract class IASTStm implements IASTVisitor{
 	 * <b>BETA</b>.
 	 * Get all the annotation of the node
 	 * @return	The list of annotations
-	 */
+	 *
 	@Beta
 	public List<Annotation> getAnnotations(){
 		return annotations;
@@ -198,7 +194,7 @@ public abstract class IASTStm implements IASTVisitor{
 	 * <b>BETA</b>.
 	 * Get all the annotation of the node
 	 * @return	The list of annotations
-	 */
+	 *
 	@Beta
 	public List<Annotation> setAnnotations(List<Annotation> annotations){
 		return this.annotations = annotations;
@@ -209,11 +205,13 @@ public abstract class IASTStm implements IASTVisitor{
 	 * Search if an annotation is already present in the list of the node.
 	 * @param annotation	The annotation to search
 	 * @return				True if it already exists.
-	 */
+	 *
 	@Beta
 	public boolean existsAnnotation(String annotation){
 		return annotations.stream().anyMatch(a -> annotation.equals(a));
 	}
+  */
+
 
 	/**
 	 * Constructor that uses general start and end position in the file of the node

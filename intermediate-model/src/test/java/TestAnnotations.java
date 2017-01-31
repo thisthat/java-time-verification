@@ -29,7 +29,7 @@ public class TestAnnotations {
 
 	@Test
 	public void clock() throws Exception {
-		List<Annotation> ann;
+		List<Annotation> ann = null;
 		ClockAnnotation cl;
 
 		//first method
@@ -39,7 +39,7 @@ public class TestAnnotations {
 
 		//method run
 		IASTMethod run = c.getFirstMethodByName("run");
-		ann = run.getStms().get(1).getAnnotations();
+		//ann = run.getStms().get(1).getAnnotations();
 		assertEquals(ann.size(), 1);
 		assertTrue(ann.get(0) instanceof ClockAnnotation);
 		cl = (ClockAnnotation) ann.get(0);
@@ -48,7 +48,7 @@ public class TestAnnotations {
 		//method init
 		IASTMethod init = c.getFirstMethodByName("init");
 		//first par with @clock
-		ann = init.getParameters().get(0).getAnnotations();
+		//ann = init.getParameters().get(0).getAnnotations();
 		assertEquals(ann.size(), 1);
 		assertTrue(ann.get(0) instanceof ClockAnnotation);
 		cl = (ClockAnnotation) ann.get(0);
