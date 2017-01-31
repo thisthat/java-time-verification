@@ -15,7 +15,6 @@ import java.util.List;
 
 public class ASTClass extends IASTStm implements IASTVisitor {
 
-
 	String packageName;
 	List<IASTMethod> methods = new ArrayList<>();
 	List<ASTStatic> staticInit = new ArrayList<>();

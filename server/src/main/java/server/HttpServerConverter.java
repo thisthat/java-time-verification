@@ -2,12 +2,14 @@ package server;
 
 import com.sun.net.httpserver.HttpServer;
 import server.handler.*;
+import server.handler.test.EchoGetHandler;
+import server.handler.test.EchoHeaderHandler;
+import server.handler.test.EchoPostHandler;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -43,6 +45,7 @@ public class HttpServerConverter {
 
 		//Get all java files from a project
 		server.createContext("/getAllFiles", new GetAllFilesHandler());
+		server.createContext("/getFile", new GetFileHandler());
 
 		server.setExecutor(httpThreadPool);
 		server.start();

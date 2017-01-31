@@ -22,22 +22,6 @@ import java.util.Arrays;
 public abstract class IASTStm implements IASTVisitor{
 
 	/**
-	 * @deprecated  we uses the type of the class itself to identify the semantic of the object
-	 */
-	@Deprecated
-	public enum Type {
-		Break,
-		Continue,
-		For,
-		Foreach,
-		If,
-		RE,
-		Return,
-		Switch,
-		Try
-	}
-
-	/**
 	 * Enum about the different visibility access level that Java offers
 	 */
 	public enum Visibility {
@@ -52,6 +36,7 @@ public abstract class IASTStm implements IASTVisitor{
 
 	protected int start;
 	protected int end;
+	protected String nodeType;
 	protected String code = "";
 	protected int line;
 	protected int lineEnd;
@@ -75,6 +60,14 @@ public abstract class IASTStm implements IASTVisitor{
 	public void addConstraint(Integer line, String msg, Class heuristic){
 		isTimeCritical = true;
 		constraint = new Triplet<>(line,msg, heuristic);
+	}
+
+	public String getNodeType() {
+		return nodeType;
+	}
+
+	public void setNodeType(String nodeType) {
+		this.nodeType = nodeType;
 	}
 
 	/**
@@ -221,7 +214,13 @@ public abstract class IASTStm implements IASTVisitor{
 	protected IASTStm(int start, int end){
 		this.start = start;
 		this.end = end;
+		this.nodeType = this.getClass().getSimpleName();
+		//System.out.println(stmType);
 		calculateSourceCode();
+	}
+
+	protected IASTStm(){
+
 	}
 
 	/**

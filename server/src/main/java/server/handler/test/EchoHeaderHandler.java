@@ -1,4 +1,4 @@
-package server.handler;
+package server.handler.test;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
