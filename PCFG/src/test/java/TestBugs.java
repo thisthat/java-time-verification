@@ -62,7 +62,7 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 2 );
+		assertEquals(g.getESync().size(), 4 );
 
 	}
 
@@ -106,10 +106,10 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 1 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
-	@Test(expected = AssertionError.class)
+	@Test //(expected = AssertionError.class)
 	public void TestBug22_package_error() throws Exception {
 		IM2PCFG p = new IM2PCFG();
 
@@ -192,7 +192,7 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 1 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
 	@Test
@@ -278,6 +278,6 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 1 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 }
