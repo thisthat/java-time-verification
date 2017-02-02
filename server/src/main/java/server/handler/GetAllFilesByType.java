@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
 import server.handler.middleware.indexMW;
+import server.handler.outputFormat.OutputData;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,10 +43,10 @@ public class GetAllFilesByType extends indexMW {
 			return;
 		}
 		List<IndexData> threads = db.getType(type);
-		List<String> files = new ArrayList<>();
+		List<OutputData> files = new ArrayList<>();
 		for(IndexData d : threads){
 			if(! files.contains(d.getPath()) )
-				files.add(d.getPath());
+				files.add(new OutputData(d));
 		}
 		ObjectMapper json = new ObjectMapper();
 		json.enable(SerializationFeature.INDENT_OUTPUT);

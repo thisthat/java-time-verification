@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
 import server.handler.middleware.indexMW;
+import server.handler.outputFormat.OutputData;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,49 +19,6 @@ import java.util.Map;
  * @version %I%, %G%
  */
 public class GetThreads extends indexMW {
-
-
-	class OutputData {
-		String path;
-		String className;
-		String packageName;
-
-		public OutputData(String path, String className, String packageName) {
-			this.path = path;
-			this.className = className;
-			this.packageName = packageName;
-		}
-
-		public OutputData(IndexData d) {
-			this.path = d.getPath();
-			this.className = d.getClassName();
-			this.packageName = d.getFullclassPackage();
-		}
-
-		public String getPath() {
-			return path;
-		}
-
-		public void setPath(String path) {
-			this.path = path;
-		}
-
-		public String getClassName() {
-			return className;
-		}
-
-		public void setClassName(String className) {
-			this.className = className;
-		}
-
-		public String getPackageName() {
-			return packageName;
-		}
-
-		public void setPackageName(String packageName) {
-			this.packageName = packageName;
-		}
-	}
 
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
