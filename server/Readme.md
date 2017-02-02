@@ -5,11 +5,48 @@ Common address: **127.0.0.1**
 
 | URL        | METHOD | Output        | Description  |
 |------------|:------:|:-------------:| :------------|
-| / | GET/POST | txt | Check the connection with the server. |
-| /getAllFiles | POST | json | It expects two parameters: <ul><li>projectPath `String`: Path from where search java files</li><li>skipTest `int`: skip test files</li></ul> `projectPath` supports only *file://* as URI protocol atm. <br/> `skipTest` is considered true if equal to **1**, any other value are considered as false. |
-| /getFile     | POST | json | It expects one parameter: <ul><li>filePath `String`: Path from of the java file</li></ul>  It returns the intermediate model in json format of the given file. <br /> `filePath` supports only *file://* as URI protocol atm.|
+| /            | GET  | txt  | Check the connection with the server. |
+| /getAllFiles | POST | json | Return all the java file |
+| /getFile     | POST | json | Return the IM of a file |
+| /openProject | POST | json | Calculate indexes of the project |
 
 
+# /getAllFiles
+
+Return the list of all *java* files in the given directory.
+
+It expects two parameters: 
+* `projectPath` : path from where search java files
+* `skipTest` : if equal to **1** it skips test files
+ 
+`projectPath` supports only *file://* as URI protocol atm. 
+
+# /getFile 
+It returns the intermediate model in json format of the given file.
+
+It expects one parameter: 
+* `filePath`: Path from of the java file
+ 
+`filePath` supports only *file://* as URI protocol atm.
+
+# /openProject
+
+The following REST API creates a db with the types of the project. 
+If we do not use this call we cannot create a proper **getThreads()** and **..()** functions. 
+Functions that requires infos about types will return an error 406 instead of 400 if the project is not currently in the db. 
+Process the project could take times, therefore the function only offer an eventually consistency. 
+Users can check the ending of the indexing phases with the **isProjectOpen()** function.
+
+It expects two parameters: 
+* `name` : Name of the project
+* `path` : Path of the project in URI format (only the *file://* protocol is supported atm.)
+
+Plus one optional parameter:
+* `invalidCache` : if equal to **1** it invalidates the cache and compute again the indexes. Default value is `0`.
+
+The function returns a value with a status code:
+* `0` : There is already an indexing on that project ongoing
+* `1` : The indexing process started correctly
 
 
 

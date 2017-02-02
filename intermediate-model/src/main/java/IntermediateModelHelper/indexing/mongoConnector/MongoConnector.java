@@ -1,5 +1,6 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
+import IntermediateModelHelper.indexing.structure.DBStatus;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import IntermediateModelHelper.indexing.structure.IndexSyncCall;
@@ -14,9 +15,12 @@ import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.Mapper;
 import org.mongodb.morphia.mapping.MapperOptions;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +38,8 @@ public class MongoConnector {
 	private static HashMap<String,MongoConnector> instances = new HashMap<String, MongoConnector>();
 
 	MongoDatabase db;
+	String dbName;
+	DBStatus dbStatus;
 	MongoCollection<Document> indexCollection;
 	final Morphia morphia = new Morphia();
 	Datastore datastore;
@@ -69,6 +75,7 @@ public class MongoConnector {
 	protected MongoConnector(String db_name, String ip, int port) {
 		MongoClient mongoClient = new MongoClient(ip, port);
 		db = mongoClient.getDatabase(db_name);
+		dbName = db_name;
 		indexCollection = db.getCollection(__COLLECTION_NAME);
 		datastore = morphia.createDatastore(mongoClient, db_name);
 		MapperOptions options = new MapperOptions();
@@ -78,6 +85,21 @@ public class MongoConnector {
 		morphia.mapPackage("IntermediateModelHelper.indexing.structure");
 		datastore.ensureIndexes();
 		datastore.ensureCaps();
+
+		Query<DBStatus> q = datastore.createQuery(DBStatus.class);
+		q.field("dbName").equal(dbName);
+		try {
+			List<DBStatus> r = q.asList();
+			if (!(r.size() > 0)) {
+				dbStatus = new DBStatus(dbName, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false);
+				datastore.save(dbStatus);
+			} else {
+				dbStatus = r.get(0);
+			}
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+
 	}
 
 	/**
@@ -580,6 +602,26 @@ public class MongoConnector {
 		List<IndexData> out =  q.asList();
 		cacheExtended.put(p, out);
 		return out;
+	}
+
+	public void setIndexStart(){
+		try {
+			this.dbStatus.setLastEdit(new Timestamp(System.currentTimeMillis()));
+			this.dbStatus.setIndexed(false);
+			this.datastore.save(dbStatus);
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public void setIndexFinish(){
+		try {
+			this.dbStatus.setLastEdit(new Timestamp(System.currentTimeMillis()));
+			this.dbStatus.setIndexed(true);
+			this.datastore.save(dbStatus);
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
 	}
 
 

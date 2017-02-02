@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class EchoPostHandler implements HttpHandler {
+public class EchoPost implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange he) throws IOException {

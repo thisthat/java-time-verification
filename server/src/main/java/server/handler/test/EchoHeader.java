@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class EchoHeaderHandler implements HttpHandler {
+public class EchoHeader implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange he) throws IOException {

@@ -1,10 +1,13 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
-import server.handler.*;
-import server.handler.test.EchoGetHandler;
-import server.handler.test.EchoHeaderHandler;
-import server.handler.test.EchoPostHandler;
+import server.handler.GetAllFiles;
+import server.handler.GetFile;
+import server.handler.OpenProject;
+import server.handler.Root;
+import server.handler.test.EchoGet;
+import server.handler.test.EchoHeader;
+import server.handler.test.EchoPost;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,15 +40,19 @@ public class HttpServerConverter {
 		httpThreadPool = Executors.newFixedThreadPool(this.noOfThreads);
 
 		//Test urls
-		server.createContext("/", new RootHandler());
-		server.createContext("/test/echoHeader", new EchoHeaderHandler());
-		server.createContext("/test/echoGet", new EchoGetHandler());
-		server.createContext("/test/echoPost", new EchoPostHandler());
+		server.createContext("/", new Root());
+		server.createContext("/test/echoHeader", new EchoHeader());
+		server.createContext("/test/echoGet", new EchoGet());
+		server.createContext("/test/echoPost", new EchoPost());
 
 
 		//Get all java files from a project
-		server.createContext("/getAllFiles", new GetAllFilesHandler());
-		server.createContext("/getFile", new GetFileHandler());
+		server.createContext("/getAllFiles", new GetAllFiles());
+		server.createContext("/getFile", new GetFile());
+
+
+		//Start project index
+		server.createContext("/openProject", new OpenProject());
 
 		server.setExecutor(httpThreadPool);
 		server.start();

@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class EchoGetHandler implements HttpHandler {
+public class EchoGet implements HttpHandler {
 
 
 

@@ -13,10 +13,11 @@ import java.util.*;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetAllFilesHandler implements HttpHandler {
+public class GetAllFilesByType implements HttpHandler {
 
 	String par1 = "projectPath";
 	String par2 = "skipTest";
+	String par3 = "type";
 
 
 	@Override
@@ -28,7 +29,7 @@ public class GetAllFilesHandler implements HttpHandler {
 		String query = br.readLine();
 		HttpServerConverter.parseQuery(query, parameters);
 
-		//validate input: expect 2 pars projectPath&skipTest
+		//validate input: expect 3 pars projectPath, skipTest, type
 		boolean flag = true;
 		if(!parameters.containsKey(par1)){
 			flag = false;
@@ -36,16 +37,20 @@ public class GetAllFilesHandler implements HttpHandler {
 		if(!parameters.containsKey(par2)){
 			flag = false;
 		}
+		if(!parameters.containsKey(par3)){
+			flag = false;
+		}
 		if(!flag){
-			String response = "Incorrect format for the parameters.";
+			String response = "Incorrect format of parameters.";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
 			os.write(response.toString().getBytes());
 			os.close();
 			return;
 		}
-		boolean skipTest = parameters.get(par2).equals("1") ? true : false;
+		boolean skipTest = parameters.get(par2).equals("1");
 		String base_path = parameters.get(par1);
+		String type = parameters.get(par3);
 		if(!base_path.startsWith("file://")){
 			String response = "Unsupported protocol. atm only file:// is supported.";
 			he.sendResponseHeaders(400, response.length());

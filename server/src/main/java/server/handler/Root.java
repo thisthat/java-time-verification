@@ -11,7 +11,7 @@ import java.io.OutputStream;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class RootHandler implements HttpHandler {
+public class Root implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange he) throws IOException {

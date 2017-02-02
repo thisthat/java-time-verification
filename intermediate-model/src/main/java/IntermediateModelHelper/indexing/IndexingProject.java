@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -79,8 +80,8 @@ public class IndexingProject {
 	 */
 	public int indexProject(String base_path, boolean deleteOld){
 		//remove old data
+		db.setIndexStart();
 		if(deleteOld) delete();
-
 		File dir = new File(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
@@ -95,18 +96,9 @@ public class IndexingProject {
 			if(this.skipTest && filename.contains("/test")){
 				continue;
 			}
-			Java2AST a = null;
-			try {
-				a = new Java2AST(filename, true);
-			} catch (IOException e) {
-				e.printStackTrace();
-				continue;
-			}
-			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result, filename);
-			result.accept(v);
+			List<ASTClass> result = JDTVisitor.parse(filename);
 			//pp filename
-			for(ASTClass c : v.listOfClasses){
+			for(ASTClass c : result){
 				IndexingFile indexing = new IndexingFile(db);
 				indexing.index(c);
 				//db.add(index);
@@ -115,6 +107,7 @@ public class IndexingProject {
 		}
 		//ensure indexes
 		db.ensureIndexes();
+		db.setIndexFinish();
 		return n_file;
 	}
 
