@@ -5,11 +5,13 @@ Common address: **127.0.0.1**
 
 | URL        | METHOD | Output        | Description  |
 |------------|:------:|:-------------:| :------------|
-| /             | GET  | txt  | Check the connection with the server. |
-| /getAllFiles  | POST | json | Return all the java file |
-| /getFile      | POST | json | Return the IM of a file |
-| /openProject  | POST | json | Calculate indexes of the project |
-| /isProjectOpen| POST | json | Return if a project has the indexes computed |
+| /                 | GET  | txt  | Check the connection with the server. |
+| /getAllFiles      | POST | json | Return all the java file |
+| /getFile          | POST | json | Return the IM of a file |
+| /openProject      | POST | json | Calculate indexes of the project |
+| /isProjectOpen    | POST | json | Return if a project has the indexes computed |
+| /getFilesByType   | POST | json | Return the list of files that extends/implements the given type |
+| /getThreads       | POST | json | Return the list of files that implements threads |
 
 # /getAllFiles
 
@@ -59,8 +61,34 @@ The return value is a status code:
 * `0` : The project has not yet the indexes in the database
 * `1` : The indexes are available
 
+# /getFilesByType
 
+Return the list of files in which each contains a class that extends or implements the given searched type.
 
+It expects two parameters:
+* `name` : Name of the project
+* `type` : Type to use as filter
+
+The output is a list of a structured data with the following format:
+* `path` : Path of the file which contains the type
+* `className` : name of the class that extends/implements the given type
+* `packageName` : name of the package of the class that extends/implements the given type
+
+A file can contains multiple classes. Therefore, to find the correct class users should use `packageName` and `className`.
+
+# /getThreads
+
+Return the list of files in which each contains a class that defines a Thread.
+
+It expects one parameter:
+* `name` : Name of the project
+
+The output is a list of a structured data with the following format:
+* `path` : Path of the file which contains the type
+* `className` : name of the class that extends/implements the Thread Java API
+* `packageName` : name of the package of the class that extends/implements the Thread Java API
+
+A file can contains multiple classes. Therefore, to find the correct class users should use `packageName` and `className`.
 
 
 
