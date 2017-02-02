@@ -84,6 +84,7 @@ public class IndexingProject {
 		if(deleteOld) delete();
 		File dir = new File(base_path);
 		String[] filter = {"java"};
+		System.err.println("Working with [" + base_path + "]");
 		Collection<File> files = FileUtils.listFiles(
 				dir,
 				filter,
