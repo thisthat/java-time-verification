@@ -51,6 +51,8 @@ public class HttpServerConverter {
 		//Start project index
 		server.createContext("/openProject", new OpenProject());
 		server.createContext("/isProjectOpen", new IsProjectOpen());
+		server.createContext("/getFilesByType", new GetAllFilesByType());
+		server.createContext("/getThreads", new GetThreads());
 
 		server.setExecutor(httpThreadPool);
 		server.start();

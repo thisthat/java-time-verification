@@ -641,6 +641,16 @@ public class MongoConnector {
 		return this.dbStatus.isIndexed();
 	}
 
+	public List<IndexData> getType(String type) {
+		Query<IndexData> q;
+		q = datastore.createQuery(IndexData.class);
+		q.or(
+				q.criteria(__EXTENDED).equal(type),
+				q.criteria(__IMPLEMENTS).contains(type)
+		);
+		return q.asList();
+	}
+
 
 	/**
 	 * Delete the current database
@@ -671,4 +681,6 @@ public class MongoConnector {
 		Pair<String,String> p = new Pair<>(c.getName(),c.getPackageName());
 		cacheSyncBlock.remove(p);
 	}
+
+
 }

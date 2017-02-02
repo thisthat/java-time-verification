@@ -17,21 +17,53 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetAllFilesByType extends indexMW {
+public class GetThreads extends indexMW {
 
-	String par = "type";
+
+	class OutputData {
+		String path;
+		String className;
+		String packageName;
+
+		public OutputData(String path, String className, String packageName) {
+			this.path = path;
+			this.className = className;
+			this.packageName = packageName;
+		}
+
+		public OutputData(IndexData d) {
+			this.path = d.getPath();
+			this.className = d.getClassName();
+			this.packageName = d.getFullclassPackage();
+		}
+
+		public String getPath() {
+			return path;
+		}
+
+		public void setPath(String path) {
+			this.path = path;
+		}
+
+		public String getClassName() {
+			return className;
+		}
+
+		public void setClassName(String className) {
+			this.className = className;
+		}
+
+		public String getPackageName() {
+			return packageName;
+		}
+
+		public void setPackageName(String packageName) {
+			this.packageName = packageName;
+		}
+	}
 
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
-		if(!parameters.containsKey(par)){
-			String response = "Incorrect format of parameters.";
-			he.sendResponseHeaders(400, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
-			return;
-		}
-		String type = parameters.get(par);
 		MongoConnector db = MongoConnector.getInstance(name);
 		if(!db.getIndexStatus()){
 			String response = "Indexes are not yet computed.";
@@ -41,11 +73,11 @@ public class GetAllFilesByType extends indexMW {
 			os.close();
 			return;
 		}
-		List<IndexData> threads = db.getType(type);
-		List<String> files = new ArrayList<>();
+		List<IndexData> threads = db.getThreads();
+		List<OutputData> files = new ArrayList<>();
 		for(IndexData d : threads){
 			if(! files.contains(d.getPath()) )
-				files.add(d.getPath());
+				files.add(new OutputData(d));
 		}
 		ObjectMapper json = new ObjectMapper();
 		json.enable(SerializationFeature.INDENT_OUTPUT);
