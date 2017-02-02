@@ -5,15 +5,15 @@ Common address: **127.0.0.1**
 
 | URL        | METHOD | Output        | Description  |
 |------------|:------:|:-------------:| :------------|
-| /            | GET  | txt  | Check the connection with the server. |
-| /getAllFiles | POST | json | Return all the java file |
-| /getFile     | POST | json | Return the IM of a file |
-| /openProject | POST | json | Calculate indexes of the project |
-
+| /             | GET  | txt  | Check the connection with the server. |
+| /getAllFiles  | POST | json | Return all the java file |
+| /getFile      | POST | json | Return the IM of a file |
+| /openProject  | POST | json | Calculate indexes of the project |
+| /isProjectOpen| POST | json | Return if a project has the indexes computed |
 
 # /getAllFiles
 
-Return the list of all *java* files in the given directory.
+The route returns the list of all *java* files in the given directory.
 
 It expects two parameters: 
 * `projectPath` : path from where search java files
@@ -48,6 +48,16 @@ The function returns a value with a status code:
 * `0` : There is already an indexing on that project ongoing
 * `1` : The indexing process started correctly
 
+# /isProjectOpen
+
+The route returns the status of the indexes for the given project. 
+
+It expects one parameter: 
+* `name` : Name of the project
+
+The return value is a status code:
+* `0` : The project has not yet the indexes in the database
+* `1` : The indexes are available
 
 
 
