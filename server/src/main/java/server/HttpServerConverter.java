@@ -1,10 +1,7 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
-import server.handler.GetAllFiles;
-import server.handler.GetFile;
-import server.handler.OpenProject;
-import server.handler.Root;
+import server.handler.*;
 import server.handler.test.EchoGet;
 import server.handler.test.EchoHeader;
 import server.handler.test.EchoPost;
@@ -53,6 +50,7 @@ public class HttpServerConverter {
 
 		//Start project index
 		server.createContext("/openProject", new OpenProject());
+		server.createContext("/isProjectOpen", new IsProjectOpen());
 
 		server.setExecutor(httpThreadPool);
 		server.start();

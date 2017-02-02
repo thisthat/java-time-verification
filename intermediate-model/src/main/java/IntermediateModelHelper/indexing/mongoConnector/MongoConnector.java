@@ -624,6 +624,23 @@ public class MongoConnector {
 		}
 	}
 
+	public boolean getIndexStatus(){
+		Query<DBStatus> q = datastore.createQuery(DBStatus.class);
+		q.field("dbName").equal(dbName);
+		try {
+			List<DBStatus> r = q.asList();
+			if (!(r.size() > 0)) {
+				dbStatus = new DBStatus(dbName, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false);
+				datastore.save(dbStatus);
+			} else {
+				dbStatus = r.get(0);
+			}
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+		return this.dbStatus.isIndexed();
+	}
+
 
 	/**
 	 * Delete the current database
