@@ -12,6 +12,9 @@ Common address: **127.0.0.1**
 | /isProjectOpen    | POST | json | Return if a project has the indexes computed |
 | /getFilesByType   | POST | json | Return the list of files that extends/implements the given type |
 | /getThreads       | POST | json | Return the list of files that implements threads |
+| /getMains         | POST | json | Return the list of files which contains a public void main |
+
+
 
 # /getAllFiles
 
@@ -79,6 +82,20 @@ A file can contains multiple classes. Therefore, to find the correct class users
 # /getThreads
 
 Return the list of files in which each contains a class that defines a Thread.
+
+It expects one parameter:
+* `name` : Name of the project
+
+The output is a list of a structured data with the following format:
+* `path` : Path of the file which contains the type
+* `className` : name of the class that extends/implements the Thread Java API
+* `packageName` : name of the package of the class that extends/implements the Thread Java API
+
+A file can contains multiple classes. Therefore, to find the correct class users should use `packageName` and `className`.
+
+# /getMains
+
+Return the list of files in which each contains a class that defines a public static void main method.
 
 It expects one parameter:
 * `name` : Name of the project
