@@ -1,0 +1,1536 @@
+{
+    "abstract": false,
+    "accessRight": "PRIVATE",
+    "allMethods": [
+        {
+            "code": "public Philosopher(int initId, Resource initr) {\r\n        id = initId;\r\n        r = initr;\r\n        new Thread(this).start();\r\n    }",
+            "constraint": null,
+            "end": 218,
+            "exceptionsThrowed": [],
+            "line": 4,
+            "lineEnd": 8,
+            "name": "Philosopher",
+            "parameters": [
+                {
+                    "code": "int initId",
+                    "constraint": null,
+                    "end": 115,
+                    "line": 4,
+                    "lineEnd": 4,
+                    "name": "initId",
+                    "start": 105,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                },
+                {
+                    "code": "Resource initr",
+                    "constraint": null,
+                    "end": 131,
+                    "line": 4,
+                    "lineEnd": 4,
+                    "name": "initr",
+                    "start": 117,
+                    "timeCritical": false,
+                    "type": "Resource",
+                    "typeNoArray": "Resource"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int",
+                "Resource"
+            ],
+            "start": 86,
+            "static": false,
+            "stms": [
+                {
+                    "code": "id = initId;",
+                    "constraint": null,
+                    "end": 156,
+                    "expression": {
+                        "code": "id = initId",
+                        "constraint": null,
+                        "end": 155,
+                        "left": {
+                            "code": "id",
+                            "constraint": null,
+                            "end": 146,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 144,
+                            "timeCritical": false,
+                            "value": "id"
+                        },
+                        "line": 5,
+                        "lineEnd": 5,
+                        "op": "equal",
+                        "right": {
+                            "code": "initId",
+                            "constraint": null,
+                            "end": 155,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 149,
+                            "timeCritical": false,
+                            "value": "initId"
+                        },
+                        "start": 144,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 5,
+                    "lineEnd": 5,
+                    "start": 144,
+                    "timeCritical": false
+                },
+                {
+                    "code": "r = initr;",
+                    "constraint": null,
+                    "end": 176,
+                    "expression": {
+                        "code": "r = initr",
+                        "constraint": null,
+                        "end": 175,
+                        "left": {
+                            "code": "r",
+                            "constraint": null,
+                            "end": 167,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "start": 166,
+                            "timeCritical": false,
+                            "value": "r"
+                        },
+                        "line": 6,
+                        "lineEnd": 6,
+                        "op": "equal",
+                        "right": {
+                            "code": "initr",
+                            "constraint": null,
+                            "end": 175,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "start": 170,
+                            "timeCritical": false,
+                            "value": "initr"
+                        },
+                        "start": 166,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 6,
+                    "lineEnd": 6,
+                    "start": 166,
+                    "timeCritical": false
+                },
+                {
+                    "code": "new Thread(this).start();",
+                    "constraint": null,
+                    "end": 211,
+                    "expression": {
+                        "code": "new Thread(this).start()",
+                        "constraint": null,
+                        "end": 210,
+                        "exprCallee": {
+                            "array": false,
+                            "code": "new Thread(this)",
+                            "constraint": null,
+                            "end": 202,
+                            "hiddenClass": null,
+                            "line": 7,
+                            "lineEnd": 7,
+                            "parameters": [
+                                {
+                                    "code": "this",
+                                    "constraint": null,
+                                    "end": 201,
+                                    "line": 7,
+                                    "lineEnd": 7,
+                                    "start": 197,
+                                    "timeCritical": false,
+                                    "value": "this"
+                                }
+                            ],
+                            "start": 186,
+                            "timeCritical": false,
+                            "typeName": "Thread"
+                        },
+                        "line": 7,
+                        "lineEnd": 7,
+                        "methodName": "start",
+                        "parameters": [],
+                        "start": 186,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_start",
+                    "line": 7,
+                    "lineEnd": 7,
+                    "start": 186,
+                    "timeCritical": false
+                }
+            ],
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public void run() {\r\n        while (true) {\r\n            try {\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            } catch (InterruptedException e) {\r\n                return;\r\n            }\r\n        }\r\n    }",
+            "constraint": null,
+            "end": 717,
+            "exceptionsThrowed": [],
+            "line": 9,
+            "lineEnd": 23,
+            "name": "run",
+            "parameters": [],
+            "returnType": "void",
+            "signature": [],
+            "start": 224,
+            "static": false,
+            "stms": [
+                {
+                    "code": "while (true) {\r\n            try {\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            } catch (InterruptedException e) {\r\n                return;\r\n            }\r\n        }",
+                    "constraint": null,
+                    "end": 710,
+                    "expr": {
+                        "code": "true",
+                        "constraint": null,
+                        "end": 264,
+                        "expression": {
+                            "code": "true",
+                            "constraint": null,
+                            "end": 264,
+                            "line": 10,
+                            "lineEnd": 10,
+                            "start": 260,
+                            "timeCritical": false,
+                            "value": "true"
+                        },
+                        "expressionName": "true",
+                        "line": 10,
+                        "lineEnd": 10,
+                        "start": 260,
+                        "timeCritical": false
+                    },
+                    "line": 10,
+                    "lineEnd": 22,
+                    "start": 253,
+                    "stms": [
+                        {
+                            "catchBranch": [
+                                {
+                                    "code": "catch (InterruptedException e) {\r\n                return;\r\n            }",
+                                    "constraint": null,
+                                    "end": 699,
+                                    "expr": {
+                                        "code": "InterruptedException e",
+                                        "constraint": null,
+                                        "end": 656,
+                                        "line": 19,
+                                        "lineEnd": 19,
+                                        "name": "e",
+                                        "start": 634,
+                                        "timeCritical": false,
+                                        "type": "InterruptedException",
+                                        "typeNoArray": "InterruptedException"
+                                    },
+                                    "line": 19,
+                                    "lineEnd": 21,
+                                    "start": 627,
+                                    "stms": [
+                                        {
+                                            "code": "return;",
+                                            "constraint": null,
+                                            "end": 684,
+                                            "expr": null,
+                                            "line": 20,
+                                            "lineEnd": 20,
+                                            "start": 677,
+                                            "timeCritical": false
+                                        }
+                                    ],
+                                    "timeCritical": false
+                                }
+                            ],
+                            "code": "try {\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            } catch (InterruptedException e) {\r\n                return;\r\n            }",
+                            "constraint": null,
+                            "end": 699,
+                            "finallyBranch": null,
+                            "line": 11,
+                            "lineEnd": 21,
+                            "start": 281,
+                            "timeCritical": false,
+                            "tryBranch": {
+                                "code": "{\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            }",
+                                "constraint": null,
+                                "end": 626,
+                                "line": 11,
+                                "lineEnd": 19,
+                                "start": 285,
+                                "stms": [
+                                    {
+                                        "code": "System.out.println(\"Phil \" + id + \" thinking\");",
+                                        "constraint": null,
+                                        "end": 351,
+                                        "expression": {
+                                            "code": "System.out.println(\"Phil \" + id + \" thinking\")",
+                                            "constraint": null,
+                                            "end": 350,
+                                            "exprCallee": {
+                                                "attributeName": "out",
+                                                "code": "System.out",
+                                                "constraint": null,
+                                                "end": 314,
+                                                "line": 12,
+                                                "lineEnd": 12,
+                                                "start": 304,
+                                                "timeCritical": false,
+                                                "variableName": {
+                                                    "code": "System",
+                                                    "constraint": null,
+                                                    "end": 310,
+                                                    "line": 12,
+                                                    "lineEnd": 12,
+                                                    "start": 304,
+                                                    "timeCritical": false,
+                                                    "value": "System"
+                                                }
+                                            },
+                                            "line": 12,
+                                            "lineEnd": 12,
+                                            "methodName": "println",
+                                            "parameters": [
+                                                {
+                                                    "code": "\" thinking\"",
+                                                    "constraint": null,
+                                                    "end": 349,
+                                                    "left": {
+                                                        "code": "\"Phil \" + id + \" thinking\"",
+                                                        "constraint": null,
+                                                        "end": 349,
+                                                        "left": {
+                                                            "code": "\"Phil \"",
+                                                            "constraint": null,
+                                                            "end": 330,
+                                                            "line": 12,
+                                                            "lineEnd": 12,
+                                                            "start": 323,
+                                                            "timeCritical": false,
+                                                            "value": "\"Phil \""
+                                                        },
+                                                        "line": 12,
+                                                        "lineEnd": 12,
+                                                        "op": "plus",
+                                                        "right": {
+                                                            "code": "id",
+                                                            "constraint": null,
+                                                            "end": 335,
+                                                            "line": 12,
+                                                            "lineEnd": 12,
+                                                            "start": 333,
+                                                            "timeCritical": false,
+                                                            "value": "id"
+                                                        },
+                                                        "start": 323,
+                                                        "timeCritical": false
+                                                    },
+                                                    "line": 12,
+                                                    "lineEnd": 12,
+                                                    "op": "plus",
+                                                    "right": {
+                                                        "code": "\" thinking\"",
+                                                        "constraint": null,
+                                                        "end": 349,
+                                                        "line": 12,
+                                                        "lineEnd": 12,
+                                                        "start": 338,
+                                                        "timeCritical": false,
+                                                        "value": "\" thinking\""
+                                                    },
+                                                    "start": 338,
+                                                    "timeCritical": false
+                                                }
+                                            ],
+                                            "start": 304,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_println",
+                                        "line": 12,
+                                        "lineEnd": 12,
+                                        "start": 304,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "Thread.sleep(30);",
+                                        "constraint": null,
+                                        "end": 386,
+                                        "expression": {
+                                            "code": "Thread.sleep(30)",
+                                            "constraint": null,
+                                            "end": 385,
+                                            "exprCallee": {
+                                                "code": "Thread",
+                                                "constraint": null,
+                                                "end": 375,
+                                                "line": 13,
+                                                "lineEnd": 13,
+                                                "start": 369,
+                                                "timeCritical": false,
+                                                "value": "Thread"
+                                            },
+                                            "line": 13,
+                                            "lineEnd": 13,
+                                            "methodName": "sleep",
+                                            "parameters": [
+                                                {
+                                                    "code": "30",
+                                                    "constraint": null,
+                                                    "end": 384,
+                                                    "line": 13,
+                                                    "lineEnd": 13,
+                                                    "start": 382,
+                                                    "timeCritical": false,
+                                                    "value": "30"
+                                                }
+                                            ],
+                                            "start": 369,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_sleep",
+                                        "line": 13,
+                                        "lineEnd": 13,
+                                        "start": 369,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "System.out.println(\"Phil \" + id + \" hungry\");",
+                                        "constraint": null,
+                                        "end": 449,
+                                        "expression": {
+                                            "code": "System.out.println(\"Phil \" + id + \" hungry\")",
+                                            "constraint": null,
+                                            "end": 448,
+                                            "exprCallee": {
+                                                "attributeName": "out",
+                                                "code": "System.out",
+                                                "constraint": null,
+                                                "end": 414,
+                                                "line": 14,
+                                                "lineEnd": 14,
+                                                "start": 404,
+                                                "timeCritical": false,
+                                                "variableName": {
+                                                    "code": "System",
+                                                    "constraint": null,
+                                                    "end": 410,
+                                                    "line": 14,
+                                                    "lineEnd": 14,
+                                                    "start": 404,
+                                                    "timeCritical": false,
+                                                    "value": "System"
+                                                }
+                                            },
+                                            "line": 14,
+                                            "lineEnd": 14,
+                                            "methodName": "println",
+                                            "parameters": [
+                                                {
+                                                    "code": "\" hungry\"",
+                                                    "constraint": null,
+                                                    "end": 447,
+                                                    "left": {
+                                                        "code": "\"Phil \" + id + \" hungry\"",
+                                                        "constraint": null,
+                                                        "end": 447,
+                                                        "left": {
+                                                            "code": "\"Phil \"",
+                                                            "constraint": null,
+                                                            "end": 430,
+                                                            "line": 14,
+                                                            "lineEnd": 14,
+                                                            "start": 423,
+                                                            "timeCritical": false,
+                                                            "value": "\"Phil \""
+                                                        },
+                                                        "line": 14,
+                                                        "lineEnd": 14,
+                                                        "op": "plus",
+                                                        "right": {
+                                                            "code": "id",
+                                                            "constraint": null,
+                                                            "end": 435,
+                                                            "line": 14,
+                                                            "lineEnd": 14,
+                                                            "start": 433,
+                                                            "timeCritical": false,
+                                                            "value": "id"
+                                                        },
+                                                        "start": 423,
+                                                        "timeCritical": false
+                                                    },
+                                                    "line": 14,
+                                                    "lineEnd": 14,
+                                                    "op": "plus",
+                                                    "right": {
+                                                        "code": "\" hungry\"",
+                                                        "constraint": null,
+                                                        "end": 447,
+                                                        "line": 14,
+                                                        "lineEnd": 14,
+                                                        "start": 438,
+                                                        "timeCritical": false,
+                                                        "value": "\" hungry\""
+                                                    },
+                                                    "start": 438,
+                                                    "timeCritical": false
+                                                }
+                                            ],
+                                            "start": 404,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_println",
+                                        "line": 14,
+                                        "lineEnd": 14,
+                                        "start": 404,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "r.acquire(id);",
+                                        "constraint": null,
+                                        "end": 481,
+                                        "expression": {
+                                            "code": "r.acquire(id)",
+                                            "constraint": null,
+                                            "end": 480,
+                                            "exprCallee": {
+                                                "code": "r",
+                                                "constraint": null,
+                                                "end": 468,
+                                                "line": 15,
+                                                "lineEnd": 15,
+                                                "start": 467,
+                                                "timeCritical": false,
+                                                "value": "r"
+                                            },
+                                            "line": 15,
+                                            "lineEnd": 15,
+                                            "methodName": "acquire",
+                                            "parameters": [
+                                                {
+                                                    "code": "id",
+                                                    "constraint": null,
+                                                    "end": 479,
+                                                    "line": 15,
+                                                    "lineEnd": 15,
+                                                    "start": 477,
+                                                    "timeCritical": false,
+                                                    "value": "id"
+                                                }
+                                            ],
+                                            "start": 467,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_acquire",
+                                        "line": 15,
+                                        "lineEnd": 15,
+                                        "start": 467,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "System.out.println(\"Phil \" + id + \" eating\");",
+                                        "constraint": null,
+                                        "end": 544,
+                                        "expression": {
+                                            "code": "System.out.println(\"Phil \" + id + \" eating\")",
+                                            "constraint": null,
+                                            "end": 543,
+                                            "exprCallee": {
+                                                "attributeName": "out",
+                                                "code": "System.out",
+                                                "constraint": null,
+                                                "end": 509,
+                                                "line": 16,
+                                                "lineEnd": 16,
+                                                "start": 499,
+                                                "timeCritical": false,
+                                                "variableName": {
+                                                    "code": "System",
+                                                    "constraint": null,
+                                                    "end": 505,
+                                                    "line": 16,
+                                                    "lineEnd": 16,
+                                                    "start": 499,
+                                                    "timeCritical": false,
+                                                    "value": "System"
+                                                }
+                                            },
+                                            "line": 16,
+                                            "lineEnd": 16,
+                                            "methodName": "println",
+                                            "parameters": [
+                                                {
+                                                    "code": "\" eating\"",
+                                                    "constraint": null,
+                                                    "end": 542,
+                                                    "left": {
+                                                        "code": "\"Phil \" + id + \" eating\"",
+                                                        "constraint": null,
+                                                        "end": 542,
+                                                        "left": {
+                                                            "code": "\"Phil \"",
+                                                            "constraint": null,
+                                                            "end": 525,
+                                                            "line": 16,
+                                                            "lineEnd": 16,
+                                                            "start": 518,
+                                                            "timeCritical": false,
+                                                            "value": "\"Phil \""
+                                                        },
+                                                        "line": 16,
+                                                        "lineEnd": 16,
+                                                        "op": "plus",
+                                                        "right": {
+                                                            "code": "id",
+                                                            "constraint": null,
+                                                            "end": 530,
+                                                            "line": 16,
+                                                            "lineEnd": 16,
+                                                            "start": 528,
+                                                            "timeCritical": false,
+                                                            "value": "id"
+                                                        },
+                                                        "start": 518,
+                                                        "timeCritical": false
+                                                    },
+                                                    "line": 16,
+                                                    "lineEnd": 16,
+                                                    "op": "plus",
+                                                    "right": {
+                                                        "code": "\" eating\"",
+                                                        "constraint": null,
+                                                        "end": 542,
+                                                        "line": 16,
+                                                        "lineEnd": 16,
+                                                        "start": 533,
+                                                        "timeCritical": false,
+                                                        "value": "\" eating\""
+                                                    },
+                                                    "start": 533,
+                                                    "timeCritical": false
+                                                }
+                                            ],
+                                            "start": 499,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_println",
+                                        "line": 16,
+                                        "lineEnd": 16,
+                                        "start": 499,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "Thread.sleep(40);",
+                                        "constraint": null,
+                                        "end": 579,
+                                        "expression": {
+                                            "code": "Thread.sleep(40)",
+                                            "constraint": null,
+                                            "end": 578,
+                                            "exprCallee": {
+                                                "code": "Thread",
+                                                "constraint": null,
+                                                "end": 568,
+                                                "line": 17,
+                                                "lineEnd": 17,
+                                                "start": 562,
+                                                "timeCritical": false,
+                                                "value": "Thread"
+                                            },
+                                            "line": 17,
+                                            "lineEnd": 17,
+                                            "methodName": "sleep",
+                                            "parameters": [
+                                                {
+                                                    "code": "40",
+                                                    "constraint": null,
+                                                    "end": 577,
+                                                    "line": 17,
+                                                    "lineEnd": 17,
+                                                    "start": 575,
+                                                    "timeCritical": false,
+                                                    "value": "40"
+                                                }
+                                            ],
+                                            "start": 562,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_sleep",
+                                        "line": 17,
+                                        "lineEnd": 17,
+                                        "start": 562,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "r.release(id);",
+                                        "constraint": null,
+                                        "end": 611,
+                                        "expression": {
+                                            "code": "r.release(id)",
+                                            "constraint": null,
+                                            "end": 610,
+                                            "exprCallee": {
+                                                "code": "r",
+                                                "constraint": null,
+                                                "end": 598,
+                                                "line": 18,
+                                                "lineEnd": 18,
+                                                "start": 597,
+                                                "timeCritical": false,
+                                                "value": "r"
+                                            },
+                                            "line": 18,
+                                            "lineEnd": 18,
+                                            "methodName": "release",
+                                            "parameters": [
+                                                {
+                                                    "code": "id",
+                                                    "constraint": null,
+                                                    "end": 609,
+                                                    "line": 18,
+                                                    "lineEnd": 18,
+                                                    "start": 607,
+                                                    "timeCritical": false,
+                                                    "value": "id"
+                                                }
+                                            ],
+                                            "start": 597,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_release",
+                                        "line": 18,
+                                        "lineEnd": 18,
+                                        "start": 597,
+                                        "timeCritical": false
+                                    }
+                                ],
+                                "timeCritical": false
+                            }
+                        }
+                    ],
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        }
+    ],
+    "attributes": [
+        {
+            "accessRight": "PRIVATE",
+            "code": "int id = 0;",
+            "constraint": null,
+            "end": 56,
+            "expr": {
+                "code": "0",
+                "constraint": null,
+                "end": 55,
+                "expression": {
+                    "code": "0",
+                    "constraint": null,
+                    "end": 55,
+                    "line": 2,
+                    "lineEnd": 2,
+                    "start": 54,
+                    "timeCritical": false,
+                    "value": "0"
+                },
+                "expressionName": "0",
+                "line": 2,
+                "lineEnd": 2,
+                "start": 54,
+                "timeCritical": false
+            },
+            "line": 2,
+            "lineEnd": 2,
+            "name": "id",
+            "start": 45,
+            "timeCritical": false,
+            "type": "int",
+            "typeNoArray": "int"
+        },
+        {
+            "accessRight": "PRIVATE",
+            "code": "Resource r = null;",
+            "constraint": null,
+            "end": 80,
+            "expr": {
+                "code": "null",
+                "constraint": null,
+                "end": 79,
+                "expression": {
+                    "code": "null",
+                    "constraint": null,
+                    "end": 79,
+                    "line": 3,
+                    "lineEnd": 3,
+                    "start": 75,
+                    "timeCritical": false,
+                    "value": "null"
+                },
+                "expressionName": "null",
+                "line": 3,
+                "lineEnd": 3,
+                "start": 75,
+                "timeCritical": false
+            },
+            "line": 3,
+            "lineEnd": 3,
+            "name": "r",
+            "start": 62,
+            "timeCritical": false,
+            "type": "Resource",
+            "typeNoArray": "Resource"
+        }
+    ],
+    "code": "class Philosopher implements Runnable {\r\n    int id = 0;\r\n    Resource r = null;\r\n    public Philosopher(int initId, Resource initr) {\r\n        id = initId;\r\n        r = initr;\r\n        new Thread(this).start();\r\n    }\r\n    public void run() {\r\n        while (true) {\r\n            try {\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            } catch (InterruptedException e) {\r\n                return;\r\n            }\r\n        }\r\n    }\r\n}",
+    "constraint": null,
+    "end": 720,
+    "extendClass": "Object",
+    "implmentsInterfaces": [
+        "Runnable"
+    ],
+    "imports": [],
+    "importsAsString": [],
+    "interface": false,
+    "line": 1,
+    "lineEnd": 24,
+    "methods": [
+        {
+            "code": "public Philosopher(int initId, Resource initr) {\r\n        id = initId;\r\n        r = initr;\r\n        new Thread(this).start();\r\n    }",
+            "constraint": null,
+            "end": 218,
+            "exceptionsThrowed": [],
+            "line": 4,
+            "lineEnd": 8,
+            "name": "Philosopher",
+            "parameters": [
+                {
+                    "code": "int initId",
+                    "constraint": null,
+                    "end": 115,
+                    "line": 4,
+                    "lineEnd": 4,
+                    "name": "initId",
+                    "start": 105,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                },
+                {
+                    "code": "Resource initr",
+                    "constraint": null,
+                    "end": 131,
+                    "line": 4,
+                    "lineEnd": 4,
+                    "name": "initr",
+                    "start": 117,
+                    "timeCritical": false,
+                    "type": "Resource",
+                    "typeNoArray": "Resource"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int",
+                "Resource"
+            ],
+            "start": 86,
+            "static": false,
+            "stms": [
+                {
+                    "code": "id = initId;",
+                    "constraint": null,
+                    "end": 156,
+                    "expression": {
+                        "code": "id = initId",
+                        "constraint": null,
+                        "end": 155,
+                        "left": {
+                            "code": "id",
+                            "constraint": null,
+                            "end": 146,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 144,
+                            "timeCritical": false,
+                            "value": "id"
+                        },
+                        "line": 5,
+                        "lineEnd": 5,
+                        "op": "equal",
+                        "right": {
+                            "code": "initId",
+                            "constraint": null,
+                            "end": 155,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 149,
+                            "timeCritical": false,
+                            "value": "initId"
+                        },
+                        "start": 144,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 5,
+                    "lineEnd": 5,
+                    "start": 144,
+                    "timeCritical": false
+                },
+                {
+                    "code": "r = initr;",
+                    "constraint": null,
+                    "end": 176,
+                    "expression": {
+                        "code": "r = initr",
+                        "constraint": null,
+                        "end": 175,
+                        "left": {
+                            "code": "r",
+                            "constraint": null,
+                            "end": 167,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "start": 166,
+                            "timeCritical": false,
+                            "value": "r"
+                        },
+                        "line": 6,
+                        "lineEnd": 6,
+                        "op": "equal",
+                        "right": {
+                            "code": "initr",
+                            "constraint": null,
+                            "end": 175,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "start": 170,
+                            "timeCritical": false,
+                            "value": "initr"
+                        },
+                        "start": 166,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 6,
+                    "lineEnd": 6,
+                    "start": 166,
+                    "timeCritical": false
+                },
+                {
+                    "code": "new Thread(this).start();",
+                    "constraint": null,
+                    "end": 211,
+                    "expression": {
+                        "code": "new Thread(this).start()",
+                        "constraint": null,
+                        "end": 210,
+                        "exprCallee": {
+                            "array": false,
+                            "code": "new Thread(this)",
+                            "constraint": null,
+                            "end": 202,
+                            "hiddenClass": null,
+                            "line": 7,
+                            "lineEnd": 7,
+                            "parameters": [
+                                {
+                                    "code": "this",
+                                    "constraint": null,
+                                    "end": 201,
+                                    "line": 7,
+                                    "lineEnd": 7,
+                                    "start": 197,
+                                    "timeCritical": false,
+                                    "value": "this"
+                                }
+                            ],
+                            "start": 186,
+                            "timeCritical": false,
+                            "typeName": "Thread"
+                        },
+                        "line": 7,
+                        "lineEnd": 7,
+                        "methodName": "start",
+                        "parameters": [],
+                        "start": 186,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_start",
+                    "line": 7,
+                    "lineEnd": 7,
+                    "start": 186,
+                    "timeCritical": false
+                }
+            ],
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public void run() {\r\n        while (true) {\r\n            try {\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            } catch (InterruptedException e) {\r\n                return;\r\n            }\r\n        }\r\n    }",
+            "constraint": null,
+            "end": 717,
+            "exceptionsThrowed": [],
+            "line": 9,
+            "lineEnd": 23,
+            "name": "run",
+            "parameters": [],
+            "returnType": "void",
+            "signature": [],
+            "start": 224,
+            "static": false,
+            "stms": [
+                {
+                    "code": "while (true) {\r\n            try {\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            } catch (InterruptedException e) {\r\n                return;\r\n            }\r\n        }",
+                    "constraint": null,
+                    "end": 710,
+                    "expr": {
+                        "code": "true",
+                        "constraint": null,
+                        "end": 264,
+                        "expression": {
+                            "code": "true",
+                            "constraint": null,
+                            "end": 264,
+                            "line": 10,
+                            "lineEnd": 10,
+                            "start": 260,
+                            "timeCritical": false,
+                            "value": "true"
+                        },
+                        "expressionName": "true",
+                        "line": 10,
+                        "lineEnd": 10,
+                        "start": 260,
+                        "timeCritical": false
+                    },
+                    "line": 10,
+                    "lineEnd": 22,
+                    "start": 253,
+                    "stms": [
+                        {
+                            "catchBranch": [
+                                {
+                                    "code": "catch (InterruptedException e) {\r\n                return;\r\n            }",
+                                    "constraint": null,
+                                    "end": 699,
+                                    "expr": {
+                                        "code": "InterruptedException e",
+                                        "constraint": null,
+                                        "end": 656,
+                                        "line": 19,
+                                        "lineEnd": 19,
+                                        "name": "e",
+                                        "start": 634,
+                                        "timeCritical": false,
+                                        "type": "InterruptedException",
+                                        "typeNoArray": "InterruptedException"
+                                    },
+                                    "line": 19,
+                                    "lineEnd": 21,
+                                    "start": 627,
+                                    "stms": [
+                                        {
+                                            "code": "return;",
+                                            "constraint": null,
+                                            "end": 684,
+                                            "expr": null,
+                                            "line": 20,
+                                            "lineEnd": 20,
+                                            "start": 677,
+                                            "timeCritical": false
+                                        }
+                                    ],
+                                    "timeCritical": false
+                                }
+                            ],
+                            "code": "try {\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            } catch (InterruptedException e) {\r\n                return;\r\n            }",
+                            "constraint": null,
+                            "end": 699,
+                            "finallyBranch": null,
+                            "line": 11,
+                            "lineEnd": 21,
+                            "start": 281,
+                            "timeCritical": false,
+                            "tryBranch": {
+                                "code": "{\r\n                System.out.println(\"Phil \" + id + \" thinking\");\r\n                Thread.sleep(30);\r\n                System.out.println(\"Phil \" + id + \" hungry\");\r\n                r.acquire(id);\r\n                System.out.println(\"Phil \" + id + \" eating\");\r\n                Thread.sleep(40);\r\n                r.release(id);\r\n            }",
+                                "constraint": null,
+                                "end": 626,
+                                "line": 11,
+                                "lineEnd": 19,
+                                "start": 285,
+                                "stms": [
+                                    {
+                                        "code": "System.out.println(\"Phil \" + id + \" thinking\");",
+                                        "constraint": null,
+                                        "end": 351,
+                                        "expression": {
+                                            "code": "System.out.println(\"Phil \" + id + \" thinking\")",
+                                            "constraint": null,
+                                            "end": 350,
+                                            "exprCallee": {
+                                                "attributeName": "out",
+                                                "code": "System.out",
+                                                "constraint": null,
+                                                "end": 314,
+                                                "line": 12,
+                                                "lineEnd": 12,
+                                                "start": 304,
+                                                "timeCritical": false,
+                                                "variableName": {
+                                                    "code": "System",
+                                                    "constraint": null,
+                                                    "end": 310,
+                                                    "line": 12,
+                                                    "lineEnd": 12,
+                                                    "start": 304,
+                                                    "timeCritical": false,
+                                                    "value": "System"
+                                                }
+                                            },
+                                            "line": 12,
+                                            "lineEnd": 12,
+                                            "methodName": "println",
+                                            "parameters": [
+                                                {
+                                                    "code": "\" thinking\"",
+                                                    "constraint": null,
+                                                    "end": 349,
+                                                    "left": {
+                                                        "code": "\"Phil \" + id + \" thinking\"",
+                                                        "constraint": null,
+                                                        "end": 349,
+                                                        "left": {
+                                                            "code": "\"Phil \"",
+                                                            "constraint": null,
+                                                            "end": 330,
+                                                            "line": 12,
+                                                            "lineEnd": 12,
+                                                            "start": 323,
+                                                            "timeCritical": false,
+                                                            "value": "\"Phil \""
+                                                        },
+                                                        "line": 12,
+                                                        "lineEnd": 12,
+                                                        "op": "plus",
+                                                        "right": {
+                                                            "code": "id",
+                                                            "constraint": null,
+                                                            "end": 335,
+                                                            "line": 12,
+                                                            "lineEnd": 12,
+                                                            "start": 333,
+                                                            "timeCritical": false,
+                                                            "value": "id"
+                                                        },
+                                                        "start": 323,
+                                                        "timeCritical": false
+                                                    },
+                                                    "line": 12,
+                                                    "lineEnd": 12,
+                                                    "op": "plus",
+                                                    "right": {
+                                                        "code": "\" thinking\"",
+                                                        "constraint": null,
+                                                        "end": 349,
+                                                        "line": 12,
+                                                        "lineEnd": 12,
+                                                        "start": 338,
+                                                        "timeCritical": false,
+                                                        "value": "\" thinking\""
+                                                    },
+                                                    "start": 338,
+                                                    "timeCritical": false
+                                                }
+                                            ],
+                                            "start": 304,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_println",
+                                        "line": 12,
+                                        "lineEnd": 12,
+                                        "start": 304,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "Thread.sleep(30);",
+                                        "constraint": null,
+                                        "end": 386,
+                                        "expression": {
+                                            "code": "Thread.sleep(30)",
+                                            "constraint": null,
+                                            "end": 385,
+                                            "exprCallee": {
+                                                "code": "Thread",
+                                                "constraint": null,
+                                                "end": 375,
+                                                "line": 13,
+                                                "lineEnd": 13,
+                                                "start": 369,
+                                                "timeCritical": false,
+                                                "value": "Thread"
+                                            },
+                                            "line": 13,
+                                            "lineEnd": 13,
+                                            "methodName": "sleep",
+                                            "parameters": [
+                                                {
+                                                    "code": "30",
+                                                    "constraint": null,
+                                                    "end": 384,
+                                                    "line": 13,
+                                                    "lineEnd": 13,
+                                                    "start": 382,
+                                                    "timeCritical": false,
+                                                    "value": "30"
+                                                }
+                                            ],
+                                            "start": 369,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_sleep",
+                                        "line": 13,
+                                        "lineEnd": 13,
+                                        "start": 369,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "System.out.println(\"Phil \" + id + \" hungry\");",
+                                        "constraint": null,
+                                        "end": 449,
+                                        "expression": {
+                                            "code": "System.out.println(\"Phil \" + id + \" hungry\")",
+                                            "constraint": null,
+                                            "end": 448,
+                                            "exprCallee": {
+                                                "attributeName": "out",
+                                                "code": "System.out",
+                                                "constraint": null,
+                                                "end": 414,
+                                                "line": 14,
+                                                "lineEnd": 14,
+                                                "start": 404,
+                                                "timeCritical": false,
+                                                "variableName": {
+                                                    "code": "System",
+                                                    "constraint": null,
+                                                    "end": 410,
+                                                    "line": 14,
+                                                    "lineEnd": 14,
+                                                    "start": 404,
+                                                    "timeCritical": false,
+                                                    "value": "System"
+                                                }
+                                            },
+                                            "line": 14,
+                                            "lineEnd": 14,
+                                            "methodName": "println",
+                                            "parameters": [
+                                                {
+                                                    "code": "\" hungry\"",
+                                                    "constraint": null,
+                                                    "end": 447,
+                                                    "left": {
+                                                        "code": "\"Phil \" + id + \" hungry\"",
+                                                        "constraint": null,
+                                                        "end": 447,
+                                                        "left": {
+                                                            "code": "\"Phil \"",
+                                                            "constraint": null,
+                                                            "end": 430,
+                                                            "line": 14,
+                                                            "lineEnd": 14,
+                                                            "start": 423,
+                                                            "timeCritical": false,
+                                                            "value": "\"Phil \""
+                                                        },
+                                                        "line": 14,
+                                                        "lineEnd": 14,
+                                                        "op": "plus",
+                                                        "right": {
+                                                            "code": "id",
+                                                            "constraint": null,
+                                                            "end": 435,
+                                                            "line": 14,
+                                                            "lineEnd": 14,
+                                                            "start": 433,
+                                                            "timeCritical": false,
+                                                            "value": "id"
+                                                        },
+                                                        "start": 423,
+                                                        "timeCritical": false
+                                                    },
+                                                    "line": 14,
+                                                    "lineEnd": 14,
+                                                    "op": "plus",
+                                                    "right": {
+                                                        "code": "\" hungry\"",
+                                                        "constraint": null,
+                                                        "end": 447,
+                                                        "line": 14,
+                                                        "lineEnd": 14,
+                                                        "start": 438,
+                                                        "timeCritical": false,
+                                                        "value": "\" hungry\""
+                                                    },
+                                                    "start": 438,
+                                                    "timeCritical": false
+                                                }
+                                            ],
+                                            "start": 404,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_println",
+                                        "line": 14,
+                                        "lineEnd": 14,
+                                        "start": 404,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "r.acquire(id);",
+                                        "constraint": null,
+                                        "end": 481,
+                                        "expression": {
+                                            "code": "r.acquire(id)",
+                                            "constraint": null,
+                                            "end": 480,
+                                            "exprCallee": {
+                                                "code": "r",
+                                                "constraint": null,
+                                                "end": 468,
+                                                "line": 15,
+                                                "lineEnd": 15,
+                                                "start": 467,
+                                                "timeCritical": false,
+                                                "value": "r"
+                                            },
+                                            "line": 15,
+                                            "lineEnd": 15,
+                                            "methodName": "acquire",
+                                            "parameters": [
+                                                {
+                                                    "code": "id",
+                                                    "constraint": null,
+                                                    "end": 479,
+                                                    "line": 15,
+                                                    "lineEnd": 15,
+                                                    "start": 477,
+                                                    "timeCritical": false,
+                                                    "value": "id"
+                                                }
+                                            ],
+                                            "start": 467,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_acquire",
+                                        "line": 15,
+                                        "lineEnd": 15,
+                                        "start": 467,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "System.out.println(\"Phil \" + id + \" eating\");",
+                                        "constraint": null,
+                                        "end": 544,
+                                        "expression": {
+                                            "code": "System.out.println(\"Phil \" + id + \" eating\")",
+                                            "constraint": null,
+                                            "end": 543,
+                                            "exprCallee": {
+                                                "attributeName": "out",
+                                                "code": "System.out",
+                                                "constraint": null,
+                                                "end": 509,
+                                                "line": 16,
+                                                "lineEnd": 16,
+                                                "start": 499,
+                                                "timeCritical": false,
+                                                "variableName": {
+                                                    "code": "System",
+                                                    "constraint": null,
+                                                    "end": 505,
+                                                    "line": 16,
+                                                    "lineEnd": 16,
+                                                    "start": 499,
+                                                    "timeCritical": false,
+                                                    "value": "System"
+                                                }
+                                            },
+                                            "line": 16,
+                                            "lineEnd": 16,
+                                            "methodName": "println",
+                                            "parameters": [
+                                                {
+                                                    "code": "\" eating\"",
+                                                    "constraint": null,
+                                                    "end": 542,
+                                                    "left": {
+                                                        "code": "\"Phil \" + id + \" eating\"",
+                                                        "constraint": null,
+                                                        "end": 542,
+                                                        "left": {
+                                                            "code": "\"Phil \"",
+                                                            "constraint": null,
+                                                            "end": 525,
+                                                            "line": 16,
+                                                            "lineEnd": 16,
+                                                            "start": 518,
+                                                            "timeCritical": false,
+                                                            "value": "\"Phil \""
+                                                        },
+                                                        "line": 16,
+                                                        "lineEnd": 16,
+                                                        "op": "plus",
+                                                        "right": {
+                                                            "code": "id",
+                                                            "constraint": null,
+                                                            "end": 530,
+                                                            "line": 16,
+                                                            "lineEnd": 16,
+                                                            "start": 528,
+                                                            "timeCritical": false,
+                                                            "value": "id"
+                                                        },
+                                                        "start": 518,
+                                                        "timeCritical": false
+                                                    },
+                                                    "line": 16,
+                                                    "lineEnd": 16,
+                                                    "op": "plus",
+                                                    "right": {
+                                                        "code": "\" eating\"",
+                                                        "constraint": null,
+                                                        "end": 542,
+                                                        "line": 16,
+                                                        "lineEnd": 16,
+                                                        "start": 533,
+                                                        "timeCritical": false,
+                                                        "value": "\" eating\""
+                                                    },
+                                                    "start": 533,
+                                                    "timeCritical": false
+                                                }
+                                            ],
+                                            "start": 499,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_println",
+                                        "line": 16,
+                                        "lineEnd": 16,
+                                        "start": 499,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "Thread.sleep(40);",
+                                        "constraint": null,
+                                        "end": 579,
+                                        "expression": {
+                                            "code": "Thread.sleep(40)",
+                                            "constraint": null,
+                                            "end": 578,
+                                            "exprCallee": {
+                                                "code": "Thread",
+                                                "constraint": null,
+                                                "end": 568,
+                                                "line": 17,
+                                                "lineEnd": 17,
+                                                "start": 562,
+                                                "timeCritical": false,
+                                                "value": "Thread"
+                                            },
+                                            "line": 17,
+                                            "lineEnd": 17,
+                                            "methodName": "sleep",
+                                            "parameters": [
+                                                {
+                                                    "code": "40",
+                                                    "constraint": null,
+                                                    "end": 577,
+                                                    "line": 17,
+                                                    "lineEnd": 17,
+                                                    "start": 575,
+                                                    "timeCritical": false,
+                                                    "value": "40"
+                                                }
+                                            ],
+                                            "start": 562,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_sleep",
+                                        "line": 17,
+                                        "lineEnd": 17,
+                                        "start": 562,
+                                        "timeCritical": false
+                                    },
+                                    {
+                                        "code": "r.release(id);",
+                                        "constraint": null,
+                                        "end": 611,
+                                        "expression": {
+                                            "code": "r.release(id)",
+                                            "constraint": null,
+                                            "end": 610,
+                                            "exprCallee": {
+                                                "code": "r",
+                                                "constraint": null,
+                                                "end": 598,
+                                                "line": 18,
+                                                "lineEnd": 18,
+                                                "start": 597,
+                                                "timeCritical": false,
+                                                "value": "r"
+                                            },
+                                            "line": 18,
+                                            "lineEnd": 18,
+                                            "methodName": "release",
+                                            "parameters": [
+                                                {
+                                                    "code": "id",
+                                                    "constraint": null,
+                                                    "end": 609,
+                                                    "line": 18,
+                                                    "lineEnd": 18,
+                                                    "start": 607,
+                                                    "timeCritical": false,
+                                                    "value": "id"
+                                                }
+                                            ],
+                                            "start": 597,
+                                            "timeCritical": false
+                                        },
+                                        "expressionName": "call_to_release",
+                                        "line": 18,
+                                        "lineEnd": 18,
+                                        "start": 597,
+                                        "timeCritical": false
+                                    }
+                                ],
+                                "timeCritical": false
+                            }
+                        }
+                    ],
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        }
+    ],
+    "name": "Philosopher",
+    "packageName": "",
+    "parent": null,
+    "path": "/Users/giovanni/repository/java-xal/intermediate-model/target/classes/Philosopher.java",
+    "realPackageName": "",
+    "start": 0,
+    "staticInit": [],
+    "timeCritical": false
+}

@@ -1,0 +1,1566 @@
+{
+    "abstract": false,
+    "accessRight": "PRIVATE",
+    "allMethods": [
+        {
+            "code": "public DiningPhilosopher(int initN) {\r\n        n = initN;\r\n        fork = new BinarySemaphore[n];\r\n        for (int i = 0; i < n; i++) {\r\n            fork[i] = new BinarySemaphore(true);\r\n        }\r\n    }",
+            "constraint": null,
+            "end": 307,
+            "exceptionsThrowed": [],
+            "line": 4,
+            "lineEnd": 10,
+            "name": "DiningPhilosopher",
+            "parameters": [
+                {
+                    "code": "int initN",
+                    "constraint": null,
+                    "end": 137,
+                    "line": 4,
+                    "lineEnd": 4,
+                    "name": "initN",
+                    "start": 128,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int"
+            ],
+            "start": 103,
+            "static": false,
+            "stms": [
+                {
+                    "code": "n = initN;",
+                    "constraint": null,
+                    "end": 160,
+                    "expression": {
+                        "code": "n = initN",
+                        "constraint": null,
+                        "end": 159,
+                        "left": {
+                            "code": "n",
+                            "constraint": null,
+                            "end": 151,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 150,
+                            "timeCritical": false,
+                            "value": "n"
+                        },
+                        "line": 5,
+                        "lineEnd": 5,
+                        "op": "equal",
+                        "right": {
+                            "code": "initN",
+                            "constraint": null,
+                            "end": 159,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 154,
+                            "timeCritical": false,
+                            "value": "initN"
+                        },
+                        "start": 150,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 5,
+                    "lineEnd": 5,
+                    "start": 150,
+                    "timeCritical": false
+                },
+                {
+                    "code": "fork = new BinarySemaphore[n];",
+                    "constraint": null,
+                    "end": 200,
+                    "expression": {
+                        "code": "fork = new BinarySemaphore[n]",
+                        "constraint": null,
+                        "end": 199,
+                        "left": {
+                            "code": "fork",
+                            "constraint": null,
+                            "end": 174,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "start": 170,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 6,
+                        "lineEnd": 6,
+                        "op": "equal",
+                        "right": {
+                            "array": true,
+                            "code": "new BinarySemaphore[n]",
+                            "constraint": null,
+                            "end": 199,
+                            "hiddenClass": null,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "parameters": [
+                                {
+                                    "code": "n",
+                                    "constraint": null,
+                                    "end": 198,
+                                    "line": 6,
+                                    "lineEnd": 6,
+                                    "start": 197,
+                                    "timeCritical": false,
+                                    "value": "n"
+                                }
+                            ],
+                            "start": 177,
+                            "timeCritical": false,
+                            "typeName": "BinarySemaphore"
+                        },
+                        "start": 170,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 6,
+                    "lineEnd": 6,
+                    "start": 170,
+                    "timeCritical": false
+                },
+                {
+                    "code": "for (int i = 0; i < n; i++) {\r\n            fork[i] = new BinarySemaphore(true);\r\n        }",
+                    "constraint": null,
+                    "end": 300,
+                    "expr": {
+                        "code": "i < n",
+                        "constraint": null,
+                        "end": 231,
+                        "expression": {
+                            "code": "i < n",
+                            "constraint": null,
+                            "end": 231,
+                            "left": {
+                                "code": "i",
+                                "constraint": null,
+                                "end": 227,
+                                "line": 7,
+                                "lineEnd": 7,
+                                "start": 226,
+                                "timeCritical": false,
+                                "value": "i"
+                            },
+                            "line": 7,
+                            "lineEnd": 7,
+                            "op": "less",
+                            "right": {
+                                "code": "n",
+                                "constraint": null,
+                                "end": 231,
+                                "line": 7,
+                                "lineEnd": 7,
+                                "start": 230,
+                                "timeCritical": false,
+                                "value": "n"
+                            },
+                            "start": 226,
+                            "timeCritical": false
+                        },
+                        "expressionName": "less",
+                        "line": 7,
+                        "lineEnd": 7,
+                        "start": 226,
+                        "timeCritical": false
+                    },
+                    "init": [
+                        {
+                            "code": "int i = 0",
+                            "constraint": null,
+                            "end": 224,
+                            "expression": {
+                                "code": "i = 0",
+                                "constraint": null,
+                                "end": 224,
+                                "expr": {
+                                    "code": "0",
+                                    "constraint": null,
+                                    "end": 224,
+                                    "line": 7,
+                                    "lineEnd": 7,
+                                    "start": 223,
+                                    "timeCritical": false,
+                                    "value": "0"
+                                },
+                                "line": 7,
+                                "lineEnd": 7,
+                                "name": {
+                                    "code": "i",
+                                    "constraint": null,
+                                    "end": 220,
+                                    "line": 7,
+                                    "lineEnd": 7,
+                                    "start": 219,
+                                    "timeCritical": false,
+                                    "value": "i"
+                                },
+                                "nameString": "i",
+                                "start": 219,
+                                "timeCritical": false,
+                                "type": "int"
+                            },
+                            "expressionName": "Declaration_i",
+                            "line": 7,
+                            "lineEnd": 7,
+                            "start": 215,
+                            "timeCritical": false
+                        }
+                    ],
+                    "line": 7,
+                    "lineEnd": 9,
+                    "post": [
+                        {
+                            "code": "i++",
+                            "constraint": null,
+                            "end": 236,
+                            "expression": {
+                                "code": "i++",
+                                "constraint": null,
+                                "end": 236,
+                                "line": 7,
+                                "lineEnd": 7,
+                                "start": 233,
+                                "timeCritical": false
+                            },
+                            "expressionName": "ASTPostOp",
+                            "line": 7,
+                            "lineEnd": 7,
+                            "start": 233,
+                            "timeCritical": false
+                        }
+                    ],
+                    "start": 210,
+                    "stms": [
+                        {
+                            "code": "fork[i] = new BinarySemaphore(true);",
+                            "constraint": null,
+                            "end": 289,
+                            "expression": {
+                                "code": "fork[i] = new BinarySemaphore(true)",
+                                "constraint": null,
+                                "end": 288,
+                                "left": {
+                                    "code": "fork[i]",
+                                    "constraint": null,
+                                    "end": 260,
+                                    "line": 8,
+                                    "lineEnd": 8,
+                                    "start": 253,
+                                    "timeCritical": false,
+                                    "value": "fork"
+                                },
+                                "line": 8,
+                                "lineEnd": 8,
+                                "op": "equal",
+                                "right": {
+                                    "array": false,
+                                    "code": "new BinarySemaphore(true)",
+                                    "constraint": null,
+                                    "end": 288,
+                                    "hiddenClass": null,
+                                    "line": 8,
+                                    "lineEnd": 8,
+                                    "parameters": [
+                                        {
+                                            "code": "true",
+                                            "constraint": null,
+                                            "end": 287,
+                                            "line": 8,
+                                            "lineEnd": 8,
+                                            "start": 283,
+                                            "timeCritical": false,
+                                            "value": "true"
+                                        }
+                                    ],
+                                    "start": 263,
+                                    "timeCritical": false,
+                                    "typeName": "BinarySemaphore"
+                                },
+                                "start": 253,
+                                "timeCritical": false
+                            },
+                            "expressionName": "ASTAssignment",
+                            "line": 8,
+                            "lineEnd": 8,
+                            "start": 253,
+                            "timeCritical": false
+                        }
+                    ],
+                    "timeCritical": false
+                }
+            ],
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public void acquire(int i) {\r\n        fork[i].P();\r\n        fork[(i + 1) % n].P();\r\n    }",
+            "constraint": null,
+            "end": 402,
+            "exceptionsThrowed": [],
+            "line": 11,
+            "lineEnd": 14,
+            "name": "acquire",
+            "parameters": [
+                {
+                    "code": "int i",
+                    "constraint": null,
+                    "end": 338,
+                    "line": 11,
+                    "lineEnd": 11,
+                    "name": "i",
+                    "start": 333,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int"
+            ],
+            "start": 313,
+            "static": false,
+            "stms": [
+                {
+                    "code": "fork[i].P();",
+                    "constraint": null,
+                    "end": 363,
+                    "expression": {
+                        "code": "fork[i].P()",
+                        "constraint": null,
+                        "end": 362,
+                        "exprCallee": {
+                            "code": "fork[i]",
+                            "constraint": null,
+                            "end": 358,
+                            "line": 12,
+                            "lineEnd": 12,
+                            "start": 351,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 12,
+                        "lineEnd": 12,
+                        "methodName": "P",
+                        "parameters": [],
+                        "start": 351,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_P",
+                    "line": 12,
+                    "lineEnd": 12,
+                    "start": 351,
+                    "timeCritical": false
+                },
+                {
+                    "code": "fork[(i + 1) % n].P();",
+                    "constraint": null,
+                    "end": 395,
+                    "expression": {
+                        "code": "fork[(i + 1) % n].P()",
+                        "constraint": null,
+                        "end": 394,
+                        "exprCallee": {
+                            "code": "fork[(i + 1) % n]",
+                            "constraint": null,
+                            "end": 390,
+                            "line": 13,
+                            "lineEnd": 13,
+                            "start": 373,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 13,
+                        "lineEnd": 13,
+                        "methodName": "P",
+                        "parameters": [],
+                        "start": 373,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_P",
+                    "line": 13,
+                    "lineEnd": 13,
+                    "start": 373,
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public void release(int i) {\r\n        fork[i].V();\r\n        fork[(i + 1) % n].V();\r\n    }",
+            "constraint": null,
+            "end": 497,
+            "exceptionsThrowed": [],
+            "line": 15,
+            "lineEnd": 18,
+            "name": "release",
+            "parameters": [
+                {
+                    "code": "int i",
+                    "constraint": null,
+                    "end": 433,
+                    "line": 15,
+                    "lineEnd": 15,
+                    "name": "i",
+                    "start": 428,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int"
+            ],
+            "start": 408,
+            "static": false,
+            "stms": [
+                {
+                    "code": "fork[i].V();",
+                    "constraint": null,
+                    "end": 458,
+                    "expression": {
+                        "code": "fork[i].V()",
+                        "constraint": null,
+                        "end": 457,
+                        "exprCallee": {
+                            "code": "fork[i]",
+                            "constraint": null,
+                            "end": 453,
+                            "line": 16,
+                            "lineEnd": 16,
+                            "start": 446,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 16,
+                        "lineEnd": 16,
+                        "methodName": "V",
+                        "parameters": [],
+                        "start": 446,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_V",
+                    "line": 16,
+                    "lineEnd": 16,
+                    "start": 446,
+                    "timeCritical": false
+                },
+                {
+                    "code": "fork[(i + 1) % n].V();",
+                    "constraint": null,
+                    "end": 490,
+                    "expression": {
+                        "code": "fork[(i + 1) % n].V()",
+                        "constraint": null,
+                        "end": 489,
+                        "exprCallee": {
+                            "code": "fork[(i + 1) % n]",
+                            "constraint": null,
+                            "end": 485,
+                            "line": 17,
+                            "lineEnd": 17,
+                            "start": 468,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 17,
+                        "lineEnd": 17,
+                        "methodName": "V",
+                        "parameters": [],
+                        "start": 468,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_V",
+                    "line": 17,
+                    "lineEnd": 17,
+                    "start": 468,
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public static void main(String[] args) {\r\n        DiningPhilosopher dp = new DiningPhilosopher(5);\r\n        for (int i = 0; i < 5; i++)\r\n            new Philosopher(i, dp);\r\n    }",
+            "constraint": null,
+            "end": 682,
+            "exceptionsThrowed": [],
+            "line": 19,
+            "lineEnd": 23,
+            "name": "main",
+            "parameters": [
+                {
+                    "code": "String[] args",
+                    "constraint": null,
+                    "end": 540,
+                    "line": 19,
+                    "lineEnd": 19,
+                    "name": "args",
+                    "start": 527,
+                    "timeCritical": false,
+                    "type": "String[]",
+                    "typeNoArray": "String"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "String[]"
+            ],
+            "start": 503,
+            "static": true,
+            "stms": [
+                {
+                    "code": "DiningPhilosopher dp = new DiningPhilosopher(5);",
+                    "constraint": null,
+                    "end": 601,
+                    "expression": {
+                        "code": "DiningPhilosopher dp = new DiningPhilosopher(5);",
+                        "constraint": null,
+                        "end": 601,
+                        "expr": {
+                            "array": false,
+                            "code": "new DiningPhilosopher(5)",
+                            "constraint": null,
+                            "end": 600,
+                            "hiddenClass": null,
+                            "line": 20,
+                            "lineEnd": 20,
+                            "parameters": [
+                                {
+                                    "code": "5",
+                                    "constraint": null,
+                                    "end": 599,
+                                    "line": 20,
+                                    "lineEnd": 20,
+                                    "start": 598,
+                                    "timeCritical": false,
+                                    "value": "5"
+                                }
+                            ],
+                            "start": 576,
+                            "timeCritical": false,
+                            "typeName": "DiningPhilosopher"
+                        },
+                        "line": 20,
+                        "lineEnd": 20,
+                        "name": {
+                            "code": "dp",
+                            "constraint": null,
+                            "end": 573,
+                            "line": 20,
+                            "lineEnd": 20,
+                            "start": 571,
+                            "timeCritical": false,
+                            "value": "dp"
+                        },
+                        "nameString": "dp",
+                        "start": 553,
+                        "timeCritical": false,
+                        "type": "DiningPhilosopher"
+                    },
+                    "expressionName": "Declaration_dp",
+                    "line": 20,
+                    "lineEnd": 20,
+                    "start": 553,
+                    "timeCritical": false
+                },
+                {
+                    "code": "for (int i = 0; i < 5; i++)\r\n            new Philosopher(i, dp);",
+                    "constraint": null,
+                    "end": 675,
+                    "expr": {
+                        "code": "i < 5",
+                        "constraint": null,
+                        "end": 632,
+                        "expression": {
+                            "code": "i < 5",
+                            "constraint": null,
+                            "end": 632,
+                            "left": {
+                                "code": "i",
+                                "constraint": null,
+                                "end": 628,
+                                "line": 21,
+                                "lineEnd": 21,
+                                "start": 627,
+                                "timeCritical": false,
+                                "value": "i"
+                            },
+                            "line": 21,
+                            "lineEnd": 21,
+                            "op": "less",
+                            "right": {
+                                "code": "5",
+                                "constraint": null,
+                                "end": 632,
+                                "line": 21,
+                                "lineEnd": 21,
+                                "start": 631,
+                                "timeCritical": false,
+                                "value": "5"
+                            },
+                            "start": 627,
+                            "timeCritical": false
+                        },
+                        "expressionName": "less",
+                        "line": 21,
+                        "lineEnd": 21,
+                        "start": 627,
+                        "timeCritical": false
+                    },
+                    "init": [
+                        {
+                            "code": "int i = 0",
+                            "constraint": null,
+                            "end": 625,
+                            "expression": {
+                                "code": "i = 0",
+                                "constraint": null,
+                                "end": 625,
+                                "expr": {
+                                    "code": "0",
+                                    "constraint": null,
+                                    "end": 625,
+                                    "line": 21,
+                                    "lineEnd": 21,
+                                    "start": 624,
+                                    "timeCritical": false,
+                                    "value": "0"
+                                },
+                                "line": 21,
+                                "lineEnd": 21,
+                                "name": {
+                                    "code": "i",
+                                    "constraint": null,
+                                    "end": 621,
+                                    "line": 21,
+                                    "lineEnd": 21,
+                                    "start": 620,
+                                    "timeCritical": false,
+                                    "value": "i"
+                                },
+                                "nameString": "i",
+                                "start": 620,
+                                "timeCritical": false,
+                                "type": "int"
+                            },
+                            "expressionName": "Declaration_i",
+                            "line": 21,
+                            "lineEnd": 21,
+                            "start": 616,
+                            "timeCritical": false
+                        }
+                    ],
+                    "line": 21,
+                    "lineEnd": 22,
+                    "post": [
+                        {
+                            "code": "i++",
+                            "constraint": null,
+                            "end": 637,
+                            "expression": {
+                                "code": "i++",
+                                "constraint": null,
+                                "end": 637,
+                                "line": 21,
+                                "lineEnd": 21,
+                                "start": 634,
+                                "timeCritical": false
+                            },
+                            "expressionName": "ASTPostOp",
+                            "line": 21,
+                            "lineEnd": 21,
+                            "start": 634,
+                            "timeCritical": false
+                        }
+                    ],
+                    "start": 611,
+                    "stms": [
+                        {
+                            "code": "new Philosopher(i, dp);",
+                            "constraint": null,
+                            "end": 675,
+                            "expression": {
+                                "array": false,
+                                "code": "new Philosopher(i, dp)",
+                                "constraint": null,
+                                "end": 674,
+                                "hiddenClass": null,
+                                "line": 22,
+                                "lineEnd": 22,
+                                "parameters": [
+                                    {
+                                        "code": "i",
+                                        "constraint": null,
+                                        "end": 669,
+                                        "line": 22,
+                                        "lineEnd": 22,
+                                        "start": 668,
+                                        "timeCritical": false,
+                                        "value": "i"
+                                    },
+                                    {
+                                        "code": "dp",
+                                        "constraint": null,
+                                        "end": 673,
+                                        "line": 22,
+                                        "lineEnd": 22,
+                                        "start": 671,
+                                        "timeCritical": false,
+                                        "value": "dp"
+                                    }
+                                ],
+                                "start": 652,
+                                "timeCritical": false,
+                                "typeName": "Philosopher"
+                            },
+                            "expressionName": "ASTNewObject",
+                            "line": 22,
+                            "lineEnd": 22,
+                            "start": 652,
+                            "timeCritical": false
+                        }
+                    ],
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        }
+    ],
+    "attributes": [
+        {
+            "accessRight": "PRIVATE",
+            "code": "int n = 0;",
+            "constraint": null,
+            "end": 61,
+            "expr": {
+                "code": "0",
+                "constraint": null,
+                "end": 60,
+                "expression": {
+                    "code": "0",
+                    "constraint": null,
+                    "end": 60,
+                    "line": 2,
+                    "lineEnd": 2,
+                    "start": 59,
+                    "timeCritical": false,
+                    "value": "0"
+                },
+                "expressionName": "0",
+                "line": 2,
+                "lineEnd": 2,
+                "start": 59,
+                "timeCritical": false
+            },
+            "line": 2,
+            "lineEnd": 2,
+            "name": "n",
+            "start": 51,
+            "timeCritical": false,
+            "type": "int",
+            "typeNoArray": "int"
+        },
+        {
+            "accessRight": "PRIVATE",
+            "code": "BinarySemaphore[] fork = null;",
+            "constraint": null,
+            "end": 97,
+            "expr": {
+                "code": "null",
+                "constraint": null,
+                "end": 96,
+                "expression": {
+                    "code": "null",
+                    "constraint": null,
+                    "end": 96,
+                    "line": 3,
+                    "lineEnd": 3,
+                    "start": 92,
+                    "timeCritical": false,
+                    "value": "null"
+                },
+                "expressionName": "null",
+                "line": 3,
+                "lineEnd": 3,
+                "start": 92,
+                "timeCritical": false
+            },
+            "line": 3,
+            "lineEnd": 3,
+            "name": "fork",
+            "start": 67,
+            "timeCritical": false,
+            "type": "BinarySemaphore[]",
+            "typeNoArray": "BinarySemaphore"
+        }
+    ],
+    "code": "class DiningPhilosopher implements Resource {\r\n    int n = 0;\r\n    BinarySemaphore[] fork = null;\r\n    public DiningPhilosopher(int initN) {\r\n        n = initN;\r\n        fork = new BinarySemaphore[n];\r\n        for (int i = 0; i < n; i++) {\r\n            fork[i] = new BinarySemaphore(true);\r\n        }\r\n    }\r\n    public void acquire(int i) {\r\n        fork[i].P();\r\n        fork[(i + 1) % n].P();\r\n    }\r\n    public void release(int i) {\r\n        fork[i].V();\r\n        fork[(i + 1) % n].V();\r\n    }\r\n    public static void main(String[] args) {\r\n        DiningPhilosopher dp = new DiningPhilosopher(5);\r\n        for (int i = 0; i < 5; i++)\r\n            new Philosopher(i, dp);\r\n    }\r\n}",
+    "constraint": null,
+    "end": 685,
+    "extendClass": "Object",
+    "implmentsInterfaces": [
+        "Resource"
+    ],
+    "imports": [],
+    "importsAsString": [],
+    "interface": false,
+    "line": 1,
+    "lineEnd": 24,
+    "methods": [
+        {
+            "code": "public DiningPhilosopher(int initN) {\r\n        n = initN;\r\n        fork = new BinarySemaphore[n];\r\n        for (int i = 0; i < n; i++) {\r\n            fork[i] = new BinarySemaphore(true);\r\n        }\r\n    }",
+            "constraint": null,
+            "end": 307,
+            "exceptionsThrowed": [],
+            "line": 4,
+            "lineEnd": 10,
+            "name": "DiningPhilosopher",
+            "parameters": [
+                {
+                    "code": "int initN",
+                    "constraint": null,
+                    "end": 137,
+                    "line": 4,
+                    "lineEnd": 4,
+                    "name": "initN",
+                    "start": 128,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int"
+            ],
+            "start": 103,
+            "static": false,
+            "stms": [
+                {
+                    "code": "n = initN;",
+                    "constraint": null,
+                    "end": 160,
+                    "expression": {
+                        "code": "n = initN",
+                        "constraint": null,
+                        "end": 159,
+                        "left": {
+                            "code": "n",
+                            "constraint": null,
+                            "end": 151,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 150,
+                            "timeCritical": false,
+                            "value": "n"
+                        },
+                        "line": 5,
+                        "lineEnd": 5,
+                        "op": "equal",
+                        "right": {
+                            "code": "initN",
+                            "constraint": null,
+                            "end": 159,
+                            "line": 5,
+                            "lineEnd": 5,
+                            "start": 154,
+                            "timeCritical": false,
+                            "value": "initN"
+                        },
+                        "start": 150,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 5,
+                    "lineEnd": 5,
+                    "start": 150,
+                    "timeCritical": false
+                },
+                {
+                    "code": "fork = new BinarySemaphore[n];",
+                    "constraint": null,
+                    "end": 200,
+                    "expression": {
+                        "code": "fork = new BinarySemaphore[n]",
+                        "constraint": null,
+                        "end": 199,
+                        "left": {
+                            "code": "fork",
+                            "constraint": null,
+                            "end": 174,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "start": 170,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 6,
+                        "lineEnd": 6,
+                        "op": "equal",
+                        "right": {
+                            "array": true,
+                            "code": "new BinarySemaphore[n]",
+                            "constraint": null,
+                            "end": 199,
+                            "hiddenClass": null,
+                            "line": 6,
+                            "lineEnd": 6,
+                            "parameters": [
+                                {
+                                    "code": "n",
+                                    "constraint": null,
+                                    "end": 198,
+                                    "line": 6,
+                                    "lineEnd": 6,
+                                    "start": 197,
+                                    "timeCritical": false,
+                                    "value": "n"
+                                }
+                            ],
+                            "start": 177,
+                            "timeCritical": false,
+                            "typeName": "BinarySemaphore"
+                        },
+                        "start": 170,
+                        "timeCritical": false
+                    },
+                    "expressionName": "ASTAssignment",
+                    "line": 6,
+                    "lineEnd": 6,
+                    "start": 170,
+                    "timeCritical": false
+                },
+                {
+                    "code": "for (int i = 0; i < n; i++) {\r\n            fork[i] = new BinarySemaphore(true);\r\n        }",
+                    "constraint": null,
+                    "end": 300,
+                    "expr": {
+                        "code": "i < n",
+                        "constraint": null,
+                        "end": 231,
+                        "expression": {
+                            "code": "i < n",
+                            "constraint": null,
+                            "end": 231,
+                            "left": {
+                                "code": "i",
+                                "constraint": null,
+                                "end": 227,
+                                "line": 7,
+                                "lineEnd": 7,
+                                "start": 226,
+                                "timeCritical": false,
+                                "value": "i"
+                            },
+                            "line": 7,
+                            "lineEnd": 7,
+                            "op": "less",
+                            "right": {
+                                "code": "n",
+                                "constraint": null,
+                                "end": 231,
+                                "line": 7,
+                                "lineEnd": 7,
+                                "start": 230,
+                                "timeCritical": false,
+                                "value": "n"
+                            },
+                            "start": 226,
+                            "timeCritical": false
+                        },
+                        "expressionName": "less",
+                        "line": 7,
+                        "lineEnd": 7,
+                        "start": 226,
+                        "timeCritical": false
+                    },
+                    "init": [
+                        {
+                            "code": "int i = 0",
+                            "constraint": null,
+                            "end": 224,
+                            "expression": {
+                                "code": "i = 0",
+                                "constraint": null,
+                                "end": 224,
+                                "expr": {
+                                    "code": "0",
+                                    "constraint": null,
+                                    "end": 224,
+                                    "line": 7,
+                                    "lineEnd": 7,
+                                    "start": 223,
+                                    "timeCritical": false,
+                                    "value": "0"
+                                },
+                                "line": 7,
+                                "lineEnd": 7,
+                                "name": {
+                                    "code": "i",
+                                    "constraint": null,
+                                    "end": 220,
+                                    "line": 7,
+                                    "lineEnd": 7,
+                                    "start": 219,
+                                    "timeCritical": false,
+                                    "value": "i"
+                                },
+                                "nameString": "i",
+                                "start": 219,
+                                "timeCritical": false,
+                                "type": "int"
+                            },
+                            "expressionName": "Declaration_i",
+                            "line": 7,
+                            "lineEnd": 7,
+                            "start": 215,
+                            "timeCritical": false
+                        }
+                    ],
+                    "line": 7,
+                    "lineEnd": 9,
+                    "post": [
+                        {
+                            "code": "i++",
+                            "constraint": null,
+                            "end": 236,
+                            "expression": {
+                                "code": "i++",
+                                "constraint": null,
+                                "end": 236,
+                                "line": 7,
+                                "lineEnd": 7,
+                                "start": 233,
+                                "timeCritical": false
+                            },
+                            "expressionName": "ASTPostOp",
+                            "line": 7,
+                            "lineEnd": 7,
+                            "start": 233,
+                            "timeCritical": false
+                        }
+                    ],
+                    "start": 210,
+                    "stms": [
+                        {
+                            "code": "fork[i] = new BinarySemaphore(true);",
+                            "constraint": null,
+                            "end": 289,
+                            "expression": {
+                                "code": "fork[i] = new BinarySemaphore(true)",
+                                "constraint": null,
+                                "end": 288,
+                                "left": {
+                                    "code": "fork[i]",
+                                    "constraint": null,
+                                    "end": 260,
+                                    "line": 8,
+                                    "lineEnd": 8,
+                                    "start": 253,
+                                    "timeCritical": false,
+                                    "value": "fork"
+                                },
+                                "line": 8,
+                                "lineEnd": 8,
+                                "op": "equal",
+                                "right": {
+                                    "array": false,
+                                    "code": "new BinarySemaphore(true)",
+                                    "constraint": null,
+                                    "end": 288,
+                                    "hiddenClass": null,
+                                    "line": 8,
+                                    "lineEnd": 8,
+                                    "parameters": [
+                                        {
+                                            "code": "true",
+                                            "constraint": null,
+                                            "end": 287,
+                                            "line": 8,
+                                            "lineEnd": 8,
+                                            "start": 283,
+                                            "timeCritical": false,
+                                            "value": "true"
+                                        }
+                                    ],
+                                    "start": 263,
+                                    "timeCritical": false,
+                                    "typeName": "BinarySemaphore"
+                                },
+                                "start": 253,
+                                "timeCritical": false
+                            },
+                            "expressionName": "ASTAssignment",
+                            "line": 8,
+                            "lineEnd": 8,
+                            "start": 253,
+                            "timeCritical": false
+                        }
+                    ],
+                    "timeCritical": false
+                }
+            ],
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public void acquire(int i) {\r\n        fork[i].P();\r\n        fork[(i + 1) % n].P();\r\n    }",
+            "constraint": null,
+            "end": 402,
+            "exceptionsThrowed": [],
+            "line": 11,
+            "lineEnd": 14,
+            "name": "acquire",
+            "parameters": [
+                {
+                    "code": "int i",
+                    "constraint": null,
+                    "end": 338,
+                    "line": 11,
+                    "lineEnd": 11,
+                    "name": "i",
+                    "start": 333,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int"
+            ],
+            "start": 313,
+            "static": false,
+            "stms": [
+                {
+                    "code": "fork[i].P();",
+                    "constraint": null,
+                    "end": 363,
+                    "expression": {
+                        "code": "fork[i].P()",
+                        "constraint": null,
+                        "end": 362,
+                        "exprCallee": {
+                            "code": "fork[i]",
+                            "constraint": null,
+                            "end": 358,
+                            "line": 12,
+                            "lineEnd": 12,
+                            "start": 351,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 12,
+                        "lineEnd": 12,
+                        "methodName": "P",
+                        "parameters": [],
+                        "start": 351,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_P",
+                    "line": 12,
+                    "lineEnd": 12,
+                    "start": 351,
+                    "timeCritical": false
+                },
+                {
+                    "code": "fork[(i + 1) % n].P();",
+                    "constraint": null,
+                    "end": 395,
+                    "expression": {
+                        "code": "fork[(i + 1) % n].P()",
+                        "constraint": null,
+                        "end": 394,
+                        "exprCallee": {
+                            "code": "fork[(i + 1) % n]",
+                            "constraint": null,
+                            "end": 390,
+                            "line": 13,
+                            "lineEnd": 13,
+                            "start": 373,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 13,
+                        "lineEnd": 13,
+                        "methodName": "P",
+                        "parameters": [],
+                        "start": 373,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_P",
+                    "line": 13,
+                    "lineEnd": 13,
+                    "start": 373,
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public void release(int i) {\r\n        fork[i].V();\r\n        fork[(i + 1) % n].V();\r\n    }",
+            "constraint": null,
+            "end": 497,
+            "exceptionsThrowed": [],
+            "line": 15,
+            "lineEnd": 18,
+            "name": "release",
+            "parameters": [
+                {
+                    "code": "int i",
+                    "constraint": null,
+                    "end": 433,
+                    "line": 15,
+                    "lineEnd": 15,
+                    "name": "i",
+                    "start": 428,
+                    "timeCritical": false,
+                    "type": "int",
+                    "typeNoArray": "int"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "int"
+            ],
+            "start": 408,
+            "static": false,
+            "stms": [
+                {
+                    "code": "fork[i].V();",
+                    "constraint": null,
+                    "end": 458,
+                    "expression": {
+                        "code": "fork[i].V()",
+                        "constraint": null,
+                        "end": 457,
+                        "exprCallee": {
+                            "code": "fork[i]",
+                            "constraint": null,
+                            "end": 453,
+                            "line": 16,
+                            "lineEnd": 16,
+                            "start": 446,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 16,
+                        "lineEnd": 16,
+                        "methodName": "V",
+                        "parameters": [],
+                        "start": 446,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_V",
+                    "line": 16,
+                    "lineEnd": 16,
+                    "start": 446,
+                    "timeCritical": false
+                },
+                {
+                    "code": "fork[(i + 1) % n].V();",
+                    "constraint": null,
+                    "end": 490,
+                    "expression": {
+                        "code": "fork[(i + 1) % n].V()",
+                        "constraint": null,
+                        "end": 489,
+                        "exprCallee": {
+                            "code": "fork[(i + 1) % n]",
+                            "constraint": null,
+                            "end": 485,
+                            "line": 17,
+                            "lineEnd": 17,
+                            "start": 468,
+                            "timeCritical": false,
+                            "value": "fork"
+                        },
+                        "line": 17,
+                        "lineEnd": 17,
+                        "methodName": "V",
+                        "parameters": [],
+                        "start": 468,
+                        "timeCritical": false
+                    },
+                    "expressionName": "call_to_V",
+                    "line": 17,
+                    "lineEnd": 17,
+                    "start": 468,
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        },
+        {
+            "abstract": false,
+            "code": "public static void main(String[] args) {\r\n        DiningPhilosopher dp = new DiningPhilosopher(5);\r\n        for (int i = 0; i < 5; i++)\r\n            new Philosopher(i, dp);\r\n    }",
+            "constraint": null,
+            "end": 682,
+            "exceptionsThrowed": [],
+            "line": 19,
+            "lineEnd": 23,
+            "name": "main",
+            "parameters": [
+                {
+                    "code": "String[] args",
+                    "constraint": null,
+                    "end": 540,
+                    "line": 19,
+                    "lineEnd": 19,
+                    "name": "args",
+                    "start": 527,
+                    "timeCritical": false,
+                    "type": "String[]",
+                    "typeNoArray": "String"
+                }
+            ],
+            "returnType": "void",
+            "signature": [
+                "String[]"
+            ],
+            "start": 503,
+            "static": true,
+            "stms": [
+                {
+                    "code": "DiningPhilosopher dp = new DiningPhilosopher(5);",
+                    "constraint": null,
+                    "end": 601,
+                    "expression": {
+                        "code": "DiningPhilosopher dp = new DiningPhilosopher(5);",
+                        "constraint": null,
+                        "end": 601,
+                        "expr": {
+                            "array": false,
+                            "code": "new DiningPhilosopher(5)",
+                            "constraint": null,
+                            "end": 600,
+                            "hiddenClass": null,
+                            "line": 20,
+                            "lineEnd": 20,
+                            "parameters": [
+                                {
+                                    "code": "5",
+                                    "constraint": null,
+                                    "end": 599,
+                                    "line": 20,
+                                    "lineEnd": 20,
+                                    "start": 598,
+                                    "timeCritical": false,
+                                    "value": "5"
+                                }
+                            ],
+                            "start": 576,
+                            "timeCritical": false,
+                            "typeName": "DiningPhilosopher"
+                        },
+                        "line": 20,
+                        "lineEnd": 20,
+                        "name": {
+                            "code": "dp",
+                            "constraint": null,
+                            "end": 573,
+                            "line": 20,
+                            "lineEnd": 20,
+                            "start": 571,
+                            "timeCritical": false,
+                            "value": "dp"
+                        },
+                        "nameString": "dp",
+                        "start": 553,
+                        "timeCritical": false,
+                        "type": "DiningPhilosopher"
+                    },
+                    "expressionName": "Declaration_dp",
+                    "line": 20,
+                    "lineEnd": 20,
+                    "start": 553,
+                    "timeCritical": false
+                },
+                {
+                    "code": "for (int i = 0; i < 5; i++)\r\n            new Philosopher(i, dp);",
+                    "constraint": null,
+                    "end": 675,
+                    "expr": {
+                        "code": "i < 5",
+                        "constraint": null,
+                        "end": 632,
+                        "expression": {
+                            "code": "i < 5",
+                            "constraint": null,
+                            "end": 632,
+                            "left": {
+                                "code": "i",
+                                "constraint": null,
+                                "end": 628,
+                                "line": 21,
+                                "lineEnd": 21,
+                                "start": 627,
+                                "timeCritical": false,
+                                "value": "i"
+                            },
+                            "line": 21,
+                            "lineEnd": 21,
+                            "op": "less",
+                            "right": {
+                                "code": "5",
+                                "constraint": null,
+                                "end": 632,
+                                "line": 21,
+                                "lineEnd": 21,
+                                "start": 631,
+                                "timeCritical": false,
+                                "value": "5"
+                            },
+                            "start": 627,
+                            "timeCritical": false
+                        },
+                        "expressionName": "less",
+                        "line": 21,
+                        "lineEnd": 21,
+                        "start": 627,
+                        "timeCritical": false
+                    },
+                    "init": [
+                        {
+                            "code": "int i = 0",
+                            "constraint": null,
+                            "end": 625,
+                            "expression": {
+                                "code": "i = 0",
+                                "constraint": null,
+                                "end": 625,
+                                "expr": {
+                                    "code": "0",
+                                    "constraint": null,
+                                    "end": 625,
+                                    "line": 21,
+                                    "lineEnd": 21,
+                                    "start": 624,
+                                    "timeCritical": false,
+                                    "value": "0"
+                                },
+                                "line": 21,
+                                "lineEnd": 21,
+                                "name": {
+                                    "code": "i",
+                                    "constraint": null,
+                                    "end": 621,
+                                    "line": 21,
+                                    "lineEnd": 21,
+                                    "start": 620,
+                                    "timeCritical": false,
+                                    "value": "i"
+                                },
+                                "nameString": "i",
+                                "start": 620,
+                                "timeCritical": false,
+                                "type": "int"
+                            },
+                            "expressionName": "Declaration_i",
+                            "line": 21,
+                            "lineEnd": 21,
+                            "start": 616,
+                            "timeCritical": false
+                        }
+                    ],
+                    "line": 21,
+                    "lineEnd": 22,
+                    "post": [
+                        {
+                            "code": "i++",
+                            "constraint": null,
+                            "end": 637,
+                            "expression": {
+                                "code": "i++",
+                                "constraint": null,
+                                "end": 637,
+                                "line": 21,
+                                "lineEnd": 21,
+                                "start": 634,
+                                "timeCritical": false
+                            },
+                            "expressionName": "ASTPostOp",
+                            "line": 21,
+                            "lineEnd": 21,
+                            "start": 634,
+                            "timeCritical": false
+                        }
+                    ],
+                    "start": 611,
+                    "stms": [
+                        {
+                            "code": "new Philosopher(i, dp);",
+                            "constraint": null,
+                            "end": 675,
+                            "expression": {
+                                "array": false,
+                                "code": "new Philosopher(i, dp)",
+                                "constraint": null,
+                                "end": 674,
+                                "hiddenClass": null,
+                                "line": 22,
+                                "lineEnd": 22,
+                                "parameters": [
+                                    {
+                                        "code": "i",
+                                        "constraint": null,
+                                        "end": 669,
+                                        "line": 22,
+                                        "lineEnd": 22,
+                                        "start": 668,
+                                        "timeCritical": false,
+                                        "value": "i"
+                                    },
+                                    {
+                                        "code": "dp",
+                                        "constraint": null,
+                                        "end": 673,
+                                        "line": 22,
+                                        "lineEnd": 22,
+                                        "start": 671,
+                                        "timeCritical": false,
+                                        "value": "dp"
+                                    }
+                                ],
+                                "start": 652,
+                                "timeCritical": false,
+                                "typeName": "Philosopher"
+                            },
+                            "expressionName": "ASTNewObject",
+                            "line": 22,
+                            "lineEnd": 22,
+                            "start": 652,
+                            "timeCritical": false
+                        }
+                    ],
+                    "timeCritical": false
+                }
+            ],
+            "syncronized": false,
+            "timeCritical": false
+        }
+    ],
+    "name": "DiningPhilosopher",
+    "packageName": "",
+    "parent": null,
+    "path": "/Users/giovanni/repository/java-xal/intermediate-model/target/classes/DiningPhilosopher.java",
+    "realPackageName": "",
+    "start": 0,
+    "staticInit": [],
+    "timeCritical": false
+}
