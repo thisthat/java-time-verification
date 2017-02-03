@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +16,6 @@ public class ASTForEach  extends IASTStm implements IASTHasStms, IASTVisitor {
 	ASTVariable var;
 	ASTRE expr;
 	List<IASTStm> stms = new ArrayList<IASTStm>();
-	public ASTForEach(Token start, Token end) {
-		super(start, end);
-	}
-
-	public ASTForEach(Token start, Token end, ASTVariable var, ASTRE expr) {
-		super(start, end);
-		this.var = var;
-		this.expr = expr;
-	}
 
 	public ASTForEach(int start, int end) {
 		super(start, end);
@@ -97,5 +87,6 @@ public class ASTForEach  extends IASTStm implements IASTHasStms, IASTVisitor {
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTForEach(this);
 	}
 }

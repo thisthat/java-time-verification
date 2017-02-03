@@ -1,7 +1,8 @@
 package intermediateModel.structure;
 
+import IntermediateModelHelper.types.DataTreeType;
 import intermediateModel.interfaces.*;
-import org.antlr.v4.runtime.Token;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,24 +19,19 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
 	boolean isSyncronized = false;
+	boolean isAbstract = false;
+	boolean isStatic = false;
 
 
-	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
+	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract, boolean isStatic) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
 		this.isSyncronized = isSyncronized;
-	}
-
-	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized) {
-		super(start,end);
-		this.name = name;
-		this.returnType = returnType;
-		this.parameters = parameters;
-		this.exceptionsThrowed = exceptionsThrowed;
-		this.isSyncronized = isSyncronized;
+		this.isAbstract = isAbstract;
+		this.isStatic = isStatic;
 	}
 
 	public boolean isSyncronized() {
@@ -44,6 +40,14 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 
 	public void setSyncronized(boolean syncronized) {
 		isSyncronized = syncronized;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean anAbstract) {
+		isAbstract = anAbstract;
 	}
 
 	public List<String> getExceptionsThrowed() {
@@ -97,16 +101,13 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 			out = out.substring(0,out.length()-1);
 		}
 		out += ") : " + returnType + " ";
-		if(exceptionsThrowed.size() > 0){
-			out += " throws ";
-			for(String v: exceptionsThrowed){
-				out += v.toString() + ",";
-			}
-			out = out.substring(0,out.length()-1);
-		}
-		out += "\n";
-		for(IASTStm e : stms){
-			out += e.toString() + "\n";
+		return out;
+	}
+
+	public List<String> getSignature(){
+		List<String> out = new ArrayList<>();
+		for(ASTVariable p : parameters){
+			out.add(p.getType());
 		}
 		return out;
 	}
@@ -132,5 +133,43 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTMethod(this);
+	}
+
+	public boolean equalsBySignature(IASTMethod c) {
+		if(c == null) return false;
+		if(!c.getName().equals(this.name)) return false;
+		if(c.getParameters().size() != this.parameters.size()) return false;
+		boolean flag = true;
+		List<ASTVariable> pars = c.getParameters();
+		for(int i = 0; i < this.parameters.size(); i++){
+			if(!pars.get(i).getType().equals(this.parameters.get(i).getType())){
+				flag = false;
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean equalsBySignature(String pkg, String name, List<Pair<String, String>> signature) {
+		if(!name.equals(this.name)) return false;
+		if(signature.size() != this.parameters.size()) return false;
+		boolean flag = true;
+		for(int i = 0; i < this.parameters.size(); i++){
+			if(signature.get(i) == null || signature.get(i).getValue0() == null){
+				return false;
+			}
+			String t1 = this.parameters.get(i).getType();
+			String t2 = signature.get(i).getValue0();
+			if(!DataTreeType.checkEqualsTypes(t1,t2, pkg , signature.get(i).getValue1() )){
+				flag = false;
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean isStatic() {
+		return this.isStatic;
 	}
 }

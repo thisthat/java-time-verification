@@ -1,7 +1,8 @@
 package intermediateModel.structure;
 
+import IntermediateModelHelper.types.DataTreeType;
 import intermediateModel.interfaces.*;
-import org.antlr.v4.runtime.Token;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +18,6 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
 
-	public ASTConstructor(Token start, Token end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
-		super(start,end);
-		this.name = name;
-		this.parameters = parameters;
-		this.exceptionsThrowed = exceptionsThrowed;
-	}
 	public ASTConstructor(int start, int end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
 		this.name = name;
@@ -30,8 +25,23 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		this.exceptionsThrowed = exceptionsThrowed;
 	}
 
+
 	public List<String> getExceptionsThrowed() {
 		return exceptionsThrowed;
+	}
+
+	@Override
+	public String getReturnType() {
+		return "void";
+	}
+
+	@Override
+	public List<String> getSignature(){
+		List<String> out = new ArrayList<>();
+		for(ASTVariable p : parameters){
+			out.add(p.getType());
+		}
+		return out;
 	}
 
 	public void setExceptionsThrowed(List<String> exceptionsThrowed) {
@@ -62,6 +72,38 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		return true;
 	}
 
+	public boolean equalsBySignature(IASTMethod c){
+		if(c == null) return false;
+		if(!c.getName().equals(this.name)) return false;
+		if(c.getParameters().size() != this.parameters.size()) return false;
+		boolean flag = true;
+		List<ASTVariable> pars = c.getParameters();
+		for(int i = 0; i < this.parameters.size(); i++){
+			if(!pars.get(i).getType().equals(this.parameters.get(i).getType())){
+				flag = false;
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean equalsBySignature(String pkg, String name, List<Pair<String, String>> signature) {
+		if(!name.equals(this.name)) return false;
+		if(signature.size() != this.parameters.size()) return false;
+		boolean flag = true;
+		for(int i = 0; i < this.parameters.size(); i++){
+			if(signature.get(i) == null || signature.get(i).getValue1() == null){
+				return false;
+			}
+			String t1 = this.parameters.get(i).getType();
+			String t2 = signature.get(i).getValue1();
+			if(!DataTreeType.checkEqualsTypes(t1,t2, pkg , signature.get(i).getValue1() )){
+				flag = false;
+			}
+		}
+		return flag;
+	}
+
 	public String toString(){
 		String out;
 		out = "\t" + name + "(";
@@ -72,17 +114,6 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 			out = out.substring(0,out.length()-1);
 		}
 		out += ")";
-		if(exceptionsThrowed.size() > 0){
-			out += " throws ";
-			for(String v: exceptionsThrowed){
-				out += v.toString() + ",";
-			}
-			out = out.substring(0,out.length()-1);
-		}
-		out += "\n";
-		for(IASTStm e : stms){
-			out += e.toString() + "\n";
-		}
 		return out;
 	}
 
@@ -106,5 +137,11 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTConstructor(this);
+	}
+
+	@Override
+	public boolean isStatic() {
+		return false;
 	}
 }

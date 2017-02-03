@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -16,13 +15,6 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 	private String name;
 	private ASTRE expr;
 
-	public ASTAttribute(Token start, Token end, Visibility accessRight, String type, String name, ASTRE expr) {
-		super(start, end);
-		this.accessRight = accessRight;
-		this.type = type;
-		this.name = name;
-		this.expr = expr;
-	}
 
 	public ASTAttribute(int start, int end, Visibility accessRight, String type, String name, ASTRE expr) {
 		super(start, end);
@@ -40,8 +32,18 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 		this.accessRight = accessRight;
 	}
 
-	public String getType() {
+	@Override
+	public String getTypeNoArray() {
+		if(type.endsWith("]")) return type.substring(0, type.indexOf("["));
+		if(type.contains(".")) return type.substring(type.indexOf(".")+1);
 		return type;
+	}
+
+	public String getType() {
+		if(type.contains("<")){
+			return type.substring(0, type.indexOf("<"));
+		} else
+			return type;
 	}
 
 	public void setType(String type) {
@@ -79,5 +81,27 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 		visitor.enterASTAttribute(this);
 		if(expr != null)
 			expr.visit(visitor);
+		visitor.exitASTAttribute(this);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof ASTVariable)
+			return equals((ASTVariable) o);
+		if (this == o) return true;
+		if (!(o instanceof ASTAttribute)) return false;
+
+		ASTAttribute that = (ASTAttribute) o;
+
+		if (getAccessRight() != that.getAccessRight()) return false;
+		if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null) return false;
+		if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+		return getExpr() != null ? getExpr().equals(that.getExpr()) : that.getExpr() == null;
+	}
+
+	public boolean equals(ASTVariable o) {
+		return this.getName() == o.getName() && this.getType() == o.getType();
+	}
+
+
 }

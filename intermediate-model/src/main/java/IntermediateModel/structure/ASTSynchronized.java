@@ -1,7 +1,9 @@
 package intermediateModel.structure;
 
-import intermediateModel.interfaces.*;
-import org.antlr.v4.runtime.Token;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTHasStms;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +16,7 @@ public class ASTSynchronized extends IASTStm implements IASTHasStms, IASTVisitor
 	List<IASTStm> stms = new ArrayList<IASTStm>();;
 	ASTRE expr;
 
-	public ASTSynchronized(Token start, Token end) {
-		super(start, end);
-	}
-
-	public ASTSynchronized(Token start, Token end, ASTRE expr) {
-		super(start, end);
-		this.expr = expr;
-	}
-
-		public ASTSynchronized(int start, int end) {
+	public ASTSynchronized(int start, int end) {
 		super(start, end);
 	}
 
@@ -83,5 +76,6 @@ public class ASTSynchronized extends IASTStm implements IASTHasStms, IASTVisitor
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
+		visitor.exitASTSynchronized(this);
 	}
 }

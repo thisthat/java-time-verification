@@ -5,18 +5,22 @@
     <packaging>pom</packaging>
     <groupId>java-xal</groupId>
     <artifactId>java-xal</artifactId>
-    <version>0.1-SNAPSHOT</version>
-    <name></name>
+    <version>0.2-SNAPSHOT</version>
+    <name>Parent</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <modules>
         <module>java-parser</module>
-        <module>convert2xal</module>
         <module>xal</module>
         <module>intermediate-model</module>
         <module>testing</module>
+        <module>PCFG</module>
+        <module>evaluation</module>
+        <module>time-annotation</module>
+        <module>server</module>
     </modules>
+
 
     <build>
         <plugins>

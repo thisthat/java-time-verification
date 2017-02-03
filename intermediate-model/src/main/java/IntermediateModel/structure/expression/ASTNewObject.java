@@ -1,10 +1,12 @@
 package intermediateModel.structure.expression;
 
+import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.ASTREVisitor;
-import org.antlr.v4.runtime.Token;
+import intermediateModel.structure.ASTHiddenClass;
+import intermediateModel.structure.ASTRE;
+import intermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.List;
 
@@ -17,12 +19,7 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 	List<IASTRE> parameters;
 	String typeName;
 	boolean isArray = false;
-
-	public ASTNewObject(Token start, Token end, String typeName, boolean isArray) {
-		super(start, end);
-		this.typeName = typeName;
-		this.isArray = isArray;
-	}
+	ASTHiddenClass hiddenClass = null;
 
 	public ASTNewObject(int start, int end, String typeName, boolean isArray) {
 		super(start, end);
@@ -30,19 +27,19 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		this.isArray = isArray;
 	}
 
-	public ASTNewObject(Token start, Token end, String typeName, boolean isArray, List<IASTRE> parameters) {
-		super(start, end);
-		this.typeName = typeName;
-		this.isArray = isArray;
-		this.parameters = parameters;
-
-	}
-
 	public ASTNewObject(int start, int end, String typeName, boolean isArray, List<IASTRE> parameters) {
 		super(start, end);
 		this.typeName = typeName;
 		this.isArray = isArray;
 		this.parameters = parameters;
+	}
+
+	public void setHiddenClass(ASTHiddenClass hiddenClass) {
+		this.hiddenClass = hiddenClass;
+	}
+
+	public ASTHiddenClass getHiddenClass() {
+		return hiddenClass;
 	}
 
 	public boolean isArray() {
@@ -85,14 +82,31 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
+		if(this.hiddenClass != null){
+			this.hiddenClass.visit(new DefaultASTVisitor(){
+				@Override
+				public void enterASTRE(ASTRE elm) {
+					if(elm.getExpression() != null)
+						elm.getExpression().visit(visitor);
+				}
+			});
+		}
+		visitor.exitASTNewObject(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTNewObject(this);
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
+		if(this.hiddenClass != null){
+			this.hiddenClass.visit(visitor);
+		}
+		visitor.exitASTNewObject(this);
+		visitor.exitAll(this);
 	}
 }
 

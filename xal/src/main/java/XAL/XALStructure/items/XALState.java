@@ -11,10 +11,11 @@ import XAL.XALStructure.XALItem;
 
 public class XALState extends XALItem {
 
-    protected String id;
-    protected String idAction = null;
-    protected String idMetric = null;
-    protected String style = "x:31; y:44; h:30; w:49";
+    protected int _ID = -1;
+    protected String name;
+    protected String nameAction = null;
+    protected String nameMetric = null;
+    protected String style = "";
     protected String timeConstraint = "";
 
     /**
@@ -27,36 +28,36 @@ public class XALState extends XALItem {
 
     /**
      * Construct a XALState object with only the ID
-     * @param id The id of the state
+     * @param name The name of the state
      */
-    public XALState(String id) {
-        this.id = id;
+    public XALState(String name) {
+        this.name = name;
     }
 
     /**
-     * Construct a XALState object with an action or a metric. In order to decide which one use, the {@link TypeProduction} parameter is used.
-     * @param id                name of the state
-     * @param id_action_metric  name of the action/metric
+     * Construct a XALState object with an action or a metric. In order to decnamee which one use, the {@link TypeProduction} parameter is used.
+     * @param name                name of the state
+     * @param name_action_metric  name of the action/metric
      * @param production        ACTION | METRIC
      */
-    public XALState(String id, String id_action_metric, TypeProduction production) {
-        this.id = id;
+    public XALState(String name, String name_action_metric, TypeProduction production) {
+        this.name = name;
         if(production == TypeProduction.ACTION)
-            this.idAction = id_action_metric;
+            this.nameAction = name_action_metric;
         else
-            this.idMetric = id_action_metric;
+            this.nameMetric = name_action_metric;
     }
 
     /**
      * Construct a XALState object with an action and a metric.
-     * @param id        name of the state
-     * @param idAction  name of the action
-     * @param idMetric  name of the metric
+     * @param name        name of the state
+     * @param nameAction  name of the action
+     * @param nameMetric  name of the metric
      */
-    public XALState(String id, String idAction, String idMetric) {
-        this.id = id;
-        this.idAction = idAction;
-        this.idMetric = idMetric;
+    public XALState(String name, String nameAction, String nameMetric) {
+        this.name = name;
+        this.nameAction = nameAction;
+        this.nameMetric = nameMetric;
     }
 
     public String getStyle() {
@@ -67,20 +68,24 @@ public class XALState extends XALItem {
         this.style = style;
     }
 
-    public String getId() {
-        return id;
+    public int getId() {
+        return _ID;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setNumericID(int id){
+        this._ID = id;
+    }
+
+    public int getNumericID(){
+        return this._ID;
     }
 
     public String getIdAction() {
-        return idAction;
+        return nameAction;
     }
 
     public String getIdMetric() {
-        return idMetric;
+        return nameMetric;
     }
 
     public String getTimeConstraint() {
@@ -91,14 +96,30 @@ public class XALState extends XALItem {
         this.timeConstraint = timeConstraint;
     }
 
-    @Override
+	public String getNameAction() {
+		return nameAction;
+	}
+
+	public void setNameAction(String nameAction) {
+		this.nameAction = nameAction;
+	}
+
+	public String getNameMetric() {
+		return nameMetric;
+	}
+
+	public void setNameMetric(String nameMetric) {
+		this.nameMetric = nameMetric;
+	}
+
+	@Override
     public String toString(int tab) {
         String out = "";
-        out += tab(tab) + String.format("<State Id=\"%s\" ", this.id);
-        if(idMetric != null)
-            out += String.format("IdMetric=\"%s\" ", this.idMetric);
-        if(idAction != null)
-            out += String.format("IdAction=\"%s\" ", this.idAction);
+        out += tab(tab) + String.format("<State Id=\"%s\" Desc=\"%s\" ", this._ID, this.name);
+        if(nameMetric != null)
+            out += String.format("IdMetric=\"%s\" ", this.nameMetric);
+        if(nameAction != null)
+            out += String.format("IdAction=\"%s\" ", this.nameAction);
         if(style != null)
             out += String.format("style=\"%s\" ", this.style);
         out += "/>";

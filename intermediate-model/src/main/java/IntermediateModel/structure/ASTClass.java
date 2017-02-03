@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 
 public class ASTClass extends IASTStm implements IASTVisitor {
 
-
 	String packageName;
 	List<IASTMethod> methods = new ArrayList<>();
 	List<ASTStatic> staticInit = new ArrayList<>();
@@ -26,25 +24,10 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	String extendClass;
 	List<ASTImport> imports = new ArrayList<>();
 	List<ASTAttribute> attributes = new ArrayList<>();
-
-	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
-		super(start,end);
-		this.packageName = packageName;
-		this.name = name;
-		this.accessRight = accessRight;
-		this.extendClass = extendClass == null ? "Object" : extendClass;
-		this.implmentsInterfaces = implmentsInterfaces;
-	}
-
-	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
-		super(start,end);
-		this.packageName = packageName;
-		this.methods = methods;
-		this.name = name;
-		this.accessRight = accessRight;
-		this.extendClass = extendClass == null ? "Object" : extendClass;
-		this.implmentsInterfaces = implmentsInterfaces;
-	}
+	String path;
+	ASTClass parent = null;
+	boolean isInterface = false;
+	boolean isAbstract = false;
 
 	public ASTClass(int start, int end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);
@@ -65,6 +48,18 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.implmentsInterfaces = implmentsInterfaces;
 	}
 
+	public ASTClass getParent() {
+		return parent;
+	}
+
+	public void setParent(ASTClass c){
+		this.parent = c;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 	public List<ASTImport> getImports() {
 		return imports;
 	}
@@ -73,8 +68,16 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.imports = imports;
 	}
 
-	public List<? extends IASTMethod> getMethods() {
-		return methods;
+	public List<IASTMethod> getAllMethods() {
+		List<IASTMethod> out = new ArrayList<>(methods);
+		if(this.parent != null){
+			out.addAll(this.parent.getAllMethods());
+		}
+		return out;
+	}
+
+	public List<IASTMethod> getMethods() {
+		return this.methods;
 	}
 
 	public String getName() {
@@ -90,7 +93,10 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	}
 
 	public String getExtendClass() {
-		return extendClass;
+		if(extendClass.contains("<")){
+			return extendClass.substring(0, extendClass.indexOf("<"));
+		} else
+			return extendClass;
 	}
 
 	public void addMethod(IASTMethod method){
@@ -151,16 +157,16 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public String toString(){
 		String out = "";
-		out = packageName + "." + name + "\n";
+		out = packageName + "." + name;// + "\n";
 		//for(ASTImport imp : imports){
 		//	out += imp.toString();
 		//}
-		for(ASTAttribute a : attributes){
-			out += a.toString();
-		}
-		for(IASTMethod m : methods){
-			out += m.toString();
-		}
+		//for(ASTAttribute a : attributes){
+		//	out += a.toString();
+		//}
+		//for(IASTMethod m : methods){
+		//	out += m.toString();
+		//}
 		return out;
 	}
 
@@ -181,8 +187,21 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 			return false;
 		if (getExtendClass() != null ? !getExtendClass().equals(astClass.getExtendClass()) : astClass.getExtendClass() != null)
 			return false;
-
+		if (getLine() != astClass.getLine()) return false;
+		if (getLineEnd() != astClass.getLineEnd()) return false;
 		return true;
+	}
+
+	public String getPath(){
+		return path;
+	}
+
+	public boolean isInterface() {
+		return isInterface;
+	}
+
+	public void setInterface(boolean anInterface) {
+		isInterface = anInterface;
 	}
 
 	@Override
@@ -208,5 +227,73 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		for(ASTAttribute a : attributes){
 			a.visit(visitor);
 		}
+		visitor.exitASTClass(this);
+	}
+
+	public IASTMethod getMethodBySignature(String name, List<String> types){
+		IASTMethod out = null;
+		for(IASTMethod m : this.methods){
+			if(!m.getName().equals(name)) continue;
+			List<ASTVariable> pars = m.getParameters();
+			if(pars.size() == types.size()){
+				boolean flag = true;
+				for(int i = 0; i < pars.size(); i++){
+					if(!pars.get(i).getType().equals(types.get(i))){
+						flag = false;
+					}
+				}
+				if(flag){
+					out = m;
+				}
+			}
+		}
+		return out;
+	}
+	public IASTMethod getFirstMethodByName(String name){
+		IASTMethod out = null;
+		for(IASTMethod m : this.methods){
+			if(!m.getName().equals(name)) continue;
+				out = m;
+		}
+		return out;
+	}
+
+	public boolean isSameClass(ASTClass _class) {
+		return this.packageName.equals(_class.getPackageName()) && this.name.equals(_class.getName());
+	}
+
+	public String getPackageMethod(IASTMethod m) {
+		for(IASTMethod localM : this.methods){
+			if(localM.equalsBySignature(m))
+				return this.packageName;
+		}
+		return this.parent != null ? this.parent.getPackageMethod(m) : this.packageName;
+	}
+
+	public String getClassNameMethod(IASTMethod m) {
+		for(IASTMethod localM : this.methods){
+			if(localM.equalsBySignature(m)) return this.name;
+		}
+		return this.parent != null ? this.parent.getClassNameMethod(m) : this.name;
+	}
+
+	public String getRealPackageName() {
+		if(this.parent == null) return this.packageName;
+		else return this.parent.getRealPackageName();
+	}
+
+	public List<String> getImportsAsString() {
+		List<String> out = new ArrayList<>();
+		for(ASTImport imp : this.imports){
+			out.add(imp.getPackagename());
+		}
+		return out;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
+	public boolean isAbstract(){
+		return this.isAbstract;
 	}
 }

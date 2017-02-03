@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -14,11 +13,7 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
 
-	public ASTVariable(Token start, Token end, String name, String type) {
-		super(start, end);
-		this.name = name;
-		this.type = type;
-	}
+
 	public ASTVariable(int start, int end, String name, String type) {
 		super(start, end);
 		this.name = name;
@@ -30,6 +25,16 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	}
 
 	public String getType() {
+		if(type.contains("<")){
+			return type.substring(0, type.indexOf("<"));
+		} else
+			return type;
+	}
+
+	@Override
+	public String getTypeNoArray() {
+		if(type.endsWith("]")) return type.substring(0, type.indexOf("["));
+		if(type.contains(".")) return type.substring(type.indexOf(".") +1);
 		return type;
 	}
 
@@ -40,6 +45,7 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 
 	@Override
 	public boolean equals(Object o) {
+		if(o instanceof ASTAttribute) return equals((ASTAttribute) o);
 		if (this == o) return true;
 		if (!(o instanceof ASTVariable)) return false;
 
@@ -51,8 +57,13 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 		return true;
 	}
 
+	public boolean equals(ASTAttribute o){
+		return this.getName() == o.getName() && this.getType() == o.getType();
+	}
+
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTVariable(this);
+		visitor.exitASTVariable(this);
 	}
 }

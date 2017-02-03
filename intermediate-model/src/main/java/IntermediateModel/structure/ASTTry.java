@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +20,6 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 
 	public class ASTTryBranch extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
-		public ASTTryBranch(Token start, Token end) {
-			super(start, end);
-		}
 
 		public ASTTryBranch(int start, int end) {
 			super(start, end);
@@ -72,10 +68,6 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 	public class ASTCatchBranch extends IASTStm implements IASTHasStms {
 		List<IASTStm> stms = new ArrayList<>();
 		ASTVariable expr = null;
-		public ASTCatchBranch(Token start, Token end, ASTVariable expr) {
-			super(start, end);
-			this.expr = expr;
-		}
 
 		public ASTCatchBranch(int start, int end, ASTVariable expr) {
 			super(start, end);
@@ -137,10 +129,6 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 			super(start, end);
 		}
 
-		public ASTFinallyBranch(Token start, Token end) {
-			super(start, end);
-		}
-
 		@Override
 		public void addStms(IASTStm stm) {
 			this.stms.add(stm);
@@ -180,10 +168,6 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 		}
 	}
 
-
-	public ASTTry(Token start, Token end) {
-		super(start, end);
-	}
 
 	public ASTTry(int start, int end) {
 		super(start, end);
@@ -256,6 +240,7 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 		}
 		if(finallyBranch != null)
 			finallyBranch.visit(visitor);
+		visitor.exitASTTry(this);
 	}
 
 }

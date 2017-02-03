@@ -89,7 +89,11 @@ public class XALMetric extends XALProduction  {
 
     @Override
     public String toString(int tab) {
-        return "";
+        String out = "";
+        out += tab(tab) + "<Metric Id=\"" + this.getId() + "\" Type=\"" + (this.type == ProductionType.automaton ? "automaton" : "object") + "\">\n";
+        out += this.getSystem().toString(tab+1);
+        out += tab(tab) + "</Metric>";
+        return out;
     }
 
     /**

@@ -34,7 +34,7 @@ public class XALAutomaton extends XALItem implements XALAddState {
     private XALClock clocks;
     private XALActionPool actionPool;
     private List<XALState> states;
-    private String initialState;
+    private int initialState;
     private List<String> finalStates;
     private List<XALTransition> transitions;
 
@@ -60,7 +60,11 @@ public class XALAutomaton extends XALItem implements XALAddState {
         this.id = id;
     }
 
-    /**
+	public XALActionPool getActionPool() {
+		return actionPool;
+	}
+
+	/**
      * Get the {@link XALGlobalState} of the automata
      * @return the list of variables of the automata
      */
@@ -107,11 +111,11 @@ public class XALAutomaton extends XALItem implements XALAddState {
      */
     @Override
     public void addState(XALState s) {
-        int i  = 0;
+        /*int i  = 0;
         String id = s.getId();
         while(existState(s.getId())) {
             s.setId(id + "_" + i++);
-        }
+        }*/
         this.states.add(s);
     }
 
@@ -119,12 +123,12 @@ public class XALAutomaton extends XALItem implements XALAddState {
         return this.existState(s.getId());
     }
 
-    public boolean existState(String s){
+    public boolean existState(int s){
         //return this.states.stream().anyMatch(state -> (state.getId().equals(s)));
         return existState(this.getStates(), s);
     }
 
-    private boolean existState(List<XALState> states, String id){
+    private boolean existState(List<XALState> states, int id){
         boolean find = false;
         for(XALState state : states){
             if(state instanceof XALAddState){
@@ -133,7 +137,7 @@ public class XALAutomaton extends XALItem implements XALAddState {
 					find = t;
 				}
             } else {
-                if(state.getId().equals(id)){
+                if(state.getId() == id){
                    find = true;
                 }
             }
@@ -146,7 +150,7 @@ public class XALAutomaton extends XALItem implements XALAddState {
      * Get the id of the init state of the automaton
      * @return the String that correspond to the ID of the {@link XALState}
      */
-    public String getInitialState() {
+    public int getInitialState() {
         return initialState;
     }
 
@@ -164,8 +168,8 @@ public class XALAutomaton extends XALItem implements XALAddState {
      * @param initialState  String that represent the ID of the {@link XALState} to use as initial state
      * @throws  XALMalformedException when the id passed as parameter does not exist in the list of state of the automaton
      */
-    public void setInitialState(final String initialState) throws XALMalformedException {
-        if(!this.states.stream().anyMatch( s -> (s.getId().equals(initialState)))){
+    public void setInitialState(final int initialState) throws XALMalformedException {
+        if(!this.states.stream().anyMatch( s -> (s.getId() == initialState))){
             throw new XALMalformedException("Initial state ID not found in the list of states");
         }
         this.initialState = initialState;
@@ -202,7 +206,7 @@ public class XALAutomaton extends XALItem implements XALAddState {
      * @param s {@link XALState} to add
      */
     public void addFinalState(XALState s) {
-        this.finalStates.add(s.getId());
+        this.finalStates.add(s.getId() + "");
     }
 
 
@@ -301,4 +305,32 @@ public class XALAutomaton extends XALItem implements XALAddState {
     protected boolean checkConstriant() {
         return true;
     }
+
+	public XALState getNodeFromNumericID(int i){
+		for(XALState s : this.getStates()){
+			if(s instanceof XALSync) {
+				XALState r = ((XALSync)s).getNodeFromNumericID(i);
+				if(r != null) {
+					return r;
+				}
+			}
+			else if(s.getNumericID() == i){
+				return s;
+			}
+		}
+		return null;
+	}
+
+	public XALSync getSyncNodeFromNumericID(int id) {
+		for(XALState s : this.getStates()){
+			if(s instanceof XALSync) {
+				if(s.getNumericID() == id){
+					return (XALSync) s;
+				} else {
+					return ((XALSync)s).getSyncNodeFromNumericID(id);
+				}
+			}
+		}
+		return null;
+	}
 }

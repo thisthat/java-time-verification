@@ -1,10 +1,9 @@
 package intermediateModel.structure.expression;
 
+import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.ASTREVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -15,13 +14,6 @@ public class ASTBinary extends IASTStm implements IASTRE {
 	protected IASTRE left;
 	protected IASTRE right;
 	protected OPERATOR op;
-
-	public ASTBinary(Token start, Token end, IASTRE left, IASTRE right, OPERATOR op) {
-		super(start, end);
-		this.left = left;
-		this.right = right;
-		this.op = op;
-	}
 
 	public ASTBinary(int start, int end, IASTRE left, IASTRE right, OPERATOR op) {
 		super(start, end);
@@ -69,12 +61,17 @@ public class ASTBinary extends IASTStm implements IASTRE {
 		visitor.enterAll(this);
 		left.visit(visitor);
 		right.visit(visitor);
+		visitor.exitASTbinary(this);
+		visitor.exitAll(this);
 	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {
+		visitor.enterAll(this);
 		visitor.enterASTbinary(this);
 		left.visit(visitor);
 		right.visit(visitor);
+		visitor.exitASTbinary(this);
+		visitor.exitAll(this);
 	}
 }

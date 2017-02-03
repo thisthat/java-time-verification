@@ -27,9 +27,9 @@ The master branch will be keep updated with the latest perfectly functional vers
 All the development will be performed in a separate branch that will be merge to the main only when it is perfectly stable.
 
 The next features to implement are:
-* Indexing before parse
-* Store information in a database
-* Create a PCFG from the source code
+* Indexing before parse [DONE]
+* Store information in a database [DONE]
+* Create a PCFG w/ Time Constraints from the source code [DONE]
 * User defined heuristics
     * Create a grammar to specify them
     * Parse and create the heuristic automatically
@@ -37,17 +37,16 @@ The next features to implement are:
 * Rewrite the source code with the annotations
 
 # Known Issues
-new Object does not take in account that an hidden class can be created in the initialization.
-At the moment, the method of the hidden class are put as method of the last visited class.
+
 
 # Current Branch
-The current branch aim to introduce the rewriting logic to apply heuristics.
-In order to do that, we have to:
-* introduce the possibilities to add annotation to the elements of the IM
-* create an interface for the heuristics that has the following elements
-    * **let** it creates a set of annotations
-    * **where** it restricts the space of search, when it matches we can apply the heuristic
-    * **rewrite** it express how to rewrite the node of the IM
 
-Questions:
-* the IM has to keep with it for each node the Env that it can see?
+The following branch will use to test new features.
+When they are ready and without knowing issue, a merge request can be created.
+
+
+>>>>>>> annotation
+
+
+
+

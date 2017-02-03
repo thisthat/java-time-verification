@@ -8,6 +8,7 @@ public interface IASTRE extends IASTVisitor {
 	enum OPERATOR {
 		less,			// <
 		lessEqual,		// <=
+		notEqual,		// !=
 		equal,			// =
 		equality,		// ==
 		greater,		// >
@@ -23,6 +24,15 @@ public interface IASTRE extends IASTVisitor {
 		and,			// &&
 		or,				// ||
 		instanceOf		// instanceOf
+		;
+
+
+		@Override
+		public String toString() {
+			if(this.equals(OPERATOR.equality))
+				return "equal";
+			return super.toString();
+		}
 	}
 
 	enum ADDDEC {
@@ -31,4 +41,7 @@ public interface IASTRE extends IASTVisitor {
 	}
 
 	void visit(ASTREVisitor visitor);
+	String getCode();
+	int getLine();
+
 }

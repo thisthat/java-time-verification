@@ -17,8 +17,8 @@ public class XALTransition extends XALItem {
     public static final String METRIC_TRUE = "true";
     public static final String METRIC_FALSE = "false";
 
-    private String from;
-    private String to;
+    private int from;
+    private int to;
 	private XALState fromState;
 	private XALState toState;
     private String metricValue = null;
@@ -47,19 +47,19 @@ public class XALTransition extends XALItem {
         return metricValue;
     }
 
-    public String getTo() {
+    public int getTo() {
         return to;
     }
 
-    public String getFrom() {
+    public int getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(int from) {
         this.from = from;
     }
 
-    public void setTo(String to) {
+    public void setTo(int to) {
         this.to = to;
     }
 

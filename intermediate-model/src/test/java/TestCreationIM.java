@@ -4,12 +4,12 @@ import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.NotYetImplemented;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModel.visitors.JDTVisitor;
-import XALConversion.util.Pair;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.javatuples.Pair;
 import org.junit.Test;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -48,14 +48,14 @@ public class TestCreationIM {
 
 			Java2AST a;
 			try {
-				a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+				a = new Java2AST(filename, true);
 			}
 			catch (Exception e){
 				fileToSkip.add(filename);
 				continue;
 			}
 			CompilationUnit result = a.getContextJDT();
-			JDTVisitor v = new JDTVisitor(result);
+			JDTVisitor v = new JDTVisitor(result, filename);
 			//System.err.println("Processing: " + filename);
 			result.accept(v);
 			for(ASTClass c : v.listOfClasses){
@@ -86,15 +86,15 @@ public class TestCreationIM {
 		if(__report && fileNotParsed.size() > 0){
 			System.err.println("-- List file not correctly parsed --");
 			for(Pair<String,String> f : fileNotParsed){
-				System.err.println("[" + f.getFirst() + "]");
-				System.err.println(f.getSecond());
+				System.err.println("[" + f.getValue0() + "]");
+				System.err.println(f.getValue1());
 			}
 		}
 		if(__report && reNotParsed.size() > 0){
 			System.err.println("-- List RE not correctly parsed --");
 			for(Pair<String,NotYetImplemented> re : reNotParsed){
-				System.err.println("[" + re.getFirst() + "]");
-				System.err.println(re.getSecond());
+				System.err.println("[" + re.getValue0() + "]");
+				System.err.println(re.getValue1());
 			}
 			System.err.println("Total REXP in the project: " + totalREXP);
 			System.err.println("Total REXP not parsed the project: " + reNotParsed.size());
