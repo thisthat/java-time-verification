@@ -40,6 +40,7 @@ public class OpenProject extends indexMW {
 			}
 			if(flag) {
 				IndexingProject index = new IndexingProject(name);
+				index.setSkipTest(false);
 				index.indexProject(base_path, delete);
 			}
 			synchronized (lock){

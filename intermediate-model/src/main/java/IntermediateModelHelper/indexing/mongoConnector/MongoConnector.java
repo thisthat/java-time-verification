@@ -1,9 +1,6 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
-import IntermediateModelHelper.indexing.structure.DBStatus;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import IntermediateModelHelper.indexing.structure.IndexSyncCall;
+import IntermediateModelHelper.indexing.structure.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -438,6 +435,19 @@ public class MongoConnector {
 				q.criteria("interfacesImplemented").contains("Runnable")
 		);
 		return q.asList();
+	}
+
+	/**
+	 * It queries the database to retrieve all the classes that are Threads.
+	 * @return list of {@link IndexData} objects.
+	 */
+	public List<IndexData> getMains(){
+		Query<IndexData> q = datastore.find(IndexData.class)
+				.filter("listOfMethods.isStatic = ", true)
+				.filter("listOfMethods.returnType = ", "void")
+				.filter("listOfMethods.name = ", "main");
+		return q.asList();
+
 	}
 
 	/**

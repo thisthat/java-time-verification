@@ -7,4 +7,8 @@ class Attempt1 implements Lock {
     public void releaseCS(int i) {
         openDoor = true;
     }
+
+    public static void main(String[] args) {
+
+    }
 }

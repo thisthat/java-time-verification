@@ -21,7 +21,7 @@ public class IsProjectOpen extends indexMW {
 
 		MongoConnector connector = MongoConnector.getInstance(name);
 		int retVal = connector.getIndexStatus() ? 1 : 0;
-		String response = "{\n\tstatus: \"" + retVal + "\"\n}\n";
+		String response = "{\n\t\"status\": \"" + retVal + "\"\n}\n";
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();
 		os.write(response.toString().getBytes());

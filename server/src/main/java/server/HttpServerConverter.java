@@ -53,6 +53,7 @@ public class HttpServerConverter {
 		server.createContext("/isProjectOpen", new IsProjectOpen());
 		server.createContext("/getFilesByType", new GetAllFilesByType());
 		server.createContext("/getThreads", new GetThreads());
+		server.createContext("/getMains", new GetMains());
 
 		server.setExecutor(httpThreadPool);
 		server.start();
