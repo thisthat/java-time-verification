@@ -27,12 +27,12 @@ public class IndexSyncCall {
 	private List<String> _signatureInMethod;
 	private String path = "";
 	private int line;
-	private short type;
+	private boolean isStatic;
 
 	public IndexSyncCall() {
 	}
 
-	public IndexSyncCall(ObjectId id, String classPackage, String name, String methodName, List<String> methodSignature, String _inClassPackage, String _inClassName, String _inMethodName, List<String> _signatureInMethod, String path, int line, short type) {
+	public IndexSyncCall(ObjectId id, String classPackage, String name, String methodName, List<String> methodSignature, String _inClassPackage, String _inClassName, String _inMethodName, List<String> _signatureInMethod, String path, int line, boolean isStatic) {
 		this.id = id;
 		this.classPackage = classPackage;
 		this.name = name;
@@ -44,7 +44,7 @@ public class IndexSyncCall {
 		this._signatureInMethod = _signatureInMethod;
 		this.path = path;
 		this.line = line;
-		this.type = type;
+		this.isStatic = isStatic;
 	}
 
 	public IndexSyncCall(SyncMethodCall call, String path) {
@@ -58,7 +58,7 @@ public class IndexSyncCall {
 		this.path = path;
 		this.line = call.getNode().getLine();
 		this.methodSignature = call.get_signatureMethodCalled();
-		this.type = call.getType();
+		this.isStatic = call.isStatic();
 	}
 
 	public List<String> getMethodSignature() {
@@ -181,11 +181,11 @@ public class IndexSyncCall {
 		this.path = path;
 	}
 
-	public short getType() {
-		return type;
+	public void setStatic(boolean synchronize) {
+		isStatic = synchronize;
 	}
 
-	public void setType(short type) {
-		this.type = type;
+	public boolean isStatic() {
+		return isStatic;
 	}
 }

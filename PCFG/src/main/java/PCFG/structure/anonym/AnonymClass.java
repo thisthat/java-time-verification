@@ -2,13 +2,11 @@ package PCFG.structure.anonym;
 
 import PCFG.structure.CFG;
 import PCFG.structure.IHasCFG;
-import PCFG.structure.edge.IEdge;
 import PCFG.structure.node.INode;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

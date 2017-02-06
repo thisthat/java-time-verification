@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,6 @@ import java.util.List;
 public class ASTWhile extends IASTStm implements IASTHasStms, IASTVisitor {
 	List<IASTStm> stms = new ArrayList<IASTStm>();;
 	ASTRE expr;
-
-	public ASTWhile(Token start, Token end) {
-		super(start, end);
-	}
-
-	public ASTWhile(Token start, Token end, ASTRE expr) {
-		super(start, end);
-		this.expr = expr;
-	}
 
 	public ASTWhile(int start, int end) {
 		super(start, end);

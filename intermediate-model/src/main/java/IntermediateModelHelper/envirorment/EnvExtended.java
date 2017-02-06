@@ -4,16 +4,10 @@ package IntermediateModelHelper.envirorment;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.types.ResolveTypes;
-import com.google.common.annotations.Beta;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The class handle kinda of a symbol table for dynamic scoping.

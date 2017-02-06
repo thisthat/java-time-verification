@@ -5,8 +5,9 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.1</version>
+        <version>0.2</version>
     </parent>
+    <version>0.2</version>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>PCFG</artifactId>
@@ -14,7 +15,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>intermediate-model</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
     </dependencies>
 

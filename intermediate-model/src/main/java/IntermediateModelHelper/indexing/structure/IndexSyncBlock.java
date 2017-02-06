@@ -1,8 +1,6 @@
 package IntermediateModelHelper.indexing.structure;
 
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTVariable;
-import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

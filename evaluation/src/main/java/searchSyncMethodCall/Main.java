@@ -25,7 +25,7 @@ import java.util.*;
  */
 public class Main {
 
-	private static final String _BROCK_IP_ = "143.205.114.27";
+	private static final String _BROCK_IP_ = "";
 
 	public class GeneralInfo {
 		public long syncCalls = 0;
@@ -35,7 +35,7 @@ public class Main {
 
 		public long methodSyncCall = 0;
 		public long nSyncMethods = 0;
-		public long nMaybe = 0;
+		public long nMust = 0;
 
 		@Override
 		public String toString() {
@@ -44,7 +44,7 @@ public class Main {
 			out += String.format("#Methods: %d \n", this.nMethods);
 			out += String.format("#Synchronized Methods: %d \n", this.nSyncMethods);
 			out += String.format("#Methods Sync Called: %d \n", this.methodSyncCall);
-			out += String.format("#Maybe Call: %d \n", this.nMaybe);
+			out += String.format("#Maybe Call: %d \n", this.nMust);
 			out += String.format("Total #Sync Calls: %d \n", this.syncCalls);
 			return  out;
 		}
@@ -84,10 +84,10 @@ public class Main {
 		for(int i = 0; i < _NAMES_.length; i++){
 			String name = _NAMES_[i];
 			conf(name);
-			//indexProject(base_path + name, name);
-			eval(name);
 			System.out.println("\n[Working with: " + name + "]");
-			System.out.println(statistics);
+			indexProject(base_path + name, name);
+			//eval(name);
+			//System.out.println(statistics);
 		}
 
 	}
@@ -143,8 +143,8 @@ public class Main {
 			if(!methodsCall.contains(m1)){
 				methodsCall.add(m1);
 			}
-			if(s.getType() == SyncMethodCall._SYNC_CALL_MAYBE_){
-				statistics.nMaybe++;
+			if(!s.isStatic()){
+				statistics.nMust++;
 			}
 		}
 
@@ -158,18 +158,9 @@ public class Main {
 		*/
 		statistics.methodSyncCall = 0;
 		write = new PrintWriter(name + "_listSyncMethod.csv");
+		write.println("method-name;number-sync;number-correct;");
 		for(Quartet<String, String, String,List<String>> entry : syncMethodNames){
-			boolean isCalled = false;
-			for(Quartet<String, String, String,List<String>> e : methodsCall){
-				if(		e.getValue0().equals(entry.getValue0()) &&
-						e.getValue1().equals(entry.getValue1())	&&
-						e.getValue2().equals(entry.getValue2())
-					){
-					isCalled = true;
-				}
-			}
-			if(isCalled) statistics.methodSyncCall++;
-			write.println(pp(entry) + ";" + isCalled);
+			write.println(pp(entry) + ";;;");
 		}
 		write.close();
 
@@ -178,34 +169,6 @@ public class Main {
 
 	}
 
-	private void search(String name, List<Quartet<String, String, String, List<String>>> syncMethodNames) throws Exception {
-		File dir = new File(base_path + name);
-		String[] filter = {"java"};
-		Collection<File> files = FileUtils.listFiles(
-				dir,
-				filter,
-				true
-		);
-		Iterator i = files.iterator();
-
-		List<Pair<String,String>> whereItIs = new ArrayList<>();
-		while (i.hasNext()) {
-			String filename = ((File)i.next()).getAbsolutePath();
-			if(filename.contains("_mvn")) continue; //skip the mvn version of vuze
-			FileInputStream inputStream = new FileInputStream(filename);
-			String filecnt = IOUtils.toString(inputStream);
-			for(Quartet<String, String, String, List<String>> m : syncMethodNames){
-				if(filecnt.contains(m.getValue2() + "(")){
-					whereItIs.add(new Pair<>(filename, m.getValue2()));
-				}
-			}
-		}
-		PrintWriter write = new PrintWriter(name + "_listSyncMethodCalled.csv");
-		for(Pair<String,String> entry : whereItIs){
-			write.println(entry.getValue0() + ";" + entry.getValue1());
-		}
-		write.close();
-	}
 
 	private String pp(Quartet<String, String, String,List<String>> entry){
 		String out = entry.getValue0() + "." + entry.getValue1() + "." + entry.getValue2() + "(";
@@ -213,15 +176,6 @@ public class Main {
 			out += entry.getValue3().get(i) + (entry.getValue3().size() == (i+1) ? "" : ",");
 		}
 		out += ")";
-		return out;
-	}
-
-	private String ppCSV(Quartet<String, String, String,List<String>> entry){
-		String out = entry.getValue0() + ";" + entry.getValue1() + ";" + entry.getValue2() + ";[";
-		for(int i = 0; i < entry.getValue3().size(); i++){
-			out += entry.getValue3().get(i) + (entry.getValue3().size() == (i+1) ? "" : ",");
-		}
-		out += "]";
 		return out;
 	}
 

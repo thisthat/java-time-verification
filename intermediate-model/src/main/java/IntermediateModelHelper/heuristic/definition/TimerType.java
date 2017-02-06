@@ -1,12 +1,12 @@
 package IntermediateModelHelper.heuristic.definition;
 
+import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
-import IntermediateModelHelper.envirorment.Env;
 
 import java.util.List;
 
@@ -59,8 +59,8 @@ public class TimerType extends SearchTimeConstraint {
 							//stm.addConstraint(stm.getLine(), ((ASTLiteral) r).getValue(), TimerType.class);
 							this.addConstraint(((ASTLiteral) r).getValue(), stm);
 						} else {
-							//stm.addConstraint(stm.getLine(), r.toString(), TimerType.class);
-							this.addConstraint(((ASTLiteral) r).getValue(), stm);
+							stm.addConstraint(stm.getLine(), r.toString(), TimerType.class);
+							//this.addConstraint(((ASTLiteral) r).getValue(), stm);
 						}
 					}
 				}

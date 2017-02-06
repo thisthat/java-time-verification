@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
  */
 
 public class ASTClass extends IASTStm implements IASTVisitor {
-
 
 	String packageName;
 	List<IASTMethod> methods = new ArrayList<>();
@@ -30,25 +28,6 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	ASTClass parent = null;
 	boolean isInterface = false;
 	boolean isAbstract = false;
-
-	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
-		super(start,end);
-		this.packageName = packageName;
-		this.name = name;
-		this.accessRight = accessRight;
-		this.extendClass = extendClass == null ? "Object" : extendClass;
-		this.implmentsInterfaces = implmentsInterfaces;
-	}
-
-	public ASTClass(Token start, Token end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
-		super(start,end);
-		this.packageName = packageName;
-		this.methods = methods;
-		this.name = name;
-		this.accessRight = accessRight;
-		this.extendClass = extendClass == null ? "Object" : extendClass;
-		this.implmentsInterfaces = implmentsInterfaces;
-	}
 
 	public ASTClass(int start, int end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);

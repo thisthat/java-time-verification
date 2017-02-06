@@ -42,5 +42,6 @@ public interface IASTRE extends IASTVisitor {
 
 	void visit(ASTREVisitor visitor);
 	String getCode();
+	int getLine();
 
 }

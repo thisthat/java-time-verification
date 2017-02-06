@@ -2,7 +2,7 @@ package PCFG.creation.helper;
 
 import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
 import IntermediateModelHelper.indexing.structure.SyncMethodCall;
-import PCFG.structure.*;
+import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
 import intermediateModel.interfaces.IASTMethod;
@@ -54,12 +54,16 @@ public class CalculateSyncCall {
 			for(KeyValue<IASTMethod,ASTClass> cIn : classes){
 				if(cOut == cIn) continue;
 				boolean sameClass = cOut.getValue().isSameClass(cIn.getValue());
+				if(sameClass) continue;
 				if(cIn.equals(cOut) && !sameClass) continue;
 				List<SyncMethodCall> outter = syncCalls.get(cOut);
 				List<SyncMethodCall> inner  = syncCalls.get(cIn);
 				for(SyncMethodCall outMethod : outter){
 					for(SyncMethodCall inMethod : inner){
-						if(outMethod.equalsBySignature(inMethod)){
+						if(
+								outMethod.get_className().equals(inMethod.get_className()) &&
+								outMethod.get_packageName().equals(inMethod.get_packageName())
+						){
 							createLink(outMethod, inMethod, pcfg, classes);
 						}
 					}
@@ -80,11 +84,13 @@ public class CalculateSyncCall {
 				to = v;
 			}
 		}
+		if(from == null || to == null){
+			return;
+		}
 		try {
-			SyncEdge e = new SyncEdge(from, to);
+			SyncEdge.TYPE t = outMethod.isStatic() && inMethod.isStatic() ? SyncEdge.TYPE.MUST_SYNC : SyncEdge.TYPE.MAY_SYNC;
+			SyncEdge e = new SyncEdge(from, to, t);
 			pcfg.addSyncEdge(e);
-		} catch (SyncEdge.MalformedSyncEdge malformedSyncEdge) {
-			malformedSyncEdge.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("error creating link: ");
 			for(KeyValue<IASTMethod,ASTClass> c : classes){

@@ -3,6 +3,7 @@ package intermediateModel.visitors;
 
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.BuildEnvironment;
+import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
@@ -10,8 +11,7 @@ import IntermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.*;
-import IntermediateModelHelper.envirorment.Env;
+import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
 
@@ -54,8 +54,8 @@ public class ApplyHeuristics extends ParseIM {
 	 * @return	List of time constraints with the predefined set of heuristics
 	 */
 	public static List<Triplet<String,IASTStm,Class>> getConstraint(ASTClass c){
-		return new ArrayList<>();
-		/*
+		//return new ArrayList<>();
+
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(ThreadTime.class);
 		ah.subscribe(SocketTimeout.class);
@@ -64,7 +64,7 @@ public class ApplyHeuristics extends ParseIM {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
-		*/
+
 	}
 
 	public void subscribe(Class<? extends SearchTimeConstraint> strategy){

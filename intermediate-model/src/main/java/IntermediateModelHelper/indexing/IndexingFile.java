@@ -140,6 +140,7 @@ public class IndexingFile extends ParseIM {
 		im.setConstructor( m instanceof ASTConstructor );
 		im.setSync( !im.isConstructor() && ((ASTMethod) m).isSyncronized() );
 		im.setReturnType(m.getReturnType());
+		im.setStatic(m.isStatic());
 		return im;
 	}
 

@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTHasStms;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +17,6 @@ public class ASTSwitch extends IASTStm {
 	public class ASTCase extends IASTStm implements IASTHasStms, IASTVisitor {
 		List<String> labels = new ArrayList<>();
 		List<IASTStm> stms = new ArrayList<>();
-
-		public ASTCase(Token start, Token end, String label) {
-			super(start, end);
-			this.labels.add(label);
-		}
-
-		public ASTCase(Token start, Token end, List<String> labels) {
-			super(start, end);
-			this.labels = labels;
-		}
 
 		public ASTCase(int start, int end, String label) {
 			super(start, end);
@@ -100,10 +89,6 @@ public class ASTSwitch extends IASTStm {
 
 	ASTRE expr;
 	List<ASTCase> cases = new ArrayList<>();
-	public ASTSwitch(Token start, Token end, ASTRE expr) {
-		super(start, end);
-		this.expr = expr;
-	}
 
 		public ASTSwitch(int start, int end, ASTRE expr) {
 		super(start, end);

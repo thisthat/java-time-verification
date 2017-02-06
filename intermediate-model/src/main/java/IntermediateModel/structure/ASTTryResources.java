@@ -2,7 +2,6 @@ package intermediateModel.structure;
 
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.List;
 
@@ -13,10 +12,7 @@ import java.util.List;
 public class ASTTryResources extends ASTTry implements IASTVisitor {
 
 	List<ASTRE> resources;
-	public ASTTryResources(Token start, Token end, List<ASTRE> resources) {
-		super(start, end);
-		this.resources = resources;
-	}
+
 	public ASTTryResources(int start, int end, List<ASTRE> resources) {
 		super(start, end);
 		this.resources = resources;

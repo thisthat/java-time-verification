@@ -8,8 +8,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
-import parser.Java2AST;
-import parser.exception.ParseErrorsException;
+import timeannotation.parser.Java2AST;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class StartEvaluation {
 
 	private final String __dir = "vuze";
 
-	public static void main(String args[]) throws IOException, ParseErrorsException {
+	public static void main(String args[]) throws IOException {
 		if(args.length < 1){
 			System.out.println("You should pass as parameter the directory of the project to analyze");
 			return;
@@ -34,7 +33,7 @@ public class StartEvaluation {
 		new StartEvaluation().run(args[0]);
 	}
 
-	public void run(String base_path) throws IOException, ParseErrorsException {
+	public void run(String base_path) throws IOException {
 		File dir = new File(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
@@ -59,7 +58,7 @@ public class StartEvaluation {
 
 		while (i.hasNext()) {
 			String filename = ((File)i.next()).getAbsolutePath();
-			Java2AST a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			Java2AST a = new Java2AST(filename,  true);
 			CompilationUnit result = a.getContextJDT();
 			JDTVisitor v = new JDTVisitor(result, filename);
 			result.accept(v);

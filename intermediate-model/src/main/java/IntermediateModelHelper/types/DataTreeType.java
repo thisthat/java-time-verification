@@ -3,7 +3,6 @@ package IntermediateModelHelper.types;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexMethod;
 import intermediateModel.structure.ASTClass;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -198,10 +197,15 @@ public class DataTreeType {
 		//dots?
 		type1 = type1.contains("<") ? type1.substring(0, type1.indexOf("<")) : type1;
 		type2 = type2.contains("<") ? type2.substring(0, type2.indexOf("<")) : type2;
+		//arrays?
+		type1 = type1.contains("[") ? type1.substring(0, type1.indexOf("[")) : type1;
+		type2 = type2.contains("[") ? type2.substring(0, type2.indexOf("[")) : type2;
 		String t1 = type1.contains(".") ? type1.substring(type1.indexOf(".") +1 ) : type1;
 		String t2 = type2.contains(".") ? type2.substring(type2.indexOf(".") +1 ) : type2;
 		if(t1.equals("Object") && t2.length() > 1) return Character.isUpperCase(t2.charAt(0));
 		if(t2.equals("Object") && t1.length() > 1) return Character.isUpperCase(t1.charAt(0));
+		if(t1.equals("Class") && t2.length() > 1) return Character.isUpperCase(t2.charAt(0));
+		if(t2.equals("Class") && t1.length() > 1) return Character.isUpperCase(t1.charAt(0));
 		//null is always compatible
 		if(type1.equals("null") && Character.isUpperCase(type2.charAt(0))) return true;
 		if(type2.equals("null") && Character.isUpperCase(type1.charAt(0))) return true;

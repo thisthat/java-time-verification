@@ -5,7 +5,7 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.1</version>
+        <version>0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>Testing</name>
@@ -46,12 +46,12 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>intermediate-model</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>PCFG</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
 
     </dependencies>

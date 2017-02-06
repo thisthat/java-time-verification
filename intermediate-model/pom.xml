@@ -5,13 +5,13 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.1</version>
+        <version>0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>Intermediate-Model</name>
     <packaging>jar</packaging>
     <artifactId>intermediate-model</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <description>
         The following module encapsulate all the structure of a Java source code file in an intermediate stucture that
         allows us to keep track of the information in the file and perform evaluation over it.
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>java-parser</artifactId>
-            <version>0.1</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -44,11 +44,6 @@
             <version>0.1</version>
         </dependency>
         <dependency>
-            <groupId>java-xal</groupId>
-            <artifactId>convert2xal</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
             <version>3.3.0</version>
@@ -57,6 +52,16 @@
             <groupId>org.mongodb.morphia</groupId>
             <artifactId>morphia</artifactId>
             <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>time-annotation</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.6.3</version>
         </dependency>
     </dependencies>
     <build>
@@ -67,7 +72,8 @@
                 <version>2.19.1</version>
                 <configuration>
                     <excludes>
-                        <!-- <exclude>**/TestHeuristics.java</exclude> -->
+                        <!-- At the moment notations are skiped, not yet implemented -->
+                         <exclude>**/TestAnnotations.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>

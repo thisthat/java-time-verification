@@ -1,10 +1,9 @@
 package intermediateModel.structure.expression;
 
+import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.ASTREVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -15,17 +14,8 @@ public class NotYetImplemented extends IASTStm implements IASTRE {
 	StackTraceElement[] cause = Thread.currentThread().getStackTrace();
 	String typeElm = null;
 
-	public NotYetImplemented(Token start, Token end) {
-		super(start, end);
-	}
-
 	public NotYetImplemented(int start, int end) {
 		super(start, end);
-	}
-
-	public NotYetImplemented(Token start, Token end, String typeElm) {
-		super(start, end);
-		this.typeElm = typeElm;
 	}
 
 	public NotYetImplemented(int start, int end, String typeElm) {

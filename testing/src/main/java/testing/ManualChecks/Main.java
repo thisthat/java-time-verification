@@ -1,22 +1,20 @@
 package testing.ManualChecks;
 
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.IndexingSyncBlock;
+import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import PCFG.structure.PCFG;
+import IntermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.creation.IM2PCFG;
-import PCFG.structure.edge.SyncEdge;
+import PCFG.structure.PCFG;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,40 +24,30 @@ import java.util.List;
 public class Main {
 
 	List<ASTClass> classes = new ArrayList<>();
-	static final String name = "wildfly-core";
+	static final String name = "activemq";
 
 	public static void main(String[] args) throws Exception {
 
 		MongoOptions.getInstance().setDbName(name);
 
-		new Main().run1();
+		new Main().run();
 	}
 
 
 	public void run() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("manual/HTTPNetworkConnection.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
-		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast, f);
-		ast.accept(v);
-		classes.addAll(v.listOfClasses);
-		ASTClass c = classes.get(4);
-
-		//add the second method
-		f =  Main.class.getClassLoader().getResource("manual/HTTPNetworkConnection.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
-		ast = a.getContextJDT();
-		v = new JDTVisitor(ast, f);
-		ast.accept(v);
-		ASTClass c1 = v.listOfClasses.get(4);
-
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("pendingRequest",
-				Arrays.asList("BTRequest","httpRequest")
-		), false);
-		p.addClass(c1, c1.getMethodBySignature("pendingRequest",
-				Arrays.asList("BTRequest","httpRequest")
-		), false);
+
+		String f =  "/Users/giovanni/repository/sources/vuze/src/main/java/org/gudy/azureus2/ui/swt/views/table/painted/TableRowPainted.java";
+		classes.addAll(JDTVisitor.parse(f));
+		ASTClass c = classes.get(0);
+		p.addClass(c, c.getFirstMethodByName("setSubItems"));
+
+		classes.clear();
+		f = "/Users/giovanni/repository/sources/vuze/src/main/java/org/gudy/azureus2/core3/util/ReferenceCountedDirectByteBuffer.java";
+		classes.addAll(JDTVisitor.parse(f));
+		c = classes.get(0);
+		p.addClass(c, c.getFirstMethodByName("incrementReferenceCount"));
+
 		/*p.addClass(c1, c1.getMethodBySignature("NetworkGlueLoopBack",
 				Arrays.asList("NetworkGlueListener")
 		));*/
@@ -74,9 +62,9 @@ public class Main {
 
 	public void run1() throws Exception {
 
-		String f = "/Users/giovanni/repository/sources/wildfly-core/server/src/main/java/org/jboss/as/server/deployment/DeploymentUnitPhaseService.java";
+		String f = "/Users/giovanni/repository/sources/jetty/jetty-ant/src/main/java/org/eclipse/jetty/ant/AntWebAppContext.java";
 		//Main.class.getClassLoader().getResource("activemq/QueueStorePrefetch.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f,  true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -84,19 +72,24 @@ public class Main {
 		ASTClass c = classes.get(0);
 
 		//add the second method
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
 		ASTClass c1 = v.listOfClasses.get(0);
 
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getFirstMethodByName("start"));
+		//p.addClass(c, c.getFirstMethodByName("getProducerBrokerExchange"));
+
+		List<IASTMethod> list = new ArrayList<IASTMethod>();
+		list.add(c.getFirstMethodByName("doStop"));
+		GenerateMethodSyncCallList syncCalls = new GenerateMethodSyncCallList(c, list );//c.getMethods());
+		List<SyncMethodCall> calls = syncCalls.calculateSyncCallList();
 		/*,
 				Arrays.asList("ThreadPool")
 		));*/
 
-		p.addClass(c, c.getFirstMethodByName("start"));
+		p.addClass(c, c.getFirstMethodByName("resetStats"));
 		/*
 				Arrays.asList("ThreadPool")
 		));*/

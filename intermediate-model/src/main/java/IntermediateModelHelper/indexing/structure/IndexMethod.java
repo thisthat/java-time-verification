@@ -36,8 +36,9 @@ public class IndexMethod {
 	boolean isConstructor = false;
 	boolean isSync = false;
 	boolean isAbs = false;
+	boolean isStatic = false;
 
-	public IndexMethod(String packageName, String fullpackageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync, boolean isAbs) {
+	public IndexMethod(String packageName, String fullpackageName, String name, String returnType, String fromClass, List<IndexParameter> parameters, List<String> exceptionsThrowed, int start, int end, int line, boolean isConstructor, boolean isSync, boolean isAbs, boolean isStatic) {
 		this.packageName = packageName;
 		this.fullpackageName = fullpackageName;
 		this.name = name;
@@ -51,6 +52,7 @@ public class IndexMethod {
 		this.isConstructor = isConstructor;
 		this.isSync = isSync;
 		this.isAbs = isAbs;
+		this.isStatic = isStatic;
 	}
 
 
@@ -209,4 +211,11 @@ public class IndexMethod {
 		this.fromClass = fromClass;
 	}
 
+	public boolean isStatic() {
+		return isStatic;
+	}
+
+	public void setStatic(boolean aStatic) {
+		isStatic = aStatic;
+	}
 }

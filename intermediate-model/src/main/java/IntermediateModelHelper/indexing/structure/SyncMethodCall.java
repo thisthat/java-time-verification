@@ -22,12 +22,12 @@ public class SyncMethodCall {
 	private ASTRE node;
 	private String _inPackageName;
 	private String _inClassName;
-	private short type;
+	private boolean isStatic;
 
 	public static final short _SYNC_CALL_NORMAL_ = 0;
 	public static final short _SYNC_CALL_MAYBE_ = 1;
 
-	public SyncMethodCall(String _packageName, String _className, String _methodCalled, List<String> signatureMethodCalled, ASTRE node, List<Pair<String, String>> paramsType, String _inMethodName, List<String> _signatureInMethod, String _inPackageName, String _inClassName, short type) {
+	public SyncMethodCall(String _packageName, String _className, String _methodCalled, List<String> signatureMethodCalled, ASTRE node, List<Pair<String, String>> paramsType, String _inMethodName, List<String> _signatureInMethod, String _inPackageName, String _inClassName, boolean isStatic) {
 		this._packageName = _packageName;
 		this._className = _className;
 		this._methodCalled = _methodCalled;
@@ -38,7 +38,7 @@ public class SyncMethodCall {
 		this._signatureMethodCalled = signatureMethodCalled;
 		this._inPackageName = _inPackageName;
 		this._inClassName = _inClassName;
-		this.type = type == _SYNC_CALL_NORMAL_ ? _SYNC_CALL_NORMAL_ : _SYNC_CALL_MAYBE_;
+		this.isStatic = isStatic;
 	}
 
 	public List<String> get_signatureMethodCalled() {
@@ -86,8 +86,8 @@ public class SyncMethodCall {
 		return _inClassName;
 	}
 
-	public short getType() {
-		return type;
+	public boolean isStatic() {
+		return isStatic;
 	}
 
 	@Override

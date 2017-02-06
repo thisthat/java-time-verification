@@ -1,8 +1,6 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import IntermediateModelHelper.indexing.structure.IndexSyncCall;
+import IntermediateModelHelper.indexing.structure.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -14,9 +12,12 @@ import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.Mapper;
 import org.mongodb.morphia.mapping.MapperOptions;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,8 @@ public class MongoConnector {
 	private static HashMap<String,MongoConnector> instances = new HashMap<String, MongoConnector>();
 
 	MongoDatabase db;
+	String dbName;
+	DBStatus dbStatus;
 	MongoCollection<Document> indexCollection;
 	final Morphia morphia = new Morphia();
 	Datastore datastore;
@@ -69,6 +72,7 @@ public class MongoConnector {
 	protected MongoConnector(String db_name, String ip, int port) {
 		MongoClient mongoClient = new MongoClient(ip, port);
 		db = mongoClient.getDatabase(db_name);
+		dbName = db_name;
 		indexCollection = db.getCollection(__COLLECTION_NAME);
 		datastore = morphia.createDatastore(mongoClient, db_name);
 		MapperOptions options = new MapperOptions();
@@ -78,6 +82,21 @@ public class MongoConnector {
 		morphia.mapPackage("IntermediateModelHelper.indexing.structure");
 		datastore.ensureIndexes();
 		datastore.ensureCaps();
+
+		Query<DBStatus> q = datastore.createQuery(DBStatus.class);
+		q.field("dbName").equal(dbName);
+		try {
+			List<DBStatus> r = q.asList();
+			if (!(r.size() > 0)) {
+				dbStatus = new DBStatus(dbName, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false);
+				datastore.save(dbStatus);
+			} else {
+				dbStatus = r.get(0);
+			}
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+
 	}
 
 	/**
@@ -152,7 +171,19 @@ public class MongoConnector {
 	 * @return	True if it is already in the DB.
 	 */
 	public boolean existSyncCallIndex(IndexSyncCall i){
-		return existSyncCallIndex(i.getClassName(), i.getPackageName(), i.getMethodName(), i.getMethodSignature());
+		return datastore.createQuery(IndexSyncCall.class)
+				.field("line").equal(i.getLine())
+				.field("path").equal(i.getPath())
+				.field("classPackage").equal(i.getClassPackage())
+				.field("name").equal(i.getClassName())
+				.field("methodName").equal(i.getMethodName())
+				.field("methodSignature").equal(i.getMethodSignature())
+				.field("_inClassPackage").equal(i.get_inClassPackage())
+				.field("_inClassName").equal(i.get_inClassName())
+				.field("_inMethodName").equal(i.get_inMethodName())
+				.field("_signatureInMethod").equal(i.get_signatureInMethod())
+				.asList().size() > 0;
+		//return false;
 	}
 	/**
 	 * Check if a class is already in the DB in the collection of Synchronized calls.
@@ -407,6 +438,19 @@ public class MongoConnector {
 	}
 
 	/**
+	 * It queries the database to retrieve all the classes that are Threads.
+	 * @return list of {@link IndexData} objects.
+	 */
+	public List<IndexData> getMains(){
+		Query<IndexData> q = datastore.find(IndexData.class)
+				.filter("listOfMethods.isStatic = ", true)
+				.filter("listOfMethods.returnType = ", "void")
+				.filter("listOfMethods.name = ", "main");
+		return q.asList();
+
+	}
+
+	/**
 	 * Get the list of classes that belong to an import statement
 	 * @param query	package name of the import
 	 * @return	List of {@link IndexData} classes
@@ -570,6 +614,53 @@ public class MongoConnector {
 		return out;
 	}
 
+	public void setIndexStart(){
+		try {
+			this.dbStatus.setLastEdit(new Timestamp(System.currentTimeMillis()));
+			this.dbStatus.setIndexed(false);
+			this.datastore.save(dbStatus);
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public void setIndexFinish(){
+		try {
+			this.dbStatus.setLastEdit(new Timestamp(System.currentTimeMillis()));
+			this.dbStatus.setIndexed(true);
+			this.datastore.save(dbStatus);
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public boolean getIndexStatus(){
+		Query<DBStatus> q = datastore.createQuery(DBStatus.class);
+		q.field("dbName").equal(dbName);
+		try {
+			List<DBStatus> r = q.asList();
+			if (!(r.size() > 0)) {
+				dbStatus = new DBStatus(dbName, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false);
+				datastore.save(dbStatus);
+			} else {
+				dbStatus = r.get(0);
+			}
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+		return this.dbStatus.isIndexed();
+	}
+
+	public List<IndexData> getType(String type) {
+		Query<IndexData> q;
+		q = datastore.createQuery(IndexData.class);
+		q.or(
+				q.criteria(__EXTENDED).equal(type),
+				q.criteria(__IMPLEMENTS).contains(type)
+		);
+		return q.asList();
+	}
+
 
 	/**
 	 * Delete the current database
@@ -600,4 +691,6 @@ public class MongoConnector {
 		Pair<String,String> p = new Pair<>(c.getName(),c.getPackageName());
 		cacheSyncBlock.remove(p);
 	}
+
+
 }

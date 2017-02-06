@@ -10,7 +10,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class TestBugs {
 
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_1.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -46,7 +46,7 @@ public class TestBugs {
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -62,7 +62,7 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 2 );
+		assertEquals(g.getESync().size(), 4 );
 
 	}
 
@@ -79,7 +79,7 @@ public class TestBugs {
 
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_3.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -90,7 +90,7 @@ public class TestBugs {
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -106,10 +106,10 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 1 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
-	@Test(expected = AssertionError.class)
+	@Test //(expected = AssertionError.class)
 	public void TestBug22_package_error() throws Exception {
 		IM2PCFG p = new IM2PCFG();
 
@@ -122,7 +122,7 @@ public class TestBugs {
 
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_4.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -133,7 +133,7 @@ public class TestBugs {
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -165,7 +165,7 @@ public class TestBugs {
 
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_5.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -176,7 +176,7 @@ public class TestBugs {
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_2.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -192,7 +192,7 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 1 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 
 	@Test
@@ -208,7 +208,7 @@ public class TestBugs {
 
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_6.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -219,7 +219,7 @@ public class TestBugs {
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_7.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -251,7 +251,7 @@ public class TestBugs {
 
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_8.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -262,7 +262,7 @@ public class TestBugs {
 
 		//add the second method
 		f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_9.java").getFile();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -278,6 +278,6 @@ public class TestBugs {
 		assertEquals(g.getE().size(), 4);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 2 );
-		assertEquals(g.getESync().size(), 1 );
+		assertEquals(g.getESync().size(), 2 );
 	}
 }

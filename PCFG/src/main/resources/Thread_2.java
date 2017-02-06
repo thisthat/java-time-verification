@@ -1,17 +1,16 @@
 class Thread_2 extends Thread {
-	Object minPrime;
-	PrimeThread(Object minPrime) {
-		this.minPrime = minPrime;
+	Object lock;
+	Thread_2(Object lock){
+		this.lock = lock;
 	}
-	public void run() {
-		System.out.print("Start the thread");
-		int do_smth = this.init();
-		synchronized (minPrime){
-			minPrime.hashCode();
+	public void run(){
+		var init = this.init();
+		synchronized(lock){
+			System.out.print("Thread2");
 		}
-		System.out.print("Result" + do_smth);
+		System.out.print("End");
 	}
 	public synchronized int init(){
-		return 10 * 90;
+		return this.hashCode();
 	}
 }

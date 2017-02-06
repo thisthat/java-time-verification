@@ -4,7 +4,6 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -16,13 +15,6 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 	private String name;
 	private ASTRE expr;
 
-	public ASTAttribute(Token start, Token end, Visibility accessRight, String type, String name, ASTRE expr) {
-		super(start, end);
-		this.accessRight = accessRight;
-		this.type = type;
-		this.name = name;
-		this.expr = expr;
-	}
 
 	public ASTAttribute(int start, int end, Visibility accessRight, String type, String name, ASTRE expr) {
 		super(start, end);

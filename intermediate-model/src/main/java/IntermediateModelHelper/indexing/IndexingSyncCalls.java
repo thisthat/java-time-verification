@@ -1,24 +1,13 @@
 package IntermediateModelHelper.indexing;
 
-import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.Env;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.*;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTAttributeAccess;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
+import IntermediateModelHelper.indexing.structure.IndexSyncCall;
+import IntermediateModelHelper.indexing.structure.SyncMethodCall;
+import intermediateModel.structure.ASTClass;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  *

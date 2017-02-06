@@ -15,7 +15,6 @@ import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
-import org.eclipse.jdt.internal.core.index.Index;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
@@ -351,9 +350,9 @@ public class ResolveTypes {
 			List<IndexData> parentImports = new ArrayList<>(imports);
 			MongoConnector mongo = MongoConnector.getInstance();
 			while(!type.equals("Object")){
-				IndexData p = getPackageFromImports(imports, type);
+				IndexData p = getPackageFromImports(parentImports, type);
 				if(p == null){
-					return  "";
+					return "";
 				}
 				for(IndexMethod m : p.getListOfMethods()){
 					if(m.equalBySignature(methodCalled, actual_pars)){

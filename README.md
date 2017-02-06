@@ -41,7 +41,11 @@ The next features to implement are:
 
 # Current Branch
 
+The following branch will use to test new features.
+When they are ready and without knowing issue, a merge request can be created.
 
+
+>>>>>>> annotation
 
 
 

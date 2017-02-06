@@ -1,8 +1,8 @@
 package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.envirorment.Env;
+import IntermediateModelHelper.envirorment.EnvBase;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.*;
@@ -10,10 +10,7 @@ import IntermediateModelHelper.types.ResolveTypes;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTAttributeAccess;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
@@ -176,7 +173,13 @@ public class IndexingSyncBlock extends ParseIM {
 		sync.setInherited(isInherited);
 		sync.setPkgVar(pkgVar);
 		sync.setClassVar(classVar);
-		boolean[] flag = {false, false}; //read,write access
+		ASTRE syncExpr = elm.getExpr();
+		boolean flagW = false, flagR = false;
+		if(syncExpr.getExpression() != null){
+			flagR = (syncExpr.getExpression() instanceof ASTMethodCall);
+			flagW = flagR;
+		}
+		boolean[] flag = {flagR, flagW}; //read,write access
 		//check if the expression of the current variable is possible to be used outside of the class
 		// can be used only in two cases:
 		// 1. The variable is in a return statement

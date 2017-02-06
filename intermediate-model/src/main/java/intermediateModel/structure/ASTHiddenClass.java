@@ -2,12 +2,9 @@ package intermediateModel.structure;
 
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
-import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -15,11 +12,6 @@ import java.util.List;
  */
 
 public class ASTHiddenClass extends ASTClass implements IASTVisitor {
-
-
-	public ASTHiddenClass(Token start, Token end) {
-		super(start, end, "", "", Visibility.HIDDEN, "", new ArrayList<String>());
-	}
 
 	public ASTHiddenClass(int start, int end) {
 		super(start, end, "", "", Visibility.HIDDEN, "", new ArrayList<String>());

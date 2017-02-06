@@ -1,16 +1,16 @@
 import Thread_2;
-
 class Thread_1 extends Thread {
-	Object minPrime;
+	Object lock;
 	Thread_2 var;
-	PrimeThread(Object minPrime) {
-		this.minPrime = minPrime;
+	Thread_1(Object lock){
+		this.lock = lock;
 	}
-	public void run() {
+	public void run(){
 		int init = var.init();
-		synchronized (minPrime){
-			System.out.print("Result" + do_smth);
+		synchronized(lock){
+			System.out.print("Thread1");
 		}
-
+		Thread.sleep(1000);
+		System.out.print("End");
 	}
 }

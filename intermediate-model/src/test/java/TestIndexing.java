@@ -5,7 +5,7 @@ import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class TestIndexing {
 
 	public List<ASTClass> init(String filename) throws Exception {
 		Java2AST a = new Java2AST( filename );
-		a.convertToAST(Java2AST.VERSION.JDT);
+		a.convertToAST();
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);

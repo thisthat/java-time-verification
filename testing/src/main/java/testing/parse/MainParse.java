@@ -11,8 +11,7 @@ import intermediateModel.structure.*;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
-import parser.exception.ParseErrorsException;
+import timeannotation.parser.Java2AST;
 import testing.indexing.MainSyncBlockHugeClass;
 
 import java.io.IOException;
@@ -191,11 +190,8 @@ public class MainParse {
 		String base_path = MainSyncBlockHugeClass.class.getClassLoader().getResource("BuddyPluginViewBetaChat.java").getPath();
 		Java2AST a = null;
 		try {
-			a = new Java2AST(base_path, Java2AST.VERSION.JDT, true);
+			a = new Java2AST(base_path, true);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		} catch (ParseErrorsException e) {
 			e.printStackTrace();
 			return;
 		}

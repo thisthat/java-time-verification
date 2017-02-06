@@ -2,7 +2,6 @@ package intermediateModel.structure;
 
 import IntermediateModelHelper.types.DataTreeType;
 import intermediateModel.interfaces.*;
-import org.antlr.v4.runtime.Token;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -23,17 +22,6 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	boolean isAbstract = false;
 	boolean isStatic = false;
 
-
-	public ASTMethod(Token start, Token end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract) {
-		super(start,end);
-		this.name = name;
-		this.returnType = returnType;
-		this.parameters = parameters;
-		this.exceptionsThrowed = exceptionsThrowed;
-		this.isSyncronized = isSyncronized;
-		this.isAbstract = isAbstract;
-		this.isStatic = isStatic;
-	}
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract, boolean isStatic) {
 		super(start,end);
@@ -149,6 +137,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	}
 
 	public boolean equalsBySignature(IASTMethod c) {
+		if(c == null) return false;
 		if(!c.getName().equals(this.name)) return false;
 		if(c.getParameters().size() != this.parameters.size()) return false;
 		boolean flag = true;

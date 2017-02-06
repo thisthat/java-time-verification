@@ -13,7 +13,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
-import parser.Java2AST;
+import timeannotation.parser.Java2AST;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class TestBugs {
 	public void bugHiddenClasses() throws Exception {
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/HiddenClass.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -70,7 +70,7 @@ public class TestBugs {
 	public void bugHiddenClassesStmsToCorrectMethod() throws Exception {
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Strange.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast,f);
 		ast.accept(v);
@@ -82,7 +82,7 @@ public class TestBugs {
 	@Test
 	public void notWellParsed() throws Exception {
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/NotWellParsed.java").getFile();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast,f);
 		ast.accept(v);
@@ -100,7 +100,7 @@ public class TestBugs {
 	@Test
 	public void CheckAccessibilitiesFromOutside() throws Exception {
 		String f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/FirstCase_1.java").getPath();
-		Java2AST a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -113,7 +113,7 @@ public class TestBugs {
 		assertTrue(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/FirstCase_2.java").getPath();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -126,7 +126,7 @@ public class TestBugs {
 		assertTrue(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/FirstCase_3.java").getPath();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -139,7 +139,7 @@ public class TestBugs {
 		assertFalse(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/SecondCase_1.java").getPath();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);
@@ -152,7 +152,7 @@ public class TestBugs {
 		assertFalse(i.get(0).isAccessibleWritingFromOutside());
 
 		f = TestBugs.class.getClassLoader().getResource("checkOutsideAccessibilities/SecondCase_2.java").getPath();
-		a = new Java2AST(f, Java2AST.VERSION.JDT, true);
+		a = new Java2AST(f, true);
 		ast = a.getContextJDT();
 		v = new JDTVisitor(ast, f);
 		ast.accept(v);

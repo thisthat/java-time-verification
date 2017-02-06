@@ -1,13 +1,13 @@
 package IntermediateModelHelper.heuristic.definition;
 
 import IntermediateModelHelper.envirorment.BuildEnvironment;
+import IntermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
-import IntermediateModelHelper.envirorment.Env;
 
 /**
  * The following class implement a search in the ASTRE of Thread.sleep/Thread.join.

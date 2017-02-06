@@ -10,6 +10,7 @@ import IntermediateModelHelper.types.DataTreeType;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
+import PCFG.structure.node.Node;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import intermediateModel.interfaces.IASTMethod;
@@ -40,6 +41,8 @@ public class ThirdEvaluation {
 	public class GeneralInfo {
 		public long syncBlock = 0;
 		public long syncCalls = 0;
+		public long syncCalls_must = 0;
+		public long syncCalls_may = 0;
 		public long nClasses = 0;
 		public long nMethods = 0;
 
@@ -60,6 +63,8 @@ public class ThirdEvaluation {
 			out += String.format("#Synchronized Methods: %d \n", this.nSyncMethods);
 			out += String.format("#Sync Blocks: %d \n", this.syncBlock);
 			out += String.format("#Sync Calls: %d \n", this.syncCalls);
+			out += String.format("#Must Sync Calls: %d \n", this.syncCalls_must);
+			out += String.format("#May Sync Calls: %d \n", this.syncCalls_may);
 
 			out += String.format("#Methods w/ Sync Blocks: %d \n", this.methodSyncBlock);
 			out += String.format("#Methods w/ Sync Calls: %d \n", this.methodSyncCall);
@@ -146,9 +151,9 @@ public class ThirdEvaluation {
 		System.out.println("Finish delete");
 		indexing.indexProject(path, false);
 		System.out.println("Indexing done");
-		indexing.indexSyncBlock(path, false);
+		if(this.runBlocks) indexing.indexSyncBlock(path, false);
 		System.out.println("Indexing Blocks done");
-		indexing.indexSyncCall(path, false);
+		if(this.runCalls) indexing.indexSyncCall(path, false);
 		System.out.println("Indexing Calls done");
 		double end = new Date().getTime();
 		System.out.println("[Indexing] "+ (end-start)/1000 + " s");
@@ -219,25 +224,26 @@ public class ThirdEvaluation {
 	}
 
 	private void evalSyncCall(List<IndexSyncCall> syncsCall) {
-		int total = syncsCall.size() * syncsCall.size();
-		int current = 0;
+		//int total = syncsCall.size() * syncsCall.size();
+		//int current = 0;
 		for(IndexSyncCall first : syncsCall){
 			for(IndexSyncCall second : syncsCall){
-				current++;
-				double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
+				//current++;
+				//double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
 				//System.out.print(String.format("\r[%s %%]", perc ));
-				compare(first,second);
+				if(first.get_inClassName().equals(second.get_inClassName()))
+					compare(first,second);
 			}
 		}
 	}
 
 	private void evalSyncBlocks(List<IndexSyncBlock> methodsBlock) {
-		int total = methodsBlock.size() * methodsBlock.size();
-		int current = 0;
+		//int total = methodsBlock.size() * methodsBlock.size();
+		//int current = 0;
 		for(IndexSyncBlock first : methodsBlock){
 			for(IndexSyncBlock second : methodsBlock){
-				current++;
-				double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
+				//current++;
+				//double perc = Math.floor(((double)current / (double)total * 100) * 1000) / 1000;
 				//System.out.print(String.format("\r[%s %%]", perc ));
 				if(DataTreeType.checkCompatibleTypes( first.getExprType(), second.getExprType(), first.getExprPkg(), second.getExprPkg() )){
 					compare(first, second);
@@ -386,8 +392,9 @@ public class ThirdEvaluation {
 
 	private void compare(ASTClass class_1, IASTMethod method_1, ASTClass class_2, IASTMethod method_2, EvalType type) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(class_1, method_1, false);
-		p.addClass(class_2, method_2, false);
+		p.setForceReindex(false);
+		p.addClass(class_1, method_1);
+		p.addClass(class_2, method_2);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSyncBlock = 0;
@@ -395,8 +402,12 @@ public class ThirdEvaluation {
 		for(SyncEdge e : graph.getESync()){
 			if(e.getType() == SyncEdge.TYPE.SYNC_BLOCK){
 				numberSyncBlock++;
-			} else if(e.getType() == SyncEdge.TYPE.SYNC_NODE) {
+			} else if(e.getType() == SyncEdge.TYPE.MAY_SYNC){
 				numberSyncCall++;
+				statistics.syncCalls_may++;
+			} else if(e.getType() == SyncEdge.TYPE.MUST_SYNC) {
+				numberSyncCall++;
+				statistics.syncCalls_must++;
 			}
 		}
 		if(timeConstraint > 0){
@@ -423,6 +434,16 @@ public class ThirdEvaluation {
 			writerBlocks.flush();
 		} else if(type == EvalType.CALLS) {
 			String out = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s", pkgOut, cOut, mOut, pkgIn, cIn, mIn, timeConstraint, numberSyncCall, (timeConstraint + numberSyncCall));
+			for(SyncEdge e : graph.getESync()){
+				if(e.getType() == SyncEdge.TYPE.MAY_SYNC || e.getType() == SyncEdge.TYPE.MUST_SYNC){
+					Node from = (Node) e.getFrom();
+					Node to = (Node) e.getTo();
+					int lineFrom = from.getLine();
+					int lineTo = to.getLine();
+					String t = e.getType() == SyncEdge.TYPE.MUST_SYNC ? "Must" : "May";
+					out += ";" + lineFrom + "-" + lineTo + ";" + t;
+				}
+			}
 			writerCalls.println(out);
 			writerCalls.flush();
 		}

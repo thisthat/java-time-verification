@@ -4,17 +4,19 @@ import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
+import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
-import PCFG.creation.IM2PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.Java2AST;
-import parser.exception.ParseErrorsException;
+import timeannotation.parser.Java2AST;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -179,8 +181,8 @@ public class EvalTopFile {
 
 	private void compare(ASTClass work_item, IASTMethod method_work_item, ASTClass aClass, IASTMethod method_class, int i) {
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(work_item, method_work_item, false);
-		p.addClass(aClass , method_class, false);
+		p.addClass(work_item, method_work_item);
+		p.addClass(aClass , method_class);
 		PCFG graph = p.buildPCFG();
 		int timeConstraint = p.getConstraintsSize();
 		int numberSync = graph.getESync().size();
@@ -236,11 +238,8 @@ public class EvalTopFile {
 		Java2AST a = null;
 		List<ASTClass> out = new ArrayList<>();
 		try {
-			a = new Java2AST(filename, Java2AST.VERSION.JDT, true);
+			a = new Java2AST(filename, true);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return out;
-		} catch (ParseErrorsException e) {
 			e.printStackTrace();
 			return out;
 		}
