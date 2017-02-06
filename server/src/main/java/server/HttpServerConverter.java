@@ -30,6 +30,10 @@ public class HttpServerConverter {
 	}
 
 	public HttpServerConverter() throws IOException {
+		this(port);
+	}
+
+	public HttpServerConverter(int port) throws IOException {
 		server = HttpServer.create(new InetSocketAddress(port), 0);
 		System.out.println("server started at " + port);
 
