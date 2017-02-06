@@ -49,7 +49,7 @@ public class TestBasicUrl {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(base_url + "/");
 		CloseableHttpResponse response = httpclient.execute(httpget);
-		assertEquals(400, response.getStatusLine().getStatusCode());
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 	@Test
 	public void TestEchoHeader() throws Exception {
