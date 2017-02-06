@@ -5,13 +5,13 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>server</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
