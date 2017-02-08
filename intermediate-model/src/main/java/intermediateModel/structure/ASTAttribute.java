@@ -62,6 +62,12 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 		return expr;
 	}
 
+	public String toText() {
+		if(expr != null)
+			return expr.getCode();
+		return "";
+	}
+
 	public void setExpr(ASTRE expr) {
 		this.expr = expr;
 	}

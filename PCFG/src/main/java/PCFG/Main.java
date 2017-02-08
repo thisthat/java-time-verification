@@ -44,21 +44,8 @@ public class Main {
 		classes.addAll(v.listOfClasses);
 		ASTClass c = classes.get(0);
 
-		//add the second method
-		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
-		a = new Java2AST(f, true);
-		ast = a.getContextJDT();
-		v = new JDTVisitor(ast, f);
-		ast.accept(v);
-		ASTClass c1 = v.listOfClasses.get(0);
-
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("run",
-				Arrays.asList()
-		));
-		p.addClass(c1, c1.getMethodBySignature("run",
-				Arrays.asList()
-		));
+		p.addClass(c);
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 

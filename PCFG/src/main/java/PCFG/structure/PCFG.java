@@ -7,8 +7,10 @@ import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.INode;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
+import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,6 +20,12 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class PCFG implements IHasCFG {
+
+	public enum DefaultAnnotation {
+		GlobalVars
+	}
+
+	HashMap<String,Object> annotation = new HashMap<>();
 
 	List<SyncEdge> ESync = new ArrayList<>();
 	List<CFG> processes = new ArrayList<>();
@@ -180,5 +188,17 @@ public class PCFG implements IHasCFG {
 			}
 		}
 		return null;
+	}
+
+	public HashMap<String, Object> getAnnotation() {
+		return annotation;
+	}
+
+	public void setAnnotation(HashMap<String, Object> annotation) {
+		this.annotation = annotation;
+	}
+
+	public void addAnnotation(String key, Object attrs) {
+		this.annotation.put(key, attrs);
 	}
 }

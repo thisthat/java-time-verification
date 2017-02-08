@@ -10,7 +10,7 @@ class Thread_1 extends Thread {
 		if(x > 0){
 			print("a");
 		} else {
-			print("b");
+			println("b");
 		}
 		synchronized(lock){
 			System.out.print("Thread1");

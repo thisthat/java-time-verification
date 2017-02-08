@@ -14,6 +14,10 @@ import PCFG.structure.node.SyncNode;
 import XAL.XALStructure.XALAddState;
 import XAL.XALStructure.exception.XALMalformedException;
 import XAL.XALStructure.items.*;
+import org.javatuples.Triplet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -24,6 +28,7 @@ public class ToXAL implements IConverter {
 	XALDocument doc = null;
 	XALAddState aut = null;
 	XALAutomaton lastAutomaton = null;
+	XALGlobalState globalVars = new XALGlobalState();
 
 	@Override
 	public String convert(PCFG pcfg) {
@@ -37,6 +42,11 @@ public class ToXAL implements IConverter {
 	public XALDocument getXAL(PCFG pcfg, String filename) {
 		pcfg = pcfg.optimize( new OptimizeForXAL() );
 		XALDocument document = new XALDocument(filename);
+
+		List<Triplet<String,String,String>> vars = (List<Triplet<String,String,String>>) pcfg.getAnnotation().get(String.valueOf(PCFG.DefaultAnnotation.GlobalVars));
+		for(Triplet<String,String,String> v : vars){
+			globalVars.addVariable(new XALVariable(v.getValue0(),v.getValue1(), v.getValue2()));
+		}
 		this.doc = document;
 		for(CFG c : pcfg.getCFG()){
 			getXAL(c);
@@ -54,6 +64,7 @@ public class ToXAL implements IConverter {
 
 	private void getXAL(CFG cfg, String name) {
 		XALAutomaton automa = new XALAutomaton(name);
+		automa.setGlobalState(globalVars);
 		doc.addAutomaton(automa);
 		lastAutomaton = automa;
 		aut = automa;
@@ -118,6 +129,7 @@ public class ToXAL implements IConverter {
 		XALAutomaton bck = lastAutomaton;
 		XALAddState bckAut = aut;
 		XALAutomaton automa = new XALAutomaton("sync_on_" + sv.getExpr() + "_" + sv.getID());
+		automa.setGlobalState(globalVars);
 		doc.addAutomaton(automa);
 		//creating metrics
 		String name = automa.getId();

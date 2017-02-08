@@ -10,6 +10,7 @@ import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import org.javatuples.KeyValue;
@@ -30,6 +31,7 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class IM2PCFG {
+
 
 	private List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock> >> indexs = new ArrayList<>();
 	CreateCFG pcfgBuilder = new CreateCFG();
@@ -127,6 +129,23 @@ public class IM2PCFG {
 		}
 
 		PCFG pcfg = pcfgBuilder.convert();
+
+		//annotate with attributes
+		List<Triplet<String,String,String>> attrs = new ArrayList<>();
+		List<ASTClass> visited = new ArrayList<>();
+		ASTClass tmp;
+		for(KeyValue<IASTMethod,ASTClass> k : pcfgBuilder.getClasses()){
+			tmp = k.getValue();
+			if(!visited.contains(tmp)){
+				visited.add(tmp);
+				for(ASTAttribute a : tmp.getAttributes()){
+					attrs.add(new Triplet<>(a.getType(), a.getName(), a.toText()));
+				}
+			}
+		}
+		pcfg.addAnnotation(String.valueOf(PCFG.DefaultAnnotation.GlobalVars), attrs);
+
+
 
 		//check for sync blocks
 		CalculateSyncBlock.calculateSyncBlock(classes, this.indexs, pcfg);

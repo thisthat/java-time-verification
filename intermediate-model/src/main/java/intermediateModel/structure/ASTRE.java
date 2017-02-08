@@ -64,6 +64,12 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		return "::::REXP:::" + expression.toString();
 	}
 
+	public String toText() {
+		if(expression == null)
+			return expression.getCode();
+		return "";
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
