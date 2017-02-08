@@ -119,15 +119,17 @@ public class ToXAL implements IConverter {
 		XALAddState bckAut = aut;
 		XALAutomaton automa = new XALAutomaton("sync_on_" + sv.getExpr() + "_" + sv.getID());
 		doc.addAutomaton(automa);
-
 		//creating metrics
 		String name = automa.getId();
 		String path = doc.getFilename();
+
 		for(Node from : sv.getNodesEntered()){
 			String nameMetric = "to_sync_node_" + from.getID();
 			XALMetric m = new XALMetric(nameMetric, XALProduction.ProductionType.automaton , "", name, path, new XALEnumeration());
+
 			lastAutomaton.getActionPool().addProduction(m);
 			doc.getNodeFromNumericID(from.getID()).setNameMetric(nameMetric);
+			doc.getNodeFromNumericID(from.getID()).setSynchronized(true);
 		}
 
 
@@ -159,7 +161,7 @@ public class ToXAL implements IConverter {
 		XALState f = doc.getNodeFromNumericID(from.getID());
 		XALState t = doc.getNodeFromNumericID(to.getID());
 		if(f == null || t == null) return;
-		lastAutomaton.addTransition(new XALTransition(f,t));
+		lastAutomaton.addTransition(new XALTransition(f,t, e.getLabel()));
 	}
 
 	private void getXAL(AnonymEdge e) {

@@ -7,6 +7,11 @@ class Thread_1 extends Thread {
 	}
 	public void run(){
 		int init = var.init();
+		if(x > 0){
+			print("a");
+		} else {
+			print("b");
+		}
 		synchronized(lock){
 			System.out.print("Thread1");
 		}

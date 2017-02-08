@@ -15,6 +15,7 @@ public class XALState extends XALItem {
     protected String name;
     protected String nameAction = null;
     protected String nameMetric = null;
+    protected boolean isSynchronized = false;
     protected String style = "";
     protected String timeConstraint = "";
 
@@ -112,7 +113,15 @@ public class XALState extends XALItem {
 		this.nameMetric = nameMetric;
 	}
 
-	@Override
+    public boolean isSynchronized() {
+        return isSynchronized;
+    }
+
+    public void setSynchronized(boolean aSynchronized) {
+        isSynchronized = aSynchronized;
+    }
+
+    @Override
     public String toString(int tab) {
         String out = "";
         out += tab(tab) + String.format("<State Id=\"%s\" Desc=\"%s\" ", this._ID, this.name);
@@ -122,6 +131,9 @@ public class XALState extends XALItem {
             out += String.format("IdAction=\"%s\" ", this.nameAction);
         if(style != null)
             out += String.format("style=\"%s\" ", this.style);
+        if(isSynchronized){
+			out += String.format("synchronized=\"%s\" ", this.isSynchronized);
+		}
         out += "/>";
         return out;
     }

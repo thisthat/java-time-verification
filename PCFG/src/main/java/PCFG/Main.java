@@ -3,6 +3,7 @@ package PCFG;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.IConverter;
 import PCFG.converter.ToDot;
+import PCFG.converter.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
@@ -29,7 +30,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		MongoOptions.getInstance().setDbName(db_name);
-		new Main().example_paper();
+		new Main().run();
 	}
 
 
@@ -62,8 +63,8 @@ public class Main {
 		graph.optimize();
 
 		BufferedWriter writer = null;
-		writer = new BufferedWriter(new FileWriter("graph.dot"));
-		IConverter toGraphViz = new ToDot(true);
+		writer = new BufferedWriter(new FileWriter("graph.xal"));
+		IConverter toGraphViz = new ToXAL();
 		writer.write(toGraphViz.convert(graph));
 		writer.close();
 	}
