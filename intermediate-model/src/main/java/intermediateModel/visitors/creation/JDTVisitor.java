@@ -35,14 +35,21 @@ public class JDTVisitor extends ASTVisitor {
 
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
+	public static List<ASTClass> parse(String filename, boolean invalidCache){
+		return  parse(filename, "", invalidCache);
+	}
+	public static List<ASTClass> parse(File file, boolean invalidCache){
+		return  parse(file, "", invalidCache);
+	}
+
 	public static List<ASTClass> parse(String filename){
-		return  parse(filename, "");
+		return  parse(filename, "", false);
 	}
 	public static List<ASTClass> parse(File file){
-		return  parse(file, "");
+		return  parse(file, "", false);
 	}
-	public static List<ASTClass> parse(String filename, String projectPath){
-		if(cache.containsKey(filename)){
+	public static List<ASTClass> parse(String filename, String projectPath, boolean invalidCache){
+		if(!invalidCache && cache.containsKey(filename)){
 			return cache.get(filename);
 		}
 		Java2AST a = null;
@@ -56,7 +63,7 @@ public class JDTVisitor extends ASTVisitor {
 		cache.put(filename, v.listOfClasses);
 		return v.listOfClasses;
 	}
-	public static List<ASTClass> parse(File file, String projectPath){
+	public static List<ASTClass> parse(File file, String projectPath, boolean invalidCache){
 		if(cache.containsKey(file.getPath())){
 			return cache.get(file.getPath());
 		}

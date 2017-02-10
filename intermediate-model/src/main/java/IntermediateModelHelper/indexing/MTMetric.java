@@ -32,7 +32,6 @@ public class MTMetric {
 			this.methods = methods;
 		}
 	}
-
 	//thread
 	//locks
 	//methods

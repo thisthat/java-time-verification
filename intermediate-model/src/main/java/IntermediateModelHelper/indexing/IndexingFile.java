@@ -29,6 +29,10 @@ public class IndexingFile extends ParseIM {
 	ASTClass _c = null;
 
 	public static MTMetric getMetrics(File _old, File _new, List<SourceCodeChange> changes){
+		List<ASTClass> _oldClasses = JDTVisitor.parse(_old);
+		List<ASTClass> _newClasses = JDTVisitor.parse(_new);
+		SourceCodeChange c = changes.get(0);
+
 		return new MTMetric();
 	}
 
