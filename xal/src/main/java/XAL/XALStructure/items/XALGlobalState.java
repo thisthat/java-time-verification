@@ -33,7 +33,8 @@ public class XALGlobalState extends XALItem {
     }
 
     public void addVariable(XALVariable v){
-        variables.add(v);
+        if(!variables.contains(v))
+            variables.add(v);
     }
 
     @Override
@@ -62,5 +63,9 @@ public class XALGlobalState extends XALItem {
     @Override
     protected boolean checkConstriant() {
         return true;
+    }
+
+    public boolean contains(XALVariable var) {
+        return variables.contains(var);
     }
 }

@@ -14,6 +14,7 @@ import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import org.javatuples.KeyValue;
+import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -131,7 +132,7 @@ public class IM2PCFG {
 		PCFG pcfg = pcfgBuilder.convert();
 
 		//annotate with attributes
-		List<Triplet<String,String,String>> attrs = new ArrayList<>();
+		List<Pair<String,String>> attrs = new ArrayList<>();
 		List<ASTClass> visited = new ArrayList<>();
 		ASTClass tmp;
 		for(KeyValue<IASTMethod,ASTClass> k : pcfgBuilder.getClasses()){
@@ -139,7 +140,7 @@ public class IM2PCFG {
 			if(!visited.contains(tmp)){
 				visited.add(tmp);
 				for(ASTAttribute a : tmp.getAttributes()){
-					attrs.add(new Triplet<>(a.getType(), a.getName(), a.toText()));
+					attrs.add(new Pair<>(a.getType(), a.getName()));
 				}
 			}
 		}

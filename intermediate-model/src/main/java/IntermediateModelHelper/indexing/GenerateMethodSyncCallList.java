@@ -180,7 +180,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		return null;
 	}
 
-		private boolean containsMethod(String name, List<Pair<String,String>> parsType, List<IndexMethod> methods){
+	private boolean containsMethod(String name, List<Pair<String,String>> parsType, List<IndexMethod> methods){
 		for(IndexMethod m : methods){
 			if(m.equalBySignature(name, parsType))
 				return true;

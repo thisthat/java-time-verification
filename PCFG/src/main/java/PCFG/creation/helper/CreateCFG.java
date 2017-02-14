@@ -67,6 +67,8 @@ public class CreateCFG extends ConvertIM {
 		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//reset structure
 			visitedHidden.clear();
+			//Node._ID = 0;
+
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){
 				@Override
@@ -89,7 +91,7 @@ public class CreateCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		lastCfg = new CFG(c.getName() + "::" + m.getName(), c.hashCode());
+		lastCfg = new CFG(c.getPackageName() + "." +  c.getName() + "::" + m.getName(), c.hashCode());
 		lastPCFG.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispatchMethod(m, c);
