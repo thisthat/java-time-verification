@@ -1,13 +1,13 @@
-package abc;
+package abc.newpkg;
 
 
 import java.llo.Obj;
-import java.llo.Str;
+import java.llo.Int;
 import java.llo.ChristianIsComplaining;
 
 public class testChange {
 
-    public Object func(){
+    public Object func(int k){
         Response r;
         HttpParser parser=in.takeHttpParser();
         if (parser==null)
@@ -40,7 +40,7 @@ public class testChange {
         LOG.info("Incomplete Response: (parser={}) {}", parser, r);
 
         in.setHttpParser(parser);
-        return null;
+        return in.meth(k);
     }
 
 }

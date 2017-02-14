@@ -1,11 +1,11 @@
 package IntermediateModelHelper.envirorment;
 
 
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTAttribute;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTMethod;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTVar;
+import IntermediateModel.structure.ASTAttribute;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTMethod;
 
 import java.io.IOException;
 import java.nio.file.Paths;

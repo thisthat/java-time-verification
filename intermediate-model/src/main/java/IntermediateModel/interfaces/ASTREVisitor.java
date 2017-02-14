@@ -1,7 +1,7 @@
-package intermediateModel.interfaces;
+package IntermediateModel.interfaces;
 
 
-import intermediateModel.structure.expression.*;
+import IntermediateModel.structure.expression.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

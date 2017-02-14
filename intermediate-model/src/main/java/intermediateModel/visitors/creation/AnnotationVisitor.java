@@ -1,4 +1,4 @@
-package intermediateModel.visitors.creation;
+package IntermediateModel.visitors.creation;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;

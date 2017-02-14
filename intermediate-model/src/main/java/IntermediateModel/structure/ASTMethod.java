@@ -1,6 +1,6 @@
-package intermediateModel.structure;
+package IntermediateModel.structure;
 
-import intermediateModel.interfaces.*;
+import IntermediateModel.interfaces.*;
 
 import java.util.ArrayList;
 import java.util.List;

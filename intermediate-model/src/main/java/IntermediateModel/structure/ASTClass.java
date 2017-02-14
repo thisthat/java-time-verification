@@ -1,9 +1,9 @@
-package intermediateModel.structure;
+package IntermediateModel.structure;
 
-import intermediateModel.interfaces.ASTVisitor;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVisitor;
+import IntermediateModel.interfaces.ASTVisitor;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	String packageName;
 	List<IASTMethod> methods = new ArrayList<>();
-	List<ASTStatic> staticInit = new ArrayList<>();
+	List<IntermediateModel.structure.ASTStatic> staticInit = new ArrayList<>();
 	String name;
 	Visibility accessRight;
 	List<String> implmentsInterfaces;

@@ -1,7 +1,7 @@
-package intermediateModel.interfaces;
+package IntermediateModel.interfaces;
 
 
-import intermediateModel.structure.ASTVariable;
+import IntermediateModel.structure.ASTVariable;
 import org.javatuples.Pair;
 
 import java.util.List;

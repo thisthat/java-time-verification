@@ -2,10 +2,10 @@ package IntermediateModelHelper.indexing;
 
 import IntermediateModelHelper.envirorment.Env;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTRE;
-import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTRE;
+import IntermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.visitors.interfaces.ParseIM;
 
 import java.io.File;
 import java.util.ArrayList;

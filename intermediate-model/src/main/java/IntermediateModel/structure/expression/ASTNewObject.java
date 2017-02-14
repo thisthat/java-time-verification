@@ -1,12 +1,12 @@
-package intermediateModel.structure.expression;
+package IntermediateModel.structure.expression;
 
-import intermediateModel.interfaces.ASTREVisitor;
-import intermediateModel.interfaces.ASTVisitor;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.ASTHiddenClass;
-import intermediateModel.structure.ASTRE;
-import intermediateModel.visitors.DefaultASTVisitor;
+import IntermediateModel.interfaces.ASTREVisitor;
+import IntermediateModel.interfaces.ASTVisitor;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.ASTHiddenClass;
+import IntermediateModel.structure.ASTRE;
+import IntermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.List;
 

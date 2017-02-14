@@ -1,9 +1,9 @@
-package intermediateModel.visitors.interfaces;
+package IntermediateModel.visitors.interfaces;
 
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTNewObject;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.ASTNewObject;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package intermediateModel.visitors;
+package IntermediateModel.visitors;
 
-import intermediateModel.interfaces.ASTREVisitor;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.structure.expression.*;
+import IntermediateModel.interfaces.ASTREVisitor;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.structure.expression.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

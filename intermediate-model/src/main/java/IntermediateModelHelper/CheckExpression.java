@@ -2,12 +2,12 @@ package IntermediateModelHelper;
 
 import IntermediateModelHelper.envirorment.BuildEnvironment;
 import IntermediateModelHelper.envirorment.Env;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.ASTVariable;
-import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.DefualtASTREVisitor;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.interfaces.IASTVar;
+import IntermediateModel.structure.ASTRE;
+import IntermediateModel.structure.ASTVariable;
+import IntermediateModel.structure.expression.*;
+import IntermediateModel.visitors.DefualtASTREVisitor;
 
 import java.util.ArrayList;
 import java.util.List;

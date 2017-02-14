@@ -1,4 +1,4 @@
-package intermediateModel.interfaces;
+package IntermediateModel.interfaces;
 
 
 import org.javatuples.Triplet;
