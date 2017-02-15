@@ -1,11 +1,11 @@
-package intermediateModel.visitors.creation;
+package IntermediateModel.visitors.creation;
 
-import intermediateModel.interfaces.IASTHasStms;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.structure.*;
-import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.creation.utility.Getter;
+import IntermediateModel.interfaces.IASTHasStms;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.*;
+import IntermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import timeannotation.parser.Java2AST;

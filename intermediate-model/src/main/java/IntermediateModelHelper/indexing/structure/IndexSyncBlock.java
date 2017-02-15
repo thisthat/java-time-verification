@@ -1,6 +1,6 @@
 package IntermediateModelHelper.indexing.structure;
 
-import intermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTMethod;
 
 import java.util.ArrayList;
 import java.util.List;

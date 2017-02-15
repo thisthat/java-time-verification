@@ -5,9 +5,9 @@ import IntermediateModelHelper.converter.GenerateXAL;
 import IntermediateModelHelper.converter.IConverterIM;
 import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.ApplyHeuristics;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
 

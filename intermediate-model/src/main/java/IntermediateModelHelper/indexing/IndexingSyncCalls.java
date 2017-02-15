@@ -4,7 +4,7 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexSyncCall;
 import IntermediateModelHelper.indexing.structure.SyncMethodCall;
-import intermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTClass;
 
 import java.util.ArrayList;
 import java.util.List;

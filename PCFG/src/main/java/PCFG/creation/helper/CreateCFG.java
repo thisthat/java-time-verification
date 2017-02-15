@@ -8,12 +8,12 @@ import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTNewObject;
-import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.interfaces.ConvertIM;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.ASTNewObject;
+import IntermediateModel.visitors.DefaultASTVisitor;
+import IntermediateModel.visitors.interfaces.ConvertIM;
 import org.javatuples.KeyValue;
 import org.javatuples.Triplet;
 
@@ -67,6 +67,8 @@ public class CreateCFG extends ConvertIM {
 		for(KeyValue<IASTMethod,ASTClass> c : classes){
 			//reset structure
 			visitedHidden.clear();
+			//Node._ID = 0;
+
 			//consider also hidden methods
 			c.getValue().visit(new DefaultASTVisitor(){
 				@Override
@@ -89,7 +91,7 @@ public class CreateCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		lastCfg = new CFG(c.getName() + "::" + m.getName(), c.hashCode());
+		lastCfg = new CFG(c.getPackageName() + "." +  c.getName() + "::" + m.getName(), c.hashCode());
 		lastPCFG.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispatchMethod(m, c);

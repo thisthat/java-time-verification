@@ -1,11 +1,11 @@
 package calculation;
 
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.structure.ASTSynchronized;
-import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTMethod;
+import IntermediateModel.structure.ASTSynchronized;
+import IntermediateModel.visitors.DefaultASTVisitor;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

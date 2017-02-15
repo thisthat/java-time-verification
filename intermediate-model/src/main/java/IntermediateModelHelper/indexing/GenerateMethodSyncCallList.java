@@ -8,13 +8,13 @@ import IntermediateModelHelper.indexing.structure.IndexMethod;
 import IntermediateModelHelper.indexing.structure.SyncMethodCall;
 import IntermediateModelHelper.types.DataTreeType;
 import IntermediateModelHelper.types.ResolveTypes;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.*;
-import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.interfaces.IASTVar;
+import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.*;
+import IntermediateModel.visitors.DefualtASTREVisitor;
+import IntermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -180,7 +180,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		return null;
 	}
 
-		private boolean containsMethod(String name, List<Pair<String,String>> parsType, List<IndexMethod> methods){
+	private boolean containsMethod(String name, List<Pair<String,String>> parsType, List<IndexMethod> methods){
 		for(IndexMethod m : methods){
 			if(m.equalBySignature(name, parsType))
 				return true;

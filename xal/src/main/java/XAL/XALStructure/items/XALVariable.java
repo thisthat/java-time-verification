@@ -71,6 +71,26 @@ public class XALVariable extends XALCLockVariable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        XALVariable that = (XALVariable) o;
+
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        return IO == that.IO;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (IO != null ? IO.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString(int tab) {
         return tab(tab) + this.toString();
     }

@@ -4,7 +4,7 @@ import IntermediateModelHelper.indexing.structure.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import intermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTClass;
 import org.bson.BsonSerializationException;
 import org.bson.Document;
 import org.javatuples.Pair;

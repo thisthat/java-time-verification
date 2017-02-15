@@ -2,10 +2,10 @@ package IntermediateModelHelper.envirorment;
 
 
 import com.google.common.annotations.Beta;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTAttribute;
-import intermediateModel.structure.ASTClass;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.interfaces.IASTVar;
+import IntermediateModel.structure.ASTAttribute;
+import IntermediateModel.structure.ASTClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;

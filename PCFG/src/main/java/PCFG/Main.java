@@ -1,22 +1,24 @@
 package PCFG;
 
+
+import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.IConverter;
 import PCFG.converter.ToDot;
+import PCFG.converter.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.creation.JDTVisitor;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -29,7 +31,11 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		MongoOptions.getInstance().setDbName(db_name);
-		new Main().example_paper();
+		Main m = new Main();
+		if(args.length > 0)
+			m.example_paper(args);
+		else
+			m.run("/Users/giovanni/repository/java-xal/PCFG/src/main/resources/fogassistant2");
 	}
 
 
@@ -43,27 +49,14 @@ public class Main {
 		classes.addAll(v.listOfClasses);
 		ASTClass c = classes.get(0);
 
-		//add the second method
-		f =  Main.class.getClassLoader().getResource("Thread_2.java").getFile();
-		a = new Java2AST(f, true);
-		ast = a.getContextJDT();
-		v = new JDTVisitor(ast, f);
-		ast.accept(v);
-		ASTClass c1 = v.listOfClasses.get(0);
-
 		IM2PCFG p = new IM2PCFG();
-		p.addClass(c, c.getMethodBySignature("run",
-				Arrays.asList()
-		));
-		p.addClass(c1, c1.getMethodBySignature("run",
-				Arrays.asList()
-		));
+		p.addClass(c);
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
 
 		BufferedWriter writer = null;
-		writer = new BufferedWriter(new FileWriter("graph.dot"));
-		IConverter toGraphViz = new ToDot(true);
+		writer = new BufferedWriter(new FileWriter("graph.xal"));
+		IConverter toGraphViz = new ToXAL(c);
 		writer.write(toGraphViz.convert(graph));
 		writer.close();
 	}
@@ -98,7 +91,7 @@ public class Main {
 		//writer.close();
 	}
 
-	public void example_paper() throws Exception {
+	public void example_paper(String[] args) throws Exception {
 		MongoOptions.getInstance().setDbName("vuze");
 		String f =  "/Users/giovanni/repository/sources/vuze/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java";
 		Java2AST a = new Java2AST(f, true);
@@ -127,6 +120,62 @@ public class Main {
 		IConverter toGraphViz = new ToDot(true);
 		writer.write(toGraphViz.convert(graph));
 		writer.close();
+
+		//MongoOptions.getInstance().setDbName(db_name);
+		String folder = args[0];
+		new Main().run(folder);
+	}
+
+
+	public void run(String path) throws Exception {
+		String _NAME_ = path.substring( path.lastIndexOf("/") +1 );
+		MongoOptions.getInstance().setDbName(_NAME_);
+		double start = new Date().getTime();
+		IndexingProject indexing = new IndexingProject(_NAME_);
+		indexing.delete();
+		System.out.println("[Indexing] Started");
+		indexing.indexProject(path, false);
+		indexing.indexSyncBlock(path, false);
+		indexing.indexSyncCall(path, false);
+		double end = new Date().getTime();
+		System.out.println("[Indexing] Finish: "+ (end-start)/1000 + " s");
+
+		start = new Date().getTime();
+		System.out.println("[XAL] Creation Started");
+
+		File dir = new File(path);
+		String[] filter = {"java"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator i = files.iterator();
+		while (i.hasNext()) {
+			String filename = ((File)i.next()).getAbsolutePath();
+			System.out.println("[DEBUG] Processing file: " + filename);
+			String fName = filename.substring( filename.lastIndexOf("/") +1 );
+			fName = fName.substring(0 , fName.indexOf("."));
+			//pp filename
+			for(ASTClass c : JDTVisitor.parse(filename)){
+				if(c.getMethods().size() == 0) continue;
+				IM2PCFG p = new IM2PCFG();
+				p.addClass(c);
+				// build
+				PCFG graph = p.buildPCFG();
+				BufferedWriter writer = null;
+				//if(v.listOfClasses.size() > 1)
+				writer = new BufferedWriter(new FileWriter( c.getPackageName().replace(".","_") + "_" + c.getName() + ".xal"));
+				//else
+				//	writer = new BufferedWriter(new FileWriter( c.getName() + ".xal"));
+				IConverter toGraphViz = new ToXAL(c);
+				writer.write(toGraphViz.convert(graph));
+				writer.close();
+			}
+		}
+		end = new Date().getTime();
+		System.out.println("[XAL] Creation Ended: " + (end-start)/1000 + " s");
+
 	}
 
 	public void example_paper2() throws Exception {

@@ -6,8 +6,8 @@ import IntermediateModelHelper.types.DataTreeType;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.SyncNode;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTClass;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.structure.ASTClass;
 import org.javatuples.KeyValue;
 
 import java.util.ArrayList;

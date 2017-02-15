@@ -1,5 +1,10 @@
 before_script:
   - mvn -v
+  - ps -A | grep -q '[m]ongod'  # do a simple harmless command of some sort
+  - RESULT=$?   # returns 0 if mongo eval succeeds
+  - if [ $RESULT -ne 0 ]; then
+  -   screen -m -d bash mongod
+  - fi
 
 test:
   script:
