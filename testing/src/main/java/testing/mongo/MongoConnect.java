@@ -9,8 +9,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.bson.Document;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -42,7 +42,7 @@ public class MongoConnect {
 		options.setStoreEmpties(true);
 		options.setStoreNulls(true);
 		morphia.getMapper().setOptions(options);
-		morphia.mapPackage("intermediateModel.structure");
+		morphia.mapPackage("IntermediateModel.structure");
 		final Datastore datastore = morphia.createDatastore(new MongoClient(), "morphia_example");
 		datastore.ensureIndexes();
 

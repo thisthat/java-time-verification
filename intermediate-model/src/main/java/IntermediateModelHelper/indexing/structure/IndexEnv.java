@@ -1,7 +1,7 @@
 package IntermediateModelHelper.indexing.structure;
 
 import IntermediateModelHelper.envirorment.Env;
-import intermediateModel.interfaces.IASTVar;
+import IntermediateModel.interfaces.IASTVar;
 
 import java.util.ArrayList;
 import java.util.List;

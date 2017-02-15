@@ -8,11 +8,11 @@ import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexMethod;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.*;
-import intermediateModel.visitors.interfaces.ParseIM;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVar;
+import IntermediateModel.structure.*;
+import IntermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
 import java.util.List;

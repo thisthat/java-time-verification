@@ -1,7 +1,7 @@
-package intermediateModel.visitors;
+package IntermediateModel.visitors;
 
-import intermediateModel.interfaces.ASTVisitor;
-import intermediateModel.structure.*;
+import IntermediateModel.interfaces.ASTVisitor;
+import IntermediateModel.structure.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

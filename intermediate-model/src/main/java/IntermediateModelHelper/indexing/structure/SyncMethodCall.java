@@ -1,7 +1,7 @@
 package IntermediateModelHelper.indexing.structure;
 
 import IntermediateModelHelper.types.DataTreeType;
-import intermediateModel.structure.ASTRE;
+import IntermediateModel.structure.ASTRE;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;

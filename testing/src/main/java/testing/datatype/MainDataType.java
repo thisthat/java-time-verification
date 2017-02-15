@@ -3,7 +3,7 @@ package testing.datatype;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.types.DataTreeType;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
 

@@ -1,9 +1,9 @@
 package calculation;
 
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTMethod;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;

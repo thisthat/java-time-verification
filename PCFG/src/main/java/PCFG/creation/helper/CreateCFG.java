@@ -8,12 +8,12 @@ import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTNewObject;
-import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.interfaces.ConvertIM;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.*;
+import IntermediateModel.structure.expression.ASTNewObject;
+import IntermediateModel.visitors.DefaultASTVisitor;
+import IntermediateModel.visitors.interfaces.ConvertIM;
 import org.javatuples.KeyValue;
 import org.javatuples.Triplet;
 

@@ -4,9 +4,9 @@ package IntermediateModelHelper.converter;
 import XAL.XALStructure.XALAddState;
 import XAL.XALStructure.exception.XALMalformedException;
 import XAL.XALStructure.items.*;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.*;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.*;
 
 import java.util.ArrayList;
 import java.util.List;

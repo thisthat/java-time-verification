@@ -1,8 +1,8 @@
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.junit.Before;
 import org.junit.Test;
 import timeannotation.definition.Annotation;

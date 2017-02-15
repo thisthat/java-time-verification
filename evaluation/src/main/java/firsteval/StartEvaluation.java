@@ -1,10 +1,10 @@
 package firsteval;
 
 import IntermediateModelHelper.heuristic.definition.*;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.ApplyHeuristics;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;

@@ -2,11 +2,11 @@ package IntermediateModelHelper.heuristic.definition;
 
 import IntermediateModelHelper.CheckExpression;
 import IntermediateModelHelper.envirorment.Env;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.ASTBinary;
-import intermediateModel.visitors.DefualtASTREVisitor;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.structure.ASTRE;
+import IntermediateModel.structure.expression.ASTBinary;
+import IntermediateModel.visitors.DefualtASTREVisitor;
 
 /**
  * The heuristic searches for snippet of code in a guard section of the following type:

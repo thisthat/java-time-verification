@@ -1,7 +1,7 @@
 package IntermediateModelHelper.heuristic.definition;
 
 import IntermediateModelHelper.envirorment.Env;
-import intermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTStm;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;

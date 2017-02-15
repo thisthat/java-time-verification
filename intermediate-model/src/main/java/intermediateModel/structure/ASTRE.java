@@ -1,14 +1,14 @@
-package intermediateModel.structure;
+package IntermediateModel.structure;
 
-import intermediateModel.interfaces.ASTVisitor;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVisitor;
-import intermediateModel.structure.expression.ASTBinary;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.structure.expression.ASTMethodCall;
-import intermediateModel.structure.expression.ASTVariableDeclaration;
-import intermediateModel.visitors.DefaultASTVisitor;
+import IntermediateModel.interfaces.ASTVisitor;
+import IntermediateModel.interfaces.IASTRE;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVisitor;
+import IntermediateModel.structure.expression.ASTBinary;
+import IntermediateModel.structure.expression.ASTLiteral;
+import IntermediateModel.structure.expression.ASTMethodCall;
+import IntermediateModel.structure.expression.ASTVariableDeclaration;
+import IntermediateModel.visitors.DefaultASTVisitor;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

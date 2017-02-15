@@ -1,4 +1,4 @@
-package intermediateModel.visitors;
+package IntermediateModel.visitors;
 
 
 import IntermediateModelHelper.CheckExpression;
@@ -8,11 +8,11 @@ import IntermediateModelHelper.heuristic.definition.*;
 import IntermediateModelHelper.indexing.IndexingFile;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.indexing.structure.IndexParameter;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.interfaces.ParseIM;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.interfaces.IASTStm;
+import IntermediateModel.interfaces.IASTVar;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;

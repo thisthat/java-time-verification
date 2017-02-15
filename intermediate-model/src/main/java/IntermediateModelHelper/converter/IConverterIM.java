@@ -1,6 +1,6 @@
 package IntermediateModelHelper.converter;
 
-import intermediateModel.structure.ASTClass;
+import IntermediateModel.structure.ASTClass;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

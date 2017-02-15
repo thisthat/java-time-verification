@@ -4,8 +4,8 @@ package IntermediateModelHelper.envirorment;
 import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import IntermediateModelHelper.indexing.structure.IndexData;
 import IntermediateModelHelper.types.ResolveTypes;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.creation.JDTVisitor;
 
 import java.util.List;
 

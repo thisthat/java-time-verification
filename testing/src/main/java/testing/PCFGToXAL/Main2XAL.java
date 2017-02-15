@@ -4,9 +4,9 @@ import PCFG.converter.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import XAL.XALStructure.items.XALDocument;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
 
