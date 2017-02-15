@@ -1,7 +1,6 @@
 package test;
 
 import com.sun.net.httpserver.HttpServer;
-import com.sun.tools.hat.internal.model.Root;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
