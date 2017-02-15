@@ -1,13 +1,13 @@
-package abc.newpkg;
+package abc;
 
 
 import java.llo.Obj;
-import java.llo.Int;
+import java.llo.Str;
 import java.llo.ChristianIsComplaining;
 
 public class testChange {
 
-    public Object func(int k){
+    public Object func(){
         Response r;
         HttpParser parser=in.takeHttpParser();
         if (parser==null)
@@ -37,10 +37,10 @@ public class testChange {
         if(te != null && te.toLowerCase(Locale.ENGLISH).contains("chunked"))
             return r;
 
-        LOG.info("Incomplete Response: (parser={}) {}", parser, r);
-
-        in.setHttpParser(parser);
-        return in.meth(k);
+        synchronized (r) {
+            LOG.info("Incomplete Response: (parser={}) {}", parser, r);
+        }
+        return null;
     }
 
 }

@@ -10,6 +10,9 @@ public class testChange {
     public Object func(){
         Response r;
         HttpParser parser=in.takeHttpParser();
+        synchronized (parser) {
+            LOG.info("PArser");
+        }
         if (parser==null)
         {
             r=new Response();
