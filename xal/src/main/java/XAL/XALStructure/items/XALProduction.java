@@ -57,7 +57,11 @@ public abstract class XALProduction extends XALItem {
 
         @Override
         public String toString(int tab) {
-            return tab(tab) + "<System Name=\"" + this.name + "\" Path=\"" + this.path + "\"/>\n";
+            String cl = "";
+            if(className != null){
+                cl = "Class=\"" + className + "\"";
+            }
+            return tab(tab) + "<System " + cl + " Name=\"" + this.name + "\" Path=\"" + this.path + "\"/>\n";
         }
 
         @Override

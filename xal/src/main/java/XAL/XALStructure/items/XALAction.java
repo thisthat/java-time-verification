@@ -76,7 +76,11 @@ public class XALAction extends XALProduction  {
 
     @Override
     public String toString(int tab) {
-        return "";
+        String out = "";
+        out += tab(tab) + "<Action Id=\"" + this.getId() + "\" Type=\"" + (this.type == ProductionType.automaton ? "automaton" : "object") + "\">\n";
+        out += this.getSystem().toString(tab+1);
+        out += tab(tab) + "</Action>";
+        return out;
     }
 
     /**

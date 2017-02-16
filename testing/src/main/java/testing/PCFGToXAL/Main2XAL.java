@@ -1,6 +1,6 @@
 package testing.PCFGToXAL;
 
-import PCFG.converter.ToXAL;
+import PCFG.converter.xal.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import XAL.XALStructure.items.XALDocument;

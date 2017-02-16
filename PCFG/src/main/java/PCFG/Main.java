@@ -4,8 +4,9 @@ package PCFG;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.IConverter;
+import PCFG.converter.Settings;
 import PCFG.converter.ToDot;
-import PCFG.converter.ToXAL;
+import PCFG.converter.xal.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import IntermediateModel.interfaces.IASTMethod;
@@ -35,7 +36,7 @@ public class Main {
 		if(args.length > 0)
 			m.example_paper(args);
 		else
-			m.run("/Users/giovanni/repository/java-xal/PCFG/src/main/resources/fogassistant2");
+			m.run("/Users/giovanni/repository/java-xal/PCFG/src/main/resources/conversion");
 	}
 
 
@@ -143,6 +144,15 @@ public class Main {
 		start = new Date().getTime();
 		System.out.println("[XAL] Creation Started");
 
+        File outDir = new File(Settings.getInstance().getOutputDir());
+		if(!outDir.exists()){
+			outDir.mkdirs();
+			System.out.println("[DEBUG] Output directory created >> " + outDir.getAbsolutePath());
+		} else {
+			FileUtils.cleanDirectory(outDir);
+			System.out.println("[DEBUG] Output directory cleaned");
+		}
+
 		File dir = new File(path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
@@ -165,7 +175,7 @@ public class Main {
 				PCFG graph = p.buildPCFG();
 				BufferedWriter writer = null;
 				//if(v.listOfClasses.size() > 1)
-				writer = new BufferedWriter(new FileWriter( c.getPackageName().replace(".","_") + "_" + c.getName() + ".xal"));
+				writer = new BufferedWriter(new FileWriter( outDir.getAbsolutePath() + "/"+ c.getPackageName().replace(".","_") + "_" + c.getName() + ".xal"));
 				//else
 				//	writer = new BufferedWriter(new FileWriter( c.getName() + ".xal"));
 				IConverter toGraphViz = new ToXAL(c);

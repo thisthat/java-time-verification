@@ -51,7 +51,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>PCFG</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
