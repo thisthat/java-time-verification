@@ -1,14 +1,11 @@
+from java2ta.engine.exceptions import ObjectDoesNotExist, EmptyContext
+
 class Context(object):
     """
     A context is a stack of environments, each mapping variables to values.
     """
 
-    class EmptyContext(Exception):
-        pass
-
-    class ObjectDoesNotExist(Exception):
-        pass
-    
+   
     def __init__(self):
 
         self._context = []
@@ -23,7 +20,7 @@ class Context(object):
         try:
             res = self._context.pop()
         except IndexError:
-            raise Context.EmptyContext("Cannot pop from empty context")
+            raise EmptyContext("Cannot pop from empty context")
 
         return res
 
@@ -41,6 +38,6 @@ class Context(object):
         if found:
             return value
         else:
-            raise Context.ObjectDoesNotExist
+            raise ObjectDoesNotExist
         
     

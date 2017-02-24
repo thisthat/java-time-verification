@@ -1,9 +1,15 @@
+from java2ta.engine.exceptions import ObjectDoesNotExist
+from java2ta.engine.context import Context
+
 class Rule(object):
     """
     Abstract class for a rule
     """
     
-    def __init__(self, asts, ctx):
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def setup(self, asts, ctx):
         self.asts = asts
         self.ctx = ctx
 
@@ -28,11 +34,12 @@ class Rule(object):
         """
         Allow to specify an additional boolean constraint on the matching terms.
         Return True iff the additional condition is satisfied. The rule can
-        be applied only if this method returns True.
+        be applied only if this method returns True. The default behavior is to
+        return True because actual rules may not want to set a where condition.
         """
-        return False
+        return True
 
-    def do_rewrite_asts(self):
+    def do_rewrite_asts(self, let_ctx=None):
         """
         Implement the actual transformation of the input abstract syntax trees.
         The resulting term can make use of:
@@ -42,7 +49,7 @@ class Rule(object):
         """
         return self.asts
 
-    def do_update_context(self):
+    def do_update_context(self, let_ctx=None):
         """
         Modify the passed context to propagate some global information on the
         next chosen rules. The context can be updated with information from:
@@ -54,3 +61,103 @@ class Rule(object):
         return self.ctx
 
 
+class RuleSet(object):
+
+    def __init__(self):
+    
+        self._rules = set()
+        self._enabled_rules = set()
+
+    def add_rule(self, rule):
+        """
+        Add a rule to the ruleset. When added, a rule is also enabled.
+        """
+    
+        if not isinstance(rule, Rule):
+            raise ValueError("Expected rule of type Rule")
+
+        self._rules.add(rule)
+        self._enabled_rules.add(rule)
+
+    def enable_all(self):
+ 
+        for rule in self._rules:
+            self._enabled_rules.add(rule)       
+
+    def disable(self, rule):
+        self._enabled_rules.remove(rule)
+
+    def pick(self):
+        
+        assert isinstance(self._rules, set)
+
+        if len(self._enabled_rules) == 0:
+            raise ObjectDoesNotExist("Cannot pick a rule from an empty rule-set")
+
+        rule = next(iter(self._enabled_rules))
+        return rule
+
+
+class Engine(object):
+
+    def __init__(self, ruleset=None):
+    
+        assert ruleset is None or isinstance(ruleset, RuleSet)
+
+        if ruleset is None:
+            ruleset = RuleSet()
+   
+        self._ruleset = ruleset
+        self._num_applications = 0
+
+    @property
+    def ruleset(self):
+        return self._ruleset
+
+    @property
+    def num_applications(self):
+        return self._num_applications
+
+    def add_rule(self, rule):
+        assert isinstance(self._ruleset, RuleSet)
+        assert isinstance(rule, Rule)
+
+        self._ruleset.add_rule(rule)
+
+    def run(self, asts):
+
+        ctx = Context()
+        self._ruleset.enable_all()
+
+        while True:
+      
+            rule = None
+            try:
+                rule = self._ruleset.pick()
+            except ObjectDoesNotExist:
+                break
+
+            assert isinstance(rule, Rule)
+
+            rule.setup(asts, ctx)
+    
+            if rule.match():
+                let_ctx = rule.let()
+
+                if rule.where():
+                    new_asts = rule.do_rewrite_asts(let_ctx)
+        
+                    # update context for next rules
+                    ctx = rule.do_update_context(let_ctx)
+        
+                    self._num_applications = self._num_applications + 1
+
+                    self._ruleset.enable_all()
+
+                else:
+                    self._ruleset.disable(rule)
+
+            else:
+                self._ruleset.disable(rule)
+
+        return asts
