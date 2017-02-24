@@ -11,29 +11,49 @@ class FakeRuleNoMatch(Rule):
         return False
 
 
-class FakeRuleMatchNoWhere(Rule):
-
-    def match(self):
-        return True
-
-    def where(self):
-        return False
-
-
 class FakeRuleMatch(Rule):
 
     def match(self):
         return True
 
 
-class FakeRuleMatchAndWhere(Rule):
+class FakeRuleMatchNoWhere(FakeRuleMatch):
 
-    def match(self):
-        return True
+    def where(self):
+        return False
+
+
+class FakeRuleMatchAndWhere(FakeRuleMatch):
 
     def where(self):
         return True
 
+
+class FakeRuleMatchAndLet(FakeRuleMatch):
+
+    def match(self):
+    
+        match_res = True
+
+        try:
+            match_res = self.ctx.get("a") != 1
+        except ObjectDoesNotExist:
+            pass
+
+        return match_res
+        
+
+    def let(self):
+        return {
+            "a":1,
+            "b":2,
+            "c":3,
+        }
+
+    def do_update_context(self, let_ctx):
+
+        self.ctx.update("a", let_ctx["a"])
+        self.ctx.update("b", let_ctx["b"])
 
 
 def setup():
@@ -52,6 +72,78 @@ def test_context_pop_empty():
     except EmptyContext:
         # this is expected
         pass
+
+
+def test_context_top_empty():
+
+    ctx = Context()
+
+    try:
+        top = ctx.top()
+        assert False, "Looking for the top element of an empty context should raise an exception"
+    except EmptyContext:
+        # this is expected
+        pass
+
+
+def test_context_push_and_top():
+
+    ctx = Context()
+
+    env1 = { "a":1, "b": 2 }
+    env2 = { "c":3, "d": 4 }
+
+    ctx.push(env1)
+    ctx.push(env2)
+
+    top1 = ctx.top()
+    top2 = ctx.top()
+
+    assert top1 == top2
+    assert top1 == env1
+
+
+def test_context_push_and_top():
+
+    ctx = Context()
+
+    env1 = { "a":1, "b": 2 }
+    env2 = { "c":3, "d": 4 }
+
+    ctx.push(env1)
+    ctx.push(env2)
+
+    top1 = ctx.top()
+
+    pop1 = ctx.pop()
+
+    top2 = ctx.top()
+
+    assert top1 != top2
+    assert top1 == env2
+    assert top2 == env1
+
+
+def test_context_push_pop_and_top():
+
+    ctx = Context()
+
+    env1 = { "a":1, "b": 2 }
+    env2 = { "c":3, "d": 4 }
+
+    ctx.push(env1)
+    ctx.push(env2)
+
+    pop1 = ctx.pop()
+    pop2 = ctx.pop()
+
+    try:
+        top1 = ctx.top()
+        assert False, "At this point the context should be empty and the top() raise an exception"
+    except EmptyContext:
+        # this was expected
+        pass
+
 
 def test_context_push_pop():
 
@@ -217,7 +309,7 @@ def test_engine_trivial():
 
     asts_pre = {} # at the moment pretty much every object can be an ASTS
 
-    asts_post = re.run(asts_pre)
+    (asts_post,ctx_post) = re.run(asts_pre)
 
     assert asts_pre == asts_post
     assert re.num_applications == 0
@@ -237,13 +329,17 @@ def test_engine_no_enabled_rules():
 
     # the execution is supposed to terminate because the two rules either
     # do not match anything, or they return False in the where() condition
-    asts_post = re.run(asts_pre)
+    (asts_post,ctx_post) = re.run(asts_pre)
 
     assert asts_pre == asts_post
     assert re.num_applications == 0
 
 
 def test_engine_divergent():
+    """
+    Note: this test uses @timeout decorator, which in turn uses signal library
+    and the SIGALARM. The latter is only supported in the Unix world.
+    """
 
     @timeout(2)
     def start_engine(engine, asts):
@@ -263,10 +359,38 @@ def test_engine_divergent():
     asts_pre = {} # at the moment pretty much every object can be an ASTS
 
     try:
-        start_engine(re, asts_pre)
+        (asts_post, ctx_post) = start_engine(re, asts_pre)
         assert False, "The execution was expected to loop forever"
     except TimeoutError:
         # the exception was expected
         pass
 
     assert re.num_applications > 0
+
+def test_engine_rule_match_once():
+
+    re = Engine()
+
+    rule1 = FakeRuleMatchAndLet()
+    
+    re.add_rule(rule1)
+
+    asts_pre = {} # at the moment pretty much every object can be an ASTS
+
+    # the execution is supposed to terminate because the two rules either
+    # do not match anything, or they return False in the where() condition
+    (asts_post, ctx_post) = re.run(asts_pre)
+
+    assert asts_pre == asts_post
+    assert re.num_applications == 1
+    assert ctx_post.get("a") == 1
+    assert ctx_post.get("b") == 2
+
+    try:
+        ctx_post.get("c")
+        assert False, "The rule FakeRuleMatchAndLet does not set any 'c' variable in the do_update_context(...) method"
+    except ObjectDoesNotExist:
+        # this exception was expected
+        pass
+
+

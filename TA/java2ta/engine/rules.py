@@ -10,6 +10,10 @@ class Rule(object):
         pass
 
     def setup(self, asts, ctx):
+
+        if not isinstance(ctx, Context):
+            raise ValueError("Expected context of type Context")
+
         self.asts = asts
         self.ctx = ctx
 
@@ -28,7 +32,7 @@ class Rule(object):
         method will not be propagated to the next rules, unless the
         do_update_method() does not do it explicitly.
         """
-        return {}
+        return None
 
     def where(self):
         """
@@ -47,6 +51,10 @@ class Rule(object):
         - the bindings in the original context
         - the bindings in the additional context produced by the let() method
         """
+
+        if let_ctx is not None and not isinstance(let_ctx, dict):
+            raise ValueError("Expected no context or context of type dict")
+
         return self.asts
 
     def do_update_context(self, let_ctx=None):
@@ -58,7 +66,9 @@ class Rule(object):
         - the original context
         - the context returned by the let() method
         """
-        return self.ctx
+
+        if let_ctx is not None and not isinstance(let_ctx, dict):
+            raise ValueError("Expected no context or context of type dict")
 
 
 class RuleSet(object):
@@ -126,7 +136,10 @@ class Engine(object):
 
     def run(self, asts):
 
+        # start with an empty environment on top of the context
         ctx = Context()
+        ctx.push({})
+
         self._ruleset.enable_all()
 
         while True:
@@ -148,7 +161,7 @@ class Engine(object):
                     new_asts = rule.do_rewrite_asts(let_ctx)
         
                     # update context for next rules
-                    ctx = rule.do_update_context(let_ctx)
+                    rule.do_update_context(let_ctx)
         
                     self._num_applications = self._num_applications + 1
 
@@ -160,4 +173,4 @@ class Engine(object):
             else:
                 self._ruleset.disable(rule)
 
-        return asts
+        return (asts,ctx)

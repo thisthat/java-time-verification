@@ -39,5 +39,20 @@ class Context(object):
             return value
         else:
             raise ObjectDoesNotExist
+
+    def top(self):
+
+        if len(self._context) == 0:
+            raise EmptyContext("An empty context has no top environment")
+
+        return next(reversed(self._context))
+
+    def update(self, name, value):
+        """
+        Update the environment on top of the context adding/updating name 
+        """
+
+        top = self.top()
+        top[name] = value
         
     
