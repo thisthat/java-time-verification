@@ -41,6 +41,7 @@ public class ASTVariableMultipleDeclaration extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		//Default RE
 		visitor.enterAll(this);
 		visitor.enterASTVariableMultipleDeclaration(this);
 		for(IASTRE v : vars){
@@ -52,13 +53,7 @@ public class ASTVariableMultipleDeclaration extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTVisitor visitor) {
-		visitor.enterAll(this);
-		visitor.enterASTVariableMultipleDeclaration(this);
-		for(IASTRE v : vars){
-			v.visit(visitor);
-		}
-		visitor.exitASTVariableMultipleDeclaration(this);
-		visitor.exitAll(this);
+		visit((ASTREVisitor) visitor);
 	}
 
 }

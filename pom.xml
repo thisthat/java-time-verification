@@ -19,8 +19,8 @@
         <module>evaluation</module>
         <module>time-annotation</module>
         <module>server</module>
+        <module>socket</module>
     </modules>
-
 
     <build>
         <plugins>

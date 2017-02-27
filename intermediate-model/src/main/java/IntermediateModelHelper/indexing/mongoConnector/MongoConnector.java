@@ -1,10 +1,10 @@
 package IntermediateModelHelper.indexing.mongoConnector;
 
+import IntermediateModel.structure.ASTClass;
 import IntermediateModelHelper.indexing.structure.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import IntermediateModel.structure.ASTClass;
 import org.bson.BsonSerializationException;
 import org.bson.Document;
 import org.javatuples.Pair;
@@ -12,16 +12,16 @@ import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.mapping.Mapper;
 import org.mongodb.morphia.mapping.MapperOptions;
 import org.mongodb.morphia.query.Query;
-import org.mongodb.morphia.query.UpdateOperations;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The following class implements a connection to MongoDB.
@@ -34,12 +34,12 @@ public class MongoConnector {
 
 	private static HashMap<String,MongoConnector> instances = new HashMap<String, MongoConnector>();
 
-	MongoDatabase db;
-	String dbName;
-	DBStatus dbStatus;
-	MongoCollection<Document> indexCollection;
-	final Morphia morphia = new Morphia();
-	Datastore datastore;
+	protected MongoDatabase db;
+	protected String dbName;
+	protected DBStatus dbStatus;
+	protected MongoCollection<Document> indexCollection;
+	protected final Morphia morphia = new Morphia();
+	protected Datastore datastore;
 	Map<String,List<IndexData>> cacheImport = new HashMap<>();
 	Map<Pair<String,String>,List<IndexData>> cacheIndex = new HashMap<>();
 	Map<Pair<String,String>,List<IndexData>> cacheInterface = new HashMap<>();
@@ -47,29 +47,35 @@ public class MongoConnector {
 	Map<Quartet<String,String, String, List<String>>,List<IndexSyncCall>> cacheSyncCall = new HashMap<>();
 	Map<Pair<String,String>,List<IndexSyncCall>> cacheSyncCallClass = new HashMap<>();
 	Map<Sextet<String,String,String,List<String>,Integer,Integer>,List<IndexSyncBlock>> cacheSyncBlock = new HashMap<>();
+	Map<String,List<IndexSocket>> cacheSocketClass = new HashMap<>();
+	Map<String,IndexSocket> cacheSocket = new HashMap<>();
+
 
 	/**
 	 * Field enumeration
 	 */
-	private final String __PACKAGE_NAME		= "classPackage";
-	private final String __CLASS_NAME 		= "name";
-	private final String __IMPORTS 			= "imports";
-	private final String __FULL_NAME 		= "fullName";
-	private final String __COLLECTION_NAME 	= "IndexData";
-	private final String __METHOD_NAME 		= "methodName";
-	private final String __IS_INTERFACE		= "isInterface";
-	private final String __EXTENDED			= "extendedType";
-	private final String __IMPLEMENTS		= "interfacesImplemented";
-	private final String __SIGNATURE 		= "signature";
-	private final String __SIGNATURE_SYNC 	= "methodSignature";
-	private final String __START	 		= "start";
-	private final String __END		 		= "end";
+	protected final String __PACKAGE_NAME		= "classPackage";
+	protected final String __CLASS_NAME 		= "name";
+	protected final String __IMPORTS 			= "imports";
+	protected final String __FULL_NAME 			= "fullName";
+	protected final String __COLLECTION_NAME 	= "IndexData";
+	protected final String __METHOD_NAME 		= "methodName";
+	protected final String __IS_INTERFACE		= "isInterface";
+	protected final String __EXTENDED			= "extendedType";
+	protected final String __IMPLEMENTS			= "interfacesImplemented";
+	protected final String __SIGNATURE 			= "signature";
+	protected final String __SIGNATURE_SYNC 	= "methodSignature";
+	protected final String __START	 			= "start";
+	protected final String __END		 		= "end";
+	protected final String __FILE				= "filename";
 
 	/**
 	 * Protected constructor. We want to give a database as singleton.
 	 * @param db_name Name of the DB to use
 	 */
 	protected MongoConnector(String db_name, String ip, int port) {
+		Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
+		mongoLogger.setLevel(Level.SEVERE);
 		MongoClient mongoClient = new MongoClient(ip, port);
 		db = mongoClient.getDatabase(db_name);
 		dbName = db_name;
@@ -692,5 +698,41 @@ public class MongoConnector {
 		cacheSyncBlock.remove(p);
 	}
 
+	public boolean existIndexSocketClass(ASTClass c) {
+		return existIndexSocketClass(c.getPath());
+	}
 
+	private boolean existIndexSocketClass(String path) {
+		return getIndexSocketClass(path).size() > 0;
+	}
+
+	public void add(IndexSocket s) {
+		if(cacheSocket.containsKey(s.getFullName())){
+			return;
+		}
+		try {
+			datastore.save(s);
+			cacheSocket.put(s.getFullName(), s);
+		} catch (BsonSerializationException e){
+			System.err.println("File too big, cannot handle it!");
+		} finally {
+			cacheSocketClass.remove(s.getFilename());
+		}
+	}
+
+	public List<IndexSocket> getIndexSocketClass(String path) {
+		if(cacheSocketClass.containsKey(path)){
+			return cacheSocketClass.get(path);
+		}
+		List<IndexSocket> out = datastore.createQuery(IndexSocket.class)
+				.field(__FILE).equal(path)
+				.asList();
+		if(out.size() > 0)
+			cacheSocketClass.put(path, out);
+		return out;
+	}
+
+	public List<IndexSocket> getIndexSocketClass(ASTClass c) {
+		return getIndexSocketClass(c.getPath());
+	}
 }
