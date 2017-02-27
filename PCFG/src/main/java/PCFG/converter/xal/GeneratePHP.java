@@ -1,35 +1,18 @@
 package PCFG.converter.xal;
 
 import IntermediateModel.structure.ASTClass;
-import PCFG.converter.Settings;
 import PCFG.structure.CFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 
 /**
  * Created by giovanni on 16/02/2017.
  */
 
-public class GeneratePHP {
-
-    PCFG pcfg;
-    ASTClass c;
-    String fileName;
-
-    public static String sanitize(String n){
-        n = n.replace("::", "_");
-        n = n.replace(".", "_");
-        return n;
-    }
+public class GeneratePHP extends GenerateCode {
 
     public GeneratePHP(PCFG pcfg, ASTClass c){
-        this.pcfg = pcfg;
-        this.c = c;
-        this.fileName = c.getPackageName().replace(".","_") + "_" + c.getName() + ".php";
+        super(pcfg,c, c.getPackageName().replace(".","_") + "_" + c.getName() + ".php");
     }
 
     public String getFileName() {
@@ -66,21 +49,9 @@ public class GeneratePHP {
         return out.toString();
     }
 
-    public void generateClass(){
-        try{
-            File outDir = new File(Settings.getInstance().getOutputDir());
-            if(!outDir.exists()){
-                outDir.mkdirs();
-                System.out.println("[DEBUG] Output directory created >> " + outDir.getAbsolutePath());
-            }
-            String file_name = outDir.getAbsolutePath() + "/" + fileName;
-            BufferedWriter writer = null;
-            writer = new BufferedWriter(new FileWriter(file_name));
-            writer.write(getPHPClass());
-            writer.close();
-        } catch (Exception e) {
-            //not create the class is the best option
-        }
+    @Override
+    String generateString() {
+        return getPHPClass();
     }
 
 }

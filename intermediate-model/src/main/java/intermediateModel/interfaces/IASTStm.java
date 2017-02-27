@@ -25,13 +25,24 @@ public abstract class IASTStm implements IASTVisitor{
 	 * Enum about the different visibility access level that Java offers
 	 */
 	public enum Visibility {
-		PUBLIC,
-		PROTECT,
-		ABSTRACT,
-		FINAL,
-		PRIVATE,
-		STRICTFP,
-		HIDDEN //hidden classes
+		PUBLIC("public"),
+		PROTECT("protect"),
+		ABSTRACT("abstract"),
+		FINAL("final"),
+		PRIVATE("private"),
+		STRICTFP("strictfp"),
+		HIDDEN("hidden") //hidden classes
+		;
+
+		String value;
+		Visibility(String s) {
+			this.value = s;
+		}
+
+		@Override
+		public String toString() {
+			return value;
+		}
 	}
 
 	protected int start;

@@ -52,8 +52,10 @@ public class ToXAL implements IConverter {
 	@Override
 	public String convert(PCFG pcfg) {
 		GeneratePHP php = new GeneratePHP(pcfg, c);
+		GenerateJava java = new GenerateJava(pcfg, c);
 		this.fileName = php.getFileName();
 		php.generateClass();
+		java.generateClass();
 		String name = "";
 		for(CFG c : pcfg.getCFG()){
 			name +=  c.getName() + "_";
