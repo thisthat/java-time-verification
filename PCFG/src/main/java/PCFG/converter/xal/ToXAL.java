@@ -22,12 +22,13 @@ import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.util.List;
+import java.util.Objects;
+
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
 public class ToXAL implements IConverter {
-
 
 	XALDocument doc = null;
 	XALAddState aut = null;

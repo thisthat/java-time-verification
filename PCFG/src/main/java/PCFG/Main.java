@@ -1,6 +1,9 @@
 package PCFG;
 
 
+import IntermediateModel.interfaces.IASTMethod;
+import IntermediateModel.structure.ASTClass;
+import IntermediateModel.visitors.creation.JDTVisitor;
 import IntermediateModelHelper.indexing.IndexingProject;
 import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.IConverter;
@@ -9,9 +12,6 @@ import PCFG.converter.ToDot;
 import PCFG.converter.xal.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
@@ -26,6 +26,7 @@ import java.util.*;
  * @version %I%, %G%
  */
 public class Main {
+
 
 	List<ASTClass> classes = new ArrayList<>();
 	static final String db_name = "jetty";
