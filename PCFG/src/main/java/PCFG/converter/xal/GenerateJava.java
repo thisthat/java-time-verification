@@ -28,6 +28,12 @@ public class GenerateJava extends GenerateCode {
         for(CFG c : pcfg.getCFG()) {
             out.append(getJavaClass(c));
         }
+        out.append("\n//Java Code\n\n");
+        for(IASTMethod m : this.c.getMethods()){
+            out.append("\t");
+            out.append(m.getCode());
+            out.append("\n");
+        }
         out.append("}");
         return out.toString();
     }
