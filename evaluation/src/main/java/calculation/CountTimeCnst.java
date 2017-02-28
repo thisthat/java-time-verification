@@ -1,8 +1,8 @@
 package calculation;
 
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.ApplyHeuristics;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

@@ -1,7 +1,7 @@
 package server.handler;
 
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.structure.IndexData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;

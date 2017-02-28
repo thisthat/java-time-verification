@@ -1,16 +1,16 @@
-package IntermediateModel.visitors.interfaces;
+package intermediateModel.visitors.interfaces;
 
-import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.BuildEnvironment;
-import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.envirorment.EnvBase;
-import IntermediateModelHelper.envirorment.EnvParameter;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.*;
-import IntermediateModel.structure.expression.ASTNewObject;
-import IntermediateModel.visitors.DefaultASTVisitor;
+import intermediateModelHelper.CheckExpression;
+import intermediateModelHelper.envirorment.BuildEnvironment;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.EnvBase;
+import intermediateModelHelper.envirorment.EnvParameter;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.List;
 

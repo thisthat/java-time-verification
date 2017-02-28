@@ -1,19 +1,19 @@
 package indexing;
 
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTVar;
-import IntermediateModel.structure.ASTAttribute;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTRE;
-import IntermediateModel.structure.expression.ASTCast;
-import IntermediateModel.structure.expression.ASTNewObject;
-import IntermediateModel.structure.expression.ASTVariableDeclaration;
-import IntermediateModel.visitors.DefualtASTREVisitor;
-import IntermediateModel.visitors.interfaces.ParseIM;
-import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.envirorment.EnvBase;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.structure.IndexSocket;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTAttribute;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.expression.ASTCast;
+import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.visitors.interfaces.ParseIM;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.EnvBase;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.structure.IndexSocket;
 
 import java.util.ArrayList;
 import java.util.List;

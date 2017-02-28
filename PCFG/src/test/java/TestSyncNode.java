@@ -1,9 +1,9 @@
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;

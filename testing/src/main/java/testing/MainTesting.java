@@ -15,11 +15,11 @@ import org.neo4j.driver.v1.*;
 */
 
 
-import IntermediateModelHelper.heuristic.definition.*;
+import intermediateModelHelper.heuristic.definition.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.ApplyHeuristics;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
 

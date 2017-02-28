@@ -1,11 +1,11 @@
 package firstEvalPCFG;
 
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.ApplyHeuristics;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.structure.IndexData;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;

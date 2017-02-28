@@ -1,9 +1,9 @@
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexSocket;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.structure.IndexSocket;
 import indexing.IndexingSocket;
 import org.javatuples.Pair;
 import org.mongodb.morphia.logging.MorphiaLoggerFactory;

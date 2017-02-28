@@ -1,4 +1,4 @@
-import IntermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTMethod;
 import Thread_8;
 import abcde.*;
 

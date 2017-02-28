@@ -1,9 +1,9 @@
 package searchSyncMethodCall;
 
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.*;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.commons.io.FileUtils;

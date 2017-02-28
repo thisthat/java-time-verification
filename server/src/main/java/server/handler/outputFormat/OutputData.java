@@ -1,6 +1,6 @@
 package server.handler.outputFormat;
 
-import IntermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.structure.IndexData;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

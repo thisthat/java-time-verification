@@ -1,7 +1,7 @@
 package PCFG.structure.node;
 
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.ASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTRE;
 import org.javatuples.Triplet;
 
 /**

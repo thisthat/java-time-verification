@@ -1,6 +1,6 @@
 package server.handler;
 
-import IntermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.IndexingProject;
 import com.sun.net.httpserver.HttpExchange;
 import server.handler.middleware.indexMW;
 

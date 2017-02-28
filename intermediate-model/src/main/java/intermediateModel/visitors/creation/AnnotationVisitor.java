@@ -1,4 +1,4 @@
-package IntermediateModel.visitors.creation;
+package intermediateModel.visitors.creation;
 
 import org.eclipse.jdt.core.dom.*;
 import timeannotation.definition.Annotation;

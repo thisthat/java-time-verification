@@ -1,15 +1,15 @@
 package testing.parse;
 
-import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.envirorment.EnvBase;
-import IntermediateModelHelper.indexing.structure.*;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.IASTVar;
-import IntermediateModel.structure.*;
-import IntermediateModel.visitors.creation.JDTVisitor;
-import IntermediateModel.visitors.interfaces.ParseIM;
+import intermediateModelHelper.CheckExpression;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.EnvBase;
+import intermediateModelHelper.indexing.structure.*;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.*;
+import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
 import testing.indexing.MainSyncBlockHugeClass;

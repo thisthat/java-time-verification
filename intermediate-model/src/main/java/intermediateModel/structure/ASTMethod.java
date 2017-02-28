@@ -1,7 +1,7 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModelHelper.types.DataTreeType;
-import IntermediateModel.interfaces.*;
+import intermediateModelHelper.types.DataTreeType;
+import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;

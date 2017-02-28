@@ -1,10 +1,10 @@
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTRE;
-import IntermediateModel.structure.expression.NotYetImplemented;
-import IntermediateModel.visitors.DefaultASTVisitor;
-import IntermediateModel.visitors.DefualtASTREVisitor;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.expression.NotYetImplemented;
+import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Pair;

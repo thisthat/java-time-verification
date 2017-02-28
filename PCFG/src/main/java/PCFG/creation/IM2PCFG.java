@@ -1,18 +1,18 @@
 package PCFG.creation;
 
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.IndexingSyncBlock;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.IndexingSyncBlock;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.creation.helper.CalculateSyncBlock;
 import PCFG.creation.helper.CalculateSyncCall;
 import PCFG.creation.helper.CreateCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.ASTAttribute;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTAttribute;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
 import org.javatuples.KeyValue;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;

@@ -1,13 +1,13 @@
 package testing.ManualChecks;
 
-import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.SyncMethodCall;
+import intermediateModelHelper.indexing.GenerateMethodSyncCallList;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import timeannotation.parser.Java2AST;
 

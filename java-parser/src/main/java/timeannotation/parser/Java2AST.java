@@ -92,7 +92,7 @@ public class Java2AST {
      */
     private void initParser() throws IOException {
 
-		String[] sources = new String[]{"/Users/giovanni/repository/sources/activemq/activemq-amqp/src/main/java"};
+		String[] sources = new String[]{ this.projectPath };
 		String[] classPath = new String[]{ System.getProperty("java.home") + "/lib"};
 
 		File file1 = new File(this.filename);

@@ -1,19 +1,11 @@
 package intermediateModel;
 
-import IntermediateModelHelper.converter.GenerateJSON;
-import IntermediateModelHelper.converter.GenerateXAL;
-import IntermediateModelHelper.converter.IConverterIM;
-import IntermediateModelHelper.heuristic.definition.*;
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.ApplyHeuristics;
-import IntermediateModel.visitors.creation.JDTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import timeannotation.parser.Java2AST;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.converter.GenerateJSON;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -28,15 +20,15 @@ public class Main {
 
 
 		List<String> files = new ArrayList<>();
-		files.add( Main.class.getClassLoader().getResource("DiningPhilosopher.java").getFile() );
-		files.add( Main.class.getClassLoader().getResource("Philosopher.java").getFile() );
+		//files.add( Main.class.getClassLoader().getResource("DiningPhilosopher.java").getFile() );
+		files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java" );
 
 		//files.add(args[0]);
 		for(int i = 0; i < files.size(); i ++){
 
 			String f = files.get(i);
 			String name = f.substring( f.lastIndexOf("/")+1, f.lastIndexOf("."));
-			List<ASTClass> lists = JDTVisitor.parse(f);
+			List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/" );
 
 			for(ASTClass c : lists){
 				//Create JSON

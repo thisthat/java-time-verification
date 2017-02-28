@@ -1,6 +1,6 @@
-package IntermediateModel.visitors.creation.utility;
+package intermediateModel.visitors.creation.utility;
 
-import IntermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTClass;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

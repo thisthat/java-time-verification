@@ -1,11 +1,11 @@
-package IntermediateModel.visitors.creation;
+package intermediateModel.visitors.creation;
 
-import IntermediateModel.interfaces.IASTHasStms;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.structure.*;
-import IntermediateModel.structure.expression.*;
-import IntermediateModel.visitors.creation.utility.Getter;
+import intermediateModel.interfaces.IASTHasStms;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.*;
+import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import timeannotation.parser.Java2AST;
@@ -1120,7 +1120,19 @@ public class JDTVisitor extends ASTVisitor {
 					getExpr( (ASTNode) p )
 			);
 		}
-		return new ASTMethodCall(start,stop, name, exprCallee, pars );
+
+		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
+		int line = mc.getLine();
+
+		IMethodBinding method = node.resolveMethodBinding();
+		if(method != null){
+			IPackageBinding pkgCalled = method.getDeclaringClass().getPackage();
+			String nameCalled = method.getDeclaringClass().getName();
+			System.out.println(line + " :: " + pkgCalled.getName() + "." + nameCalled);
+		} else {
+			System.out.println(line + " :: null :(" );
+		}
+		return mc;
 	}
 
 	public IASTRE.OPERATOR getOperator(String op){
