@@ -9,12 +9,13 @@ class Rule(object):
     def __init__(self, *args, **kwargs):
         pass
 
-    def setup(self, asts, ctx):
+    def setup(self, asts_in, asts_out, ctx):
 
         if not isinstance(ctx, Context):
             raise ValueError("Expected context of type Context")
 
-        self.asts = asts
+        self.asts_in = asts_in
+        self.asts_out = asts_out
         self.ctx = ctx
 
     def match(self):
@@ -55,7 +56,7 @@ class Rule(object):
         if let_ctx is not None and not isinstance(let_ctx, dict):
             raise ValueError("Expected no context or context of type dict")
 
-        return self.asts
+        return self.asts_out
 
     def do_update_context(self, let_ctx=None):
         """
@@ -134,7 +135,7 @@ class Engine(object):
 
         self._ruleset.add_rule(rule)
 
-    def run(self, asts):
+    def run(self, asts_in, asts_out):
 
         # start with an empty environment on top of the context
         ctx = Context()
@@ -152,14 +153,16 @@ class Engine(object):
 
             assert isinstance(rule, Rule)
 
-            rule.setup(asts, ctx)
+            rule.setup(asts_in, asts_out, ctx)
     
             if rule.match():
                 let_ctx = rule.let()
 
                 if rule.where():
-                    new_asts = rule.do_rewrite_asts(let_ctx)
-        
+
+                    # overwrite old reference to asts_out
+                    asts_out = rule.do_rewrite_asts(let_ctx)
+
                     # update context for next rules
                     rule.do_update_context(let_ctx)
         
@@ -173,4 +176,4 @@ class Engine(object):
             else:
                 self._ruleset.disable(rule)
 
-        return (asts,ctx)
+        return (asts_out,ctx)

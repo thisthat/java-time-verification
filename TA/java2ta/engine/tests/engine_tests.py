@@ -307,11 +307,12 @@ def test_engine_trivial():
     
     re.add_rule(rule1)
 
-    asts_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_in_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_out_pre = {} 
 
-    (asts_post,ctx_post) = re.run(asts_pre)
+    (asts_out_post,ctx_post) = re.run(asts_in_pre, asts_out_pre)
 
-    assert asts_pre == asts_post
+    assert asts_in_pre == asts_out_post
     assert re.num_applications == 0
 
 
@@ -325,13 +326,14 @@ def test_engine_no_enabled_rules():
     re.add_rule(rule1)
     re.add_rule(rule2)
 
-    asts_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_in_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_out_pre = {}
 
     # the execution is supposed to terminate because the two rules either
     # do not match anything, or they return False in the where() condition
-    (asts_post,ctx_post) = re.run(asts_pre)
+    (asts_out_post,ctx_post) = re.run(asts_in_pre, asts_out_pre)
 
-    assert asts_pre == asts_post
+    assert asts_out_pre == asts_out_post
     assert re.num_applications == 0
 
 
@@ -342,11 +344,11 @@ def test_engine_divergent():
     """
 
     @timeout(2)
-    def start_engine(engine, asts):
+    def start_engine(engine, asts_in, asts_out):
         # the execution of the run(...) method is supposed not to terminate, for
         # this reason we wrap it in a funtion with a @timeout decorator that
         # expires after 2 seconds
-        return engine.run(asts)
+        return engine.run(asts_in, asts_out)
 
     re = Engine()
 
@@ -356,10 +358,11 @@ def test_engine_divergent():
     re.add_rule(rule1)
     re.add_rule(rule2)
 
-    asts_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_in_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_out_pre = {}
 
     try:
-        (asts_post, ctx_post) = start_engine(re, asts_pre)
+        (asts_out_post, ctx_post) = start_engine(re, asts_in_pre, asts_out_pre)
         assert False, "The execution was expected to loop forever"
     except TimeoutError:
         # the exception was expected
@@ -375,13 +378,14 @@ def test_engine_rule_match_once():
     
     re.add_rule(rule1)
 
-    asts_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_in_pre = {} # at the moment pretty much every object can be an ASTS
+    asts_out_pre = {}
 
     # the execution is supposed to terminate because the two rules either
     # do not match anything, or they return False in the where() condition
-    (asts_post, ctx_post) = re.run(asts_pre)
+    (asts_out_post, ctx_post) = re.run(asts_in_pre, asts_out_pre)
 
-    assert asts_pre == asts_post
+    assert asts_out_pre == asts_out_post
     assert re.num_applications == 1
     assert ctx_post.get("a") == 1
     assert ctx_post.get("b") == 2
