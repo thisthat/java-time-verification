@@ -63,7 +63,7 @@ class ClockExpression(object):
 
 class Location(object):
 
-    def __init__(self, name):
+    def __init__(self, name, is_initial=False, is_urgent=False):
 
         assert isinstance(name, basestring)
 
@@ -72,8 +72,8 @@ class Location(object):
         self.incoming = set([])
         self.outgoing = set([])
 
-        self.is_initial = False
-        self.is_urgent = False
+        self.is_initial = is_initial
+        self.is_urgent = is_urgent
 
 
     def set_invariant(self, cexp):
@@ -147,6 +147,9 @@ class TA(object):
 
         assert isinstance(edge, Edge)
         assert isinstance(self.edges, set)
+
+        if edge.source not in self.locations or edge.target not in self.locations:
+            raise ValueError("Before adding an edge, you must add its source and target locations to the TA")
     
         self.edges.add(edge)
 
@@ -161,14 +164,17 @@ class NTA(object):
 
     def __init__(self):
 
-        self.ntas = set([])
+        self.tas = set([])
         self.variables = set([])
 
-    def add_nta(self, nta):
+    def add_ta(self, ta):
     
-        assert isinstance(nta, NTA)
+        assert isinstance(ta, TA)
 
-        self.ntas.add(nta)
+        if not ta.initial_loc:
+            raise ValueError("All the TAs must have an initial location")
+
+        self.tas.add(ta)
 
     def add_variable(self, var):
 

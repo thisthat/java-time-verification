@@ -74,3 +74,148 @@ def test_simple_ta():
     # adding a duplicate edge is ignored
     ta.add_edge(e1)
     assert len(ta.edges) == 3
+
+
+def test_ta_initial_loc():
+
+    l1 = Location("L1", is_initial=True)
+
+    assert l1.is_initial
+    
+    l2 = Location("L2")
+    l3 = Location("L3")
+    l3.is_initial = True
+    
+    e1 = Edge(l1,l2)
+
+    ta = TA("foo")
+    ta.add_location(l1)
+    ta.add_location(l2)
+    
+    ta.add_edge(e1)
+
+    assert ta.initial_loc == l1, "%s vs %s" % (ta.initial_loc, l1)
+        
+    try:
+        ta.add_location(l3)
+        assert False, "An exception was expected due to inserting a second initial state"
+    except ValueError:
+        # exception was expected
+        pass
+
+ 
+def test_dangling_edges():
+
+    l1 = Location("L1")
+    l2 = Location("L2")
+    l3 = Location("L3")
+    
+    e1 = Edge(l1,l2)
+    e2 = Edge(l2,l3)
+    e3 = Edge(l3,l1)
+
+    ta = TA("foo")
+    ta.add_location(l1)
+    ta.add_location(l2)
+
+    ta.add_edge(e1)
+
+    try:
+        ta.add_edge(e2)
+        assert False, "Expected exception because e2 target state is not in TA"
+    except ValueError:
+        # this was expected, because e2 target state is not in ta
+        pass
+
+    try:
+        ta.add_edge(e3)
+        assert False, "Expected exception because e3 source state is not in TA"
+    except ValueError:
+        # this was expected, because e3 source state is not in ta
+        pass
+
+
+def test_simple_nta():
+
+    l1 = Location("L1", is_initial=True)
+    l2 = Location("L2")
+    l3 = Location("L3")
+    
+    e1 = Edge(l1,l2)
+    e2 = Edge(l2,l3)
+    e3 = Edge(l3,l1)
+
+    ta = TA("foo")
+    ta.add_location(l1)
+    ta.add_location(l2)
+    ta.add_location(l3)
+
+    ta.add_edge(e1)
+    ta.add_edge(e2)
+    ta.add_edge(e3)
+
+    nta = NTA()
+
+    nta.add_ta(ta)
+
+    assert len(nta.tas) == 1
+
+    # adding twice the same TA is ignored
+    nta.add_ta(ta)
+    assert len(nta.tas) == 1
+ 
+
+def test_nta_missing_initial():
+
+    # a first timed automaton
+    l1 = Location("L1", is_initial=True)
+    assert l1.is_initial == True
+
+    l2 = Location("L2")
+    l3 = Location("L3")
+    
+    e1 = Edge(l1,l2)
+    e2 = Edge(l2,l3)
+    e3 = Edge(l3,l1)
+
+    ta = TA("foo")
+    ta.add_location(l1)
+    ta.add_location(l2)
+    ta.add_location(l3)
+
+    ta.add_edge(e1)
+    ta.add_edge(e2)
+    ta.add_edge(e3)
+
+    # a second timed automaton
+    l12 = Location("L12")
+    assert l12.is_initial == False
+    
+    l22 = Location("L22")
+    l32 = Location("L32")
+    
+    e12 = Edge(l12,l22)
+    e22 = Edge(l22,l32)
+    e32 = Edge(l32,l12)
+
+    ta2 = TA("foo 2")
+    ta2.add_location(l12)
+    ta2.add_location(l22)
+    ta2.add_location(l32)
+
+    ta2.add_edge(e12)
+    ta2.add_edge(e22)
+    ta2.add_edge(e32)
+    
+    # the network of TAs
+    nta = NTA()
+
+    nta.add_ta(ta)
+
+    try:
+        nta.add_ta(ta2)
+        assert False, "An exception was expected because the added TA does not have an initial location"
+    except ValueError:
+        # this was excpected, because ta2 does not have an initia location
+        pass
+  
