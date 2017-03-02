@@ -43,3 +43,34 @@ def test_connected_locations():
     assert e3.target == l1
 
 
+def test_simple_ta():
+
+    l1 = Location("L1")
+    l2 = Location("L2")
+    l3 = Location("L3")
+    
+    e1 = Edge(l1,l2)
+    e2 = Edge(l2,l3)
+    e3 = Edge(l3,l1)
+
+    ta = TA("foo")
+    ta.add_location(l1)
+    ta.add_location(l2)
+    ta.add_location(l3)
+
+    # all locations are distinct
+    assert len(ta.locations) == 3
+
+    # inserting a duplicated location is ignored
+    ta.add_location(l1)
+    assert len(ta.locations) == 3
+
+    ta.add_edge(e1)
+    ta.add_edge(e2)
+    ta.add_edge(e3)
+
+    assert len(ta.edges) == 3
+
+    # adding a duplicate edge is ignored
+    ta.add_edge(e1)
+    assert len(ta.edges) == 3

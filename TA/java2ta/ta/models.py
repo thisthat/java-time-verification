@@ -109,11 +109,13 @@ class Edge(object):
 
 class TA(object):
     
-    def __init__(self, locations=[], edges=[]):
+    def __init__(self, name, locations=[], edges=[]):
 
+        assert isinstance(name, basestring)
         assert isinstance(locations, set) or isinstance(locations, list)
         assert isinstance(edges, set) or isinstance(edges, list)
 
+        self.name = name
         self.locations = set([])
 
         for loc in locations:
