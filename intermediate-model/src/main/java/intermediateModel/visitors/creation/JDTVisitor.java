@@ -1128,9 +1128,9 @@ public class JDTVisitor extends ASTVisitor {
 		if(method != null){
 			IPackageBinding pkgCalled = method.getDeclaringClass().getPackage();
 			String nameCalled = method.getDeclaringClass().getName();
-			System.out.println(line + " :: " + pkgCalled.getName() + "." + nameCalled);
+			//System.out.println(line + " :: " + pkgCalled.getName() + "." + nameCalled);
 		} else {
-			System.out.println(line + " :: null :(" );
+			//System.out.println(line + " :: null :(" );
 		}
 		return mc;
 	}

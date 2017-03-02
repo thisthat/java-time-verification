@@ -2,6 +2,7 @@ package server.handler;
 
 import intermediateModelHelper.indexing.IndexingProject;
 import com.sun.net.httpserver.HttpExchange;
+import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class OpenProject extends indexMW {
 
 		@Override
 		public void run() {
-			boolean flag = true;
+			boolean flag = false;
 			synchronized (lock){
 				flag = indexProcess.containsKey(name) ? indexProcess.get(name) : true;
 				indexProcess.put(name, true);
@@ -61,21 +62,12 @@ public class OpenProject extends indexMW {
 			flag = false;
 		}
 		if(!flag){
-			String response = "Incorrect format for the parameters.";
-			he.sendResponseHeaders(400, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+			ParsePars.printErrorMessagePars(he);
 			return;
 		}
 		String base_path = parameters.get(par1);
 		boolean delete = parameters.containsKey(par2) && parameters.get(par2).equals("1");
-		if(!base_path.startsWith("file://")){
-			String response = "Unsupported protocol. atm only file:// is supported.";
-			he.sendResponseHeaders(400, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+		if(!ParsePars.parseFileUrl(base_path, he)){
 			return;
 		}
 		base_path = base_path.replace("file://","");

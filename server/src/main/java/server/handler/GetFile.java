@@ -2,11 +2,13 @@ package server.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import server.HttpServerConverter;
+import server.handler.middleware.ParsePars;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,20 +40,11 @@ public class GetFile implements HttpHandler {
 			flag = false;
 		}
 		if(!flag){
-			String response = "Incorrect format for the parameters.";
-			he.sendResponseHeaders(400, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+			ParsePars.printErrorMessagePars(he);
 			return;
 		}
 		String base_path = parameters.get(par1);
-		if(!base_path.startsWith("file://")){
-			String response = "Unsupported protocol. atm only file:// is supported.";
-			he.sendResponseHeaders(400, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+		if(!ParsePars.parseFileUrl(base_path, he)){
 			return;
 		}
 		base_path = base_path.replace("file://","");
@@ -68,7 +61,7 @@ public class GetFile implements HttpHandler {
 			return;
 		}
 		// send response
-		ObjectMapper json = new ObjectMapper();
+		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
 		String response = json.writeValueAsString(classes.get(0));
 		he.getResponseHeaders().add("Content-Type","application/json");

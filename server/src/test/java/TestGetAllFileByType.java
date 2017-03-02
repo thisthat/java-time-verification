@@ -8,6 +8,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.SystemDefaultCredentialsProvider;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -49,7 +51,7 @@ public class TestGetAllFileByType {
 	}
 
 	@Test
-	public void TestGetAllFileByType() throws Exception {
+	public void TestSuccess() throws Exception {
 
 		MongoOptions.getInstance().setDbName("tt");
 		MongoConnector.getInstance().drop();
@@ -68,7 +70,9 @@ public class TestGetAllFileByType {
 		assertEquals(200, response.getStatusLine().getStatusCode());
 
 		int status = 0;
-		while(status == 0){
+		long start = System.currentTimeMillis();
+		boolean expired = false;
+		while(status == 0 && !expired){
 			httpclient = HttpClients.createDefault();
 			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
 			nvps = new ArrayList<>();
@@ -79,18 +83,25 @@ public class TestGetAllFileByType {
 			myString = IOUtils.toString(stream, "UTF-8");
 			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
 			status = itemWithOwner.getStatus();
+			long now = System.currentTimeMillis() - start;
+			if( now > 15*1000){
+				expired = true; //max 30s
+			}
 		}
-
-		httpclient = HttpClients.createDefault();
-		httppost = new HttpPost(base_url);
-		nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
-		nvps.add(new BasicNameValuePair("type", "Object"));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		response = httpclient.execute(httppost);
-		stream = response.getEntity().getContent();
-		myString = IOUtils.toString(stream, "UTF-8");
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		if(!expired){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost(base_url);
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", "tt"));
+			nvps.add(new BasicNameValuePair("type", "Object"));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			assertEquals(200, response.getStatusLine().getStatusCode());
+		} else {
+			throw new TimeoutException("More than 15s");
+		}
 	}
 
 	@Test

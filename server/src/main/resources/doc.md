@@ -26,6 +26,13 @@ It expects two parameters:
  
 `projectPath` supports only *file://* as URI protocol atm. 
 
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
+
+e.g. 
+```bash
+curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
+```
+
 # /getFile 
 It returns the intermediate model in json format of the given file.
 
@@ -33,6 +40,13 @@ It expects one parameter:
 * `filePath`: Path from of the java file
  
 `filePath` supports only *file://* as URI protocol atm.
+
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
+
+e.g. 
+```bash
+curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
+```
 
 # /openProject
 
@@ -79,6 +93,12 @@ The output is a list of a structured data with the following format:
 
 A file can contains multiple classes. Therefore, to find the correct class users should use `packageName` and `className`.
 
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`.
+
+e.g. 
+```bash
+curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
+```
 # /getThreads
 
 Return the list of files in which each contains a class that defines a Thread.
@@ -107,5 +127,10 @@ The output is a list of a structured data with the following format:
 
 A file can contains multiple classes. Therefore, to find the correct class users should use `packageName` and `className`.
 
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`
 
+e.g. 
+```bash
+curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
+```
 
