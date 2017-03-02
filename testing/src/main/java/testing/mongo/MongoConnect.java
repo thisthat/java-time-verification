@@ -1,7 +1,7 @@
 package testing.mongo;
 
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.structure.IndexData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;

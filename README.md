@@ -44,8 +44,10 @@ The next features to implement are:
 The following branch will use to test new features.
 When they are ready and without knowing issue, a merge request can be created.
 
-
->>>>>>> annotation
+#Extract all Classes and methods form Jar
+```bash
+find . | grep ".class" | xargs javap -p > _classes.txt
+```
 
 
 

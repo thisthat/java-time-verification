@@ -1,8 +1,8 @@
 package PCFG.creation;
 
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.IndexingSyncBlock;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.IndexingSyncBlock;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.creation.helper.CalculateSyncBlock;
 import PCFG.creation.helper.CalculateSyncCall;
 import PCFG.creation.helper.CreateCFG;
@@ -10,9 +10,11 @@ import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import org.javatuples.KeyValue;
+import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class IM2PCFG {
+
 
 	private List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock> >> indexs = new ArrayList<>();
 	CreateCFG pcfgBuilder = new CreateCFG();
@@ -127,6 +130,23 @@ public class IM2PCFG {
 		}
 
 		PCFG pcfg = pcfgBuilder.convert();
+
+		//annotate with attributes
+		List<Pair<String,String>> attrs = new ArrayList<>();
+		List<ASTClass> visited = new ArrayList<>();
+		ASTClass tmp;
+		for(KeyValue<IASTMethod,ASTClass> k : pcfgBuilder.getClasses()){
+			tmp = k.getValue();
+			if(!visited.contains(tmp)){
+				visited.add(tmp);
+				for(ASTAttribute a : tmp.getAttributes()){
+					attrs.add(new Pair<>(a.getType(), a.getName()));
+				}
+			}
+		}
+		pcfg.addAnnotation(String.valueOf(PCFG.DefaultAnnotation.GlobalVars), attrs);
+
+
 
 		//check for sync blocks
 		CalculateSyncBlock.calculateSyncBlock(classes, this.indexs, pcfg);

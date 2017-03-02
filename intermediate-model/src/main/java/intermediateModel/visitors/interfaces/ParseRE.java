@@ -1,6 +1,6 @@
 package intermediateModel.visitors.interfaces;
 
-import IntermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.expression.*;
 

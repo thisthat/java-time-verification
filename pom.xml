@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>java-xal</groupId>
     <artifactId>java-xal</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <name>Parent</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,28 +19,11 @@
         <module>evaluation</module>
         <module>time-annotation</module>
         <module>server</module>
+        <module>socket</module>
     </modules>
-
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <executable>3rdPartyLibraries/installLocalMaven.sh</executable>
-                    <!--<workingDirectory>3rdPartyLibraries/</workingDirectory>-->
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

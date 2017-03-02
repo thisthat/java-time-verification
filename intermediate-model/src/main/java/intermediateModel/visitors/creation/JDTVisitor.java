@@ -1120,7 +1120,19 @@ public class JDTVisitor extends ASTVisitor {
 					getExpr( (ASTNode) p )
 			);
 		}
-		return new ASTMethodCall(start,stop, name, exprCallee, pars );
+
+		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
+		int line = mc.getLine();
+
+		IMethodBinding method = node.resolveMethodBinding();
+		if(method != null){
+			IPackageBinding pkgCalled = method.getDeclaringClass().getPackage();
+			String nameCalled = method.getDeclaringClass().getName();
+			//System.out.println(line + " :: " + pkgCalled.getName() + "." + nameCalled);
+		} else {
+			//System.out.println(line + " :: null :(" );
+		}
+		return mc;
 	}
 
 	public IASTRE.OPERATOR getOperator(String op){

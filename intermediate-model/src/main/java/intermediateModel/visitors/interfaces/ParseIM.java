@@ -1,10 +1,10 @@
 package intermediateModel.visitors.interfaces;
 
-import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.BuildEnvironment;
-import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.envirorment.EnvBase;
-import IntermediateModelHelper.envirorment.EnvParameter;
+import intermediateModelHelper.CheckExpression;
+import intermediateModelHelper.envirorment.BuildEnvironment;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.EnvBase;
+import intermediateModelHelper.envirorment.EnvParameter;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;

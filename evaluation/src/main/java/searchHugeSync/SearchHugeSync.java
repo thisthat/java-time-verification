@@ -1,12 +1,12 @@
 package searchHugeSync;
 
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import IntermediateModelHelper.indexing.structure.IndexSyncCall;
-import IntermediateModelHelper.types.DataTreeType;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModelHelper.indexing.structure.IndexSyncCall;
+import intermediateModelHelper.types.DataTreeType;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;

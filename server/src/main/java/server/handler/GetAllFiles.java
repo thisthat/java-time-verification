@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.apache.commons.io.FileUtils;
 import server.HttpServerConverter;
+import server.handler.middleware.ParsePars;
 
 import java.io.*;
 import java.util.*;
@@ -37,21 +38,12 @@ public class GetAllFiles implements HttpHandler {
 			flag = false;
 		}
 		if(!flag){
-			String response = "Incorrect format for the parameters.";
-			he.sendResponseHeaders(400, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+			ParsePars.printErrorMessagePars(he);
 			return;
 		}
 		boolean skipTest = parameters.get(par2).equals("1");
 		String base_path = parameters.get(par1);
-		if(!base_path.startsWith("file://")){
-			String response = "Unsupported protocol. atm only file:// is supported.";
-			he.sendResponseHeaders(400, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+		if(!ParsePars.parseFileUrl(base_path, he)){
 			return;
 		}
 		base_path = base_path.replace("file://","");
@@ -88,7 +80,7 @@ public class GetAllFiles implements HttpHandler {
 
 
 		// send response
-		ObjectMapper json = new ObjectMapper();
+		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		String response = json.writeValueAsString(outputFiles);
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());

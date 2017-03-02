@@ -1,8 +1,8 @@
 package PCFG.creation.helper;
 
-import IntermediateModelHelper.indexing.structure.IndexParameter;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import IntermediateModelHelper.types.DataTreeType;
+import intermediateModelHelper.indexing.structure.IndexParameter;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModelHelper.types.DataTreeType;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.SyncNode;

@@ -1,8 +1,8 @@
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.IndexData;
 import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
 import intermediateModel.structure.ASTClass;

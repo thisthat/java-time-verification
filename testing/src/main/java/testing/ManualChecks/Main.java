@@ -1,8 +1,8 @@
 package testing.ManualChecks;
 
-import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.SyncMethodCall;
+import intermediateModelHelper.indexing.GenerateMethodSyncCallList;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;

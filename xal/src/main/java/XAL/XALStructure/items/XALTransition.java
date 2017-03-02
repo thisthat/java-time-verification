@@ -66,7 +66,7 @@ public class XALTransition extends XALItem {
     @Override
     public String toString(int tab) {
         String out = tab(tab) + String.format("<Transition IdInputState=\"%s\" IdOutputState=\"%s\" ",this.from, this.to);
-        if(this.metricValue != null)
+        if(this.metricValue != null && !this.metricValue.equals(""))
             out += String.format("MetricValue=\"%s\" ",this.metricValue);
         out += String.format("style=\"%s\"", this.style );
 		if(!fromState.getTimeConstraint().equals("")){

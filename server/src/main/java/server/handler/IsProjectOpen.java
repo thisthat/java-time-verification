@@ -1,7 +1,7 @@
 package server.handler;
 
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import com.sun.net.httpserver.HttpExchange;
 import server.handler.middleware.indexMW;
 

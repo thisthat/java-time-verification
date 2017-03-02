@@ -1,7 +1,7 @@
 package PCFG.creation.helper;
 
-import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
-import IntermediateModelHelper.indexing.structure.SyncMethodCall;
+import intermediateModelHelper.indexing.GenerateMethodSyncCallList;
+import intermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;

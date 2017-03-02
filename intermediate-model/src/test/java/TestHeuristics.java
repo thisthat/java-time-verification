@@ -1,4 +1,4 @@
-import IntermediateModelHelper.heuristic.definition.*;
+import intermediateModelHelper.heuristic.definition.*;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;

@@ -1,9 +1,9 @@
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.IndexingSyncBlock;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.IndexingSyncBlock;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTHiddenClass;

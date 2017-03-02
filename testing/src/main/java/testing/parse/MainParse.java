@@ -1,9 +1,9 @@
 package testing.parse;
 
-import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.envirorment.EnvBase;
-import IntermediateModelHelper.indexing.structure.*;
+import intermediateModelHelper.CheckExpression;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.EnvBase;
+import intermediateModelHelper.indexing.structure.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;

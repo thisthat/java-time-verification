@@ -1,8 +1,8 @@
 package firstEvalPCFG;
 
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
