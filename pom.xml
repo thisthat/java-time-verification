@@ -20,6 +20,7 @@
         <module>time-annotation</module>
         <module>server</module>
         <module>socket</module>
+        <module>smellDetector</module>
     </modules>
 
     <build>

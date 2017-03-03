@@ -1,12 +1,17 @@
 package server.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import intermediateModelHelper.indexing.IndexingProject;
 import com.sun.net.httpserver.HttpExchange;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +39,7 @@ public class OpenProject extends indexMW {
 
 		@Override
 		public void run() {
-			boolean flag = false;
+			boolean flag;
 			synchronized (lock){
 				flag = indexProcess.containsKey(name) ? indexProcess.get(name) : true;
 				indexProcess.put(name, true);
@@ -47,6 +52,36 @@ public class OpenProject extends indexMW {
 			synchronized (lock){
 				indexProcess.put(name, false);
 			}
+		}
+	}
+
+	public HashMap<String, Boolean> getIndexProcess() {
+		return indexProcess;
+	}
+
+	class Status {
+		int status;
+		String description;
+
+		public Status(int status, String description) {
+			this.status = status;
+			this.description = description;
+		}
+
+		public int getStatus() {
+			return status;
+		}
+
+		public void setStatus(int status) {
+			this.status = status;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
 		}
 	}
 
@@ -72,22 +107,28 @@ public class OpenProject extends indexMW {
 		}
 		base_path = base_path.replace("file://","");
 
-		if(!indexProcess.containsKey(name) || !indexProcess.get(name)) {
-			IndexingThread thread = new IndexingThread(name, base_path, delete, indexProcess);
-			thread.start();
-			//compute
-			String response = "{\n\tstatus: \"1\"\n}\n";
-			he.sendResponseHeaders(200, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+		Status msg;
+		//does the path exists?
+		if (new File(base_path).exists()) {
+			if(!indexProcess.containsKey(name) || !indexProcess.get(name)) {
+				IndexingThread thread = new IndexingThread(name, base_path, delete, indexProcess);
+				thread.start();
+				//compute
+				msg = new Status(0, "");
+			} else {
+				msg = new Status(1, "A process is already parsing this folder");
+			}
 		} else {
-			String response = "{\n\tstatus: \"0\"\n}\n";
-			he.sendResponseHeaders(200, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
+			msg = new Status(1, "Path does not exists");
 		}
+
+		ObjectMapper json = ParsePars.getOutputFormat(parameters);
+		json.enable(SerializationFeature.INDENT_OUTPUT);
+		String response = json.writeValueAsString(msg);
+		he.sendResponseHeaders(200, response.length());
+		OutputStream os = he.getResponseBody();
+		os.write(response.toString().getBytes());
+		os.close();
 	}
 
 
