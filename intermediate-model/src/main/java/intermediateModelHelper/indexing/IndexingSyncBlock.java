@@ -3,6 +3,7 @@ package intermediateModelHelper.indexing;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.EnvBase;
+import intermediateModelHelper.envirorment.EnvExtended;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.*;
@@ -110,6 +111,14 @@ public class IndexingSyncBlock extends ParseIM {
 	@Override
 	protected EnvBase createBaseEnv(ASTClass c){
 		super.createBaseEnv(c);
+		if(!c.getExtendClass().equals("Object")){
+			Env s = base_env;
+			while(s.getPrev() != null) {
+				s = s.getPrev();
+			}
+			s.setPrev(EnvExtended.getExtendedEnv(c));
+		}
+
 		//check method
 		for (IASTMethod m : c.getMethods()) {
 			lastMethodName = m.getName();

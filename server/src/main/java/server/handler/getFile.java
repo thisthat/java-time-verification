@@ -1,27 +1,35 @@
 package server.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.apache.commons.io.FileUtils;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import server.HttpServerConverter;
+import server.handler.middleware.BaseRoute;
 import server.handler.middleware.ParsePars;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetAllFiles implements HttpHandler {
+public class getFile extends BaseRoute {
+	String par1 = "filePath";
 
-	String par1 = "projectPath";
-	String par2 = "skipTest";
 
 
 	@Override
-	public void handle(HttpExchange he) throws IOException {
+	public void handleConnection(HttpExchange he) throws IOException {
 		// parse request
 		Map<String, String> parameters = new HashMap<>();
 		InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
@@ -29,63 +37,41 @@ public class GetAllFiles implements HttpHandler {
 		String query = br.readLine();
 		HttpServerConverter.parseQuery(query, parameters);
 
-		//validate input: expect 2 pars projectPath&skipTest
+		//validate input
 		boolean flag = true;
 		if(!parameters.containsKey(par1)){
-			flag = false;
-		}
-		if(!parameters.containsKey(par2)){
 			flag = false;
 		}
 		if(!flag){
 			ParsePars.printErrorMessagePars(he);
 			return;
 		}
-		boolean skipTest = parameters.get(par2).equals("1");
 		String base_path = parameters.get(par1);
 		if(!ParsePars.parseFileUrl(base_path, he)){
 			return;
 		}
 		base_path = base_path.replace("file://","");
+		List<ASTClass> classes;
 		//Compute response
-		File dir = new File(base_path);
-		String[] filter = {"java"};
-		Collection<File> files = null;
-		try{
-			files = FileUtils.listFiles(
-					dir,
-					filter,
-					true
-			);
-		}
-		catch (Exception e){
-			String response = "Directory " + base_path + " does not exists or it cannot be opened";
+		try {
+			classes = JDTVisitor.parse(base_path);
+		} catch (Exception e){
+			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
 			os.write(response.toString().getBytes());
 			os.close();
 			return;
 		}
-		Iterator i = files.iterator();
-		List<String> outputFiles = new ArrayList<>();
-
-		while (i.hasNext()) {
-
-			String filename = ((File)i.next()).getAbsolutePath();
-			if(skipTest && filename.contains("/test")){
-				continue;
-			}
-			outputFiles.add(filename);
-		}
-
-
 		// send response
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
-		String response = json.writeValueAsString(outputFiles);
+		json.enable(SerializationFeature.INDENT_OUTPUT);
+		String response = json.writeValueAsString(classes.get(0));
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();
 		os.write(response.toString().getBytes());
 		os.close();
 	}
+
 }

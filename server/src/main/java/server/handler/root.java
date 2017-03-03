@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.apache.commons.io.IOUtils;
 import server.HttpServerConverter;
+import server.handler.middleware.BaseRoute;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,19 +18,19 @@ import java.util.Set;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class Root implements HttpHandler {
+public class root extends BaseRoute {
 
 	@Override
-	public void handle(HttpExchange he) throws IOException {
+	public void handleConnection(HttpExchange he) throws IOException {
 
 		Headers headers = he.getRequestHeaders();
 		Set<Map.Entry<String, List<String>>> entries = headers.entrySet();
 		boolean user = false;
 		for (Map.Entry<String, List<String>> entry : entries)
-			if(entry.getKey().equals("Accept-encoding"))
+			if (entry.getKey().equals("Accept-encoding"))
 				user = true;
 
-		if(user){
+		if (user) {
 			ClassLoader classLoader = getClass().getClassLoader();
 
 			StringWriter writer = new StringWriter();
@@ -53,6 +54,5 @@ public class Root implements HttpHandler {
 			os.write(response.getBytes());
 			os.close();
 		}
-
 	}
 }

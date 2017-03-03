@@ -14,13 +14,13 @@ import java.util.Map;
 /**
  * Created by giovanni on 03/03/2017.
  */
-public class GetStatus extends indexMW {
+public class getStatus extends indexMW {
 
     private static final String _OPEN_ = "open";
     private static final String _OPENING_ = "opening";
     private static final String _CLOSED_ = "closed";
 
-    OpenProject op;
+    openProject op;
 
     class Status {
         String status;
@@ -49,7 +49,7 @@ public class GetStatus extends indexMW {
     }
 
 
-    public GetStatus(OpenProject op) {
+    public getStatus(openProject op) {
         this.op = op;
     }
 

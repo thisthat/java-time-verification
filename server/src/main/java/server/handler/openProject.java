@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class OpenProject extends indexMW {
+public class openProject extends indexMW {
 
 	static Object lock = new Object();
 

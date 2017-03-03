@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class IsProjectOpen extends indexMW {
+public class isProjectOpen extends indexMW {
 
 
 	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
@@ -27,4 +27,5 @@ public class IsProjectOpen extends indexMW {
 		os.write(response.toString().getBytes());
 		os.close();
 	}
+
 }

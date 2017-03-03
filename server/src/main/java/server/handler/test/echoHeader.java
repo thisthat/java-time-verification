@@ -3,6 +3,7 @@ package server.handler.test;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import server.handler.middleware.BaseRoute;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,10 +15,12 @@ import java.util.Set;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class EchoHeader implements HttpHandler {
+public class echoHeader extends BaseRoute {
+
+
 
 	@Override
-	public void handle(HttpExchange he) throws IOException {
+	public void handleConnection(HttpExchange he) throws IOException {
 		Headers headers = he.getRequestHeaders();
 		Set<Map.Entry<String, List<String>>> entries = headers.entrySet();
 		String response = "";

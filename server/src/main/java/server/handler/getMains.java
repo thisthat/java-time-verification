@@ -19,22 +19,15 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetAllFilesByType extends indexMW {
-
-	String par = "type";
+public class getMains extends indexMW {
 
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
-		if(!parameters.containsKey(par)){
-			ParsePars.printErrorMessagePars(he);
-			return;
-		}
-		String type = parameters.get(par);
 		if(!ParsePars.ParseIndexStatus(name,he)){
 			return;
 		}
 		MongoConnector db = MongoConnector.getInstance(name);
-		List<IndexData> threads = db.getType(type);
+		List<IndexData> threads = db.getMains();
 		List<OutputData> files = new ArrayList<>();
 		for(IndexData d : threads){
 			if(! files.contains(d.getPath()) )
@@ -50,4 +43,5 @@ public class GetAllFilesByType extends indexMW {
 		os.close();
 
 	}
+
 }

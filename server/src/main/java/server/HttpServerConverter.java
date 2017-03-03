@@ -2,9 +2,9 @@ package server;
 
 import com.sun.net.httpserver.HttpServer;
 import server.handler.*;
-import server.handler.test.EchoGet;
-import server.handler.test.EchoHeader;
-import server.handler.test.EchoPost;
+import server.handler.test.echoGet;
+import server.handler.test.echoHeader;
+import server.handler.test.echoPost;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -24,6 +24,7 @@ public class HttpServerConverter {
 	private final int noOfThreads = 4;
 	private final ExecutorService httpThreadPool;
 	HttpServer server;
+	private static boolean _debug;
 
 	public static int getPort() {
 		return port;
@@ -41,25 +42,25 @@ public class HttpServerConverter {
 		httpThreadPool = Executors.newFixedThreadPool(this.noOfThreads);
 
 		//Test urls
-		server.createContext("/", new Root());
-		server.createContext("/test/echoHeader", new EchoHeader());
-		server.createContext("/test/echoGet", new EchoGet());
-		server.createContext("/test/echoPost", new EchoPost());
+		server.createContext("/", new root());
+		server.createContext("/test/echoHeader", new echoHeader());
+		server.createContext("/test/echoGet", new echoGet());
+		server.createContext("/test/echoPost", new echoPost());
 
 
 		//Get all java files from a project
-		server.createContext("/getAllFiles", new GetAllFiles());
-		server.createContext("/getFile", new GetFile());
+		server.createContext("/getAllFiles", new getAllFiles());
+		server.createContext("/getFile", new getFile());
 
 
-		OpenProject op = new OpenProject();
+		openProject op = new openProject();
 		//Start project index
 		server.createContext("/openProject", op);
-		server.createContext("/isProjectOpen", new IsProjectOpen());
-		server.createContext("/getFilesByType", new GetAllFilesByType());
-		server.createContext("/getThreads", new GetThreads());
-		server.createContext("/getStatus", new GetStatus(op));
-		server.createContext("/getMains", new GetMains());
+		server.createContext("/isProjectOpen", new isProjectOpen());
+		server.createContext("/getFilesByType", new getFilesByType());
+		server.createContext("/getThreads", new getThreads());
+		server.createContext("/getStatus", new getStatus(op));
+		server.createContext("/getMains", new getMains());
 
 		server.setExecutor(httpThreadPool);
 		server.start();
@@ -97,9 +98,17 @@ public class HttpServerConverter {
 		}
 	}
 
+	public static boolean isDebugActive() {
+		return _debug;
+	}
+
 	public void stop() {
 		System.out.println("server stopped at " + port);
 		server.stop(1);
 		httpThreadPool.shutdownNow();
+	}
+
+	public void setDebug(boolean debug) {
+		_debug = debug;
 	}
 }

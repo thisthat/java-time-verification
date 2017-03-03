@@ -399,8 +399,8 @@ public class ResolveTypes {
 				//it is a variable
 				IASTVar type = e.getVar(val);
 				if(type == null){
-					System.err.println("[Var] Should be not the case! Resolving sync expr for class:" + c.getPath());
-					System.err.println("@line:" + ((ASTLiteral) expr).getLine());
+					//System.err.println("[Var] Should be not the case! Resolving sync expr for class:" + c.getPath());
+					//System.err.println("@line:" + expr.getLine());
 				} else {
 					IndexData d = getPackageFromImports(imports, type.getType());
 					if(d == null){
@@ -423,8 +423,8 @@ public class ResolveTypes {
 				}
 				IASTVar type = e.getVar(varName);
 				if (type == null) {
-					System.err.println("[Attribute] Should be not the case! Resolving sync expr for class:" + c.getPath());
-					System.err.println("@line:" + ((ASTAttributeAccess) expr).getLine() );
+					//System.err.println("[Attribute] Should be not the case! Resolving sync expr for class:" + c.getPath());
+					//System.err.println("@line:" + ((ASTAttributeAccess) expr).getLine() );
 				} else {
 					IndexData d = getPackageFromImports(imports, type.getType());
 					if (d == null) {
