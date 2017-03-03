@@ -13,6 +13,7 @@ Default IP: **127.0.0.1**
 | /getFilesByType   | POST | json | Return the list of files that extends/implements the given type |
 | /getThreads       | POST | json | Return the list of files that implements threads |
 | /getMains         | POST | json | Return the list of files which contains a public void main |
+| /getStatus        | POST | json | Return the status of the selected project |
 
 
 
@@ -64,8 +65,11 @@ Plus one optional parameter:
 * `invalidCache` : if equal to **1** it invalidates the cache and compute again the indexes. Default value is `0`.
 
 The function returns a value with a status code:
-* `0` : There is already an indexing on that project ongoing
-* `1` : The indexing process started correctly
+* `0` : The path exists and the process started correctly
+* `1` : There was an error, look `description` to understand which error was
+
+`description` is a text field that shows an error message.
+
 
 # /isProjectOpen
 
@@ -77,6 +81,13 @@ It expects one parameter:
 The return value is a status code:
 * `0` : The project has not yet the indexes in the database
 * `1` : The indexes are available
+
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
+
+e.g. 
+```bash
+curl -s http://localhost:9000/isProjectOpen -d 'format=yaml&name=test'
+```
 
 # /getFilesByType
 
@@ -134,3 +145,22 @@ e.g.
 curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
 ```
 
+# /getStatus
+
+The route returns the status of the given project. 
+
+It expects one parameter: 
+* `name` : Name of the project
+
+The return value is a status message:
+* `open`    : The project has been opened correctly and the indexing phase ends
+* `opening` : The indexes are currently on computing
+* `closed`  : The indexes have never been created
+* `error`   : The index procedure had an error. See the `description` field for the error log.
+
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
+
+e.g. 
+```bash
+curl -s http://localhost:9000/getStatus -d 'format=yaml&name=test'
+```
