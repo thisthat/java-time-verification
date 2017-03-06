@@ -17,8 +17,8 @@ public class OutputData {
 		this.packageName = packageName;
 	}
 
-	public OutputData(IndexData d) {
-		this.path = d.getPath();
+	public OutputData(IndexData d, String base_path) {
+		this.path = d.getPath().replace(base_path,"");
 		this.className = d.getClassName();
 		this.packageName = d.getFullclassPackage();
 	}

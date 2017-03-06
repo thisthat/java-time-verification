@@ -98,6 +98,7 @@ public class IndexingProject {
 		//ensure indexes
 		db.ensureIndexes();
 		db.setIndexFinish();
+		db.setBasePath(base_path);
 		return n_file;
 	}
 

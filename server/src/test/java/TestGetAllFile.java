@@ -1,3 +1,5 @@
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -13,7 +15,9 @@ import org.junit.Test;
 import server.HttpServerConverter;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +33,35 @@ public class TestGetAllFile {
 	static String base_url;
 	static String base_project;
 
+	static final String db_name = "tt";
+
 	@BeforeClass
 	public static void setUp() throws Exception {
 		server = new HttpServerConverter();
 		base_url = "http://localhost:" + HttpServerConverter.getPort();
-		ClassLoader classLoader = TestGetAllFile.class.getClassLoader();
+		ClassLoader classLoader = TestIsProjectOpen.class.getClassLoader();
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
 		base_project = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("/")) + "/";
+
+		MongoOptions.getInstance().setDbName(db_name);
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
+
+		openProject();
+	}
+
+	private static void openProject() throws IOException {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url + "/openProject");
+		List<NameValuePair> nvps = new ArrayList<>();
+		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 	@AfterClass
@@ -48,7 +74,7 @@ public class TestGetAllFile {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("projectPath", "file://" + base_project));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		nvps.add(new BasicNameValuePair("skipTest", "0"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
@@ -62,7 +88,7 @@ public class TestGetAllFile {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("projectPath", "file://" + base_project));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		nvps.add(new BasicNameValuePair("skipTest", "1"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
@@ -82,14 +108,14 @@ public class TestGetAllFile {
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
-		assertEquals(400, response.getStatusLine().getStatusCode());
+		assertEquals(406, response.getStatusLine().getStatusCode());
 	}
 	@Test
 	public void TestGetAllFilesNoSkip() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("projectPath", "file://" + base_project));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		//nvps.add(new BasicNameValuePair("skipTest", "1"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
@@ -102,26 +128,13 @@ public class TestGetAllFile {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("projectPath", "http://" + base_project));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		nvps.add(new BasicNameValuePair("skipTest", "1"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
-		assertEquals(400, response.getStatusLine().getStatusCode());
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
-	@Test
-	public void TestGetAllFilesNoDirectory() throws Exception {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
-		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("projectPath", "file:///C:/Unix/Windows/Osx"));
-		nvps.add(new BasicNameValuePair("skipTest", "1"));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
-		assertEquals(400, response.getStatusLine().getStatusCode());
 
-	}
 }

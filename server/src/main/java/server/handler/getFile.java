@@ -2,19 +2,15 @@ package server.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
-import server.HttpServerConverter;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import server.handler.middleware.ParsePars;
+import server.handler.middleware.indexMW;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,18 +18,13 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetFile implements HttpHandler {
+public class getFile extends indexMW {
 	String par1 = "filePath";
 
-	@Override
-	public void handle(HttpExchange he) throws IOException {
-		// parse request
-		Map<String, String> parameters = new HashMap<>();
-		InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
-		BufferedReader br = new BufferedReader(isr);
-		String query = br.readLine();
-		HttpServerConverter.parseQuery(query, parameters);
+	String lastFileServed = "";
 
+	@Override
+	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		//validate input
 		boolean flag = true;
 		if(!parameters.containsKey(par1)){
@@ -43,15 +34,25 @@ public class GetFile implements HttpHandler {
 			ParsePars.printErrorMessagePars(he);
 			return;
 		}
-		String base_path = parameters.get(par1);
-		if(!ParsePars.parseFileUrl(base_path, he)){
+		String file_path = parameters.get(par1);
+		if(!ParsePars.parseFileUrl(file_path, he)){
 			return;
 		}
-		base_path = base_path.replace("file://","");
+		file_path = file_path.replace("file://","");
+
+		//get base path of project
+		MongoConnector mongo = MongoConnector.getInstance(name);
+		String base_path = mongo.getBasePath();
+
+		String file = base_path + "/" + file_path;
+		//avoid bad path
+		file = file.replace("//","/");
+		lastFileServed = file;
+
 		List<ASTClass> classes;
 		//Compute response
 		try {
-			classes = JDTVisitor.parse(base_path);
+			classes = JDTVisitor.parse(file);
 		} catch (Exception e){
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
@@ -69,5 +70,11 @@ public class GetFile implements HttpHandler {
 		OutputStream os = he.getResponseBody();
 		os.write(response.toString().getBytes());
 		os.close();
+	}
+
+	@Override
+	protected void printLog() {
+		super.printLog();
+		System.out.println("File served: " + lastFileServed);
 	}
 }

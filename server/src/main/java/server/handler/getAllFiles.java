@@ -3,9 +3,12 @@ package server.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import org.apache.commons.io.FileUtils;
 import server.HttpServerConverter;
+import server.handler.middleware.BaseRoute;
 import server.handler.middleware.ParsePars;
+import server.handler.middleware.indexMW;
 
 import java.io.*;
 import java.util.*;
@@ -14,38 +17,26 @@ import java.util.*;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetAllFiles implements HttpHandler {
+public class getAllFiles extends indexMW {
 
-	String par1 = "projectPath";
-	String par2 = "skipTest";
-
+	String par1 = "skipTest";
 
 	@Override
-	public void handle(HttpExchange he) throws IOException {
-		// parse request
-		Map<String, String> parameters = new HashMap<>();
-		InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
-		BufferedReader br = new BufferedReader(isr);
-		String query = br.readLine();
-		HttpServerConverter.parseQuery(query, parameters);
-
+	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		//validate input: expect 2 pars projectPath&skipTest
 		boolean flag = true;
 		if(!parameters.containsKey(par1)){
-			flag = false;
-		}
-		if(!parameters.containsKey(par2)){
 			flag = false;
 		}
 		if(!flag){
 			ParsePars.printErrorMessagePars(he);
 			return;
 		}
-		boolean skipTest = parameters.get(par2).equals("1");
-		String base_path = parameters.get(par1);
-		if(!ParsePars.parseFileUrl(base_path, he)){
-			return;
-		}
+		boolean skipTest = parameters.get(par1).equals("1");
+
+		MongoConnector mongo = MongoConnector.getInstance(name);
+		String base_path = mongo.getBasePath();
+
 		base_path = base_path.replace("file://","");
 		//Compute response
 		File dir = new File(base_path);
@@ -75,9 +66,9 @@ public class GetAllFiles implements HttpHandler {
 			if(skipTest && filename.contains("/test")){
 				continue;
 			}
-			outputFiles.add(filename);
+			//remove project path
+			outputFiles.add(filename.replace(base_path,""));
 		}
-
 
 		// send response
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
@@ -88,4 +79,5 @@ public class GetAllFiles implements HttpHandler {
 		os.write(response.toString().getBytes());
 		os.close();
 	}
+
 }

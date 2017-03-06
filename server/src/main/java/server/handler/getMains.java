@@ -1,6 +1,5 @@
 package server.handler;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.structure.IndexData;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +19,7 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetThreads extends indexMW {
+public class getMains extends indexMW {
 
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
@@ -28,11 +27,12 @@ public class GetThreads extends indexMW {
 			return;
 		}
 		MongoConnector db = MongoConnector.getInstance(name);
-		List<IndexData> threads = db.getThreads();
+		String base_path = db.getBasePath();
+		List<IndexData> threads = db.getMains();
 		List<OutputData> files = new ArrayList<>();
 		for(IndexData d : threads){
 			if(! files.contains(d.getPath()) )
-				files.add(new OutputData(d));
+				files.add(new OutputData(d, base_path));
 		}
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
@@ -44,4 +44,5 @@ public class GetThreads extends indexMW {
 		os.close();
 
 	}
+
 }

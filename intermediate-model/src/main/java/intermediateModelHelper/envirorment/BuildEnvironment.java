@@ -49,7 +49,7 @@ public class BuildEnvironment {
 			f = path + "MethodTimeRelevant.txt";
 			methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
 		} catch (Exception e) {
-			System.err.println("Cannot read from FS. Trying to populate time relevant information from resources.");
+			//System.err.println("Cannot read from FS. Trying to populate time relevant information from resources.");
 			//try to load from resources
 			String f = getClass().getClassLoader().getResource("descriptorTimeRelevant/TypeTimeRelevant.txt").getFile();
 			try {

@@ -18,6 +18,7 @@ import org.junit.Test;
 import server.HttpServerConverter;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ import static org.junit.Assert.assertEquals;
  * @version %I%, %G%
  */
 public class TestMains {
+
+	private static final String db_name = "tt";
 
 	public static class Item {
 		String status;
@@ -56,10 +59,30 @@ public class TestMains {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		server = new HttpServerConverter();
-		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getMains";
+		base_url = "http://localhost:" + HttpServerConverter.getPort();
 		ClassLoader classLoader = TestMains.class.getClassLoader();
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
 		base_project = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("/")) + "/";
+		MongoOptions.getInstance().setDbName(db_name);
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
+		openProject();
+		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getMains";
+	}
+
+	private static void openProject() throws IOException {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url + "/openProject");
+		List<NameValuePair> nvps = new ArrayList<>();
+		String projectpath = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
+		nvps.add(new BasicNameValuePair("name", db_name));
+		nvps.add(new BasicNameValuePair("path", "file://" + projectpath));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 	@AfterClass

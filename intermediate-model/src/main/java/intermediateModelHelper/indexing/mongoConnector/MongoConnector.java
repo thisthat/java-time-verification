@@ -102,7 +102,18 @@ public class MongoConnector {
 		} catch (Exception e){
 			System.err.println(e.getMessage());
 		}
+	}
 
+	public void setBasePath(String basePath){
+		if(!basePath.endsWith("/")){
+			basePath = basePath + "/";
+		}
+		dbStatus.setBasePath(basePath);
+		datastore.save(dbStatus);
+	}
+
+	public String getBasePath(){
+		return dbStatus.getBasePath();
 	}
 
 	/**

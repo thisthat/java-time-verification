@@ -22,6 +22,7 @@ public class DBStatus {
 	private ObjectId id;
 
 	String dbName;
+	String basePath;
 	Timestamp createdAt;
 	Timestamp lastEdit;
 	boolean indexed = false;
@@ -29,14 +30,19 @@ public class DBStatus {
 	public DBStatus() {
 	}
 
-	public DBStatus(ObjectId id, String dbName, Timestamp createdAt, Timestamp lastEdit, boolean indexed) {
+	public DBStatus(ObjectId id, String dbName, String basePath, Timestamp createdAt, Timestamp lastEdit, boolean indexed) {
 		this.id = id;
 		this.dbName = dbName;
+		this.basePath = basePath;
 		this.createdAt = createdAt;
 		this.lastEdit = lastEdit;
 		this.indexed = indexed;
 	}
 
+	public DBStatus(String dbName, String basePath, Timestamp createdAt, Timestamp lastEdit, boolean indexed) {
+		this(dbName,createdAt,lastEdit,indexed);
+		this.basePath = basePath;
+	}
 	public DBStatus(String dbName, Timestamp createdAt, Timestamp lastEdit, boolean indexed) {
 		this.dbName = dbName;
 		this.createdAt = createdAt;
@@ -82,5 +88,13 @@ public class DBStatus {
 
 	public void setIndexed(boolean indexed) {
 		this.indexed = indexed;
+	}
+
+	public String getBasePath() {
+		return basePath;
+	}
+
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
 	}
 }

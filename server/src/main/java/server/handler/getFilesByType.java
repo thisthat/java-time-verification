@@ -19,9 +19,10 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class GetAllFilesByType extends indexMW {
+public class getFilesByType extends indexMW {
 
 	String par = "type";
+
 
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
@@ -34,11 +35,12 @@ public class GetAllFilesByType extends indexMW {
 			return;
 		}
 		MongoConnector db = MongoConnector.getInstance(name);
+		String base_path = db.getBasePath();
 		List<IndexData> threads = db.getType(type);
 		List<OutputData> files = new ArrayList<>();
 		for(IndexData d : threads){
 			if(! files.contains(d.getPath()) )
-				files.add(new OutputData(d));
+				files.add(new OutputData(d, base_path));
 		}
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
@@ -50,4 +52,5 @@ public class GetAllFilesByType extends indexMW {
 		os.close();
 
 	}
+
 }
