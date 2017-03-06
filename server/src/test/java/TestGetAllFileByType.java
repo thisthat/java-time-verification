@@ -16,6 +16,7 @@ import org.junit.Test;
 import server.HttpServerConverter;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +37,29 @@ public class TestGetAllFileByType {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		server = new HttpServerConverter();
-		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getFilesByType";
+		base_url = "http://localhost:" + HttpServerConverter.getPort();
 		ClassLoader classLoader = TestGetAllFileByType.class.getClassLoader();
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
 		base_project = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("/")) + "/";
 		MongoOptions.getInstance().setDbName("tt");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
+		openProject();
+		base_url = base_url + "/getFilesByType";
+	}
+
+	private static void openProject() throws IOException {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url + "/openProject");
+		List<NameValuePair> nvps = new ArrayList<>();
+		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 	@AfterClass

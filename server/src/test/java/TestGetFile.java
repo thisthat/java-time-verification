@@ -1,3 +1,5 @@
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -12,6 +14,7 @@ import org.junit.Test;
 import server.HttpServerConverter;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,8 @@ public class TestGetFile {
 	static HttpServerConverter server;
 	static String base_url;
 	static String base_project;
+	static String base_file;
+	static final String db_name = "tt";
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -35,6 +40,28 @@ public class TestGetFile {
 		ClassLoader classLoader = TestGetFile.class.getClassLoader();
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
 		base_project = file.getAbsolutePath();
+		base_project = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
+		base_file = "Attempt1.java";
+		MongoOptions.getInstance().setDbName(db_name);
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
+		openProject();
+	}
+
+
+	private static void openProject() throws IOException {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url + "/openProject");
+		List<NameValuePair> nvps = new ArrayList<>();
+		String projectpath = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
+		nvps.add(new BasicNameValuePair("name", db_name));
+		nvps.add(new BasicNameValuePair("path", "file://" + projectpath));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 	@AfterClass
@@ -43,11 +70,12 @@ public class TestGetFile {
 	}
 
 	@Test
-	public void TestGetFile() throws Exception {
+	public void TestGetFileSuccess() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url + "/getFile");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("filePath", "file://" + base_project));
+		nvps.add(new BasicNameValuePair("filePath", "file://" + base_file));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
@@ -61,7 +89,8 @@ public class TestGetFile {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url + "/getFile");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("filePath", "" + base_project));
+		nvps.add(new BasicNameValuePair("filePath", "" + base_file));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
@@ -74,6 +103,7 @@ public class TestGetFile {
 		HttpPost httppost = new HttpPost(base_url + "/getFile");
 		List<NameValuePair> nvps = new ArrayList<>();
 		nvps.add(new BasicNameValuePair("filePath", "file://C:/file.java"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
@@ -86,6 +116,19 @@ public class TestGetFile {
 		HttpPost httppost = new HttpPost(base_url + "/getFile");
 		List<NameValuePair> nvps = new ArrayList<>();
 		//nvps.add(new BasicNameValuePair("filePath", "file://C:/file.java"));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
+		assertEquals(406, response.getStatusLine().getStatusCode());
+	}
+	@Test
+	public void TestGetFileNoFilePar() throws Exception {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url + "/getFile");
+		List<NameValuePair> nvps = new ArrayList<>();
+		//nvps.add(new BasicNameValuePair("filePath", "file://C:/file.java"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();

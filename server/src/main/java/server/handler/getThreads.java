@@ -28,11 +28,12 @@ public class getThreads extends indexMW {
 			return;
 		}
 		MongoConnector db = MongoConnector.getInstance(name);
+		String base_path = db.getBasePath();
 		List<IndexData> threads = db.getThreads();
 		List<OutputData> files = new ArrayList<>();
 		for(IndexData d : threads){
 			if(! files.contains(d.getPath()) )
-				files.add(new OutputData(d));
+				files.add(new OutputData(d, base_path));
 		}
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
