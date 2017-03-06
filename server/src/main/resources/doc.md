@@ -3,6 +3,10 @@ Default PORT: **9000**
 
 Default IP: **127.0.0.1**
 
+# Debug Mode   
+If the server is lunched with the flag `-debug` it will print for each request it handles, a message of the selected route with its parameters.
+
+
 | URL        | METHOD | Output        | Description  |
 |------------|:------:|:-------------:| :------------|
 | /                 | GET  | txt  | Check the connection with the server. |
@@ -19,15 +23,14 @@ Default IP: **127.0.0.1**
 
 # /getAllFiles
 
-The route returns the list of all *java* files in the given directory.
+The route returns the list of all *java* files in the given project.
 
 It expects two parameters: 
-* `projectPath` : path from where search java files
+* `name` : project name
 * `skipTest` : if equal to **1** it skips test files
- 
-`projectPath` supports only *file://* as URI protocol atm. 
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
+The output is a relative path with regarding of the project path.
 
 e.g. 
 ```bash
@@ -38,9 +41,11 @@ curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/gio
 It returns the intermediate model in json format of the given file.
 
 It expects one parameter: 
-* `filePath`: Path from of the java file
+* `filePath`: Relative path (of the project path) of the java file
  
 `filePath` supports only *file://* as URI protocol atm.
+
+The output is a relative path with regarding of the project path.
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
 
@@ -98,7 +103,7 @@ It expects two parameters:
 * `type` : Type to use as filter
 
 The output is a list of a structured data with the following format:
-* `path` : Path of the file which contains the type
+* `path` : Path of the file which contains the type relative to the project path
 * `className` : name of the class that extends/implements the given type
 * `packageName` : name of the package of the class that extends/implements the given type
 
@@ -118,7 +123,7 @@ It expects one parameter:
 * `name` : Name of the project
 
 The output is a list of a structured data with the following format:
-* `path` : Path of the file which contains the type
+* `path` : Path of the file which contains the type relative to the project path
 * `className` : name of the class that extends/implements the Thread Java API
 * `packageName` : name of the package of the class that extends/implements the Thread Java API
 
@@ -132,7 +137,7 @@ It expects one parameter:
 * `name` : Name of the project
 
 The output is a list of a structured data with the following format:
-* `path` : Path of the file which contains the type
+* `path` : Path of the file which contains the type relative to the project path
 * `className` : name of the class that extends/implements the Thread Java API
 * `packageName` : name of the package of the class that extends/implements the Thread Java API
 
