@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.IOUtils;
@@ -31,11 +32,13 @@ public class TestGetFile {
 	static String base_url;
 	static String base_project;
 	static String base_file;
-	static final String db_name = "tt";
+	static final String db_name = "ttGetFile";
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 		server = new HttpServerConverter();
+		Thread.sleep(1000);
+		//server.setDebug(true);
 		base_url = "http://localhost:" + HttpServerConverter.getPort();
 		ClassLoader classLoader = TestGetFile.class.getClassLoader();
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
@@ -45,16 +48,17 @@ public class TestGetFile {
 		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		openProject();
+		openProject(db_name);
+
 	}
 
 
-	private static void openProject() throws IOException {
+	public static void openProject(String db) throws IOException {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url + "/openProject");
 		List<NameValuePair> nvps = new ArrayList<>();
 		String projectpath = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
-		nvps.add(new BasicNameValuePair("name", db_name));
+		nvps.add(new BasicNameValuePair("name", db));
 		nvps.add(new BasicNameValuePair("path", "file://" + projectpath));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
@@ -62,6 +66,29 @@ public class TestGetFile {
 		String myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
+		waitForEndOpen(db);
+	}
+
+	public static void waitForEndOpen(String db) throws IOException {
+		CloseableHttpClient httpclient;
+		HttpPost httppost;
+		List<NameValuePair> nvps;
+		CloseableHttpResponse response;
+		InputStream stream;
+		String myString;
+		int status = 0;
+		while(status == 0){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", db));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
+			status = itemWithOwner.getStatus();
+		}
 	}
 
 	@AfterClass

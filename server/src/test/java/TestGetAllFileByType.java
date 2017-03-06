@@ -33,6 +33,7 @@ public class TestGetAllFileByType {
 	static HttpServerConverter server;
 	static String base_url;
 	static String base_project;
+	static final String db_name = "ttAllfiles";
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -44,22 +45,8 @@ public class TestGetAllFileByType {
 		MongoOptions.getInstance().setDbName("tt");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		openProject();
+		TestGetFile.openProject(db_name);
 		base_url = base_url + "/getFilesByType";
-	}
-
-	private static void openProject() throws IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/openProject");
-		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
-		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
-		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 	@AfterClass
@@ -77,7 +64,7 @@ public class TestGetAllFileByType {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/openProject");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
@@ -93,7 +80,7 @@ public class TestGetAllFileByType {
 			httpclient = HttpClients.createDefault();
 			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
 			nvps = new ArrayList<>();
-			nvps.add(new BasicNameValuePair("name", "tt"));
+			nvps.add(new BasicNameValuePair("name", db_name));
 			httppost.setEntity(new UrlEncodedFormEntity(nvps));
 			response = httpclient.execute(httppost);
 			stream = response.getEntity().getContent();
@@ -109,7 +96,7 @@ public class TestGetAllFileByType {
 			httpclient = HttpClients.createDefault();
 			httppost = new HttpPost(base_url);
 			nvps = new ArrayList<>();
-			nvps.add(new BasicNameValuePair("name", "tt"));
+			nvps.add(new BasicNameValuePair("name", db_name));
 			nvps.add(new BasicNameValuePair("type", "Object"));
 			httppost.setEntity(new UrlEncodedFormEntity(nvps));
 			response = httpclient.execute(httppost);
@@ -140,7 +127,7 @@ public class TestGetAllFileByType {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url);
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
@@ -158,7 +145,7 @@ public class TestGetAllFileByType {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url);
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		nvps.add(new BasicNameValuePair("type", "type"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
