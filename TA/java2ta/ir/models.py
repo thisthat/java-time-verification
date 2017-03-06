@@ -44,17 +44,15 @@ class Project(object):
         return self.status == Project.STATUS_CHOICES[label]
 
 
-    def open_project(self):
+    def open(self):
         
         data = {
             "name": self.name,
             "path": self.path,
         }
 
-        self.client.post("/openProject", **data)
+        self.client.post("/openProject", data)
         self.set_status("opening")
-    
-        return self.status == Project.STATUS_CHOICES["open"]
 
     def is_open(self):
     

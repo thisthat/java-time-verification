@@ -43,16 +43,18 @@ class RestfulAPIClient(object):
 
 
 
-    def post(self, url, **data):
+    def post(self, url, data):
         
         if url.startswith("/"):
             url = url[1:]
 
         full_url = "%s://%s/%s" % (self.protocol, self.base_url, url)
-        resp = requests.post(full_url, **data)
+        resp = requests.post(full_url, data)
 
         if resp.status_code != 200:
             raise ApiError("POST /{}/ {}".format(url, resp.status_code))
+
+        print "returned text:\n%s" % resp.text
             
         return resp.json()
 
