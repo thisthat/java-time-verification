@@ -47,21 +47,7 @@ public class TestGetAllFile {
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
 
-		openProject();
-	}
-
-	private static void openProject() throws IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/openProject");
-		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
-		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
-		assertEquals(200, response.getStatusLine().getStatusCode());
+		TestGetFile.openProject(db_name);
 	}
 
 	@AfterClass

@@ -39,9 +39,9 @@ public class TestOpenProject {
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
 		base_project = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("/")) + "/";
 
-		//MongoOptions.getInstance().setDbName("tt");
-		//MongoConnector.getInstance().drop();
-		//MongoConnector.getInstance().ensureIndexes();
+		MongoOptions.getInstance().setDbName("tt");
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
 	}
 
 	@AfterClass

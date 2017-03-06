@@ -31,7 +31,7 @@ public class TestThreads {
 	static HttpServerConverter server;
 	static String base_url;
 	static String base_project;
-	static final String db_name = "tt";
+	static final String db_name = "ttThreads";
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -44,23 +44,8 @@ public class TestThreads {
 		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		openProject();
+		TestGetFile.openProject(db_name);
 		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getThreads";
-	}
-
-	private static void openProject() throws IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/openProject");
-		List<NameValuePair> nvps = new ArrayList<>();
-		String projectpath = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
-		nvps.add(new BasicNameValuePair("name", db_name));
-		nvps.add(new BasicNameValuePair("path", "file://" + projectpath));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
-		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 	@AfterClass

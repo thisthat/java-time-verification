@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestMains {
 
-	private static final String db_name = "tt";
+	private static final String db_name = "ttMains";
 
 	public static class Item {
 		String status;
@@ -66,24 +66,10 @@ public class TestMains {
 		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		openProject();
+		TestGetFile.openProject(db_name);
 		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getMains";
 	}
 
-	private static void openProject() throws IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/openProject");
-		List<NameValuePair> nvps = new ArrayList<>();
-		String projectpath = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
-		nvps.add(new BasicNameValuePair("name", db_name));
-		nvps.add(new BasicNameValuePair("path", "file://" + projectpath));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
-		assertEquals(200, response.getStatusLine().getStatusCode());
-	}
 
 	@AfterClass
 	public static void tearDown() throws Exception {
@@ -99,7 +85,7 @@ public class TestMains {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url);
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
@@ -120,7 +106,7 @@ public class TestMains {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/openProject");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
 		nvps.add(new BasicNameValuePair("invalidCache", "1"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
@@ -135,7 +121,7 @@ public class TestMains {
 			httpclient = HttpClients.createDefault();
 			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
 			nvps = new ArrayList<>();
-			nvps.add(new BasicNameValuePair("name", "tt"));
+			nvps.add(new BasicNameValuePair("name", db_name));
 			httppost.setEntity(new UrlEncodedFormEntity(nvps));
 			response = httpclient.execute(httppost);
 			stream = response.getEntity().getContent();
@@ -148,7 +134,7 @@ public class TestMains {
 		httpclient = HttpClients.createDefault();
 		httppost = new HttpPost(base_url);
 		nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("name", db_name));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		response = httpclient.execute(httppost);
 		stream = response.getEntity().getContent();

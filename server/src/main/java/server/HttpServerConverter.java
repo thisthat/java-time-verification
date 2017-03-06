@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +26,8 @@ public class HttpServerConverter {
 	private final ExecutorService httpThreadPool;
 	HttpServer server;
 	private static boolean _debug;
+
+	private static Map<String,String> lastParameters = new HashMap<>();
 
 	public static int getPort() {
 		return port;
@@ -96,6 +99,11 @@ public class HttpServerConverter {
 				}
 			}
 		}
+		lastParameters = parameters;
+	}
+
+	public static Map<String, String> getLastParameters() {
+		return lastParameters;
 	}
 
 	public static boolean isDebugActive() {

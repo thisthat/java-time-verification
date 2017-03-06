@@ -22,6 +22,7 @@ import java.util.Map;
 public class openProject extends indexMW {
 
 	static Object lock = new Object();
+	String lastProjectOpen = "";
 
 	class IndexingThread extends Thread {
 		String name;
@@ -122,6 +123,8 @@ public class openProject extends indexMW {
 			msg = new Status(1, "Path does not exists");
 		}
 
+		lastProjectOpen = base_path;
+
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
 		String response = json.writeValueAsString(msg);
@@ -131,5 +134,9 @@ public class openProject extends indexMW {
 		os.close();
 	}
 
-
+	@Override
+	protected void printLog() {
+		super.printLog();
+		System.out.println("Opened project: " + lastProjectOpen);
+	}
 }
