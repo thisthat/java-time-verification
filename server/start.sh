@@ -1,9 +1,13 @@
 #!/bin/sh
 
-SERVER_JAR="target/server-0.1-SNAPSHOT.jar"
 MVN=`which mvn`
+SERVER_JAR=`ls target/server-*.jar | sort -r | head -1`
+SERVER_FLAGS=-debug
+MVN_FLAGS=-DskipTests=True
 
 if [ ! -e ${SERVER_JAR} ]; then
     # the file does not exist: compile
-    $MVN package -DskipTests=true
+    $MVN package $MVN_FLAGS
 fi
+
+java -jar $SERVER_JAR $SERVER_FLAGS
