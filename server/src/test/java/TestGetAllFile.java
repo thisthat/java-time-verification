@@ -47,7 +47,7 @@ public class TestGetAllFile {
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
 
-		TestGetFile.openProject(db_name);
+		TestGetFile.openProject(db_name, base_project);
 	}
 
 	@AfterClass

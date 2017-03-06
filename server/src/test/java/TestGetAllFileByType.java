@@ -45,7 +45,7 @@ public class TestGetAllFileByType {
 		MongoOptions.getInstance().setDbName("tt");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		TestGetFile.openProject(db_name);
+		TestGetFile.openProject(db_name, base_project);
 		base_url = base_url + "/getFilesByType";
 	}
 
@@ -152,7 +152,7 @@ public class TestGetAllFileByType {
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
-		assertEquals(406, response.getStatusLine().getStatusCode());
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 

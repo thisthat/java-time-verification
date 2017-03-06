@@ -44,7 +44,7 @@ public class TestThreads {
 		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		TestGetFile.openProject(db_name);
+		TestGetFile.openProject(db_name, base_project);
 		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getThreads";
 	}
 

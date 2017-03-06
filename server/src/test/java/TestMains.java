@@ -66,7 +66,7 @@ public class TestMains {
 		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		TestGetFile.openProject(db_name);
+		TestGetFile.openProject(db_name, base_project);
 		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getMains";
 	}
 
@@ -92,7 +92,7 @@ public class TestMains {
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
-		assertEquals(406, response.getStatusLine().getStatusCode());
+		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
 
 	@Test
