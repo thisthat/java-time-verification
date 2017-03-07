@@ -23,10 +23,11 @@ def test_close_wrong_project():
         assert False, "An exception was expected because it does not exist such a project"
     except Exception:
         # this was expected
+        pass
 
 def test_close_open_project():
 
-     p = Project("fooproject", "file:///home/spegni/git/safe-rtse/java-xal/TA/java2ta/ir/tests/javaproject/", "localhost:9000")
+    p = Project("fooproject", "file:///home/spegni/git/safe-rtse/java-xal/TA/java2ta/ir/tests/javaproject/", "localhost:9000")
 
     p.open()
 

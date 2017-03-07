@@ -35,7 +35,7 @@ class Rule(object):
         """
         return None
 
-    def where(self):
+    def where(self, let_ctx=None):
         """
         Allow to specify an additional boolean constraint on the matching terms.
         Return True iff the additional condition is satisfied. The rule can
@@ -157,11 +157,14 @@ class Engine(object):
     
             if rule.match():
                 let_ctx = rule.let()
+                assert let_ctx is None or isinstance(let_ctx, dict), "The let() method should return None or a dictionary of assignments: { var1:val1, ..., varN, valN }. Returned: %s" % let_ctx
 
-                if rule.where():
+                if rule.where(let_ctx):
 
                     # overwrite old reference to asts_out
                     asts_out = rule.do_rewrite_asts(let_ctx)
+        
+                    assert asts_out is not None, "Perhaps you forgot to return the output AST from do_rewrite_asts?"
 
                     # update context for next rules
                     rule.do_update_context(let_ctx)

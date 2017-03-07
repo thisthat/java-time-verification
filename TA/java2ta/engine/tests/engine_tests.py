@@ -19,13 +19,13 @@ class FakeRuleMatch(Rule):
 
 class FakeRuleMatchNoWhere(FakeRuleMatch):
 
-    def where(self):
+    def where(self, let_ctx):
         return False
 
 
 class FakeRuleMatchAndWhere(FakeRuleMatch):
 
-    def where(self):
+    def where(self, let_ctx):
         return True
 
 
