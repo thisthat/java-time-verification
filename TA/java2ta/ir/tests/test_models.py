@@ -6,7 +6,7 @@ import pkg_resources
 
 def test_open_project():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
 
     p = Project("fooproject", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -25,7 +25,7 @@ def test_open_project():
 
 def test_close_wrong_project():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "javaprojects")
+    test_proj_path = pkg_resources.resource_filename(__name__, "helloworlds")
 
     p = Project("foofiedoesnotexist", "file:///%s" % test_proj_path, "localhost:9000")
 
@@ -38,7 +38,7 @@ def test_close_wrong_project():
 
 def test_close_open_project():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
 
     p = Project("fie", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -55,7 +55,7 @@ def test_close_open_project():
 
 def test_get_files():
  
-    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
 
     p = Project("foo", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -74,7 +74,7 @@ def test_get_files():
 
 def test_get_mains():
  
-    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
 
     p = Project("foo", "file://%s" % test_proj_path, "localhost:9000")
 
