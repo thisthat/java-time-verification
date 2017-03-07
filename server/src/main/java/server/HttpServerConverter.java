@@ -64,6 +64,8 @@ public class HttpServerConverter {
 		server.createContext("/getThreads", new getThreads());
 		server.createContext("/getStatus", new getStatus(op));
 		server.createContext("/getMains", new getMains());
+		server.createContext("/clean", new clean());
+		server.createContext("/cleanAll", new cleanAll());
 
 		server.setExecutor(httpThreadPool);
 		server.start();
