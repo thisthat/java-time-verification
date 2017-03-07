@@ -1,8 +1,11 @@
 package intermediateModel;
 
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.converter.GenerateJSON;
+import org.javatuples.Triplet;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class Main {
 		List<String> files = new ArrayList<>();
 		//files.add( Main.class.getClassLoader().getResource("DiningPhilosopher.java").getFile() );
 		files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java" );
+		//files.add( "/Users/giovanni/repository/java-xal/project_eval/activemq/activemq-client/src/main/java/org/apache/activemq/ActiveMQConnection.java" );
 
 		//files.add(args[0]);
 		for(int i = 0; i < files.size(); i ++){
@@ -29,14 +33,16 @@ public class Main {
 			String f = files.get(i);
 			String name = f.substring( f.lastIndexOf("/")+1, f.lastIndexOf("."));
 			List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/" );
+			//List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/activemq/" );
 
 			for(ASTClass c : lists){
 				//Create JSON
-				GenerateJSON conv = new GenerateJSON();
-				FileWriter write = new FileWriter(name + ".json");
-				write.write(conv.convert(c));
-				write.flush();
-				write.close();
+				List<Triplet<String,IASTStm,Class>> cnst =  ApplyHeuristics.getConstraint(c);
+				System.out.println("Class " + c.getName() + " : " + cnst.size());
+				//for(Triplet<String,IASTStm, Class> cc : cnst){
+				//	System.out.println(cc);
+				//}
+
 			}
 		}
 

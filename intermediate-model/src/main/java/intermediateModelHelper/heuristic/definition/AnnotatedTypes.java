@@ -1,10 +1,17 @@
 package intermediateModelHelper.heuristic.definition;
 
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+
+import java.util.List;
 
 
 /**
@@ -15,6 +22,14 @@ import intermediateModel.structure.expression.ASTMethodCall;
  * @version %I%, %G%
  */
 public class AnnotatedTypes extends SearchTimeConstraint {
+
+	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
+	List<TimeTimeout> timeTimeout = TemporalInfo.getInstance().getTimeTimeout();
+	List<TimeTypes>   timeTypes   = TemporalInfo.getInstance().getTimeTypes();
+
+
+	public AnnotatedTypes() {
+	}
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
@@ -29,12 +44,26 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 		if(!(stm instanceof ASTRE)) return;
 		//works only on ASTRE
 		IASTRE expr = ((ASTRE) stm).getExpression();
-		//only search for Method Call
-		if(!(expr instanceof ASTMethodCall)) return;
-		ASTMethodCall method = (ASTMethodCall) expr;
+		if(expr == null){
+			return;
+		}
+		expr.visit(new DefualtASTREVisitor(){
+			@Override
+			public void enterASTMethodCall(ASTMethodCall elm) {
+				String pointer = elm.getClassPointed();
+				if(pointer != null && containTimeOut(pointer, elm.getMethodName(), elm.getParameters().size())) {
+					AnnotatedTypes.super.addConstraint("timeout", elm);
+				}
+			}
+		});
+	}
 
-		//TODO extends this search with the full typesystem of the project :: for each method its return type
-
+	private boolean containTimeOut(String pointer, String name, int nPars){
+		for(TimeMethod m : timeMethods){
+			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
+				return true;
+		}
+		return false;
 	}
 
 }

@@ -1,6 +1,7 @@
 package intermediateModel.visitors;
 
 
+import intermediateModel.structure.ASTRE;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
@@ -57,10 +58,10 @@ public class ApplyHeuristics extends ParseIM {
 		//return new ArrayList<>();
 
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
-		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		//ah.subscribe(ThreadTime.class);
+		//ah.subscribe(SocketTimeout.class);
+		//ah.subscribe(TimeoutResources.class);
+		//ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
@@ -110,10 +111,15 @@ public class ApplyHeuristics extends ParseIM {
 
 	@Override
 	protected void analyzeEveryStm(IASTStm elm, Env env) {
-		applyStep(elm, env);
+
 	}
 
-	private void applyStep(IASTStm stm, Env env){
+	@Override
+	protected void analyzeASTRE(ASTRE r, Env env) {
+		applyStep(r, env);
+	}
+
+	private void applyStep(ASTRE stm, Env env){
 		for(SearchTimeConstraint s : strategies){
 			s.next(stm, env);
 		}

@@ -1,7 +1,9 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModelHelper.envirorment.Env;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTRE;
+import intermediateModelHelper.envirorment.Env;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -34,7 +36,16 @@ public abstract class SearchTimeConstraint {
 	 * @param stm	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */
-	public abstract void next(IASTStm stm, Env env);
+	public abstract void next(ASTRE stm, Env env);
+
+	/**
+	 * It used to accept a new Method Definition
+	 * @param method	Statement to process
+	 * @param env	Envirorment visible to that statement
+	 */
+	protected void newMethod(IASTMethod method, Env env){
+
+	}
 
 	/**
 	 * Add a constraint to the list

@@ -1,13 +1,12 @@
 package intermediateModelHelper.heuristic.definition;
 
 
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.envirorment.Env;
 
 /**
  *
@@ -26,6 +25,9 @@ public class SocketTimeout extends SearchTimeConstraint {
 	boolean found = false;
 	private Integer __SOCKET_SOTIMEOUT = 0;
 
+
+
+
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
 	 * It collects the {@link ASTMethodCall} in the RExp and search for the definition of the method <b>setSoTimeout</b>
@@ -36,8 +38,8 @@ public class SocketTimeout extends SearchTimeConstraint {
 	 * @param env	Envirorment visible to that statement
 	 */
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
+	public void next(ASTRE stm, Env env) {
+
 		//works only on ASTRE
 		IASTRE expr = ((ASTRE) stm).getExpression();
 		//only search for Method Call
@@ -51,7 +53,8 @@ public class SocketTimeout extends SearchTimeConstraint {
 
 		if(mc_search[0] == null && !(expr instanceof ASTMethodCall)) return;
 
-		ASTMethodCall mc = mc_search[0] == null ? (ASTMethodCall) stm : mc_search[0];
+		//ASTMethodCall mc = mc_search[0] == null ? (ASTMethodCall) stm : mc_search[0];
+		ASTMethodCall mc = mc_search[0];
 
 		//Search for the timeout
 		if(mc.getMethodName().equals("setSoTimeout")){

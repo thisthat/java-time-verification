@@ -16,6 +16,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	private String methodName;
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
+	String classPointed = null;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
 		super(start, end);
@@ -62,6 +63,14 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 				", exprCallee=" + exprCallee +
 				", parameters=" + parameters +
 				'}';
+	}
+
+	public String getClassPointed() {
+		return classPointed;
+	}
+
+	public void setClassPointed(String classPointed) {
+		this.classPointed = classPointed;
 	}
 
 	@Override

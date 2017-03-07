@@ -7,6 +7,12 @@ import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTMethod;
+import intermediateModelHelper.envirorment.temporal.ParseMethods;
+import intermediateModelHelper.envirorment.temporal.ParseTimeout;
+import intermediateModelHelper.envirorment.temporal.ParseTypes;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -26,7 +32,10 @@ import java.util.List;
 public class BuildEnvironment {
 
 	private static BuildEnvironment instance = null;// = new BuildEnvironment();
+
+	@Deprecated
 	private static List<String> typeTimeRelevant;// = new ArrayList<>();
+	@Deprecated
 	private static List<String> methodTimeRelevant;// = new ArrayList<>();
 
 	/**
@@ -63,7 +72,6 @@ public class BuildEnvironment {
 			} catch (IOException e1) {
 				methodTimeRelevant = new ArrayList<>();
 			}
-
 		}
 	}
 
