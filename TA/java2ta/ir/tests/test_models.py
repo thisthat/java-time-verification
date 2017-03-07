@@ -2,9 +2,13 @@ from time import sleep
 
 from java2ta.ir.models import Project
 
+import pkg_resources
+
 def test_open_project():
 
-    p = Project("fooproject", "file:///home/spegni/git/safe-rtse/java-xal/TA/java2ta/ir/tests/javaproject/", "localhost:9000")
+    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+
+    p = Project("fooproject", "file://%s" % test_proj_path, "localhost:9000")
 
     assert p.is_status("closed")
     p.open()
@@ -21,7 +25,9 @@ def test_open_project():
 
 def test_close_wrong_project():
 
-    p = Project("foofiedoesnotexist", "file:///home/spegni/git/safe-rtse/java-xal/TA/java2ta/ir/tests/javaproject/", "localhost:9000")
+    test_proj_path = pkg_resources.resource_filename(__name__, "javaprojects")
+
+    p = Project("foofiedoesnotexist", "file:///%s" % test_proj_path, "localhost:9000")
 
     try:
         p.clean()
@@ -32,7 +38,9 @@ def test_close_wrong_project():
 
 def test_close_open_project():
 
-    p = Project("fooproject", "file:///home/spegni/git/safe-rtse/java-xal/TA/java2ta/ir/tests/javaproject/", "localhost:9000")
+    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+
+    p = Project("fie", "file://%s" % test_proj_path, "localhost:9000")
 
     p.open()
 

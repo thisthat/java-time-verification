@@ -1,5 +1,7 @@
 from nose.tools import *
 import java2ta
+import pkg_resources
+import os
 
 from java2ta.ir.parser import Parser
 
@@ -11,9 +13,11 @@ def teardown():
 
 def test_basic():
 
-    test1_path = "tests/examples/Philosopher.json"
-    test2_path = "tests/examples/DiningPhilosopher.json"
-    fake_path = "tests/examples/foofie.json"
+    base_path = pkg_resources.resource_filename(__name__, "examples")
+
+    test1_path = os.path.join(base_path, "Philosopher.json")
+    test2_path = os.path.join(base_path, "DiningPhilosopher.json")
+    fake_path = os.path.join(base_path, "foofie.json")
 
     p = Parser()
     obj1 = p.parse(test1_path)
