@@ -174,13 +174,26 @@ curl -s http://localhost:9000/getStatus -d 'format=yaml&name=test'
 
 # /clean
 
+Given a project name, it clears every information stored in the database for that project.
+
 It expects one parameter: 
 * `name` : Name of the project
 
 Return in output a status description
-* `open`    : The project has been opened correctly and the indexing phase ends
-* `opening` : The indexes are currently on computing
+* `status`    : It is zero if everything was ok, greater than that if an error occurs
+* `description` : In case of error, the description of the message
 
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`
+
+# /cleanAll
+
+Removes every information stored in the database. 
+
+Return in output a status description
+* `status`    : It is zero if everything was ok, greater than that if an error occurs
+* `description` : In case of error, the description of the message
+
+The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`
 
 
 
