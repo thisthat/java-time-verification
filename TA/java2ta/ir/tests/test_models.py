@@ -12,10 +12,11 @@ def test_open_project():
     sleep(1)
 
     assert p.is_status("opening") or p.is_status("open")
+    is_open = p.is_open()
 
-    sleep(2)
-
-    assert p.is_status("open"), "Expected opened project. Got: %s" % p.status
+    if not is_open:
+        sleep(1)
+        assert p.is_open(), "Expected opened project. Got: %s" % p.status
 
 
 def test_close_wrong_project():

@@ -61,16 +61,18 @@ class Project(object):
         elif self.is_status("closed"):
             return False
         else:
-            curr_status = self.client.post("/isProjectOpen", { "name":self.name })
+            curr_status = self.client.post("/getStatus", { "name":self.name })
 
-            if curr_status == "1":
-                self.set_status("open")
-                curr_status = True
-            else:
-                self.set_status("opening")
-                curr_status = False
+            assert "status" in curr_status, "Wrong status information."
 
-            return curr_status
+            if curr_status["status"] == "error":
+                description = curr_status["description"]
+                raise Exception("Error when getting project status: %s" % description)
+
+            self.status = curr_status["status"]
+
+            return self.is_status("open")
+
 
     def clean(self):
         data = {
