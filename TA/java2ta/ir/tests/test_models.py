@@ -51,3 +51,42 @@ def test_close_open_project():
     p.clean()
 
     assert p.is_status("closed")
+
+
+def test_get_files():
+ 
+    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+
+    p = Project("foo", "file://%s" % test_proj_path, "localhost:9000")
+
+    p.open()
+
+    sleep(1)
+
+    assert p.is_open(), "Expected open project. Project status: %s" % p.status
+
+    files = p.get_files()
+
+    assert len(files) == 1, "Expected list containing one file. Got: %s" % files
+
+    assert files[0] == "HelloWorld.java"
+ 
+
+def test_get_mains():
+ 
+    test_proj_path = pkg_resources.resource_filename(__name__, "javaproject")
+
+    p = Project("foo", "file://%s" % test_proj_path, "localhost:9000")
+
+    p.open()
+
+    sleep(1)
+
+    assert p.is_open(), "Expected open project. Project status: %s" % p.status
+
+    mains = p.get_mains()
+
+    assert len(mains) == 1, "Expected list containing one class with main method. Got: %s" % mains
+    assert mains[0]["className"] == "HelloWorld"
+    assert mains[0]["path"] == "HelloWorld.java"
+    assert mains[0]["packageName"] == ""
