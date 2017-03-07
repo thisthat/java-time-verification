@@ -68,6 +68,16 @@ class Project(object):
             else:
                 self.set_status("opening")
 
+    def clean(self):
+        data = {
+            "name": self.name,
+        }
+
+        self.client.post("/clean", data)
+        self.set_status("closed")
+
+   
+
 
     def get_threads(self):
     

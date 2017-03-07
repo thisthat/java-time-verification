@@ -54,7 +54,7 @@ class RestfulAPIClient(object):
         if resp.status_code != 200:
             raise ApiError("POST /{}/ {}".format(url, resp.status_code))
 
-        print "returned text:\n%s" % resp.text
+#        print "returned text:\n%s" % resp.text
             
         return resp.json()
 
