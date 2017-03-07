@@ -48,16 +48,15 @@ public class TestGetFile {
 		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		openProject(db_name);
+		openProject(db_name, base_project);
 
 	}
 
 
-	public static void openProject(String db) throws IOException {
+	public static void openProject(String db, String projectpath) throws IOException {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/openProject");
+		HttpPost httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/openProject");
 		List<NameValuePair> nvps = new ArrayList<>();
-		String projectpath = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
 		nvps.add(new BasicNameValuePair("name", db));
 		nvps.add(new BasicNameValuePair("path", "file://" + projectpath));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));

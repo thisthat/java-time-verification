@@ -6,6 +6,7 @@ import intermediateModelHelper.indexing.IndexingProject;
 import com.sun.net.httpserver.HttpExchange;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
+import server.handler.outputFormat.Status;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,32 +61,6 @@ public class openProject extends indexMW {
 		return indexProcess;
 	}
 
-	class Status {
-		int status;
-		String description;
-
-		public Status(int status, String description) {
-			this.status = status;
-			this.description = description;
-		}
-
-		public int getStatus() {
-			return status;
-		}
-
-		public void setStatus(int status) {
-			this.status = status;
-		}
-
-		public String getDescription() {
-			return description;
-		}
-
-		public void setDescription(String description) {
-			this.description = description;
-		}
-	}
-
 	String par1 = "path";
 	String par2 = "invalidCache";
 
@@ -115,12 +90,12 @@ public class openProject extends indexMW {
 				IndexingThread thread = new IndexingThread(name, base_path, delete, indexProcess);
 				thread.start();
 				//compute
-				msg = new Status(0, "");
+				msg = new Status("0", "");
 			} else {
-				msg = new Status(1, "A process is already parsing this folder");
+				msg = new Status("1", "A process is already parsing this folder");
 			}
 		} else {
-			msg = new Status(1, "Path does not exists");
+			msg = new Status("1", "Path does not exists");
 		}
 
 		lastProjectOpen = base_path;

@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
+import server.handler.outputFormat.Status;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,32 +22,6 @@ public class getStatus extends indexMW {
     private static final String _CLOSED_ = "closed";
 
     openProject op;
-
-    class Status {
-        String status;
-        String description;
-
-        public Status(String status, String description) {
-            this.status = status;
-            this.description = description;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-    }
 
 
     public getStatus(openProject op) {

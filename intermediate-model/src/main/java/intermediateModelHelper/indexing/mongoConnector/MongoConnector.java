@@ -1,5 +1,6 @@
 package intermediateModelHelper.indexing.mongoConnector;
 
+import com.mongodb.client.MongoCursor;
 import intermediateModel.structure.ASTClass;
 import intermediateModelHelper.indexing.structure.*;
 import com.mongodb.MongoClient;
@@ -37,6 +38,7 @@ public class MongoConnector {
 	protected MongoDatabase db;
 	protected String dbName;
 	protected DBStatus dbStatus;
+	protected MongoClient mongoClient;
 	protected MongoCollection<Document> indexCollection;
 	protected final Morphia morphia = new Morphia();
 	protected Datastore datastore;
@@ -76,7 +78,7 @@ public class MongoConnector {
 	protected MongoConnector(String db_name, String ip, int port) {
 		Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
 		mongoLogger.setLevel(Level.SEVERE);
-		MongoClient mongoClient = new MongoClient(ip, port);
+		mongoClient = new MongoClient(ip, port);
 		db = mongoClient.getDatabase(db_name);
 		dbName = db_name;
 		indexCollection = db.getCollection(__COLLECTION_NAME);
@@ -102,6 +104,15 @@ public class MongoConnector {
 		} catch (Exception e){
 			System.err.println(e.getMessage());
 		}
+	}
+
+	public List<String> databases(){
+		List<String> out = new ArrayList<>();
+		MongoCursor<String> dbsCursor = mongoClient.listDatabaseNames().iterator();
+		while(dbsCursor.hasNext()) {
+			out.add(dbsCursor.next());
+		}
+		return out;
 	}
 
 	public void setBasePath(String basePath){
