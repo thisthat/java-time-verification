@@ -19,7 +19,7 @@ class RestfulAPIClient(object):
         if resp.status_code != 200:
             raise APIError("API service not available")
 
-    def get(self, url, **data):
+    def get(self, url, data={}):
 
         if url.startswith("/"):
             url = url[1:]
@@ -37,13 +37,13 @@ class RestfulAPIClient(object):
         resp = requests.get(full_url)
 
         if resp.status_code != 200:
-            raise ApiError("GET /{}/ {}".format(url, resp.status_code))
+            raise APIError("GET /{}/ {}".format(url, resp.status_code))
             
         return resp.json()
 
 
 
-    def post(self, url, data):
+    def post(self, url, data={}):
         
         if url.startswith("/"):
             url = url[1:]
@@ -52,18 +52,18 @@ class RestfulAPIClient(object):
         resp = requests.post(full_url, data)
 
         if resp.status_code != 200:
-            raise ApiError("POST /{}/ {}".format(url, resp.status_code))
+            raise APIError("POST /{}/ {}".format(url, resp.status_code))
 
 #        print "returned text:\n%s" % resp.text
             
         return resp.json()
 
     
-    def delete(self, url, **data):
+    def delete(self, url, data={}):
         raise ValueError("Method not supported, yet")
 
 
-    def put(self, url, **data):
+    def put(self, url, data={}):
         raise ValueError("Method not supported, yet")
 
         

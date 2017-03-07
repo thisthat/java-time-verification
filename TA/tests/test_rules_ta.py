@@ -73,6 +73,7 @@ class RuleCreateChain(Rule):
         self.asts_out.add_location(new_loc)
 
         if prev_loc is not None:
+            # the edge can exist only after having created at least 2 locations
             e = Edge(source=prev_loc, target=new_loc)
             self.asts_out.add_edge(e)
 

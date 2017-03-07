@@ -28,7 +28,7 @@ class Project(object):
         """
     
         if label not in Project.STATUS_CHOICES:
-            raise ValueError("Expected label in ('%s')" % ",".join(Project.STATUS_CHOICES.keys()))
+            raise ValueError("Expected label in ('%s'). Passed: '%s'" % (",".join(Project.STATUS_CHOICES.keys()), label))
 
         self.status = Project.STATUS_CHOICES[label]
 
@@ -39,7 +39,7 @@ class Project(object):
         """
     
         if label not in Project.STATUS_CHOICES:
-            raise ValueError("Expected label in ('%s')" % ",".join(Project.STATUS_CHOICES.keys()))
+            raise ValueError("Expected label in ('%s'). Passed: '%s'" % (",".join(Project.STATUS_CHOICES.keys()), label))
 
         return self.status == Project.STATUS_CHOICES[label]
 
@@ -56,17 +56,21 @@ class Project(object):
 
     def is_open(self):
     
-        if self.get_status("open"):
+        if self.is_status("open"):
             return True
-        elif self.get_status("close"):
+        elif self.is_status("closed"):
             return False
         else:
-            curr_status = self.client.post("/isProjectOpen")
+            curr_status = self.client.post("/isProjectOpen", { "name":self.name })
 
             if curr_status == "1":
                 self.set_status("open")
+                curr_status = True
             else:
                 self.set_status("opening")
+                curr_status = False
+
+            return curr_status
 
     def clean(self):
         data = {
@@ -81,12 +85,47 @@ class Project(object):
 
     def get_threads(self):
     
-        return []
+        threads = []
+    
+        if self.is_open():
+    
+            data = { "name": self.name }
+            threads = self.client.post("/getThreads", data)
+
+        return threads
 
     def get_files(self, type=None):
 
-        return []
+        files = []
+
+        if self.is_open():
+            data = { "name": self.name, "skipTest": 0 }
+            url = "/getAllFiles"
+
+            if type:    
+                data["type"] = type
+                url = "/getFilesByType"
+                
+            files = self.client.post(url, data)
+
+        return files
 
     def get_file(self, path):
 
-        return None
+        file = None
+
+        if self.is_open():
+            data = { "name": self.name, "filePath": path }
+            file = self.client.post("/getFile", data)
+
+        return file
+
+    def get_mains(self):
+        
+        mains = []
+
+        if self.is_open():
+            data = { "name": self.name }
+            mains = self.client.post("/getMains", data)
+
+        return mains
