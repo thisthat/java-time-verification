@@ -4,6 +4,17 @@ from java2ta.ir.models import Project
 
 import pkg_resources
 
+def check_is_open(project):
+    num_attempts = 30
+
+    while num_attempts > 0 and not project.is_open():
+        # repeat after a short time ...
+        sleep(1)
+        num_attempts = num_attempts - 1
+
+    assert project.is_open(), "Process '%s' (path='%s',status='%s') took more that %s seconds to open, something is probably wrong ..." % (project.name, project.path, project.status, num_attempts)
+
+
 def test_open_project():
 
     test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
@@ -13,15 +24,9 @@ def test_open_project():
     assert p.is_status("closed")
     p.open()
 
-    sleep(1)
-
     assert p.is_status("opening") or p.is_status("open")
-    is_open = p.is_open()
 
-    if not is_open:
-        sleep(1)
-        assert p.is_open(), "Expected opened project. Got: %s" % p.status
-
+    check_is_open(p)
 
 def test_close_wrong_project():
 
@@ -44,8 +49,6 @@ def test_close_open_project():
 
     p.open()
 
-    sleep(1)
-
     assert p.is_status("opening") or p.is_status("open")
    
     p.clean()
@@ -61,9 +64,7 @@ def test_get_files():
 
     p.open()
 
-    sleep(1)
-
-    assert p.is_open(), "Expected open project. Project status: %s" % p.status
+    check_is_open(p)
 
     files = p.get_files()
 
@@ -80,9 +81,7 @@ def test_get_mains():
 
     p.open()
 
-    sleep(1)
-
-    assert p.is_open(), "Expected open project. Project status: %s" % p.status
+    check_is_open(p)
 
     mains = p.get_mains()
 
@@ -100,15 +99,8 @@ def test_open_project_bigger_concurrent():
     assert p.is_status("closed")
     p.open()
 
-    sleep(1)
-
-    assert p.is_status("opening") or p.is_status("open")
-    is_open = p.is_open()
-
-    if not is_open:
-        sleep(5)
-        assert p.is_open(), "Expected opened project. Got: %s" % p.status
-
+    check_is_open(p)
+ 
     files = p.get_files()
     assert len(files) == 51
 
@@ -128,14 +120,7 @@ def test_open_project_bigger_distributed():
     assert p.is_status("closed")
     p.open()
 
-    sleep(1)
-
-    assert p.is_status("opening") or p.is_status("open")
-    is_open = p.is_open()
-
-    if not is_open:
-        sleep(5)
-        assert p.is_open(), "Expected opened project. Got: %s" % p.status
+    check_is_open(p)
 
     files = p.get_files()
     assert len(files) == 90
@@ -148,3 +133,17 @@ def test_open_project_bigger_distributed():
     assert "MsgList.java" in files, files
     assert "Lock.java" in files, files
 
+
+def test_get_file():
+
+    test_proj_path = pkg_resources.resource_filename(__name__, "dist-progs")
+
+    p = Project("dist-progs", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+ 
+    file = p.get_file("Lock.java")
+    assert isinstance(file, dict)

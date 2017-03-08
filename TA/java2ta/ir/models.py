@@ -116,6 +116,9 @@ class Project(object):
 
         file = None
 
+        if not path.startswith("file://"):
+            path = "file://" + path
+
         if self.is_open():
             data = { "name": self.name, "filePath": path }
             file = self.client.post("/getFile", data)

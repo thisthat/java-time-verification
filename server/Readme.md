@@ -13,7 +13,6 @@ If the server is lunched with the flag `-debug` it will print for each request i
 | /getAllFiles      | POST | json | Return all the java file |
 | /getFile          | POST | json | Return the IM of a file |
 | /openProject      | POST | json | Calculate indexes of the project |
-| /isProjectOpen    | POST | json | Return if a project has the indexes computed |
 | /getFilesByType   | POST | json | Return the list of files that extends/implements the given type |
 | /getThreads       | POST | json | Return the list of files that implements threads |
 | /getMains         | POST | json | Return the list of files which contains a public void main |
@@ -29,31 +28,32 @@ The route returns the list of all *java* files in the given project.
 
 It expects two parameters: 
 * `name` : project name
-* `skipTest` : if equal to **1** it skips test files
+* `skipTest` : if equals **1** it skips test files
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
 The output is a relative path with regarding of the project path.
 
 e.g. 
 ```bash
-curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
+curl -s http://localhost:9000/getAllFiles -d 'format=yaml&name=projectFoo&skipTest=0'
 ```
 
 # /getFile 
 It returns the intermediate model in json format of the given file.
 
-It expects one parameter: 
+It expects two parameters:
+* `name`: The project name
 * `filePath`: Relative path (of the project path) of the java file
  
 `filePath` supports only *file://* as URI protocol atm.
 
-The output is a relative path with regarding of the project path.
+The output is ... TODO
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
 
 e.g. 
 ```bash
-curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
+curl -s http://localhost:9000/getFile -d 'format=yaml&name=projectFoo&filePath=file://Attempt1.java'
 ```
 
 # /openProject
@@ -78,24 +78,6 @@ The function returns a value with a status code:
 `description` is a text field that shows an error message.
 
 
-# /isProjectOpen
-
-The route returns the status of the indexes for the given project. 
-
-It expects one parameter: 
-* `name` : Name of the project
-
-The return value is a status code:
-* `0` : The project has not yet the indexes in the database
-* `1` : The indexes are available
-
-The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
-
-e.g. 
-```bash
-curl -s http://localhost:9000/isProjectOpen -d 'format=yaml&name=test'
-```
-
 # /getFilesByType
 
 Return the list of files in which each contains a class that extends or implements the given searched type.
@@ -115,7 +97,7 @@ The standard output is in `JSON`, to change to `YAML` set the parameter `format`
 
 e.g. 
 ```bash
-curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
+curl -s http://localhost:9000/getFilesByType -d 'format=yaml&name=projectFoo&type=...  TODO
 ```
 # /getThreads
 
@@ -169,7 +151,7 @@ The standard output is in `JSON`, to change to `YAML` set the parameter `format`
 
 e.g. 
 ```bash
-curl -s http://localhost:9000/getStatus -d 'format=yaml&name=test'
+curl -s http://localhost:9000/getStatus -d 'format=yaml&name=projectFoo'
 ```
 
 # /clean
@@ -185,6 +167,12 @@ Return in output a status description
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`
 
+e.g. 
+```bash
+curl -s http://localhost:9000/getStatus -d 'format=yaml&name=projectFoo'
+```
+
+
 # /cleanAll
 
 Removes every information stored in the database. 
@@ -195,5 +183,10 @@ Return in output a status description
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`
 
+
+e.g. 
+```bash
+curl -s http://localhost:9000/getStatus -d 'format=yaml'
+```
 
 
