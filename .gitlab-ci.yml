@@ -1,5 +1,6 @@
 before_script:
   - pwd
+  - curl -s http://localhost:9000/shutdown -d ''
   - java -jar TA/tests/server-0.2-SNAPSHOT.jar &
 
 test:
