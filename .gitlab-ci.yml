@@ -5,6 +5,4 @@ before_script:
 test:
   script:
     - nosetests TA
-
-after_script:
-  - curl -s http://localhost:9000/shutdown -d ''
+    - curl -s http://localhost:9000/shutdown -d ''
