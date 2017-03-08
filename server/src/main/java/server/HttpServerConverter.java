@@ -46,6 +46,7 @@ public class HttpServerConverter {
 
 		//Test urls
 		server.createContext("/", new root());
+		server.createContext("/shutdown", new shutDown());
 		server.createContext("/test/echoHeader", new echoHeader());
 		server.createContext("/test/echoGet", new echoGet());
 		server.createContext("/test/echoPost", new echoPost());
@@ -59,7 +60,7 @@ public class HttpServerConverter {
 		openProject op = new openProject();
 		//Start project index
 		server.createContext("/openProject", op);
-		server.createContext("/isProjectOpen", new isProjectOpen());
+		//server.createContext("/isProjectOpen", new isProjectOpen());
 		server.createContext("/getFilesByType", new getFilesByType());
 		server.createContext("/getThreads", new getThreads());
 		server.createContext("/getStatus", new getStatus(op));
