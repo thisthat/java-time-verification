@@ -52,7 +52,7 @@ class RestfulAPIClient(object):
         resp = requests.post(full_url, data)
 
         if resp.status_code != 200:
-            raise APIError("POST /{}/ {}".format(url, resp.status_code))
+            raise APIError("POST {} {} : {}".format(full_url, resp.status_code, data))
 
 #        print "returned text:\n%s" % resp.text
             
