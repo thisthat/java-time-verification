@@ -546,7 +546,7 @@ public class LightHashMap<S,T> extends AbstractMap<S,T> implements Cloneable {
 		}
 		test();
 		
-		System.out.println("\n\nPerforming sanity tests");
+		System.out.println("\n\nPerforming sanity testsRoutes");
 		final Random rnd = new Random();
 		final byte[] buffer = new byte[25];
 		final String[] fillData = new String[1048];

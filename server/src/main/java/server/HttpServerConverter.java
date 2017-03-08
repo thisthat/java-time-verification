@@ -60,7 +60,7 @@ public class HttpServerConverter {
 		openProject op = new openProject();
 		//Start project index
 		server.createContext("/openProject", op);
-		//server.createContext("/isProjectOpen", new isProjectOpen());
+		server.createContext("/isProjectOpen", new isProjectOpen());
 		server.createContext("/getFilesByType", new getFilesByType());
 		server.createContext("/getThreads", new getThreads());
 		server.createContext("/getStatus", new getStatus(op));
@@ -117,6 +117,11 @@ public class HttpServerConverter {
 		System.out.println("server stopped at " + port);
 		server.stop(1);
 		httpThreadPool.shutdownNow();
+		try {
+			Thread.currentThread().sleep(1000);
+		} catch (InterruptedException e) {
+			//we try but who cares
+		}
 	}
 
 	public void setDebug(boolean debug) {
