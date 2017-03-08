@@ -2,6 +2,7 @@ package intermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
@@ -36,7 +37,7 @@ public abstract class SearchTimeConstraint {
 	/**
 	 * It used to set up internal resources
 	 */
-	public abstract void setup();
+	public abstract void setup(ASTClass c);
 
 	/**
 	 * It used to accept a Statement

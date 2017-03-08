@@ -12,8 +12,12 @@ public class ABC {
     URLConnection sr2 = new URLConnection();
     Socket noTime = new Socket();
     Socket jupTime = new Socket();
+    int time = System.currentTimeMillis();
+    int noTime = 0;
 
     public ABC(){
+        super();
+        super.clone();
         s.setSoTimeout(1100);
         sr.setReadTimeout(100);
         jupTime.setSoTimeout(1000);
@@ -48,6 +52,7 @@ public class ABC {
     }
 
     public void m4(){
+        ABCD d = new DatagramSocket();
         DatagramSocket d = new DatagramSocket();
         d.setSoTimeout(100);
         d.receive( new DatagramPacket(p) );
@@ -64,6 +69,39 @@ public class ABC {
         jupTime.getInputStream().read();
         noTime.getInputStream().read();
 
+    }
+
+    public int getTime(){
+        return System.currentTimeMillis();
+    }
+
+    public int getTime1(){
+        return time;
+    }
+
+    public int getTime2(){
+        return notime;
+    }
+
+    public void m7(){
+        int now = getTime();
+        if( now < 10) {
+            //time cnst
+        }
+    }
+
+    public void m8(){
+        int now = getTime1();
+        if( now < 10) {
+            //time cnst
+        }
+    }
+
+    public void m8(){
+        int now = getTime2();
+        if( now < 10) {
+            //time cnst
+        }
     }
 
 }

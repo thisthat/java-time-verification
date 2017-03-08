@@ -24,8 +24,8 @@ public class Main {
 
 		List<String> files = new ArrayList<>();
 		//files.add( Main.class.getClassLoader().getResource("DiningPhilosopher.java").getFile() );
-		//files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java" );
-		files.add( "/Users/giovanni/repository/java-xal/intermediate-model/src/main/resources/TestSocket.java" );
+		files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java" );
+		//files.add( "/Users/giovanni/repository/java-xal/intermediate-model/src/main/resources/TestSocket.java" );
 		//files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/org/gudy/azureus2/core3/util/UrlUtils.java" );
 		//files.add( "/Users/giovanni/repository/java-xal/project_eval/activemq/activemq-client/src/main/java/org/apache/activemq/ActiveMQConnection.java" );
 
@@ -41,9 +41,11 @@ public class Main {
 				//Create JSON
 				List<Triplet<String,IASTStm,Class>> cnst =  ApplyHeuristics.getConstraint(c);
 				System.out.println("Class " + c.getName() + " : " + cnst.size());
-				//for(Triplet<String,IASTStm, Class> cc : cnst){
-				//	System.out.println(cc);
-				//}
+
+				for(Triplet<String,IASTStm, Class> cc : cnst){
+					System.out.println(cc.getValue0());
+					System.out.println("\n\n");
+				}
 
 			}
 		}

@@ -1,5 +1,6 @@
 package intermediateModelHelper.heuristic.definition;
 
+import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.visitors.DefualtASTREVisitor;
@@ -34,7 +35,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 	}
 
 	@Override
-	public void setup() {
+	public void setup(ASTClass c) {
 
 	}
 

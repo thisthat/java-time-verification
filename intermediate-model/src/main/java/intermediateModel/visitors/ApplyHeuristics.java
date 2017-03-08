@@ -63,10 +63,10 @@ public class ApplyHeuristics extends ParseIM {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		//ah.subscribe(ThreadTime.class);
 		//ah.subscribe(SocketTimeout.class);
-		//ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimeoutResources.class);
 		//ah.subscribe(TimerType.class);
-		ah.subscribe(AnnotatedTypes.class);
-		ah.subscribe(SetTimeout.class);
+		//ah.subscribe(AnnotatedTypes.class);
+		//ah.subscribe(SetTimeout.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
 
@@ -87,7 +87,7 @@ public class ApplyHeuristics extends ParseIM {
 			SearchTimeConstraint a = null;
 			try {
 				a = type.newInstance();
-				a.setup();
+				a.setup(c);
 				strategies.add(a);
 			} catch (InstantiationException e) {
 				//e.printStackTrace();

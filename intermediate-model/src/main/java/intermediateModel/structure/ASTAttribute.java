@@ -14,6 +14,7 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 	private String type;
 	private String name;
 	private ASTRE expr;
+	private String typePointed;
 
 
 	public ASTAttribute(int start, int end, Visibility accessRight, String type, String name, ASTRE expr) {
@@ -110,4 +111,11 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 	}
 
 
+    public void setTypePointed(String typePointed) {
+        this.typePointed = typePointed;
+    }
+
+	public String getTypePointed() {
+		return typePointed;
+	}
 }

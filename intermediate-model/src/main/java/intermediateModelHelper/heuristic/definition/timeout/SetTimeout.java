@@ -3,6 +3,7 @@ package intermediateModelHelper.heuristic.definition.timeout;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
@@ -59,7 +60,7 @@ public class SetTimeout extends SearchTimeConstraint {
 
 
 	@Override
-	public void setup() {
+	public void setup(ASTClass c) {
 		this.analysingConstructor = false;
 		this.isReadingWithTimeoutConstruct = false;
 		this.isReadingWithTimeout = false;
@@ -84,8 +85,6 @@ public class SetTimeout extends SearchTimeConstraint {
 		inputStream.add(new SetTimeOutMethod("java.net.URLConnection", "getInputStream", new ArrayList<>()));
 		inputStream.add(new SetTimeOutMethod("java.net.HttpURLConnection", "getInputStream", new ArrayList<>()));
 		inputStream.add(new SetTimeOutMethod("javax.net.ssl.HttpsURLConnection", "getInputStream", new ArrayList<>()));
-
-
 
 	}
 
