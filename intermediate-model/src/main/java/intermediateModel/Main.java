@@ -25,7 +25,8 @@ public class Main {
 		List<String> files = new ArrayList<>();
 		//files.add( Main.class.getClassLoader().getResource("DiningPhilosopher.java").getFile() );
 		//files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java" );
-		files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/org/gudy/azureus2/core3/util/UrlUtils.java" );
+		files.add( "/Users/giovanni/repository/java-xal/intermediate-model/src/main/resources/TestSocket.java" );
+		//files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/org/gudy/azureus2/core3/util/UrlUtils.java" );
 		//files.add( "/Users/giovanni/repository/java-xal/project_eval/activemq/activemq-client/src/main/java/org/apache/activemq/ActiveMQConnection.java" );
 
 		//files.add(args[0]);

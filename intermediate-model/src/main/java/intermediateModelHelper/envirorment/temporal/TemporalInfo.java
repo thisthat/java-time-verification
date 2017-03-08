@@ -13,6 +13,8 @@ public class TemporalInfo {
 
     private static List<TimeMethod>  timeMethods;
     private static List<TimeTimeout> timeTimeout;
+    private static List<TimeTimeout> timeSoTimeout;
+    private static List<TimeTimeout> readTimeout;
     private static List<TimeTypes>   timeTypes;
 
     private static TemporalInfo instance = null;
@@ -20,6 +22,7 @@ public class TemporalInfo {
     protected TemporalInfo() {
         timeMethods = new ParseMethods( getClass().getClassLoader().getResource("descriptorTimeRelevant/methods.csv").getFile()).getMethods();
         timeTimeout = new ParseTimeout( getClass().getClassLoader().getResource("descriptorTimeRelevant/timeout.csv").getFile()).getMethods();
+        readTimeout = new ParseTimeout( getClass().getClassLoader().getResource("descriptorTimeRelevant/readtimeout.csv").getFile()).getMethods();
         timeTypes   = new ParseTypes(   getClass().getClassLoader().getResource("descriptorTimeRelevant/types.csv")  .getFile()).getMethods();
     }
 
@@ -37,6 +40,14 @@ public class TemporalInfo {
 
     public List<TimeTimeout> getTimeTimeout() {
         return timeTimeout;
+    }
+
+    public List<TimeTimeout> getTimeSoTimeout() {
+        return timeSoTimeout;
+    }
+
+    public List<TimeTimeout> getReadTimeout() {
+        return readTimeout;
     }
 
     public List<TimeTypes> getTimeTypes() {
