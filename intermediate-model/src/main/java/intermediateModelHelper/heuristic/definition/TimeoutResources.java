@@ -1,12 +1,13 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModelHelper.CheckExpression;
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.CheckExpression;
+import intermediateModelHelper.envirorment.Env;
 
 /**
  * The heuristic searches for snippet of code in a guard section of the following type:
@@ -24,10 +25,14 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 public class TimeoutResources extends SearchTimeConstraint {
 
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
+	public void setup() {
+
+	}
+
+	@Override
+	public void next(ASTRE stm, Env env) {
 		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
+		IASTRE expr = stm.getExpression();
 
 		final boolean[] found = {false};
 		//search for A {<,<=,>,>=} C
@@ -50,6 +55,16 @@ public class TimeoutResources extends SearchTimeConstraint {
 		if(found[0]){
 			this.addConstraint(stm.getCode(),stm);
 		}
+
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
 
 	}
 

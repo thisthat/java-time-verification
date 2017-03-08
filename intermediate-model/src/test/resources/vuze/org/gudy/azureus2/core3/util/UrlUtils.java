@@ -877,7 +877,7 @@ public class UrlUtils
 	{
 		if ( connect_timeout != -1 ){
 				
-			connection.setConnectTimeout( (int)connect_timeout );	
+			connection.setConnectTimeout( (int)connect_timeout );
 		}
 			
 		if ( read_timeout != -1 ){

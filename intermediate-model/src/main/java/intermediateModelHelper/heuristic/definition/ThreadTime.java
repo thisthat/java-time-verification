@@ -1,13 +1,14 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModelHelper.envirorment.BuildEnvironment;
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModelHelper.envirorment.BuildEnvironment;
+import intermediateModelHelper.envirorment.Env;
 
 /**
  * The following class implement a search in the ASTRE of Thread.sleep/Thread.join.
@@ -22,6 +23,11 @@ import intermediateModel.structure.expression.ASTMethodCall;
  */
 public class ThreadTime extends SearchTimeConstraint {
 
+	@Override
+	public void setup() {
+
+	}
+
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
 	 * The search is focused in find the {@code Thread.sleep()}, {@code Thread.join()} and {@code object.wait()} calls.
@@ -30,10 +36,9 @@ public class ThreadTime extends SearchTimeConstraint {
 	 * @param env	Envirorment visible to that statement
 	 */
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
+	public void next(ASTRE stm, Env env) {
 		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
+		IASTRE expr = stm.getExpression();
 		//only search for Method Call
 		if(!(expr instanceof ASTMethodCall)) return;
 
@@ -101,6 +106,16 @@ public class ThreadTime extends SearchTimeConstraint {
 		if(found){
 			this.addConstraint(time, stm);
 		}
+
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
 
 	}
 }

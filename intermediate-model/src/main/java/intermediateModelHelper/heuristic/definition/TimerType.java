@@ -1,12 +1,13 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModelHelper.envirorment.Env;
 
 import java.util.List;
 
@@ -28,6 +29,11 @@ import java.util.List;
  */
 public class TimerType extends SearchTimeConstraint {
 
+	@Override
+	public void setup() {
+
+	}
+
 	/**
 	 * We check all the calls to the {@code schedule()} method. If the variable that execute the method
 	 * is in the envirorment and it has type <b>Timer</b>, then we add the instruction to the list of time constraint.
@@ -36,10 +42,10 @@ public class TimerType extends SearchTimeConstraint {
 	 * @param env	Envirorment visible to that statement
 	 */
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
+	public void next(ASTRE stm, Env env) {
+
 		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
+		IASTRE expr = stm.getExpression();
 		//only search for Method Call
 		if(!(expr instanceof ASTMethodCall)) return;
 		//get all the vars with Timer type
@@ -66,6 +72,16 @@ public class TimerType extends SearchTimeConstraint {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
+
 	}
 
 }

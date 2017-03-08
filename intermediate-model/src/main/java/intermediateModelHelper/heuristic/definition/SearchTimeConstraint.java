@@ -2,6 +2,8 @@ package intermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModelHelper.envirorment.Env;
 import org.javatuples.Triplet;
@@ -32,6 +34,11 @@ public abstract class SearchTimeConstraint {
 	protected List<Triplet<String,IASTStm,Class>> timeConstraint = new ArrayList<>();
 
 	/**
+	 * It used to set up internal resources
+	 */
+	public abstract void setup();
+
+	/**
 	 * It used to accept a Statement
 	 * @param stm	Statement to process
 	 * @param env	Envirorment visible to that statement
@@ -43,9 +50,14 @@ public abstract class SearchTimeConstraint {
 	 * @param method	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */
-	protected void newMethod(IASTMethod method, Env env){
+	public abstract void nextMethod(ASTMethod method, Env env);
 
-	}
+	/**
+	 * It used to accept a new Constructor Definition
+	 * @param method	Statement to process
+	 * @param env	Envirorment visible to that statement
+	 */
+	public abstract void nextConstructor(ASTConstructor method, Env env);
 
 	/**
 	 * Add a constraint to the list
@@ -64,6 +76,7 @@ public abstract class SearchTimeConstraint {
 	public List<Triplet<String, IASTStm, Class>> getTimeConstraint() {
 		return timeConstraint;
 	}
+
 
 
 }

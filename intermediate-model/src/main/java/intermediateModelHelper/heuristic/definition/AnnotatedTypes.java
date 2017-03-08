@@ -1,5 +1,7 @@
 package intermediateModelHelper.heuristic.definition;
 
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
@@ -31,6 +33,11 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 	public AnnotatedTypes() {
 	}
 
+	@Override
+	public void setup() {
+
+	}
+
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
 	 * The heuristc search if the method called is in the list of time relevant methods.
@@ -40,10 +47,9 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 	 * @param env	Envirorment visible to that statement
 	 */
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
+	public void next(ASTRE stm, Env env) {
 		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
+		IASTRE expr = stm.getExpression();
 		if(expr == null){
 			return;
 		}
@@ -56,6 +62,16 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
+
 	}
 
 	private boolean containTimeOut(String pointer, String name, int nPars){

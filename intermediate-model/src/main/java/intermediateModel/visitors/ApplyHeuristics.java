@@ -1,11 +1,14 @@
 package intermediateModel.visitors;
 
 
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.*;
+import intermediateModelHelper.heuristic.definition.timeout.SetTimeout;
 import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModelHelper.indexing.structure.IndexParameter;
@@ -63,6 +66,7 @@ public class ApplyHeuristics extends ParseIM {
 		//ah.subscribe(TimeoutResources.class);
 		//ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(SetTimeout.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
 
@@ -83,6 +87,7 @@ public class ApplyHeuristics extends ParseIM {
 			SearchTimeConstraint a = null;
 			try {
 				a = type.newInstance();
+				a.setup();
 				strategies.add(a);
 			} catch (InstantiationException e) {
 				//e.printStackTrace();
@@ -100,14 +105,37 @@ public class ApplyHeuristics extends ParseIM {
 				v.setTimeCritical(true);
 			}
 		}
-		//check method
+		//first constructor
 		for(IASTMethod m : c.getMethods()){
+			if(m instanceof ASTMethod) continue;
 			Env eMethod = new Env(base);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
+			analyzeMethod(m, eMethod);
+			analyze(m.getStms(), eMethod );
+		}
+
+		//then methods
+		for(IASTMethod m : c.getMethods()){
+			if(m instanceof ASTConstructor) continue;
+			Env eMethod = new Env(base);
+			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
+			analyzeMethod(m, eMethod);
 			analyze(m.getStms(), eMethod );
 		}
 	}
 
+	@Override
+	protected void analyzeMethod(IASTMethod method, Env e) {
+		if(method instanceof ASTConstructor) {
+			for(SearchTimeConstraint s : strategies){
+				s.nextConstructor((ASTConstructor) method,e);
+			}
+		} else {
+			for(SearchTimeConstraint s : strategies){
+				s.nextMethod((ASTMethod) method,e);
+			}
+		}
+	}
 
 	@Override
 	protected void analyzeEveryStm(IASTStm elm, Env env) {

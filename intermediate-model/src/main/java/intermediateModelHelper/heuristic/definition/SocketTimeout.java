@@ -2,6 +2,8 @@ package intermediateModelHelper.heuristic.definition;
 
 
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
@@ -26,7 +28,10 @@ public class SocketTimeout extends SearchTimeConstraint {
 	private Integer __SOCKET_SOTIMEOUT = 0;
 
 
+	@Override
+	public void setup() {
 
+	}
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
@@ -41,7 +46,7 @@ public class SocketTimeout extends SearchTimeConstraint {
 	public void next(ASTRE stm, Env env) {
 
 		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
+		IASTRE expr = stm.getExpression();
 		//only search for Method Call
 		final ASTMethodCall[] mc_search = {null};
 		expr.visit(new DefualtASTREVisitor() {
@@ -83,6 +88,16 @@ public class SocketTimeout extends SearchTimeConstraint {
 			this.addConstraint(value_timeout, stm);
 			found = false;
 		}
+
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
 
 	}
 
