@@ -1,6 +1,8 @@
 before_script:
-  - mvn -v
+  - pwd
+  - java -jar TA/tests/server-0.2-SNAPSHOT.jar &
 
 test:
   script:
     - nosetests TA
+    - curl -s http://localhost:9000/shutdown -d ''
