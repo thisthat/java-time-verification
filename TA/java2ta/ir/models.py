@@ -11,7 +11,7 @@ class Project(object):
     }
 
 
-    def __init__(self, name, path, api_url=None):
+    def __init__(self, name, path=None, api_url=None):
         
         self.name = name
         self.path = path
@@ -125,6 +125,9 @@ class Project(object):
             data = { "name": self.name, "filePath": path }
             file = self.client.post("/getFile", data)
 
+        if file is not None and isinstance(file, dict):
+            file = [ file ]
+
         return file
 
     def get_mains(self):
@@ -144,7 +147,9 @@ class Thread(object):
         assert isinstance(ir, dict)
         assert isinstance(project, Project)
 
-        self.name = ir["name"]  
+        assert project.is_open(), "Expected open project. Got project in status: '%s'" % project.status
+
+        self.name = ir["className"]  
         self.path = ir["path"]
         self.package = ir["packageName"]
         self._project = project
@@ -160,6 +165,7 @@ class Thread(object):
             for curr in classes:
                 if curr["name"] == self.name:
                     self._klass = curr
+                    self._imported = True
 
             if not self._klass:
                 raise Exception("It was not possible to import class '%s' from file '%s'" % (self.name, self.path))

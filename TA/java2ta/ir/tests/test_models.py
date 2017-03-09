@@ -1,6 +1,6 @@
 from time import sleep
 
-from java2ta.ir.models import Project
+from java2ta.ir.models import Project, Thread
 
 import pkg_resources
 
@@ -136,8 +136,6 @@ def test_open_project_bigger_distributed():
 
 def check_file(file):
 
-    assert isinstance(file, dict)
-
     assert "code" in file
     assert "methods" in file
     assert "imports" in file
@@ -175,7 +173,11 @@ def test_get_files_dist():
 
     check_is_open(p)
  
-    file_lock = p.get_file("Lock.java")
+    all_files_lock = p.get_file("Lock.java")
+
+    assert isinstance(all_files_lock, list)
+
+    file_lock = all_files_lock[0]
 
     check_file(file_lock)
     assert not file_lock["abstract"] 
@@ -190,7 +192,9 @@ def test_get_files_dist():
     assert file_lock["implmentsInterfaces"] == [ "MsgHandler" ] # TODO fix name
     assert file_lock["extendClass"] == "Object"
 
-    file_leader = p.get_file("RingLeader.java")
+    all_files_leader = p.get_file("RingLeader.java")
+    assert isinstance(all_files_leader, list)
+    file_leader = all_files_leader[0]
     check_file(file_leader)
     assert file_leader["implmentsInterfaces"] == [ "Election" ] # TODO fix name
     assert len(file_leader["attributes"]) == 4
@@ -237,3 +241,34 @@ def test_get_files_by_type():
     assert files[3]["path"] in expected_paths
     assert files[4]["path"] in expected_paths
 
+
+def test_thread():
+
+ 
+    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+
+    p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    threads = p.get_threads() 
+
+    for ir in threads:
+
+        t = Thread(ir=ir, project=p) 
+
+        print "check thread: %s" % t.name
+
+        assert t.name == ir["className"]
+        assert t.path == ir["path"]
+        assert t.package == ir["packageName"]
+
+        klass = t.klass
+    
+        assert isinstance(klass, dict)  
+        assert klass["name"] == t.name
+        assert klass["path"].endswith(t.path)
+        assert klass["packageName"] == t.package
