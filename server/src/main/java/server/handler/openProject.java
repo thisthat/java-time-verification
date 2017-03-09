@@ -58,7 +58,6 @@ public class openProject extends indexMW {
 	}
 
 
-
 	String par1 = "path";
 	String par2 = "invalidCache";
 
@@ -87,6 +86,10 @@ public class openProject extends indexMW {
 			if(!ParsePars.parseFileUrl(base_path, he)){
 				return;
 			}
+		}
+		//if path is defined as parameter we MUST use it rewriting previous values
+		if(parameters.containsKey(par1)){
+			base_path = parameters.get(par1);
 		}
 		boolean delete = parameters.containsKey(par2) && parameters.get(par2).equals("1");
 		base_path = base_path.replace("file://","");

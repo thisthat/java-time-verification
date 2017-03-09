@@ -67,7 +67,10 @@ It expects two parameters:
 * `name` : Name of the project
 * `path` : Path of the project in URI format (only the *file://* protocol is supported atm.)
 
-Plus one optional parameter:
+**HOWEVER** `path` can be optional if a project was already opened. The program will use the previously used one.
+If a project was already opened and we specify the `path` parameter we use the value of the parameter overwriting previously values.
+
+One optional parameter can be used:
 * `invalidCache` : if equal to **1** it invalidates the cache and compute again the indexes. Default value is `0`.
 
 The function returns a value with a status code:
