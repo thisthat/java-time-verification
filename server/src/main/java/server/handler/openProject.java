@@ -2,8 +2,10 @@ package server.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import intermediateModelHelper.indexing.IndexingProject;
 import com.sun.net.httpserver.HttpExchange;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import org.javatuples.Pair;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.Status;
@@ -11,8 +13,6 @@ import server.handler.outputFormat.Status;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,9 +29,9 @@ public class openProject extends indexMW {
 		String name;
 		String base_path;
 		boolean delete;
-		HashMap<String, Boolean> indexProcess;
+		HashMap<String, Pair<Boolean,String>> indexProcess;
 
-		public IndexingThread(String name, String base_path, boolean delete, HashMap<String, Boolean> indexProcess) {
+		public IndexingThread(String name, String base_path, boolean delete, HashMap<String, Pair<Boolean,String>> indexProcess) {
 			super();
 			this.name = name;
 			this.base_path = base_path;
@@ -43,8 +43,8 @@ public class openProject extends indexMW {
 		public void run() {
 			boolean flag;
 			synchronized (lock){
-				flag = indexProcess.containsKey(name) ? !indexProcess.get(name) : true;
-				indexProcess.put(name, true);
+				flag = indexProcess.containsKey(name) ? indexProcess.get(name).getValue0() : true;
+				indexProcess.put(name, new Pair<>(true, base_path));
 			}
 			if(flag) {
 				IndexingProject index = new IndexingProject(name);
@@ -52,7 +52,7 @@ public class openProject extends indexMW {
 				index.indexProject(base_path, delete);
 			}
 			synchronized (lock){
-				indexProcess.put(name, false);
+				indexProcess.put(name, new Pair<>(false, base_path));
 			}
 		}
 	}
@@ -62,23 +62,33 @@ public class openProject extends indexMW {
 	String par1 = "path";
 	String par2 = "invalidCache";
 
-	HashMap<String, Boolean> indexProcess = new HashMap<>();
+	HashMap<String, Pair<Boolean,String>> indexProcess = new HashMap<>();
 	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 
-		//validate input
-		boolean flag = true;
-		if(!parameters.containsKey(par1)){
-			flag = false;
+		MongoConnector mongo = MongoConnector.getInstance(name);
+		String base_path = "";
+		//is path mandatory?
+		if(indexProcess.containsKey(name)){
+			//no it is not
+			base_path = indexProcess.get(name).getValue1();
+		} else if(mongo.getIndexStatus()) {
+			base_path = mongo.getBasePath();
+		} else {
+			//yes it is
+			boolean flag = true;
+			if(!parameters.containsKey(par1)){
+				flag = false;
+			}
+			if(!flag){
+				ParsePars.printErrorMessagePars(he);
+				return;
+			}
+			base_path = parameters.get(par1);
+			if(!ParsePars.parseFileUrl(base_path, he)){
+				return;
+			}
 		}
-		if(!flag){
-			ParsePars.printErrorMessagePars(he);
-			return;
-		}
-		String base_path = parameters.get(par1);
 		boolean delete = parameters.containsKey(par2) && parameters.get(par2).equals("1");
-		if(!ParsePars.parseFileUrl(base_path, he)){
-			return;
-		}
 		base_path = base_path.replace("file://","");
 
 		Status msg;
@@ -86,7 +96,7 @@ public class openProject extends indexMW {
 		if (new File(base_path).exists()) {
 			boolean doesItExistsAlready = false;
 			synchronized (lock){
-				doesItExistsAlready = indexProcess.containsKey(name) && indexProcess.get(name);
+				doesItExistsAlready = indexProcess.containsKey(name) && indexProcess.get(name).getValue0();
 			}
 			if(!doesItExistsAlready) {
 				IndexingThread thread = new IndexingThread(name, base_path, delete, indexProcess);
@@ -114,7 +124,7 @@ public class openProject extends indexMW {
 	public boolean doesItExists(String name){
 		boolean doesItExistsAlready = false;
 		synchronized (lock){
-			doesItExistsAlready = indexProcess.containsKey(name) && indexProcess.get(name);
+			doesItExistsAlready = indexProcess.containsKey(name) && indexProcess.get(name).getValue0();
 		}
 		return doesItExistsAlready;
 	}
