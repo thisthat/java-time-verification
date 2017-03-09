@@ -101,12 +101,14 @@ class Project(object):
         files = []
 
         if self.is_open():
-            data = { "name": self.name, "skipTest": 0 }
+            data = { "name": self.name }
             url = "/getAllFiles"
 
             if type:    
                 data["type"] = type
                 url = "/getFilesByType"
+            else:
+                data["skipTest"] = 0
                 
             files = self.client.post(url, data)
 
@@ -134,3 +136,35 @@ class Project(object):
             mains = self.client.post("/getMains", data)
 
         return mains
+
+
+class Thread(object):
+
+    def __init__(self, ir, project):
+        assert isinstance(ir, dict)
+        assert isinstance(project, Project)
+
+        self.name = ir["name"]  
+        self.path = ir["path"]
+        self.package = ir["packageName"]
+        self._project = project
+        self._imported = False
+        self._klass = None
+
+    @property
+    def klass(self):
+    
+        if not self._imported:
+            classes = self._project.get_file(self.path)
+            
+            for curr in classes:
+                if curr["name"] == self.name:
+                    self._klass = curr
+
+            if not self._klass:
+                raise Exception("It was not possible to import class '%s' from file '%s'" % (self.name, self.path))
+
+        assert self._klass is not None
+        return self._klass
+    
+
