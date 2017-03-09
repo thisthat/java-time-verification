@@ -36,7 +36,7 @@ public class getStatus extends indexMW {
         if(connector.getIndexStatus()){
             //the project was opened successfully
             status = new Status(_OPEN_,"");
-        } else if(op.getIndexProcess().containsKey(name) && op.getIndexProcess().get(name)){
+        } else if(op.doesItExists(name)){
             //is currently on going
             status = new Status(_OPENING_,"");
         } else {

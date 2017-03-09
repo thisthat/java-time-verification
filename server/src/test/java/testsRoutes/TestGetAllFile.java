@@ -32,7 +32,7 @@ public class TestGetAllFile {
 	static String base_url;
 	static String base_project;
 
-	static final String db_name = "tt";
+	static final String db_name = "ttGetAllFile";
 
 	@BeforeClass
 	public static void setUp() throws Exception {

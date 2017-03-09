@@ -106,7 +106,7 @@ public class MongoConnector {
 		}
 	}
 
-	public List<String> databases(){
+	public synchronized List<String> databases(){
 		List<String> out = new ArrayList<>();
 		MongoCursor<String> dbsCursor = mongoClient.listDatabaseNames().iterator();
 		while(dbsCursor.hasNext()) {
@@ -115,7 +115,7 @@ public class MongoConnector {
 		return out;
 	}
 
-	public void setBasePath(String basePath){
+	public synchronized void setBasePath(String basePath){
 		if(!basePath.endsWith("/")){
 			basePath = basePath + "/";
 		}
@@ -123,7 +123,7 @@ public class MongoConnector {
 		datastore.save(dbStatus);
 	}
 
-	public String getBasePath(){
+	public synchronized String getBasePath(){
 		return dbStatus.getBasePath();
 	}
 
@@ -163,7 +163,7 @@ public class MongoConnector {
 	 * @param packageName	PackageName to search
 	 * @return				True if it is already in the DB.
 	 */
-	public boolean existClassIndex(String name, String packageName){
+	public synchronized boolean existClassIndex(String name, String packageName){
 		return getIndex(name,packageName).size() > 0;
 	}
 
@@ -172,7 +172,7 @@ public class MongoConnector {
 	 * @param c	{@link ASTClass} to search
 	 * @return 	True if it is already in the DB.
 	 */
-	public boolean existClassIndex(ASTClass c){
+	public synchronized boolean existClassIndex(ASTClass c){
 		return existClassIndex(c.getName(), c.getPackageName());
 	}
 
@@ -181,7 +181,7 @@ public class MongoConnector {
 	 * @param i	{@link IndexData} to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existClassIndex(IndexData i){
+	public synchronized boolean existClassIndex(IndexData i){
 		return existClassIndex(i.getClassName(), i.getClassPackage());
 	}
 
@@ -190,7 +190,7 @@ public class MongoConnector {
 	 * @param c	{@link ASTClass} to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncCallIndexClass(ASTClass c) {
+	public synchronized boolean existSyncCallIndexClass(ASTClass c) {
 		return getSyncCallIndexClass(c.getName(),c.getPackageName()).size() > 0;
 	}
 	/**
@@ -198,7 +198,7 @@ public class MongoConnector {
 	 * @param i	{@link IndexSyncCall} to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncCallIndex(IndexSyncCall i){
+	public synchronized boolean existSyncCallIndex(IndexSyncCall i){
 		return datastore.createQuery(IndexSyncCall.class)
 				.field("line").equal(i.getLine())
 				.field("path").equal(i.getPath())
@@ -219,7 +219,7 @@ public class MongoConnector {
 	 * @param packageName	Package of the class to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncCallIndex(String name, String packageName, String methodName, List<String> signature){
+	public synchronized boolean existSyncCallIndex(String name, String packageName, String methodName, List<String> signature){
 		return getSyncCallIndex(name,packageName, methodName, signature).size() > 0;
 	}
 
@@ -228,7 +228,7 @@ public class MongoConnector {
 	 * @param c	{@link ASTClass} to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncBlockIndex(ASTClass c) {
+	public synchronized boolean existSyncBlockIndex(ASTClass c) {
 		return getSyncBlockIndexClass(c.getName(),c.getPackageName()).size() > 0;
 	}
 	/**
@@ -236,7 +236,7 @@ public class MongoConnector {
 	 * @param i	{@link IndexSyncBlock} to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncBlockIndex(IndexSyncBlock i){
+	public synchronized boolean existSyncBlockIndex(IndexSyncBlock i){
 		return existSyncBlockIndex(i.getName(), i.getPackageName(), i.getMethodName(), i.getSignature(), i.getStart(), i.getEnd());
 	}
 	/**
@@ -245,7 +245,7 @@ public class MongoConnector {
 	 * @param packageName	Package of the class to search
 	 * @return	True if it is already in the DB.
 	 */
-	public boolean existSyncBlockIndex(String name, String packageName, String methodName, List<String> signature, int start, int end){
+	public synchronized boolean existSyncBlockIndex(String name, String packageName, String methodName, List<String> signature, int start, int end){
 		return getSyncBlockIndex(name,packageName, methodName, signature, start, end).size() > 0;
 	}
 
@@ -253,7 +253,7 @@ public class MongoConnector {
 	 * Insert a indexed class in the database iff. it is not already present
 	 * @param indexStructureClass	Indexed structure of a class to insert
 	 */
-	public void add(IndexData indexStructureClass){
+	public synchronized void add(IndexData indexStructureClass){
 		if(existClassIndex(indexStructureClass)){
 			return;
 		}
@@ -282,7 +282,7 @@ public class MongoConnector {
 		}
 	}
 
-	public void add(IndexSyncCall indexSyncCall){
+	public synchronized void add(IndexSyncCall indexSyncCall){
 		if(existSyncCallIndex(indexSyncCall)){
 			return;
 		}
@@ -298,7 +298,7 @@ public class MongoConnector {
 		}
 	}
 
-	public void add(IndexSyncBlock indexSyncBlock) {
+	public synchronized void add(IndexSyncBlock indexSyncBlock) {
 		if(existSyncBlockIndex(indexSyncBlock)){
 			return;
 		}
@@ -324,7 +324,7 @@ public class MongoConnector {
 	 * @param packageName	PackageName of the class to get
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexData> getIndex(String name, String packageName){
+	public synchronized List<IndexData> getIndex(String name, String packageName){
 		return getIndex(name, packageName, false);
 	}
 
@@ -334,7 +334,7 @@ public class MongoConnector {
 	 * @param packageName	PackageName of the class to get
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexData> getIndex(String name, String packageName, boolean ignoreCache){
+	public synchronized List<IndexData> getIndex(String name, String packageName, boolean ignoreCache){
 		Pair<String,String> p = new Pair<>(name,packageName);
 		if(!ignoreCache && cacheIndex.containsKey(p)){
 			return cacheIndex.get(p);
@@ -354,12 +354,12 @@ public class MongoConnector {
 	 * @param c	{@link ASTClass} to get
 	 * @return	List of {@link IndexData} documents
 	 */
-	public List<IndexData> getIndex(ASTClass c){
+	public synchronized List<IndexData> getIndex(ASTClass c){
 		return  getIndex(c.getName(), c.getPackageName());
 	}
 
 
-	public List<IndexSyncCall> getSyncCallIndexClass(ASTClass c) {
+	public synchronized List<IndexSyncCall> getSyncCallIndexClass(ASTClass c) {
 		return getSyncCallIndexClass(c.getName(), c.getPackageName());
 	}
 
@@ -369,7 +369,7 @@ public class MongoConnector {
 	 * @param packageName	PackageName of the class to get
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexSyncCall> getSyncCallIndexClass(String name, String packageName){
+	public synchronized List<IndexSyncCall> getSyncCallIndexClass(String name, String packageName){
 		Pair<String,String> p = new Pair<>(name,packageName);
 		if(cacheSyncCallClass.containsKey(p)){
 			return cacheSyncCallClass.get(p);
@@ -392,7 +392,7 @@ public class MongoConnector {
 	 * @param methodSignature Signature of the method to search
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexSyncCall> getSyncCallIndex(String name, String packageName, String methodName, List<String> methodSignature){
+	public synchronized List<IndexSyncCall> getSyncCallIndex(String name, String packageName, String methodName, List<String> methodSignature){
 		Quartet<String,String, String, List<String>> p = new Quartet<>(name,packageName, methodName, methodSignature);
 		if(cacheSyncCall.containsKey(p)){
 			return cacheSyncCall.get(p);
@@ -409,7 +409,7 @@ public class MongoConnector {
 		return out;
 	}
 
-	public List<IndexSyncBlock> getSyncBlockIndex(ASTClass c) {
+	public synchronized List<IndexSyncBlock> getSyncBlockIndex(ASTClass c) {
 		return getSyncBlockIndexClass(c.getName(), c.getPackageName());
 	}
 
@@ -419,7 +419,7 @@ public class MongoConnector {
 	 * @param packageName	PackageName of the class to get
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexSyncBlock> getSyncBlockIndex(String name, String packageName, String methodName, List<String> signature, int start, int end){
+	public synchronized List<IndexSyncBlock> getSyncBlockIndex(String name, String packageName, String methodName, List<String> signature, int start, int end){
 		Sextet<String,String,String,List<String>,Integer,Integer> p = new Sextet<>(name,packageName, methodName, signature, start, end);
 		if(cacheSyncBlock.containsKey(p)){
 			return cacheSyncBlock.get(p);
@@ -444,7 +444,7 @@ public class MongoConnector {
 	 * @param packageName	PackageName of the class to get
 	 * @return				List of {@link IndexData} documents
 	 */
-	public List<IndexSyncBlock> getSyncBlockIndexClass(String name, String packageName){
+	public synchronized List<IndexSyncBlock> getSyncBlockIndexClass(String name, String packageName){
 		List<IndexSyncBlock> out =  datastore.createQuery(IndexSyncBlock.class)
 				.field(__CLASS_NAME).equal(name)
 				.field(__PACKAGE_NAME).equal(packageName)
@@ -456,7 +456,7 @@ public class MongoConnector {
 	 * It queries the database to retrieve all the classes that are Threads.
 	 * @return list of {@link IndexData} objects.
 	 */
-	public List<IndexData> getThreads(){
+	public synchronized List<IndexData> getThreads(){
 		Query<IndexData> q = datastore.createQuery(IndexData.class);
 		q.or(
 				q.criteria("extendedType").equal("Thread"),
@@ -469,7 +469,7 @@ public class MongoConnector {
 	 * It queries the database to retrieve all the classes that are Threads.
 	 * @return list of {@link IndexData} objects.
 	 */
-	public List<IndexData> getMains(){
+	public synchronized List<IndexData> getMains(){
 		Query<IndexData> q = datastore.find(IndexData.class)
 				.filter("listOfMethods.isStatic = ", true)
 				.filter("listOfMethods.returnType = ", "void")
@@ -483,7 +483,7 @@ public class MongoConnector {
 	 * @param query	package name of the import
 	 * @return	List of {@link IndexData} classes
 	 */
-	public List<IndexData> getFromImport(String query){
+	public synchronized List<IndexData> getFromImport(String query){
 		if(cacheImport.containsKey(query)){
 			return cacheImport.get(query);
 		}
@@ -503,7 +503,7 @@ public class MongoConnector {
 	}
 
 
-	public List<IndexData> getClassesThatImports(String _package, String name){
+	public synchronized List<IndexData> getClassesThatImports(String _package, String name){
 		Query<IndexData> q = datastore.createQuery(IndexData.class);
 		q.or(
 			q.criteria(__IMPORTS).equal(_package + ".*"),
@@ -512,7 +512,7 @@ public class MongoConnector {
 		return q.asList();
 	}
 
-	public void ensureIndexes(){
+	public synchronized void ensureIndexes(){
 		datastore.ensureIndexes();
 	}
 
@@ -520,7 +520,7 @@ public class MongoConnector {
 	 * Getter of the DB structure.
 	 * @return the database structure.
 	 */
-	public MongoDatabase getDb() {
+	public synchronized MongoDatabase getDb() {
 		return db;
 	}
 
@@ -528,7 +528,7 @@ public class MongoConnector {
 	 * Getter of the DB structure.
 	 * @return the database structure.
 	 */
-	public Datastore getDatastore() {
+	public synchronized Datastore getDatastore() {
 		return datastore;
 	}
 
@@ -536,7 +536,7 @@ public class MongoConnector {
 	 * Delete a class from the DB
 	 * @param c	Class to remove
 	 */
-	public void delete(ASTClass c) {
+	public synchronized void delete(ASTClass c) {
 		Query<IndexData> q = datastore.createQuery(IndexData.class)
 				.field(__CLASS_NAME).equal(c.getName())
 				.field(__PACKAGE_NAME).equal(c.getPackageName());
@@ -545,7 +545,7 @@ public class MongoConnector {
 		cacheIndex.remove(p);
 	}
 
-	public List<IndexData> resolveClassImplementingInterface(String interfaceName, String packageName){
+	public synchronized List<IndexData> resolveClassImplementingInterface(String interfaceName, String packageName){
 		Pair<String,String> p = new Pair<>(interfaceName, packageName);
 		if(cacheInterface.containsKey(p)){
 			return cacheInterface.get(p);
@@ -623,7 +623,7 @@ public class MongoConnector {
 		return output;
 	}
 
-	public List<IndexData> getExtensionOfClass(String pkg, String name){
+	public synchronized List<IndexData> getExtensionOfClass(String pkg, String name){
 		Pair<String,String> p = new Pair<>(pkg, name);
 		if(cacheExtended.containsKey(p)){
 			return cacheExtended.get(p);
@@ -642,7 +642,7 @@ public class MongoConnector {
 		return out;
 	}
 
-	public void setIndexStart(){
+	public synchronized void setIndexStart(){
 		try {
 			this.dbStatus.setLastEdit(new Timestamp(System.currentTimeMillis()));
 			this.dbStatus.setIndexed(false);
@@ -652,7 +652,7 @@ public class MongoConnector {
 		}
 	}
 
-	public void setIndexFinish(){
+	public synchronized void setIndexFinish(){
 		try {
 			this.dbStatus.setLastEdit(new Timestamp(System.currentTimeMillis()));
 			this.dbStatus.setIndexed(true);
@@ -662,7 +662,7 @@ public class MongoConnector {
 		}
 	}
 
-	public boolean getIndexStatus(){
+	public synchronized boolean getIndexStatus(){
 		Query<DBStatus> q = datastore.createQuery(DBStatus.class);
 		q.field("dbName").equal(dbName);
 		try {
@@ -679,7 +679,7 @@ public class MongoConnector {
 		return this.dbStatus.isIndexed();
 	}
 
-	public List<IndexData> getType(String type) {
+	public synchronized List<IndexData> getType(String type) {
 		Query<IndexData> q;
 		q = datastore.createQuery(IndexData.class);
 		q.or(
@@ -693,8 +693,9 @@ public class MongoConnector {
 	/**
 	 * Delete the current database
 	 */
-	public void drop(){
+	public synchronized void drop(){
 		this.db.drop();
+		this.dbStatus = new DBStatus(dbName, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false);
 		this.cacheIndex = new HashMap<>();
 		this.cacheImport = new HashMap<>();
 		this.cacheSyncBlock = new HashMap<>();
@@ -702,7 +703,7 @@ public class MongoConnector {
 	}
 
 
-	public void deleteSyncCalls(ASTClass c) {
+	public synchronized void deleteSyncCalls(ASTClass c) {
 		Query<IndexSyncCall> q = datastore.createQuery(IndexSyncCall.class)
 				.field(__CLASS_NAME).equal(c.getName())
 				.field(__PACKAGE_NAME).equal(c.getPackageName());
@@ -711,7 +712,7 @@ public class MongoConnector {
 		cacheSyncCall.remove(p);
 	}
 
-	public void deleteSyncBlock(ASTClass c) {
+	public synchronized void deleteSyncBlock(ASTClass c) {
 		Query<IndexSyncBlock> q = datastore.createQuery(IndexSyncBlock.class)
 				.field(__CLASS_NAME).equal(c.getName())
 				.field(__PACKAGE_NAME).equal(c.getPackageName());
@@ -720,7 +721,7 @@ public class MongoConnector {
 		cacheSyncBlock.remove(p);
 	}
 
-	public boolean existIndexSocketClass(ASTClass c) {
+	public synchronized boolean existIndexSocketClass(ASTClass c) {
 		return existIndexSocketClass(c.getPath());
 	}
 
@@ -728,7 +729,7 @@ public class MongoConnector {
 		return getIndexSocketClass(path).size() > 0;
 	}
 
-	public void add(IndexSocket s) {
+	public synchronized void add(IndexSocket s) {
 		if(cacheSocket.containsKey(s.getFullName())){
 			return;
 		}
@@ -742,7 +743,7 @@ public class MongoConnector {
 		}
 	}
 
-	public List<IndexSocket> getIndexSocketClass(String path) {
+	public synchronized List<IndexSocket> getIndexSocketClass(String path) {
 		if(cacheSocketClass.containsKey(path)){
 			return cacheSocketClass.get(path);
 		}
@@ -754,7 +755,7 @@ public class MongoConnector {
 		return out;
 	}
 
-	public List<IndexSocket> getIndexSocketClass(ASTClass c) {
+	public synchronized List<IndexSocket> getIndexSocketClass(ASTClass c) {
 		return getIndexSocketClass(c.getPath());
 	}
 }
