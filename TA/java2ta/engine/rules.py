@@ -135,10 +135,12 @@ class Engine(object):
 
         self._ruleset.add_rule(rule)
 
-    def run(self, asts_in, asts_out):
+    def run(self, asts_in, asts_out, ctx=None):
 
         # start with an empty environment on top of the context
-        ctx = Context()
+        if not ctx:
+            ctx = Context()
+        
         ctx.push({})
 
         self._ruleset.enable_all()

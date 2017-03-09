@@ -24,10 +24,10 @@ class Context(object):
 
         return res
 
-    def get(self, name):
+    def get(self, name, default=None):
 
         found = False
-        value = None
+        value = default
 
         for env in reversed(self._context):
             if name in env:
@@ -35,10 +35,12 @@ class Context(object):
                 value = env[name]
                 break
 
-        if found:
-            return value
-        else:
-            raise ObjectDoesNotExist
+        return value
+
+##        if found:
+##            return value
+##        else:
+##            raise ObjectDoesNotExist
 
     def top(self):
 

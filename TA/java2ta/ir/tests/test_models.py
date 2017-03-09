@@ -260,8 +260,6 @@ def test_thread():
 
         t = Thread(ir=ir, project=p) 
 
-        print "check thread: %s" % t.name
-
         assert t.name == ir["className"]
         assert t.path == ir["path"]
         assert t.package == ir["packageName"]
