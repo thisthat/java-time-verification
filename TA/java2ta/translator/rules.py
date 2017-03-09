@@ -46,23 +46,25 @@ class AddStates(Rule):
 
     def match(self):
 
-        ss = self.ctx.get("ss")
+        ss = self.ctx.get("state_space")
 
         return ss is not None and len(self.asts_out.locations) == 0
 
     def do_rewrite_asts(self, let_ctx):
     
-        assert isinstance(self.asts_post, TA)
+        assert isinstance(self.asts_out, TA)
     
-        ss = self.ctx.get("ss")
+        ss = self.ctx.get("state_space")
 
         assert isinstance(ss, StateSpace)
 
         for conf in ss.enumerate:
-            name = "_".join(conf)
+            name = "_".join(map(lambda v: "%s" % v, conf))
             l = Location(name)
 
-            self.asts_post.add_location(l)
+            self.asts_out.add_location(l)
+
+        return self.asts_out
 
         
 
