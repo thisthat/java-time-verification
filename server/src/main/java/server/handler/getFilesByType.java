@@ -22,6 +22,7 @@ import java.util.Map;
 public class getFilesByType extends indexMW {
 
 	String par = "type";
+	String lastType = "";
 
 
 	@Override
@@ -36,6 +37,9 @@ public class getFilesByType extends indexMW {
 		}
 		MongoConnector db = MongoConnector.getInstance(name);
 		String base_path = db.getBasePath();
+
+		this.lastType = type;
+
 		List<IndexData> threads = db.getType(type);
 		List<OutputData> files = new ArrayList<>();
 		for(IndexData d : threads){
@@ -50,7 +54,11 @@ public class getFilesByType extends indexMW {
 		OutputStream os = he.getResponseBody();
 		os.write(response.toString().getBytes());
 		os.close();
-
 	}
 
+	@Override
+	protected void printLog() {
+		super.printLog();
+		System.out.println("Searching for: " + lastType);
+	}
 }

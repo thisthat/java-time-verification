@@ -985,7 +985,7 @@ public class SpeedLimitMonitor implements PSMonitorListener
         boolean hadChockingPing = hadChockingPing();
         float percentDiff = (float)Math.abs( highestValue-preTestValue )/(float)(Math.max(highestValue,preTestValue));
         if( percentDiff<0.15f  && hadChockingPing ){
-            //Only set to medium if had both a chocking ping and two tests with similar results.
+            //Only set to medium if had both a chocking ping and two testsRoutes with similar results.
             retVal = SpeedLimitConfidence.MED;
         }else{
             retVal = SpeedLimitConfidence.LOW;

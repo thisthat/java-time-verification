@@ -1070,7 +1070,7 @@ public class MessageBoxShell
 		MessageBoxShell messageBoxShell = new MessageBoxShell(
 				"Title",
 				"Test\n"
-						+ "THis is a very long line that tests whether the box gets really wide which is something we don't want.\n"
+						+ "THis is a very long line that testsRoutes whether the box gets really wide which is something we don't want.\n"
 						+ "A <A HREF=\"Link\">link</A> for <A HREF=\"http://moo.com\">you</a>",
 				new String[] {
 					"Okay",

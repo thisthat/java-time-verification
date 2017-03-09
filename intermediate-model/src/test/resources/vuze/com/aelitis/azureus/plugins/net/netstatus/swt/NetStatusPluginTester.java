@@ -152,7 +152,7 @@ NetStatusPluginTester
 			
 			if ( admin.canPing()){
 				
-				log( "Running ping tests" );
+				log( "Running ping testsRoutes" );
 				
 				try{
 					InetAddress	target_address = InetAddress.getByName( plugin.getPingTarget());
@@ -263,7 +263,7 @@ NetStatusPluginTester
 			
 			if ( admin.canTraceRoute()){
 				
-				log( "Running trace route tests" );
+				log( "Running trace route testsRoutes" );
 				
 				try{
 					InetAddress	target_address = InetAddress.getByName( plugin.getPingTarget());

@@ -64,7 +64,7 @@ public class getFile extends indexMW {
 		// send response
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
-		String response = json.writeValueAsString(classes.get(0));
+		String response = json.writeValueAsString(classes);
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();

@@ -1,3 +1,6 @@
+package testsRoutes;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.IOUtils;
@@ -8,7 +11,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -62,6 +64,19 @@ public class TestOpenProject {
 		String myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
+		int status = 0;
+		while(status == 0){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", "tt"));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
+			status = itemWithOwner.getStatus();
+		}
 	}
 
 	@Test
@@ -87,6 +102,19 @@ public class TestOpenProject {
 		myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
+		int status = 0;
+		while(status == 0){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", "tt"));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
+			status = itemWithOwner.getStatus();
+		}
 	}
 
 	@Test
@@ -102,6 +130,7 @@ public class TestOpenProject {
 		String myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
 		assertEquals(400, response.getStatusLine().getStatusCode());
+
 	}
 
 	@Test
@@ -163,6 +192,19 @@ public class TestOpenProject {
 		String myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
+		int status = 0;
+		while(status == 0){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", "tt"));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
+			status = itemWithOwner.getStatus();
+		}
 	}
 	@Test
 	public void TestOpenProjectOptPars2() throws Exception {
@@ -178,6 +220,19 @@ public class TestOpenProject {
 		String myString = IOUtils.toString(stream, "UTF-8");
 		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
+		int status = 0;
+		while(status == 0){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", "tt"));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
+			status = itemWithOwner.getStatus();
+		}
 	}
 
 }

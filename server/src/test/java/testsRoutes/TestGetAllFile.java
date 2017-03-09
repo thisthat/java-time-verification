@@ -1,6 +1,7 @@
+package testsRoutes;
+
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -8,7 +9,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.SystemDefaultCredentialsProvider;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,11 +16,9 @@ import org.junit.Test;
 import server.HttpServerConverter;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,25 +26,27 @@ import static org.junit.Assert.assertEquals;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class TestGetAllFileByType {
+public class TestGetAllFile {
 
 	static HttpServerConverter server;
 	static String base_url;
 	static String base_project;
-	static final String db_name = "ttAllfiles";
+
+	static final String db_name = "ttGetAllFile";
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 		server = new HttpServerConverter();
 		base_url = "http://localhost:" + HttpServerConverter.getPort();
-		ClassLoader classLoader = TestGetAllFileByType.class.getClassLoader();
+		ClassLoader classLoader = TestGetAllFile.class.getClassLoader();
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
 		base_project = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("/")) + "/";
-		MongoOptions.getInstance().setDbName("tt");
+
+		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
+
 		TestGetFile.openProject(db_name, base_project);
-		base_url = base_url + "/getFilesByType";
 	}
 
 	@AfterClass
@@ -55,106 +55,71 @@ public class TestGetAllFileByType {
 	}
 
 	@Test
-	public void TestSuccess() throws Exception {
-
-		MongoOptions.getInstance().setDbName("tt");
-		MongoConnector.getInstance().drop();
-		MongoConnector.getInstance().ensureIndexes();
-		//first open project and get indexes
+	public void TestGetAllFiles() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/openProject");
+		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
 		nvps.add(new BasicNameValuePair("name", db_name));
-		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
+		nvps.add(new BasicNameValuePair("skipTest", "0"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
 
-		int status = 0;
-		long start = System.currentTimeMillis();
-		boolean expired = false;
-		while(status == 0 && !expired){
-			httpclient = HttpClients.createDefault();
-			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
-			nvps = new ArrayList<>();
-			nvps.add(new BasicNameValuePair("name", db_name));
-			httppost.setEntity(new UrlEncodedFormEntity(nvps));
-			response = httpclient.execute(httppost);
-			stream = response.getEntity().getContent();
-			myString = IOUtils.toString(stream, "UTF-8");
-			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
-			status = itemWithOwner.getStatus();
-			long now = System.currentTimeMillis() - start;
-			if( now > 15*1000){
-				expired = true; //max 30s
-			}
-		}
-		if(!expired){
-			httpclient = HttpClients.createDefault();
-			httppost = new HttpPost(base_url);
-			nvps = new ArrayList<>();
-			nvps.add(new BasicNameValuePair("name", db_name));
-			nvps.add(new BasicNameValuePair("type", "Object"));
-			httppost.setEntity(new UrlEncodedFormEntity(nvps));
-			response = httpclient.execute(httppost);
-			stream = response.getEntity().getContent();
-			myString = IOUtils.toString(stream, "UTF-8");
-			assertEquals(200, response.getStatusLine().getStatusCode());
-		} else {
-			throw new TimeoutException("More than 15s");
-		}
 	}
-
 	@Test
-	public void TestGetAllFileByTypeNoPar() throws Exception {
+	public void TestGetAllFilesSkipTest() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url);
+		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
-		//nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("name", db_name));
+		nvps.add(new BasicNameValuePair("skipTest", "1"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
+		assertEquals(200, response.getStatusLine().getStatusCode());
+
+	}
+	@Test
+	public void TestGetAllFilesNoPar() throws Exception {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
+		List<NameValuePair> nvps = new ArrayList<>();
+		//nvps.add(new BasicNameValuePair("projectPath", "file:///Users/giovanni/repository/java-xal/project_eval/"));
+		//nvps.add(new BasicNameValuePair("skipTest", "1"));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
 		assertEquals(406, response.getStatusLine().getStatusCode());
 	}
-
 	@Test
-	public void TestGetAllFileByTypeNoType() throws Exception {
+	public void TestGetAllFilesNoSkip() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url);
+		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
 		nvps.add(new BasicNameValuePair("name", db_name));
+		//nvps.add(new BasicNameValuePair("skipTest", "1"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
 		assertEquals(400, response.getStatusLine().getStatusCode());
 	}
-
 	@Test
-	public void TestGetAllFileByTypeNoIndexes() throws Exception {
-		MongoOptions.getInstance().setDbName("tt");
-		MongoConnector.getInstance().drop();
-		MongoConnector.getInstance().ensureIndexes();
-
+	public void TestGetAllFilesNoFileProtocol() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url);
+		HttpPost httppost = new HttpPost(base_url + "/getAllFiles");
 		List<NameValuePair> nvps = new ArrayList<>();
 		nvps.add(new BasicNameValuePair("name", db_name));
-		nvps.add(new BasicNameValuePair("type", "type"));
+		nvps.add(new BasicNameValuePair("skipTest", "1"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
 	}
-
-
 
 }

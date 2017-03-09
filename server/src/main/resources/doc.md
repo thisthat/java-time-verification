@@ -13,7 +13,6 @@ If the server is lunched with the flag `-debug` it will print for each request i
 | /getAllFiles      | POST | json | Return all the java file |
 | /getFile          | POST | json | Return the IM of a file |
 | /openProject      | POST | json | Calculate indexes of the project |
-| /isProjectOpen    | POST | json | Return if a project has the indexes computed |
 | /getFilesByType   | POST | json | Return the list of files that extends/implements the given type |
 | /getThreads       | POST | json | Return the list of files that implements threads |
 | /getMains         | POST | json | Return the list of files which contains a public void main |
@@ -77,24 +76,6 @@ The function returns a value with a status code:
 
 `description` is a text field that shows an error message.
 
-
-# /isProjectOpen
-
-The route returns the status of the indexes for the given project. 
-
-It expects one parameter: 
-* `name` : Name of the project
-
-The return value is a status code:
-* `0` : The project has not yet the indexes in the database
-* `1` : The indexes are available
-
-The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
-
-e.g. 
-```bash
-curl -s http://localhost:9000/isProjectOpen -d 'format=yaml&name=test'
-```
 
 # /getFilesByType
 
