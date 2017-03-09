@@ -9,3 +9,10 @@ test:
 compile:
   script:
     - mvn clean compile
+
+deploy:
+  script:
+    - mvn clean package -DskipTests=true
+  artifacts:
+    paths:
+    - server/target/server*.jar
