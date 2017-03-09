@@ -43,7 +43,7 @@ public class openProject extends indexMW {
 		public void run() {
 			boolean flag;
 			synchronized (lock){
-				flag = indexProcess.containsKey(name) ? indexProcess.get(name) : true;
+				flag = indexProcess.containsKey(name) ? !indexProcess.get(name) : true;
 				indexProcess.put(name, true);
 			}
 			if(flag) {
