@@ -6,8 +6,8 @@ class Context(object):
     """
 
    
-    def __init__(self):
-
+    def __init__(self, initial_env=None):
+    
         self._context = []
 
     def push(self, ctx):

@@ -96,6 +96,21 @@ class Project(object):
 
         return threads
 
+    def get_thread(self, name):
+        
+        threads = self.get_threads()
+
+        found = None
+        for curr in threads:
+            if curr["className"] == name:
+                found = curr
+                break
+
+        if found is None:
+            raise Exception("No thread found with name '%s'" % name)
+
+        return found
+
     def get_files(self, type=None):
 
         files = []

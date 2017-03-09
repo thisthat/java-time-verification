@@ -129,6 +129,12 @@ class TA(object):
         self.initial_loc = None
         self.variables = set([])
 
+    def has_location(self, name):
+
+        found = filter(lambda l: l.name == name, self.locations)
+
+        return len(found) > 0
+
 
     def add_location(self, loc):
 
