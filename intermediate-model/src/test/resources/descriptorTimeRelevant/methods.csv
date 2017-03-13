@@ -1,0 +1,15 @@
+Class;Method;Signature
+java.net.Socket;connect;SocketAddress,int
+javax.net.ssl.SSLSocket;connect;SocketAddress,int
+java.lang.Thread;join;long
+java.lang.Thread;join;long,int
+java.lang.Thread;sleep;long
+java.lang.Thread;sleep;long,int
+java.lang.Process;waitFor;long,TimeUnit
+java.util.concurrent.FutureTask;get;long,TimeUnit
+java.util.Timer;schedule;TimerTask,Date
+java.util.Timer;schedule;TimerTask,Date,long
+java.util.Timer;schedule;TimerTask,long
+java.util.Timer;schedule;TimerTask,long,long
+java.util.Timer;scheduleAtFixedRate;TimerTast,Date,long
+java.util.Timer;scheduleAtFixedRate;TimerTask,long,long

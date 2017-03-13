@@ -76,7 +76,6 @@ public class TestBugs {
 		ast.accept(v);
 		//we have only one class
 		ASTClass c = v.listOfClasses.get(0);
-
 	}
 
 	@Test
