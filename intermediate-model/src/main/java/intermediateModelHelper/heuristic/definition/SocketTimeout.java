@@ -22,6 +22,7 @@ import intermediateModelHelper.envirorment.Env;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Deprecated
 public class SocketTimeout extends SearchTimeConstraint {
 
 	private String value_timeout = "";

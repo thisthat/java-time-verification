@@ -13,3 +13,10 @@ test:
 compile:
   script:
     - mvn clean compile
+
+deploy:
+  script:
+    - mvn clean package -DskipTests=true
+  artifacts:
+    paths:
+    - intermediate-model/target/intermediate-model*.jar

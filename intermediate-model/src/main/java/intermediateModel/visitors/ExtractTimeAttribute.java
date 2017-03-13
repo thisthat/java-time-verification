@@ -54,7 +54,6 @@ public class ExtractTimeAttribute extends ParseIM {
 
     @Override
     protected void analyzeASTRE(ASTRE r, Env env) {
-        if(r.getLine() != 236) return;
         CheckExpression.checkRE(r, env);
     }
 }

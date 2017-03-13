@@ -34,6 +34,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 	public void next(ASTRE stm, Env env) {
 		//works only on ASTRE
 		IASTRE expr = stm.getExpression();
+		CheckExpression.checkRE(stm,env);
 
 		final boolean[] found = {false};
 		//search for A {<,<=,>,>=} C

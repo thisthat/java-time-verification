@@ -22,6 +22,7 @@ import intermediateModelHelper.envirorment.Env;
  * @version %I%, %G%
  *
  */
+@Deprecated
 public class ThreadTime extends SearchTimeConstraint {
 
 	@Override

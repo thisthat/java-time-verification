@@ -28,6 +28,7 @@ import java.util.List;
  * @version %I%, %G%
  *
  */
+@Deprecated
 public class TimerType extends SearchTimeConstraint {
 
 	@Override

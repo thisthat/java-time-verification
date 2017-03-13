@@ -8,10 +8,6 @@ import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.*;
-import intermediateModelHelper.heuristic.definition.timeout.SetTimeout;
-import intermediateModelHelper.indexing.IndexingFile;
-import intermediateModelHelper.indexing.structure.IndexData;
-import intermediateModelHelper.indexing.structure.IndexParameter;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
@@ -113,7 +109,7 @@ public class ApplyHeuristics extends ParseIM {
 		if(__DEBUG__){
 			System.out.println("List of TIMED ATTRIBUTEs : " + timeAttribute.getTimeAttributes().size());
 			for(IASTVar p : timeAttribute.getTimeAttributes()){
-				System.out.format("\t %s %s", p.getName(), p.getType());
+				System.out.format("\t %s %s\n", p.getName(), p.getType());
 			}
 		}
 		//first constructor

@@ -1,4 +1,4 @@
-package intermediateModelHelper.heuristic.definition.timeout;
+package intermediateModelHelper.heuristic.definition;
 
 
 import intermediateModel.interfaces.IASTRE;
@@ -14,8 +14,6 @@ import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
-import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
 import java.util.ArrayList;
 import java.util.Arrays;

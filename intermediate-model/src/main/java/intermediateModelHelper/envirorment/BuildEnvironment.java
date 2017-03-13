@@ -100,12 +100,13 @@ public class BuildEnvironment {
 	private void buildEnvMethod(IASTMethod mm, Env where) {
 		//put the default method from list
 		for(TimeTypes m : timeTypes){
-			where.addMethodTimeRelevant(m.getClassName(),m.getMethodName(), m.getSignature());
+			if(!where.existMethodTimeRelevant(m.getClassName(),m.getMethodName(), m.getSignature()))
+				where.addMethodTimeRelevant(m.getClassName(),m.getMethodName(), m.getSignature());
 		}
 		//return type is one of the interesting one - only methods
 		if (mm instanceof ASTMethod) {
 			ASTMethod m = (ASTMethod) mm;
-			where.addMethod(m.getName(), m.getReturnType(), m.getSignature());
+			//where.addMethod(m.getName(), m.getReturnType(), m.getSignature());
 		}
 	}
 

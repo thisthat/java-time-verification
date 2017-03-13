@@ -58,6 +58,7 @@ public class CheckExpression {
 				flag[0] = flag[0] || setVariableInEnv(elm, env);
 			}
 		});
+
 		return flag[0];
 	}
 
@@ -101,7 +102,15 @@ public class CheckExpression {
 
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
+					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
+						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
+							v.setTimeCritical(true);
+							var.setTimeCritical(true);
+							where.addVar(var);
+							flag[0] = true;
+						}
+					}
+					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
 						v.setTimeCritical(true);
 						var.setTimeCritical(true);
 						where.addVar(var);
@@ -159,7 +168,6 @@ public class CheckExpression {
 						IASTVar var = where.getVar(elm.getValue());
 						if(var != null) { //avoid method call that can be literal as well
 							var.setTimeCritical(true);
-
 						}
 					}
 				});
