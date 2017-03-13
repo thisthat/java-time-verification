@@ -1,3 +1,5 @@
+package testsRoutes;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
@@ -15,10 +17,10 @@ import org.junit.Test;
 import server.HttpServerConverter;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,68 +28,25 @@ import static org.junit.Assert.assertEquals;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class TestGetFile {
+public class TestGetAllFileByType {
 
 	static HttpServerConverter server;
 	static String base_url;
 	static String base_project;
-	static String base_file;
-	static final String db_name = "ttGetFile";
+	static final String db_name = "ttAllfiles";
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 		server = new HttpServerConverter();
-		Thread.sleep(1000);
-		//server.setDebug(true);
 		base_url = "http://localhost:" + HttpServerConverter.getPort();
-		ClassLoader classLoader = TestGetFile.class.getClassLoader();
+		ClassLoader classLoader = TestGetAllFileByType.class.getClassLoader();
 		File file = new File(classLoader.getResource("progs/Attempt1.java").getFile());
-		base_project = file.getAbsolutePath();
-		base_project = base_project.substring(0, base_project.lastIndexOf("/")) + "/";
-		base_file = "Attempt1.java";
-		MongoOptions.getInstance().setDbName(db_name);
+		base_project = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("/")) + "/";
+		MongoOptions.getInstance().setDbName("tt");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		openProject(db_name, base_project);
-
-	}
-
-
-	public static void openProject(String db, String projectpath) throws IOException {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/openProject");
-		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("name", db));
-		nvps.add(new BasicNameValuePair("path", "file://" + projectpath));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
-		//System.out.println(myString);
-		assertEquals(200, response.getStatusLine().getStatusCode());
-		waitForEndOpen(db);
-	}
-
-	public static void waitForEndOpen(String db) throws IOException {
-		CloseableHttpClient httpclient;
-		HttpPost httppost;
-		List<NameValuePair> nvps;
-		CloseableHttpResponse response;
-		InputStream stream;
-		String myString;
-		int status = 0;
-		while(status == 0){
-			httpclient = HttpClients.createDefault();
-			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
-			nvps = new ArrayList<>();
-			nvps.add(new BasicNameValuePair("name", db));
-			httppost.setEntity(new UrlEncodedFormEntity(nvps));
-			response = httpclient.execute(httppost);
-			stream = response.getEntity().getContent();
-			myString = IOUtils.toString(stream, "UTF-8");
-			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
-			status = itemWithOwner.getStatus();
-		}
+		TestGetFile.openProject(db_name, base_project);
+		base_url = base_url + "/getFilesByType";
 	}
 
 	@AfterClass
@@ -96,12 +55,17 @@ public class TestGetFile {
 	}
 
 	@Test
-	public void TestGetFileSuccess() throws Exception {
+	public void TestSuccess() throws Exception {
+
+		MongoOptions.getInstance().setDbName("tt");
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
+		//first open project and get indexes
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/getFile");
+		HttpPost httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/openProject");
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("filePath", "file://" + base_file));
 		nvps.add(new BasicNameValuePair("name", db_name));
+		nvps.add(new BasicNameValuePair("path", "file://" + base_project));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
@@ -109,56 +73,88 @@ public class TestGetFile {
 		//System.out.println(myString);
 		assertEquals(200, response.getStatusLine().getStatusCode());
 
+		int status = 0;
+		long start = System.currentTimeMillis();
+		boolean expired = false;
+		while(status == 0 && !expired){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost("http://localhost:" + HttpServerConverter.getPort() + "/isProjectOpen");
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", db_name));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
+			status = itemWithOwner.getStatus();
+			long now = System.currentTimeMillis() - start;
+			if( now > 15*1000){
+				expired = true; //max 30s
+			}
+		}
+		if(!expired){
+			httpclient = HttpClients.createDefault();
+			httppost = new HttpPost(base_url);
+			nvps = new ArrayList<>();
+			nvps.add(new BasicNameValuePair("name", db_name));
+			nvps.add(new BasicNameValuePair("type", "Object"));
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			response = httpclient.execute(httppost);
+			stream = response.getEntity().getContent();
+			myString = IOUtils.toString(stream, "UTF-8");
+			assertEquals(200, response.getStatusLine().getStatusCode());
+		} else {
+			throw new TimeoutException("More than 15s");
+		}
 	}
+
 	@Test
-	public void TestGetFileNoFileURI() throws Exception {
+	public void TestGetAllFileByTypeNoPar() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/getFile");
+		HttpPost httppost = new HttpPost(base_url);
 		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("filePath", "" + base_file));
-		nvps.add(new BasicNameValuePair("name", db_name));
+		//nvps.add(new BasicNameValuePair("name", "tt"));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
-		assertEquals(400, response.getStatusLine().getStatusCode());
-	}
-	@Test
-	public void TestGetFileNoFile() throws Exception {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/getFile");
-		List<NameValuePair> nvps = new ArrayList<>();
-		nvps.add(new BasicNameValuePair("filePath", "file://C:/file.java"));
-		nvps.add(new BasicNameValuePair("name", db_name));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
-		assertEquals(400, response.getStatusLine().getStatusCode());
-	}
-	@Test
-	public void TestGetFileNoParam() throws Exception {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/getFile");
-		List<NameValuePair> nvps = new ArrayList<>();
-		//nvps.add(new BasicNameValuePair("filePath", "file://C:/file.java"));
-		httppost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse response = httpclient.execute(httppost);
-		InputStream stream = response.getEntity().getContent();
-		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
 		assertEquals(406, response.getStatusLine().getStatusCode());
 	}
+
 	@Test
-	public void TestGetFileNoFilePar() throws Exception {
+	public void TestGetAllFileByTypeNoType() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(base_url + "/getFile");
+		HttpPost httppost = new HttpPost(base_url);
 		List<NameValuePair> nvps = new ArrayList<>();
-		//nvps.add(new BasicNameValuePair("filePath", "file://C:/file.java"));
 		nvps.add(new BasicNameValuePair("name", db_name));
 		httppost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		InputStream stream = response.getEntity().getContent();
 		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
 		assertEquals(400, response.getStatusLine().getStatusCode());
 	}
+
+	@Test
+	public void TestGetAllFileByTypeNoIndexes() throws Exception {
+		MongoOptions.getInstance().setDbName("tt");
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
+
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url);
+		List<NameValuePair> nvps = new ArrayList<>();
+		nvps.add(new BasicNameValuePair("name", db_name));
+		nvps.add(new BasicNameValuePair("type", "type"));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
+		assertEquals(200, response.getStatusLine().getStatusCode());
+	}
+
+
+
 }

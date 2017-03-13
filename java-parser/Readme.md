@@ -27,7 +27,7 @@ It is normal java code but taken from a real project.
 Class with just one method without the class declaration. It is supposed to test the parse error recovery of ANTLR
 
 ## PredictionModule.java
-A huge class to test its performances. Moreover it tests the support to <? extends T> type.
+A huge class to test its performances. Moreover it testsRoutes the support to <? extends T> type.
 
 ## RandomLongFile.java
 Copy/Paste three times the content of PredictionModule.java in order to check the performance with huge files.

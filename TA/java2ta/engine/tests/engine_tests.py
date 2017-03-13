@@ -203,13 +203,7 @@ def test_context_get_unknown():
     ctx.push(env1)
     ctx.push(env2)
 
-    try:
-        ctx.get("x")
-        assert False, "The name 'x' should not be present in the context"
-    except ObjectDoesNotExist:
-        # this is expected
-        pass
-
+    assert ctx.get("x") is None, "The name 'x' should not be present in the context"
  
 def test_ruleset_pick_simple():
 
@@ -390,11 +384,5 @@ def test_engine_rule_match_once():
     assert ctx_post.get("a") == 1
     assert ctx_post.get("b") == 2
 
-    try:
-        ctx_post.get("c")
-        assert False, "The rule FakeRuleMatchAndLet does not set any 'c' variable in the do_update_context(...) method"
-    except ObjectDoesNotExist:
-        # this exception was expected
-        pass
-
+    ctx_post.get("c") is None, "The rule FakeRuleMatchAndLet does not set any 'c' variable in the do_update_context(...) method"
 

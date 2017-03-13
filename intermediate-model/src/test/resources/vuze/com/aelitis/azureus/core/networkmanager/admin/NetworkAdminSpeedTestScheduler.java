@@ -26,7 +26,7 @@ public interface NetworkAdminSpeedTestScheduler
 	public static final int TEST_TYPE_BT	= 1;
 	
     /**
-     * If system crashes on start-up, then speed tests torrents need to be
+     * If system crashes on start-up, then speed testsRoutes torrents need to be
      * cleaned on start-up etc - call this method on start to allow this
      */
     public void initialise();

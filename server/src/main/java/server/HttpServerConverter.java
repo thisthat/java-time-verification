@@ -46,6 +46,7 @@ public class HttpServerConverter {
 
 		//Test urls
 		server.createContext("/", new root());
+		server.createContext("/shutdown", new shutDown());
 		server.createContext("/test/echoHeader", new echoHeader());
 		server.createContext("/test/echoGet", new echoGet());
 		server.createContext("/test/echoPost", new echoPost());
@@ -116,6 +117,11 @@ public class HttpServerConverter {
 		System.out.println("server stopped at " + port);
 		server.stop(1);
 		httpThreadPool.shutdownNow();
+		try {
+			Thread.currentThread().sleep(1000);
+		} catch (InterruptedException e) {
+			//we try but who cares
+		}
 	}
 
 	public void setDebug(boolean debug) {

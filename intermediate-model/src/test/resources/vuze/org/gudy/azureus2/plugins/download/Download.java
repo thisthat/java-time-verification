@@ -141,7 +141,7 @@ Download extends DownloadEventNotifier, DownloadStub, Taggable
 	
     /**
      * Flag value - if set the user won't be bothered with popups/completion events during
-     * the download's life. This is used, for example, for downloads used to run speed-tests
+     * the download's life. This is used, for example, for downloads used to run speed-testsRoutes
      * @since 3.0.1.3
      */
     

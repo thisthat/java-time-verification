@@ -1,3 +1,5 @@
+package testsRoutes;
+
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +17,6 @@ import org.junit.Test;
 import server.HttpServerConverter;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class TestThreads {
 		MongoOptions.getInstance().setDbName(db_name);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
-		TestGetFile.openProject(db_name, base_project);
+		//TestGetFile.openProject(db_name, base_project);
 		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/getThreads";
 	}
 
@@ -105,6 +106,9 @@ public class TestThreads {
 			myString = IOUtils.toString(stream, "UTF-8");
 			TestMains.Item itemWithOwner = new ObjectMapper().readValue(myString, TestMains.Item.class);
 			status = itemWithOwner.getStatus();
+			try{
+				Thread.currentThread().sleep(1000);
+			} catch (Exception e) {}
 		}
 		//Get Mains
 		httpclient = HttpClients.createDefault();

@@ -142,7 +142,7 @@ DownloadManager
         DiskManagerFileInfo     file );
     	
     	/**
-    	 * Use with care - introduced to support speed tests whereby we want to avoid checking the
+    	 * Use with care - introduced to support speed testsRoutes whereby we want to avoid checking the
     	 * virtual torrent used for the test
     	 * @param enabled
     	 */

@@ -11,7 +11,7 @@ class Project(object):
     }
 
 
-    def __init__(self, name, path, api_url=None):
+    def __init__(self, name, path=None, api_url=None):
         
         self.name = name
         self.path = path
@@ -96,17 +96,34 @@ class Project(object):
 
         return threads
 
+    def get_thread(self, name):
+        
+        threads = self.get_threads()
+
+        found = None
+        for curr in threads:
+            if curr["className"] == name:
+                found = curr
+                break
+
+        if found is None:
+            raise Exception("No thread found with name '%s'" % name)
+
+        return found
+
     def get_files(self, type=None):
 
         files = []
 
         if self.is_open():
-            data = { "name": self.name, "skipTest": 0 }
+            data = { "name": self.name }
             url = "/getAllFiles"
 
             if type:    
                 data["type"] = type
                 url = "/getFilesByType"
+            else:
+                data["skipTest"] = 0
                 
             files = self.client.post(url, data)
 
@@ -123,6 +140,9 @@ class Project(object):
             data = { "name": self.name, "filePath": path }
             file = self.client.post("/getFile", data)
 
+        if file is not None and isinstance(file, dict):
+            file = [ file ]
+
         return file
 
     def get_mains(self):
@@ -134,3 +154,38 @@ class Project(object):
             mains = self.client.post("/getMains", data)
 
         return mains
+
+
+class Thread(object):
+
+    def __init__(self, ir, project):
+        assert isinstance(ir, dict)
+        assert isinstance(project, Project)
+
+        assert project.is_open(), "Expected open project. Got project in status: '%s'" % project.status
+
+        self.name = ir["className"]  
+        self.path = ir["path"]
+        self.package = ir["packageName"]
+        self._project = project
+        self._imported = False
+        self._klass = None
+
+    @property
+    def klass(self):
+    
+        if not self._imported:
+            classes = self._project.get_file(self.path)
+            
+            for curr in classes:
+                if curr["name"] == self.name:
+                    self._klass = curr
+                    self._imported = True
+
+            if not self._klass:
+                raise Exception("It was not possible to import class '%s' from file '%s'" % (self.name, self.path))
+
+        assert self._klass is not None
+        return self._klass
+    
+

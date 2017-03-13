@@ -1693,7 +1693,7 @@ public class StartStopRulesDefaultPlugin implements Plugin,
 				
 				long	oldest_test = 0;
 				
-					// add in the time required to run a cycle of tests
+					// add in the time required to run a cycle of testsRoutes
 				
 				long adjustedReTest = iDownloadReTestMillis + iDownloadTestTimeMillis * downloads.size();
 	

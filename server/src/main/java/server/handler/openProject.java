@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class openProject extends indexMW {
 
-	static Object lock = new Object();
+	static final Object lock = new Object();
 	String lastProjectOpen = "";
 
 	class IndexingThread extends Thread {
@@ -43,7 +43,7 @@ public class openProject extends indexMW {
 		public void run() {
 			boolean flag;
 			synchronized (lock){
-				flag = indexProcess.containsKey(name) ? indexProcess.get(name) : true;
+				flag = indexProcess.containsKey(name) ? !indexProcess.get(name) : true;
 				indexProcess.put(name, true);
 			}
 			if(flag) {
@@ -57,9 +57,7 @@ public class openProject extends indexMW {
 		}
 	}
 
-	public HashMap<String, Boolean> getIndexProcess() {
-		return indexProcess;
-	}
+
 
 	String par1 = "path";
 	String par2 = "invalidCache";
@@ -86,7 +84,11 @@ public class openProject extends indexMW {
 		Status msg;
 		//does the path exists?
 		if (new File(base_path).exists()) {
-			if(!indexProcess.containsKey(name) || !indexProcess.get(name)) {
+			boolean doesItExistsAlready = false;
+			synchronized (lock){
+				doesItExistsAlready = indexProcess.containsKey(name) && indexProcess.get(name);
+			}
+			if(!doesItExistsAlready) {
 				IndexingThread thread = new IndexingThread(name, base_path, delete, indexProcess);
 				thread.start();
 				//compute
@@ -109,9 +111,17 @@ public class openProject extends indexMW {
 		os.close();
 	}
 
+	public boolean doesItExists(String name){
+		boolean doesItExistsAlready = false;
+		synchronized (lock){
+			doesItExistsAlready = indexProcess.containsKey(name) && indexProcess.get(name);
+		}
+		return doesItExistsAlready;
+	}
+
 	@Override
 	protected void printLog() {
 		super.printLog();
-		System.out.println("Opened project: " + lastProjectOpen);
+		System.out.println("\tOpening project: " + lastProjectOpen);
 	}
 }
