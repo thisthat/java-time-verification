@@ -257,7 +257,7 @@ public class JDTVisitor extends ASTVisitor {
 
 			ASTAttribute attribute = new ASTAttribute(ss, st, ASTClass.Visibility.PUBLIC, type, name, expr);
 			String pkg, nmm;
-			ITypeBinding typePointed = cons.resolveVariable().getType();
+			ITypeBinding typePointed = cons.resolveVariable() != null ? cons.resolveVariable().getType() : null;
 			if(typePointed != null){
 				pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
 				nmm = typePointed.getName();
@@ -970,7 +970,7 @@ public class JDTVisitor extends ASTVisitor {
 				IASTRE e = getExpr(subVar.getInitializer());
 				ASTVariableDeclaration v = new ASTVariableDeclaration(vStart, vStop, type, name, e);
 				String pkg, nmm;
-				ITypeBinding typePointed = subVar.resolveBinding().getType();
+				ITypeBinding typePointed = subVar.resolveBinding() != null ? subVar.resolveBinding().getType() : null;
 				if(typePointed != null){
 					pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
 					nmm = typePointed.getName();
@@ -994,7 +994,7 @@ public class JDTVisitor extends ASTVisitor {
 				IASTRE e = getExpr(subVar.getInitializer());
 				ASTVariableDeclaration v = new ASTVariableDeclaration(vStart, vStop, type, name, e);
 				String pkg, nmm;
-				ITypeBinding typePointed = subVar.resolveBinding().getType();
+				ITypeBinding typePointed = subVar.resolveBinding() != null ? subVar.resolveBinding().getType() : null;
 				if(typePointed != null){
 					pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
 					nmm = typePointed.getName();

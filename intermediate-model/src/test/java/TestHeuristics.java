@@ -3,6 +3,8 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.structure.IndexData;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Test;
@@ -76,6 +78,33 @@ public class TestHeuristics {
 
 		assertEquals(constraints.size(), 2);
 
+	}
+
+	@Test
+	public void TestShowBug18() throws Exception {
+		String filename = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.subscribe(ThreadTime.class);
+		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(TimerType.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+
+		IndexingFile indexing = new IndexingFile();
+		IndexData data = indexing.index(cs.get(0));
+
+		List<Triplet<String, IASTStm, Class>> constraints = ah.getTimeConstraint();
+
+		assertTrue(check(
+				14,
+				"paused_on > 0 && started_on > 0",
+				TimeoutResources.class,
+				constraints
+		));
+
+		assertEquals(constraints.size(), 1);
 	}
 
 	@Test

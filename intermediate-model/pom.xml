@@ -73,7 +73,7 @@
                 <configuration>
                     <excludes>
                         <!-- At the moment notations are skiped, not yet implemented -->
-                         <exclude>**/TestAnnotations.java</exclude>
+                         <exclude>**/TestHeuristics.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
