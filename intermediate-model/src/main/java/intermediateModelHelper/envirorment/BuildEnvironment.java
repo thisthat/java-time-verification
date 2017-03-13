@@ -10,6 +10,7 @@ import intermediateModel.structure.ASTMethod;
 import intermediateModelHelper.envirorment.temporal.ParseMethods;
 import intermediateModelHelper.envirorment.temporal.ParseTimeout;
 import intermediateModelHelper.envirorment.temporal.ParseTypes;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
@@ -34,9 +35,9 @@ public class BuildEnvironment {
 	private static BuildEnvironment instance = null;// = new BuildEnvironment();
 
 	@Deprecated
-	private static List<String> typeTimeRelevant;// = new ArrayList<>();
-	@Deprecated
 	private static List<String> methodTimeRelevant;// = new ArrayList<>();
+
+	List<TimeTypes> timeTypes = TemporalInfo.getInstance().getTimeTypes();
 
 	/**
 	 * Get the instance with lazy initialization.
@@ -50,29 +51,6 @@ public class BuildEnvironment {
 	}
 
 	protected BuildEnvironment(){
-		try {
-			String path = BuildEnvironment.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-			path = path.substring(0, path.lastIndexOf("/")) + "/conf/";
-			String f = path + "TypeTimeRelevant.txt";
-			typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
-			f = path + "MethodTimeRelevant.txt";
-			methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
-		} catch (Exception e) {
-			//System.err.println("Cannot read from FS. Trying to populate time relevant information from resources.");
-			//try to load from resources
-			String f = getClass().getClassLoader().getResource("descriptorTimeRelevant/TypeTimeRelevant.txt").getFile();
-			try {
-				typeTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
-			} catch (IOException e1) {
-				typeTimeRelevant = new ArrayList<>();
-			}
-			f = getClass().getClassLoader().getResource("descriptorTimeRelevant/MethodTimeRelevant.txt").getFile();
-			try {
-				methodTimeRelevant = java.nio.file.Files.readAllLines(Paths.get(f));
-			} catch (IOException e1) {
-				methodTimeRelevant = new ArrayList<>();
-			}
-		}
 	}
 
 
@@ -99,9 +77,9 @@ public class BuildEnvironment {
 		//Env where = oldEnv;
 		//check over attributes
 		for (ASTAttribute a : _class.getAttributes()) {
-			a.setTimeCritical(
-					typeTimeRelevant.stream().anyMatch(type -> (type.equals(a.getType())))
-			);
+			//a.setTimeCritical(
+			//		typeTimeRelevant.stream().anyMatch(type -> (type.equals(a.getType())))
+			//);
 			where.addVar(a);
 		}
 		//check over methods
@@ -121,21 +99,12 @@ public class BuildEnvironment {
 	 */
 	private void buildEnvMethod(IASTMethod mm, Env where) {
 		//put the default method from list
-		for(String m : methodTimeRelevant){
-			String[] exp = m.split(",");
-			List<String> signature = new ArrayList<>();
-			for(int i = 2; i < exp.length; i++){
-				signature.add(exp[i]);
-			}
-			where.addMethodTimeRelevant(exp[0], exp[1], signature);
+		for(TimeTypes m : timeTypes){
+			where.addMethodTimeRelevant(m.getClassName(),m.getMethodName(), m.getSignature());
 		}
 		//return type is one of the interesting one - only methods
 		if (mm instanceof ASTMethod) {
 			ASTMethod m = (ASTMethod) mm;
-			String retType = m.getReturnType();
-			m.setTimeCritical(
-					typeTimeRelevant.stream().anyMatch(type -> (type.equals(retType)))
-			);
 			where.addMethod(m.getName(), m.getReturnType(), m.getSignature());
 		}
 	}
@@ -146,7 +115,11 @@ public class BuildEnvironment {
 	 * @return	True if is in the list of those types that are time related.
 	 */
 	public boolean hasVarTypeTimeRelated(IASTVar v){
-		return typeTimeRelevant.stream().anyMatch(type -> (type.equals(v.getType())));
+		if(v.getTypePointed() != null && !v.getTypePointed().equals("")) {
+			String fullyQualifiedTypeName = v.getTypePointed();
+			return timeTypes.stream().anyMatch(type -> (type.getClassName().equals(fullyQualifiedTypeName)));
+		}
+		return timeTypes.stream().anyMatch(type -> (type.getClassName().endsWith(v.getType())));
 	}
 
 	/**
@@ -155,7 +128,7 @@ public class BuildEnvironment {
 	 * @return	True if is in the list of those types that are time related.
 	 */
 	public boolean isTypeTimeRelated(String t){
-		return typeTimeRelevant.stream().anyMatch(type -> (type.equals(t)));
+		return false;//typeTimeRelevant.stream().anyMatch(type -> (type.equals(t)));
 	}
 
 

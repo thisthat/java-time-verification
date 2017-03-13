@@ -154,7 +154,7 @@ class ResolveExpressionType extends ParseRE {
 	protected Object analyze(ASTMethodCall r) {
 		String method = r.getMethodName();
 		if(e.existMethod(method)){
-			return e.getMethod(method).getRetType();
+			//return e.getMethod(method).getRetType();
 		}
 		return null;
 	}

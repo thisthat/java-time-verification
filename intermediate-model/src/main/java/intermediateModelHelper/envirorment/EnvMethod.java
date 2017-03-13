@@ -8,19 +8,19 @@ import java.util.List;
  * @version %I%, %G%
  */
 class EnvMethod {
-	private String name;
-	private String retType;
+	private String className;
+	private String methodName;
 	private boolean istimeRelevant;
 	private List<String> signature = new ArrayList<>();
 
-	public EnvMethod(String name, String retType, List<String> signature) {
-		this.name = name;
-		this.retType = retType;
+	public EnvMethod(String className, String methodName, List<String> signature) {
+		this.className = className;
+		this.methodName = methodName;
 		this.signature = signature;
 	}
 
-	public EnvMethod(String name, List<String> signature) {
-		this.name = name;
+	public EnvMethod(String className, List<String> signature) {
+		this.className = className;
 		this.signature = signature;
 	}
 
@@ -28,17 +28,17 @@ class EnvMethod {
 		this.signature = signature;
 	}
 
-	public EnvMethod(String name, boolean istimeRelevant) {
-		this.name = name;
+	public EnvMethod(String className, boolean istimeRelevant) {
+		this.className = className;
 		this.istimeRelevant = istimeRelevant;
 	}
 
-	public String getRetType() {
-		return retType;
+	public String getMethodName() {
+		return methodName;
 	}
 
-	public String getName() {
-		return name;
+	public String getClassName() {
+		return className;
 	}
 
 	public boolean istimeRelevant() {
@@ -52,13 +52,21 @@ class EnvMethod {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof EnvMethod)) return false;
+		if (o == null || getClass() != o.getClass()) return false;
 
 		EnvMethod envMethod = (EnvMethod) o;
 
-		if (getName() != null ? !getName().equals(envMethod.getName()) : envMethod.getName() != null) return false;
-		return signature != null ? signature.equals(envMethod.signature) : envMethod.signature == null;
-
+		if (className != null ? !className.equals(envMethod.className) : envMethod.className != null) return false;
+		if (methodName != null ? !methodName.equals(envMethod.methodName) : envMethod.methodName != null) return false;
+		//return signature != null ? signature.equals(envMethod.signature) : envMethod.signature == null;
+		return signature != null ? signature.size() == envMethod.signature.size() : envMethod.signature == null;
 	}
 
+	@Override
+	public int hashCode() {
+		int result = className != null ? className.hashCode() : 0;
+		result = 31 * result + (methodName != null ? methodName.hashCode() : 0);
+		result = 31 * result + (signature != null ? signature.hashCode() : 0);
+		return result;
+	}
 }

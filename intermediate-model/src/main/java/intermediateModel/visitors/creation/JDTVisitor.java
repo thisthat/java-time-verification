@@ -8,6 +8,7 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.internal.compiler.env.IBinaryType;
 import timeannotation.parser.Java2AST;
 
 import java.io.IOException;
@@ -357,6 +358,17 @@ public class JDTVisitor extends ASTVisitor {
 			st = ss + p.getLength();
 			ASTVariable par = new ASTVariable(ss, st, p.getName().getFullyQualifiedName(), p.getType().toString());
 			//par.setAnnotations( AnnotationVisitor.getAnnotationVariable(p.modifiers(), p) );
+			ITypeBinding typePointed =  p.getType().resolveBinding();
+			if(typePointed != null){
+				String pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+				String nmm = typePointed.getName();
+				String classPointed = pkg + "." + nmm;
+				if(classPointed.startsWith(".")){
+					classPointed = classPointed.substring(1);
+				}
+				par.setTypePointed(classPointed);
+				//System.out.println(node.toString() + " points to " + classPointed);
+			}
 			pars.add(par);
 		}
 		//is syncronized
@@ -443,6 +455,17 @@ public class JDTVisitor extends ASTVisitor {
 		String vname = v.getName().getIdentifier();
 		String vtype = v.getType().toString();
 		ASTVariable var = new ASTVariable(vstart, vstop, vname, vtype);
+		ITypeBinding typePointed =  v.getType().resolveBinding();
+		if(typePointed != null){
+			String pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+			String nmm = typePointed.getName();
+			String classPointed = pkg + "." + nmm;
+			if(classPointed.startsWith(".")){
+				classPointed = classPointed.substring(1);
+			}
+			var.setTypePointed(classPointed);
+			//System.out.println(node.toString() + " points to " + classPointed);
+		}
 		ASTRE expr = getExprState(node.getExpression());
 
 		ASTForEach foreach = new ASTForEach(start,stop, var, expr);
@@ -533,6 +556,17 @@ public class JDTVisitor extends ASTVisitor {
 			eStop = eStart + exception.getLength();
 
 			ASTVariable ex = new ASTVariable(eStart, eStop, exception.getName().getFullyQualifiedName(), exception.getType().toString() );
+			ITypeBinding typePointed =  exception.getType().resolveBinding();
+			if(typePointed != null){
+				String pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+				String nmm = typePointed.getName();
+				String classPointed = pkg + "." + nmm;
+				if(classPointed.startsWith(".")){
+					classPointed = classPointed.substring(1);
+				}
+				ex.setTypePointed(classPointed);
+				//System.out.println(node.toString() + " points to " + classPointed);
+			}
 			ASTTry.ASTCatchBranch catchBranch = elm.new ASTCatchBranch(cStart, cStop, ex);
 			elm.addCatchBranch(catchBranch);
 			lastMethod = catchBranch;

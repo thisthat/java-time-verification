@@ -33,6 +33,8 @@ import java.util.List;
  */
 public class ApplyHeuristics extends ParseIM {
 
+	private boolean __DEBUG__ = false;
+
 	protected List<SearchTimeConstraint> strategies = new ArrayList<>();
 	protected List<Class<? extends SearchTimeConstraint>> strategiesTypes = new ArrayList<>();
 
@@ -61,6 +63,7 @@ public class ApplyHeuristics extends ParseIM {
 		//return new ArrayList<>();
 
 		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.set__DEBUG__(true);
 		//ah.subscribe(ThreadTime.class);
 		//ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
@@ -69,7 +72,10 @@ public class ApplyHeuristics extends ParseIM {
 		//ah.subscribe(SetTimeout.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
+	}
 
+	public void set__DEBUG__(boolean __DEBUG__) {
+		this.__DEBUG__ = __DEBUG__;
 	}
 
 	public void subscribe(Class<? extends SearchTimeConstraint> strategy){
@@ -97,12 +103,17 @@ public class ApplyHeuristics extends ParseIM {
 		}
 		super.set_class(c);
 		Env base = super.createBaseEnv(c);
-		IndexingFile indexingFile = new IndexingFile();
-		IndexData data = indexingFile.index(c);
-		for(IndexParameter p : data.getTimeAttribute()){
+		ExtractTimeAttribute timeAttribute = new ExtractTimeAttribute(c);
+		for(IASTVar p : timeAttribute.getTimeAttributes()){
 			if(base.existVarName(p.getName())){
 				IASTVar v = base.getVar(p.getName());
 				v.setTimeCritical(true);
+			}
+		}
+		if(__DEBUG__){
+			System.out.println("List of TIMED ATTRIBUTEs : " + timeAttribute.getTimeAttributes().size());
+			for(IASTVar p : timeAttribute.getTimeAttributes()){
+				System.out.format("\t %s %s", p.getName(), p.getType());
 			}
 		}
 		//first constructor
