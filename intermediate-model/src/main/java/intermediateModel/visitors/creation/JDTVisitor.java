@@ -8,8 +8,8 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.internal.compiler.env.IBinaryType;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
+import parser.UnparsableException;
 
 import java.io.IOException;
 import java.util.*;
@@ -25,7 +25,7 @@ public class JDTVisitor extends ASTVisitor {
 	private String packageName = "";
 	private List<ASTImport> listOfImports = new ArrayList<>();
 	private ASTClass lastClass;
-	private IASTHasStms lastMethod;
+	private IASTHasStms lastMethod = new ASTMethod(0,0, ASTMethod.lambda, "void", new ArrayList<>(), new ArrayList<>(), false, false, false);
 
 	private Stack<ASTClass> stackClasses = new Stack<>();
 	private Stack<String> stackPackage = new Stack<>();
@@ -36,9 +36,14 @@ public class JDTVisitor extends ASTVisitor {
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
 	public static List<ASTClass> parse(String filename){
-		return  parse(filename, "");
+		try{
+			return  parse(filename, "");
+		} catch (UnparsableException e) {
+			return new ArrayList<>();
+		}
+
 	}
-	public static List<ASTClass> parse(String filename, String projectPath){
+	public static List<ASTClass> parse(String filename, String projectPath) throws UnparsableException {
 		if(cache.containsKey(filename)){
 			return cache.get(filename);
 		}
@@ -46,7 +51,10 @@ public class JDTVisitor extends ASTVisitor {
 		try {
 			a = new Java2AST(filename, true, projectPath);
 		} catch (IOException e) {
-		}
+		} /*catch (UnparsableException e) {
+			//cannot parse the file
+			return new ArrayList<>();
+		}*/
 		CompilationUnit result = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
@@ -745,7 +753,12 @@ public class JDTVisitor extends ASTVisitor {
 				ASTRE re = new ASTRE(start, stop,
 						newVar
 				);
-				bck.addStms(re);
+				try {
+					bck.addStms(re);
+				} catch (Exception e){
+					//lambda expression in a attribute definition -> skip
+					System.out.println("BRK");
+				}
 			}
 		}
 		lastMethod = bck;
@@ -756,7 +769,12 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(ExpressionStatement node) {
 		IASTHasStms bck = lastMethod;
 		ASTRE re = getExprState(node);
-		bck.addStms(re);
+		try {
+			bck.addStms(re);
+		} catch (Exception e){
+			//lambda expression in a attribute definition -> skip
+			System.out.println("BRK");
+		}
 		lastMethod = bck;
 		return true;
 	}
@@ -1090,14 +1108,18 @@ public class JDTVisitor extends ASTVisitor {
 				if(node instanceof FieldDeclaration){
 					FieldDeclaration f = (FieldDeclaration) node;
 					ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
-					if(f.modifiers().size() > 0){
+					/*if(f.modifiers().size() > 0){
 						int i = 0;
 						while(i < f.modifiers().size() && !(f.modifiers().get(i) instanceof Modifier)){
 							i++;
 						}
-						Modifier m = (Modifier) f.modifiers().get(i);
-						vis = Getter.visibility(m.toString());
-					}
+						try {
+							Modifier m = (Modifier) f.modifiers().get(i);
+							vis = Getter.visibility(m.toString());
+						} catch (Exception e){
+							System.out.println("BRK");
+						}
+					}*/
 					String typeF = f.getType().toString();
 					String name = "";
 					ASTRE exprF = null;

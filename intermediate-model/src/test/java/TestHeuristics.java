@@ -8,7 +8,7 @@ import intermediateModelHelper.indexing.structure.IndexData;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.util.List;
 

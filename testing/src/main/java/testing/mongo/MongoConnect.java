@@ -18,7 +18,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.MapperOptions;
 import org.mongodb.morphia.query.Query;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.io.File;
 import java.io.IOException;

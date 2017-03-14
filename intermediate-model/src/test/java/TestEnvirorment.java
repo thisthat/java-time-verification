@@ -3,23 +3,19 @@ import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.EnvBase;
 import intermediateModelHelper.envirorment.EnvExtended;
 import intermediateModelHelper.envirorment.EnvParameter;
-import intermediateModelHelper.heuristic.definition.*;
-import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
-import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Before;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.util.List;
 

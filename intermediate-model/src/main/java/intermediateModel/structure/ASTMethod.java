@@ -13,7 +13,8 @@ import java.util.List;
  */
 
 public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTVisitor {
-	String name;
+    public static String lambda = "λ";
+    String name;
 	String returnType;
 	List<ASTVariable> parameters;
 	List<String> exceptionsThrowed;

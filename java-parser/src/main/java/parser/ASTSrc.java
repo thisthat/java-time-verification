@@ -1,4 +1,4 @@
-package timeannotation.parser;
+package parser;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 

@@ -2,7 +2,7 @@ package intermediateModel.interfaces;
 
 
 import org.javatuples.Triplet;
-import timeannotation.parser.ASTSrc;
+import parser.ASTSrc;
 
 import java.util.Arrays;
 

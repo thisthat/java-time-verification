@@ -7,7 +7,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.util.Arrays;
 

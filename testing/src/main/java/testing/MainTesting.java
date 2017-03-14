@@ -21,7 +21,8 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
+import parser.UnparsableException;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,11 +37,11 @@ import java.util.List;
 public class MainTesting {
 
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, UnparsableException {
 		new MainTesting().run();
 	}
 
-	public void run() throws IOException {
+	public void run() throws IOException, UnparsableException {
 		List<String> files = new ArrayList<>();
 		files.add( MainTesting.class.getResource("JavaTimerExampleTask.java").getFile() );
 		//files.add( Main.class.getResource("FailoverTimeoutTest.java").getFile() );

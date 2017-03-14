@@ -11,6 +11,7 @@ import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.javatuples.Triplet;
+import parser.UnparsableException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -66,7 +67,10 @@ public class Main {
 
 
 
-		String name = args.length > 0 ? args[0] : "output.csv";
+		String name = args.length > 0 ? args[0] : "output";
+
+		name = name.replace(".", "_");
+
 		String base_path = args.length > 0 ? args[1] :"/Users/giovanni/repository/java-xal/project_eval/";
 
 		String csvFile = name + ".csv";
@@ -86,13 +90,18 @@ public class Main {
 			}
 		}
 		System.out.println("#files " + files.size());
+		int counter = 0;
 		//files.add(args[0]);
 		for(int i = 0; i < files.size(); i ++){
 			String f = files.get(i);
-			List<ASTClass> lists = JDTVisitor.parse(f, base_path );
+			List<ASTClass> lists = new ArrayList<>();
+			try {
+				lists = JDTVisitor.parse(f, base_path);
+			} catch (UnparsableException e){
+				counter++;
+			}
 			//List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/activemq/" );
 			for(ASTClass c : lists){
-				//Create JSON
 				int implicit_timeout = 0;
 				int set_timeout = 0;
 				int resource_expired = 0;
@@ -115,11 +124,11 @@ public class Main {
 					writer.write(line);
 					writer.flush();
 				}
-
 			}
 		}
 		writer.flush();
 		writer.close();
 		Utils.send_email(String.format("Project %s {%s} ends.\r\n", name, base_path));
+		System.out.println("#Skipped " + counter);
 	}
 }

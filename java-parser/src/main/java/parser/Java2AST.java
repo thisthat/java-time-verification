@@ -1,4 +1,4 @@
-package timeannotation.parser;
+package parser;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -66,7 +66,7 @@ public class Java2AST {
      * @param parse         Boolean value to decide if the file has to be parsed directly
      * @throws IOException  Exception in the case some filesystem problems will arise
      */
-    public Java2AST(String filename, boolean parse) throws IOException {
+    public Java2AST(String filename, boolean parse) throws IOException, UnparsableException {
         this.filename = filename;
         initParser();
         if(parse){
@@ -74,7 +74,7 @@ public class Java2AST {
         }
     }
 
-	public Java2AST(String filename, boolean parse, String projectPath) throws IOException {
+	public Java2AST(String filename, boolean parse, String projectPath) throws IOException, UnparsableException {
 		this.filename = filename;
 		this.projectPath = projectPath;
 		initParser();
@@ -121,8 +121,12 @@ public class Java2AST {
     /**
      * It converts the java source file into the AST representation.
      */
-    public void convertToAST() {
-        contextJDT = (CompilationUnit) parserJDT.createAST(null);
+    public void convertToAST() throws UnparsableException {
+    	try {
+			contextJDT = (CompilationUnit) parserJDT.createAST(null);
+		} catch (Exception e){
+			throw new UnparsableException(this.filename);
+		}
         isParsed = true;
 		ASTSrc.getInstance().setJDT(contextJDT);
     }
