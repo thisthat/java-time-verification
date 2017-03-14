@@ -3,6 +3,7 @@ package intermediateModelHelper.envirorment.temporal;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,11 @@ public class ParseMethods extends ParseCSV {
 
     public ParseMethods(File file) {
         super(file);
+        super.start();
+    }
+
+    public ParseMethods(InputStream stream) {
+        super(stream);
         super.start();
     }
 

@@ -1,9 +1,6 @@
 package intermediateModelHelper.envirorment.temporal;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by giovanni on 07/03/2017.
@@ -12,6 +9,9 @@ public abstract class ParseCSV {
 
     File file;
     String separator = ";";
+    InputStream stream;
+
+    boolean isStream = false;
 
     public ParseCSV(String path){
         this(new File(path));
@@ -19,6 +19,11 @@ public abstract class ParseCSV {
 
     public ParseCSV(File file) {
         this.file = file;
+    }
+
+    public ParseCSV(InputStream stream){
+        this.isStream = true;
+        this.stream = stream;
     }
 
     public String getSeparator() {
@@ -30,8 +35,20 @@ public abstract class ParseCSV {
     }
 
     protected void start(){
+        try {
+            if (isStream) {
+                start(new InputStreamReader(stream));
+            } else {
+                start(new FileReader(this.file));
+            }
+        } catch (Exception e){
+            System.err.println("Cannot open file or stream: " + this.file + " -- " + this.stream);
+        }
+    }
+
+    private void start(InputStreamReader file){
         boolean notHeader = false;
-        try (BufferedReader br = new BufferedReader(new FileReader(this.file))) {
+        try (BufferedReader br = new BufferedReader(file)) {
             String line;
             while ((line = br.readLine()) != null) {
                 // use comma as separator

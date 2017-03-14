@@ -3,6 +3,7 @@ package intermediateModelHelper.envirorment.temporal;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,11 @@ public class ParseTimeout extends ParseCSV {
 
     public ParseTimeout(File file) {
         super(file);
+        super.start();
+    }
+
+    public ParseTimeout(InputStream stream) {
+        super(stream);
         super.start();
     }
 

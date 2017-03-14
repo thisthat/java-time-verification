@@ -70,7 +70,7 @@ public class Main {
 
 		FileWriter writer = new FileWriter(csvFile);
 		writer.write("path;implicit_timeout;set_timeout;expired_resource\n");
-
+		writer.flush();
 		List<String> files = new ArrayList<>();
 		IndexingProject index = new IndexingProject();
 		{
@@ -107,6 +107,7 @@ public class Main {
 					String line = String.format("%s;%d;%d;%d\n", c.getPath(), implicit_timeout, set_timeout, resource_expired);
 					//System.out.println(line);
 					writer.write(line);
+					writer.flush();
 				}
 
 			}

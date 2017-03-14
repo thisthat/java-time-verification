@@ -20,10 +20,10 @@ public class TemporalInfo {
     private static TemporalInfo instance = null;
 
     protected TemporalInfo() {
-        timeMethods = new ParseMethods( getClass().getClassLoader().getResource("descriptorTimeRelevant/methods.csv").getFile()).getMethods();
-        timeTimeout = new ParseTimeout( getClass().getClassLoader().getResource("descriptorTimeRelevant/timeout.csv").getFile()).getMethods();
-        readTimeout = new ParseTimeout( getClass().getClassLoader().getResource("descriptorTimeRelevant/readtimeout.csv").getFile()).getMethods();
-        timeTypes   = new ParseTypes(   getClass().getClassLoader().getResource("descriptorTimeRelevant/types.csv")  .getFile()).getMethods();
+        timeMethods = new ParseMethods( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/methods.csv")).getMethods();
+        timeTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/timeout.csv")).getMethods();
+        readTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/readtimeout.csv")).getMethods();
+        timeTypes   = new ParseTypes(   getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/types.csv")).getMethods();
     }
 
     public static synchronized TemporalInfo getInstance(){
