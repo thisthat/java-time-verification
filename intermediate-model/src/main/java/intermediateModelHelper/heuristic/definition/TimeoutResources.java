@@ -34,9 +34,11 @@ public class TimeoutResources extends SearchTimeConstraint {
 	public void next(ASTRE stm, Env env) {
 		//works only on ASTRE
 		IASTRE expr = stm.getExpression();
+		if(expr == null){
+			return;
+		}
 		CheckExpression.checkRE(stm,env);
 
-		final boolean[] found = {false};
 		//search for A {<,<=,>,>=} C
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
@@ -48,15 +50,11 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case greaterEqual:
 						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
-							found[0] = true;
+							TimeoutResources.super.addConstraint("timeoutResource", elm);
 						}
 				}
 			}
 		});
-
-		if(found[0]){
-			this.addConstraint(stm.getCode(),stm);
-		}
 
 	}
 

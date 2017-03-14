@@ -1,18 +1,15 @@
 package intermediateModelHelper.heuristic.definition;
 
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
-import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModelHelper.envirorment.Env;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 
 import java.util.List;
 
@@ -27,8 +24,6 @@ import java.util.List;
 public class AnnotatedTypes extends SearchTimeConstraint {
 
 	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
-	List<TimeTimeout> timeTimeout = TemporalInfo.getInstance().getTimeTimeout();
-	List<TimeTypes>   timeTypes   = TemporalInfo.getInstance().getTimeTypes();
 
 
 	public AnnotatedTypes() {

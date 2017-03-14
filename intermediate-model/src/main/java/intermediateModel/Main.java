@@ -5,10 +5,16 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.converter.GenerateJSON;
+import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
+import intermediateModelHelper.heuristic.definition.SetTimeout;
+import intermediateModelHelper.heuristic.definition.TimeoutResources;
+import intermediateModelHelper.indexing.IndexingProject;
 import org.javatuples.Triplet;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -18,6 +24,7 @@ import java.util.List;
  */
 public class Main {
 
+	/*
 	public static void main(String[] args) throws Exception {
 
 
@@ -50,5 +57,61 @@ public class Main {
 			}
 		}
 
+	}
+	*/
+
+
+	public static void main(String[] args) throws Exception {
+
+
+
+		String base_path = args.length > 0 ? args[0] :"/Users/giovanni/repository/java-xal/project_eval/";
+		String csvFile = args.length > 0 ? args[1] : "output.csv";
+
+		FileWriter writer = new FileWriter(csvFile);
+		writer.write("path;implicit_timeout;set_timeout;expired_resource\n");
+
+		List<String> files = new ArrayList<>();
+		IndexingProject index = new IndexingProject();
+		{
+			Iterator<File> f = index.getJavaFiles(base_path);
+			while (f.hasNext()) {
+				files.add(f.next().getAbsolutePath());
+			}
+		}
+		System.out.println("#files " + files.size());
+		//files.add(args[0]);
+		for(int i = 0; i < files.size(); i ++){
+			String f = files.get(i);
+			List<ASTClass> lists = JDTVisitor.parse(f, base_path );
+			//List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/activemq/" );
+			for(ASTClass c : lists){
+				//Create JSON
+				int implicit_timeout = 0;
+				int set_timeout = 0;
+				int resource_expired = 0;
+				List<Triplet<String,IASTStm,Class>> cnst =  ApplyHeuristics.getConstraint(c);
+				if(cnst.size() > 0){
+					for(Triplet<String,IASTStm,Class> t : cnst){
+						Class type = t.getValue2();
+						if(type.equals(AnnotatedTypes.class)){
+							implicit_timeout++;
+						}
+						if(type.equals(SetTimeout.class)){
+							set_timeout++;
+						}
+						if(type.equals(TimeoutResources.class)){
+							resource_expired++;
+						}
+					}
+					String line = String.format("%s;%d;%d;%d\n", c.getPath(), implicit_timeout, set_timeout, resource_expired);
+					//System.out.println(line);
+					writer.write(line);
+				}
+
+			}
+		}
+		writer.flush();
+		writer.close();
 	}
 }

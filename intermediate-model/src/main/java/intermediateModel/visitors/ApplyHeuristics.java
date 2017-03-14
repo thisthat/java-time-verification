@@ -59,13 +59,13 @@ public class ApplyHeuristics extends ParseIM {
 		//return new ArrayList<>();
 
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.set__DEBUG__(true);
+		ah.set__DEBUG__(false);
 		//ah.subscribe(ThreadTime.class);
 		//ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
 		//ah.subscribe(TimerType.class);
-		//ah.subscribe(AnnotatedTypes.class);
-		//ah.subscribe(SetTimeout.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(SetTimeout.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
 	}
@@ -155,6 +155,7 @@ public class ApplyHeuristics extends ParseIM {
 	}
 
 	private void applyStep(ASTRE stm, Env env){
+		if(stm == null) return;
 		for(SearchTimeConstraint s : strategies){
 			s.next(stm, env);
 		}

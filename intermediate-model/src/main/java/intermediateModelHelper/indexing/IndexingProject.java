@@ -159,7 +159,7 @@ public class IndexingProject {
 		return n_file;
 	}
 
-	public Iterator getJavaFiles(String base_path){
+	public Iterator<File> getJavaFiles(String base_path){
 		File dir = new File(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
@@ -167,7 +167,7 @@ public class IndexingProject {
 				filter,
 				true
 		);
-		Iterator i = files.iterator();
+		Iterator<File> i = files.iterator();
 		return i;
 	}
 
