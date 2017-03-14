@@ -9,6 +9,7 @@ import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.SetTimeout;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.javatuples.Triplet;
 
 import java.io.File;
@@ -65,8 +66,13 @@ public class Main {
 
 
 
-		String base_path = args.length > 0 ? args[0] :"/Users/giovanni/repository/java-xal/project_eval/";
-		String csvFile = args.length > 0 ? args[1] : "output.csv";
+		String name = args.length > 0 ? args[0] : "output.csv";
+		String base_path = args.length > 0 ? args[1] :"/Users/giovanni/repository/java-xal/project_eval/";
+
+		String csvFile = name + ".csv";
+		System.out.println(base_path + "\n" + csvFile);
+
+		MongoOptions.getInstance().setDbName(name);
 
 		FileWriter writer = new FileWriter(csvFile);
 		writer.write("path;implicit_timeout;set_timeout;expired_resource\n");
@@ -114,5 +120,6 @@ public class Main {
 		}
 		writer.flush();
 		writer.close();
+		Utils.send_email(String.format("Project %s {%s} ends.\r\n", name, base_path));
 	}
 }
