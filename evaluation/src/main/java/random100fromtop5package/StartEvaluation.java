@@ -22,7 +22,7 @@ public class StartEvaluation {
 	private static final String __dir = "top5package";
 	private static final String __random = "evaluation-vuze/csvs/random100/files_" + __dir + ".csv";
 
-	public static void main(String args[]) throws IOException, InterruptedException {
+	public static void main(String args[]) throws Exception, InterruptedException {
 		String path = "";
 		if(args.length < 1){
 			System.err.println("You should pass as parameter the directory of the project to analyze");
@@ -35,7 +35,7 @@ public class StartEvaluation {
 		new StartEvaluation().run(path);
 	}
 
-	public void run(String base_path) throws IOException, InterruptedException {
+	public void run(String base_path) throws Exception, InterruptedException {
 		File f = new File(__random);
 		if(!f.exists()){
 			calculateFiles(base_path);
@@ -43,7 +43,7 @@ public class StartEvaluation {
 		parse();
 	}
 
-	private void calculateFiles(String base_path) throws IOException, InterruptedException {
+	private void calculateFiles(String base_path) throws Exception, InterruptedException {
 		PrintWriter writer = new PrintWriter(__random, "UTF-8");
 		File dir = new File(base_path);
 		String[] filter = {"java"};
@@ -72,7 +72,7 @@ public class StartEvaluation {
 		writer.close();
 	}
 
-	private void parse() throws IOException {
+	private void parse() throws Exception {
 
 
 		List<String> listJavafiles = new ArrayList<>();

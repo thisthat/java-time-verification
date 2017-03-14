@@ -239,7 +239,7 @@ public class EvalTopFile {
 		List<ASTClass> out = new ArrayList<>();
 		try {
 			a = new Java2AST(filename, true);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return out;
 		}
