@@ -156,36 +156,79 @@ class Project(object):
         return mains
 
 
-class Thread(object):
+class ASTNode(object):
 
-    def __init__(self, ir, project):
-        assert isinstance(ir, dict)
+    def __init__(self, class_ir, project):
+        assert isinstance(class_ir, dict)
         assert isinstance(project, Project)
+#        assert isinstance(class_name, basestring)
 
         assert project.is_open(), "Expected open project. Got project in status: '%s'" % project.status
 
-        self.name = ir["className"]  
-        self.path = ir["path"]
-        self.package = ir["packageName"]
+        class_name = class_ir["className"]
+
         self._project = project
         self._imported = False
-        self._klass = None
+        self._class_ast = None
+        self._class_name = class_name
 
     @property
-    def klass(self):
+    def class_name(self):
+        return self._class_name
+
+    @property
+    def class_ast(self):
     
         if not self._imported:
             classes = self._project.get_file(self.path)
             
             for curr in classes:
-                if curr["name"] == self.name:
-                    self._klass = curr
+                if curr["name"] == self._class_name:
+                    self._class_ast = curr
                     self._imported = True
 
-            if not self._klass:
+            if not self._class_ast:
                 raise Exception("It was not possible to import class '%s' from file '%s'" % (self.name, self.path))
 
-        assert self._klass is not None
-        return self._klass
-    
+        assert self._class_ast is not None
+        return self._class_ast
+   
+
+
+class Klass(ASTNode):
+
+    def __init__(self, ir, project):
+        assert isinstance(ir, dict)
+        assert "path" in ir
+        assert "packageName" in ir
+
+        super(Klass, self).__init__(ir, project)
+
+        self.name = self.class_name
+        self.path = ir["path"]
+        self.package = ir["packageName"]
+
+        self._ast = self._class_ast
+
+    @property
+    def ast(self):
+
+        return self.class_ast
+
+    @property   
+    def methods(self):
+        return self.ast["methods"]
+
+    def get_methods(self, name):
+        
+        return filter(lambda ast: ast["name"] == name, self.methods)
+
+class Thread(Klass):
+    """
+    This is a Klass extending the java.lang.Runnable interface 
+    TODO other interfaces to consider?
+    TODO add a check that the wrapped class indeed extends the Runnable interface
+    """
+
+    pass
 

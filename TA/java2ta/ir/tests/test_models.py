@@ -243,7 +243,6 @@ def test_get_files_by_type():
 
 
 def test_thread():
-
  
     test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
 
@@ -264,9 +263,40 @@ def test_thread():
         assert t.path == ir["path"]
         assert t.package == ir["packageName"]
 
-        klass = t.klass
+        ast = t.ast
     
-        assert isinstance(klass, dict)  
-        assert klass["name"] == t.name
-        assert klass["path"].endswith(t.path)
-        assert klass["packageName"] == t.package
+        assert isinstance(ast, dict), ast 
+        assert ast["name"] == t.name
+        assert ast["path"].endswith(t.path)
+        assert ast["packageName"] == t.package
+
+
+def test_methods():
+
+    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+
+    p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    threads = p.get_threads() 
+
+    for ir in threads:
+
+        t = Thread(ir=ir, project=p) 
+
+        run_methods = t.get_methods("run")
+    
+        assert len(run_methods) == 1, "Every thread is supposed to have a run() method"
+
+        constructors = t.get_methods(t.name)
+
+        assert len(constructors) <= 1, "Every thread has at most one constructor, in this project"
+
+        all_methods = t.methods
+        assert len(all_methods) >= len(run_methods) + len(constructors)
+
+    

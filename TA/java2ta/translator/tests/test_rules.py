@@ -51,7 +51,6 @@ def test_extract_state_space():
 
 def test_add_states():
 
-
     test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")

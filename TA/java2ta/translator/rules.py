@@ -1,6 +1,7 @@
 from java2ta.abstraction import AbstractAttribute, StateSpace
 from java2ta.engine.rules import Rule
 from java2ta.ta.models import TA, Location, Edge
+from java2ta.ir.models import Klass, Thread, Method
     
 
 class ExtractStateSpace(Rule):
@@ -16,8 +17,8 @@ class ExtractStateSpace(Rule):
         return self.ctx.get("state_space") is None and self.ctx.get("abs_predicates") is not None
 
     def let(self):
-    
-        attributes = self.asts_in.klass["attributes"]
+ 
+        attributes = self.get_attributes()   
         predicates = self.ctx.get("abs_predicates")
         assert isinstance(predicates, dict), predicates
 
@@ -38,8 +39,24 @@ class ExtractStateSpace(Rule):
 
         return let_ctx
 
+
+    def get_attributes(self):
+        return None
+       
+
     def do_update_context(self, let_ctx):
         self.ctx.update("state_space", let_ctx["state_space"])
+
+
+class ExtractClassStateSpace(ExtractStateSpace):
+
+    def get_attributes(self):
+        assert isinstance(self.asts_in, Klass)
+        attributes = self.asts_in.ast["attributes"]
+
+        return attributes
+
+class ExtractMethodStateSpace(ExtractClassStateSpace):
 
 
 class AddStates(Rule):
