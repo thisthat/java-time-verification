@@ -1,6 +1,6 @@
 from time import sleep
 
-from java2ta.ir.models import Project, Thread
+from java2ta.ir.models import Project, Thread, Method
 
 import pkg_resources
 
@@ -260,14 +260,15 @@ def test_thread():
         t = Thread(ir["className"], ir["packageName"], project=p) 
 
         assert t.name == ir["className"]
-        assert t.path == ir["path"]
+        assert t.path == "" 
         assert t.package_name == ir["packageName"]
 
         ast = t.ast
     
         assert isinstance(ast, dict), ast 
         assert ast["name"] == t.name
-        assert ast["path"].endswith(t.path)
+        assert len(t.path) > 0
+        assert ast["path"] == t.path
         assert ast["packageName"] == t.package_name
 
 
@@ -288,15 +289,19 @@ def test_methods():
 
         t = Thread(ir["className"], ir["packageName"], project=p) 
 
-        run_methods = t.get_methods("run")
-    
-        assert len(run_methods) == 1, "Every thread is supposed to have a run() method"
+        run_method = Method("run", t)
 
-        constructors = t.get_methods(t.name)
+        assert isinstance(run_method.ast, dict), "Every thread is supposed to have a run() method"
 
-        assert len(constructors) <= 1, "Every thread has at most one constructor, in this project"
-
-        all_methods = t.methods
-        assert len(all_methods) >= len(run_methods) + len(constructors)
+        assert "name" in run_method.ast
+        assert "parameters" in run_method.ast
+        assert "returnType" in run_method.ast, run_method.ast.keys()
+        assert "code" in run_method.ast
+        assert "stms" in run_method.ast
+        assert "abstract" in run_method.ast
+        assert "static" in run_method.ast
+        assert "signature" in run_method.ast
+        assert "exceptionsThrowed" in run_method.ast
+        assert "synchronized" in run_method.ast, run_method.ast.keys()
 
     

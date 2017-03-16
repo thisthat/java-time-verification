@@ -273,6 +273,8 @@ class Thread(Klass):
 
             raise Exception("It was not possible to import class '%s' from file '%s'" % (full_name, self.path))
 
+        self.path = found[0]["path"]
+
         return found[0]
 
 
