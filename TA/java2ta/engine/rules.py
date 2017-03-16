@@ -1,3 +1,4 @@
+import abc
 from java2ta.engine.exceptions import ObjectDoesNotExist
 from java2ta.engine.context import Context
 
@@ -5,6 +6,7 @@ class Rule(object):
     """
     Abstract class for a rule
     """
+    __metaclass__ = abc.ABCMeta
     
     def __init__(self, *args, **kwargs):
         pass
@@ -18,6 +20,7 @@ class Rule(object):
         self.asts_out = asts_out
         self.ctx = ctx
 
+    @abc.abstractmethod
     def match(self):
         """
         Return True iff the rule matches with the passed set of

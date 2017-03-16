@@ -1,7 +1,7 @@
 from java2ta.engine.rules import Engine
 from java2ta.engine.context import Context
 from java2ta.ta.models import TA
-from java2ta.translator.rules import ExtractStateSpace, AddStates
+from java2ta.translator.rules import ExtractClassStateSpace, ExtractMethodStateSpace, AddStates
 from java2ta.abstraction import StateSpace
 from java2ta.ir.models import Project, Thread
 from java2ta.ir.tests.test_models import check_is_open
@@ -24,7 +24,7 @@ def test_extract_state_space():
     thread = Thread(thread_desc, p)
 
 
-    r1 = ExtractStateSpace()
+    r1 = ExtractClassStateSpace()
     ta = TA(thread.name)
     e = Engine()
     e.add_rule(r1)
@@ -64,7 +64,7 @@ def test_add_states():
     thread = Thread(thread_desc, p)
 
 
-    r1 = ExtractStateSpace()
+    r1 = ExtractClassStateSpace()
     r2 = AddStates()
     ta = TA(thread.name)
     e = Engine()

@@ -1,7 +1,8 @@
+import abc
 from java2ta.abstraction import AbstractAttribute, StateSpace
 from java2ta.engine.rules import Rule
 from java2ta.ta.models import TA, Location, Edge
-from java2ta.ir.models import Klass, Thread, Method
+from java2ta.ir.models import Klass, Thread
     
 
 class ExtractStateSpace(Rule):
@@ -12,6 +13,8 @@ class ExtractStateSpace(Rule):
     If the rule is applied, it adds an entry 'state_space' of type StateSpace
     to the context.
     """
+
+    __metaclass__ = abc.ABCMeta
 
     def match(self):
         return self.ctx.get("state_space") is None and self.ctx.get("abs_predicates") is not None
@@ -39,7 +42,7 @@ class ExtractStateSpace(Rule):
 
         return let_ctx
 
-
+    @abc.abstractmethod
     def get_attributes(self):
         return None
        
@@ -57,6 +60,22 @@ class ExtractClassStateSpace(ExtractStateSpace):
         return attributes
 
 class ExtractMethodStateSpace(ExtractClassStateSpace):
+
+    def get_attributes(self):
+        assert isinstance(self.asts_in, tuple)
+        assert isinstance(self.asts_in[0], Klass)
+        assert isinstance(self.asts_in[1], basestring)
+
+        klass, method_name = self.asts_in
+        
+        # TODO in case of method overloading, now we pick the first; 
+        # find a better way to specify exactly which method is the desired one
+        method = klass.get_methods(method_name)[0]        
+
+        class_attributes = klass.ast["attributes"]
+        method_parameters = method["parameters"]
+ 
+        return class_attributes + method_parameters       
 
 
 class AddStates(Rule):
