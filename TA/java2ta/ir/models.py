@@ -1,3 +1,4 @@
+import abc
 from java2ta.ir.client import RestfulAPIClient
 
 class Project(object):
@@ -82,34 +83,24 @@ class Project(object):
         self.client.post("/clean", data)
         self.set_status("closed")
 
-   
 
-
-    def get_threads(self):
+    def get_threads(self, name=None):
     
-        threads = []
+        found_threads = []
     
         if self.is_open():
     
             data = { "name": self.name }
-            threads = self.client.post("/getThreads", data)
+            all_threads = self.client.post("/getThreads", data)
 
-        return threads
+            if name is not None:
+                found_threads = filter(lambda t: t["className"] == name, 
+                                        all_threads)
+            else:
+                found_threads = all_threads
 
-    def get_thread(self, name):
-        
-        threads = self.get_threads()
+        return found_threads
 
-        found = None
-        for curr in threads:
-            if curr["className"] == name:
-                found = curr
-                break
-
-        if found is None:
-            raise Exception("No thread found with name '%s'" % name)
-
-        return found
 
     def get_files(self, type=None):
 
@@ -145,6 +136,18 @@ class Project(object):
 
         return file
 
+    def get_class(self, name, path):
+        files = self.get_file(path)
+
+        found = None
+
+        for curr in files:
+            if curr["className"] == name:
+                found = curr
+                break
+
+        return found
+
     def get_mains(self):
         
         mains = []
@@ -157,71 +160,82 @@ class Project(object):
 
 
 class ASTNode(object):
+    """
+    This is an abstract class to represent relevant nodes of the source AST.
+    Since the AST is the Intermediate Representation obtained invoking the 
+    webservice, we cache the AST once obtained and try to minimize the 
+    service invokations.
+    """
+    __metaclass__ = abc.ABCMeta
 
-    def __init__(self, class_ir, project):
-        assert isinstance(class_ir, dict)
-        assert isinstance(project, Project)
-#        assert isinstance(class_name, basestring)
+    def __init__(self, name, project, parent=None):
+        self.name = name
+        self.project = project
+        self._ast = None
+        self.parent = parent
+        self.children = []
 
-        assert project.is_open(), "Expected open project. Got project in status: '%s'" % project.status
+        if self.parent is not None:
+            self.parent.add_child(self)
 
-        class_name = class_ir["className"]
+    def add_child(self, child):
+        assert isinstance(child, ASTNode)
 
-        self._project = project
-        self._imported = False
-        self._class_ast = None
-        self._class_name = class_name
+        self.children.append(child)
 
     @property
-    def class_name(self):
-        return self._class_name
+    def ast(self):
+        if not self._ast:
+            self._ast = self.get_ast()
 
-    @property
-    def class_ast(self):
-    
-        if not self._imported:
-            classes = self._project.get_file(self.path)
-            
-            for curr in classes:
-                if curr["name"] == self._class_name:
-                    self._class_ast = curr
-                    self._imported = True
+            assert isinstance(self._ast, dict)
 
-            if not self._class_ast:
-                raise Exception("It was not possible to import class '%s' from file '%s'" % (self.name, self.path))
+        return self._ast
 
-        assert self._class_ast is not None
-        return self._class_ast
-   
+    @abc.abstractmethod
+    def get_ast(self):
+        """
+        This is the method where the extending class should put the logic for
+        invoking the service and finding the desired node in the Intermediate
+        Representation.
+        """
+        pass
 
 
 class Klass(ASTNode):
 
-    def __init__(self, ir, project):
-        assert isinstance(ir, dict)
-        assert "path" in ir
-        assert "packageName" in ir
+    def __init__(self, name, package_name, path, project):
 
-        super(Klass, self).__init__(ir, project)
+        # at the moment, Klasses are root elements
+        super(Klass, self).__init__(name, project)
 
-        self.name = self.class_name
-        self.path = ir["path"]
-        self.package = ir["packageName"]
+        self.name = name
+        self.path = path
+        self.package_name = package_name
 
-        self._ast = self._class_ast
-
-    @property
-    def ast(self):
-
-        return self.class_ast
-
-    @property   
-    def methods(self):
-        return self.ast["methods"]
-
-    def get_methods(self, name):
+    def get_ast(self):
+        classes = self.project.get_file(self.path)
         
-        return filter(lambda ast: ast["name"] == name, self.methods)
+        found = None
+
+        for curr in classes:
+            assert isinstance(curr, dict)
+            assert "name" in curr
+            assert "packageName" in curr
+
+            if curr["name"] == self.name and \
+                    curr["packageName"] == self.package_name:
+                found = curr
+
+        if not found:
+            full_name = self.name
+            if self.package_name:
+                full_name = "%s.%s" % (self.package_name, self.full_name)
+
+            raise Exception("It was not possible to import class '%s' from file '%s'" % (full_name, self.path))
+
+        return found
+
 
 class Thread(Klass):
     """
@@ -229,6 +243,57 @@ class Thread(Klass):
     TODO other interfaces to consider?
     TODO add a check that the wrapped class indeed extends the Runnable interface
     """
+    def __init__(self, name, package_name, project):
 
-    pass
+        super(Thread, self).__init__(name, package_name, "", project)
 
+
+    def get_ast(self):
+        threads = self.project.get_threads(self.name)
+
+        # TODO at the moment consider only there is only one possible thread
+        # with the given name. FIX ASAP
+        thread = threads[0]
+
+        assert isinstance(thread, dict)
+        assert "className" in thread
+        assert "packageName" in thread
+        assert "path" in thread
+       
+        classes_ir = self.project.get_file(thread["path"])
+        
+        found = filter(lambda ir: ir["name"] == self.name and ir["packageName"] == self.package_name, classes_ir)
+    
+        assert len(found) <= 1
+        
+        if len(found) == 0:
+            full_name = self.name
+            if self.package_name:
+                full_name = "%s.%s" % (self.package_name, self.full_name)
+
+            raise Exception("It was not possible to import class '%s' from file '%s'" % (full_name, self.path))
+
+        return found[0]
+
+
+
+
+class Method(ASTNode):
+
+    def __init__(self, name, klass):
+ 
+        assert isinstance(name, basestring)       
+        assert isinstance(klass, Klass)
+
+        super(Method, self).__init__(name, klass.project, parent=klass)
+        self.klass = klass
+
+    def get_ast(self):
+        methods = self.klass.ast["methods"]
+
+        found = filter(lambda m: m["name"] == self.name, methods)
+
+        # TODO at the moment we only take the first method with the given name
+        # (due to method overloading, the language may have more than one).
+        # Fix this ASAP
+        return found[0]

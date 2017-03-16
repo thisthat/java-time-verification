@@ -257,18 +257,18 @@ def test_thread():
 
     for ir in threads:
 
-        t = Thread(ir=ir, project=p) 
+        t = Thread(ir["className"], ir["packageName"], project=p) 
 
         assert t.name == ir["className"]
         assert t.path == ir["path"]
-        assert t.package == ir["packageName"]
+        assert t.package_name == ir["packageName"]
 
         ast = t.ast
     
         assert isinstance(ast, dict), ast 
         assert ast["name"] == t.name
         assert ast["path"].endswith(t.path)
-        assert ast["packageName"] == t.package
+        assert ast["packageName"] == t.package_name
 
 
 def test_methods():
@@ -286,7 +286,7 @@ def test_methods():
 
     for ir in threads:
 
-        t = Thread(ir=ir, project=p) 
+        t = Thread(ir["className"], ir["packageName"], project=p) 
 
         run_methods = t.get_methods("run")
     

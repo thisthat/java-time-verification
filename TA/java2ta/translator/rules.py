@@ -2,7 +2,7 @@ import abc
 from java2ta.abstraction import AbstractAttribute, StateSpace
 from java2ta.engine.rules import Rule
 from java2ta.ta.models import TA, Location, Edge
-from java2ta.ir.models import Klass, Thread
+from java2ta.ir.models import Klass, Thread, Method
     
 
 class ExtractStateSpace(Rule):
@@ -55,6 +55,7 @@ class ExtractClassStateSpace(ExtractStateSpace):
 
     def get_attributes(self):
         assert isinstance(self.asts_in, Klass)
+        assert "attributes" in self.asts_in.ast, self.asts_in.ast.keys()
         attributes = self.asts_in.ast["attributes"]
 
         return attributes
@@ -62,18 +63,13 @@ class ExtractClassStateSpace(ExtractStateSpace):
 class ExtractMethodStateSpace(ExtractClassStateSpace):
 
     def get_attributes(self):
-        assert isinstance(self.asts_in, tuple)
-        assert isinstance(self.asts_in[0], Klass)
-        assert isinstance(self.asts_in[1], basestring)
+        assert isinstance(self.asts_in, Method)
 
-        klass, method_name = self.asts_in
+        klass = self.asts_in.parent
+        method_name = self.asts_in.name
         
-        # TODO in case of method overloading, now we pick the first; 
-        # find a better way to specify exactly which method is the desired one
-        method = klass.get_methods(method_name)[0]        
-
         class_attributes = klass.ast["attributes"]
-        method_parameters = method["parameters"]
+        method_parameters = self.asts_in.ast["parameters"]
  
         return class_attributes + method_parameters       
 

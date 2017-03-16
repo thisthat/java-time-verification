@@ -209,8 +209,8 @@ def test_ruleset_pick_simple():
 
     rs = RuleSet()
     
-    rule1 = Rule()
-    rule2 = Rule()
+    rule1 = FakeRuleNoMatch()
+    rule2 = FakeRuleMatch()
 
     rs.add_rule(rule1)
     rs.add_rule(rule2)
@@ -224,8 +224,8 @@ def test_ruleset_pick_multiple_times():
  
     rs = RuleSet()
     
-    rule1 = Rule()
-    rule2 = Rule()
+    rule1 = FakeRuleNoMatch()
+    rule2 = FakeRuleMatch()
 
     rs.add_rule(rule1)
     rs.add_rule(rule2)
@@ -243,8 +243,8 @@ def test_ruleset_pick_with_disabled_rules():
  
     rs = RuleSet()
     
-    rule1 = Rule()
-    rule2 = Rule()
+    rule1 = FakeRuleNoMatch()
+    rule2 = FakeRuleMatch()
 
     rs.add_rule(rule1)
     rs.add_rule(rule2)
@@ -262,8 +262,8 @@ def test_ruleset_pick_from_all_disabled():
 
     rs = RuleSet()
     
-    rule1 = Rule()
-    rule2 = Rule()
+    rule1 = FakeRuleNoMatch()
+    rule2 = FakeRuleMatch()
 
     rs.add_rule(rule1)
     rs.add_rule(rule2)
@@ -297,7 +297,7 @@ def test_engine_trivial():
 
     re = Engine()
 
-    rule1 = Rule()
+    rule1 = FakeRuleNoMatch()
     
     re.add_rule(rule1)
 
