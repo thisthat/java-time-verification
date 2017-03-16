@@ -2,6 +2,7 @@ import intermediateModelHelper.types.DataTreeType;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +33,11 @@ public class TestInheritance {
 
 
 
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

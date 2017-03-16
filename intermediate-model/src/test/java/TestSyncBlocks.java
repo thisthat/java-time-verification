@@ -4,6 +4,7 @@ import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexSyncBlock;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,6 +34,11 @@ public class TestSyncBlocks {
 		indexing.indexProject(directory, true);
 		indexing.indexSyncBlock(directory, false);
 		
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

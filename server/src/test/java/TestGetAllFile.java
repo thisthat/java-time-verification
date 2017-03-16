@@ -52,6 +52,7 @@ public class TestGetAllFile {
 
 	@AfterClass
 	public static void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 		server.stop();
 	}
 

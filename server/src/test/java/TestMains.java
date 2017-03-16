@@ -73,6 +73,7 @@ public class TestMains {
 
 	@AfterClass
 	public static void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 		server.stop();
 	}
 

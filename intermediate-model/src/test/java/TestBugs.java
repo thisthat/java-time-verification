@@ -9,6 +9,7 @@ import intermediateModel.structure.ASTIf;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
@@ -31,6 +32,11 @@ public class TestBugs {
 		MongoOptions.getInstance().setDbName("intermediate_model_" + this.getClass().getSimpleName());
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

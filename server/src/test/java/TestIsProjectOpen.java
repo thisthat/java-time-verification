@@ -45,8 +45,10 @@ public class TestIsProjectOpen {
 
 	@AfterClass
 	public static void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 		server.stop();
 	}
+
 
 	@Test
 	public void TestIsProjectOpen() throws Exception {

@@ -6,6 +6,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Pair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
@@ -27,7 +28,11 @@ public class TestInterface {
 		MongoOptions.getInstance().setDbName("testInterface");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
+	}
 
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

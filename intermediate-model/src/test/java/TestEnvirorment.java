@@ -13,6 +13,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
@@ -54,6 +55,11 @@ public class TestEnvirorment {
 		MongoOptions.getInstance().setDbName("testEnv");
 		MongoConnector.getInstance().drop();
 
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	public List<ASTClass> init(String filename) throws Exception {

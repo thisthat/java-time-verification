@@ -6,6 +6,7 @@ import PCFG.structure.PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parser.Java2AST;
@@ -27,6 +28,11 @@ public class TestSynchronization {
 		MongoOptions.getInstance().setDbName(DB_NAME);
 		MongoConnector.getInstance(DB_NAME).drop();
 		MongoConnector.getInstance(DB_NAME).ensureIndexes();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

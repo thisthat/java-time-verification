@@ -50,6 +50,7 @@ public class TestThreads {
 
 	@AfterClass
 	public static void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 		server.stop();
 	}
 
