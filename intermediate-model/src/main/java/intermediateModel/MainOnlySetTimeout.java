@@ -4,9 +4,9 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.converter.GenerateJSON;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.SetTimeout;
+import intermediateModelHelper.heuristic.definition.SetTimeoutPermissive;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
@@ -25,43 +25,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class Main {
-
-	/*
-	public static void main(String[] args) throws Exception {
-
-
-
-		List<String> files = new ArrayList<>();
-		//files.add( Main.class.getClassLoader().getResource("DiningPhilosopher.java").getFile() );
-		files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/com/aelitis/azureus/core/impl/AzureusCoreImpl.java" );
-		//files.add( "/Users/giovanni/repository/java-xal/intermediate-model/src/main/resources/TestSocket.java" );
-		//files.add( "/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/org/gudy/azureus2/core3/util/UrlUtils.java" );
-		//files.add( "/Users/giovanni/repository/java-xal/project_eval/activemq/activemq-client/src/main/java/org/apache/activemq/ActiveMQConnection.java" );
-
-		//files.add(args[0]);
-		for(int i = 0; i < files.size(); i ++){
-
-			String f = files.get(i);
-			String name = f.substring( f.lastIndexOf("/")+1, f.lastIndexOf("."));
-			List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/vuze/src/main/java/" );
-			//List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/activemq/" );
-
-			for(ASTClass c : lists){
-				//Create JSON
-				List<Triplet<String,IASTStm,Class>> cnst =  ApplyHeuristics.getConstraint(c);
-				System.out.println("Class " + c.getName() + " : " + cnst.size());
-
-				for(Triplet<String,IASTStm, Class> cc : cnst){
-					System.out.println(cc.getValue0());
-					System.out.println("\n\n");
-				}
-
-			}
-		}
-
-	}
-	*/
+public class MainOnlySetTimeout {
 
 
 	public static void main(String[] args) throws Exception {
@@ -71,9 +35,9 @@ public class Main {
 		String name = args.length > 0 ? args[0] : "output";
 		name = name.replace(".", "_");
 		String base_path = args.length > 0 ? args[1] :"/Users/giovanni/repository/java-xal/project_eval/";
-		String csvFile = name + ".csv";
-		System.out.println("[DEBUG] Prject Name: " + name);
-		System.out.println("[DEBUG] Prject Path: " + base_path);
+		String csvFile = name + "_timeoutPermissive.csv";
+		System.out.println("[DEBUG] Project Name: " + name);
+		System.out.println("[DEBUG] Project Path: " + base_path);
 
 		System.out.println("[DEBUG] Start indexing.");
 		MongoOptions.getInstance().setDbName(name);
@@ -109,18 +73,16 @@ public class Main {
 				int implicit_timeout = 0;
 				int set_timeout = 0;
 				int resource_expired = 0;
-				List<Triplet<String,IASTStm,Class>> cnst =  ApplyHeuristics.getConstraint(c);
+				ApplyHeuristics ah = new ApplyHeuristics();
+				ah.set__DEBUG__(false);
+				ah.subscribe(SetTimeoutPermissive.class);
+				ah.analyze(c);
+				List<Triplet<String,IASTStm,Class>> cnst = ah.getTimeConstraint();
 				if(cnst.size() > 0){
 					for(Triplet<String,IASTStm,Class> t : cnst){
 						Class type = t.getValue2();
-						if(type.equals(AnnotatedTypes.class)){
-							implicit_timeout++;
-						}
-						if(type.equals(SetTimeout.class)){
+						if(type.equals(SetTimeoutPermissive.class)){
 							set_timeout++;
-						}
-						if(type.equals(TimeoutResources.class)){
-							resource_expired++;
 						}
 					}
 					String line = String.format("%s;%d;%d;%d\n", c.getPath(), implicit_timeout, set_timeout, resource_expired);

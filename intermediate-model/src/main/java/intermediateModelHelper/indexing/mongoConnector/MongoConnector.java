@@ -78,6 +78,14 @@ public class MongoConnector {
 	protected MongoConnector(String db_name, String ip, int port) {
 		Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
 		mongoLogger.setLevel(Level.SEVERE);
+		connect(db_name,ip,port);
+	}
+
+	public void close(){
+		mongoClient.close();
+	}
+
+	public void connect(String db_name, String ip, int port){
 		mongoClient = new MongoClient(ip, port);
 		db = mongoClient.getDatabase(db_name);
 		dbName = db_name;

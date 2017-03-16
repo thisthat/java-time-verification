@@ -9,6 +9,7 @@ import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
@@ -30,16 +31,13 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class SetTimeout extends SearchTimeConstraint {
-
-	private boolean analysingConstructor;
-	private boolean isReadingWithTimeoutConstruct;
-	private boolean isReadingWithTimeout;
-
+public class SetTimeoutPermissive extends SearchTimeConstraint {
 
 	List<TimeTimeout> timeTimeout = TemporalInfo.getInstance().getTimeTimeout();
 	List<TimeTimeout> readTimeout = TemporalInfo.getInstance().getReadTimeout();
 
+	boolean isSetReadTimeoutDefined = false;
+	boolean isSetTimeoutDefined = false;
 
 
 	private class SetTimeOutMethod extends TimeInfo {
@@ -50,18 +48,11 @@ public class SetTimeout extends SearchTimeConstraint {
 
 	private List<SetTimeOutMethod> timeOutMethod = new ArrayList<>();
 	private List<SetTimeOutMethod> timeOutReadMethod = new ArrayList<>();
-	private List<SetTimeOutMethod> inputStream = new ArrayList<>();
-
-	List<IASTVar> socketVariables = new ArrayList<>();
-	List<IASTVar> socketVariablesConstruct = new ArrayList<>();
-
-
 
 	@Override
 	public void setup(ASTClass c) {
-		this.analysingConstructor = false;
-		this.isReadingWithTimeoutConstruct = false;
-		this.isReadingWithTimeout = false;
+		this.isSetReadTimeoutDefined = false;
+		this.isSetTimeoutDefined = false;
 
 		timeOutMethod.add( new SetTimeOutMethod("java.net.URLConnection", "setConnectTimeout", Arrays.asList("int") ));
 		timeOutMethod.add( new SetTimeOutMethod("java.net.HttpURLConnection", "setConnectTimeout", Arrays.asList("int") ));
@@ -78,38 +69,36 @@ public class SetTimeout extends SearchTimeConstraint {
 		timeOutReadMethod.add(new SetTimeOutMethod("java.net.HttpURLConnection", "setReadTimeout", Arrays.asList("int") ));
 		timeOutReadMethod.add(new SetTimeOutMethod("javax.net.ssl.HttpsURLConnection", "setReadTimeout", Arrays.asList("int") ));
 
-		inputStream.add(new SetTimeOutMethod("java.net.Socket", "getInputStream", new ArrayList<>()));
-		inputStream.add(new SetTimeOutMethod("javax.net.ssl.SSLSocket", "getInputStream", new ArrayList<>()));
-		inputStream.add(new SetTimeOutMethod("java.net.URLConnection", "getInputStream", new ArrayList<>()));
-		inputStream.add(new SetTimeOutMethod("java.net.HttpURLConnection", "getInputStream", new ArrayList<>()));
-		inputStream.add(new SetTimeOutMethod("javax.net.ssl.HttpsURLConnection", "getInputStream", new ArrayList<>()));
+
+		//search if a timeout read or timeout is defined in the class
+
+		c.visit(new DefaultASTVisitor(){
+			@Override
+			public void enterASTMethodCall(ASTMethodCall elm) {
+				if(isSetTimoutRead(elm)){
+					isSetReadTimeoutDefined = true;
+				}
+				if(isSetTimout(elm)){
+					isSetTimeoutDefined = true;
+				}
+			}
+		});
 
 	}
 
 	@Override
 	public void nextMethod(ASTMethod method, Env env) {
-		this.analysingConstructor = false;
-		this.isReadingWithTimeout = false;
-		socketVariables.clear();
-		socketVariables.addAll(socketVariablesConstruct);
 	}
 
 	@Override
 	public void nextConstructor(ASTConstructor method, Env env) {
-		this.analysingConstructor = true;
 	}
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
-	 * It collects the {@link ASTMethodCall} in the RExp and search for the definition of the methods:
-	 * <ul>
-	 *     <li>setConnectTimeout</li>
-	 *     <li>setSoTimeout</li>
-	 *     <li>setReadTimeout</li>
-	 * </ul>
-	 * When a call of this method is detected, it sets the variable as <i>Time Related</i>.
-	 * Whenever we then found that a time related variable calls a method which has a <b>time behaviour</b> we save the
-	 * stm as time constraint.
+	 * It collects the {@link ASTMethodCall} in the RExp and search for the definition of the method <b>setSoTimeout</b>
+	 * from which it extracts the time value. Then when it finds the call to <b>receive</b> or <b>getOutputStream</b>
+	 * it saves the time constraint (if the variable that calls the methods is time relevant as well).
 	 *
 	 * @param stm	Statement to process
 	 * @param env	Envirorment visible to that statement
@@ -124,30 +113,13 @@ public class SetTimeout extends SearchTimeConstraint {
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
 				//check if is setting a timeout
-				if(isSetTimout(elm)) {
-					IASTVar var = getVar(elm, env);
-					if(var != null) {
-						if(analysingConstructor)
-							socketVariablesConstruct.add(var);
-						socketVariables.add(var);
-					}
-				}
-				//check if set a timeout in read input stream
-				if(isSetTimoutRead(elm)){
-					if (analysingConstructor)
-						isReadingWithTimeoutConstruct = true;
-					isReadingWithTimeout = true;
-				}
 				//is require an input stream which has a timeout?
-				if(isReadingInputStream(elm) && (isReadingWithTimeout || isReadingWithTimeoutConstruct)){
-					SetTimeout.super.addConstraint("timeout", elm);
+				if(isReadingInputStream(elm) && isSetReadTimeoutDefined){
+					SetTimeoutPermissive.super.addConstraint("timeout", elm);
 				}
 				//check if it calls a method with timeout
 				if(requireSetTimout(elm)){
-					IASTVar var = getVar(elm, env);
-					//check if variable was setted with timeout
-					if(socketVariables.contains(var))
-						SetTimeout.super.addConstraint("timeout", elm);
+					SetTimeoutPermissive.super.addConstraint("timeout", elm);
 				}
 			}
 		});
@@ -165,15 +137,6 @@ public class SetTimeout extends SearchTimeConstraint {
 				return true;
 		}
 		return false;
-	}
-
-	private IASTVar getVar(ASTMethodCall elm, Env env){
-		if(elm.getExprCallee() instanceof ASTLiteral){
-			String varName = ((ASTLiteral) elm.getExprCallee()).getValue();
-			IASTVar var = env.getVar(varName);
-			return var;
-		}
-		return null;
 	}
 
 	private boolean isSetTimout(ASTMethodCall elm) {
