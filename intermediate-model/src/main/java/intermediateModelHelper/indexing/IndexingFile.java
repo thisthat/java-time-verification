@@ -64,6 +64,9 @@ public class IndexingFile extends ParseIM {
 	public IndexData index(ASTClass c, boolean forceReindex) {
 		this._c = c;
 		super.set_class(c);
+		if(c.getName().equals("CreatePathOptions")){
+			System.out.println("BRK");
+		}
 		if(mongo.existClassIndex(c)){
 			if(forceReindex){
 				mongo.delete(c);

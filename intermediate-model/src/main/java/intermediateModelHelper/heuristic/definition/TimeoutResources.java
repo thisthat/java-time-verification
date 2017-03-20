@@ -48,6 +48,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case lessEqual:
 					case greater:
 					case greaterEqual:
+					case equality:
 						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
 							TimeoutResources.super.addConstraint("timeoutResource", elm);

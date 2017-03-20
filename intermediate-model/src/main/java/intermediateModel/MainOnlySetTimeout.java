@@ -42,7 +42,7 @@ public class MainOnlySetTimeout {
 		System.out.println("[DEBUG] Start indexing.");
 		MongoOptions.getInstance().setDbName(name);
 		IndexingProject indexingProject = new IndexingProject(name);
-		indexingProject.indexProject(base_path, true);
+		indexingProject.indexProject(base_path, false);
 		System.out.println("[DEBUG] Finish indexing.");
 		System.out.println("[DEBUG] Computing time constraint.");
 
@@ -50,9 +50,8 @@ public class MainOnlySetTimeout {
 		writer.write("path;implicit_timeout;set_timeout;expired_resource\n");
 		writer.flush();
 		List<String> files = new ArrayList<>();
-		IndexingProject index = new IndexingProject();
 		{
-			Iterator<File> f = index.getJavaFiles(base_path);
+			Iterator<File> f = IndexingProject.getJavaFiles(base_path);
 			while (f.hasNext()) {
 				files.add(f.next().getAbsolutePath());
 			}
@@ -68,11 +67,12 @@ public class MainOnlySetTimeout {
 			} catch (UnparsableException e){
 				counter++;
 			}
+			int implicit_timeout = 0;
+			int set_timeout = 0;
+			int resource_expired = 0;
 			//List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/activemq/" );
 			for(ASTClass c : lists){
-				int implicit_timeout = 0;
-				int set_timeout = 0;
-				int resource_expired = 0;
+
 				ApplyHeuristics ah = new ApplyHeuristics();
 				ah.set__DEBUG__(false);
 				ah.subscribe(SetTimeoutPermissive.class);
@@ -85,11 +85,14 @@ public class MainOnlySetTimeout {
 							set_timeout++;
 						}
 					}
-					String line = String.format("%s;%d;%d;%d\n", c.getPath(), implicit_timeout, set_timeout, resource_expired);
-					//System.out.println(line);
-					writer.write(line);
-					writer.flush();
+
 				}
+			}
+			if((implicit_timeout+set_timeout+resource_expired) > 0) {
+				String line = String.format("%s;%d;%d;%d\n", f, implicit_timeout, set_timeout, resource_expired);
+				//System.out.println(line);
+				writer.write(line);
+				writer.flush();
 			}
 		}
 		writer.flush();

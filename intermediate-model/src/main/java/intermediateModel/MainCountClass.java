@@ -4,7 +4,6 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.converter.GenerateJSON;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.SetTimeout;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
@@ -25,7 +24,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class Main {
+public class MainCountClass {
 
 	/*
 	public static void main(String[] args) throws Exception {
@@ -65,27 +64,15 @@ public class Main {
 
 
 	public static void main(String[] args) throws Exception {
-
-
-
 		String name = args.length > 0 ? args[0] : "output";
 		name = name.replace(".", "_");
 		String base_path = args.length > 0 ? args[1] :"/Users/giovanni/repository/java-xal/project_eval/";
 		String csvFile = name + ".csv";
 		System.out.println("[DEBUG] Prject Name: " + name);
 		System.out.println("[DEBUG] Prject Path: " + base_path);
-
-		System.out.println("[DEBUG] Start indexing.");
-		MongoOptions.getInstance().setDbName(name);
-		IndexingProject indexingProject = new IndexingProject(name);
-		indexingProject.indexProject(base_path, false);
-		System.out.println("[DEBUG] Finish indexing.");
-		System.out.println("[DEBUG] Computing time constraint.");
-
-		FileWriter writer = new FileWriter(csvFile);
-		writer.write("path;implicit_timeout;set_timeout;expired_resource\n");
-		writer.flush();
+		System.out.println("[DEBUG] Computing number of classes.");
 		List<String> files = new ArrayList<>();
+
 		{
 			Iterator<File> f = IndexingProject.getJavaFiles(base_path);
 			while (f.hasNext()) {
@@ -98,44 +85,11 @@ public class Main {
 		for(int i = 0; i < files.size(); i ++){
 			String f = files.get(i);
 			List<ASTClass> lists = new ArrayList<>();
-			try {
-				lists = JDTVisitor.parse(f, base_path);
-			} catch (UnparsableException e){
-				counter++;
-			}
-			int implicit_timeout = 0;
-			int set_timeout = 0;
-			int resource_expired = 0;
+			lists = JDTVisitor.parse(f, base_path);
 			//List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/activemq/" );
-			for(ASTClass c : lists){
-				List<Triplet<String,IASTStm,Class>> cnst =  ApplyHeuristics.getConstraint(c);
-				if(cnst.size() > 0){
-					for(Triplet<String,IASTStm,Class> t : cnst){
-						Class type = t.getValue2();
-						if(type.equals(AnnotatedTypes.class)){
-							implicit_timeout++;
-						}
-						if(type.equals(SetTimeout.class)){
-							set_timeout++;
-						}
-						if(type.equals(TimeoutResources.class)){
-							resource_expired++;
-						}
-					}
-				}
-			}
-			if((implicit_timeout+set_timeout+resource_expired) > 0){
-				String line = String.format("%s;%d;%d;%d\n", f, implicit_timeout, set_timeout, resource_expired);
-				//System.out.println(line);
-				writer.write(line);
-				writer.flush();
-			}
+			counter += lists.size();
 		}
-		writer.flush();
-		writer.close();
-		Utils.send_email(String.format("Project %s {%s} ends.\r\n", name, base_path));
-		System.out.println("#Skipped " + counter);
+		System.out.println("#Classes " + counter);
 		System.out.println("[DEBUG] Finish project " + name);
-		//MongoConnector.getInstance(name).close();
 	}
 }

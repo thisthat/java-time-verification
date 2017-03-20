@@ -35,9 +35,10 @@ public class JDTVisitor extends ASTVisitor {
 
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
+	@Deprecated
 	public static List<ASTClass> parse(String filename){
 		try{
-			return  parse(filename, "");
+			return parse(filename, "");
 		} catch (UnparsableException e) {
 			return new ArrayList<>();
 		}

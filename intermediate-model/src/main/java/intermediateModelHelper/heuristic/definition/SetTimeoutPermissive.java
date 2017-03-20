@@ -118,7 +118,7 @@ public class SetTimeoutPermissive extends SearchTimeConstraint {
 					SetTimeoutPermissive.super.addConstraint("timeout", elm);
 				}
 				//check if it calls a method with timeout
-				if(requireSetTimout(elm)){
+				if(requireSetTimout(elm) && isSetTimeoutDefined){
 					SetTimeoutPermissive.super.addConstraint("timeout", elm);
 				}
 			}
