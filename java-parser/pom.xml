@@ -5,7 +5,7 @@
     <packaging>jar</packaging>
     <groupId>java-xal</groupId>
     <artifactId>java-parser</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <name>Java-Parser</name>
     <description>
         The module creates an AST using JDT.
@@ -36,44 +36,12 @@
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.12.0.v20160516-2131</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>runtime</artifactId>
-            <version>3.10.0-v20140318-2214</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>resources</artifactId>
-            <version>3.3.0-v20070604</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>text</artifactId>
-            <version>3.3.0-v20070606-0010</version>
+            <version>3.12.2</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <executable>3rdPartyLibraries/installLocalMaven.sh</executable>
-                    <!--<workingDirectory>3rdPartyLibraries/</workingDirectory>-->
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

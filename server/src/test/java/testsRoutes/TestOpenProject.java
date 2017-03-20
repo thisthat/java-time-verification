@@ -44,9 +44,11 @@ public class TestOpenProject {
 		MongoConnector.getInstance().ensureIndexes();
 	}
 
-	@After
-	public void tearDown() throws Exception {
+	@AfterClass
+	public static void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 		server.stop();
+
 	}
 
 	@Test

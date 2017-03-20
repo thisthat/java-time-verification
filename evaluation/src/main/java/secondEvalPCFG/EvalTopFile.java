@@ -11,7 +11,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -239,7 +239,7 @@ public class EvalTopFile {
 		List<ASTClass> out = new ArrayList<>();
 		try {
 			a = new Java2AST(filename, true);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return out;
 		}

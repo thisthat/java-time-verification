@@ -8,7 +8,8 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
+import parser.UnparsableException;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,7 +25,7 @@ public class JDTVisitor extends ASTVisitor {
 	private String packageName = "";
 	private List<ASTImport> listOfImports = new ArrayList<>();
 	private ASTClass lastClass;
-	private IASTHasStms lastMethod;
+	private IASTHasStms lastMethod = new ASTMethod(0,0, ASTMethod.lambda, "void", new ArrayList<>(), new ArrayList<>(), false, false, false);
 
 	private Stack<ASTClass> stackClasses = new Stack<>();
 	private Stack<String> stackPackage = new Stack<>();
@@ -34,10 +35,16 @@ public class JDTVisitor extends ASTVisitor {
 
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
+	@Deprecated
 	public static List<ASTClass> parse(String filename){
-		return  parse(filename, "");
+		try{
+			return parse(filename, "");
+		} catch (UnparsableException e) {
+			return new ArrayList<>();
+		}
+
 	}
-	public static List<ASTClass> parse(String filename, String projectPath){
+	public static List<ASTClass> parse(String filename, String projectPath) throws UnparsableException {
 		if(cache.containsKey(filename)){
 			return cache.get(filename);
 		}
@@ -45,7 +52,10 @@ public class JDTVisitor extends ASTVisitor {
 		try {
 			a = new Java2AST(filename, true, projectPath);
 		} catch (IOException e) {
-		}
+		} /*catch (UnparsableException e) {
+			//cannot parse the file
+			return new ArrayList<>();
+		}*/
 		CompilationUnit result = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
@@ -143,6 +153,18 @@ public class JDTVisitor extends ASTVisitor {
 			ss = f.getStartPosition();
 			st = ss + f.getLength();
 			ASTAttribute attribute = new ASTAttribute(ss, st, vis, type, name, expr);
+			String pkg, nmm;
+			ITypeBinding typePointed = f.getType().resolveBinding();
+			if(typePointed != null){
+				pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+				nmm = typePointed.getName();
+				String classPointed = pkg + "." + nmm;
+				if(classPointed.startsWith(".")){
+					classPointed = classPointed.substring(1);
+				}
+				attribute.setTypePointed(classPointed);
+				//System.out.println(node.toString() + " points to " + classPointed);
+			}
 			c.addAttribute(attribute);
 		}
 		c.setInterface(node.isInterface());
@@ -217,6 +239,18 @@ public class JDTVisitor extends ASTVisitor {
 			ss = f.getStartPosition();
 			st = ss + f.getLength();
 			ASTAttribute attribute = new ASTAttribute(ss, st, vis, type, name, expr);
+			String pkg, nmm;
+			ITypeBinding typePointed = f.getType().resolveBinding();
+			if(typePointed != null){
+				pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+				nmm = typePointed.getName();
+				String classPointed = pkg + "." + nmm;
+				if(classPointed.startsWith(".")){
+					classPointed = classPointed.substring(1);
+				}
+				attribute.setTypePointed(classPointed);
+				//System.out.println(node.toString() + " points to " + classPointed);
+			}
 			c.addAttribute(attribute);
 		}
 		//const of enum
@@ -231,6 +265,18 @@ public class JDTVisitor extends ASTVisitor {
 			ASTRE expr = null;
 
 			ASTAttribute attribute = new ASTAttribute(ss, st, ASTClass.Visibility.PUBLIC, type, name, expr);
+			String pkg, nmm;
+			ITypeBinding typePointed = cons.resolveVariable() != null ? cons.resolveVariable().getType() : null;
+			if(typePointed != null){
+				pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+				nmm = typePointed.getName();
+				String classPointed = pkg + "." + nmm;
+				if(classPointed.startsWith(".")){
+					classPointed = classPointed.substring(1);
+				}
+				attribute.setTypePointed(classPointed);
+				//System.out.println(node.toString() + " points to " + classPointed);
+			}
 			c.addAttribute(attribute);
 		}
 		packageName = packageName + "." + className;
@@ -321,6 +367,17 @@ public class JDTVisitor extends ASTVisitor {
 			st = ss + p.getLength();
 			ASTVariable par = new ASTVariable(ss, st, p.getName().getFullyQualifiedName(), p.getType().toString());
 			//par.setAnnotations( AnnotationVisitor.getAnnotationVariable(p.modifiers(), p) );
+			ITypeBinding typePointed =  p.getType().resolveBinding();
+			if(typePointed != null){
+				String pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+				String nmm = typePointed.getName();
+				String classPointed = pkg + "." + nmm;
+				if(classPointed.startsWith(".")){
+					classPointed = classPointed.substring(1);
+				}
+				par.setTypePointed(classPointed);
+				//System.out.println(node.toString() + " points to " + classPointed);
+			}
 			pars.add(par);
 		}
 		//is syncronized
@@ -407,6 +464,17 @@ public class JDTVisitor extends ASTVisitor {
 		String vname = v.getName().getIdentifier();
 		String vtype = v.getType().toString();
 		ASTVariable var = new ASTVariable(vstart, vstop, vname, vtype);
+		ITypeBinding typePointed =  v.getType().resolveBinding();
+		if(typePointed != null){
+			String pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+			String nmm = typePointed.getName();
+			String classPointed = pkg + "." + nmm;
+			if(classPointed.startsWith(".")){
+				classPointed = classPointed.substring(1);
+			}
+			var.setTypePointed(classPointed);
+			//System.out.println(node.toString() + " points to " + classPointed);
+		}
 		ASTRE expr = getExprState(node.getExpression());
 
 		ASTForEach foreach = new ASTForEach(start,stop, var, expr);
@@ -497,6 +565,17 @@ public class JDTVisitor extends ASTVisitor {
 			eStop = eStart + exception.getLength();
 
 			ASTVariable ex = new ASTVariable(eStart, eStop, exception.getName().getFullyQualifiedName(), exception.getType().toString() );
+			ITypeBinding typePointed =  exception.getType().resolveBinding();
+			if(typePointed != null){
+				String pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+				String nmm = typePointed.getName();
+				String classPointed = pkg + "." + nmm;
+				if(classPointed.startsWith(".")){
+					classPointed = classPointed.substring(1);
+				}
+				ex.setTypePointed(classPointed);
+				//System.out.println(node.toString() + " points to " + classPointed);
+			}
 			ASTTry.ASTCatchBranch catchBranch = elm.new ASTCatchBranch(cStart, cStop, ex);
 			elm.addCatchBranch(catchBranch);
 			lastMethod = catchBranch;
@@ -655,13 +734,32 @@ public class JDTVisitor extends ASTVisitor {
 		for(Object o : node.fragments()){
 			if(o instanceof VariableDeclarationFragment){
 				VariableDeclarationFragment v = (VariableDeclarationFragment)o;
-				ASTRE re = new ASTRE(start, stop,
-						new ASTVariableDeclaration(start, stop, type,
-								getExpr(v.getName()), getExpr(v.getInitializer()))
-						);
+				ASTVariableDeclaration newVar = new ASTVariableDeclaration(start, stop, type,
+						getExpr(v.getName()), getExpr(v.getInitializer()));
+
+				String pkg, nmm;
+				ITypeBinding typePointed = node.getType().resolveBinding();
+				if(typePointed != null){
+					pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+					nmm = typePointed.getName();
+					String classPointed = pkg + "." + nmm;
+					if(classPointed.startsWith(".")){
+						classPointed = classPointed.substring(1);
+					}
+					newVar.setTypePointed(classPointed);
+					//System.out.println(node.toString() + " points to " + classPointed);
+				}
 				//annotation
 				//re.setAnnotations( AnnotationVisitor.getAnnotationVariable(node.modifiers(), v) );
-				bck.addStms(re);
+				ASTRE re = new ASTRE(start, stop,
+						newVar
+				);
+				try {
+					bck.addStms(re);
+				} catch (Exception e){
+					//lambda expression in a attribute definition -> skip
+					//System.out.println("BRK");
+				}
 			}
 		}
 		lastMethod = bck;
@@ -672,7 +770,12 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(ExpressionStatement node) {
 		IASTHasStms bck = lastMethod;
 		ASTRE re = getExprState(node);
-		bck.addStms(re);
+		try {
+			bck.addStms(re);
+		} catch (Exception e){
+			//lambda expression in a attribute definition -> skip
+			//System.out.println("BRK");
+		}
 		lastMethod = bck;
 		return true;
 	}
@@ -800,7 +903,21 @@ public class JDTVisitor extends ASTVisitor {
 					getExpr( (ASTNode) p )
 			);
 		}
-		return new ASTMethodCall(start,stop, name, exprCallee, pars );
+		ASTMethodCall mc = new ASTMethodCall(start,stop, name, exprCallee, pars );
+		IMethodBinding method = expr.resolveMethodBinding();
+		String pkg, nmm;
+		if(method != null){
+			ITypeBinding theClass = method.getDeclaringClass();
+			pkg = theClass.getPackage().getName();
+			nmm = theClass.getName();
+			String classPointed = pkg + "." + nmm;
+			if(classPointed.startsWith(".")){
+				classPointed = classPointed.substring(1);
+			}
+			mc.setClassPointed(classPointed);
+			//System.out.println(node.toString() + " points to " + classPointed);
+		}
+		return mc;
 	}
 
 	private IASTRE arrayInitializer(ArrayInitializer expr) {
@@ -871,6 +988,18 @@ public class JDTVisitor extends ASTVisitor {
 				IASTRE name = getExpr(subVar.getName());
 				IASTRE e = getExpr(subVar.getInitializer());
 				ASTVariableDeclaration v = new ASTVariableDeclaration(vStart, vStop, type, name, e);
+				String pkg, nmm;
+				ITypeBinding typePointed = subVar.resolveBinding() != null ? subVar.resolveBinding().getType() : null;
+				if(typePointed != null){
+					pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+					nmm = typePointed.getName();
+					String classPointed = pkg + "." + nmm;
+					if(classPointed.startsWith(".")){
+						classPointed = classPointed.substring(1);
+					}
+					v.setTypePointed(classPointed);
+					//System.out.println(node.toString() + " points to " + classPointed);
+				}
 				vars.add(v);
 			}
 			ret = new ASTVariableMultipleDeclaration(start,stop,type, vars);
@@ -883,6 +1012,18 @@ public class JDTVisitor extends ASTVisitor {
 				IASTRE name = getExpr(subVar.getName());
 				IASTRE e = getExpr(subVar.getInitializer());
 				ASTVariableDeclaration v = new ASTVariableDeclaration(vStart, vStop, type, name, e);
+				String pkg, nmm;
+				ITypeBinding typePointed = subVar.resolveBinding() != null ? subVar.resolveBinding().getType() : null;
+				if(typePointed != null){
+					pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+					nmm = typePointed.getName();
+					String classPointed = pkg + "." + nmm;
+					if(classPointed.startsWith(".")){
+						classPointed = classPointed.substring(1);
+					}
+					v.setTypePointed(classPointed);
+					//System.out.println(node.toString() + " points to " + classPointed);
+				}
 				ret = v;
 			}
 
@@ -968,14 +1109,18 @@ public class JDTVisitor extends ASTVisitor {
 				if(node instanceof FieldDeclaration){
 					FieldDeclaration f = (FieldDeclaration) node;
 					ASTClass.Visibility vis = ASTClass.Visibility.PRIVATE;
-					if(f.modifiers().size() > 0){
+					/*if(f.modifiers().size() > 0){
 						int i = 0;
 						while(i < f.modifiers().size() && !(f.modifiers().get(i) instanceof Modifier)){
 							i++;
 						}
-						Modifier m = (Modifier) f.modifiers().get(i);
-						vis = Getter.visibility(m.toString());
-					}
+						try {
+							Modifier m = (Modifier) f.modifiers().get(i);
+							vis = Getter.visibility(m.toString());
+						} catch (Exception e){
+							System.out.println("BRK");
+						}
+					}*/
 					String typeF = f.getType().toString();
 					String name = "";
 					ASTRE exprF = null;
@@ -988,6 +1133,18 @@ public class JDTVisitor extends ASTVisitor {
 					ssF = f.getStartPosition();
 					stF = ssF + f.getLength();
 					ASTAttribute attribute = new ASTAttribute(ssF, stF, vis, typeF , name, exprF);
+					String pkg, nmm;
+					ITypeBinding typePointed = f.getType().resolveBinding();
+					if(typePointed != null){
+						pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+						nmm = typePointed.getName();
+						String classPointed = pkg + "." + nmm;
+						if(classPointed.startsWith(".")){
+							classPointed = classPointed.substring(1);
+						}
+						attribute.setTypePointed(classPointed);
+						//System.out.println(node.toString() + " points to " + classPointed);
+					}
 					c.addAttribute(attribute);
 				}
 				if(node instanceof MethodDeclaration){
@@ -1122,15 +1279,19 @@ public class JDTVisitor extends ASTVisitor {
 		}
 
 		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
-		int line = mc.getLine();
 
 		IMethodBinding method = node.resolveMethodBinding();
+		String pkg, nmm;
 		if(method != null){
-			IPackageBinding pkgCalled = method.getDeclaringClass().getPackage();
-			String nameCalled = method.getDeclaringClass().getName();
-			//System.out.println(line + " :: " + pkgCalled.getName() + "." + nameCalled);
-		} else {
-			//System.out.println(line + " :: null :(" );
+			ITypeBinding theClass = method.getDeclaringClass();
+			pkg = theClass.getPackage().getName();
+			nmm = theClass.getName();
+			String classPointed = pkg + "." + nmm;
+			if(classPointed.startsWith(".")){
+				classPointed = classPointed.substring(1);
+			}
+			mc.setClassPointed(classPointed);
+			//System.out.println(node.toString() + " points to " + classPointed);
 		}
 		return mc;
 	}

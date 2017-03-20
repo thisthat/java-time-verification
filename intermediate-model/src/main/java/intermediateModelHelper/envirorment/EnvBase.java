@@ -8,6 +8,7 @@ package intermediateModelHelper.envirorment;
  * @version %I%, %G%
  */
 public class EnvBase extends Env {
+
 	public EnvBase() {
 	}
 

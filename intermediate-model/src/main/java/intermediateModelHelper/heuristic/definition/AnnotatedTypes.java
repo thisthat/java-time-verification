@@ -1,10 +1,17 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+
+import java.util.List;
 
 
 /**
@@ -16,6 +23,17 @@ import intermediateModel.structure.expression.ASTMethodCall;
  */
 public class AnnotatedTypes extends SearchTimeConstraint {
 
+	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
+
+
+	public AnnotatedTypes() {
+	}
+
+	@Override
+	public void setup(ASTClass c) {
+
+	}
+
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
 	 * The heuristc search if the method called is in the list of time relevant methods.
@@ -25,16 +43,39 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 	 * @param env	Envirorment visible to that statement
 	 */
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
+	public void next(ASTRE stm, Env env) {
 		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
-		//only search for Method Call
-		if(!(expr instanceof ASTMethodCall)) return;
-		ASTMethodCall method = (ASTMethodCall) expr;
+		IASTRE expr = stm.getExpression();
+		if(expr == null){
+			return;
+		}
+		expr.visit(new DefualtASTREVisitor(){
+			@Override
+			public void enterASTMethodCall(ASTMethodCall elm) {
+				String pointer = elm.getClassPointed();
+				if(pointer != null && containTimeOut(pointer, elm.getMethodName(), elm.getParameters().size())) {
+					AnnotatedTypes.super.addConstraint("timeout", elm);
+				}
+			}
+		});
+	}
 
-		//TODO extends this search with the full typesystem of the project :: for each method its return type
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
 
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
+
+	}
+
+	private boolean containTimeOut(String pointer, String name, int nPars){
+		for(TimeMethod m : timeMethods){
+			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
+				return true;
+		}
+		return false;
 	}
 
 }

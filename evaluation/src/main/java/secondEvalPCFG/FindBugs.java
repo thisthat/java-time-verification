@@ -11,7 +11,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.io.File;
 import java.io.IOException;
@@ -199,7 +199,7 @@ public class FindBugs {
 		List<ASTClass> out = new ArrayList<>();
 		try {
 			a = new Java2AST(filename, true);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return out;
 		}

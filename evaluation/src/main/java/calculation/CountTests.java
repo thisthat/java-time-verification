@@ -6,7 +6,7 @@ import intermediateModel.structure.ASTMethod;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class CountTests {
 				Java2AST a = null;
 				try {
 					a = new Java2AST(filename, true);
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					continue;
 				}

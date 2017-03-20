@@ -1,12 +1,14 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModelHelper.CheckExpression;
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.CheckExpression;
+import intermediateModelHelper.envirorment.Env;
 
 /**
  * The heuristic searches for snippet of code in a guard section of the following type:
@@ -24,12 +26,20 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 public class TimeoutResources extends SearchTimeConstraint {
 
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
-		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
+	public void setup(ASTClass c) {
 
-		final boolean[] found = {false};
+	}
+
+	@Override
+	public void next(ASTRE stm, Env env) {
+		//works only on ASTRE
+		IASTRE expr = stm.getExpression();
+		if(expr == null){
+			return;
+		}
+
+		CheckExpression.checkRE(stm,env);
+
 		//search for A {<,<=,>,>=} C
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
@@ -39,17 +49,24 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case lessEqual:
 					case greater:
 					case greaterEqual:
+					case equality:
 						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
-							found[0] = true;
+							TimeoutResources.super.addConstraint(stm.getCode(), stm);
 						}
 				}
 			}
 		});
 
-		if(found[0]){
-			this.addConstraint(stm.getCode(),stm);
-		}
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
 
 	}
 

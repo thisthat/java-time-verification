@@ -15,7 +15,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>intermediate-model</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -6,9 +6,10 @@ import PCFG.structure.PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.util.Arrays;
 
@@ -26,6 +27,11 @@ public class TestAnonymousClasses {
 		MongoOptions.getInstance().setDbName(DB_NAME);
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

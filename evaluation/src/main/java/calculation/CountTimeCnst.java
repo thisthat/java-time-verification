@@ -4,6 +4,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
+import parser.UnparsableException;
 
 import java.io.File;
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Iterator;
  */
 public class CountTimeCnst {
 
-	public static void main(String... args){
+	public static void main(String... args) throws UnparsableException {
 		String[] projects = {"activemq","airavata", "jetty", "vuze", "wildfly-core"};
 		for(String p : projects){
 			System.out.append(p);
@@ -24,7 +25,7 @@ public class CountTimeCnst {
 		}
 	}
 
-	private static void compute(String project){
+	private static void compute(String project) throws UnparsableException {
 		String base_path = "/Users/giovanni/repository/sources/" + project;
 		File dir = new File(base_path);
 		String[] filter = {"java"};

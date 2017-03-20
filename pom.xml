@@ -14,13 +14,10 @@
         <module>java-parser</module>
         <module>xal</module>
         <module>intermediate-model</module>
-        <module>testing</module>
         <module>PCFG</module>
         <module>evaluation</module>
         <module>time-annotation</module>
         <module>server</module>
-        <module>socket</module>
-        <module>smellDetector</module>
     </modules>
 
     <build>

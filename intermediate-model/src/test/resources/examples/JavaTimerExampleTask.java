@@ -35,7 +35,7 @@ public class JavaTimerExampleTask extends TimerTask {
 		timer.schedule(task, 0, 5000);
 		System.out.println("The schedular has started");
 
-		task.wait();
+		task.wait(100);
 
 		try {
 			// Putting a sleep of 10000 ms so that the task can run twice as it

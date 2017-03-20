@@ -8,7 +8,8 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
+import parser.UnparsableException;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class StartEvaluation {
 
 	private final String __dir = "vuze";
 
-	public static void main(String args[]) throws IOException {
+	public static void main(String args[]) throws Exception {
 		if(args.length < 1){
 			System.out.println("You should pass as parameter the directory of the project to analyze");
 			return;
@@ -33,7 +34,7 @@ public class StartEvaluation {
 		new StartEvaluation().run(args[0]);
 	}
 
-	public void run(String base_path) throws IOException {
+	public void run(String base_path) throws IOException, UnparsableException {
 		File dir = new File(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
