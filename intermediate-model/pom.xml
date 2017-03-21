@@ -82,6 +82,10 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <debug>true</debug>
+                    <compilerArgs>
+                        <arg>-g</arg>
+                    </compilerArgs>
                 </configuration>
                 <version>3.5.1</version>
             </plugin>
