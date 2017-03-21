@@ -3,6 +3,7 @@ from java2ta.engine.context import Context
 from java2ta.ta.models import TA
 from java2ta.translator.rules import ExtractClassStateSpace, ExtractMethodStateSpace, AddStates
 from java2ta.abstraction import StateSpace
+from java2ta.abstraction.domains import *
 from java2ta.ir.models import Project, Thread, Klass, Method
 from java2ta.ir.tests.test_models import check_is_open
 
@@ -18,8 +19,6 @@ def test_extract_class_state_space():
 
     check_is_open(p)
 
-#    thread_desc = p.get_thread("Producer")
-
     thread = Thread("Producer", "", p)
 
 
@@ -30,10 +29,10 @@ def test_extract_class_state_space():
     
     ctx = Context()
     ctx.push({})
-    predicates = {
-        "b": [ "null", "empty", "some_elements", "full", ]
+    domains = {
+        "b": BOUNDED_COLLECTION,
     }
-    ctx.update("abs_predicates", predicates)
+    ctx.update("abs_domains", domains)
     
     (ta_post, ctx_post) = e.run(thread, ta, ctx)
 
@@ -45,7 +44,7 @@ def test_extract_class_state_space():
     assert ctx_post.get("state_space") is not None
     assert isinstance(ctx_post.get("state_space"), StateSpace)
 
-    assert len(ctx.get("state_space").enumerate) == 4
+    assert len(ctx.get("state_space").enumerate) == BOUNDED_COLLECTION.size
 
 
 def test_add_states_from_class_state_space():
@@ -58,8 +57,6 @@ def test_add_states_from_class_state_space():
 
     check_is_open(p)
 
-#    thread_desc = p.get_thread("Producer")
-
     thread = Thread("Producer", "", p)
 
     r1 = ExtractClassStateSpace()
@@ -71,16 +68,16 @@ def test_add_states_from_class_state_space():
     
     ctx = Context()
     ctx.push({})
-    predicates = {
-        "b": [ "null", "empty", "some_elements", "full", ]
+    domains = {
+        "b": BOUNDED_COLLECTION,
     }
-    ctx.update("abs_predicates", predicates)
+    ctx.update("abs_domains", domains)
     
     (ta_post, ctx_post) = e.run(thread, ta, ctx)
 
     assert e.num_applications == 2, e.num_applications
     
-    assert len(ta_post.locations) == 4
+    assert len(ta_post.locations) == BOUNDED_COLLECTION.size
     assert len(ta_post.edges) == 0
 
 
@@ -94,12 +91,6 @@ def test_extract_method_state_space():
 
     check_is_open(p)
 
-#    thread_desc = p.get_thread("Producer")
-#    class_ir = p.get_class("file://SemaphoreLock.java", "SemaphoreLock")
-
-#    assert isinstance(class_ir, dict)
-
-#    klass = Klass(class_ir, p)
     klass = Klass("SemaphoreLock", "", "file://SemaphoreLock.java", p)
 
     m = Method("requestCS", klass)
@@ -111,11 +102,11 @@ def test_extract_method_state_space():
     
     ctx = Context()
     ctx.push({})
-    predicates = {
-        "mutex": [ "true", "false", ],
-        "i": [ "< 0", "== 0", "> 0" ]
+    domains = {
+        "mutex": BOOLEANS,
+        "i": INTEGERS,
     }
-    ctx.update("abs_predicates", predicates)
+    ctx.update("abs_domains", domains)
     
     (ta_post, ctx_post) = e.run(m, ta, ctx)
 
@@ -127,6 +118,6 @@ def test_extract_method_state_space():
     assert ctx_post.get("state_space") is not None
     assert isinstance(ctx_post.get("state_space"), StateSpace)
 
-    assert len(ctx.get("state_space").enumerate) == (len(predicates["mutex"]) * len(predicates["i"]))
+    assert ctx.get("state_space").size == domains["mutex"].size * domains["i"].size
 
 

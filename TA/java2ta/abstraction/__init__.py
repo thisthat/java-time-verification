@@ -3,7 +3,8 @@ class AbstractAttribute(object):
     def __init__(self, name, values, initial):
         self.name = name
 
-        assert isinstance(values, list), "Expected list. Passed '%s'" % values
+#        assert isinstance(values, list), "Expected list. Passed '%s'" % values
+        assert hasattr(values, "__iter__"), "Expected iterable. Passed '%s'" % values
         assert initial in values, "Expected value in '%s'. Passed: '%s'" % (",".join(values), initial)
 
         self.domain = {}
@@ -74,6 +75,10 @@ class StateSpace(object):
                 self._configurations = self.do_multiply(self._configurations, attr)
 
         return self._configurations
+
+    @property
+    def size(self):
+        return len(self.enumerate)
 
     def do_multiply(self, configurations, attribute):
         """     

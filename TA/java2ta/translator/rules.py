@@ -1,5 +1,6 @@
 import abc
 from java2ta.abstraction import AbstractAttribute, StateSpace
+from java2ta.abstraction.domains import Domain
 from java2ta.engine.rules import Rule
 from java2ta.ta.models import TA, Location, Edge
 from java2ta.ir.models import Klass, Thread, Method
@@ -7,7 +8,7 @@ from java2ta.ir.models import Klass, Thread, Method
 
 class ExtractStateSpace(Rule):
     """
-    This rule assumes the context has a dictionary called 'abs_predicates'
+    This rule assumes the context has a dictionary called 'abs_domains'
     associating every attribute name with a list of admitted values.
 
     If the rule is applied, it adds an entry 'state_space' of type StateSpace
@@ -17,23 +18,25 @@ class ExtractStateSpace(Rule):
     __metaclass__ = abc.ABCMeta
 
     def match(self):
-        return self.ctx.get("state_space") is None and self.ctx.get("abs_predicates") is not None
+        return self.ctx.get("state_space") is None and self.ctx.get("abs_domains") is not None
 
     def let(self):
  
         attributes = self.get_attributes()   
-        predicates = self.ctx.get("abs_predicates")
-        assert isinstance(predicates, dict), predicates
+        domains = self.ctx.get("abs_domains")
+        assert isinstance(domains, dict), domains
 
         ss = StateSpace()
 
-        # 1. find attributes with an abstraction predicate
+        # 1. find attributes with an associated abstract domain
         for attr in attributes:
             name = attr["name"]
-            if name in predicates:
-                values = predicates[name]
+            if name in domains:
+                dom = domains[name]
+
+                assert isinstance(dom, Domain)
                 
-                abs_att = AbstractAttribute(name, values, values[0])
+                abs_att = AbstractAttribute(name, dom.values, dom.default)
                 ss.add_attribute(abs_att)
 
         let_ctx = {
@@ -98,6 +101,3 @@ class AddStates(Rule):
 
         return self.asts_out
 
-        
-
-        
