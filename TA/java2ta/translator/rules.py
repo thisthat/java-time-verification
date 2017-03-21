@@ -101,3 +101,37 @@ class AddStates(Rule):
 
         return self.asts_out
 
+
+
+class TranslateMethod(Rule):
+
+    def match(self):
+        """
+        There is something to do iff:
+        - there is a list of methods to be translated
+        - there is not a method under translation, currently
+        - not all the methods have been translated
+        """
+        methods_todo = self.ctx.get("translate_methods")
+        methods_done = self.ctx.get("methods_translated")
+        curr_method = self.ctx.get("method_curr")
+
+        return isinstance(methods_todo,list) and curr_method is None and (len(set(methods_todo) - set(methods(done))) > 0)
+
+
+    def do_update_context(self, let_ctx):
+        """
+        Pick a method name among those to be translated that have not been
+        processed, so far. Save the method name in the 'method_curr' variable in
+        the context.
+        """
+        assert self.ctx.get("method_curr") is None
+
+        methods_todo = self.ctx.get("translate_methods")
+        methods_done = self.ctx.get("methods_translated")
+ 
+        missing = set(methods_todo) - set(methods_done) 
+
+        pick_method = next(iter(missing))
+
+        self.ctx.update("method_curr", pick_method)      
