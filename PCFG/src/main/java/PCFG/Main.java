@@ -1,19 +1,19 @@
 package PCFG;
 
 
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.converter.IConverter;
 import PCFG.converter.ToDot;
 import PCFG.converter.ToXAL;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.io.BufferedWriter;
 import java.io.File;

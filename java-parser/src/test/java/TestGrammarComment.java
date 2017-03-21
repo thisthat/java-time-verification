@@ -1,5 +1,5 @@
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 /**
  * Created by giovanni (@thisthatDC) on 18/03/16.

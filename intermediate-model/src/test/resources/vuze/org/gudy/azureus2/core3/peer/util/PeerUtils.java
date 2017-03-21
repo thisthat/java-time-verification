@@ -341,7 +341,7 @@ public class PeerUtils {
 	 int 					specific_max )
   {
 	 // max will have been adjusted based on network selection so we don't actually need to use
-	 // nework info any further during this calculation
+	 // nework info any further during this evaluation.calculation
 	  
     int curConnPerTorrent = PeerIdentityManager.getIdentityCount( data_id );
 	  

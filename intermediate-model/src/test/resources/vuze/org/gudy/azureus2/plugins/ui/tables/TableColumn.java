@@ -365,7 +365,7 @@ public interface TableColumn {
   /**
    * Retrieves whether the preferred width is automatically calculated.
    * 
-   * @return preferred width auto calculation state
+   * @return preferred width auto evaluation.calculation state
    *
    * @since 3.0.0.7
    */

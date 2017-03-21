@@ -21,8 +21,9 @@ public class XALSync extends XALState implements XALAddState {
     XALAddState parent;
 
     /**
-     * Check the super method in {@link XALState}
+     * * Check the super method in {@link XALState}
      * @param id The id of the state
+     * @param parent Parent
      */
     public XALSync(String id, XALAddState parent) {
         super(id);

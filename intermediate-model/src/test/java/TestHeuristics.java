@@ -1,12 +1,16 @@
-import IntermediateModelHelper.heuristic.definition.*;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.ApplyHeuristics;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.heuristic.definition.*;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.IndexData;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.util.List;
 
@@ -20,12 +24,8 @@ import static org.junit.Assert.assertTrue;
 public class TestHeuristics {
 
 	public List<ASTClass> init(String filename) throws Exception {
-		Java2AST a = new Java2AST( filename );
-		a.convertToAST();
-		CompilationUnit ast = a.getContextJDT();
-		JDTVisitor v = new JDTVisitor(ast, filename);
-		ast.accept(v);
-		return v.listOfClasses;
+		String dir = filename.substring(0, filename.lastIndexOf("/"));
+		return JDTVisitor.parse(filename,dir);
 	}
 
 	@Test
@@ -33,10 +33,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/ExportChangesJob.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -50,10 +48,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/FailoverTimeoutTest.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -69,8 +65,8 @@ public class TestHeuristics {
 		));
 		assertTrue(check(
 				195,
-				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)));",
-				ThreadTime.class,
+				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)))",
+				AnnotatedTypes.class,
 				constraints
 		));
 
@@ -79,14 +75,40 @@ public class TestHeuristics {
 	}
 
 	@Test
+	public void TestShowBug18() throws Exception {
+		String filename = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
+		List<ASTClass> cs = init(filename);
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.set__DEBUG__(true);
+		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(SetTimeout.class);
+		ah.subscribe(AnnotatedTypes.class);
+		ah.analyze(cs.get(0));
+		MongoOptions.getInstance().setDbName("TestShowBug18");
+		IndexingFile indexing = new IndexingFile();
+		IndexData data = indexing.index(cs.get(0));
+
+		List<Triplet<String, IASTStm, Class>> constraints = ah.getTimeConstraint();
+
+		assertTrue(check(
+				14,
+				"paused_on > 0 && started_on > 0",
+				TimeoutResources.class,
+				constraints
+		));
+
+		assertEquals(constraints.size(), 1);
+
+		MongoConnector.getInstance().close();
+	}
+
+	@Test
 	public void TestJavaTimerExampleTask() throws Exception {
 		String filename = getClass().getClassLoader().getResource("examples/JavaTimerExampleTask.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -95,26 +117,26 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				16,
-				"Thread.sleep(4000);",
-				ThreadTime.class,
+				"Thread.sleep(4000)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				35,
-				"timer.schedule(task, 0, 5000);",
-				TimerType.class,
+				"timer.schedule(task, 0, 5000)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				38,
-				"task.wait();",
-				ThreadTime.class,
+				"task.wait(100)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				43,
-				"Thread.sleep(10000);",
-				ThreadTime.class,
+				"Thread.sleep(10000)",
+				AnnotatedTypes.class,
 				constraints
 		));
 
@@ -127,10 +149,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/MCGroupImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -139,8 +159,8 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				817,
-				"socket.receive( packet );",
-				SocketTimeout.class,
+				"socket.receive( packet )",
+				SetTimeout.class,
 				constraints
 		));
 
@@ -153,10 +173,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/ProjectServiceImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -165,8 +183,8 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				349,
-				"Thread.sleep(500+((int)Math.random()*1000));",
-				ThreadTime.class,
+				"Thread.sleep(500+((int)Math.random()*1000))",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertEquals(constraints.size(), 1);
@@ -178,10 +196,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/SmallTest.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -194,10 +210,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/socketTest.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -205,9 +219,9 @@ public class TestHeuristics {
 
 
 		assertTrue(check(
-				39,
-				"DataOutputStream dos = new DataOutputStream( socket.getOutputStream());",
-				SocketTimeout.class,
+				35,
+				"socket.connect( new InetSocketAddress( _address, 2190 ), 5000 )",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertEquals(constraints.size(), 1);
@@ -220,10 +234,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/Test.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		List<Triplet<String,IASTStm,Class>> constraints;
 		//First class
@@ -233,20 +245,20 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				86,
-				"Thread.sleep(5000);",
-				ThreadTime.class,
+				"Thread.sleep(5000)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				205,
-				"wait();",
-				ThreadTime.class,
+				"wait(100)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				232,
-				"createTopologyThread.sleep(1000);",
-				ThreadTime.class,
+				"createTopologyThread.sleep(1000)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertEquals(constraints.size(), 3);
@@ -266,29 +278,22 @@ public class TestHeuristics {
 		constraints = ah.getTimeConstraint();
 		assertTrue(check(
 				290,
-				"Thread.sleep(5000);",
-				ThreadTime.class,
+				"Thread.sleep(5000)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				293,
-				"Thread.sleep(5000);",
-				ThreadTime.class,
+				"Thread.sleep(5000)",
+				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				302,
-				"Thread.sleep(_class.SleepTimeout);",
-				ThreadTime.class,
+				"Thread.sleep(_class.SleepTimeout)",
+				AnnotatedTypes.class,
 				constraints
 		));
-		assertTrue(check(
-				308,
-				"Thread.join();",
-				ThreadTime.class,
-				constraints
-		));
-
 
 	}
 
@@ -297,10 +302,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/testLambdas.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
@@ -313,10 +316,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/TimerEvent.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -330,10 +331,8 @@ public class TestHeuristics {
 		String filename = getClass().getClassLoader().getResource("examples/UPnPImpl.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
+		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
@@ -341,18 +340,12 @@ public class TestHeuristics {
 
 
 		assertTrue(check(
-				612,
-				"SystemTime.getMonotonousTime() - last_fail < period",
-				TimeoutResources.class,
+				859,
+				"socket.connect(new InetSocketAddress(control.getHost(), control.getPort()), CONNECT_TIMEOUT)",
+				AnnotatedTypes.class,
 				constraints
 		));
-		assertTrue(check(
-				864,
-				"PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), \"UTF8\"));",
-				SocketTimeout.class,
-				constraints
-		));
-		assertEquals(constraints.size(), 2);
+		assertEquals(constraints.size(), 1);
 
 	}
 

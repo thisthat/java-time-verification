@@ -17,7 +17,7 @@ import org.gudy.bouncycastle.asn1.DERSequence;
 /**
  * PKIX RFC-2459
  *
- * The X.509 v2 CRL syntax is as follows.  For signature calculation,
+ * The X.509 v2 CRL syntax is as follows.  For signature evaluation.calculation,
  * the data that is to be signed is ASN.1 DER encoded.
  *
  * <pre>

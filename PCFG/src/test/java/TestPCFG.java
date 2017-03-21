@@ -1,15 +1,16 @@
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.structure.node.Node;
 import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,6 +25,11 @@ public class TestPCFG {
 		MongoOptions.getInstance().setDbName("TestPCFG");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

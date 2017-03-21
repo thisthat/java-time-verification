@@ -399,7 +399,7 @@ public final class KeyBindings
     }
 
     /**
-     * Runs simple tests on KeyBindings keybinding values
+     * Runs simple testsRoutes on KeyBindings keybinding values
      * @param args Command-line arguments; they are not used
      */
     public static void main(final String[] args)

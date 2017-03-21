@@ -1,16 +1,16 @@
 package PCFG.creation.helper;
 
-import IntermediateModelHelper.indexing.GenerateMethodSyncCallList;
-import IntermediateModelHelper.indexing.structure.SyncMethodCall;
+import intermediateModelHelper.indexing.GenerateMethodSyncCallList;
+import intermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.structure.ASTConstructor;
-import IntermediateModel.structure.ASTMethod;
-import IntermediateModel.structure.ASTRE;
-import IntermediateModel.visitors.DefaultASTVisitor;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
+import intermediateModel.structure.ASTRE;
+import intermediateModel.visitors.DefaultASTVisitor;
 import org.javatuples.KeyValue;
 
 import java.util.HashMap;

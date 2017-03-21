@@ -222,7 +222,7 @@ DHTControlImpl
 		encode_keys						= _encode_keys;
 		enable_random_poking			= _enable_random_poking;
 		
-			// set this so we don't do initial calculation until reasonably populated
+			// set this so we don't do initial evaluation.calculation until reasonably populated
 		
 		last_dht_estimate_time	= SystemTime.getCurrentTime();
 		
@@ -406,7 +406,7 @@ DHTControlImpl
 		encode_keys						= _encode_keys;
 		enable_random_poking			= _enable_random_poking;
 		
-			// set this so we don't do initial calculation until reasonably populated
+			// set this so we don't do initial evaluation.calculation until reasonably populated
 		
 		last_dht_estimate_time	= SystemTime.getCurrentTime();
 		

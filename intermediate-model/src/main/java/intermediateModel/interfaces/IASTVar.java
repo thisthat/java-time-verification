@@ -1,4 +1,4 @@
-package IntermediateModel.interfaces;
+package intermediateModel.interfaces;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -11,4 +11,5 @@ public interface IASTVar {
 	boolean isTimeCritical();
 	void setTimeCritical(boolean timeCritical);
 	boolean equals(Object o);
+	public String getTypePointed();
 }

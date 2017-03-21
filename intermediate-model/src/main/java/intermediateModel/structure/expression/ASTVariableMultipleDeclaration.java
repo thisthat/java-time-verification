@@ -1,9 +1,9 @@
-package IntermediateModel.structure.expression;
+package intermediateModel.structure.expression;
 
-import IntermediateModel.interfaces.ASTREVisitor;
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.ASTREVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +41,7 @@ public class ASTVariableMultipleDeclaration extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTREVisitor visitor) {
+		//Default RE
 		visitor.enterAll(this);
 		visitor.enterASTVariableMultipleDeclaration(this);
 		for(IASTRE v : vars){
@@ -52,13 +53,7 @@ public class ASTVariableMultipleDeclaration extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTVisitor visitor) {
-		visitor.enterAll(this);
-		visitor.enterASTVariableMultipleDeclaration(this);
-		for(IASTRE v : vars){
-			v.visit(visitor);
-		}
-		visitor.exitASTVariableMultipleDeclaration(this);
-		visitor.exitAll(this);
+		visit((ASTREVisitor) visitor);
 	}
 
 }

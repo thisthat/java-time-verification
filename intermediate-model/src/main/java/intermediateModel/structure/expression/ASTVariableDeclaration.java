@@ -1,9 +1,9 @@
-package IntermediateModel.structure.expression;
+package intermediateModel.structure.expression;
 
-import IntermediateModel.interfaces.ASTREVisitor;
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.ASTREVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -14,6 +14,7 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 	String type;
 	IASTRE name;
 	IASTRE expr;
+	private String typePointed;
 
 	public ASTVariableDeclaration(int start, int end, String type, IASTRE name, IASTRE expr) {
 		super(start, end);
@@ -82,4 +83,11 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 		visitor.exitAll(this);
 	}
 
+	public void setTypePointed(String typePointed) {
+		this.typePointed = typePointed;
+	}
+
+	public String getTypePointed() {
+		return typePointed;
+	}
 }

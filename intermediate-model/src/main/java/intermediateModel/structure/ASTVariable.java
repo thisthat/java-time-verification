@@ -1,9 +1,9 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.IASTVar;
-import IntermediateModel.interfaces.IASTVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.interfaces.IASTVisitor;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -12,6 +12,7 @@ import IntermediateModel.interfaces.IASTVisitor;
 public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
+	private String typePointed;
 
 
 	public ASTVariable(int start, int end, String name, String type) {
@@ -55,6 +56,14 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 		if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null) return false;
 
 		return true;
+	}
+
+	public void setTypePointed(String typePointed) {
+		this.typePointed = typePointed;
+	}
+
+	public String getTypePointed() {
+		return typePointed;
 	}
 
 	public boolean equals(ASTAttribute o){

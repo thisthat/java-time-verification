@@ -1,9 +1,10 @@
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,11 +19,12 @@ import java.util.List;
 public class TestSyncBlocks {
 
 	String file = TestSyncBlocks.class.getClassLoader().getResource("exprTypesSync/Thread_1.java").getPath();
+	String _dir = "";
 	@Before
 	public void setUp() throws Exception {
 
 		String directory = file.substring(0, file.lastIndexOf("/")+1);
-
+		_dir = directory;
 
 		MongoOptions.getInstance().setDbName("testSyncBlocks");
 		MongoConnector.getInstance().drop();
@@ -35,9 +37,14 @@ public class TestSyncBlocks {
 		
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
+	}
+
 	@Test
 	public void TestSyncs() throws Exception {
-		List<ASTClass> classes = JDTVisitor.parse(file);
+		List<ASTClass> classes = JDTVisitor.parse(file, _dir);
 		ASTClass c = classes.get(0);
 		List<IndexSyncBlock> ret = MongoConnector.getInstance().getSyncBlockIndex(c);
 		assertEquals(5, ret.size());

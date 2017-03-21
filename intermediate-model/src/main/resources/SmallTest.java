@@ -1,4 +1,4 @@
-import IntermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTStm;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

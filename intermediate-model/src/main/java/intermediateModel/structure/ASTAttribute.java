@@ -1,9 +1,9 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.IASTVar;
-import IntermediateModel.interfaces.IASTVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.interfaces.IASTVisitor;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -14,6 +14,7 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 	private String type;
 	private String name;
 	private ASTRE expr;
+	private String typePointed;
 
 
 	public ASTAttribute(int start, int end, Visibility accessRight, String type, String name, ASTRE expr) {
@@ -110,4 +111,11 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 	}
 
 
+    public void setTypePointed(String typePointed) {
+        this.typePointed = typePointed;
+    }
+
+	public String getTypePointed() {
+		return typePointed;
+	}
 }

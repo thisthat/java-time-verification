@@ -1,4 +1,4 @@
-import IntermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTMethod;
 import Thread_2;
 import abcd.XString;
 

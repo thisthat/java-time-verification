@@ -470,7 +470,7 @@ NetStatusProtocolTester
 							
 							if ( active_tests.size() > MAX_ACTIVE_TESTS ){
 								
-								log( "Too many active tests" );
+								log( "Too many active testsRoutes" );
 								
 								return( reply );
 								

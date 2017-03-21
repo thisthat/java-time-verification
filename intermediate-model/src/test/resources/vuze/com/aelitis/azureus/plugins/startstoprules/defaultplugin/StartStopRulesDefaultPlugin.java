@@ -897,7 +897,7 @@ public class StartStopRulesDefaultPlugin implements Plugin,
 			if (iNewRankType != iRankType) {
 				iRankType = iNewRankType;
 
-				// shorten recalc for timed rank type, since the calculation is fast and we want to stop on the second
+				// shorten recalc for timed rank type, since the evaluation.calculation is fast and we want to stop on the second
 				if (iRankType == RANK_TIMED) {
 					if (recalcSeedingRanksTask == null) {
 						recalcAllSeedingRanks(false);
@@ -1693,7 +1693,7 @@ public class StartStopRulesDefaultPlugin implements Plugin,
 				
 				long	oldest_test = 0;
 				
-					// add in the time required to run a cycle of tests
+					// add in the time required to run a cycle of testsRoutes
 				
 				long adjustedReTest = iDownloadReTestMillis + iDownloadTestTimeMillis * downloads.size();
 	

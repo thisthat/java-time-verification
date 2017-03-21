@@ -1,4 +1,4 @@
-package IntermediateModel.interfaces;
+package intermediateModel.interfaces;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

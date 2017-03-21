@@ -1878,7 +1878,7 @@ DownloadManagerController
 		}
 
 		// The calculate from stats doesn't take into consideration DND
-		// So, if we have no DND files, use calculation from stats, which
+		// So, if we have no DND files, use evaluation.calculation from stats, which
 		// remembers things like whether the file was once complete
 		if (!cached_has_dnd_files) {
 			return stats.getRemaining() == 0;
@@ -1903,7 +1903,7 @@ DownloadManagerController
 		// No DiskManager or it's in a bad state for us.
 		// Assumed: We have DND files
 		if (bIncludeDND) {
-			// Want to include DND files in calculation, which there some, which
+			// Want to include DND files in evaluation.calculation, which there some, which
 			// means completion MUST be false
 			return false;
 		}

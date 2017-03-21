@@ -1,9 +1,9 @@
-package IntermediateModel.structure.expression;
+package intermediateModel.structure.expression;
 
-import IntermediateModel.interfaces.ASTREVisitor;
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTRE;
-import IntermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.ASTREVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	private String methodName;
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
+	String classPointed = null;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
 		super(start, end);
@@ -62,6 +63,14 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 				", exprCallee=" + exprCallee +
 				", parameters=" + parameters +
 				'}';
+	}
+
+	public String getClassPointed() {
+		return classPointed;
+	}
+
+	public void setClassPointed(String classPointed) {
+		this.classPointed = classPointed;
 	}
 
 	@Override

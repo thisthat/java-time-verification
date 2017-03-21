@@ -2,14 +2,15 @@ package server;
 
 import com.sun.net.httpserver.HttpServer;
 import server.handler.*;
-import server.handler.test.EchoGet;
-import server.handler.test.EchoHeader;
-import server.handler.test.EchoPost;
+import server.handler.test.echoGet;
+import server.handler.test.echoHeader;
+import server.handler.test.echoPost;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +25,9 @@ public class HttpServerConverter {
 	private final int noOfThreads = 4;
 	private final ExecutorService httpThreadPool;
 	HttpServer server;
+	private static boolean _debug;
+
+	private static Map<String,String> lastParameters = new HashMap<>();
 
 	public static int getPort() {
 		return port;
@@ -41,23 +45,28 @@ public class HttpServerConverter {
 		httpThreadPool = Executors.newFixedThreadPool(this.noOfThreads);
 
 		//Test urls
-		server.createContext("/", new Root());
-		server.createContext("/test/echoHeader", new EchoHeader());
-		server.createContext("/test/echoGet", new EchoGet());
-		server.createContext("/test/echoPost", new EchoPost());
+		server.createContext("/", new root());
+		server.createContext("/shutdown", new shutDown());
+		server.createContext("/test/echoHeader", new echoHeader());
+		server.createContext("/test/echoGet", new echoGet());
+		server.createContext("/test/echoPost", new echoPost());
 
 
 		//Get all java files from a project
-		server.createContext("/getAllFiles", new GetAllFiles());
-		server.createContext("/getFile", new GetFile());
+		server.createContext("/getAllFiles", new getAllFiles());
+		server.createContext("/getFile", new getFile());
 
 
+		openProject op = new openProject();
 		//Start project index
-		server.createContext("/openProject", new OpenProject());
-		server.createContext("/isProjectOpen", new IsProjectOpen());
-		server.createContext("/getFilesByType", new GetAllFilesByType());
-		server.createContext("/getThreads", new GetThreads());
-		server.createContext("/getMains", new GetMains());
+		server.createContext("/openProject", op);
+		server.createContext("/isProjectOpen", new isProjectOpen());
+		server.createContext("/getFilesByType", new getFilesByType());
+		server.createContext("/getThreads", new getThreads());
+		server.createContext("/getStatus", new getStatus(op));
+		server.createContext("/getMains", new getMains());
+		server.createContext("/clean", new clean());
+		server.createContext("/cleanAll", new cleanAll());
 
 		server.setExecutor(httpThreadPool);
 		server.start();
@@ -93,11 +102,29 @@ public class HttpServerConverter {
 				}
 			}
 		}
+		lastParameters = parameters;
+	}
+
+	public static Map<String, String> getLastParameters() {
+		return lastParameters;
+	}
+
+	public static boolean isDebugActive() {
+		return _debug;
 	}
 
 	public void stop() {
 		System.out.println("server stopped at " + port);
 		server.stop(1);
 		httpThreadPool.shutdownNow();
+		try {
+			Thread.currentThread().sleep(1000);
+		} catch (InterruptedException e) {
+			//we try but who cares
+		}
+	}
+
+	public void setDebug(boolean debug) {
+		_debug = debug;
 	}
 }

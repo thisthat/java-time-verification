@@ -1,25 +1,22 @@
-import IntermediateModelHelper.CheckExpression;
-import IntermediateModelHelper.envirorment.Env;
-import IntermediateModelHelper.envirorment.EnvBase;
-import IntermediateModelHelper.envirorment.EnvExtended;
-import IntermediateModelHelper.envirorment.EnvParameter;
-import IntermediateModelHelper.heuristic.definition.*;
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.IndexingProject;
-import IntermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import IntermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.structure.*;
-import IntermediateModel.visitors.ApplyHeuristics;
-import IntermediateModel.visitors.creation.JDTVisitor;
-import IntermediateModel.visitors.interfaces.ParseIM;
+import intermediateModelHelper.CheckExpression;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.EnvBase;
+import intermediateModelHelper.envirorment.EnvExtended;
+import intermediateModelHelper.envirorment.EnvParameter;
+import intermediateModelHelper.indexing.IndexingProject;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.*;
+import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.util.List;
 
@@ -58,6 +55,11 @@ public class TestEnvirorment {
 		MongoOptions.getInstance().setDbName("testEnv");
 		MongoConnector.getInstance().drop();
 
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	public List<ASTClass> init(String filename) throws Exception {
@@ -124,33 +126,6 @@ public class TestEnvirorment {
 	}
 
 	@Test
-	public void TestShowBug18() throws Exception {
-		String filename = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
-		List<ASTClass> cs = init(filename);
-		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(ThreadTime.class);
-		ah.subscribe(SocketTimeout.class);
-		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(TimerType.class);
-		ah.subscribe(AnnotatedTypes.class);
-		ah.analyze(cs.get(0));
-
-		IndexingFile indexing = new IndexingFile();
-		IndexData data = indexing.index(cs.get(0));
-
-		List<Triplet<String, IASTStm, Class>> constraints = ah.getTimeConstraint();
-
-		assertTrue(check(
-				14,
-				"paused_on > 0 && started_on > 0",
-				TimeoutResources.class,
-				constraints
-		));
-
-		assertEquals(constraints.size(), 1);
-	}
-
-	@Test
 	public void TestEnvExtended() throws Exception {
 		IndexingProject indexing = new IndexingProject();
 		String directory = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
@@ -171,7 +146,7 @@ public class TestEnvirorment {
 
 		List<ASTClass> cs;
 		EnvExtended e;
-		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Shape.java").getFile());
+		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Shape.java").getFile(), directory);
 		getEnv.start(cs.get(0));
 		assertTrue(out[0].getPrev().getPrev() == null);
 		assertTrue(out[0].existVarName("x"));
@@ -182,7 +157,7 @@ public class TestEnvirorment {
 		assertEquals(e.getClassName(), "Object");
 		assertEquals(e.getPackageName(), "");
 
-		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Rectangle.java").getFile());
+		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Rectangle.java").getFile(), directory);
 		getEnv.start(cs.get(0));
 		assertTrue(out[0].getPrev() instanceof EnvExtended);
 		assertTrue(out[0].isInherited("x"));
@@ -202,7 +177,7 @@ public class TestEnvirorment {
 		assertEquals(e.getClassName(), "Shape");
 		assertEquals(e.getPackageName(), "");
 
-		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Square.java").getFile());
+		cs = JDTVisitor.parse( getClass().getClassLoader().getResource("env/Square.java").getFile(), directory);
 		getEnv.start(cs.get(0));
 		assertTrue(out[0].getPrev() instanceof EnvExtended);
 		assertTrue(out[0].getPrev().getPrev() instanceof EnvExtended);

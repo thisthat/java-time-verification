@@ -1,7 +1,6 @@
 package server.handler.middleware;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import server.HttpServerConverter;
 
 import java.io.BufferedReader;
@@ -15,10 +14,12 @@ import java.util.Map;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public abstract class indexMW implements HttpHandler {
+public abstract class indexMW extends BaseRoute {
+
+
 
 	@Override
-	public void handle(HttpExchange he) throws IOException {
+	public void handleConnection(HttpExchange he) throws IOException {
 
 		Map<String, String> parameters = new HashMap<>();
 		InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
@@ -37,6 +38,8 @@ public abstract class indexMW implements HttpHandler {
 		String name = parameters.get("name");
 		handle(he, parameters, name);
 	}
+
+
 
 	protected abstract void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException;
 }

@@ -430,7 +430,7 @@ TRTrackerBTAnnouncerImpl
         secs_to_wait = TRTrackerAnnouncer.REFRESH_MINIMUM_SECS;
       }
       
-      //use 'min interval' for calculation
+      //use 'min interval' for evaluation.calculation
       if( min_interval != 0 && secs_to_wait < min_interval ) {
         float percentage = (float)min_interval / current_time_to_wait_secs;  //percentage of original interval
         

@@ -1,8 +1,8 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.IASTVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVisitor;
 
 
 /**

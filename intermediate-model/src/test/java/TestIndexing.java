@@ -1,11 +1,10 @@
-import IntermediateModelHelper.indexing.IndexingFile;
-import IntermediateModelHelper.indexing.structure.IndexData;
-import IntermediateModelHelper.indexing.structure.IndexMethod;
-import IntermediateModelHelper.indexing.structure.IndexSyncBlock;
-import IntermediateModel.structure.ASTClass;
-import IntermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.structure.IndexMethod;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;

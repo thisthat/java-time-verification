@@ -193,7 +193,7 @@ public class UploadSessionPicker {
 	
 	//this picks downloading sessions only
 	protected LinkedList<UploadSession> pickBestDownloadSessions( int max_sessions ) {
-		//TODO factor download priority into best calculation?
+		//TODO factor download priority into best evaluation.calculation?
 		
 		ArrayList<PEPeer> all_peers = globalGetAllDownloadPeers();
 		

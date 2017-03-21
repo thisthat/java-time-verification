@@ -1,7 +1,7 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModelHelper.types.DataTreeType;
-import IntermediateModel.interfaces.*;
+import intermediateModelHelper.types.DataTreeType;
+import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -13,7 +13,8 @@ import java.util.List;
  */
 
 public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTVisitor {
-	String name;
+    public static String lambda = "λ";
+    String name;
 	String returnType;
 	List<ASTVariable> parameters;
 	List<String> exceptionsThrowed;

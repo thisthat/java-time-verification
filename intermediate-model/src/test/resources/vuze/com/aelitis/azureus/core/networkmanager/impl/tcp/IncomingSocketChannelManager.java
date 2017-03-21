@@ -155,7 +155,7 @@ public class IncomingSocketChannelManager
      
     	//run a daemon thread to poll listen port for connectivity
     	//it seems that sometimes under OSX that listen server sockets sometimes stop accepting incoming connections for some unknown reason
-    	//this checker tests to make sure the listen socket is still accepting connections, and if not, recreates the socket
+    	//this checker testsRoutes to make sure the listen socket is still accepting connections, and if not, recreates the socket
     
     SimpleTimer.addPeriodicEvent("IncomingSocketChannelManager:concheck", 60 * 1000, new TimerEventPerformer()
 		{

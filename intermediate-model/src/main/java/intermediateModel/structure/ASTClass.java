@@ -1,9 +1,9 @@
-package IntermediateModel.structure;
+package intermediateModel.structure;
 
-import IntermediateModel.interfaces.ASTVisitor;
-import IntermediateModel.interfaces.IASTMethod;
-import IntermediateModel.interfaces.IASTStm;
-import IntermediateModel.interfaces.IASTVisitor;
+import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	List<ASTStatic> staticInit = new ArrayList<>();
 	String name;
 	Visibility accessRight;
-	List<String> implmentsInterfaces;
+	List<String> implementsInterfaces;
 	String extendClass;
 	List<ASTImport> imports = new ArrayList<>();
 	List<ASTAttribute> attributes = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.name = name;
 		this.accessRight = accessRight;
 		this.extendClass = extendClass == null ? "Object" : extendClass;
-		this.implmentsInterfaces = implmentsInterfaces;
+		this.implementsInterfaces = implmentsInterfaces;
 	}
 
 	public ASTClass(int start, int end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces, List<IASTMethod> methods) {
@@ -45,7 +45,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.name = name;
 		this.accessRight = accessRight;
 		this.extendClass = extendClass == null ? "Object" : extendClass;
-		this.implmentsInterfaces = implmentsInterfaces;
+		this.implementsInterfaces = implmentsInterfaces;
 	}
 
 	public ASTClass getParent() {
@@ -89,7 +89,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	}
 
 	public List<String> getImplmentsInterfaces() {
-		return implmentsInterfaces;
+		return implementsInterfaces;
 	}
 
 	public String getExtendClass() {
@@ -120,7 +120,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	}
 
 	public void setImplmentsInterfaces(List<String> implmentsInterfaces) {
-		this.implmentsInterfaces = implmentsInterfaces;
+		this.implementsInterfaces = implmentsInterfaces;
 	}
 
 	public void setExtendClass(String extendClass) {
