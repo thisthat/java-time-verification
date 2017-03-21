@@ -1,6 +1,5 @@
 before_script:
   - mvn -v
-  - mongod &
 
 test:
   script:
