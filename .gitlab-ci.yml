@@ -1,15 +1,22 @@
 before_script:
   - mvn -v
 
+stages:
+  - test
+  - deploy
+
 test:
+  stage: test
   script:
     - mvn clean test
 
 compile:
+  stage: test
   script:
     - mvn clean compile
 
-deploy:
+release:
+  stage: deploy
   script:
     - mvn clean package -DskipTests=true
   artifacts:
@@ -17,12 +24,6 @@ deploy:
     - server/target/server*.jar
     - intermediate-model/target/intermediate-model*.jar
 
-pages:
-  script:
-    - mvn clean package -DskipTests=true
-  artifacts:
-    paths:
-      - target/site/apidocs
 pages:
   stage: deploy
   script:
