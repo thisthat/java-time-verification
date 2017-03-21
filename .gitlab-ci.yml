@@ -23,3 +23,15 @@ pages:
   artifacts:
     paths:
       - target/site/apidocs
+pages:
+  stage: deploy
+  script:
+  - mvn clean package -DskipTests=true
+  - mkdir .public
+  - cp -r target/site/apidocs/ .public
+  - mv .public public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
