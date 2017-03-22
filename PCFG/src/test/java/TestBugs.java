@@ -23,7 +23,7 @@ public class TestBugs {
 
 	@Before
 	public void setUp() throws Exception {
-		MongoOptions.getInstance().setDbName("test");
+		MongoOptions.getInstance().setDbName("testPCFGBugs");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
 	}
@@ -36,6 +36,7 @@ public class TestBugs {
 	@Test
 	public void TestBug23() throws Exception {
 		IM2PCFG p = new IM2PCFG();
+		p.setForceReindex(true);
 
 		//first method
 		String f =  TestBugs.class.getClassLoader().getResource("bugs/Thread_1.java").getFile();

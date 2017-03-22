@@ -239,9 +239,6 @@ public class GenerateMethodSyncCallList extends ParseIM {
 		if(r == null || r.getExpression() == null){
 			return;
 		}
-		/*if(r.getLine() == 676){
-			System.out.println("BRK");
-		} else { return; }*/
 		String inMethod = lastMethod;
 		String inMethodPkg = _class.getPackageName();
 		String inMethodClass = _class.getName();

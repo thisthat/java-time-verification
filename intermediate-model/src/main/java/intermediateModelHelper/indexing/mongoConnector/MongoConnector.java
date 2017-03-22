@@ -519,12 +519,12 @@ public class MongoConnector {
 	 * @return	List of {@link IndexData} classes
 	 */
 	public synchronized List<IndexData> getFromImport(String query){
-		if(cacheImport.containsKey(query)){
+		if(!query.endsWith("*") && cacheImport.containsKey(query)){
 			return cacheImport.get(query);
 		}
 		Query<IndexData> q = datastore.createQuery(IndexData.class);//.filter("classPackage",regexp);
 		if(query.endsWith("*")){
-			q.field(__FULL_NAME).startsWith(query);
+			q.field(__FULL_NAME).contains(query);
 		} else {
 			q.field(__FULL_NAME).equal(query);
 		}

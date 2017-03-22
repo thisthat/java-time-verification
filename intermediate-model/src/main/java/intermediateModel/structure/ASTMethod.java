@@ -28,13 +28,13 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<Pair<String,String>> declaredVar = new ArrayList<>();
 
 
-	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract, boolean isStatic) {
+	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
-		this.isSynchronized = isSyncronized;
+		this.isSynchronized = isSynchronized;
 		this.isAbstract = isAbstract;
 		this.isStatic = isStatic;
 	}
