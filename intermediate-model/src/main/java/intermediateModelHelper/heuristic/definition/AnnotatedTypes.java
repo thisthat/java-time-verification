@@ -10,6 +10,7 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+import org.junit.rules.Timeout;
 
 import java.util.List;
 
@@ -53,8 +54,19 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
 				String pointer = elm.getClassPointed();
-				if(pointer != null && containTimeOut(pointer, elm.getMethodName(), elm.getParameters().size())) {
-					AnnotatedTypes.super.addConstraint("timeout", elm);
+				String name = elm.getMethodName();
+				List<IASTRE> pars = elm.getParameters();
+				int size = pars.size();
+				if(pointer != null && containTimeOut(pointer, name, size)) {
+					String timeout = "";
+					TimeMethod m = getTimeOut(pointer,name, size);
+					int[] p = m.getTimeouts();
+					for(int i : p){
+						timeout += pars.get(i).getCode() + "+";
+					}
+					if(timeout.length() > 1)
+						timeout = timeout.substring(0, timeout.length() - 1);
+					AnnotatedTypes.super.addConstraint(timeout, elm);
 				}
 			}
 		});
@@ -76,6 +88,14 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 				return true;
 		}
 		return false;
+	}
+
+	private TimeMethod getTimeOut(String pointer, String name, int nPars){
+		for(TimeMethod m : timeMethods){
+			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
+				return m;
+		}
+		return null;
 	}
 
 }

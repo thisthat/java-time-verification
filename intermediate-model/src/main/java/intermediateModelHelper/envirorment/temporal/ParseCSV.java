@@ -46,7 +46,7 @@ public abstract class ParseCSV {
         }
     }
 
-    private void start(InputStreamReader file){
+    protected void start(InputStreamReader file){
         boolean notHeader = false;
         try (BufferedReader br = new BufferedReader(file)) {
             String line;
@@ -70,6 +70,7 @@ public abstract class ParseCSV {
             e.printStackTrace();
         }
     }
+
 
     protected abstract void handleHeader(String[] header);
     protected abstract void handleRow(String className, String methodName, String[] signature);

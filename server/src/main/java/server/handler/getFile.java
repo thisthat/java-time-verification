@@ -3,7 +3,9 @@ package server.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
@@ -88,6 +90,11 @@ public class getFile extends indexMW {
 			ApplyHeuristics ah = new ApplyHeuristics();
 			ah.subscribe(AnnotatedTypes.class);
 			ah.subscribe(TimeoutResources.class);
+			ah.analyze(c);
+			//annotate each method
+			for(IASTMethod m : c.getMethods()){
+				m.setDeclaredVars();
+			}
 		}
 		//annotate with Time
 

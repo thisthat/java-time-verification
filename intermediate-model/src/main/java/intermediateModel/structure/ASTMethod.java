@@ -1,5 +1,8 @@
 package intermediateModel.structure;
 
+import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.types.DataTreeType;
 import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
@@ -22,6 +25,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	boolean isSyncronized = false;
 	boolean isAbstract = false;
 	boolean isStatic = false;
+	List<Pair<String,String>> declaredVar = new ArrayList<>();
 
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract, boolean isStatic) {
@@ -172,5 +176,22 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	@Override
 	public boolean isStatic() {
 		return this.isStatic;
+	}
+
+
+	public List<Pair<String, String>> getDeclaredVar() {
+		return declaredVar;
+	}
+
+	public void setDeclaredVars() {
+		declaredVar.clear();
+		for(IASTStm stm : stms) {
+			stm.visit(new DefaultASTVisitor() {
+				@Override
+				public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
+					declaredVar.add(new Pair<>(elm.getName().getCode(), elm.getType()));
+				}
+			});
+		}
 	}
 }

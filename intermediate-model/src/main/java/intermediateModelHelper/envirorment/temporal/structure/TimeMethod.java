@@ -7,7 +7,14 @@ import java.util.List;
  */
 public class TimeMethod extends TimeInfo {
 
-    public TimeMethod(String className, String methodName, List<String> signature) {
+    private int[] timeouts;
+
+    public TimeMethod(String className, String methodName, List<String> signature, int[] timeouts) {
         super(className, methodName, signature);
+        this.timeouts = timeouts;
+    }
+
+    public int[] getTimeouts() {
+        return timeouts;
     }
 }

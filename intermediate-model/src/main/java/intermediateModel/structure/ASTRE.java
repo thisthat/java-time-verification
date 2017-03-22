@@ -30,6 +30,8 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		setUsedVars();
 	}
 
+
+
 	private void setUsedVars() {
 		if(this.expression == null) return;
 		expression.visit(new DefualtASTREVisitor(){

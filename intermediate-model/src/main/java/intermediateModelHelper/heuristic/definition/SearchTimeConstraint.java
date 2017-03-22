@@ -70,7 +70,6 @@ public abstract class SearchTimeConstraint {
 		if(!timeConstraint.contains(elm))
 			timeConstraint.add( elm );
 		stm.addConstraint( stm.getLine(), message, getClass() );
-		System.out.println("FOUND");
 	}
 
 	/**

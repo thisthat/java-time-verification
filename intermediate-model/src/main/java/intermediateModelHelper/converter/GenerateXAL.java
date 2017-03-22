@@ -520,7 +520,7 @@ public class GenerateXAL {
 			lastAutomaton.addTransition(transition);
 		}
 		if(stm.isTimeCritical() && stm.getConstraint() != null){
-			String constraint = "<ClockConstraint ClockExp=\"" + stm.getConstraint().getValue1() +"\"/>";
+			String constraint = "<ClockConstraint ClockExp=\"" + stm.getConstraint().getValue() +"\"/>";
 			state.setTimeConstraint(constraint);
 		}
 		this.lastState = state;
