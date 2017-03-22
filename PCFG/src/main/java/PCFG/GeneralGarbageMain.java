@@ -24,14 +24,14 @@ import java.util.*;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class Main {
+public class GeneralGarbageMain {
 
 	List<ASTClass> classes = new ArrayList<>();
 	static final String db_name = "jetty";
 
 	public static void main(String[] args) throws Exception {
 		MongoOptions.getInstance().setDbName(db_name);
-		Main m = new Main();
+		GeneralGarbageMain m = new GeneralGarbageMain();
 		if(args.length > 0)
 			m.example_paper(args);
 		else
@@ -41,7 +41,7 @@ public class Main {
 
 
 	public void run() throws Exception {
-		String f =  Main.class.getClassLoader().getResource("Thread_1.java").getFile();
+		String f =  GeneralGarbageMain.class.getClassLoader().getResource("Thread_1.java").getFile();
 		Java2AST a = new Java2AST(f, true);
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, f);
@@ -123,7 +123,7 @@ public class Main {
 
 		//MongoOptions.getInstance().setDbName(db_name);
 		String folder = args[0];
-		new Main().run(folder);
+		new GeneralGarbageMain().run(folder);
 	}
 
 

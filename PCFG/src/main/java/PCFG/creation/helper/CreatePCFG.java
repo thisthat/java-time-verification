@@ -24,7 +24,7 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class CreateCFG extends ConvertIM {
+public class CreatePCFG extends ConvertIM {
 
 	private List<KeyValue<IASTMethod,ASTClass>> classes = new ArrayList<>();
 
@@ -45,6 +45,9 @@ public class CreateCFG extends ConvertIM {
 
 	public void addMethod(KeyValue<IASTMethod,ASTClass> k){
 		classes.add(k);
+	}
+	public void addMethod(IASTMethod m, ASTClass c){
+		classes.add(new KeyValue<>(m,c));
 	}
 
 	public List<KeyValue<IASTMethod, ASTClass>> getClasses() {

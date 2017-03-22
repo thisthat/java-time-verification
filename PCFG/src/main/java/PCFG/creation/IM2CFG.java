@@ -31,34 +31,19 @@ import java.util.List;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class IM2PCFG {
+public class IM2CFG {
 
-
-	private List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock> >> indexs = new ArrayList<>();
 	CreatePCFG pcfgBuilder = new CreatePCFG();
 
-	public IM2PCFG(List<KeyValue<IASTMethod,ASTClass>> classes) {
-		for(KeyValue<IASTMethod,ASTClass> k : classes){
-			pcfgBuilder.addMethod(k);
-		}
+	public IM2CFG(IASTMethod m, ASTClass c) {
+		pcfgBuilder.addMethod(m, c);
 	}
 
-	public IM2PCFG() {
-
+	public IM2CFG() {
 	}
 
 	public int getConstraintsSize() {
 		return pcfgBuilder.getConstraints().size();
-	}
-
-	boolean forceReindex = true;
-
-	public boolean isForceReindex() {
-		return forceReindex;
-	}
-
-	public void setForceReindex(boolean forceReindex) {
-		this.forceReindex = forceReindex;
 	}
 
 	/**
@@ -99,35 +84,6 @@ public class IM2PCFG {
 	}
 
 	public PCFG buildPCFG(){
-		//init data
-		this.indexs.clear();
-		List<KeyValue<IASTMethod,ASTClass>> classes = pcfgBuilder.getClasses();
-		for(KeyValue<IASTMethod,ASTClass> k : classes){
-			IndexingFile indexCall = new IndexingFile();
-			indexCall.index(k.getValue(), this.forceReindex);
-			IndexingSyncBlock indexing = new IndexingSyncBlock();
-			List<IndexSyncBlock> blocks = indexing.index(k.getValue(), this.forceReindex);
-			List<IndexSyncBlock> toAdd = new ArrayList<>();
-			IASTMethod m = k.getKey();
-			for(IndexSyncBlock b : blocks){
-				boolean f = false;
-				if(m.getName().equals(b.getMethodName()) && m.getParameters().size() == b.getSignature().size()){
-					f = true;
-					for(int i = 0; i < m.getParameters().size(); i++){
-						if(!m.getParameters().get(i).getType().equals( b.getSignature().get(i) )){
-							f = false;
-						}
-					}
-				}
-				if(m.getStart() > b.getStart() || b.getEnd() > m.getEnd() ){
-					f = false;
-				}
-				if(f){
-					toAdd.add(b);
-				}
-			}
-			this.indexs.add( new KeyValue<>(k, toAdd) );
-		}
 
 		PCFG pcfg = pcfgBuilder.convert();
 
@@ -145,14 +101,6 @@ public class IM2PCFG {
 			}
 		}
 		pcfg.addAnnotation(String.valueOf(PCFG.DefaultAnnotation.GlobalVars), attrs);
-
-
-
-		//check for sync blocks
-		CalculateSyncBlock.calculateSyncBlock(classes, this.indexs, pcfg);
-
-		//check for call on sync methods
-		CalculateSyncCall.calculateSyncCall(classes, pcfg);
 
 		//set time constraint
 		for(Node v : pcfg.getV()){
