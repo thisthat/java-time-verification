@@ -15,7 +15,6 @@
         <module>xal</module>
         <module>intermediate-model</module>
         <module>PCFG</module>
-        <module>evaluation</module>
         <module>time-annotation</module>
         <module>server</module>
     </modules>
