@@ -1,7 +1,7 @@
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.io.File;
 import java.util.Collection;

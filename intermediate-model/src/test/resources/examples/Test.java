@@ -202,7 +202,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	public Collection<Class<? extends IFloodlightService>> getModuleServices() {
 		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
 	    l.add(INetTopologyService.class);
-		wait();
+		wait(100);
 	    return l;
 	}
 	@Override

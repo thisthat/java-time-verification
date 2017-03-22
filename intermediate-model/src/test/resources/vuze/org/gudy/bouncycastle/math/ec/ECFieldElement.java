@@ -107,7 +107,7 @@ public abstract class ECFieldElement
 
         // D.1.4 91
         /**
-         * return a sqrt root - the routine verifies that the calculation
+         * return a sqrt root - the routine verifies that the evaluation.calculation
          * returns the right value - if none exists it returns null.
          */
         public ECFieldElement sqrt()

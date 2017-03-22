@@ -18,6 +18,6 @@ POS_INTEGERS = Domain(["null", "== 0", "> 0", "max"])
 STRING = Domain(["null", "not_null"])
 
 COLLECTION = Domain(["null", "empty", "some_elements" ])
-BOUNDED_COLLECTION = Domain(["null", "empty", "some_elements" ])
+BOUNDED_COLLECTION = Domain(["null", "empty", "some_elements", "full" ])
 
 BOOLEANS = Domain([ "true", "false" ])

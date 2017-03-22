@@ -42,22 +42,24 @@ public class CheckExpression {
 	 * @param env {@link Env} class where to add the new definition
 	 *
 	 */
-	public static Env checkRE(ASTRE rexp, Env env){
+	public static boolean checkRE(ASTRE rexp, Env env){
 		if(rexp == null){
-			return env;
+			return false;
 		}
+		final boolean[] flag = {false};
 		rexp.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
-				setVariableInEnv(elm, env);
+				flag[0] = flag[0] || setVariableInEnv(elm, env);
 			}
 
 			@Override
 			public void enterASTAssignment(ASTAssignment elm) {
-				setVariableInEnv(elm, env);
+				flag[0] = flag[0] || setVariableInEnv(elm, env);
 			}
 		});
-		return env;
+
+		return flag[0];
 	}
 
 	/**
@@ -66,12 +68,11 @@ public class CheckExpression {
 	 * @param v			Variable to control
 	 * @param where		Envirorment where to add
 	 */
-	public static Env setVariableInEnv(ASTVariable v, Env where){
-		v.setTimeCritical(
-				BuildEnvironment.getInstance().hasVarTypeTimeRelated(v)
-		);
+	public static boolean setVariableInEnv(ASTVariable v, Env where){
+		boolean flag = BuildEnvironment.getInstance().hasVarTypeTimeRelated(v);
+		v.setTimeCritical( flag );
 		where.addVar(v);
-		return where;
+		return flag;
 	}
 
 	/**
@@ -86,23 +87,34 @@ public class CheckExpression {
 	 * @param v			Variable to check
 	 * @param where		Envirorment where to add
 	 */
-	private static void setVariableInEnv(ASTVariableDeclaration v, Env where){
+	private static boolean setVariableInEnv(ASTVariableDeclaration v, Env where){
 		//check the type
 		ASTVariable var = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
+		var.setTypePointed(v.getTypePointed());
 		var.setSouceCode(v.getCode());
 		var.setTimeCritical(v.isTimeCritical());
 		setVariableInEnv(var, where);
 		//check the expr
+		final boolean[] flag = {false};
 		if(v.getExpr() != null) {
 			v.getExpr().visit(new DefualtASTREVisitor() {
 				//method call
 
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
+					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
+						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
+							v.setTimeCritical(true);
+							var.setTimeCritical(true);
+							where.addVar(var);
+							flag[0] = true;
+						}
+					}
+					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
 						v.setTimeCritical(true);
 						var.setTimeCritical(true);
 						where.addVar(var);
+						flag[0] = true;
 					}
 				}
 
@@ -119,11 +131,13 @@ public class CheckExpression {
 								v.setTimeCritical(true);
 								var.setTimeCritical(true);
 								where.addVar(var);
+								flag[0] = true;
 							}
 					}
 				}
 			});
 		}
+		return flag[0];
 	}
 
 	/**
@@ -138,24 +152,28 @@ public class CheckExpression {
 	 * @param v			Variable to check
 	 * @param where		Envirorment where to add
 	 */
-	private static void setVariableInEnv(ASTAssignment v, Env where){
+	private static boolean setVariableInEnv(ASTAssignment v, Env where){
 		IASTRE left = v.getLeft();
+		final boolean[] flag = new boolean[1];
 		if(left instanceof ASTLiteral){
 			String name = ((ASTLiteral) left).getValue();
 			IASTVar var = where.getVar(name);
 			if(var != null //should be never the case if code compiles
 					&& checkIt(v.getRight(), where)){ //if exists something time related
-				var.setTimeCritical(true); //the assigned var is time relevant
+				var.setTimeCritical(true);
+				flag[0] = true;//the assigned var is time relevant
 				v.getRight().visit(new DefualtASTREVisitor() { //and also all the var used inside the expr
 					@Override
 					public void enterASTLiteral(ASTLiteral elm) {
 						IASTVar var = where.getVar(elm.getValue());
-						if(var != null) //avoid method call that can be literal as well
+						if(var != null) { //avoid method call that can be literal as well
 							var.setTimeCritical(true);
+						}
 					}
 				});
 			}
 		}
+		return flag[0];
 	}
 
 	/**
@@ -181,7 +199,12 @@ public class CheckExpression {
 
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
-				if(where.existMethodTimeRelevant(elm.getMethodName(), getSignature(elm.getParameters(), where))){
+				if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
+					if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
+						r[0] = true;
+					}
+				}
+				else if(where.existMethodTimeRelevant(elm.getMethodName(), getSignature(elm.getParameters(), where))){
 					r[0] = true;
 				}
 			}

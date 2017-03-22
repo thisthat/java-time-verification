@@ -331,8 +331,8 @@ public final class SHA1 {
 
 
 	/**
-	 * Resets the SHA-1 to initial state for a new message digest calculation.
-	 * Must be called before starting a new hash calculation.
+	 * Resets the SHA-1 to initial state for a new message digest evaluation.calculation.
+	 * Must be called before starting a new hash evaluation.calculation.
 	 */
 	 public void reset() {
 		 h0 = 0x67452301;
@@ -353,7 +353,7 @@ public final class SHA1 {
 	private byte[] cacheBlock; 
 
 	/**
-	 * Starts or continues a SHA-1 message digest calculation.
+	 * Starts or continues a SHA-1 message digest evaluation.calculation.
 	 * Only the remaining bytes of the given ByteBuffer are used.
 	 * @param buffer input data
 	 */
@@ -395,7 +395,7 @@ public final class SHA1 {
 
 
 	/**
-	 * Finishes the SHA-1 message digest calculation.
+	 * Finishes the SHA-1 message digest evaluation.calculation.
 	 * @return 20-byte hash result
 	 */
 	public byte[] digest() {
@@ -434,8 +434,8 @@ public final class SHA1 {
 
 
 	/**
-	 * Finishes the SHA-1 message digest calculation, by first performing a final update
-	 * from the given input buffer, then completing the calculation as with digest().
+	 * Finishes the SHA-1 message digest evaluation.calculation, by first performing a final update
+	 * from the given input buffer, then completing the evaluation.calculation as with digest().
 	 * @param buffer input data
 	 * @return 20-byte hash result
 	 */
@@ -448,7 +448,7 @@ public final class SHA1 {
 
 	/**
 	 * Save the current digest state.
-	 * This allows the resuming of a SHA-1 calculation, even after a digest calculation
+	 * This allows the resuming of a SHA-1 evaluation.calculation, even after a digest evaluation.calculation
 	 * is finished with digest().
 	 */
 	public void saveState() {

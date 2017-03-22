@@ -1,7 +1,12 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModelHelper.envirorment.Env;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
+import intermediateModel.structure.ASTRE;
+import intermediateModelHelper.envirorment.Env;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -30,11 +35,30 @@ public abstract class SearchTimeConstraint {
 	protected List<Triplet<String,IASTStm,Class>> timeConstraint = new ArrayList<>();
 
 	/**
+	 * It used to set up internal resources
+	 */
+	public abstract void setup(ASTClass c);
+
+	/**
 	 * It used to accept a Statement
 	 * @param stm	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */
-	public abstract void next(IASTStm stm, Env env);
+	public abstract void next(ASTRE stm, Env env);
+
+	/**
+	 * It used to accept a new Method Definition
+	 * @param method	Statement to process
+	 * @param env	Envirorment visible to that statement
+	 */
+	public abstract void nextMethod(ASTMethod method, Env env);
+
+	/**
+	 * It used to accept a new Constructor Definition
+	 * @param method	Statement to process
+	 * @param env	Envirorment visible to that statement
+	 */
+	public abstract void nextConstructor(ASTConstructor method, Env env);
 
 	/**
 	 * Add a constraint to the list
@@ -42,7 +66,9 @@ public abstract class SearchTimeConstraint {
 	 * @param stm	The instruction to add to the list
 	 */
 	protected void addConstraint(String message, IASTStm stm){
-		timeConstraint.add( new Triplet<>(message, stm, getClass()) );
+		Triplet<String,IASTStm,Class> elm = new Triplet<>(message, stm, getClass());
+		if(!timeConstraint.contains(elm))
+			timeConstraint.add( elm );
 		stm.addConstraint( stm.getLine(), message, getClass() );
 	}
 
@@ -53,6 +79,7 @@ public abstract class SearchTimeConstraint {
 	public List<Triplet<String, IASTStm, Class>> getTimeConstraint() {
 		return timeConstraint;
 	}
+
 
 
 }

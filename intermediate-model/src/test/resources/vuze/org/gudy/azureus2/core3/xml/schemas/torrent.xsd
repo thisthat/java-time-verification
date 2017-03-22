@@ -87,7 +87,7 @@
      <xsd:sequence>
      	
      	<!-- unfortunately there is no fixed character set for the NAME torrent attribute. As this is
-     		 included in hash calculation it is essential that character set decoding/encoding issues
+     		 included in hash evaluation.calculation it is essential that character set decoding/encoding issues
      		 don't stuff the value of NAME up. If it doesn't convert to and from UTF-8 unchanged
      		 the value is dumped as bytes (encoding="bytes") as opposed to utf8 (encoding="utf8")
      	-->

@@ -303,7 +303,7 @@ public class Env {
 	 */
 	public boolean existMethod(String methodName){
 		for(EnvMethod mm : methodList){
-			String method = mm.getName();
+			String method = mm.getMethodName();
 			if(method.equals(methodName)) {
 				return true;
 			}
@@ -326,7 +326,7 @@ public class Env {
 		if(methodList.contains(mEnv)){
 			boolean flag = false;
 			for(EnvMethod mm : methodList){
-				if(mm.getName().equals(methodName)){
+				if(mm.getMethodName().equals(methodName)){
 					flag = mm.istimeRelevant();
 				}
 			}
@@ -335,6 +335,30 @@ public class Env {
 		//is not here, search in the previous ones
 		if(prev != null){
 			return prev.existMethodTimeRelevant(methodName, signature);
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Search if it exists a method time related inside the env
+	 * @param methodName	Name of the method that we are looking for
+	 * @return				True if it exists in the Env
+	 */
+	public boolean existMethodTimeRelevant(String classPointed, String methodName, List<String> signature){
+		EnvMethod mEnv = new EnvMethod(classPointed, methodName, signature);
+		if(methodList.contains(mEnv)){
+			boolean flag = false;
+			for(EnvMethod mm : methodList){
+				if(mm.equals(mEnv)){
+					flag = mm.istimeRelevant();
+				}
+			}
+			return flag;
+		}
+		//is not here, search in the previous ones
+		if(prev != null){
+			return prev.existMethodTimeRelevant(classPointed, methodName, signature);
 		} else {
 			return false;
 		}
@@ -364,10 +388,9 @@ public class Env {
 
 	/**
 	 * Add to the Environment a new Method that is time related
-	 * @param method	Method name to add
 	 */
-	public void addMethodTimeRelevant(String method, String retType, List<String> signature){
-		EnvMethod m = new EnvMethod(method, retType, signature);
+	public void addMethodTimeRelevant(String className, String methodName, List<String> signature){
+		EnvMethod m = new EnvMethod(className, methodName, signature);
 		m.setIstimeRelevant(true);
 		methodList.add( m );
 	}
@@ -375,7 +398,7 @@ public class Env {
 
 	public EnvMethod getMethod(String methodName){
 		for(EnvMethod mm : methodList){
-			String method = mm.getName();
+			String method = mm.getMethodName();
 			if(method.equals(methodName)) {
 				return mm;
 			}

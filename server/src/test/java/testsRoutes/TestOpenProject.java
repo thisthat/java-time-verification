@@ -11,9 +11,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import server.HttpServerConverter;
 
 import java.io.File;
@@ -33,8 +31,8 @@ public class TestOpenProject {
 	static String base_url;
 	static String base_project;
 
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		server = new HttpServerConverter();
 		base_url = "http://localhost:" + HttpServerConverter.getPort() + "/openProject";
 		ClassLoader classLoader = TestOpenProject.class.getClassLoader();
@@ -48,7 +46,9 @@ public class TestOpenProject {
 
 	@AfterClass
 	public static void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 		server.stop();
+
 	}
 
 	@Test
@@ -119,6 +119,7 @@ public class TestOpenProject {
 
 	@Test
 	public void TestOpenProjectNoProto() throws Exception {
+
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url);
 		List<NameValuePair> nvps = new ArrayList<>();
@@ -150,6 +151,25 @@ public class TestOpenProject {
 
 	@Test
 	public void TestOpenProjectNo1Par() throws Exception {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url);
+		List<NameValuePair> nvps = new ArrayList<>();
+		nvps.add(new BasicNameValuePair("name", "tt"));
+		//nvps.add(new BasicNameValuePair("path", "file://" + base_project));
+		httppost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httppost);
+		InputStream stream = response.getEntity().getContent();
+		String myString = IOUtils.toString(stream, "UTF-8");
+		//System.out.println(myString);
+		assertEquals(400, response.getStatusLine().getStatusCode());
+	}
+
+
+	@Test
+	public void TestOpenProjectNo1ParFail() throws Exception {
+		MongoOptions.getInstance().setDbName("tt");
+		MongoConnector.getInstance().drop();
+		MongoConnector.getInstance().ensureIndexes();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(base_url);
 		List<NameValuePair> nvps = new ArrayList<>();

@@ -1,16 +1,15 @@
-import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import intermediateModelHelper.indexing.structure.IndexData;
 import PCFG.structure.PCFG;
 import PCFG.creation.IM2PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import timeannotation.parser.Java2AST;
+import parser.Java2AST;
 
 import java.util.ArrayList;
 
@@ -27,6 +26,11 @@ public class TestBugs {
 		MongoOptions.getInstance().setDbName("test");
 		MongoConnector.getInstance().drop();
 		MongoConnector.getInstance().ensureIndexes();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		MongoConnector.getInstance().close();
 	}
 
 	@Test

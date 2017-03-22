@@ -297,7 +297,7 @@ DownloadManager
      * @param bIncludingDND true- include files marked as Do Not Download.<BR>
      *                       false- don't include files marked DND.<p>
      *                       If there are DND files and you choose to include
-     *                       DND in the calculation, false will always be 
+     *                       DND in the evaluation.calculation, false will always be
      *                       returned.
      * @return whether download is complete
      */

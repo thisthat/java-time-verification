@@ -122,7 +122,7 @@ class Engine(object):
             ruleset = RuleSet()
    
         self._ruleset = ruleset
-        self._num_applications = 0
+        self._num_applications = {}
 
     @property
     def ruleset(self):
@@ -130,15 +130,18 @@ class Engine(object):
 
     @property
     def num_applications(self):
-        return self._num_applications
+        return sum(self._num_applications.values())
 
     def add_rule(self, rule):
         assert isinstance(self._ruleset, RuleSet)
         assert isinstance(rule, Rule)
 
         self._ruleset.add_rule(rule)
+        self._num_applications[rule] = 0
 
     def run(self, asts_in, asts_out, ctx=None):
+
+        assert isinstance(self._num_applications, dict)
 
         # start with an empty environment on top of the context
         if not ctx:
@@ -147,6 +150,12 @@ class Engine(object):
         ctx.push({})
 
         self._ruleset.enable_all()
+
+        # reset number of applied rules
+        for rule, count in self._num_applications.iteritems():
+            self._num_applications[rule] = 0        
+
+        # start interpretation loop
 
         while True:
       
@@ -174,7 +183,7 @@ class Engine(object):
                     # update context for next rules
                     rule.do_update_context(let_ctx)
         
-                    self._num_applications = self._num_applications + 1
+                    self._num_applications[rule] = self._num_applications[rule] + 1
 
                     self._ruleset.enable_all()
 

@@ -243,7 +243,7 @@ public class SpeedManagerAlgorithmProviderPingMap
             }//if
         }//for
 
-        //if we are in a limit finding mode then don't even bother with this calculation.
+        //if we are in a limit finding mode then don't even bother with this evaluation.calculation.
         if( limitMonitor.isConfTestingLimits() ){
 
             if( limitMonitor.isConfLimitTestFinished() ){
@@ -369,7 +369,7 @@ public class SpeedManagerAlgorithmProviderPingMap
 
         //have we accululated enough data to make an adjustment?
         if( intervalCount < numIntervalsBetweenCal ){
-            //get more data before making another calculation.
+            //get more data before making another evaluation.calculation.
             return true;
         }
 

@@ -12,7 +12,7 @@ TranscodeJobImpl
 			if ( state == ST_PAUSED ){
 				state = ST_RUNNING;
 				if ( paused_on > 0 && started_on > 0 ){
-					process_time -= SystemTime.getMonotonousTime() - paused_on;
+					process_time -= System.currentTimeMillis()  - paused_on;
 				}
 			}else{
 				return;
@@ -30,7 +30,7 @@ TranscodeJobImpl
 			}
 			if ( state == ST_RUNNING ){
 				state = ST_PAUSED;
-				paused_on = SystemTime.getMonotonousTime();
+				paused_on = System.currentTimeMillis() ;
 			}else{
 				return;
 			}

@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>java-xal</groupId>
     <artifactId>java-xal</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3.5</version>
     <name>Parent</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,13 +14,10 @@
         <module>java-parser</module>
         <module>xal</module>
         <module>intermediate-model</module>
-        <module>testing</module>
         <module>PCFG</module>
         <module>evaluation</module>
         <module>time-annotation</module>
         <module>server</module>
-        <module>socket</module>
-        <module>smellDetector</module>
     </modules>
 
     <build>
@@ -31,8 +28,46 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <debug>true</debug>
                 </configuration>
                 <version>3.3</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>reference.conf</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>intermediateModel.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -58,63 +93,11 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>javadoc</goal>
-                            <goal>test-javadoc</goal>
+                            <goal>aggregate</goal>
                         </goals>
-                        <phase>site</phase>
-                        <configuration>
-                            <tags>
-                                <tag>
-                                    <name>todo</name>
-                                    <!-- todo tag for all places -->
-                                    <placement>a</placement>
-                                    <head>It has to be implemented yet:</head>
-                                </tag>
-                                <tag>
-                                    <name>TODO</name>
-                                    <!-- todo tag for all places -->
-                                    <placement>a</placement>
-                                    <head>It has to be implemented yet:</head>
-                                </tag>
-                            </tags>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
-                <configuration>
-                    <createDependencyReducedPom>true</createDependencyReducedPom>
-                     <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-                <executions>
-                    <execution>
                         <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
                         <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>reference.conf</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>server.StartServer</mainClass>
-                                </transformer>
-                            </transformers>
+                            <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                     </execution>
                 </executions>

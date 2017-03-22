@@ -5,6 +5,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.FileUtils;
+import parser.UnparsableException;
 
 import java.io.File;
 import java.util.Collection;
@@ -86,7 +87,12 @@ public class IndexingProject {
 			if(this.skipTest && filename.contains("/test")){
 				continue;
 			}
-			List<ASTClass> result = JDTVisitor.parse(filename);
+			List<ASTClass> result = null;
+			try {
+				result = JDTVisitor.parse(filename, base_path);
+			} catch (UnparsableException e) {
+				continue;
+			}
 			//pp filename
 			for(ASTClass c : result){
 				IndexingFile indexing = new IndexingFile(db);
@@ -108,6 +114,7 @@ public class IndexingProject {
 	 * @param base_path	Path from where start to search for Java files.
 	 * @return	The number of file parsed. <u>IT IS NOT THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
 	 */
+	@Deprecated
 	public int indexSyncCall(String base_path, boolean deleteOld){
 		if(deleteOld) delete();
 		Iterator i = getJavaFiles(base_path);
@@ -137,6 +144,7 @@ public class IndexingProject {
 	 * @param base_path	Path from where start to search for Java files.
 	 * @return	The number of file parsed. <u>IT IS NOT THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
 	 */
+	@Deprecated
 	public int indexSyncBlock(String base_path, boolean deleteOld){
 		if(deleteOld) delete();
 		Iterator i = getJavaFiles(base_path);
@@ -159,7 +167,7 @@ public class IndexingProject {
 		return n_file;
 	}
 
-	public Iterator getJavaFiles(String base_path){
+	public static Iterator<File> getJavaFiles(String base_path){
 		File dir = new File(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
@@ -167,7 +175,7 @@ public class IndexingProject {
 				filter,
 				true
 		);
-		Iterator i = files.iterator();
+		Iterator<File> i = files.iterator();
 		return i;
 	}
 

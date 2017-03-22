@@ -11,4 +11,5 @@ public interface IASTVar {
 	boolean isTimeCritical();
 	void setTimeCritical(boolean timeCritical);
 	boolean equals(Object o);
+	public String getTypePointed();
 }

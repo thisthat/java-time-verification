@@ -105,7 +105,7 @@ public class PingSpaceMapper
     }//convertBitsPerSec2meshIndex
 
     /**
-     * The reverse of bit/sec -> mesh index calculation.
+     * The reverse of bit/sec -> mesh index evaluation.calculation.
      * @param meshIndex - value between 0 and 70
      * @return lowest BitsPerSecond that meets that criteria.
      */

@@ -9,7 +9,9 @@ from java2ta.ir.models import Klass, Thread, Method
 class ExtractStateSpace(Rule):
     """
     This rule assumes the context has a dictionary called 'abs_domains'
-    associating every attribute name with a list of admitted values.
+    associating every attribute/variable name with a list of admitted abstract
+    values. A state-space is created where all the combinations of 
+    attributes/variables abstract values are enumerated.
 
     If the rule is applied, it adds an entry 'state_space' of type StateSpace
     to the context.
@@ -55,6 +57,10 @@ class ExtractStateSpace(Rule):
 
 
 class ExtractClassStateSpace(ExtractStateSpace):
+    """
+    This rule builds the StateSpace of a class instance, 
+    examining the combinations of all from its attributes.
+    """
 
     def get_attributes(self):
         assert isinstance(self.asts_in, Klass)
@@ -64,6 +70,13 @@ class ExtractClassStateSpace(ExtractStateSpace):
         return attributes
 
 class ExtractMethodStateSpace(ExtractClassStateSpace):
+    """
+    This rule builds the StateSpace of a method, by collecting the relevant
+    variables and attributes to which the method has access:
+    - class attributes
+    - method formal parameters
+    - method local variables (TODO)
+    """
 
     def get_attributes(self):
         assert isinstance(self.asts_in, Method)
@@ -78,6 +91,10 @@ class ExtractMethodStateSpace(ExtractClassStateSpace):
 
 
 class AddStates(Rule):
+    """
+    This rule takes a StateSpace and create a number of locations in the 
+    output Timed Automaton.
+    """
 
     def match(self):
 
@@ -104,6 +121,10 @@ class AddStates(Rule):
 
 
 class TranslateMethod(Rule):
+    """
+    This rule picks a method to be translated to a Timed Automaton, from a list
+    of methods specified in the context.
+    """
 
     def match(self):
         """
@@ -121,9 +142,11 @@ class TranslateMethod(Rule):
 
     def do_update_context(self, let_ctx):
         """
-        Pick a method name among those to be translated that have not been
-        processed, so far. Save the method name in the 'method_curr' variable in
-        the context.
+        Pick a method among those to be translated that have not been
+        processed, so far. Save the method in the 'method_curr' variable in
+        the context. Please, note that so far the rule does not make any 
+        assumption about what a method is (it may be a single name, 
+        a tuple with extra-information or an instance of some class)
         """
         assert self.ctx.get("method_curr") is None
 
@@ -135,3 +158,5 @@ class TranslateMethod(Rule):
         pick_method = next(iter(missing))
 
         self.ctx.update("method_curr", pick_method)      
+
+

@@ -176,7 +176,7 @@ IntegratedResourceBundle
 
 		locale = main.getLocale();
 
-			// use a somewhat decent initial capacity, proper calculation would require java 1.6
+			// use a somewhat decent initial capacity, proper evaluation.calculation would require java 1.6
 		
 		addResourceMessages( main, isMessageBundle );
 		

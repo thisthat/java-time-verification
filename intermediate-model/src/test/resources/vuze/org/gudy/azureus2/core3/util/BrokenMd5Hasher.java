@@ -29,11 +29,11 @@ import java.nio.ByteOrder;
 
 /**
  * Use this class for getting a MD5 message digest.
- * Create a MD5 and reuse it after a message digest calculation. There can be as
+ * Create a MD5 and reuse it after a message digest evaluation.calculation. There can be as
  * many MD5 objects as you want to have multiple calculations same time.
  * The message can be passed in one or a sequenze of parts wrapped in a
- * ByteBuffer to the update of the same MD5 instance. To finish the calculation
- * use final, it will reset the MD5 instance for a new calculation.
+ * ByteBuffer to the update of the same MD5 instance. To finish the evaluation.calculation
+ * use final, it will reset the MD5 instance for a new evaluation.calculation.
  *
  * @author emarant
  * @version $Revision: 1.1 $
@@ -81,7 +81,7 @@ public final class BrokenMd5Hasher {
     }
     
     /**
-    * Resets the MD5 to initial state for a new message digest calculation.
+    * Resets the MD5 to initial state for a new message digest evaluation.calculation.
     */
     public void reset(){
         stateA = 0x67452301;
@@ -97,7 +97,7 @@ public final class BrokenMd5Hasher {
     }
     
     /** 
-    * Starts or continues a MD5 message digest calculation.
+    * Starts or continues a MD5 message digest evaluation.calculation.
     * input.remaining() should be a multiple of 64 to be most efficant, but
     * other amounts work too. Only remaining bytes of the ByteBuffer are used
     * and input.position() will be input.limit() after return.
@@ -160,9 +160,9 @@ public final class BrokenMd5Hasher {
     }
     
     /**
-    * Finishs a MD5 message digest calculation.
+    * Finishs a MD5 message digest evaluation.calculation.
     * The result is stored in digest and the MD5-object is <b>reset</b> and so
-    * ready for a new message digest calculation.
+    * ready for a new message digest evaluation.calculation.
     *
     * @param digest should be a ByteBuffer with digest.remaining() &gt;= 16
     *

@@ -11,19 +11,19 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3.5</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>intermediate-model</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3.5</version>
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>PCFG</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>java-parser</artifactId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 
@@ -83,7 +83,7 @@
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>searchHugeSync.SearchHugeSync</mainClass>
+                                    <mainClass>evaluation.searchHugeSync.SearchHugeSync</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

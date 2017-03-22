@@ -1,13 +1,15 @@
 package intermediateModelHelper.heuristic.definition;
 
 
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTConstructor;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.envirorment.Env;
 
 /**
  *
@@ -20,11 +22,18 @@ import intermediateModel.visitors.DefualtASTREVisitor;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Deprecated
 public class SocketTimeout extends SearchTimeConstraint {
 
 	private String value_timeout = "";
 	boolean found = false;
 	private Integer __SOCKET_SOTIMEOUT = 0;
+
+
+	@Override
+	public void setup(ASTClass c) {
+
+	}
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
@@ -36,10 +45,10 @@ public class SocketTimeout extends SearchTimeConstraint {
 	 * @param env	Envirorment visible to that statement
 	 */
 	@Override
-	public void next(IASTStm stm, Env env) {
-		if(!(stm instanceof ASTRE)) return;
+	public void next(ASTRE stm, Env env) {
+
 		//works only on ASTRE
-		IASTRE expr = ((ASTRE) stm).getExpression();
+		IASTRE expr = stm.getExpression();
 		//only search for Method Call
 		final ASTMethodCall[] mc_search = {null};
 		expr.visit(new DefualtASTREVisitor() {
@@ -51,7 +60,8 @@ public class SocketTimeout extends SearchTimeConstraint {
 
 		if(mc_search[0] == null && !(expr instanceof ASTMethodCall)) return;
 
-		ASTMethodCall mc = mc_search[0] == null ? (ASTMethodCall) stm : mc_search[0];
+		//ASTMethodCall mc = mc_search[0] == null ? (ASTMethodCall) stm : mc_search[0];
+		ASTMethodCall mc = mc_search[0];
 
 		//Search for the timeout
 		if(mc.getMethodName().equals("setSoTimeout")){
@@ -80,6 +90,16 @@ public class SocketTimeout extends SearchTimeConstraint {
 			this.addConstraint(value_timeout, stm);
 			found = false;
 		}
+
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
 
 	}
 

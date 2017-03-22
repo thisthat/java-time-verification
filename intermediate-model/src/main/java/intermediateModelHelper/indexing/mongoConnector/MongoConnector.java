@@ -52,6 +52,11 @@ public class MongoConnector {
 	Map<String,List<IndexSocket>> cacheSocketClass = new HashMap<>();
 	Map<String,IndexSocket> cacheSocket = new HashMap<>();
 
+	boolean isClose = false;
+
+	String lastIp;
+	int lastPort;
+
 
 	/**
 	 * Field enumeration
@@ -78,7 +83,30 @@ public class MongoConnector {
 	protected MongoConnector(String db_name, String ip, int port) {
 		Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
 		mongoLogger.setLevel(Level.SEVERE);
+		connect(db_name,ip,port);
+	}
+
+	public void close(){
+		mongoClient.close();
+		isClose = true;
+	}
+
+	public boolean isClose() {
+		return isClose;
+	}
+
+	public String getLastIp() {
+		return lastIp;
+	}
+
+	public int getLastPort() {
+		return lastPort;
+	}
+
+	public void connect(String db_name, String ip, int port){
 		mongoClient = new MongoClient(ip, port);
+		lastIp = ip;
+		lastPort = port;
 		db = mongoClient.getDatabase(db_name);
 		dbName = db_name;
 		indexCollection = db.getCollection(__COLLECTION_NAME);
@@ -90,6 +118,7 @@ public class MongoConnector {
 		morphia.mapPackage("intermediateModelHelper.indexing.structure");
 		datastore.ensureIndexes();
 		datastore.ensureCaps();
+		isClose = false;
 
 		Query<DBStatus> q = datastore.createQuery(DBStatus.class);
 		q.field("dbName").equal(dbName);
@@ -134,7 +163,10 @@ public class MongoConnector {
 	 */
 	public static synchronized MongoConnector getInstance(String db_name) {
 		if(instances.containsKey(db_name)){
-			return instances.get(db_name);
+			MongoConnector i = instances.get(db_name);
+			if(i.isClose())
+				i.connect(db_name, i.getLastIp(), i.getLastPort());
+			return i;
 		}
 		MongoOptions options = MongoOptions.getInstance();
 		MongoConnector m = new MongoConnector(db_name, options.getIp(), options.getPort());
@@ -150,7 +182,10 @@ public class MongoConnector {
 		MongoOptions options = MongoOptions.getInstance();
 		String db_name = options.getDbName();
 		if(instances.containsKey(db_name)){
-			return instances.get(db_name);
+			MongoConnector i = instances.get(db_name);
+			if(i.isClose)
+				i.connect(db_name, i.getLastIp(), i.getLastPort());
+			return i;
 		}
 		MongoConnector m = new MongoConnector(db_name, options.getIp(), options.getPort());
 		instances.put(db_name, m);

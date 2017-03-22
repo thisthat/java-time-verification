@@ -897,7 +897,7 @@ public class StartStopRulesDefaultPlugin implements Plugin,
 			if (iNewRankType != iRankType) {
 				iRankType = iNewRankType;
 
-				// shorten recalc for timed rank type, since the calculation is fast and we want to stop on the second
+				// shorten recalc for timed rank type, since the evaluation.calculation is fast and we want to stop on the second
 				if (iRankType == RANK_TIMED) {
 					if (recalcSeedingRanksTask == null) {
 						recalcAllSeedingRanks(false);

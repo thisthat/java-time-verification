@@ -60,7 +60,7 @@ public final class SHA1Hasher {
   
   
   /**
-   * Start or continue a hash calculation with the given data.
+   * Start or continue a hash evaluation.calculation with the given data.
    * @param data input
    */
   public void update( byte[] data ) {
@@ -69,7 +69,7 @@ public final class SHA1Hasher {
   
   
   /**
-   * Start or continue a hash calculation with the given data,
+   * Start or continue a hash evaluation.calculation with the given data,
    * starting at the given position, for the given length.
    * @param data input
    * @param pos start position
@@ -81,7 +81,7 @@ public final class SHA1Hasher {
   
   
   /**
-   * Start or continue a hash calculation with the given data.
+   * Start or continue a hash evaluation.calculation with the given data.
    * @param buffer data input
    */
   public void update( ByteBuffer buffer ) {
@@ -90,7 +90,7 @@ public final class SHA1Hasher {
   
 
   /**
-   * Finish the hash calculation.
+   * Finish the hash evaluation.calculation.
    * @return 20-byte hash
    */
   public byte[] getDigest() {
@@ -102,7 +102,7 @@ public final class SHA1Hasher {
   }  
   
   /**
-   * Resets the hash calculation.
+   * Resets the hash evaluation.calculation.
    */
   public void reset() {
     sha1.reset();
