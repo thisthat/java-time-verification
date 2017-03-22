@@ -87,12 +87,7 @@ public class IndexingProject {
 			if(this.skipTest && filename.contains("/test")){
 				continue;
 			}
-			List<ASTClass> result = null;
-			try {
-				result = JDTVisitor.parse(filename, base_path);
-			} catch (UnparsableException e) {
-				continue;
-			}
+			List<ASTClass> result = JDTVisitor.parse(filename, base_path);
 			//pp filename
 			for(ASTClass c : result){
 				IndexingFile indexing = new IndexingFile(db);

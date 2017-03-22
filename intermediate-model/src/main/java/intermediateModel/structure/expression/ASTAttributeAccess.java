@@ -41,6 +41,8 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 	public void visit(ASTREVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTAttributeAccess(this);
+		if(variableName != null)
+			variableName.visit(visitor);
 		visitor.exitASTAttributeAccess(this);
 		visitor.exitAll(this);
 	}
@@ -49,6 +51,8 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTAttributeAccess(this);
+		if(variableName != null)
+			variableName.visit(visitor);
 		visitor.exitASTAttributeAccess(this);
 		visitor.exitAll(this);
 	}

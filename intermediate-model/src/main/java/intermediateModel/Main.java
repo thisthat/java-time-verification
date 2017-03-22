@@ -97,12 +97,7 @@ public class Main {
 		//files.add(args[0]);
 		for(int i = 0; i < files.size(); i ++){
 			String f = files.get(i);
-			List<ASTClass> lists = new ArrayList<>();
-			try {
-				lists = JDTVisitor.parse(f, base_path);
-			} catch (UnparsableException e){
-				counter++;
-			}
+			List<ASTClass> lists = JDTVisitor.parse(f, base_path);
 			int implicit_timeout = 0;
 			int set_timeout = 0;
 			int resource_expired = 0;
