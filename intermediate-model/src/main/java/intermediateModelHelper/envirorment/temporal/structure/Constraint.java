@@ -37,4 +37,26 @@ public class Constraint {
     public IASTStm getElm() {
         return elm;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Constraint that = (Constraint) o;
+
+        if (line != that.line) return false;
+        if (elm != null ? !elm.equals(that.elm) : that.elm != null) return false;
+        if (category != null ? !category.equals(that.category) : that.category != null) return false;
+        return value != null ? value.equals(that.value) : that.value == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = elm != null ? elm.hashCode() : 0;
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + line;
+        return result;
+    }
 }
