@@ -1,7 +1,5 @@
 package PCFG.creation.helper;
 
-import intermediateModelHelper.indexing.GenerateMethodSyncCallList;
-import intermediateModelHelper.indexing.structure.SyncMethodCall;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.Node;
@@ -11,6 +9,8 @@ import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModelHelper.indexing.GenerateMethodSyncCallList;
+import intermediateModelHelper.indexing.structure.SyncMethodCall;
 import org.javatuples.KeyValue;
 
 import java.util.HashMap;

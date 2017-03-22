@@ -14,6 +14,19 @@ import java.util.List;
  */
 public class XALTransition extends XALItem {
 
+    private class ClockConstraint {
+        private String ClockExp = "";
+
+        private ClockConstraint(String clockExp) {
+            ClockExp = clockExp;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("<ClockConstraint ClockExp=\"%s\"/>\n", this.ClockExp);
+        }
+    }
+
     public static final String METRIC_TRUE = "true";
     public static final String METRIC_FALSE = "false";
 
@@ -23,6 +36,7 @@ public class XALTransition extends XALItem {
 	private XALState toState;
     private String metricValue = null;
     private String style;
+    private ClockConstraint clock = null;
 
     public XALTransition(XALState from, XALState to) {
         this.from = from.getId();
@@ -34,12 +48,13 @@ public class XALTransition extends XALItem {
 
 
     public XALTransition(XALState from, XALState to, String metricValue) {
-        this.from = from.getId();
-        this.to = to.getId();
-		this.fromState = from;
-		this.toState = to;
+        this(from,to);
         this.metricValue = metricValue;
-        this.style = "[]";
+    }
+
+    public XALTransition(XALState from, XALState to, String metricValue, String clockExpr) {
+        this(from,to, metricValue);
+        this.clock = new ClockConstraint(clockExpr);
     }
 
 
@@ -69,9 +84,9 @@ public class XALTransition extends XALItem {
         if(this.metricValue != null && !this.metricValue.equals(""))
             out += String.format("MetricValue=\"%s\" ",this.metricValue);
         out += String.format("style=\"%s\"", this.style );
-		if(!fromState.getTimeConstraint().equals("")){
+		if(clock != null){
 			out += ">\n";
-			out += tab(tab+1) + fromState.getTimeConstraint();
+			out += tab(tab+1) + clock.toString();
 			out += tab(tab) + "</Transition>";
 		} else {
 			out += " />";

@@ -72,7 +72,7 @@ public class GenerateXAL {
 			e.printStackTrace();
 		}
 		lastAutomatonWhereAdd = xalAutomaton;
-		if(elm.isSyncronized()){
+		if(elm.isSynchronized()){
 			XALSync sync = new XALSync(elm.getName(), lastAutomatonWhereAdd);
 			xalAutomaton.addState(sync);
 			lastAutomatonWhereAdd = sync;

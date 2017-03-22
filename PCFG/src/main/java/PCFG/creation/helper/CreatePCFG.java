@@ -14,6 +14,7 @@ import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.interfaces.ConvertIM;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.KeyValue;
 import org.javatuples.Triplet;
 
@@ -38,7 +39,7 @@ public class CreatePCFG extends ConvertIM {
 	private IHasCFG lastPCFG = null;
 	private String lastClass = "";
 	List<ASTHiddenClass> visitedHidden = new ArrayList<>();
-	private List<Triplet<String, IASTStm, Class>> constraints = new ArrayList<>();
+	private List<Constraint> constraints = new ArrayList<>();
 
 	private PCFG pcfg;
 
@@ -58,7 +59,7 @@ public class CreatePCFG extends ConvertIM {
 		return pcfg;
 	}
 
-	public List<Triplet<String, IASTStm, Class>> getConstraints() {
+	public List<Constraint> getConstraints() {
 		return constraints;
 	}
 
@@ -452,9 +453,9 @@ public class CreatePCFG extends ConvertIM {
 	}
 
 	protected void convertRE(ASTRE r) {
-		Triplet<String, IASTStm, Class> c = getConstraint(r);
+		Constraint c = getConstraint(r);
 		if(c != null){
-			this.lastLabel = this.lastLabel + "[" + c.getValue0() + "]";
+			this.lastLabel = this.lastLabel + "[" + c.getValue() + "]";
 		}
 		addState(
 				new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL, r.getStart(), r.getEnd(), r.getLine())
@@ -521,9 +522,9 @@ public class CreatePCFG extends ConvertIM {
 		this.lastLabel = "";
 	}
 
-	private Triplet<String, IASTStm, Class> getConstraint(ASTRE r){
-		for(Triplet<String, IASTStm, Class> c : this.constraints){
-			if(c.getValue1().equals(r)){
+	private Constraint getConstraint(ASTRE r){
+		for(Constraint c : this.constraints){
+			if(c.getElm().equals(r)){
 				return c;
 			}
 		}

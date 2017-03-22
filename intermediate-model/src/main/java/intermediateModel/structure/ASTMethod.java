@@ -22,7 +22,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<ASTVariable> parameters;
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
-	boolean isSyncronized = false;
+	boolean isSynchronized = false;
 	boolean isAbstract = false;
 	boolean isStatic = false;
 	List<Pair<String,String>> declaredVar = new ArrayList<>();
@@ -34,17 +34,17 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
-		this.isSyncronized = isSyncronized;
+		this.isSynchronized = isSyncronized;
 		this.isAbstract = isAbstract;
 		this.isStatic = isStatic;
 	}
 
-	public boolean isSyncronized() {
-		return isSyncronized;
+	public boolean isSynchronized() {
+		return isSynchronized;
 	}
 
-	public void setSyncronized(boolean syncronized) {
-		isSyncronized = syncronized;
+	public void setSynchronized(boolean sync) {
+		isSynchronized = sync;
 	}
 
 	public boolean isAbstract() {

@@ -1,13 +1,14 @@
 package com.example.fogassistant2;
 
+import android.os.Environment;
+import android.util.Log;
+import org.json.JSONArray;
+import org.jtransforms.fft.FloatFFT_1D;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import org.json.JSONArray;
-import org.jtransforms.fft.FloatFFT_1D;
-import android.os.Environment;
-import android.util.Log;
 
 public class Processor {
 	

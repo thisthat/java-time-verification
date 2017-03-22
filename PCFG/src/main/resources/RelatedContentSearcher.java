@@ -22,55 +22,6 @@
 
 package com.aelitis.azureus.core.content;
 
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AESemaphore;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AddressUtils;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.BDecoder;
-import org.gudy.azureus2.core3.util.BEncoder;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.ByteArrayHashMap;
-import org.gudy.azureus2.core3.util.Constants;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabase;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseContact;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseException;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseKey;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseProgressListener;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseTransferHandler;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseTransferType;
-import org.gudy.azureus2.plugins.ddb.DistributedDatabaseValue;
-import org.gudy.azureus2.plugins.utils.search.SearchException;
-import org.gudy.azureus2.plugins.utils.search.SearchInstance;
-import org.gudy.azureus2.plugins.utils.search.SearchObserver;
-import org.gudy.azureus2.plugins.utils.search.SearchProvider;
-import org.gudy.azureus2.plugins.utils.search.SearchResult;
-import org.gudy.azureus2.pluginsimpl.local.ddb.DDBaseImpl;
-
 import com.aelitis.azureus.core.cnetwork.ContentNetwork;
 import com.aelitis.azureus.core.content.RelatedContentManager.ContentCache;
 import com.aelitis.azureus.core.content.RelatedContentManager.DownloadInfo;
@@ -85,6 +36,18 @@ import com.aelitis.azureus.plugins.dht.DHTPluginInterface;
 import com.aelitis.azureus.plugins.dht.DHTPluginInterface.DHTInterface;
 import com.aelitis.azureus.plugins.dht.DHTPluginValue;
 import com.aelitis.azureus.util.ImportExportUtils;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.ddb.*;
+import org.gudy.azureus2.plugins.utils.search.*;
+import org.gudy.azureus2.pluginsimpl.local.ddb.DDBaseImpl;
+
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class 
 RelatedContentSearcher 

@@ -1,3 +1,4 @@
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.definition.*;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
@@ -39,7 +40,7 @@ public class TestHeuristics {
 		ah.analyze(cs.get(0));
 
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 	}
 
@@ -53,7 +54,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 
 
 
@@ -88,7 +89,7 @@ public class TestHeuristics {
 		IndexingFile indexing = new IndexingFile();
 		IndexData data = indexing.index(cs.get(0));
 
-		List<Triplet<String, IASTStm, Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 
 		assertTrue(check(
 				14,
@@ -112,7 +113,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 
 
 		assertTrue(check(
@@ -154,7 +155,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 
 
 		assertTrue(check(
@@ -178,7 +179,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 
 
 		assertTrue(check(
@@ -201,7 +202,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 	}
 
@@ -215,7 +216,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 
 
 		assertTrue(check(
@@ -237,7 +238,7 @@ public class TestHeuristics {
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
-		List<Triplet<String,IASTStm,Class>> constraints;
+		List<Constraint> constraints;
 		//First class
 		ah.analyze(cs.get(0));
 		constraints = ah.getTimeConstraint();
@@ -306,7 +307,7 @@ public class TestHeuristics {
 		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 
 	}
@@ -321,7 +322,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
 
 	}
@@ -336,7 +337,7 @@ public class TestHeuristics {
 		ah.subscribe(AnnotatedTypes.class);
 		ah.analyze(cs.get(0));
 
-		List<Triplet<String,IASTStm,Class>> constraints = ah.getTimeConstraint();
+		List<Constraint> constraints = ah.getTimeConstraint();
 
 
 		assertTrue(check(
@@ -349,12 +350,12 @@ public class TestHeuristics {
 
 	}
 
-	private boolean check(int line, String code, Class _class, List<Triplet<String, IASTStm, Class>> constraints ){
+	private boolean check(int line, String code, Class _class, List<Constraint> constraints ){
 		boolean flag = false;
-		for(Triplet<String, IASTStm, Class> c : constraints){
-			if(		c.getValue1().getCode().equals(code) &&
-					c.getValue1().getLine() == line &&
-					c.getValue2().equals(_class)){
+		for(Constraint c : constraints){
+			if(		c.getElm().getCode().equals(code) &&
+					c.getLine() == line &&
+					c.getCategory().equals(_class.getCanonicalName())){
 				flag = true;
 			}
 		}

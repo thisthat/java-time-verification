@@ -1,9 +1,10 @@
 package com.example.fogassistant2;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import android.os.Environment;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class Functions {
 	

@@ -58,9 +58,9 @@ public abstract class IASTStm implements IASTVisitor{
 	 * @param msg			message with information about the constraint
 	 * @param heuristic		class that detected the constraint
 	 */
-	public void addConstraint(Integer line, String msg, Class heuristic){
+	public void addConstraint(Constraint c){
 		isTimeCritical = true;
-		constraint = new Constraint(heuristic,msg, line);
+		constraint = c;
 	}
 
 	public String getNodeType() {

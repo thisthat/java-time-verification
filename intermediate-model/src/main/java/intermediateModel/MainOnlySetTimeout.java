@@ -4,6 +4,7 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.SetTimeout;
 import intermediateModelHelper.heuristic.definition.SetTimeoutPermissive;
@@ -72,11 +73,11 @@ public class MainOnlySetTimeout {
 				ah.set__DEBUG__(false);
 				ah.subscribe(SetTimeoutPermissive.class);
 				ah.analyze(c);
-				List<Triplet<String,IASTStm,Class>> cnst = ah.getTimeConstraint();
+				List<Constraint> cnst = ah.getTimeConstraint();
 				if(cnst.size() > 0){
-					for(Triplet<String,IASTStm,Class> t : cnst){
-						Class type = t.getValue2();
-						if(type.equals(SetTimeoutPermissive.class)){
+					for(Constraint t : cnst){
+						String type = t.getCategory();
+						if(type.equals(SetTimeoutPermissive.class.getCanonicalName())){
 							set_timeout++;
 						}
 					}

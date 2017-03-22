@@ -31,9 +31,18 @@ public class OptimizeCFG implements IOptimization {
 						 f = true;
 					}
 				}
-				if(!f)
-					n.setEnd(true);
+				n.setEnd(!f); //set end node only when there are no exit edges
+				//move cnst to edge
+				if(n.getConstraint() != null){
+					for(Edge e : p.getE()){
+						if(e.getFrom().equals(n)){
+							e.setConstraint(n.getConstraint());
+						}
+					}
+				}
 			}
+
+
 		}
 		return pcfg;
 	}

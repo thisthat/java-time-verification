@@ -1,6 +1,5 @@
-import intermediateModel.interfaces.IASTMethod;
-import Thread_2;
 import abcd.XString;
+import intermediateModel.interfaces.IASTMethod;
 
 class Thread_3 extends Thread {
 

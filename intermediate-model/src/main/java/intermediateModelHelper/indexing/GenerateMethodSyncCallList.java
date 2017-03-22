@@ -333,7 +333,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 				if(method.isAbstract()){ //cannot use this :( we have to go through the implementations
 					searchInExtension(_class.getPackageName(), _class.getName(), actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 				}
-				else if(method.isSyncronized()){
+				else if(method.isSynchronized()){
 					boolean flag = true;
 					if(actual_pars.size() == m.getParameters().size()){
 						for(int i = 0, max = actual_pars.size(); i < max; i++){
@@ -410,7 +410,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 					if(method.isAbstract()){ //cannot use this :( we have to go through the implementations
 						searchInExtension(_class.getPackageName(), _class.getName(), actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 					}
-					else if(method.isSyncronized() && method.getName().equals(methodCalled)){
+					else if(method.isSynchronized() && method.getName().equals(methodCalled)){
 						boolean flag = true;
 						if(actual_pars.size() == m.getParameters().size()){
 							for(int i = 0, max = actual_pars.size(); i < max; i++){

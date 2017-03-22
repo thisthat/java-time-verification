@@ -2,6 +2,7 @@ package PCFG.structure.node;
 
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.Triplet;
 
 /**
@@ -14,17 +15,17 @@ public class Node implements INode {
 	TYPE type;
 	int id = 0;
 	int start,end,line;
-	Triplet<String,IASTStm,Class> constraint = null;
+	Constraint constraint = null;
 	boolean isStart = false;
 	boolean isEnd = false;
 
 	public static int _ID = 0;
 
-	public void setConstraint(Triplet<String,IASTStm,Class> constraint) {
+	public void setConstraint(Constraint constraint) {
 		this.constraint = constraint;
 	}
 
-	public Triplet<String, IASTStm, Class> getConstraint() {
+	public Constraint getConstraint() {
 		return constraint;
 	}
 
@@ -144,12 +145,21 @@ public class Node implements INode {
 		return true;
 	}
 
-	public boolean equals(Triplet<String,IASTStm,Class> c){
-		IASTStm r = c.getValue1();
+	public boolean equals(Constraint c){
+		IASTStm r = c.getElm();
 		if (getStart() != r.getStart()) return false;
-		if (getEnd()   != r.getEnd()) return false;
+		if (getEnd()   != r.getEnd()) return equalsExpectSemiColon(c);
 		if (getLine()  != r.getLine()) return false;
 		if (getCode()  != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
+		return true;
+	}
+
+	private boolean equalsExpectSemiColon(Constraint c) {
+		IASTStm r = c.getElm();
+		if (getStart() != r.getStart()) return false;
+		if (getEnd()-1   != r.getEnd()) return equalsExpectSemiColon(c);
+		if (getLine()  != r.getLine()) return false;
+		if (getCode()  != null ? !getCode().substring(0, getCode().length()-1).equals(r.getCode()) : r.getCode() != null) return false;
 		return true;
 	}
 

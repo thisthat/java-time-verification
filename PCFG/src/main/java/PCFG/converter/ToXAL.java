@@ -1,11 +1,5 @@
 package PCFG.converter;
 
-import intermediateModelHelper.envirorment.Env;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import intermediateModelHelper.indexing.structure.IndexData;
-import intermediateModelHelper.indexing.structure.IndexMethod;
-import intermediateModelHelper.types.ResolveTypes;
 import PCFG.optimization.OptimizeForXAL;
 import PCFG.structure.CFG;
 import PCFG.structure.PCFG;
@@ -33,6 +27,12 @@ import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.structure.IndexMethod;
+import intermediateModelHelper.types.ResolveTypes;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
@@ -477,7 +477,10 @@ public class ToXAL implements IConverter {
 		XALState f = doc.getNodeFromNumericID(from.getID());
 		XALState t = doc.getNodeFromNumericID(to.getID());
 		if(f == null || t == null) return;
-		lastAutomaton.addTransition(new XALTransition(f,t, e.getLabel()));
+		if(e.getConstraint() != null)
+			lastAutomaton.addTransition(new XALTransition(f,t, e.getLabel(), "t &lt; " + e.getConstraint().getValue()));
+		else
+			lastAutomaton.addTransition(new XALTransition(f,t, e.getLabel()));
 	}
 
 	private void getXAL(AnonymEdge e) {

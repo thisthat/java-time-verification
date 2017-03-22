@@ -1,13 +1,14 @@
 package com.example.fogassistant2;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import org.json.JSONException;
-import org.json.JSONObject;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Environment;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class LoggerService extends IntentService {
 

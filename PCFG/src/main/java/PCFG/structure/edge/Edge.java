@@ -1,6 +1,7 @@
 package PCFG.structure.edge;
 
 import PCFG.structure.node.Node;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -10,6 +11,7 @@ public class Edge implements IEdge {
 	Node from;
 	Node to;
 	String label;
+	private Constraint constraint;
 
 	public Edge(Node from, Node to) {
 		this.from = from;
@@ -35,4 +37,11 @@ public class Edge implements IEdge {
 		return this.label;
 	}
 
+	public void setConstraint(Constraint constraint) {
+		this.constraint = constraint;
+	}
+
+	public Constraint getConstraint() {
+		return constraint;
+	}
 }

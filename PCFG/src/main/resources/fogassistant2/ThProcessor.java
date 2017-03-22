@@ -1,12 +1,13 @@
 package com.example.fogassistant2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import org.jtransforms.fft.FloatFFT_1D;
 import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
+import org.jtransforms.fft.FloatFFT_1D;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressLint("NewApi") public class ThProcessor implements Parcelable {
 	

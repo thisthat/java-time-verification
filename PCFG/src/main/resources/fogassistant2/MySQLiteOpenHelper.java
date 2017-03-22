@@ -1,11 +1,11 @@
 package com.example.fogassistant2;
 
-import java.io.File;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+
+import java.io.File;
 
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 	

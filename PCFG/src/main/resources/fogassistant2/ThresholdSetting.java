@@ -1,8 +1,5 @@
 package com.example.fogassistant2;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +15,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ThresholdSetting extends ActionBarActivity implements SensorEventListener {
 	

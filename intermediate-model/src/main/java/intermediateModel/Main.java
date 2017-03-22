@@ -5,6 +5,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.converter.GenerateJSON;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.SetTimeout;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
@@ -103,17 +104,17 @@ public class Main {
 			int resource_expired = 0;
 			//List<ASTClass> lists = JDTVisitor.parse(f,"/Users/giovanni/repository/java-xal/project_eval/activemq/" );
 			for(ASTClass c : lists){
-				List<Triplet<String,IASTStm,Class>> cnst =  ApplyHeuristics.getConstraint(c);
+				List<Constraint> cnst =  ApplyHeuristics.getConstraint(c);
 				if(cnst.size() > 0){
-					for(Triplet<String,IASTStm,Class> t : cnst){
-						Class type = t.getValue2();
-						if(type.equals(AnnotatedTypes.class)){
+					for(Constraint t : cnst){
+						String type = t.getCategory();
+						if(type.equals(AnnotatedTypes.class.getCanonicalName())){
 							implicit_timeout++;
 						}
-						if(type.equals(SetTimeout.class)){
+						if(type.equals(SetTimeout.class.getCanonicalName())){
 							set_timeout++;
 						}
-						if(type.equals(TimeoutResources.class)){
+						if(type.equals(TimeoutResources.class.getCanonicalName())){
 							resource_expired++;
 						}
 					}

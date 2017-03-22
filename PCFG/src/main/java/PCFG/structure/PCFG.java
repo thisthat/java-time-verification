@@ -7,7 +7,6 @@ import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.INode;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
-import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.HashMap;

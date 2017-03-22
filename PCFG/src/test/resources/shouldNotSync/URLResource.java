@@ -18,6 +18,10 @@
 
 package org.eclipse.jetty.util.resource;
 
+import org.eclipse.jetty.util.URIUtil;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,10 +30,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.ReadableByteChannel;
 import java.security.Permission;
-
-import org.eclipse.jetty.util.URIUtil;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 
 /* ------------------------------------------------------------ */
 /** Abstract resource class.

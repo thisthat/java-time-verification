@@ -93,7 +93,7 @@ public class IndexingFile extends ParseIM {
 		for(IASTMethod m : c.getMethods()){
 			data.addMethod(prepareOutput(m));
 			if(m instanceof ASTMethod){
-				if(((ASTMethod) m).isSyncronized()){
+				if(((ASTMethod) m).isSynchronized()){
 					data.addSyncMethod(prepareOutput(m));
 				}
 			}
@@ -138,7 +138,7 @@ public class IndexingFile extends ParseIM {
 		im.setEnd(((IASTStm)m).getEnd());
 		im.setLine(((IASTStm)m).getLine());
 		im.setConstructor( m instanceof ASTConstructor );
-		im.setSync( !im.isConstructor() && ((ASTMethod) m).isSyncronized() );
+		im.setSync( !im.isConstructor() && ((ASTMethod) m).isSynchronized() );
 		im.setReturnType(m.getReturnType());
 		im.setStatic(m.isStatic());
 		return im;

@@ -1,7 +1,5 @@
 package PCFG.creation;
 
-import PCFG.creation.helper.CalculateSyncBlock;
-import PCFG.creation.helper.CalculateSyncCall;
 import PCFG.creation.helper.CreatePCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;
@@ -10,12 +8,9 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModelHelper.indexing.IndexingFile;
-import intermediateModelHelper.indexing.IndexingSyncBlock;
-import intermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.KeyValue;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +29,7 @@ import java.util.List;
 public class IM2CFG {
 
 	CreatePCFG pcfgBuilder = new CreatePCFG();
+	private List<Constraint> constraints = new ArrayList<>();
 
 	public IM2CFG(IASTMethod m, ASTClass c) {
 		pcfgBuilder.addMethod(m, c);
@@ -54,7 +50,7 @@ public class IM2CFG {
 	 */
 	public void addClass(ASTClass c, IASTMethod method){
 
-		List<Triplet<String,IASTStm,Class>> currentClassConstraint = ApplyHeuristics.getConstraint(c);
+		List<Constraint> currentClassConstraint = ApplyHeuristics.getConstraint(c);
 		IASTMethod met = null;
 		for(IASTMethod m : c.getMethods()){
 			if(m.equals(method)){
@@ -64,10 +60,10 @@ public class IM2CFG {
 		if(met != null){
 			int startLine =  ((IASTStm) met).getLine();
 			int endLine   =  ((IASTStm) met).getLineEnd();
-			for(Triplet<String,IASTStm,Class> time : currentClassConstraint){
-				int line = time.getValue1().getLine();
+			for(Constraint time : currentClassConstraint){
+				int line = time.getLine();
 				if(startLine <= line && line <= endLine){
-					pcfgBuilder.getConstraints().add(time);
+					constraints.add(time);
 				}
 			}
 		}
@@ -75,12 +71,6 @@ public class IM2CFG {
 		pcfgBuilder.addMethod(k);
 		//IndexingFile indexFile = new IndexingFile();
 		//indexFile.index(c, reindex);
-	}
-
-	public void addClass(ASTClass c){
-		for(IASTMethod m : c.getMethods()){
-			addClass(c,m);
-		}
 	}
 
 	public PCFG buildPCFG(){
@@ -102,9 +92,11 @@ public class IM2CFG {
 		}
 		pcfg.addAnnotation(String.valueOf(PCFG.DefaultAnnotation.GlobalVars), attrs);
 
+
+
 		//set time constraint
 		for(Node v : pcfg.getV()){
-			for(Triplet<String, IASTStm, Class> c : pcfgBuilder.getConstraints()){
+			for(Constraint c : constraints){
 				if(v.equals(c)){
 					v.setConstraint(c);
 				}
