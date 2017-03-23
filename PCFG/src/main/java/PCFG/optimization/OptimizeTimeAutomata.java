@@ -1,0 +1,48 @@
+package PCFG.optimization;
+
+import PCFG.structure.CFG;
+import PCFG.structure.IOptimization;
+import PCFG.structure.PCFG;
+import PCFG.structure.edge.Edge;
+import PCFG.structure.node.Node;
+import PCFG.structure.node.SyncNode;
+import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
+import intermediateModelHelper.heuristic.definition.TimeoutResources;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Giovanni Liva (@thisthatDC)
+ * @version %I%, %G%
+ */
+public class OptimizeTimeAutomata implements IOptimization {
+
+
+	@Override
+	public PCFG optimize(PCFG pcfg) {
+		for(CFG p : pcfg.getCFG()){
+			handleCFG(p);
+		}
+		return pcfg;
+	}
+
+	private void handleCFG(CFG c) {
+		// annotate reset of variables
+		for(Node n : c.getV()){
+			if(n.getConstraint() != null) {
+				if(n.getConstraint().isCategory(AnnotatedTypes.class)){
+					n.setResetClock(true);
+					n.getConstraint().setValue("t < " + n.getConstraint().getValue());
+				}
+				if(n.getConstraint().isCategory(TimeoutResources.class)){
+
+				}
+			}
+		}
+
+	}
+
+
+
+}

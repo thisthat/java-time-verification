@@ -4,6 +4,7 @@ package PCFG;
 import PCFG.converter.IConverter;
 import PCFG.converter.ToXAL;
 import PCFG.creation.IM2CFG;
+import PCFG.optimization.OptimizeTimeAutomata;
 import PCFG.structure.PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
@@ -40,6 +41,8 @@ public class GeneralOnlyCFGMain {
 		p.addClass(c, c.getMethods().get(1));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();
+		graph.optimize(new OptimizeTimeAutomata());
+
 
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter("graph.xal"));

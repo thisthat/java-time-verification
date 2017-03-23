@@ -19,6 +19,7 @@ public class OptimizeCFG implements IOptimization {
 		for(CFG p : pcfg.getCFG()){
 			List<Edge> edges = new ArrayList<>();
 			for(Edge e : p.getE()){
+				//remove the edge out of a return
 				if(!e.getFrom().getType().equals(Node.TYPE.RETURN)){
 					edges.add(e);
 				}

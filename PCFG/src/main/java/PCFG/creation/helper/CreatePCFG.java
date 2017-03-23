@@ -11,7 +11,10 @@ import PCFG.structure.node.SyncNode;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.interfaces.ConvertIM;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
@@ -42,6 +45,8 @@ public class CreatePCFG extends ConvertIM {
 	private List<Constraint> constraints = new ArrayList<>();
 
 	private PCFG pcfg;
+
+	private int _nTimeVar = 0;
 
 
 	public void addMethod(KeyValue<IASTMethod,ASTClass> k){
@@ -457,9 +462,33 @@ public class CreatePCFG extends ConvertIM {
 		if(c != null){
 			this.lastLabel = this.lastLabel + "[" + c.getValue() + "]";
 		}
-		addState(
-				new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL, r.getStart(), r.getEnd(), r.getLine())
-		);
+		Node node = new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL, r.getStart(), r.getEnd(), r.getLine());
+		final String[] varName = {"t_" + _nTimeVar++};
+		r.visit(new DefaultASTVisitor(){
+			@Override
+			public void enterASTAssignment(ASTAssignment elm) {
+				elm.getLeft().visit(new DefaultASTVisitor() {
+					@Override
+					public void enterASTLiteral(ASTLiteral elm) {
+						varName[0] = elm.getValue();
+					}
+				});
+			}
+
+			@Override
+			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
+				elm.getName().visit(new DefaultASTVisitor() {
+					@Override
+					public void enterASTLiteral(ASTLiteral elm) {
+						varName[0] = elm.getValue();
+					}
+				});
+			}
+		});
+		if(r.getIsResetTime()){
+			node.setResetClock(varName[0], true);
+		}
+		addState( node );
 		if(r != null && r.getExpression() != null) {
 			r.getExpression().visit(new DefaultASTVisitor() {
 				@Override

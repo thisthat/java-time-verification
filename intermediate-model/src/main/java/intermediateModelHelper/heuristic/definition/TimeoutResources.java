@@ -38,7 +38,9 @@ public class TimeoutResources extends SearchTimeConstraint {
 			return;
 		}
 
-		CheckExpression.checkRE(stm,env);
+		if(CheckExpression.checkRE(stm,env)){
+			stm.markResetTime();
+		}
 
 		//search for A {<,<=,>,>=} C
 		expr.visit(new DefualtASTREVisitor(){

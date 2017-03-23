@@ -18,7 +18,13 @@ public class XALTransition extends XALItem {
         private String ClockExp = "";
 
         private ClockConstraint(String clockExp) {
-            ClockExp = clockExp;
+            ClockExp = escape(clockExp);
+        }
+
+        private String escape(String clockExp) {
+            clockExp = clockExp.replace("<", "&lt;");
+            clockExp = clockExp.replace(">", "&gt;");
+            return clockExp;
         }
 
         @Override
@@ -37,6 +43,7 @@ public class XALTransition extends XALItem {
     private String metricValue = null;
     private String style;
     private ClockConstraint clock = null;
+    private List<String> clockReset = new ArrayList<>();
 
     public XALTransition(XALState from, XALState to) {
         this.from = from.getId();
@@ -84,9 +91,13 @@ public class XALTransition extends XALItem {
         if(this.metricValue != null && !this.metricValue.equals(""))
             out += String.format("MetricValue=\"%s\" ",this.metricValue);
         out += String.format("style=\"%s\"", this.style );
-		if(clock != null){
+		if(clock != null || clockReset.size() > 0){
 			out += ">\n";
-			out += tab(tab+1) + clock.toString();
+			for(String reset : clockReset){
+                out += tab(tab+1) + reset.toString();
+            }
+            if(clock != null)
+			    out += tab(tab+1) + clock.toString();
 			out += tab(tab) + "</Transition>";
 		} else {
 			out += " />";
@@ -106,5 +117,9 @@ public class XALTransition extends XALItem {
     @Override
     protected boolean checkConstriant() {
         return false;
+    }
+
+    public void addClockReset(String clockReset) {
+        this.clockReset.add(String.format("<ClockReset ClockVar=\"%s\"/>\n", clockReset));
     }
 }

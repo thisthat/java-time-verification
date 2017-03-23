@@ -54,8 +54,8 @@ public class ToXAL implements IConverter {
 
 		public FindMethodCall(ASTClass _class) {
 			super(_class);
-			mongo = MongoConnector.getInstance(MongoOptions.getInstance().getDbName());
-			processImports();
+			//mongo = MongoConnector.getInstance(MongoOptions.getInstance().getDbName());
+			//processImports();
 		}
 
 		/**
@@ -299,13 +299,13 @@ public class ToXAL implements IConverter {
 
 	List<ASTAttribute> attribute;
 	ASTClass c;
-	List<Triplet<String,String, ASTRE>> calls;
+	List<Triplet<String,String, ASTRE>> calls = new ArrayList<>();
 
 	public ToXAL(ASTClass c) {
 		this.c = c;
 		this.attribute = c.getAttributes();
 		FindMethodCall find = new FindMethodCall(this.c);
-		calls = find.getMethodCalls();
+		//calls = find.getMethodCalls();
 	}
 
 	@Override
@@ -321,6 +321,15 @@ public class ToXAL implements IConverter {
 		pcfg = pcfg.optimize( new OptimizeForXAL() );
 		XALDocument document = new XALDocument(filename);
 
+		List<String> timeVars = new ArrayList<>();
+		for(Node n : pcfg.getV()){
+			for(String var : n.getResetVars()){
+				if(!timeVars.contains(var)){
+					timeVars.add(var);
+				}
+			}
+		}
+
 		List<Pair<String,String>> vars = (List<Pair<String,String>>) pcfg.getAnnotation().get(String.valueOf(PCFG.DefaultAnnotation.GlobalVars));
 		for(Pair<String,String> v : vars){
 			XALVariable var = new XALVariable(v.getValue1(),v.getValue0(),"");
@@ -334,7 +343,12 @@ public class ToXAL implements IConverter {
 
 		}*/
 		//add method call
-
+		for(String v : timeVars){
+			XALCLockVariable cv = new XALCLockVariable(v);
+			for(XALAutomaton a : document.getAutomatons()){
+				a.getClocks().addVariable(cv);
+			}
+		}
 		return document;
 	}
 
@@ -426,7 +440,6 @@ public class ToXAL implements IConverter {
 				lastAutomaton.getActionPool().addProduction(m);
 				s.setNameMetric(nameMetric);
 			}
-
 		}
 	}
 
@@ -477,10 +490,17 @@ public class ToXAL implements IConverter {
 		XALState f = doc.getNodeFromNumericID(from.getID());
 		XALState t = doc.getNodeFromNumericID(to.getID());
 		if(f == null || t == null) return;
+		XALTransition tt;
 		if(e.getConstraint() != null)
-			lastAutomaton.addTransition(new XALTransition(f,t, e.getLabel(), "t &lt; " + e.getConstraint().getValue()));
+			tt  = new XALTransition(f,t, e.getLabel(), e.getConstraint().getValue());
 		else
-			lastAutomaton.addTransition(new XALTransition(f,t, e.getLabel()));
+			tt = new XALTransition(f,t, e.getLabel());
+		if(e.getFrom().isResetClock()){
+			for(String r : e.getFrom().getResetVars()){
+				tt.addClockReset(r);
+			}
+		}
+		lastAutomaton.addTransition(tt);
 	}
 
 	private void getXAL(AnonymEdge e) {

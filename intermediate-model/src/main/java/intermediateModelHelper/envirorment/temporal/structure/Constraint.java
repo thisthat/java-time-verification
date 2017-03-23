@@ -1,6 +1,7 @@
 package intermediateModelHelper.envirorment.temporal.structure;
 
 import intermediateModel.interfaces.IASTStm;
+import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
 /**
  * Created by giovanni on 22/03/2017.
@@ -51,6 +52,10 @@ public class Constraint {
         return value != null ? value.equals(that.value) : that.value == null;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
     public int hashCode() {
         int result = elm != null ? elm.hashCode() : 0;
@@ -58,5 +63,9 @@ public class Constraint {
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + line;
         return result;
+    }
+
+    public boolean isCategory(Class<? extends SearchTimeConstraint> _class){
+        return this.category.equals(_class.getCanonicalName());
     }
 }

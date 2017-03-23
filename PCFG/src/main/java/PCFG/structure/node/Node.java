@@ -5,6 +5,9 @@ import intermediateModel.structure.ASTRE;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.Triplet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -16,8 +19,11 @@ public class Node implements INode {
 	int id = 0;
 	int start,end,line;
 	Constraint constraint = null;
+	boolean isResetClock = false;
 	boolean isStart = false;
 	boolean isEnd = false;
+
+	List<String> resetVars = new ArrayList<>();
 
 	public static int _ID = 0;
 
@@ -45,7 +51,7 @@ public class Node implements INode {
 		isEnd = end;
 	}
 
-	public enum TYPE {
+    public enum TYPE {
 		RETURN,
 		BREAK,
 		CONTINUE,
@@ -121,6 +127,23 @@ public class Node implements INode {
 
 	public int getLine() {
 		return line;
+	}
+
+	public boolean isResetClock() {
+		return isResetClock;
+	}
+
+	public void setResetClock(boolean resetClock) {
+		this.setResetClock("t", resetClock);
+	}
+
+	public void setResetClock(String s, boolean resetClock) {
+		this.isResetClock = resetClock;
+		this.resetVars.add(s);
+	}
+
+	public List<String> getResetVars() {
+		return resetVars;
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class XALCLockVariable extends XALItem {
 
     @Override
     public String toString(int tab) {
-        return String.format("<Variable Name=\"%s\" />", this.name);
+        return tab(tab) + String.format("<Variable Name=\"%s\" />", this.name);
     }
 
     @Override

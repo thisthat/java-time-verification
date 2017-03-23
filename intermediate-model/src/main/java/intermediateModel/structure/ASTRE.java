@@ -23,6 +23,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	private static int _ID = 0;
 	List<String> usedVars = new ArrayList<>();
 	Env env = new Env();
+	private boolean isResetTime = false;
 
 	public ASTRE(int start, int end, IASTRE expression) {
 		super(start, end);
@@ -138,5 +139,13 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		visitor.enterASTRE(this);
 		expression.visit(visitor);
 		visitor.exitASTRE(this);
+	}
+
+    public void markResetTime() {
+		this.isResetTime = true;
+    }
+
+    public boolean getIsResetTime(){
+		return this.isResetTime;
 	}
 }
