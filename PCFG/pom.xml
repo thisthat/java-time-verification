@@ -7,7 +7,7 @@
         <groupId>java-xal</groupId>
         <version>0.3.5</version>
     </parent>
-    <version>0.2.1</version>
+    <version>0.2.3-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>PCFG</artifactId>

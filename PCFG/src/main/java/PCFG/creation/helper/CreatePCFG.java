@@ -82,7 +82,7 @@ public class CreatePCFG extends ConvertIM {
 			c.getValue().visit(new DefaultASTVisitor(){
 				@Override
 				public void enterASTMethod(ASTMethod m) {
-					if(m.equalsBySignature( c.getKey())) {
+					if(m.equalsBySignature( c.getKey()) && c.getValue().hasMethod(m)) {
 						addSingleClassStates(c.getValue(), m);
 					}
 				}

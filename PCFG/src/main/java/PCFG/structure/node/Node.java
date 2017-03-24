@@ -180,7 +180,7 @@ public class Node implements INode {
 	private boolean equalsExpectSemiColon(Constraint c) {
 		IASTStm r = c.getElm();
 		if (getStart() != r.getStart()) return false;
-		if (getEnd()-1   != r.getEnd()) return equalsExpectSemiColon(c);
+		if (getEnd()-1   != r.getEnd()) return false;
 		if (getLine()  != r.getLine()) return false;
 		if (getCode()  != null ? !getCode().substring(0, getCode().length()-1).equals(r.getCode()) : r.getCode() != null) return false;
 		return true;

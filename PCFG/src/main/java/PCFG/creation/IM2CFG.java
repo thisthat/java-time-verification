@@ -39,7 +39,7 @@ public class IM2CFG {
 	}
 
 	public int getConstraintsSize() {
-		return pcfgBuilder.getConstraints().size();
+		return constraints.size();
 	}
 
 	/**

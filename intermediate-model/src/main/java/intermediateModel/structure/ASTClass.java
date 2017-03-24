@@ -296,4 +296,12 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	public boolean isAbstract(){
 		return this.isAbstract;
 	}
+
+    public boolean hasMethod(IASTMethod key) {
+		for(IASTMethod m : this.getMethods()){
+			if(m == key)
+				return true;
+		}
+		return false;
+    }
 }
