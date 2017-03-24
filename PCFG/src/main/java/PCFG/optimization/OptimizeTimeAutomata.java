@@ -3,6 +3,7 @@ package PCFG.optimization;
 import PCFG.structure.CFG;
 import PCFG.structure.IOptimization;
 import PCFG.structure.PCFG;
+import PCFG.structure.anonym.AnonymClass;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
@@ -29,7 +30,16 @@ public class OptimizeTimeAutomata implements IOptimization {
 
 	private void handleCFG(CFG c) {
 		// annotate reset of variables
-		for(Node n : c.getV()){
+		handleNodes(c.getV());
+		for(AnonymClass a : c.getAnonNodes()){
+			for(CFG ac : a.getCFG()){
+				handleCFG(ac);
+			}
+		}
+	}
+
+	private void handleNodes(List<Node> V){
+		for(Node n : V){
 			if(n.getConstraint() != null) {
 				if(n.getConstraint().isCategory(AnnotatedTypes.class)){
 					n.setResetClock(true);
@@ -40,9 +50,7 @@ public class OptimizeTimeAutomata implements IOptimization {
 				}
 			}
 		}
-
 	}
-
 
 
 }
