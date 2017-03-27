@@ -6,6 +6,7 @@ import PCFG.structure.PCFG;
 import PCFG.structure.anonym.AnonymClass;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,12 @@ public class OptimizeCFG implements IOptimization {
 			if(n.getConstraint() != null){
 				for(Edge e : p.getE()){
 					if(e.getFrom().equals(n)){
-						e.setConstraint(n.getConstraint());
+						if(n.getType() == Node.TYPE.IF_EXPR && e.getLabel().equals("False")){
+							Constraint c = n.getConstraint();
+							e.setConstraint(c.negate());
+						} else {
+							e.setConstraint(n.getConstraint());
+						}
 					}
 				}
 			}

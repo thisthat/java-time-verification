@@ -68,4 +68,21 @@ public class Constraint {
     public boolean isCategory(Class<? extends SearchTimeConstraint> _class){
         return this.category.equals(_class.getCanonicalName());
     }
+
+    public Constraint negate() {
+        String neg_value = this.value;
+        if(neg_value.contains("<"))
+            neg_value = neg_value.replace("<", ">=");
+        else if(neg_value.contains(">"))
+            neg_value = neg_value.replace(">", "<=");
+        else if(neg_value.contains("<="))
+            neg_value = neg_value.replace("<=", ">");
+        else if(neg_value.contains(">="))
+            neg_value = neg_value.replace(">=", "<");
+        else if(neg_value.contains("=="))
+            neg_value = neg_value.replace("==", "!=");
+        else if(neg_value.contains("!="))
+            neg_value = neg_value.replace("!=", "==");
+        return new Constraint(this.elm, this.category, neg_value, this.line);
+    }
 }
