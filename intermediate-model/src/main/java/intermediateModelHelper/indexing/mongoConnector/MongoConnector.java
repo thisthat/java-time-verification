@@ -514,6 +514,19 @@ public class MongoConnector {
 	}
 
 	/**
+	 * It queries the database to retrieve all the classes that contains timed methods.
+	 * @return list of {@link IndexData} objects.
+	 */
+	public synchronized List<IndexData> getTimedMethod(){
+		Query<IndexData> q = datastore.find(IndexData.class)
+				.disableValidation()
+				.field("listOfTimedMethods.0").exists();
+		return q.asList();
+	}
+
+
+
+	/**
 	 * Get the list of classes that belong to an import statement
 	 * @param query	package name of the import
 	 * @return	List of {@link IndexData} classes

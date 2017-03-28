@@ -1,4 +1,4 @@
-package PCFG;
+package examples;
 
 
 import PCFG.converter.IConverter;

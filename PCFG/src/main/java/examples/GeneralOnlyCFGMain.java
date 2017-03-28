@@ -1,4 +1,4 @@
-package PCFG;
+package examples;
 
 
 import PCFG.converter.IConverter;
@@ -8,10 +8,8 @@ import PCFG.optimization.OptimizeTimeAutomata;
 import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTVariable;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.IndexingProject;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,7 +17,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

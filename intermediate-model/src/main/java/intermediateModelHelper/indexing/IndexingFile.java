@@ -222,7 +222,7 @@ public class IndexingFile extends ParseIM {
 		ASTRE re = elm.getExpr();
 		if(re != null && re.getExpression() != null && //sanity checks
 				CheckExpression.checkIt(re.getExpression(), env)){
-			data.getListOfTimedMethods().add(lastMethodName);
+			data.getListOfTimedMethods().add(new IndexData.IndexTimeMethod(lastMethodName, signatureLastMethodName));
 		}
 
 	}

@@ -191,15 +191,20 @@ public class CreatePCFG extends ConvertIM {
 	}
 
 	protected void convertWhile(ASTWhile stm) {
-		Node expr = new Node(stm.getExpr().getExpressionName(), stm.getExpr().getCode(), Node.TYPE.NORMAL, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node expr = new Node(stm.getExpr().getExpressionName(), stm.getExpr().getCode(), Node.TYPE.WHILE_EXPR, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState( expr );
 		this.lastLabel = "True";
 		dispachStm(stm.getStms());
 		//back to the expr
 		Edge e = new Edge( this.lastNode , expr );
 		this.lastCfg.addEdge(e);
-		this.lastLabel = "False";
-		this.lastNode = expr;
+		this.lastLabel = "";
+		Node endWhile = new Node("_end_while_", stm.getExpr().getCode(), Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
+		e = new Edge( expr, endWhile);
+		e.setLabel("False" );
+		this.lastCfg.addNode(endWhile);
+		this.lastCfg.addEdge(e);
+		this.lastNode = endWhile;
 	}
 
 	protected void convertSynchronized(ASTSynchronized stm) {

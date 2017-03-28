@@ -71,9 +71,42 @@ public class OptimizeCFG implements IOptimization {
 			}
 		}
 
+		handleBrk(p);
+
 		for(AnonymClass a : p.getAnonNodes()){
 			for(CFG c : a.getCFG()){
 				handleCFG(c);
+			}
+		}
+	}
+
+	private void handleBrk(CFG p) {
+		for(Node n : p.getV()){
+			if(n.getType() == Node.TYPE.BREAK){
+				List<Node> cicle = p.getPrev(n);
+				boolean found = false;
+				List<Node> toVisit = new ArrayList<>();
+				while(!found && cicle.size() > 0) {
+					for (Node c : cicle) {
+						switch (c.getType()) {
+							case FOREACH:
+								handleBrkForeach();
+								found = true;
+								break;
+							case SWITCH:
+								handleBrkSwitch();
+								found = true;
+								break;
+							case WHILE_EXPR:
+								handleBrkWhile();
+								found = true;
+								break;
+						}
+					}
+					if (!found) {
+
+					}
+				}
 			}
 		}
 	}

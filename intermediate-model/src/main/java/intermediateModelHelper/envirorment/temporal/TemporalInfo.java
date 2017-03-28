@@ -33,6 +33,25 @@ public class TemporalInfo {
         return instance;
     }
 
+    public void addTimeMethods(List<TimeMethod> timeMethods) {
+        TemporalInfo.timeMethods.addAll(timeMethods);
+    }
+
+    public void addTimeTimeout(List<TimeTimeout> timeTimeout) {
+        TemporalInfo.timeTimeout.addAll(timeTimeout);
+    }
+
+    public void addTimeSoTimeout(List<TimeTimeout> timeSoTimeout) {
+        TemporalInfo.timeSoTimeout.addAll(timeSoTimeout);
+    }
+
+    public void addReadTimeout(List<TimeTimeout> readTimeout) {
+        TemporalInfo.readTimeout.addAll(readTimeout);
+    }
+
+    public void addTimeTypes(List<TimeTypes> timeTypes) {
+        TemporalInfo.timeTypes.addAll(timeTypes);
+    }
 
     public List<TimeMethod> getTimeMethods() {
         return timeMethods;

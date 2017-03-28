@@ -71,11 +71,7 @@ public class Constraint {
 
     public Constraint negate() {
         String neg_value = this.value;
-        if(neg_value.contains("<"))
-            neg_value = neg_value.replace("<", ">=");
-        else if(neg_value.contains(">"))
-            neg_value = neg_value.replace(">", "<=");
-        else if(neg_value.contains("<="))
+        if(neg_value.contains("<="))
             neg_value = neg_value.replace("<=", ">");
         else if(neg_value.contains(">="))
             neg_value = neg_value.replace(">=", "<");
@@ -83,6 +79,10 @@ public class Constraint {
             neg_value = neg_value.replace("==", "!=");
         else if(neg_value.contains("!="))
             neg_value = neg_value.replace("!=", "==");
+        else if(neg_value.contains("<"))
+            neg_value = neg_value.replace("<", ">=");
+        else if(neg_value.contains(">"))
+            neg_value = neg_value.replace(">", "<=");
         return new Constraint(this.elm, this.category, neg_value, this.line);
     }
 }

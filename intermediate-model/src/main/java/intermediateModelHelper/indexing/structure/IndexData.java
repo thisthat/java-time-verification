@@ -33,11 +33,41 @@ import java.util.List;
 		@Index(fields = @Field(value = "$**", type = IndexType.TEXT))
 )
 public class IndexData {
+
+	public static class IndexTimeMethod {
+		String name;
+		List<String> signature;
+
+		public IndexTimeMethod(String name, List<String> signature) {
+			this.name = name;
+			this.signature = signature;
+		}
+
+		public IndexTimeMethod() {
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public List<String> getSignature() {
+			return signature;
+		}
+
+		public void setSignature(List<String> signature) {
+			this.signature = signature;
+		}
+	}
+
 	@Id
 	private ObjectId id;
 	List<IndexMethod> listOfMethods = new ArrayList<>();
 	@Beta
-	List<String> listOfTimedMethods = new ArrayList<>();
+	List<IndexTimeMethod> listOfTimedMethods = new ArrayList<>();
 	List<IndexMethod> listOfSyncMethods = new ArrayList<>();
 	List<IndexParameter> timeAttribute = new ArrayList<>();
 	List<String> imports = new ArrayList<>();
@@ -55,7 +85,7 @@ public class IndexData {
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<String> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String fullclassPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented, boolean isInterface, boolean isAbstract) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<IndexTimeMethod> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String fullclassPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented, boolean isInterface, boolean isAbstract) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
@@ -105,11 +135,11 @@ public class IndexData {
 		this.listOfMethods = listOfMethods;
 	}
 
-	public List<String> getListOfTimedMethods() {
+	public List<IndexTimeMethod> getListOfTimedMethods() {
 		return listOfTimedMethods;
 	}
 
-	public void setListOfTimedMethods(List<String> listOfTimedMethods) {
+	public void setListOfTimedMethods(List<IndexTimeMethod> listOfTimedMethods) {
 		this.listOfTimedMethods = listOfTimedMethods;
 	}
 
