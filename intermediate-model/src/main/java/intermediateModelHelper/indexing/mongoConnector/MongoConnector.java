@@ -541,7 +541,7 @@ public class MongoConnector {
 		} else {
 			q.field(__FULL_NAME).equal(query);
 		}
-		List<IndexData> out = q.search(query).asList();
+		List<IndexData> out = q.asList();
 		if(out.size() > 0) {
 			cacheImport.put(query, out);
 		} else { // if(forceCache){

@@ -61,7 +61,7 @@ public class TestSyncNode {
 		MongoConnector.getInstance().ensureIndexes();
 		PCFG g = p.buildPCFG();
 
-		assertEquals(g.getV().size(), 45);
+		assertEquals(g.getV().size(), 46);
 		assertEquals(g.getE().size(), 26);
 		assertEquals(g.getSyncNodes().size(), 3 );
 		assertEquals(g.getCFG().size(), 2 );

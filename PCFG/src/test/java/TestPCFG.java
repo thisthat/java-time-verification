@@ -84,8 +84,8 @@ public class TestPCFG {
 		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
-		assertEquals(g.getV().size(), 7);
-		assertEquals(g.getE().size(), 7);
+		assertEquals(g.getV().size(), 8);
+		assertEquals(g.getE().size(), 8);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -179,8 +179,8 @@ public class TestPCFG {
 		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
-		assertEquals(g.getV().size(), 6);
-		assertEquals(g.getE().size(), 6);
+		assertEquals(g.getV().size(), 7);
+		assertEquals(g.getE().size(), 7);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -223,7 +223,7 @@ public class TestPCFG {
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 13);
-		assertEquals(g.getE().size(), 14);
+		assertEquals(g.getE().size(), 12);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
