@@ -38,6 +38,7 @@ public class CreatePCFG extends ConvertIM {
 	private String lastLabel = "";
 	private boolean isMultiLabel = false;
 	private List<Node> multiLabel = new ArrayList<>();
+	private List<Node> breakLabels = new ArrayList<>();
 
 	private IHasCFG lastPCFG = null;
 	private String lastClass = "";
@@ -137,11 +138,16 @@ public class CreatePCFG extends ConvertIM {
 		Edge eBack = new Edge(this.lastNode, has_next);
 		this.lastCfg.addEdge(eBack);
 
-		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node end_for = new Node("_end_for", "", Node.TYPE.END_CICLE, stm.getStart(), stm.getEnd(), stm.getLine());
 		this.lastCfg.addNode(end_for);
 		Edge e = new Edge(has_next, end_for);
 		e.setLabel("False");
 		this.lastCfg.addEdge(e);
+		for(Node br : breakLabels){
+			e = new Edge( br, end_for);
+			this.lastCfg.addEdge(e);
+		}
+		breakLabels.clear();
 		this.lastNode = end_for;
 	}
 
@@ -168,11 +174,17 @@ public class CreatePCFG extends ConvertIM {
 		Edge eBack = new Edge(this.lastNode, expr_for);
 		this.lastCfg.addEdge(eBack);
 		//close the for
-		Node end_for = new Node("_end_for", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node end_for = new Node("_end_for", "", Node.TYPE.END_CICLE, stm.getStart(), stm.getEnd(), stm.getLine());
 		this.lastCfg.addNode(end_for);
 		Edge e = new Edge(expr_for, end_for);
 		e.setLabel("False");
 		this.lastCfg.addEdge(e);
+		for(Node br : breakLabels){
+			e = new Edge( br, end_for);
+			this.lastCfg.addEdge(e);
+		}
+		breakLabels.clear();
+
 		this.lastNode = end_for;
 	}
 
@@ -186,8 +198,18 @@ public class CreatePCFG extends ConvertIM {
 		Edge e = new Edge( expr, init_do_while );
 		e.setLabel("True");
 		this.lastCfg.addEdge(e);
-		this.lastLabel = "False";
-		this.lastNode = expr;
+		this.lastLabel = "";
+		Node endWhile = new Node("_end_while_", stm.getExpr().getCode(), Node.TYPE.END_CICLE, stm.getStart(), stm.getEnd(), stm.getLine());
+		e = new Edge( expr, endWhile);
+		e.setLabel("False" );
+		this.lastCfg.addNode(endWhile);
+		this.lastCfg.addEdge(e);
+		for(Node br : breakLabels){
+			e = new Edge( br, endWhile);
+			this.lastCfg.addEdge(e);
+		}
+		breakLabels.clear();
+		this.lastNode = endWhile;
 	}
 
 	protected void convertWhile(ASTWhile stm) {
@@ -199,11 +221,16 @@ public class CreatePCFG extends ConvertIM {
 		Edge e = new Edge( this.lastNode , expr );
 		this.lastCfg.addEdge(e);
 		this.lastLabel = "";
-		Node endWhile = new Node("_end_while_", stm.getExpr().getCode(), Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node endWhile = new Node("_end_while_", stm.getExpr().getCode(), Node.TYPE.END_CICLE, stm.getStart(), stm.getEnd(), stm.getLine());
 		e = new Edge( expr, endWhile);
 		e.setLabel("False" );
 		this.lastCfg.addNode(endWhile);
 		this.lastCfg.addEdge(e);
+		for(Node br : breakLabels){
+			e = new Edge( br, endWhile);
+			this.lastCfg.addEdge(e);
+		}
+		breakLabels.clear();
 		this.lastNode = endWhile;
 	}
 
@@ -457,9 +484,9 @@ public class CreatePCFG extends ConvertIM {
 	}
 
 	protected void convertBreak(ASTBreak stm) {
-		addState(
-				new Node("break", stm.getCode(), Node.TYPE.BREAK, stm.getStart(), stm.getEnd(), stm.getLine())
-		);
+		Node br = new Node("break", stm.getCode(), Node.TYPE.BREAK, stm.getStart(), stm.getEnd(), stm.getLine());
+		breakLabels.add(br);
+		addState(br);
 	}
 
 	protected void convertRE(ASTRE r) {

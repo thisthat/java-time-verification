@@ -37,6 +37,18 @@ public class ASTArrayInitializer extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		StringBuffer bf = new StringBuffer();
+		bf.append("{");
+		for(IASTRE e : exprs){
+			bf.append(e.print());
+			bf.append(",");
+		}
+		String out = bf.toString();
+		return out.substring(0, out.length()-1) + " }";
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTArrayInitializer(this);

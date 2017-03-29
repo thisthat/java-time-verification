@@ -66,7 +66,8 @@ public class Node implements INode {
 		IF_EXPR,
 		CONTAINS_SYNC,
 		END_WHILE,
-		WHILE_EXPR
+		WHILE_EXPR,
+		END_CICLE,
 	}
 
 	public Node(String name, String code, TYPE type, int start, int end, int line) {

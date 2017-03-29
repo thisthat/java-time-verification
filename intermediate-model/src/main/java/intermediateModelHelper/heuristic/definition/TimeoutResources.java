@@ -1,6 +1,8 @@
 package intermediateModelHelper.heuristic.definition;
 
+import com.rits.cloning.Cloner;
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
@@ -9,6 +11,7 @@ import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.heuristic.beta.Translation;
 
 /**
  * The heuristic searches for snippet of code in a guard section of the following type:
@@ -55,12 +58,19 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case notEqual:
 						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
-							TimeoutResources.super.addConstraint(stm.getCode(), stm);
+							addConstraint(stm);
 						}
 				}
 			}
 		});
 
+	}
+
+	protected void addConstraint(ASTRE stm) {
+		Cloner cloner = new Cloner();
+		ASTRE expr = cloner.deepClone(stm);
+		Translation.Translate(expr);
+		super.addConstraint(expr.print(), stm);
 	}
 
 	@Override

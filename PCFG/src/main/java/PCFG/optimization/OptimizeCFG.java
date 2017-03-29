@@ -81,33 +81,12 @@ public class OptimizeCFG implements IOptimization {
 	}
 
 	private void handleBrk(CFG p) {
-		for(Node n : p.getV()){
-			if(n.getType() == Node.TYPE.BREAK){
-				List<Node> cicle = p.getPrev(n);
-				boolean found = false;
-				List<Node> toVisit = new ArrayList<>();
-				while(!found && cicle.size() > 0) {
-					for (Node c : cicle) {
-						switch (c.getType()) {
-							case FOREACH:
-								handleBrkForeach();
-								found = true;
-								break;
-							case SWITCH:
-								handleBrkSwitch();
-								found = true;
-								break;
-							case WHILE_EXPR:
-								handleBrkWhile();
-								found = true;
-								break;
-						}
-					}
-					if (!found) {
-
-					}
-				}
+		List<Edge> newEdges = new ArrayList<>(p.getE());
+		for(Edge e : p.getE()){
+			if(e.getFrom().getType() == Node.TYPE.BREAK && e.getTo().getType() != Node.TYPE.END_CICLE){
+				newEdges.remove(e);
 			}
 		}
+		p.setE(newEdges);
 	}
 }

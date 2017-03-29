@@ -137,7 +137,8 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTRE(this);
-		expression.visit(visitor);
+		if(expression != null)
+			expression.visit(visitor);
 		visitor.exitASTRE(this);
 	}
 
@@ -148,4 +149,12 @@ public class ASTRE extends IASTStm implements IASTVisitor {
     public boolean getIsResetTime(){
 		return this.isResetTime;
 	}
+
+    public String print() {
+    	StringBuffer bf = new StringBuffer();
+    	if(this.expression != null){
+			bf.append(expression.print());
+		}
+		return bf.toString();
+    }
 }

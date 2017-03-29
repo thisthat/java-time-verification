@@ -31,6 +31,7 @@ public class OptimizeTimeAutomata implements IOptimization {
 	private void handleCFG(CFG c) {
 		// annotate reset of variables
 		handleNodes(c.getV());
+		handleEdges(c.getE());
 		for(AnonymClass a : c.getAnonNodes()){
 			for(CFG ac : a.getCFG()){
 				handleCFG(ac);
@@ -42,8 +43,23 @@ public class OptimizeTimeAutomata implements IOptimization {
 		for(Node n : V){
 			if(n.getConstraint() != null) {
 				if(n.getConstraint().isCategory(AnnotatedTypes.class)){
-					n.setResetClock(true);
+					//n.setResetClock(true);
 					n.getConstraint().setValue("t <= " + n.getConstraint().getValue());
+				}
+				if(n.getConstraint().isCategory(TimeoutResources.class)){
+
+				}
+			}
+		}
+	}
+
+	private void handleEdges(List<Edge> E){
+		for(Edge e : E){
+			Node n = e.getTo();
+			if(n.getConstraint() != null) {
+				if(n.getConstraint().isCategory(AnnotatedTypes.class)){
+					e.getFrom().setResetClock(true);
+					//n.getConstraint().setValue("t <= " + n.getConstraint().getValue());
 				}
 				if(n.getConstraint().isCategory(TimeoutResources.class)){
 

@@ -74,6 +74,16 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		StringBuffer bf = new StringBuffer();
+		bf.append(type + " " + name.print());
+		if(expr != null) {
+			bf.append(" = " + expr.print());
+		}
+		return bf.toString();
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTVariableDeclaration(this);

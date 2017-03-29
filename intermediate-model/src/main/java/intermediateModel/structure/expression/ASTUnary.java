@@ -38,6 +38,11 @@ public class ASTUnary extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		return op.print() + expr.print();
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTUnary(this);

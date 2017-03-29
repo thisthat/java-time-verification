@@ -48,6 +48,11 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		return variableName.print() + "." + attributeName;
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTAttributeAccess(this);

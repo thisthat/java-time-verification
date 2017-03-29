@@ -46,6 +46,11 @@ public class ASTConditional extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		return expr.print() + " ? " + thenExpr.print() + " : " + elseExpr.print();
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTConditional(this);

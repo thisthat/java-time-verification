@@ -52,6 +52,18 @@ public class ASTVariableMultipleDeclaration extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		StringBuffer bf = new StringBuffer();
+		bf.append(bf + " ");
+		for(IASTRE v : vars){
+			bf.append(v.print());
+			bf.append(",");
+		}
+		bf.subSequence(0, bf.length()-1);
+		return bf.toString();
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visit((ASTREVisitor) visitor);
 	}
