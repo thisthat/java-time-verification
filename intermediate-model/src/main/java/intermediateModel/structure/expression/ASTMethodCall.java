@@ -89,7 +89,10 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	@Override
 	public String print() {
 		StringBuffer bf = new StringBuffer();
-		bf.append(exprCallee.print() + "." + methodName + "(");
+		if(exprCallee != null)
+			bf.append(exprCallee.print() + "." + methodName + "(");
+		else
+			bf.append(methodName + "(");
 		for(IASTRE p : parameters){
 			bf.append(p.print());
 			bf.append(",");
