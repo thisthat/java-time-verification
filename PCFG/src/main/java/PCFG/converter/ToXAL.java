@@ -495,7 +495,7 @@ public class ToXAL implements IConverter {
 			tt  = new XALTransition(f,t, e.getLabel(), e.getConstraint().getValue());
 		else
 			tt = new XALTransition(f,t, e.getLabel());
-		if(e.getFrom().isResetClock()){
+		if(e.getFrom().isResetClock() && e.getTo().getConstraint() != null){
 			for(String r : e.getFrom().getResetVars()){
 				tt.addClockReset(r);
 			}

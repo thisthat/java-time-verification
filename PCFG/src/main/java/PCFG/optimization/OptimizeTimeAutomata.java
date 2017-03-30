@@ -61,7 +61,7 @@ public class OptimizeTimeAutomata implements IOptimization {
 					e.getFrom().setResetClock(true);
 					//n.getConstraint().setValue("t <= " + n.getConstraint().getValue());
 				}
-				if(n.getConstraint().isCategory(TimeoutResources.class)){
+				else if(n.getConstraint().isCategory(TimeoutResources.class)){
 
 				}
 			}

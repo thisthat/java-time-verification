@@ -313,7 +313,7 @@ public class CreatePCFG extends ConvertIM {
 				//from catch to end try
 				Edge toEnd = new Edge(instance, finally_try);
 				toEnd.setLabel("False");
-				this.lastCfg.addEdge(toEnd);
+				//this.lastCfg.addEdge(toEnd);
 			}
 		}
 
@@ -371,7 +371,7 @@ public class CreatePCFG extends ConvertIM {
 				//from catch to end try
 				Edge toEnd = new Edge(instance, finally_try);
 				toEnd.setLabel("False");
-				this.lastCfg.addEdge(toEnd);
+				//this.lastCfg.addEdge(toEnd);
 			}
 		}
 
