@@ -1,9 +1,7 @@
 package intermediateModel.visitors;
 
 
-import intermediateModel.structure.ASTConstructor;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.*;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
@@ -12,7 +10,6 @@ import intermediateModelHelper.heuristic.definition.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
 
@@ -146,6 +143,12 @@ public class ApplyHeuristics extends ParseIM {
 	@Override
 	protected void analyzeEveryStm(IASTStm elm, Env env) {
 
+	}
+
+	@Override
+	protected void analyzeASTDoWhile(ASTDoWhile elm, Env env) {
+		super.analyze(elm.getStms(), env);
+		super.analyze(elm.getStms(), env);
 	}
 
 	@Override

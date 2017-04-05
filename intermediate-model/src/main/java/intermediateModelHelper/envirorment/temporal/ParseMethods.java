@@ -51,7 +51,7 @@ public class ParseMethods extends ParseCSV {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

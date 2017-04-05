@@ -42,7 +42,7 @@ public abstract class ParseCSV {
                 start(new FileReader(this.file));
             }
         } catch (Exception e){
-            System.err.println("Cannot open file or stream: " + this.file + " -- " + this.stream);
+            //System.err.println("Cannot open file or stream: " + this.file + " -- " + this.stream);
         }
     }
 
@@ -67,7 +67,7 @@ public abstract class ParseCSV {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
 

@@ -193,7 +193,7 @@ public class CreatePCFG extends ConvertIM {
 		addState(init_do_while);
 		dispachStm(stm.getStms());
 		ASTRE ex = stm.getExpr();
-		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.NORMAL, ex.getStart(), ex.getEnd(), ex.getLine() );
+		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.WHILE_EXPR, ex.getStart(), ex.getEnd(), ex.getLine() );
 		addState( expr );
 		Edge e = new Edge( expr, init_do_while );
 		e.setLabel("True");

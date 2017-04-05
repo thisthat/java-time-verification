@@ -24,7 +24,20 @@ public class TemporalInfo {
         timeTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/timeout.csv")).getMethods();
         readTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/readtimeout.csv")).getMethods();
         timeTypes   = new ParseTypes(   getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/types.csv")).getMethods();
+        loadUserDefined();
     }
+
+    private void loadUserDefined() {
+        String dir = System.getProperty("user.dir");
+        if(!dir.endsWith("/"))
+            dir += "/";
+        dir += "config/";
+        timeMethods.addAll( new ParseMethods(dir + "methods.csv").getMethods());
+        timeTimeout.addAll( new ParseTimeout(dir + "timeout.csv").getMethods());
+        readTimeout.addAll( new ParseTimeout(dir + "readtimeout.csv").getMethods());
+        timeTypes.addAll(   new ParseTypes  (dir + "types.csv").getMethods());
+    }
+
 
     public static synchronized TemporalInfo getInstance(){
         if(instance == null) {

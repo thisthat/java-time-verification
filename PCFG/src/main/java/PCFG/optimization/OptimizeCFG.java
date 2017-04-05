@@ -60,7 +60,11 @@ public class OptimizeCFG implements IOptimization {
 			if(n.getConstraint() != null){
 				for(Edge e : p.getE()){
 					if(e.getFrom().equals(n)){
-						if(n.getType() == Node.TYPE.IF_EXPR && e.getLabel().equals("False")){
+						if( //is a branching stms?
+							(n.getType() == Node.TYPE.IF_EXPR || n.getType() == Node.TYPE.WHILE_EXPR)
+									&&
+							e.getLabel().equals("False"))
+						{
 							Constraint c = n.getConstraint();
 							e.setConstraint(c.negate());
 						} else {
