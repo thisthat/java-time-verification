@@ -1,4 +1,4 @@
-package com.example.fogassistant2;
+package fogassistant2;
 
 public class ApplicationUtility {
 	public static final String APPTAG = "FOG";

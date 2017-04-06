@@ -244,7 +244,7 @@ public class CreatePCFG extends ConvertIM {
 	protected void convertIf(ASTIf stm) {
 		ASTRE ex = stm.getGuard();
 		Node expr = new Node(ex.getExpressionName(), ex.getCode(), Node.TYPE.IF_EXPR, ex.getStart(), ex.getEnd(), ex.getLine() );
-		Node end_if = new Node("_end_if_", "", Node.TYPE.USELESS, stm.getStart(), stm.getEnd(), stm.getLine());
+		Node end_if = new Node("_end_if_", "", Node.TYPE.END_IF, stm.getStart(), stm.getEnd(), stm.getLine());
 		addState( expr );
 		this.lastLabel = "True";
 		super.dispachStm(stm.getIfBranch().getStms());

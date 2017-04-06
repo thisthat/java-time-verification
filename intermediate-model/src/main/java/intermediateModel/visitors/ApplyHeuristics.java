@@ -6,6 +6,7 @@ import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 import intermediateModelHelper.heuristic.definition.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
@@ -59,6 +60,7 @@ public class ApplyHeuristics extends ParseIM {
 		//ah.subscribe(ThreadTime.class);
 		//ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(UndefiniteTimeout.class);
 		//ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.subscribe(SetTimeout.class);

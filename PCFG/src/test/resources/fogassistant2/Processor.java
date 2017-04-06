@@ -1,4 +1,4 @@
-package com.example.fogassistant2;
+package fogassistant2;
 
 import android.os.Environment;
 import android.util.Log;

@@ -76,11 +76,24 @@ public class OptimizeCFG implements IOptimization {
 		}
 
 		handleBrk(p);
+		handleUseless(p);
+		handleFinal(p);
 
 		for(AnonymClass a : p.getAnonNodes()){
 			for(CFG c : a.getCFG()){
 				handleCFG(c);
 			}
+		}
+	}
+
+	private void handleFinal(CFG p) {
+		for(Node v : p.getV()) {
+			boolean flag = true;
+			for (Edge e : p.getE()) {
+				if (e.getFrom().equals(v))
+					flag = false;
+			}
+			v.setEnd(flag);
 		}
 	}
 
@@ -92,5 +105,24 @@ public class OptimizeCFG implements IOptimization {
 			}
 		}
 		p.setE(newEdges);
+	}
+	private void handleUseless(CFG p) {
+		List<Node> newNode = new ArrayList<>();
+		for(Node v : p.getV()){
+			boolean flag = false;
+			if(v.getType().equals(Node.TYPE.END_IF)) {
+				for(Edge e : p.getE()){
+					if(e.getTo().equals(v))
+						flag = true;
+				}
+				if(flag){
+					newNode.add(v);
+				}
+			} else {
+				newNode.add(v);
+			}
+
+		}
+		p.setV(newNode);
 	}
 }

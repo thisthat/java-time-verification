@@ -5,6 +5,7 @@ import PCFG.converter.IConverter;
 import PCFG.converter.ToDot;
 import PCFG.converter.ToXAL;
 import PCFG.creation.IM2PCFG;
+import PCFG.optimization.OptimizeTimeAutomata;
 import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
@@ -18,6 +19,7 @@ import parser.Java2AST;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -32,12 +34,31 @@ public class GeneralGarbageMain {
 	public static void main(String[] args) throws Exception {
 		MongoOptions.getInstance().setDbName(db_name);
 		GeneralGarbageMain m = new GeneralGarbageMain();
+		m.run_wait();
+		if(true)
+			return;
 		if(args.length > 0)
 			m.example_paper(args);
 		else
-			m.run("/Users/giovanni/repository/java-xal/PCFG/src/main/resources/fogassistant2");
+			m.run("/Users/giovanni/repository/java-xal/PCFG/src/test/resources/fogassistant2");
 	}
 
+	private void run_wait() throws Exception {
+		String f =  "/Users/giovanni/repository/java-xal/PCFG/src/test/resources/time/UndefiniteTimeBehaviour.java";
+		ASTClass c = JDTVisitor.parse(f,System.getProperty("user.dir")).get(0);
+		IASTMethod m = c.getAllMethods().get(0);
+		IM2PCFG p = new IM2PCFG();
+		p.addClass(c,m);
+		PCFG graph = p.buildPCFG();
+		graph.optimize();
+		graph.optimize(new OptimizeTimeAutomata());
+
+		BufferedWriter writer = null;
+		writer = new BufferedWriter(new FileWriter("graph.xal"));
+		IConverter toGraphViz = new ToXAL(c);
+		writer.write(toGraphViz.convert(graph));
+		writer.close();
+	}
 
 
 	public void run() throws Exception {

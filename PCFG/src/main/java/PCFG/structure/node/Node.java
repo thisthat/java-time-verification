@@ -67,7 +67,7 @@ public class Node implements INode {
 		CONTAINS_SYNC,
 		END_WHILE,
 		WHILE_EXPR,
-		END_CICLE,
+		END_CICLE, END_IF,
 	}
 
 	public Node(String name, String code, TYPE type, int start, int end, int line) {
@@ -155,7 +155,7 @@ public class Node implements INode {
 		if (!(o instanceof Node)) return false;
 
 		Node node = (Node) o;
-
+		if (getID() != node.getID()) return false;
 		if (getStart() != node.getStart()) return false;
 		if (getEnd() != node.getEnd()) return false;
 		if (getLine() != node.getLine()) return false;

@@ -9,6 +9,7 @@ import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
+import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class OptimizeTimeAutomata implements IOptimization {
 	}
 
 	private void handleEdges(List<Edge> E){
+		List<Edge> newE = new ArrayList<>();
 		for(Edge e : E){
 			Node n = e.getTo();
 			if(n.getConstraint() != null) {
@@ -64,8 +66,12 @@ public class OptimizeTimeAutomata implements IOptimization {
 				else if(n.getConstraint().isCategory(TimeoutResources.class)){
 
 				}
+				else if(n.getConstraint().isCategory(UndefiniteTimeout.class)){
+					newE.add(new Edge(n,n));
+				}
 			}
 		}
+		E.addAll(newE);
 	}
 
 

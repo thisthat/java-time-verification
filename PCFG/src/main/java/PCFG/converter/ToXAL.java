@@ -28,6 +28,7 @@ import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexData;
@@ -491,7 +492,7 @@ public class ToXAL implements IConverter {
 		XALState t = doc.getNodeFromNumericID(to.getID());
 		if(f == null || t == null) return;
 		XALTransition tt;
-		if(e.getConstraint() != null)
+		if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class))
 			tt  = new XALTransition(f,t, e.getLabel(), e.getConstraint().getValue());
 		else
 			tt = new XALTransition(f,t, e.getLabel());

@@ -1,4 +1,4 @@
-package com.example.fogassistant2;
+package fogassistant2;
 
 import android.app.IntentService;
 import android.content.Intent;

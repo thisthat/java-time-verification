@@ -3,6 +3,7 @@ package intermediateModelHelper.envirorment.temporal;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class TemporalInfo {
     private static List<TimeTimeout> timeSoTimeout;
     private static List<TimeTimeout> readTimeout;
     private static List<TimeTypes>   timeTypes;
+    private static List<TimeUndefinedTimeout>  timeUndefinedTimeout;
 
     private static TemporalInfo instance = null;
 
@@ -24,6 +26,7 @@ public class TemporalInfo {
         timeTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/timeout.csv")).getMethods();
         readTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/readtimeout.csv")).getMethods();
         timeTypes   = new ParseTypes(   getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/types.csv")).getMethods();
+        timeUndefinedTimeout   = new ParseUndefinedTimeout(   getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/undefinedTimeout.csv")).getMethods();
         loadUserDefined();
     }
 
@@ -36,6 +39,7 @@ public class TemporalInfo {
         timeTimeout.addAll( new ParseTimeout(dir + "timeout.csv").getMethods());
         readTimeout.addAll( new ParseTimeout(dir + "readtimeout.csv").getMethods());
         timeTypes.addAll(   new ParseTypes  (dir + "types.csv").getMethods());
+        timeUndefinedTimeout.addAll(   new ParseUndefinedTimeout  (dir + "undefinedTimeout.csv").getMethods());
     }
 
 
@@ -62,6 +66,10 @@ public class TemporalInfo {
         TemporalInfo.readTimeout.addAll(readTimeout);
     }
 
+    public static void addTimeUndefinedTimeout(List<TimeUndefinedTimeout> timeUndefinedTimeout) {
+        TemporalInfo.timeUndefinedTimeout.addAll(timeUndefinedTimeout);
+    }
+
     public void addTimeTypes(List<TimeTypes> timeTypes) {
         TemporalInfo.timeTypes.addAll(timeTypes);
     }
@@ -84,5 +92,9 @@ public class TemporalInfo {
 
     public List<TimeTypes> getTimeTypes() {
         return timeTypes;
+    }
+
+    public List<TimeUndefinedTimeout> getTimeUndefinedTimeout() {
+        return timeUndefinedTimeout;
     }
 }

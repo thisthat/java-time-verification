@@ -1,4 +1,4 @@
-package com.example.fogassistant2;
+package fogassistant2;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
