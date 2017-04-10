@@ -4,6 +4,7 @@ package examples;
 import PCFG.converter.IConverter;
 import PCFG.converter.ToDot;
 import PCFG.converter.ToXAL;
+import PCFG.creation.IM2CFG;
 import PCFG.creation.IM2PCFG;
 import PCFG.optimization.OptimizeTimeAutomata;
 import PCFG.structure.PCFG;
@@ -47,7 +48,7 @@ public class GeneralGarbageMain {
 		String f =  "/Users/giovanni/repository/java-xal/PCFG/src/test/resources/time/UndefiniteTimeBehaviour.java";
 		ASTClass c = JDTVisitor.parse(f,System.getProperty("user.dir")).get(0);
 		IASTMethod m = c.getAllMethods().get(0);
-		IM2PCFG p = new IM2PCFG();
+		IM2CFG p = new IM2CFG();
 		p.addClass(c,m);
 		PCFG graph = p.buildPCFG();
 		graph.optimize();

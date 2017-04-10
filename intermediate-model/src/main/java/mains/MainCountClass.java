@@ -1,4 +1,4 @@
-package intermediateModel;
+package mains;
 
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;

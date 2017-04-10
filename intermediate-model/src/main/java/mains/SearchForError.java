@@ -1,4 +1,4 @@
-package intermediateModel;
+package mains;
 
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;

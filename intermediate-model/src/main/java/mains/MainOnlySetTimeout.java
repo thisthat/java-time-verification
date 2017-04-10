@@ -1,5 +1,6 @@
-package intermediateModel;
+package mains;
 
+import intermediateModel.Utils;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
