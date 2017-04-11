@@ -11,6 +11,7 @@ public class Constraint {
     String category;
     String value;
     int line;
+    Constraint edgeVersion;
 
     public Constraint(IASTStm elm, String category, String value, int line) {
         this.elm = elm;
@@ -28,6 +29,14 @@ public class Constraint {
     }
 
     public String getValue() {
+        if(value.startsWith(".")){
+            String tmp = value.substring(1); //no first dot
+            int first = tmp.indexOf("(");
+            int last = tmp.lastIndexOf(")");
+            String firstPart = tmp.substring(0, first);
+            String lastPart = tmp.substring(last + 1);
+            return firstPart+lastPart;
+        }
         return value;
     }
 
@@ -37,6 +46,10 @@ public class Constraint {
 
     public IASTStm getElm() {
         return elm;
+    }
+
+    public void setEdgeVersion(Constraint edgeVersion) {
+        this.edgeVersion = edgeVersion;
     }
 
     @Override
@@ -84,5 +97,9 @@ public class Constraint {
         else if(neg_value.contains(">"))
             neg_value = neg_value.replace(">", "<=");
         return new Constraint(this.elm, this.category, neg_value, this.line);
+    }
+
+    public Constraint getEdgeVersion(){
+        return edgeVersion;
     }
 }

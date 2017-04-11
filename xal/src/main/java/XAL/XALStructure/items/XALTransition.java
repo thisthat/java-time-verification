@@ -22,6 +22,9 @@ public class XALTransition extends XALItem {
         }
 
         private String escape(String clockExp) {
+            if(clockExp.startsWith(".")){
+                clockExp = clockExp.substring(1);
+            }
             clockExp = clockExp.replace("<", "&lt;");
             clockExp = clockExp.replace(">", "&gt;");
             return clockExp;
@@ -94,7 +97,7 @@ public class XALTransition extends XALItem {
 		if(clock != null || clockReset.size() > 0){
 			out += ">\n";
 			for(String reset : clockReset){
-                out += tab(tab+1) + reset.toString();
+                out += tab(tab+1) + reset;
             }
             if(clock != null)
 			    out += tab(tab+1) + clock.toString();

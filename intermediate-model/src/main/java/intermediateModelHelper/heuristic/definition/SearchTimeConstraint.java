@@ -65,11 +65,12 @@ public abstract class SearchTimeConstraint {
 	 * @param message Message to store with the time constraint
 	 * @param stm	The instruction to add to the list
 	 */
-	protected void addConstraint(String message, IASTStm stm){
+	protected Constraint addConstraint(String message, IASTStm stm){
 		Constraint elm = new Constraint(stm, getClass(), message, stm.getLine());
 		if(!timeConstraint.contains(elm))
 			timeConstraint.add( elm );
 		stm.addConstraint( elm );
+		return elm;
 	}
 
 	/**

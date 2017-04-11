@@ -11,6 +11,7 @@ import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.beta.Translation;
 
 /**
@@ -58,7 +59,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case notEqual:
 						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
-							addConstraint(stm);
+							addConstraint(stm, env);
 						}
 				}
 			}
@@ -66,11 +67,13 @@ public class TimeoutResources extends SearchTimeConstraint {
 
 	}
 
-	protected void addConstraint(ASTRE stm) {
+	protected void addConstraint(ASTRE stm, Env e) {
 		Cloner cloner = new Cloner();
 		ASTRE expr = cloner.deepClone(stm);
-		Translation.Translate(expr);
-		super.addConstraint(expr.print(), stm);
+		Translation.Translate(expr,e);
+		Constraint c = super.addConstraint(expr.print(), stm);
+		//Constraint edgeVersion = cloner.deepClone(c);
+		//c.setEdgeVersion(edgeVersion);
 	}
 
 	@Override
