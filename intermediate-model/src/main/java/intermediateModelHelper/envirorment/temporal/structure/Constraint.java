@@ -89,7 +89,7 @@ public class Constraint {
         else if(neg_value.contains(">="))
             neg_value = neg_value.replace(">=", "<");
         else if(neg_value.contains("=="))
-            neg_value = neg_value.replace("==", "!=");
+            neg_value = neg_value.replace("==", "<") + " || " + neg_value.replace("==", ">");
         else if(neg_value.contains("!="))
             neg_value = neg_value.replace("!=", "==");
         else if(neg_value.contains("<"))

@@ -4,6 +4,7 @@ import PCFG.structure.CFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
+import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
 import uppaal.*;
 
 import java.io.ByteArrayOutputStream;
@@ -34,7 +35,7 @@ public class ToUppaal implements IConverter {
 	/**
 	 * PrettyPrint the PCFG in the Uppaal syntax
 	 * @param pcfg PCFG to convert.
-	 * @return	Graphviz representation of the PCFG
+	 * @return	Uppaal representation of the PCFG
 	 */
 	@Override
 	public String convert(PCFG pcfg) {
@@ -51,6 +52,8 @@ public class ToUppaal implements IConverter {
 	private void convert(CFG c) {
 		String name = c.getName().substring(c.getName().indexOf("::")+2);
 		Automaton aut = new Automaton(name);
+		Declaration dec = new Declaration();
+		aut.setDeclaration(dec);
 		doc.addAutomaton(aut);
 		SystemDeclaration sys = new SystemDeclaration();
 		sys.addDeclaration(String.format("Process = %s();", name));
@@ -63,9 +66,21 @@ public class ToUppaal implements IConverter {
 				aut.setInit(l);
 			}
 			map.put(v, l);
+			//time var
+			for(String var : v.getResetVars()){
+				dec.add(String.format("clock %s;\n",var));
+			}
 		}
 		for(Edge e : c.getE()){
-			new Transition(aut, map.get(e.getFrom()), map.get(e.getTo()));
+			Transition t = new Transition(aut, map.get(e.getFrom()), map.get(e.getTo()));
+			if(e.getFrom().isResetClock()){
+				for(String r : e.getFrom().getResetVars()){
+					t.addUpdate(String.format("%s = 0", r));
+				}
+			}
+			if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class) && e.getLabel().equals("True")){
+				t.setGuard(e.getConstraint().getValue());
+			}
 		}
 	}
 
