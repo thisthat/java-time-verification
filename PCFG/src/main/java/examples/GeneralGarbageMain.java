@@ -3,6 +3,7 @@ package examples;
 
 import PCFG.converter.IConverter;
 import PCFG.converter.ToDot;
+import PCFG.converter.ToUppaal;
 import PCFG.converter.ToXAL;
 import PCFG.creation.IM2CFG;
 import PCFG.creation.IM2PCFG;
@@ -55,9 +56,12 @@ public class GeneralGarbageMain {
 		graph.optimize(new OptimizeTimeAutomata());
 
 		BufferedWriter writer = null;
-		writer = new BufferedWriter(new FileWriter("graph.xal"));
+		//writer = new BufferedWriter(new FileWriter("graph.xal"));
+		writer = new BufferedWriter(new FileWriter("graph.xml"));
 		IConverter toGraphViz = new ToXAL(c);
-		writer.write(toGraphViz.convert(graph));
+		IConverter toUppaal = new ToUppaal(true);
+		//writer.write(toGraphViz.convert(graph));
+		writer.write(toUppaal.convert(graph));
 		writer.close();
 	}
 

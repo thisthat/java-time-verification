@@ -81,6 +81,16 @@ public class OptimizeCFG implements IOptimization {
 		handleUseless(p);
 		handleFinal(p);
 
+		List<Edge> newE = new ArrayList<>();
+		//remove useless edges
+		for(Edge e : p.getE()){
+			Node from = e.getFrom();
+			if(p.getV().contains(from)){
+				newE.add(e);
+			}
+		}
+		p.setE(newE);
+
 		for(AnonymClass a : p.getAnonNodes()){
 			for(CFG c : a.getCFG()){
 				handleCFG(c);

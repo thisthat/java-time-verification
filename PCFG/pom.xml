@@ -17,6 +17,11 @@
             <artifactId>intermediate-model</artifactId>
             <version>0.3.5</version>
         </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>uppaal-library</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

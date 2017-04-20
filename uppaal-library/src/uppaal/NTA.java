@@ -396,7 +396,7 @@ public class NTA extends UppaalElement{
 	private Document generateXMLDocument() {
 		return new Document(this.generateXMLElement(),new DocType("nta",
 				"-//Uppaal Team//DTD Flat System 1.1//EN",
-		"flat-1_1.dtd"));
+		"http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd"));
 	}
 	
 	/**
