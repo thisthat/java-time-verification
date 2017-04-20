@@ -61,7 +61,7 @@ public class ToUppaal implements IConverter {
 		doc.setSystemDeclaration(sys);
 		HashMap<Node,Location> map = new HashMap<>();
 		for(Node v : c.getV()){
-			Location l = new Location(aut, new Name(this.hideName ? "s" + v.getID() : v.getName()), Location.LocationType.NORMAL, 0, 0);
+			Location l = new Location(aut, new Name(this.hideName ? "s" + v.getID() : v.getName()), Location.LocationType.COMMITTED, 0, 0);
 			if(v.isStart()){
 				aut.setInit(l);
 			}

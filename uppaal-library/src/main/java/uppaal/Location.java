@@ -107,6 +107,7 @@ public class Location extends PositionedUppaalElement{
 		this.comment = new Comment();
 		this.invariant = new Invariant(x, y);
 		this.expRate = new ExponentialRate(x,y);
+		this.type = type;
 		this.incomingTrans = new LinkedList<Transition>();
 		this.outgoingTrans = new LinkedList<Transition>();
 		automaton.addLocation(this);
