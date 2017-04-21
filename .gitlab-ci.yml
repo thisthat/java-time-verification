@@ -28,8 +28,8 @@ release:
 release-docker:
   stage: docker
   script:
-    - docker-compose build
-    - docker tag java-xal:0.1 thisthatdc/java-xal:0.1
+    - docker build -t java-xal .
+    - docker tag java-xal thisthatdc/java-xal:0.1
     - docker push thisthatdc/java-xal:0.1
 
 pages:
