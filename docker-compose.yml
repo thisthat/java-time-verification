@@ -1,0 +1,6 @@
+java-xal:
+  build: .
+  ports:
+   - "9000:9000"
+  environment:
+    ENV: DEV

@@ -4,6 +4,7 @@ before_script:
 stages:
   - test
   - deploy
+  - docker
 
 test:
   stage: test
@@ -23,6 +24,13 @@ release:
     paths:
     - server/target/server*.jar
     - intermediate-model/target/intermediate-model*.jar
+
+release-docker:
+  stage: docker
+  script:
+    - docker-compose build
+    - docker tag java-xal:0.1 thisthatdc/java-xal:0.1
+    - docker push thisthatdc/java-xal:0.1
 
 pages:
   stage: deploy
