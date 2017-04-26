@@ -19,14 +19,20 @@ import java.util.HashMap;
  */
 public class ToUppaal implements IConverter {
 
-	boolean hideName = true;
+	public enum NAMING {
+		LINE,
+		ID,
+		PRETTY
+	}
+	NAMING typeName = NAMING.LINE;
+
 	NTA doc = new NTA();
 
 	/**
 	 * Constructor. Initialise the internal variables according to the parameters.
 	 */
-	public ToUppaal(boolean hideName) {
-		this.hideName = hideName;
+	public ToUppaal(NAMING typeName) {
+		this.typeName = typeName;
 	}
 
 	public ToUppaal() {
@@ -61,7 +67,32 @@ public class ToUppaal implements IConverter {
 		doc.setSystemDeclaration(sys);
 		HashMap<Node,Location> map = new HashMap<>();
 		for(Node v : c.getV()){
-			Location l = new Location(aut, new Name(this.hideName ? "s" + v.getID() : v.getName()), Location.LocationType.COMMITTED, 0, 0);
+			String nameLoc;
+			switch(typeName){
+				case LINE:
+					switch(v.getType()){
+						case TRY:
+						case BREAK:
+						case THROW:
+						case NORMAL:
+						case RETURN:
+						case SWITCH:
+						case FOREACH:
+						case FINALLY:
+						case IF_EXPR:
+						case CONTINUE:
+						case WHILE_EXPR:
+							nameLoc = "l" + v.getLine();
+							break;
+						default:
+							nameLoc = "l" + v.getLine() + "--" + v.getID();
+						 	break;
+					}
+					break;
+				case PRETTY: nameLoc = v.getName(); break;
+				default: nameLoc = "s" + v.getID(); break;
+			}
+			Location l = new Location(aut, new Name(nameLoc), Location.LocationType.COMMITTED, 0, 0);
 			if(v.isStart()){
 				aut.setInit(l);
 			}
@@ -78,9 +109,16 @@ public class ToUppaal implements IConverter {
 					t.addUpdate(String.format("%s = 0", r));
 				}
 			}
-			if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class) && e.getLabel().equals("True")){
-				t.setGuard(e.getConstraint().getValue());
+			if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class)){
+				//we have a cnst to represent, but if we are in an if branch, only the true branch will have it
+				String l = e.getLabel();
+				if(l.equals("") || l.equals("True")){
+					t.setGuard(e.getConstraint().getValue());
+				}
 			}
+			/*if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class) && e.getLabel() != null && e.getLabel().equals("True")){
+				t.setGuard(e.getConstraint().getValue());
+			}*/
 		}
 	}
 

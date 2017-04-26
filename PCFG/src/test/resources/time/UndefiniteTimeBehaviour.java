@@ -2,13 +2,12 @@ package a.b.c.d.e.test;
 
 
 public class UndefiniteTimeBehaviour {
-	public void method_1(){
+	public void method_1(int x){
 		Object a = new Object();
 		a.wait();
 		try{
-			long	duration_secs = System.currentTimeMillis()/1000;
-
-			if ( duration_secs == 0 ){
+			long duration_secs = System.currentTimeMillis()/1000;
+			if ( duration_secs == x){
 
 				long length = file.getSourceFile().getLength();
 

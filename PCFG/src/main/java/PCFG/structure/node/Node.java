@@ -129,6 +129,20 @@ public class Node implements INode {
 	}
 
 	public int getLine() {
+		switch(this.type){
+			case TRY:
+			case BREAK:
+			case THROW:
+			case NORMAL:
+			case RETURN:
+			case SWITCH:
+			case FOREACH:
+			case FINALLY:
+			case IF_EXPR:
+			case CONTINUE:
+			case WHILE_EXPR:
+				return line;
+		}
 		return line;
 	}
 

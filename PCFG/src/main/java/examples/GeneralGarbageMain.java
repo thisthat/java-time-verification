@@ -59,7 +59,7 @@ public class GeneralGarbageMain {
 		//writer = new BufferedWriter(new FileWriter("graph.xal"));
 		writer = new BufferedWriter(new FileWriter("graph.xml"));
 		IConverter toGraphViz = new ToXAL(c);
-		IConverter toUppaal = new ToUppaal(true);
+		IConverter toUppaal = new ToUppaal(ToUppaal.NAMING.PRETTY);
 		//writer.write(toGraphViz.convert(graph));
 		writer.write(toUppaal.convert(graph));
 		writer.close();

@@ -2,6 +2,7 @@ package examples;
 
 
 import PCFG.converter.IConverter;
+import PCFG.converter.ToUppaal;
 import PCFG.converter.ToXAL;
 import PCFG.creation.IM2CFG;
 import PCFG.optimization.OptimizeTimeAutomata;
@@ -11,6 +12,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.structure.IndexData;
@@ -56,7 +58,7 @@ public class Kafka_3540 {
 
 
 	public void run(String base, String working, String outputdir, String outputFile)  throws Exception{
-		if(!outputdir.endsWith("/")){
+		if(!outputdir.endsWith("/") && !outputFile.startsWith("/")){
 			outputdir += "/";
 		}
 		List<String> files = new ArrayList<>();
@@ -67,13 +69,14 @@ public class Kafka_3540 {
 			}
 		}
 
+
 		//IndexingProject indexingProject = new IndexingProject(this.project_name);
 		//indexingProject.setSkipTest(false);
 		//indexingProject.setShowUpdates(true);
 		//indexingProject.indexProject(working, true);
 		//System.out.println("> Indexing Complete <");
 
-		this.loadUserType();
+		//this.loadUserType();
 
 		String f = base + "org/apache/kafka/clients/consumer/internals/ConsumerCoordinator.java";
 		System.out.println("> Processing ConsumerCoordinator.java<");
@@ -88,12 +91,30 @@ public class Kafka_3540 {
 		graph.optimize(new OptimizeTimeAutomata());
 
 		BufferedWriter writer = null;
-		writer = new BufferedWriter(new FileWriter(outputFile));
-		IConverter toGraphViz = new ToXAL(c);
+		writer = new BufferedWriter(new FileWriter(outputdir + outputFile));
+		IConverter toGraphViz = new ToUppaal();
 		writer.write(toGraphViz.convert(graph));
 		writer.close();
 
-		System.out.println("\n\n> Processing Complete <");
+		f = base + "org/apache/kafka/clients/consumer/internals/AbstractCoordinator.java";
+		System.out.println("> Processing ConsumerCoordinator.java<");
+		classes = JDTVisitor.parse(f, base);
+		c = classes.get(0);
+		m = c.getFirstMethodByName("ensureCoordinatorReady");
+		p = new IM2CFG();
+		p.addClass(c, m);
+		//p.addClass(c, c.getFirstMethodByName("interruptClusterStateProcessing"));
+		graph = p.buildPCFG();
+		graph.optimize();
+		graph.optimize(new OptimizeTimeAutomata());
+
+		writer = null;
+		writer = new BufferedWriter(new FileWriter(outputdir + "2_" + outputFile));
+		toGraphViz = new ToUppaal(ToUppaal.NAMING.LINE);
+		writer.write(toGraphViz.convert(graph));
+		writer.close();
+
+		System.out.println("\n> Processing Complete <");
 
 	}
 
