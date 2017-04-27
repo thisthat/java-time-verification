@@ -19,15 +19,19 @@ public class TestInstrumentation implements ClassFileTransformer  {
                             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
 
+        //the idea is, once we load the correct class, we change on the fly its bytecode
         byte[] byteCode = classfileBuffer;
         if (className.equals("instrumentation/Testing")) {
             System.err.println("AGENT INJECTION : " + className);
             try {
+                //retrive the class and method that we are looking for
                 ClassPool cp = ClassPool.getDefault();
                 CtClass cc = cp.get("instrumentation.Testing");
+                //add the imports that we need for logging
                 injectClass(cc);
+                //instrument the code of the method
                 CtMethod m = cc.getDeclaredMethod("randomSleep");
-                injectMethod(m, "instrumentation.Testing","randomSleep", 14, "randomSleepDuration" );
+                injectMethod(m, "instrumentation.Testing", 14, "randomSleepDuration" );
                 byteCode = cc.toBytecode();
                 cc.detach();
             } catch (Exception ex) {
@@ -37,13 +41,27 @@ public class TestInstrumentation implements ClassFileTransformer  {
         return byteCode;
     }
 
+    /**
+     * It adds the imports needed to write a file.
+     * @param cc    Class in which insert the imports
+     * @throws NotFoundException
+     */
     private void injectClass(CtClass cc) throws NotFoundException {
         ClassPool cp = cc.getClassPool();
         cp.importPackage("java.io.FileWriter");
         cp.importPackage("java.io.IOException");
     }
 
-    private void injectMethod(CtMethod m, String className, String methodName, int line, String var) throws CannotCompileException {
+    /**
+     * It instruments the byte code of a method setting up the logging of a specific value
+     * @param m             Method to instrument
+     * @param className     Name of the class which holds the method
+     * @param line          Line where to log the data
+     * @param var           Variable name to log
+     * @throws CannotCompileException
+     */
+    private void injectMethod(CtMethod m, String className, int line, String var) throws CannotCompileException {
+        String methodName = m.getName();
         m.addLocalVariable("__thID", CtClass.longType);
         m.insertBefore("__thID = Thread.currentThread().getId();");
         StringBuffer src = new StringBuffer();
