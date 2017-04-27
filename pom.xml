@@ -19,6 +19,7 @@
         <module>server</module>
         <module>testJUppaal</module>
         <module>uppaal-library</module>
+        <module>code-instrumentation</module>
     </modules>
 
     <build>
