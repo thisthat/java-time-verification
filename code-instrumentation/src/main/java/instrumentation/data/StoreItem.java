@@ -60,4 +60,9 @@ public class StoreItem {
     public void setVarName(String varName) {
         this.varName = varName;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s.%s %s:%d",  className, methodName, varName, line);
+    }
 }

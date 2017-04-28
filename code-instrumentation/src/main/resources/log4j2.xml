@@ -20,7 +20,7 @@
             <AppenderRef ref="MyFileError"/>
         </Root>
         <Root level="debug">
-            <AppenderRef ref="MyFileInfo"/>
+            <AppenderRef ref="MyFileDebug"/>
         </Root>
     </Loggers>
 </Configuration>

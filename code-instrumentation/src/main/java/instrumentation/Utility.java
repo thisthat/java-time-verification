@@ -7,4 +7,7 @@ public class Utility {
     public static String convertJavaToPkgName(String className){
         return className.replace("/",".");
     }
+    public static String convertPkgNametoJava(String className){
+        return className.replace(".","/");
+    }
 }

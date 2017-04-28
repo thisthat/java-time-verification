@@ -8,6 +8,13 @@ import java.lang.instrument.Instrumentation;
 public class TestAgent {
     public static void premain(String agentArgs, Instrumentation inst) {
 
+        if(agentArgs != null){
+            System.out.println("Args: " + agentArgs + "\n");
+            String confPath = agentArgs;
+            ReadConfFile readConfFile = new ReadConfFile(confPath);
+            readConfFile.start();
+        }
+
         // registers the transformer
         inst.addTransformer(new TestInstrumentation());
     }

@@ -1,13 +1,2 @@
-1,instrumentation.Testing,randomSleep,14,randomSleepDuration,977
-1,instrumentation.Testing,randomSleep,18,abc,10
-1,instrumentation.Testing,randomSleep,14,randomSleepDuration,771
-1,instrumentation.Testing,randomSleep,18,abc,10
-1,instrumentation.Testing,randomSleep,14,randomSleepDuration,650
-1,instrumentation.Testing,randomSleep,18,abc,10
-1,instrumentation.Testing,randomSleep,14,randomSleepDuration,1198
-1,instrumentation.Testing,randomSleep,20,abc,10
-1,instrumentation.Testing,randomSleep,14,randomSleepDuration,845
-1,instrumentation.Testing,randomSleep,20,abc,10
-1,instrumentation.Testing,randomSleep,14,randomSleepDuration,741
-1,instrumentation.Testing,randomSleep,14,randomSleepDuration,974
-1,instrumentation.Testing,randomSleep,18,abc,10
+1,instrumentation.Testing,randomSleep,14,randomSleepDuration,896
+1,instrumentation.Testing,randomSleep,14,randomSleepDuration,1087

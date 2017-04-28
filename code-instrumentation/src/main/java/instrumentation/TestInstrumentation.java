@@ -34,7 +34,7 @@ public class TestInstrumentation implements ClassFileTransformer  {
             LOGGER.debug("Injected class {}", className);
             List<StoreItem> items = classesToInject.getClass(className);
             ClassPool cp = ClassPool.getDefault();
-            CtClass cc;
+            CtClass cc = null;
             try {
                 cc = cp.get(items.get(0).getClassName());
                 injectClass(cc);
@@ -44,10 +44,10 @@ public class TestInstrumentation implements ClassFileTransformer  {
             for(StoreItem item : items){
                 try {
                     CtMethod m = cc.getDeclaredMethod(item.getMethodName());
-                    injectMethod(m, "instrumentation.Testing", 14, "randomSleepDuration" );
+                    injectMethod(m, item);
 
                 } catch (Exception ex) {
-
+                    LOGGER.error("Cannot inject the code of method {}: {}", item, ex.getMessage());
                 }
             }
             if(cc != null){
@@ -63,6 +63,7 @@ public class TestInstrumentation implements ClassFileTransformer  {
 
         }
 
+        /*
         if (className.equals("instrumentation/Testing")) {
             System.err.println("AGENT INJECTION : " + className);
             try {
@@ -80,6 +81,7 @@ public class TestInstrumentation implements ClassFileTransformer  {
                 LOGGER.error("Cannot inject: {}", ex.getMessage());
             }
         }
+        */
         return byteCode;
     }
 
@@ -96,14 +98,15 @@ public class TestInstrumentation implements ClassFileTransformer  {
 
     /**
      * It instruments the byte code of a method setting up the logging of a specific value
-     * @param m             Method to instrument
-     * @param className     Name of the class which holds the method
-     * @param line          Line where to log the data
-     * @param var           Variable name to log
+     * @param m     Method to instrument
+     * @param item  {@link StoreItem} which holds the info where to inject
      * @throws CannotCompileException
      */
-    private void injectMethod(CtMethod m, String className, int line, String var) throws CannotCompileException {
+    private void injectMethod(CtMethod m, StoreItem item) throws CannotCompileException {
         String methodName = m.getName();
+        String className = item.getClassName();
+        int line = item.getLine();
+        String var = item.getVarName();
         m.addLocalVariable("__thID", CtClass.longType);
         m.insertBefore("__thID = Thread.currentThread().getId();");
         StringBuffer src = new StringBuffer();
