@@ -115,7 +115,14 @@ def test_pred_between():
  
 
 def test_split_numeric_domain():
-
+    """
+    When passing X distinct and sorted numbers to split the entire
+    [-inf,+inf] numeric interval, we expect to get 2*X+1 predicates:
+    - less than the minimum
+    - greater than the maximum
+    - equal to each item of X
+    - between x and y, where x and y are two adjacent items of X
+    """
     values = [-5,0,1,2,10]
     pred = split_numeric_domain(values)
 
@@ -138,7 +145,11 @@ def test_split_numeric_domain():
 
 
 def test_split_numeric_domain_duplicates():
-
+    """
+    When passing a list of numbers with duplicates, we expect to obtain
+    the same predicates as when passing the list with only distinct
+    numbers.
+    """
     values = [-5,0,1,1,2,10]
     pred = split_numeric_domain(values)
 
@@ -162,7 +173,11 @@ def test_split_numeric_domain_duplicates():
 
 
 def test_split_numeric_domain_unsorted():
-
+    """
+    If we pass a list of unsorted numbers to split the numeric
+    interval, we expect to obtain the same predicates as the
+    ones obtained when the same numbers are passed in order.
+    """
     values = [10,-5,2,0,1,]
     pred = split_numeric_domain(values)
 
@@ -185,7 +200,13 @@ def test_split_numeric_domain_unsorted():
 
 
 def test_split_numeric_domain_small():
-
+    """
+    If we split the numeric domain using only one
+    value, we expect to get 3 predicates:
+    - less than the specified number
+    - equal to the specified number
+    - greater than the specified number
+    """
     values = [0]
     pred = split_numeric_domain(values)
 
@@ -200,7 +221,10 @@ def test_split_numeric_domain_small():
 
 
 def test_split_numeric_domain_no_value():
-
+    """
+    If we try to split a numeric interval without specifying
+    any number, simply no predicate is generated.
+    """
     pred = split_numeric_domain([])
 
     assert len(pred) == 0
