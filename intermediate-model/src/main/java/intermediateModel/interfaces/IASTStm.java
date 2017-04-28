@@ -1,6 +1,7 @@
 package intermediateModel.interfaces;
 
 
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.Triplet;
 import parser.ASTSrc;
 
@@ -40,14 +41,14 @@ public abstract class IASTStm implements IASTVisitor{
 	protected String code = "";
 	protected int line;
 	protected int lineEnd;
-	protected Triplet<Integer,String, Class> constraint = null;
+	protected Constraint constraint = null;
 	//@Beta protected List<Annotation> annotations = new ArrayList<>();
 	private boolean isTimeCritical = false;
 	/**
 	 * Retrive the time constraint of the current Node
 	 * @return the information of the time constraint with &lt;line, message, class that detected the constraint&gt;
 	 */
-	public Triplet<Integer,String, Class> getConstraint(){
+	public Constraint getConstraint(){
 		return constraint;
 	}
 
@@ -57,9 +58,9 @@ public abstract class IASTStm implements IASTVisitor{
 	 * @param msg			message with information about the constraint
 	 * @param heuristic		class that detected the constraint
 	 */
-	public void addConstraint(Integer line, String msg, Class heuristic){
+	public void addConstraint(Constraint c){
 		isTimeCritical = true;
-		constraint = new Triplet<>(line,msg, heuristic);
+		constraint = c;
 	}
 
 	public String getNodeType() {

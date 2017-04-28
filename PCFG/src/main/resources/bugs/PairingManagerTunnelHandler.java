@@ -20,46 +20,6 @@
 
 package com.aelitis.azureus.core.pairing.impl;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.URL;
-import java.security.AlgorithmParameters;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.util.Base32;
-import org.gudy.azureus2.core3.util.ByteFormatter;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.FileUtil;
-import org.gudy.azureus2.core3.util.IndentWriter;
-import org.gudy.azureus2.core3.util.RandomUtils;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.SystemTime;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-import org.gudy.azureus2.core3.util.UrlUtils;
-import org.gudy.azureus2.plugins.PluginInterface;
-import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
-import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
-import org.gudy.bouncycastle.crypto.agreement.srp.SRP6Server;
-import org.gudy.bouncycastle.crypto.agreement.srp.SRP6VerifierGenerator;
-import org.gudy.bouncycastle.crypto.digests.SHA256Digest;
-import org.json.simple.JSONObject;
-
 import com.aelitis.azureus.core.AzureusCore;
 import com.aelitis.azureus.core.dht.DHT;
 import com.aelitis.azureus.core.dht.nat.DHTNATPuncher;
@@ -73,6 +33,28 @@ import com.aelitis.azureus.core.security.CryptoManager;
 import com.aelitis.azureus.core.security.CryptoManagerFactory;
 import com.aelitis.azureus.plugins.dht.DHTPlugin;
 import com.aelitis.azureus.util.JSONUtils;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.util.*;
+import org.gudy.azureus2.plugins.PluginInterface;
+import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageRequest;
+import org.gudy.azureus2.plugins.tracker.web.TrackerWebPageResponse;
+import org.gudy.bouncycastle.crypto.agreement.srp.SRP6Server;
+import org.gudy.bouncycastle.crypto.agreement.srp.SRP6VerifierGenerator;
+import org.gudy.bouncycastle.crypto.digests.SHA256Digest;
+import org.json.simple.JSONObject;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.security.AlgorithmParameters;
+import java.util.*;
 
 public class 
 PairingManagerTunnelHandler 

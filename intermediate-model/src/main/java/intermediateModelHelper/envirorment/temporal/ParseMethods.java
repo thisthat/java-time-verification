@@ -2,8 +2,7 @@ package intermediateModelHelper.envirorment.temporal;
 
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +29,32 @@ public class ParseMethods extends ParseCSV {
         super.start();
     }
 
+    @Override
+    protected void start(InputStreamReader file){
+        boolean notHeader = false;
+        try (BufferedReader br = new BufferedReader(file)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // use comma as separator
+                String[] row = line.split(separator);
+                if(notHeader) {
+                    if(row.length == 4){
+                        handleRow(row[0],row[1], row[2].split(","), Arrays.stream(row[3].split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray());
+                    } else {
+                        handleRow(row[0],row[1], new String[0]);
+                    }
+
+                }
+                else {
+                    notHeader = true;
+                    handleHeader(row);
+                }
+            }
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+    }
+
 
     public List<TimeMethod> getMethods(){
         return methods;
@@ -42,8 +67,12 @@ public class ParseMethods extends ParseCSV {
 
     @Override
     protected void handleRow(String className, String methodName, String[] signature) {
+
+    }
+
+    protected void handleRow(String className, String methodName, String[] signature, int[] timeouts) {
         List<String> sign = Arrays.asList(signature);
-        this.methods.add(new TimeMethod(className, methodName, sign));
+        this.methods.add(new TimeMethod(className, methodName, sign, timeouts));
     }
 
 }

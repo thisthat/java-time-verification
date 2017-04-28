@@ -1,11 +1,8 @@
 package PCFG.creation;
 
-import intermediateModelHelper.indexing.IndexingFile;
-import intermediateModelHelper.indexing.IndexingSyncBlock;
-import intermediateModelHelper.indexing.structure.IndexSyncBlock;
 import PCFG.creation.helper.CalculateSyncBlock;
 import PCFG.creation.helper.CalculateSyncCall;
-import PCFG.creation.helper.CreateCFG;
+import PCFG.creation.helper.CreatePCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;
 import intermediateModel.interfaces.IASTMethod;
@@ -13,6 +10,10 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.indexing.IndexingFile;
+import intermediateModelHelper.indexing.IndexingSyncBlock;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
 import org.javatuples.KeyValue;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -35,7 +36,7 @@ public class IM2PCFG {
 
 
 	private List<KeyValue<KeyValue<IASTMethod,ASTClass>, List<IndexSyncBlock> >> indexs = new ArrayList<>();
-	CreateCFG pcfgBuilder = new CreateCFG();
+	CreatePCFG pcfgBuilder = new CreatePCFG();
 
 	public IM2PCFG(List<KeyValue<IASTMethod,ASTClass>> classes) {
 		for(KeyValue<IASTMethod,ASTClass> k : classes){
@@ -69,7 +70,7 @@ public class IM2PCFG {
 	 */
 	public void addClass(ASTClass c, IASTMethod method){
 
-		List<Triplet<String,IASTStm,Class>> currentClassConstraint = ApplyHeuristics.getConstraint(c);
+		List<Constraint> currentClassConstraint = ApplyHeuristics.getConstraint(c);
 		IASTMethod met = null;
 		for(IASTMethod m : c.getMethods()){
 			if(m.equals(method)){
@@ -79,8 +80,8 @@ public class IM2PCFG {
 		if(met != null){
 			int startLine =  ((IASTStm) met).getLine();
 			int endLine   =  ((IASTStm) met).getLineEnd();
-			for(Triplet<String,IASTStm,Class> time : currentClassConstraint){
-				int line = time.getValue1().getLine();
+			for(Constraint time : currentClassConstraint){
+				int line = time.getLine();
 				if(startLine <= line && line <= endLine){
 					pcfgBuilder.getConstraints().add(time);
 				}
@@ -156,7 +157,7 @@ public class IM2PCFG {
 
 		//set time constraint
 		for(Node v : pcfg.getV()){
-			for(Triplet<String, IASTStm, Class> c : pcfgBuilder.getConstraints()){
+			for(Constraint c : pcfgBuilder.getConstraints()){
 				if(v.equals(c)){
 					v.setConstraint(c);
 				}

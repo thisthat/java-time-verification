@@ -2,7 +2,11 @@ package PCFG.structure.node;
 
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.Triplet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -14,17 +18,20 @@ public class Node implements INode {
 	TYPE type;
 	int id = 0;
 	int start,end,line;
-	Triplet<String,IASTStm,Class> constraint = null;
+	Constraint constraint = null;
+	boolean isResetClock = false;
 	boolean isStart = false;
 	boolean isEnd = false;
 
+	List<String> resetVars = new ArrayList<>();
+
 	public static int _ID = 0;
 
-	public void setConstraint(Triplet<String,IASTStm,Class> constraint) {
+	public void setConstraint(Constraint constraint) {
 		this.constraint = constraint;
 	}
 
-	public Triplet<String, IASTStm, Class> getConstraint() {
+	public Constraint getConstraint() {
 		return constraint;
 	}
 
@@ -44,7 +51,7 @@ public class Node implements INode {
 		isEnd = end;
 	}
 
-	public enum TYPE {
+    public enum TYPE {
 		RETURN,
 		BREAK,
 		CONTINUE,
@@ -57,7 +64,10 @@ public class Node implements INode {
 		USELESS,
 		HIDDENCLASS,
 		IF_EXPR,
-		CONTAINS_SYNC
+		CONTAINS_SYNC,
+		END_WHILE,
+		WHILE_EXPR,
+		END_CICLE, END_IF,
 	}
 
 	public Node(String name, String code, TYPE type, int start, int end, int line) {
@@ -119,7 +129,38 @@ public class Node implements INode {
 	}
 
 	public int getLine() {
+		switch(this.type){
+			case TRY:
+			case BREAK:
+			case THROW:
+			case NORMAL:
+			case RETURN:
+			case SWITCH:
+			case FOREACH:
+			case FINALLY:
+			case IF_EXPR:
+			case CONTINUE:
+			case WHILE_EXPR:
+				return line;
+		}
 		return line;
+	}
+
+	public boolean isResetClock() {
+		return isResetClock;
+	}
+
+	public void setResetClock(boolean resetClock) {
+		this.setResetClock("t", resetClock);
+	}
+
+	public void setResetClock(String s, boolean resetClock) {
+		this.isResetClock = resetClock;
+		this.resetVars.add(s);
+	}
+
+	public List<String> getResetVars() {
+		return resetVars;
 	}
 
 	@Override
@@ -128,7 +169,7 @@ public class Node implements INode {
 		if (!(o instanceof Node)) return false;
 
 		Node node = (Node) o;
-
+		if (getID() != node.getID()) return false;
 		if (getStart() != node.getStart()) return false;
 		if (getEnd() != node.getEnd()) return false;
 		if (getLine() != node.getLine()) return false;
@@ -144,12 +185,21 @@ public class Node implements INode {
 		return true;
 	}
 
-	public boolean equals(Triplet<String,IASTStm,Class> c){
-		IASTStm r = c.getValue1();
+	public boolean equals(Constraint c){
+		IASTStm r = c.getElm();
 		if (getStart() != r.getStart()) return false;
-		if (getEnd()   != r.getEnd()) return false;
+		if (getEnd()   != r.getEnd()) return equalsExpectSemiColon(c);
 		if (getLine()  != r.getLine()) return false;
 		if (getCode()  != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
+		return true;
+	}
+
+	private boolean equalsExpectSemiColon(Constraint c) {
+		IASTStm r = c.getElm();
+		if (getStart() != r.getStart()) return false;
+		if (getEnd()-1   != r.getEnd()) return false;
+		if (getLine()  != r.getLine()) return false;
+		if (getCode()  != null ? !getCode().substring(0, getCode().length()-1).equals(r.getCode()) : r.getCode() != null) return false;
 		return true;
 	}
 

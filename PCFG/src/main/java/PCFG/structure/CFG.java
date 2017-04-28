@@ -126,4 +126,23 @@ public class CFG {
 	public void setE(List<Edge> e) {
 		this.E = e;
 	}
+
+	public List<Node> getNext(Node n){
+		List<Node> out = new ArrayList<>();
+		for(Edge e : this.E){
+			if(e.getFrom().equals(n)){
+				out.add(e.getTo());
+			}
+		}
+		return out;
+	}
+	public List<Node> getPrev(Node n){
+		List<Node> out = new ArrayList<>();
+		for(Edge e : this.E){
+			if(e.getTo().equals(n)){
+				out.add(e.getFrom());
+			}
+		}
+		return out;
+	}
 }

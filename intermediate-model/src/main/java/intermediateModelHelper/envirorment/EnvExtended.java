@@ -50,7 +50,7 @@ public class EnvExtended extends Env {
 		MongoConnector mongo = MongoConnector.getInstance();
 		IndexData parent = ResolveTypes.getPackageFromImportsString(c.getRealPackageName(), c.getImportsAsString(), c.getExtendClass());
 		if(parent != null){
-			List<ASTClass> classes = JDTVisitor.parse(parent.getPath());
+			List<ASTClass> classes = JDTVisitor.parse(parent.getPath(),parent.getPath());
 			for(ASTClass p : classes){
 				if(p.getName().equals(c.getExtendClass())){
 					EnvExtended out = new EnvExtended( getExtendedEnv(p), p.getName(), p.getPackageName());

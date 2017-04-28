@@ -87,6 +87,22 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		StringBuffer bf = new StringBuffer();
+		if(exprCallee != null)
+			bf.append(exprCallee.print() + "." + methodName + "(");
+		else
+			bf.append(methodName + "(");
+		for(IASTRE p : parameters){
+			bf.append(p.print());
+			bf.append(",");
+		}
+		bf.subSequence(0, bf.length()-1);
+		bf.append(")");
+		return bf.toString();
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTMethodCall(this);

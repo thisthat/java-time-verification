@@ -18,23 +18,18 @@
 
 package org.eclipse.jetty.util.resource;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.eclipse.jetty.util.IO;
+import org.eclipse.jetty.util.URIUtil;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
+
+import java.io.*;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
-
-import org.eclipse.jetty.util.IO;
-import org.eclipse.jetty.util.URIUtil;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 
 
 /* ------------------------------------------------------------ */

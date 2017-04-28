@@ -41,6 +41,11 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public String print() {
+		return value;
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTLiteral(this);

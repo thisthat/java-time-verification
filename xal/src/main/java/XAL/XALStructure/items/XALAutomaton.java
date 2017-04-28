@@ -119,6 +119,10 @@ public class XALAutomaton extends XALItem implements XALAddState {
         this.states.add(s);
     }
 
+    public XALClock getClocks() {
+        return clocks;
+    }
+
     public boolean existState(XALState s){
         return this.existState(s.getId());
     }

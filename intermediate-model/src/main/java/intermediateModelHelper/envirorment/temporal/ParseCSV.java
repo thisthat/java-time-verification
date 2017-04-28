@@ -42,11 +42,11 @@ public abstract class ParseCSV {
                 start(new FileReader(this.file));
             }
         } catch (Exception e){
-            System.err.println("Cannot open file or stream: " + this.file + " -- " + this.stream);
+            //System.err.println("Cannot open file or stream: " + this.file + " -- " + this.stream);
         }
     }
 
-    private void start(InputStreamReader file){
+    protected void start(InputStreamReader file){
         boolean notHeader = false;
         try (BufferedReader br = new BufferedReader(file)) {
             String line;
@@ -67,9 +67,10 @@ public abstract class ParseCSV {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
+
 
     protected abstract void handleHeader(String[] header);
     protected abstract void handleRow(String className, String methodName, String[] signature);

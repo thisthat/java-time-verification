@@ -1,11 +1,5 @@
 package PCFG.converter;
 
-import intermediateModelHelper.envirorment.Env;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import intermediateModelHelper.indexing.structure.IndexData;
-import intermediateModelHelper.indexing.structure.IndexMethod;
-import intermediateModelHelper.types.ResolveTypes;
 import PCFG.optimization.OptimizeForXAL;
 import PCFG.structure.CFG;
 import PCFG.structure.PCFG;
@@ -33,6 +27,13 @@ import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
+import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.indexing.structure.IndexData;
+import intermediateModelHelper.indexing.structure.IndexMethod;
+import intermediateModelHelper.types.ResolveTypes;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
@@ -54,8 +55,8 @@ public class ToXAL implements IConverter {
 
 		public FindMethodCall(ASTClass _class) {
 			super(_class);
-			mongo = MongoConnector.getInstance(MongoOptions.getInstance().getDbName());
-			processImports();
+			//mongo = MongoConnector.getInstance(MongoOptions.getInstance().getDbName());
+			//processImports();
 		}
 
 		/**
@@ -299,13 +300,13 @@ public class ToXAL implements IConverter {
 
 	List<ASTAttribute> attribute;
 	ASTClass c;
-	List<Triplet<String,String, ASTRE>> calls;
+	List<Triplet<String,String, ASTRE>> calls = new ArrayList<>();
 
 	public ToXAL(ASTClass c) {
 		this.c = c;
 		this.attribute = c.getAttributes();
 		FindMethodCall find = new FindMethodCall(this.c);
-		calls = find.getMethodCalls();
+		//calls = find.getMethodCalls();
 	}
 
 	@Override
@@ -321,6 +322,15 @@ public class ToXAL implements IConverter {
 		pcfg = pcfg.optimize( new OptimizeForXAL() );
 		XALDocument document = new XALDocument(filename);
 
+		List<String> timeVars = new ArrayList<>();
+		for(Node n : pcfg.getV()){
+			for(String var : n.getResetVars()){
+				if(!timeVars.contains(var)){
+					timeVars.add(var);
+				}
+			}
+		}
+
 		List<Pair<String,String>> vars = (List<Pair<String,String>>) pcfg.getAnnotation().get(String.valueOf(PCFG.DefaultAnnotation.GlobalVars));
 		for(Pair<String,String> v : vars){
 			XALVariable var = new XALVariable(v.getValue1(),v.getValue0(),"");
@@ -334,7 +344,12 @@ public class ToXAL implements IConverter {
 
 		}*/
 		//add method call
-
+		for(String v : timeVars){
+			XALCLockVariable cv = new XALCLockVariable(v);
+			for(XALAutomaton a : document.getAutomatons()){
+				a.getClocks().addVariable(cv);
+			}
+		}
 		return document;
 	}
 
@@ -426,7 +441,6 @@ public class ToXAL implements IConverter {
 				lastAutomaton.getActionPool().addProduction(m);
 				s.setNameMetric(nameMetric);
 			}
-
 		}
 	}
 
@@ -477,7 +491,17 @@ public class ToXAL implements IConverter {
 		XALState f = doc.getNodeFromNumericID(from.getID());
 		XALState t = doc.getNodeFromNumericID(to.getID());
 		if(f == null || t == null) return;
-		lastAutomaton.addTransition(new XALTransition(f,t, e.getLabel()));
+		XALTransition tt;
+		if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class))
+			tt  = new XALTransition(f,t, e.getLabel(), e.getConstraint().getValue());
+		else
+			tt = new XALTransition(f,t, e.getLabel());
+		if(e.getFrom().isResetClock() && e.getTo().getConstraint() != null){
+			for(String r : e.getFrom().getResetVars()){
+				tt.addClockReset(r);
+			}
+		}
+		lastAutomaton.addTransition(tt);
 	}
 
 	private void getXAL(AnonymEdge e) {

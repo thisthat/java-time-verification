@@ -72,7 +72,7 @@ public class GenerateXAL {
 			e.printStackTrace();
 		}
 		lastAutomatonWhereAdd = xalAutomaton;
-		if(elm.isSyncronized()){
+		if(elm.isSynchronized()){
 			XALSync sync = new XALSync(elm.getName(), lastAutomatonWhereAdd);
 			xalAutomaton.addState(sync);
 			lastAutomatonWhereAdd = sync;
@@ -520,7 +520,7 @@ public class GenerateXAL {
 			lastAutomaton.addTransition(transition);
 		}
 		if(stm.isTimeCritical() && stm.getConstraint() != null){
-			String constraint = "<ClockConstraint ClockExp=\"" + stm.getConstraint().getValue1() +"\"/>";
+			String constraint = "<ClockConstraint ClockExp=\"" + stm.getConstraint().getValue() +"\"/>";
 			state.setTimeConstraint(constraint);
 		}
 		this.lastState = state;

@@ -1,5 +1,3 @@
-import xyz.abc.*;
-
 class Thread_2 extends Thread {
 
 	Object minPrime;

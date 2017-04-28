@@ -1,9 +1,9 @@
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.After;
 import org.junit.Before;
@@ -61,8 +61,8 @@ public class TestSyncNode {
 		MongoConnector.getInstance().ensureIndexes();
 		PCFG g = p.buildPCFG();
 
-		assertEquals(g.getV().size(), 45);
-		assertEquals(g.getE().size(), 26);
+		assertEquals(g.getV().size(), 46);
+		assertEquals(g.getE().size(), 24);
 		assertEquals(g.getSyncNodes().size(), 3 );
 		assertEquals(g.getCFG().size(), 2 );
 		assertEquals(g.getESync().size(), 0 );

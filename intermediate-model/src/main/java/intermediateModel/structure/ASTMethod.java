@@ -1,5 +1,8 @@
 package intermediateModel.structure;
 
+import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.types.DataTreeType;
 import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
@@ -19,28 +22,29 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<ASTVariable> parameters;
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
-	boolean isSyncronized = false;
+	boolean isSynchronized = false;
 	boolean isAbstract = false;
 	boolean isStatic = false;
+	List<Pair<String,String>> declaredVar = new ArrayList<>();
 
 
-	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSyncronized, boolean isAbstract, boolean isStatic) {
+	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
 		super(start,end);
 		this.name = name;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.exceptionsThrowed = exceptionsThrowed;
-		this.isSyncronized = isSyncronized;
+		this.isSynchronized = isSynchronized;
 		this.isAbstract = isAbstract;
 		this.isStatic = isStatic;
 	}
 
-	public boolean isSyncronized() {
-		return isSyncronized;
+	public boolean isSynchronized() {
+		return isSynchronized;
 	}
 
-	public void setSyncronized(boolean syncronized) {
-		isSyncronized = syncronized;
+	public void setSynchronized(boolean sync) {
+		isSynchronized = sync;
 	}
 
 	public boolean isAbstract() {
@@ -172,5 +176,22 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	@Override
 	public boolean isStatic() {
 		return this.isStatic;
+	}
+
+
+	public List<Pair<String, String>> getDeclaredVar() {
+		return declaredVar;
+	}
+
+	public void setDeclaredVars() {
+		declaredVar.clear();
+		for(IASTStm stm : stms) {
+			stm.visit(new DefaultASTVisitor() {
+				@Override
+				public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
+					declaredVar.add(new Pair<>(elm.getName().getCode(), elm.getType()));
+				}
+			});
+		}
 	}
 }

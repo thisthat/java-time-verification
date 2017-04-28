@@ -19,24 +19,22 @@
 
 package com.aelitis.net.magneturi.impl;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.internat.MessageText;
-import org.gudy.azureus2.core3.logging.LogEvent;
-import org.gudy.azureus2.core3.logging.LogIDs;
-import org.gudy.azureus2.core3.logging.Logger;
-import org.gudy.azureus2.core3.util.*;
-import org.gudy.bouncycastle.util.encoders.Base64;
-
 import com.aelitis.azureus.core.util.CopyOnWriteList;
 import com.aelitis.azureus.core.util.HTTPUtils;
 import com.aelitis.azureus.core.util.png.PNG;
 import com.aelitis.net.magneturi.MagnetURIHandler;
 import com.aelitis.net.magneturi.MagnetURIHandlerListener;
 import com.aelitis.net.magneturi.MagnetURIHandlerProgressListener;
+import org.gudy.azureus2.core3.config.COConfigurationManager;
+import org.gudy.azureus2.core3.internat.MessageText;
+import org.gudy.azureus2.core3.logging.LogEvent;
+import org.gudy.azureus2.core3.logging.LogIDs;
+import org.gudy.azureus2.core3.logging.Logger;
+import org.gudy.azureus2.core3.util.*;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 /**
  * @author parg

@@ -1,13 +1,13 @@
 package PCFG.creation.helper;
 
-import intermediateModelHelper.indexing.structure.IndexParameter;
-import intermediateModelHelper.indexing.structure.IndexSyncBlock;
-import intermediateModelHelper.types.DataTreeType;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.SyncEdge;
 import PCFG.structure.node.SyncNode;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
+import intermediateModelHelper.indexing.structure.IndexParameter;
+import intermediateModelHelper.indexing.structure.IndexSyncBlock;
+import intermediateModelHelper.types.DataTreeType;
 import org.javatuples.KeyValue;
 
 import java.util.ArrayList;

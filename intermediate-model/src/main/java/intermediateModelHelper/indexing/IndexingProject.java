@@ -1,11 +1,11 @@
 package intermediateModelHelper.indexing;
 
+import com.google.common.collect.Iterators;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.FileUtils;
-import parser.UnparsableException;
 
 import java.io.File;
 import java.util.Collection;
@@ -28,6 +28,7 @@ public class IndexingProject {
 	protected MongoConnector db;
 	protected String projectName;
 	protected boolean skipTest = true;
+	protected boolean showUpdates = false;
 
 	/**
 	 * Construct the db given the project name.
@@ -59,6 +60,14 @@ public class IndexingProject {
 		return projectName;
 	}
 
+	public boolean isShowUpdates() {
+		return showUpdates;
+	}
+
+	public void setShowUpdates(boolean showUpdates) {
+		this.showUpdates = showUpdates;
+	}
+
 	/**
 	 * Start the indexing from the <b>base_path</b> passed as parameter.
 	 * It iterates on the directory and sub-directories searching for Java files.
@@ -81,18 +90,22 @@ public class IndexingProject {
 		db.setIndexStart();
 		if(deleteOld) delete();
 		Iterator i = getJavaFiles(base_path);
+		int size = 0;
+		if(this.showUpdates){
+			size = Iterators.size(i);
+			i = getJavaFiles(base_path);
+		}
 		int n_file = 0;
 		while (i.hasNext()) {
+			if(this.showUpdates){
+				System.out.print("\r                                                 ");
+				System.out.print(String.format("\r[DEBUG] Indexing %f %%", (double)n_file/(double)size));
+			}
 			String filename = ((File)i.next()).getAbsolutePath();
 			if(this.skipTest && filename.contains("/test")){
 				continue;
 			}
-			List<ASTClass> result = null;
-			try {
-				result = JDTVisitor.parse(filename, base_path);
-			} catch (UnparsableException e) {
-				continue;
-			}
+			List<ASTClass> result = JDTVisitor.parse(filename, base_path);
 			//pp filename
 			for(ASTClass c : result){
 				IndexingFile indexing = new IndexingFile(db);
@@ -100,6 +113,9 @@ public class IndexingProject {
 				//db.add(index);
 			}
 			n_file++;
+		}
+		if(this.showUpdates){
+			System.out.println("");
 		}
 		//ensure indexes
 		db.ensureIndexes();
@@ -203,7 +219,7 @@ public class IndexingProject {
 
 
 	public void delete(){
-		db.getDb().drop();
+		db.drop();
 	}
 
 }

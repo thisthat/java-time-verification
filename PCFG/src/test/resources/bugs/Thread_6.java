@@ -1,6 +1,5 @@
-import intermediateModel.interfaces.IASTMethod;
-import Thread_7;
 import abcde.*;
+import intermediateModel.interfaces.IASTMethod;
 
 class Thread_6 extends Thread {
 

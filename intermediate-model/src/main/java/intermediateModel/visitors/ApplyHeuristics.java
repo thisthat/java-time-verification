@@ -1,17 +1,16 @@
 package intermediateModel.visitors;
 
 
-import intermediateModel.structure.ASTConstructor;
-import intermediateModel.structure.ASTMethod;
-import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.*;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 import intermediateModelHelper.heuristic.definition.*;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
 
@@ -46,16 +45,14 @@ public class ApplyHeuristics extends ParseIM {
 	 * It gets, with a set of predefined heuristics, the time constraints of the given class.
 	 * In particular, the list of heuristics that it uses are:
 	 * <ul>
-	 *     <li>{@link ThreadTime}</li>
-	 *     <li>{@link SocketTimeout}</li>
+	 *     <li>{@link SetTimeout}</li>
 	 *     <li>{@link TimeoutResources}</li>
-	 *     <li>{@link TimerType}</li>
 	 *     <li>{@link AnnotatedTypes}</li>
 	 * </ul>
 	 * @param c	Class to analyze
 	 * @return	List of time constraints with the predefined set of heuristics
 	 */
-	public static List<Triplet<String,IASTStm,Class>> getConstraint(ASTClass c){
+	public static List<Constraint> getConstraint(ASTClass c){
 		//return new ArrayList<>();
 
 		ApplyHeuristics ah = new ApplyHeuristics();
@@ -63,6 +60,7 @@ public class ApplyHeuristics extends ParseIM {
 		//ah.subscribe(ThreadTime.class);
 		//ah.subscribe(SocketTimeout.class);
 		ah.subscribe(TimeoutResources.class);
+		ah.subscribe(UndefiniteTimeout.class);
 		//ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.subscribe(SetTimeout.class);
@@ -150,6 +148,12 @@ public class ApplyHeuristics extends ParseIM {
 	}
 
 	@Override
+	protected void analyzeASTDoWhile(ASTDoWhile elm, Env env) {
+		super.analyze(elm.getStms(), env);
+		super.analyze(elm.getStms(), env);
+	}
+
+	@Override
 	protected void analyzeASTRE(ASTRE r, Env env) {
 		applyStep(r, env);
 	}
@@ -162,8 +166,8 @@ public class ApplyHeuristics extends ParseIM {
 	}
 
 
-	public List<Triplet<String, IASTStm, Class>> getTimeConstraint() {
-		List<Triplet<String, IASTStm, Class>> out = new ArrayList<>();
+	public List<Constraint> getTimeConstraint() {
+		List<Constraint> out = new ArrayList<>();
 		for(SearchTimeConstraint s : strategies){
 			out.addAll(s.getTimeConstraint());
 		}

@@ -1,11 +1,13 @@
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import PCFG.structure.node.Node;
-import PCFG.structure.PCFG;
+import PCFG.converter.IConverter;
+import PCFG.converter.ToDot;
 import PCFG.creation.IM2PCFG;
+import PCFG.structure.PCFG;
+import PCFG.structure.node.Node;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.After;
 import org.junit.Before;
@@ -84,8 +86,8 @@ public class TestPCFG {
 		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
-		assertEquals(g.getV().size(), 7);
-		assertEquals(g.getE().size(), 7);
+		assertEquals(g.getV().size(), 8);
+		assertEquals(g.getE().size(), 8);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -179,8 +181,8 @@ public class TestPCFG {
 		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
-		assertEquals(g.getV().size(), 6);
-		assertEquals(g.getE().size(), 6);
+		assertEquals(g.getV().size(), 7);
+		assertEquals(g.getE().size(), 7);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -223,7 +225,7 @@ public class TestPCFG {
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 13);
-		assertEquals(g.getE().size(), 14);
+		assertEquals(g.getE().size(), 12);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -481,8 +483,9 @@ public class TestPCFG {
 		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
+
 		assertEquals(g.getV().size(), 12);
-		assertEquals(g.getE().size(), 15);
+		assertEquals(g.getE().size(), 13);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -531,7 +534,7 @@ public class TestPCFG {
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 11);
-		assertEquals(g.getE().size(), 12);
+		assertEquals(g.getE().size(), 11);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -586,7 +589,7 @@ public class TestPCFG {
 		PCFG g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 13);
-		assertEquals(g.getE().size(), 16);
+		assertEquals(g.getE().size(), 14);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );
@@ -636,7 +639,7 @@ public class TestPCFG {
 		g = p.buildPCFG();
 
 		assertEquals(g.getV().size(), 11);
-		assertEquals(g.getE().size(), 12);
+		assertEquals(g.getE().size(), 11);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );

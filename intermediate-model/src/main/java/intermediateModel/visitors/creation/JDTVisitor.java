@@ -37,25 +37,22 @@ public class JDTVisitor extends ASTVisitor {
 
 	@Deprecated
 	public static List<ASTClass> parse(String filename){
-		try{
-			return parse(filename, "");
-		} catch (UnparsableException e) {
-			return new ArrayList<>();
-		}
-
+		return parse(filename, "");
 	}
-	public static List<ASTClass> parse(String filename, String projectPath) throws UnparsableException {
+
+	public static List<ASTClass> parse(String filename, String projectPath) {
 		if(cache.containsKey(filename)){
 			return cache.get(filename);
 		}
 		Java2AST a = null;
 		try {
 			a = new Java2AST(filename, true, projectPath);
-		} catch (IOException e) {
-		} /*catch (UnparsableException e) {
+		}
+		catch (IOException e) {}
+		catch (UnparsableException e) {
 			//cannot parse the file
 			return new ArrayList<>();
-		}*/
+		}
 		CompilationUnit result = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);

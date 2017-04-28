@@ -21,6 +21,22 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 	boolean isArray = false;
 	ASTHiddenClass hiddenClass = null;
 
+	@Override
+	public String print() {
+		StringBuffer bf = new StringBuffer();
+		bf.append("new " + typeName);
+		if(isArray)
+			bf.append("[]");
+		bf.append("(");
+		for(IASTRE p : parameters){
+			bf.append(p.print());
+			bf.append(",");
+		}
+		bf.subSequence(0,bf.length()-1);
+		bf.append(")");
+		return bf.toString();
+	}
+
 	public ASTNewObject(int start, int end, String typeName, boolean isArray) {
 		super(start, end);
 		this.typeName = typeName;

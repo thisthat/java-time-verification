@@ -15,9 +15,11 @@
         <module>xal</module>
         <module>intermediate-model</module>
         <module>PCFG</module>
-        <module>evaluation</module>
         <module>time-annotation</module>
         <module>server</module>
+        <module>testJUppaal</module>
+        <module>uppaal-library</module>
+        <module>code-instrumentation</module>
     </modules>
 
     <build>

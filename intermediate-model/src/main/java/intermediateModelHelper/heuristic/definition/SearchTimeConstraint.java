@@ -1,12 +1,12 @@
 package intermediateModelHelper.heuristic.definition;
 
-import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public abstract class SearchTimeConstraint {
 	 *     <li>Type of Heuristic that found the constraint</li>
 	 * </ul>
 	 */
-	protected List<Triplet<String,IASTStm,Class>> timeConstraint = new ArrayList<>();
+	protected List<Constraint> timeConstraint = new ArrayList<>();
 
 	/**
 	 * It used to set up internal resources
@@ -65,18 +65,19 @@ public abstract class SearchTimeConstraint {
 	 * @param message Message to store with the time constraint
 	 * @param stm	The instruction to add to the list
 	 */
-	protected void addConstraint(String message, IASTStm stm){
-		Triplet<String,IASTStm,Class> elm = new Triplet<>(message, stm, getClass());
+	protected Constraint addConstraint(String message, IASTStm stm){
+		Constraint elm = new Constraint(stm, getClass(), message, stm.getLine());
 		if(!timeConstraint.contains(elm))
 			timeConstraint.add( elm );
-		stm.addConstraint( stm.getLine(), message, getClass() );
+		stm.addConstraint( elm );
+		return elm;
 	}
 
 	/**
 	 * Getter.
 	 * @return The list of constraint.
 	 */
-	public List<Triplet<String, IASTStm, Class>> getTimeConstraint() {
+	public List<Constraint> getTimeConstraint() {
 		return timeConstraint;
 	}
 
