@@ -20,11 +20,18 @@ class DataType(object):
         self._name = name
         self._smt_declaration = smt_declaration
 
+    @property
     def smt_declaration(self):
         return self._smt_declaration
 
+    def set_smt_declaration(self, smt_declaration):
+        self._smt_declaration = smt_declaration
+
     @property
     def name(self):
+        return self._name
+
+    def __unicode__(self):
         return self._name
 
 
@@ -176,12 +183,23 @@ class Domain(object):
     def default(self):
         return self._default
 
+    @property
     def smt_declaration(self):
-        return ""
+        smt_declaration = "<No DataType>"
+
+        if self.datatype:
+            smt_declaration = self.datatype.smt_declaration
+
+        return smt_declaration
     
     @property    
     def name(self):
-        return self.datatype.name
+        name = "<No DataType>"
+
+        if self.datatype:
+            name = self.datatype.name
+
+        return name
 
 
 class Integer(DataType):
@@ -192,13 +210,92 @@ class Real(DataType):
     def __init__(self):
         super(Real,self).__init__(name="Real")
 
+class DataTypeRegistry(dict):
+    """
+    Keeps a mapping between the fully-qualified name of the data-type in the 
+    programming languages and the class describing the corresponding SMT 
+    data-type.
+    """
+
+    _the_registry = None
+
+    @staticmethod
+    def the_registry():
+
+        if DataTypeRegistry._the_registry == None:
+            DataTypeRegistry._the_registry = DataTypeRegistry()
+        
+        return DataTypeRegistry._the_registry
+
 class DataTypeFactory(object):
     
+    INTEGER_TYPES = [ "byte", "short", "int", "long", "java.lang.AtomicInteger", "java.lang.AtomicLong", "java.lang.BigInteger", "java.lang.Byte", "java.lang.Integer", "java.lang.Long", "java.lang.Short" ]
+    REAL_TYPES = [ "float", "double", "java.lang.BigDecimal", "java.lang.Double", "java.lang.Float", ]
+
+    # this is used to store the singleton instance of this data-type factory
+    _the_factory = None
+
     @staticmethod
-    def from_class(self, java_class):
-        class_name = "IntPair"
-        smt_declaration = "(declare-datatypes () ((%s (mk-pair (first Int) (second Int)))))" % class_name
-        return DataType(name=class_name, smt_declaration=smt_declaration)
+    def the_factory():
+
+        if DataTypeFactory._the_factory == None:
+            
+            reg = DataTypeRegistry.the_registry()
+            DataTypeFactory._the_factory = DataTypeFactory(reg)
+
+        return DataTypeFactory._the_factory
+
+   
+    def __init__(self, registry):
+        assert isinstance(registry, DataTypeRegistry)
+        self.registry = registry
+
+
+    def from_fqn(self, fqn, *args, **kwargs):
+
+        dt = None
+        if fqn in self.registry:
+            dt = self.registry[fqn]
+        else:
+            if fqn in self.INTEGER_TYPES:
+                dt = Integer()
+            elif fqn in self.REAL_TYPES:
+                dt = Real()
+            else:
+                dt = DataType(name=fqn)
+
+            self.registry[fqn] = dt
+
+        return dt
+
+    def from_class(self, fqn, attributes):
+        """
+        Assume 'fqn' is a string denoting the full-qualified name of the class, 
+        and 'attributes' 
+        is a dictionary describing all the attributes of the class itself.
+        The latter maps each attribute name to its type.
+        """
+
+        if fqn not in self.registry:
+            dt = DataType(name=fqn)
+            self.registry[fqn] = dt
+
+        dt = self.registry[fqn]
+
+        if not dt.smt_declaration:
+    
+            attr_projectors = []
+            for (attr_name, attr_type) in attributes.iteritems():
+
+                attr_dt = self.from_fqn(attr_type)
+                attr_dt_name = attr_dt.name if attr_dt else "???"
+
+                attr_projectors.append("(%(attr_name)s %(attr_type)s)" % { "attr_name":attr_name, "attr_type": attr_dt_name })
+
+            smt_declaration = "(declare-datatypes () ((%(fqn)s (init-%(fqn)s %(attributes)s))))" % { "fqn": fqn, "attributes": " ".join(attr_projectors) }
+            dt.set_smt_declaration(smt_declaration)
+
+        return dt
 
 
 
