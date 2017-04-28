@@ -4,7 +4,12 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
-        <File name="MyFile" fileName="logs/error.log">
+        <File name="MyFileError" fileName="logs/error.log">
+            <PatternLayout>
+                <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
+        <File name="MyFileDebug" fileName="logs/debug.log">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
             </PatternLayout>
@@ -12,7 +17,10 @@
     </Appenders>
     <Loggers>
         <Root level="error">
-            <AppenderRef ref="MyFile"/>
+            <AppenderRef ref="MyFileError"/>
+        </Root>
+        <Root level="debug">
+            <AppenderRef ref="MyFileInfo"/>
         </Root>
     </Loggers>
 </Configuration>

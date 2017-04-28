@@ -1,13 +1,17 @@
 package instrumentation;
 
+import instrumentation.data.Store;
+import instrumentation.data.StoreItem;
 import javassist.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.List;
 
 ;
 
@@ -18,6 +22,7 @@ public class TestInstrumentation implements ClassFileTransformer  {
 
     String filePath = System.getProperty("user.dir") +  File.separator + "traces.txt";
     private static final Logger LOGGER = LogManager.getLogger();
+    private static Store classesToInject = Store.getInstance();
 
     public byte[] transform(ClassLoader loader, String className, Class classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
@@ -25,6 +30,39 @@ public class TestInstrumentation implements ClassFileTransformer  {
 
         //the idea is, once we load the correct class, we change on the fly its bytecode
         byte[] byteCode = classfileBuffer;
+        if(classesToInject.containClass(className)){
+            LOGGER.debug("Injected class {}", className);
+            List<StoreItem> items = classesToInject.getClass(className);
+            ClassPool cp = ClassPool.getDefault();
+            CtClass cc;
+            try {
+                cc = cp.get(items.get(0).getClassName());
+                injectClass(cc);
+            } catch (Exception ex){
+                LOGGER.error("Cannot inject class {}: {}", className, ex.getMessage());
+            }
+            for(StoreItem item : items){
+                try {
+                    CtMethod m = cc.getDeclaredMethod(item.getMethodName());
+                    injectMethod(m, "instrumentation.Testing", 14, "randomSleepDuration" );
+
+                } catch (Exception ex) {
+
+                }
+            }
+            if(cc != null){
+                try {
+                    byteCode = cc.toBytecode();
+                    cc.detach();
+                }
+                catch (Exception e) {
+                    LOGGER.error("Cannot recompile on the fly class {}: {}", className, e.getMessage());
+                }
+
+            }
+
+        }
+
         if (className.equals("instrumentation/Testing")) {
             System.err.println("AGENT INJECTION : " + className);
             try {
@@ -36,7 +74,6 @@ public class TestInstrumentation implements ClassFileTransformer  {
                 //instrument the code of the method
                 CtMethod m = cc.getDeclaredMethod("randomSleep");
                 injectMethod(m, "instrumentation.Testing", 14, "randomSleepDuration" );
-                injectMethod(m, "instrumentation.Testing", 18, "abc" );
                 byteCode = cc.toBytecode();
                 cc.detach();
             } catch (Exception ex) {
