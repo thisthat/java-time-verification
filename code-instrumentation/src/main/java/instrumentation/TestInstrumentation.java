@@ -1,6 +1,9 @@
 package instrumentation;
 
 import javassist.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -14,6 +17,7 @@ import java.security.ProtectionDomain;
 public class TestInstrumentation implements ClassFileTransformer  {
 
     String filePath = System.getProperty("user.dir") +  File.separator + "traces.txt";
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public byte[] transform(ClassLoader loader, String className, Class classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
@@ -32,10 +36,11 @@ public class TestInstrumentation implements ClassFileTransformer  {
                 //instrument the code of the method
                 CtMethod m = cc.getDeclaredMethod("randomSleep");
                 injectMethod(m, "instrumentation.Testing", 14, "randomSleepDuration" );
+                injectMethod(m, "instrumentation.Testing", 18, "abc" );
                 byteCode = cc.toBytecode();
                 cc.detach();
             } catch (Exception ex) {
-                ex.printStackTrace();
+                LOGGER.error("Cannot inject: {}", ex.getMessage());
             }
         }
         return byteCode;

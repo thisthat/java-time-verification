@@ -12,7 +12,10 @@ target
 *.png
 *.zip
 *.pdf
-[^pom]*.xml
+[^(pom|log4j)]*.xml
+
+#[^log4j2]*.xml
+
 project_eval/
 evaluation/src/main/nodejs/evaluation_recall/node_modules/
 dependency-reduced-pom.xml
