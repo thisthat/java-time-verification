@@ -13,6 +13,8 @@ target
 *.zip
 *.pdf
 *.xml
+**/logs
+*.txt
 !pom.xml
 !log4j2.xml
 

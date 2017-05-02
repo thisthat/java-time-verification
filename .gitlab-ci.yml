@@ -5,15 +5,15 @@ stages:
   - test
   - deploy
 
-test:
-  stage: test
-  script:
-    - mvn clean test
-
 compile:
   stage: test
   script:
     - mvn clean compile
+
+test:
+  stage: test
+  script:
+    - mvn test
 
 release:
   stage: deploy
