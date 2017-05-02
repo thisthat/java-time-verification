@@ -31,7 +31,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 
 	@Override
 	public void setup(ASTClass c) {
-
+		super.setup(c);
 	}
 
 	@Override
@@ -74,16 +74,6 @@ public class TimeoutResources extends SearchTimeConstraint {
 		Constraint c = super.addConstraint(expr.print(), stm);
 		//Constraint edgeVersion = cloner.deepClone(c);
 		//c.setEdgeVersion(edgeVersion);
-	}
-
-	@Override
-	public void nextMethod(ASTMethod method, Env env) {
-
-	}
-
-	@Override
-	public void nextConstructor(ASTConstructor method, Env env) {
-
 	}
 
 	/*

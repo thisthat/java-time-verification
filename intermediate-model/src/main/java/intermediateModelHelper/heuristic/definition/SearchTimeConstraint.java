@@ -1,5 +1,6 @@
 package intermediateModelHelper.heuristic.definition;
 
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
@@ -33,11 +34,14 @@ public abstract class SearchTimeConstraint {
 	 * </ul>
 	 */
 	protected List<Constraint> timeConstraint = new ArrayList<>();
-
+	private ASTClass c = null;
+	private String methodName = "";
 	/**
 	 * It used to set up internal resources
 	 */
-	public abstract void setup(ASTClass c);
+	public void setup(ASTClass c){
+		this.c = c;
+	}
 
 	/**
 	 * It used to accept a Statement
@@ -51,14 +55,22 @@ public abstract class SearchTimeConstraint {
 	 * @param method	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */
-	public abstract void nextMethod(ASTMethod method, Env env);
+	public void nextMethod(ASTMethod method, Env env){
+		setMethodName(method);
+	}
 
 	/**
 	 * It used to accept a new Constructor Definition
 	 * @param method	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */
-	public abstract void nextConstructor(ASTConstructor method, Env env);
+	public void nextConstructor(ASTConstructor method, Env env){
+		setMethodName(method);
+	}
+
+	private void setMethodName(IASTMethod name){
+		methodName = name.getName();
+	}
 
 	/**
 	 * Add a constraint to the list
@@ -66,10 +78,13 @@ public abstract class SearchTimeConstraint {
 	 * @param stm	The instruction to add to the list
 	 */
 	protected Constraint addConstraint(String message, IASTStm stm){
-		Constraint elm = new Constraint(stm, getClass(), message, stm.getLine());
+		int line = stm.getLine();
+		Constraint elm = new Constraint(stm, getClass(), message, line, c, methodName);
 		if(!timeConstraint.contains(elm))
 			timeConstraint.add( elm );
 		stm.addConstraint( elm );
+		//add the log of the constraint
+
 		return elm;
 	}
 

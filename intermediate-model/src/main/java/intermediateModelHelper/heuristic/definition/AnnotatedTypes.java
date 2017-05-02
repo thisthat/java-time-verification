@@ -32,7 +32,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 
 	@Override
 	public void setup(ASTClass c) {
-
+		super.setup(c);
 	}
 
 	/**
@@ -70,16 +70,6 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void nextMethod(ASTMethod method, Env env) {
-
-	}
-
-	@Override
-	public void nextConstructor(ASTConstructor method, Env env) {
-
 	}
 
 	private boolean containTimeOut(String pointer, String name, int nPars){

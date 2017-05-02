@@ -1,7 +1,13 @@
 package intermediateModelHelper.envirorment.temporal.structure;
 
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by giovanni on 22/03/2017.
@@ -11,7 +17,7 @@ public class Constraint {
     String category;
     String value;
     int line;
-    Constraint edgeVersion;
+    List<RuntimeConstraint> runtimeConstraints = new ArrayList<>();
 
     public Constraint(IASTStm elm, String category, String value, int line) {
         this.elm = elm;
@@ -20,8 +26,21 @@ public class Constraint {
         this.line = line;
     }
 
-    public Constraint(IASTStm elm, Class category, String value, int line) {
+    public Constraint(IASTStm elm, Class category, String value, int line, ASTClass c, String methodName) {
         this(elm, category.getCanonicalName(), value, line);
+        String className = c.getPackageName() + "." + c.getName();
+        elm.visit(new DefaultASTVisitor(){
+            @Override
+            public void enterASTLiteral(ASTLiteral elm) {
+                //we should skip strings and integers
+                String val = elm.getValue();
+                if(val.startsWith("\"") || val.substring(0,1).matches("[0-9]")){
+                    return;
+                }
+                RuntimeConstraint rntCnst = new RuntimeConstraint(className,methodName,line,val);
+                runtimeConstraints.add(rntCnst);
+            }
+        });
     }
 
     public String getCategory() {
@@ -48,8 +67,12 @@ public class Constraint {
         return elm;
     }
 
-    public void setEdgeVersion(Constraint edgeVersion) {
-        this.edgeVersion = edgeVersion;
+    public List<RuntimeConstraint> getRuntimeConstraints() {
+        return runtimeConstraints;
+    }
+
+    public void setRuntimeConstraints(List<RuntimeConstraint> runtimeConstraints) {
+        this.runtimeConstraints = runtimeConstraints;
     }
 
     @Override
@@ -96,10 +119,9 @@ public class Constraint {
             neg_value = neg_value.replace("<", ">=");
         else if(neg_value.contains(">"))
             neg_value = neg_value.replace(">", "<=");
-        return new Constraint(this.elm, this.category, neg_value, this.line);
+        Constraint c = new Constraint(this.elm, this.category, neg_value, this.line);
+        c.setRuntimeConstraints(this.runtimeConstraints);
+        return c;
     }
 
-    public Constraint getEdgeVersion(){
-        return edgeVersion;
-    }
 }
