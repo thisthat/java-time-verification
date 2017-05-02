@@ -1,5 +1,3 @@
-import static org.junit.Assert.assertEquals;
-
 import instrumentation.Testing;
 import org.junit.Test;
 
@@ -12,4 +10,9 @@ public class AgentTest {
         sleeping.randomSleep();
     }
 
+    @Test
+    public void name() throws Exception {
+        new UndefinedTimeBehaviour().method_1(100);
+
+    }
 }

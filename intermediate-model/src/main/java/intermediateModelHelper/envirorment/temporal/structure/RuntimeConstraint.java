@@ -47,4 +47,9 @@ public class RuntimeConstraint {
     public void setVarName(String varName) {
         this.varName = varName;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s;%s;%d;%s", className, methodName, line, varName);
+    }
 }

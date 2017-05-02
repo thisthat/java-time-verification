@@ -25,7 +25,7 @@ import java.util.List;
 public abstract class SearchTimeConstraint {
 
 	/**
-	 * Stores the list of {@link Triplet} of time instruction the heurisitc found.
+	 * Stores the list of {@link Triplet} of time instruction the heuristic found.
 	 * It saves:
 	 * <ul>
 	 *     <li>Message</li>

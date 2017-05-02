@@ -2,10 +2,7 @@ package intermediateModelHelper.heuristic.definition;
 
 import com.rits.cloning.Cloner;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTConstructor;
-import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.visitors.DefualtASTREVisitor;

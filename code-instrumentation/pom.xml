@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>code-instrumentation</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -65,7 +66,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.14</version>
                 <configuration>
-                    <argLine>-javaagent:target/${project.build.finalName}.jar=/Users/giovanni/repository/java-xal/code-instrumentation/src/main/resources/example.conf</argLine>
+                    <!--<argLine>-javaagent:target/${project.build.finalName}.jar=/Users/giovanni/repository/java-xal/code-instrumentation/src/main/resources/example.conf</argLine>-->
+                    <argLine>-javaagent:target/${project.build.finalName}.jar=/Users/giovanni/repository/java-xal/constraint.conf</argLine>
                 </configuration>
             </plugin>
 

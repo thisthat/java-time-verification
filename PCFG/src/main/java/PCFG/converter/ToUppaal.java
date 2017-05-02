@@ -78,14 +78,13 @@ public class ToUppaal implements IConverter {
 						case RETURN:
 						case SWITCH:
 						case FOREACH:
-						case FINALLY:
 						case IF_EXPR:
 						case CONTINUE:
 						case WHILE_EXPR:
 							nameLoc = "l" + v.getLine();
 							break;
 						default:
-							nameLoc = "l" + v.getLine() + "--" + v.getID();
+							nameLoc = "l" + v.getLine() +"_"+ v.getNameNoID();
 						 	break;
 					}
 					break;

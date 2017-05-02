@@ -1,0 +1,2 @@
+17:27:23.174 [main] DEBUG instrumentation.TestInstrumentation - Storing info in /Users/giovanni/repository/java-xal/code-instrumentation/src/test/resources/traces.txt
+17:27:23.179 [main] DEBUG instrumentation.TestInstrumentation - Injected class UndefinedTimeBehaviour

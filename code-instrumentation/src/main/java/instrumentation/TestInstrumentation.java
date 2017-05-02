@@ -20,9 +20,13 @@ import java.util.List;
  */
 public class TestInstrumentation implements ClassFileTransformer  {
 
-    String filePath = System.getProperty("user.dir") +  File.separator + "traces.txt";
+    public static String filePath = System.getProperty("user.dir") +  File.separator + "traces.txt";
     private static final Logger LOGGER = LogManager.getLogger();
     private static Store classesToInject = Store.getInstance();
+
+    public TestInstrumentation() {
+        LOGGER.debug("Storing info in {}", filePath);
+    }
 
     public byte[] transform(ClassLoader loader, String className, Class classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
@@ -30,6 +34,7 @@ public class TestInstrumentation implements ClassFileTransformer  {
 
         //the idea is, once we load the correct class, we change on the fly its bytecode
         byte[] byteCode = classfileBuffer;
+        //LOGGER.debug("Analysing class {}", className);
         if(classesToInject.containClass(className)){
             LOGGER.debug("Injected class {}", className);
             List<StoreItem> items = classesToInject.getClass(className);
@@ -122,6 +127,16 @@ public class TestInstrumentation implements ClassFileTransformer  {
         src.append("+\"\\n\");");
         src.append("fw.close();");
         src.append("}catch (IOException e) {}");
-        m.insertAt(line+1, src.toString());
+        try {
+            m.insertAt(line, src.toString());
+            return;
+        } catch (CannotCompileException e){
+            LOGGER.error("Cannot inject the code of method {} at line {}: {}", item, line, e.getMessage());
+        }
+        try {
+            m.insertAt(line+1, src.toString());
+        } catch (CannotCompileException e){
+            LOGGER.error("Cannot inject the code of method {} at line {}: {}", item, line+1, e.getMessage());
+        }
     }
 }

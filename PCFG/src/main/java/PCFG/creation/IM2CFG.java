@@ -42,6 +42,10 @@ public class IM2CFG {
 		return constraints.size();
 	}
 
+	public List<Constraint> getConstraints(){
+		return constraints;
+	}
+
 	/**
 	 * Insert a class in the list of classes to process for creating the PCFG.
 	 * Moreover, the method will index the class and extract the time constraint in it.

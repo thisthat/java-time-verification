@@ -9,7 +9,7 @@ public class UndefiniteTimeBehaviour {
 			long duration_secs = System.currentTimeMillis()/1000;
 			if ( duration_secs == x){
 
-				long length = file.getSourceFile().getLength();
+				long length = 1000;
 
 				return( length * 10 );
 
@@ -20,5 +20,9 @@ public class UndefiniteTimeBehaviour {
 			}
 		}catch( Throwable e ){
 		}
+	}
+
+	public static void main(String[] args) {
+		new UndefiniteTimeBehaviour().method_1(100);
 	}
 }

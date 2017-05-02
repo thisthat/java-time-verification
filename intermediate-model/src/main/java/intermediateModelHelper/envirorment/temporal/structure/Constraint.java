@@ -124,4 +124,19 @@ public class Constraint {
         return c;
     }
 
+    public String runtimeConstraintList(){
+        return runtimeConstraintList(false);
+    }
+
+    public String runtimeConstraintList(boolean header){
+        StringBuilder out = new StringBuilder();
+        if(header)
+            out.append("class;method;line;var\n");
+        for(RuntimeConstraint r : runtimeConstraints){
+            out.append(r.toString());
+            out.append("\n");
+        }
+        return out.toString();
+    }
+
 }

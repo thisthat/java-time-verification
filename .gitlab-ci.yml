@@ -23,6 +23,7 @@ release:
     paths:
     - server/target/server*.jar
     - intermediate-model/target/intermediate-model*.jar
+    - code-instrumentation/target/code-instrumentation*.jar
 
 pages:
   stage: deploy
