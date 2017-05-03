@@ -7,7 +7,7 @@ import java.lang.instrument.Instrumentation;
  */
 public class TestAgent {
     public static void premain(String agentArgs, Instrumentation inst) {
-
+        System.err.println("AGENT INJECTED");
         if(agentArgs != null){
             System.out.println("Args: " + agentArgs + "\n");
             String confPath = agentArgs;

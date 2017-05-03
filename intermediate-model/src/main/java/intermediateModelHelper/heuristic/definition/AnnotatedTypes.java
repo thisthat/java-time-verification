@@ -50,6 +50,9 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 		if(expr == null){
 			return;
 		}
+		if(stm.getLine() == 523){
+			System.out.println("BRK");
+		}
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
