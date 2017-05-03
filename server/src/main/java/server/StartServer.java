@@ -1,6 +1,13 @@
 package server;
 
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+
 import java.io.IOException;
+import java.util.Collections;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -10,7 +17,7 @@ public class StartServer {
 
 	static boolean debug = false;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		int port = HttpServerConverter.port;
 		int i = 0;
 
@@ -25,7 +32,36 @@ public class StartServer {
 					break;
 			}
 		}
-		new StartServer().run(port);
+
+		Callable<Boolean> task = () -> {
+			try {
+				MongoConnector c = MongoConnector.getInstance();
+				c.getDb();
+				return true;
+			}
+			catch (Exception e) {
+				return false;
+			}
+		};
+		ExecutorService executor = Executors.newFixedThreadPool(1);
+		Future<Boolean> future = executor.submit(task);
+		String clear = "\r" +  String.join("", Collections.nCopies(25, " "));
+		i = -1;
+		while(!future.isDone()){
+			Thread.sleep(500);
+			System.out.print(clear);
+			System.out.print("\rTry to contact mongodb" + String.join("", Collections.nCopies((++i)%3 + 1, ".")) );
+		}
+		Boolean result = future.get();
+		if(result) {
+			System.out.println("\nMongo was found!");
+			new StartServer().run(port);
+		}
+		else {
+			System.err.println("Cannot contact mongodb. Please run mongodb before calling the server.");
+			System.err.flush();
+			System.exit(1);
+		}
 	}
 
 	public void run(int port) throws IOException {
