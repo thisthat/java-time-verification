@@ -124,11 +124,31 @@ class LTE(BinaryPredicate):
 class Eq(BinaryPredicate):
     _smt_name = "="
 
+class NotEq(Predicate):
+    _smt_assert = "(assert (not (= {var} {value})))"
+    _label = "{var} != {value}"
 
 class Between(Predicate):
     
     _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
     _label = "{min} < {var} < {max}"
+
+
+def split_eq_value(value):
+    
+    predicates = [ Eq({"value":value}), NotEq({"value":value}) ]
+
+    return predicates
+
+
+def split_enum(value_list):
+
+    predicates = []
+
+    for curr in value_list:
+        predicates.append(Eq({"value":curr}))
+
+    return predicates
 
 
 def split_numeric_domain(split_values):
@@ -161,18 +181,26 @@ def split_numeric_domain(split_values):
 
 class Domain(object):
     """
-    A Domain is basically a pair containing:
-    - DataType: specifies the Z3/SMTLib2 equivalent of the programming language 
+    A Domain is basically a tuple containing:
+    - datatype: specifies the Z3/SMTLib2 equivalent of the programming language 
             data-type we are abstracting
-    - Predicates: specifies a list of predicates that can be applied at concrete
+    - predicates: specifies a list of predicates that can be applied at concrete
             values in order to obtain the desired abstract values. Note that each
             concrete value is supposed to satisfy *exactly* one of the predicates,
             at each time. In this way, each predicate can be treated as an
             *abstract value* of the domain
+    - default: one predicate that is satisfied initially by the variable of the given
+            datatype
     """
-    def __init__(self, datatype, predicates):
+    def __init__(self, datatype, predicates, default=None):
         self.datatype = datatype
-        self._default = predicates[0]
+    
+        if not default:
+            default = predicates[0]
+
+        assert isinstance(default, Predicate)
+
+        self._default = default
         self.predicates = set(predicates)
 
     @property
@@ -206,9 +234,16 @@ class Integer(DataType):
     def __init__(self):
         super(Integer,self).__init__(name="Int")
 
+
 class Real(DataType):
     def __init__(self):
         super(Real,self).__init__(name="Real")
+
+
+class Boolean(DataType):
+    def __init__(self):
+        super(Boolean,self).__init__(name="Bool")
+
 
 class DataTypeRegistry(dict):
     """
@@ -299,12 +334,30 @@ class DataTypeFactory(object):
 
 
 
-##INTEGERS = Domain(["null", "< 0", "== 0", "> 0", "max"])
-##POS_INTEGERS = Domain(["null", "== 0", "> 0", "max"])
+INTEGERS = Domain(Integer(), split_numeric_domain([0,])) #["null", "< 0", "== 0", "> 0", "max"])
+POS_INTEGERS = Domain(Integer(), [ Eq({"value":0}), GT({"value":0}) ]) #["null", "== 0", "> 0", "max"])
 ##
-##STRING = Domain(["null", "not_null"])
+#STRING = Domain(["null", "not_null"])
 ##
 ##COLLECTION = Domain(["null", "empty", "some_elements" ])
 ##BOUNDED_COLLECTION = Domain(["null", "empty", "some_elements", "full" ])
 ##
-##BOOLEANS = Domain([ "true", "false" ])
+BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]))
+
+
+class Variable(object):
+    
+    def __init__(self, name, domain):
+        assert isinstance(name, basestring)
+        assert isinstance(domain, Domain)
+
+        self.name = name
+        self.domain = domain
+
+    @property
+    def datatype(self):
+        return self.domain.datatype
+
+    @property
+    def predicates(self):
+        return self.domain.predicates
