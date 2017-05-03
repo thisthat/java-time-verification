@@ -2,11 +2,12 @@ before_script:
   - mvn -v
 
 stages:
+  - compile
   - test
   - deploy
 
 compile:
-  stage: test
+  stage: compile
   script:
     - mvn clean compile
 

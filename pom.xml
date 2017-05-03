@@ -20,6 +20,7 @@
         <module>testJUppaal</module>
         <module>uppaal-library</module>
         <module>code-instrumentation</module>
+        <module>usage</module>
     </modules>
 
     <build>

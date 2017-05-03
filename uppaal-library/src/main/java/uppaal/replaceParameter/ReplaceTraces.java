@@ -1,7 +1,11 @@
-package uppaal;
+package uppaal.replaceParameter;
 
 import com.rits.cloning.Cloner;
 import org.javatuples.Pair;
+import uppaal.Automaton;
+import uppaal.Declaration;
+import uppaal.NTA;
+import uppaal.Transition;
 import uppaal.labels.Guard;
 
 import java.util.ArrayList;
