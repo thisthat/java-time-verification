@@ -56,6 +56,8 @@ public class Declaration extends UppaalElement{
 	}
 
 	public void add(String s) {
+		if(declarations.contains(s))
+			return;
 		declarations.add(s);
 	}
 	public void remove(String s) {

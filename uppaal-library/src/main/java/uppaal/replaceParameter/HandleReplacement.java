@@ -36,15 +36,43 @@ public class HandleReplacement {
         }
         // create an instance of the model per thread
         for(Integer thid : threadIds){
-            NTA thModel = replacer.replace(groupById.get(thid));
-            //writer = new BufferedWriter(new FileWriter("graph.xal"));
-            try{
-                thModel.writeXMLWithPrettyLayout(dir + "thread_" + thid + ".xml");
-            } catch (Exception e){
-                System.err.println("Cannot create file for thread #" + thid);
+            List<List<Pair<String,String>>> versions = splitVersion(groupById.get(thid));
+            int vId = 0;
+            for(List<Pair<String,String>> v : versions){
+                vId++;
+                NTA thModel = replacer.replace(v);
+                //writer = new BufferedWriter(new FileWriter("graph.xal"));
+                try {
+                    thModel.writeXMLWithPrettyLayout(dir + "thread_" + thid + "_v" + vId + ".xml");
+                } catch (Exception e) {
+                    System.err.println("Cannot create file for thread #" + thid + "_v"+ vId);
+                }
             }
+
         }
     }
 
+    public static List<List<Pair<String,String>>> splitVersion(List<Pair<String,String>> trace){
+        List<List<Pair<String,String>>> out = new ArrayList<>();
+        List<Pair<String,String>> tmp = new ArrayList<>();
+        for(Pair<String,String> elm : trace){
+            //is a value already there?
+            boolean f = false;
+            String varName = elm.getValue0();
+            for(Pair<String,String> visited : tmp){
+                if(varName.equals(visited.getValue0())){
+                    f = true;
+                }
+            }
+            //we come across the same var? -> split
+            if(f){
+                out.add(tmp);
+                tmp = new ArrayList<>();
+            }
+            tmp.add(elm);
+        }
+        out.add(tmp);
+        return out;
+    }
 
 }

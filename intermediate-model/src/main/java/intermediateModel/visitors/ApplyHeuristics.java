@@ -64,6 +64,7 @@ public class ApplyHeuristics extends ParseIM {
 		//ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.subscribe(SetTimeout.class);
+		ah.subscribe(AssignmentTimeVar.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
 	}
@@ -150,7 +151,7 @@ public class ApplyHeuristics extends ParseIM {
 	@Override
 	protected void analyzeASTDoWhile(ASTDoWhile elm, Env env) {
 		super.analyze(elm.getStms(), env);
-		super.analyze(elm.getStms(), env);
+		//super.analyze(elm.getStms(), env);
 	}
 
 	@Override

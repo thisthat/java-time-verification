@@ -18,14 +18,14 @@ import java.io.IOException;
  *
  * KAKFA-3540
  *  -issue:
- /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/issue/kafka_3540.xml
- /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/issue/traces.txt
- /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/issue/
+/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/issue/kafka_3540.xml
+/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/issue/traces.txt
+/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/issue/
  *
  * -fix:
- /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/kafka_3540_fix.xml
- /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/traces.txt
- /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/
+/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/kafka_3540_fix.xml
+/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/traces.txt
+/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/
  *
  */
 public class ExampleCombineTraces {

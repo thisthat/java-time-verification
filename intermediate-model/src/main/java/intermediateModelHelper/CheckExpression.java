@@ -136,6 +136,13 @@ public class CheckExpression {
 					}
 				}
 			});
+			if(!flag[0]){
+				//check x = timeVar;
+				if(v.getExpr() instanceof ASTLiteral){
+					String varName = ((ASTLiteral) v.getExpr()).getValue();
+					flag[0] = where.existVarNameTimeRelevant(varName);
+				}
+			}
 		}
 		return flag[0];
 	}

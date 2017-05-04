@@ -105,7 +105,7 @@ public class ToUppaal implements IConverter {
 			Transition t = new Transition(aut, map.get(e.getFrom()), map.get(e.getTo()));
 			if(e.getFrom().isResetClock()){
 				for(String r : e.getFrom().getResetVars()){
-					t.addUpdate(String.format("%s = 0", r));
+					t.addUpdate(String.format("%s := 0", r));
 				}
 			}
 			if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class)){

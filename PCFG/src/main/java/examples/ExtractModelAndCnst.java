@@ -35,7 +35,7 @@ public class ExtractModelAndCnst {
         String methodName = args[2];
         String modelName = args[3];
         String outputName = args[4];
-        List<ASTClass> cs = JDTVisitor.parse(file, args[5]);
+        List<ASTClass> cs = JDTVisitor.parse( file, args[5]);
         ASTClass c = null;
         for(ASTClass cc : cs){
             if(cc.getName().equals(className))
