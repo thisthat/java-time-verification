@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>0.5-SNAPSHOT</version>
+    <artifactId>usage</artifactId>
     <dependencies>
         <dependency>
             <groupId>java-xal</groupId>
@@ -21,7 +22,7 @@
             <version>0.2.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <artifactId>usage</artifactId>
+
 
 
 </project>
