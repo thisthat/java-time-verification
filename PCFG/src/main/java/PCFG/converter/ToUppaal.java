@@ -4,13 +4,18 @@ import PCFG.structure.CFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
+import intermediateModel.structure.ASTClass;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
+import org.javatuples.Pair;
 import uppaal.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The class convert the PCFG in the DOT language
@@ -18,6 +23,8 @@ import java.util.HashMap;
  * @version %I%, %G%
  */
 public class ToUppaal implements IConverter {
+
+	ASTClass c;
 
 	public enum NAMING {
 		LINE,
@@ -35,7 +42,9 @@ public class ToUppaal implements IConverter {
 		this.typeName = typeName;
 	}
 
-	public ToUppaal() {
+	public ToUppaal(ASTClass c, NAMING typeName) {
+		this(typeName);
+		this.c = c;
 	}
 
 	/**
@@ -59,6 +68,11 @@ public class ToUppaal implements IConverter {
 		String name = c.getName().substring(c.getName().indexOf("::")+2);
 		Automaton aut = new Automaton(name);
 		Declaration dec = new Declaration();
+		//add vars
+		for(String v : c.getMethod().getTimeVars()){
+			dec.add("int "+ v + ";");
+		}
+
 		aut.setDeclaration(dec);
 		doc.addAutomaton(aut);
 		SystemDeclaration sys = new SystemDeclaration();
@@ -97,22 +111,25 @@ public class ToUppaal implements IConverter {
 			}
 			map.put(v, l);
 			//time var
-			for(String var : v.getResetVars()){
-				dec.add(String.format("clock %s;\n",var));
+			List<String> timeVarsMethod = c.getMethod().getTimeVars();
+			for(Pair<String,String> var : v.getResetVars()){
+				if(!timeVarsMethod.contains(var.getValue0()))
+					dec.add(String.format("clock %s;\n",var.getValue0()));
 			}
 		}
 		for(Edge e : c.getE()){
 			Transition t = new Transition(aut, map.get(e.getFrom()), map.get(e.getTo()));
 			if(e.getFrom().isResetClock()){
-				for(String r : e.getFrom().getResetVars()){
-					t.addUpdate(String.format("%s := 0", r));
+				for(Pair<String,String> r : e.getFrom().getResetVars()){
+					t.addUpdate(String.format("%s = %s", r.getValue0(), r.getValue1().equals("") ? "0" : r.getValue1()));
 				}
 			}
-			if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class)){
+			Constraint cns = e.getConstraint();
+			if(cns != null && !cns.isCategory(UndefiniteTimeout.class) && !cns.isCategory(AssignmentTimeVar.class)){
 				//we have a cnst to represent, but if we are in an if branch, only the true branch will have it
 				String l = e.getLabel();
 				if(l.equals("") || l.equals("True")){
-					t.setGuard(e.getConstraint().getValue());
+					t.setGuard(cns.getValue());
 				}
 			}
 			/*if(e.getConstraint() != null && !e.getConstraint().isCategory(UndefiniteTimeout.class) && e.getLabel() != null && e.getLabel().equals("True")){

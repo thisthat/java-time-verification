@@ -1,5 +1,7 @@
 package intermediateModelHelper.heuristic.definition;
 
+import com.rits.cloning.Cloner;
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
@@ -26,6 +28,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 
 	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
 
+	IASTMethod currentMethod;
 
 	public AnnotatedTypes() {
 	}
@@ -67,6 +70,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 					if(timeout.length() > 1)
 						timeout = timeout.substring(0, timeout.length() - 1);
 					AnnotatedTypes.super.addConstraint(timeout, elm);
+					AnnotatedTypes.super.addTimeVar(currentMethod, timeout);
 				}
 			}
 		});
@@ -86,6 +90,18 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 				return m;
 		}
 		return null;
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+		super.nextMethod(method, env);
+		currentMethod = method;
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
+		super.nextConstructor(method, env);
+		currentMethod = method;
 	}
 
 }

@@ -61,7 +61,6 @@ public class TimeoutResources extends SearchTimeConstraint {
 				}
 			}
 		});
-
 	}
 
 	protected void addConstraint(ASTRE stm, Env e) {

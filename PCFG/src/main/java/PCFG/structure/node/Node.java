@@ -3,6 +3,7 @@ package PCFG.structure.node;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Node implements INode {
 	boolean isStart = false;
 	boolean isEnd = false;
 
-	List<String> resetVars = new ArrayList<>();
+	List<Pair<String,String>> resetVars = new ArrayList<>();
 
 	public static int _ID = 0;
 
@@ -155,11 +156,14 @@ public class Node implements INode {
 	}
 
 	public void setResetClock(String s, boolean resetClock) {
+		this.setResetClock(s, resetClock, "");
+	}
+	public void setResetClock(String s, boolean resetClock, String value) {
 		this.isResetClock = resetClock;
-		this.resetVars.add(s);
+		this.resetVars.add(new Pair<String,String>(s,value));
 	}
 
-	public List<String> getResetVars() {
+	public List<Pair<String,String>> getResetVars() {
 		return resetVars;
 	}
 

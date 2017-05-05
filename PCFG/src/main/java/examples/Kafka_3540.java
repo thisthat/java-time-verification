@@ -92,7 +92,7 @@ public class Kafka_3540 {
 
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter(outputdir + outputFile));
-		IConverter toGraphViz = new ToUppaal();
+		IConverter toGraphViz = new ToUppaal(c, ToUppaal.NAMING.LINE);
 		writer.write(toGraphViz.convert(graph));
 		writer.close();
 

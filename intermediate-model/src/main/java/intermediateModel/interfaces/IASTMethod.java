@@ -25,4 +25,6 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	boolean isStatic();
 	List<Pair<String,String>> getDeclaredVar();
 	void setDeclaredVars();
+	List<String> getTimeVars();
+	void setTimeVars(List<String> vars);
 }

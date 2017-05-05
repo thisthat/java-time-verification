@@ -324,9 +324,9 @@ public class ToXAL implements IConverter {
 
 		List<String> timeVars = new ArrayList<>();
 		for(Node n : pcfg.getV()){
-			for(String var : n.getResetVars()){
-				if(!timeVars.contains(var)){
-					timeVars.add(var);
+			for(Pair<String,String> var : n.getResetVars()){
+				if(!timeVars.contains(var.getValue0())){
+					timeVars.add(var.getValue0());
 				}
 			}
 		}
@@ -497,8 +497,8 @@ public class ToXAL implements IConverter {
 		else
 			tt = new XALTransition(f,t, e.getLabel());
 		if(e.getFrom().isResetClock() && e.getTo().getConstraint() != null){
-			for(String r : e.getFrom().getResetVars()){
-				tt.addClockReset(r);
+			for(Pair<String,String> r : e.getFrom().getResetVars()){
+				tt.addClockReset(r.getValue0());
 			}
 		}
 		lastAutomaton.addTransition(tt);

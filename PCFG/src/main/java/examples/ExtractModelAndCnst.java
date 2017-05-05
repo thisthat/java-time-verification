@@ -36,6 +36,9 @@ public class ExtractModelAndCnst {
         String modelName = args[3];
         String outputName = args[4];
         List<ASTClass> cs = JDTVisitor.parse( file, args[5]);
+
+        System.out.println(">> Writing model: " + modelName);
+        System.out.println(">> Writing conf file: " + outputName);
         ASTClass c = null;
         for(ASTClass cc : cs){
             if(cc.getName().equals(className))
@@ -60,7 +63,7 @@ public class ExtractModelAndCnst {
         BufferedWriter writer = null;
         //writer = new BufferedWriter(new FileWriter("graph.xal"));
         writer = new BufferedWriter(new FileWriter(nameModel));
-        IConverter toUppaal = new ToUppaal(ToUppaal.NAMING.LINE);
+        IConverter toUppaal = new ToUppaal(c, ToUppaal.NAMING.LINE);
         //writer.write(toGraphViz.convert(graph));
         writer.write(toUppaal.convert(graph));
         writer.close();

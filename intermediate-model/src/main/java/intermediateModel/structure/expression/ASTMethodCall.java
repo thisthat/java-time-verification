@@ -17,6 +17,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
 	String classPointed = null;
+	boolean isTimeCall = false;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
 		super(start, end);
@@ -86,8 +87,18 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		visitor.exitAll(this);
 	}
 
+	public boolean isTimeCall() {
+		return isTimeCall;
+	}
+
+	public void setTimeCall(boolean timeCall) {
+		isTimeCall = timeCall;
+	}
+
 	@Override
 	public String print() {
+		if(isTimeCall)
+			return "{replace}";
 		StringBuffer bf = new StringBuffer();
 		if(exprCallee != null)
 			bf.append(exprCallee.print() + "." + methodName + "(");

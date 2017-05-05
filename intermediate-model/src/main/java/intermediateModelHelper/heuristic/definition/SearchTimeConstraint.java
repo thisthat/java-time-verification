@@ -11,6 +11,7 @@ import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public abstract class SearchTimeConstraint {
 	 * </ul>
 	 */
 	protected List<Constraint> timeConstraint = new ArrayList<>();
+	protected HashMap<IASTMethod, List<String>> timeVars = new HashMap<>();
 	private ASTClass c = null;
 	private String methodName = "";
 	/**
@@ -88,6 +90,18 @@ public abstract class SearchTimeConstraint {
 		return elm;
 	}
 
+	protected void addTimeVar(IASTMethod method, String name){
+		if(timeVars.containsKey(method)){
+			List<String> l = timeVars.get(method);
+			if(!l.contains(name))
+				l.add(name);
+		} else {
+			List<String> l = new ArrayList<>();
+			l.add(name);
+			timeVars.put(method,l);
+		}
+	}
+
 	/**
 	 * Getter.
 	 * @return The list of constraint.
@@ -96,6 +110,7 @@ public abstract class SearchTimeConstraint {
 		return timeConstraint;
 	}
 
-
-
+	public HashMap<IASTMethod, List<String>> getTimeVars() {
+		return timeVars;
+	}
 }

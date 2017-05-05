@@ -5,6 +5,7 @@ import PCFG.structure.edge.AnonymEdge;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
+import intermediateModel.interfaces.IASTMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class CFG {
 
+	IASTMethod method;
 	private static int ID = 0;
 	public static final String _CLUSTER_NAME = "cluster_cfg_";
 	List<Node> V = new ArrayList<>();
@@ -27,10 +29,11 @@ public class CFG {
 	int hashcode;
 	int line = 0;
 
-	public CFG(String name, int hashcode) {
+	public CFG(String name, int hashcode, IASTMethod m) {
 		this.name = name;
 		this.id = ID++;
 		this.hashcode = hashcode;
+		this.method = m;
 	}
 
 	public int getLine() {
@@ -144,5 +147,9 @@ public class CFG {
 			}
 		}
 		return out;
+	}
+
+	public IASTMethod getMethod() {
+		return method;
 	}
 }

@@ -15,6 +15,7 @@ import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -128,6 +129,12 @@ public class ApplyHeuristics extends ParseIM {
 			analyzeMethod(m, eMethod);
 			analyze(m.getStms(), eMethod );
 		}
+
+		//storing vars in methodss
+		for(IASTMethod m : c.getMethods()) {
+			List<String> vars = getMethodTimeVars(m);
+			m.setTimeVars(vars);
+		}
 	}
 
 	@Override
@@ -171,6 +178,17 @@ public class ApplyHeuristics extends ParseIM {
 		List<Constraint> out = new ArrayList<>();
 		for(SearchTimeConstraint s : strategies){
 			out.addAll(s.getTimeConstraint());
+		}
+		return out;
+	}
+
+	public List<String> getMethodTimeVars(IASTMethod m) {
+		List<String> out = new ArrayList<>();
+		for(SearchTimeConstraint s : strategies){
+			HashMap<IASTMethod,List<String>> tmp = s.getTimeVars();
+			if(tmp.containsKey(m)){
+				out.addAll(tmp.get(m));
+			}
 		}
 		return out;
 	}

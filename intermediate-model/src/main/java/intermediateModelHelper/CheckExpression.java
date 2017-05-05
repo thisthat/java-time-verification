@@ -95,56 +95,13 @@ public class CheckExpression {
 		var.setTimeCritical(v.isTimeCritical());
 		setVariableInEnv(var, where);
 		//check the expr
-		final boolean[] flag = {false};
-		if(v.getExpr() != null) {
-			v.getExpr().visit(new DefualtASTREVisitor() {
-				//method call
-
-				@Override
-				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
-						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
-							v.setTimeCritical(true);
-							var.setTimeCritical(true);
-							where.addVar(var);
-							flag[0] = true;
-						}
-					}
-					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
-						v.setTimeCritical(true);
-						var.setTimeCritical(true);
-						where.addVar(var);
-						flag[0] = true;
-					}
-				}
-
-				//math op between time
-				@Override
-				public void enterASTbinary(ASTBinary elm) {
-					switch (elm.getOp()){
-						case minus:
-						case plus:
-						case mul:
-						case div:
-						case mod:
-							if(checkIt(elm, where)){
-								v.setTimeCritical(true);
-								var.setTimeCritical(true);
-								where.addVar(var);
-								flag[0] = true;
-							}
-					}
-				}
-			});
-			if(!flag[0]){
-				//check x = timeVar;
-				if(v.getExpr() instanceof ASTLiteral){
-					String varName = ((ASTLiteral) v.getExpr()).getValue();
-					flag[0] = where.existVarNameTimeRelevant(varName);
-				}
-			}
+		boolean flag = checkRightHandAssignment(v.getExpr(), where);
+		if(flag){
+			v.setTimeCritical(true);
+			var.setTimeCritical(true);
+			where.addVar(var);
 		}
-		return flag[0];
+		return flag;
 	}
 
 	/**
@@ -166,7 +123,7 @@ public class CheckExpression {
 			String name = ((ASTLiteral) left).getValue();
 			IASTVar var = where.getVar(name);
 			if(var != null //should be never the case if code compiles
-					&& checkIt(v.getRight(), where)){ //if exists something time related
+					&& checkRightHandAssignment(v.getRight(), where)){ //if exists something time related
 				var.setTimeCritical(true);
 				flag[0] = true;//the assigned var is time relevant
 				v.getRight().visit(new DefualtASTREVisitor() { //and also all the var used inside the expr
@@ -178,6 +135,49 @@ public class CheckExpression {
 						}
 					}
 				});
+			}
+		}
+		return flag[0];
+	}
+
+	public static boolean checkRightHandAssignment(IASTRE expr, Env where){
+		final boolean[] flag = {false};
+		if(expr != null) {
+			expr.visit(new DefualtASTREVisitor() {
+				//method call
+				@Override
+				public void enterASTMethodCall(ASTMethodCall elm) {
+					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
+						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
+							flag[0] = true;
+						}
+					}
+					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
+						flag[0] = true;
+					}
+				}
+
+				//math op between time
+				@Override
+				public void enterASTbinary(ASTBinary elm) {
+					switch (elm.getOp()){
+						case minus:
+						case plus:
+						case mul:
+						case div:
+						case mod:
+							if(checkIt(elm, where)){
+								flag[0] = true;
+							}
+					}
+				}
+			});
+			if(!flag[0]){
+				//check x = timeVar;
+				if(expr instanceof ASTLiteral){
+					String varName = ((ASTLiteral) expr).getValue();
+					flag[0] = where.existVarNameTimeRelevant(varName);
+				}
 			}
 		}
 		return flag[0];

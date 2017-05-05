@@ -101,7 +101,7 @@ public class CreatePCFG extends ConvertIM {
 
 	private void addSingleClassStates(ASTClass c, IASTMethod m){
 		lastNode = null;
-		lastCfg = new CFG(c.getPackageName() + "." +  c.getName() + "::" + m.getName(), c.hashCode());
+		lastCfg = new CFG(c.getPackageName() + "." +  c.getName() + "::" + m.getName(), c.hashCode(), m);
 		lastPCFG.addCFG(lastCfg);
 		lastClass = c.getName();
 		dispatchMethod(m, c);
@@ -111,7 +111,7 @@ public class CreatePCFG extends ConvertIM {
 
 		//init
 		lastNode = null;
-		lastCfg = new CFG("anonymous" + "::" + m.getName(), lastCfg.getHashcode());
+		lastCfg = new CFG("anonymous" + "::" + m.getName(), lastCfg.getHashcode(), m);
 		lastCfg.setLine(m.getLine());
 		lastPCFG.addCFG(lastCfg);
 		lastClass = "anonymous";
@@ -518,7 +518,10 @@ public class CreatePCFG extends ConvertIM {
 			}
 		});
 		if(r.getIsResetTime()){
-			node.setResetClock(varName[0], true);
+			if(r.getExpression() != null)
+				node.setResetClock(varName[0], true, r.getResetExpression());
+			else
+				node.setResetClock(varName[0], true);
 		}
 		addState( node );
 		if(r != null && r.getExpression() != null) {
