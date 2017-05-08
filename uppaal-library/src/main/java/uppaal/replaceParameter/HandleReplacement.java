@@ -24,9 +24,6 @@ public class HandleReplacement {
             int vId = 0;
             for(List<TraceItem> v : versions){
                 vId++;
-                if(thid == 296 && vId == 21){
-                    System.out.println("BRK");
-                }
                 NTA thModel = replacer.replace(v);
                 //writer = new BufferedWriter(new FileWriter("graph.xal"));
                 try {

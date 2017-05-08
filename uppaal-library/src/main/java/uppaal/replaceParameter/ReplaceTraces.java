@@ -68,7 +68,9 @@ public class ReplaceTraces {
                         continue;
                     Update u  = t.getUpdate();
                     if(u != null) {
-                        t.setUpdate(u.toString().replace("{replace}", val));
+                        String update = u.toString();
+                        if(update.contains(var))
+                            t.setUpdate(update.replace("{replace}", val));
                         //System.out.println("Update t");
                     }
                 }
