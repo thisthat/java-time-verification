@@ -10,7 +10,7 @@
     <version>0.2.3-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>PCFG</artifactId>
+    <artifactId>parallel-control-flow-graph</artifactId>
     <dependencies>
         <dependency>
             <groupId>java-xal</groupId>

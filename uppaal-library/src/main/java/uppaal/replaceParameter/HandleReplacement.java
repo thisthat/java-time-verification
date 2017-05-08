@@ -1,6 +1,5 @@
 package uppaal.replaceParameter;
 
-import org.javatuples.Pair;
 import uppaal.NTA;
 
 import java.util.ArrayList;
@@ -16,30 +15,18 @@ public class HandleReplacement {
         ReplaceTraces replacer = new ReplaceTraces(model);
         List<TraceItem> instances = ReadTraces.getTraces(traces);
         //info on thread ids
-        List<Integer> threadIds = new ArrayList<>();
-        for(TraceItem t : instances){
-            int thId = t.getThreadID();
-            if(!threadIds.contains(thId))
-                threadIds.add(thId);
-        }
+        List<Integer> threadIds = getThreads(instances);
         //Group by Thread ID the substitutions
-        HashMap<Integer,List<Pair<String,String>>> groupById = new HashMap<>();
-        //init with empty lists each thread
-        for(Integer thid : threadIds){
-            groupById.put(thid, new ArrayList<Pair<String,String>>());
-        }
-        // add data
-        for(TraceItem t : instances){
-            int thId = t.getThreadID();
-            List<Pair<String,String>> vals = groupById.get(thId);
-            vals.add(new Pair<>(t.getVarName(), t.getVarValue()));
-        }
+        HashMap<Integer,List<TraceItem>> groupById = groupById(instances, threadIds);
         // create an instance of the model per thread
         for(Integer thid : threadIds){
-            List<List<Pair<String,String>>> versions = splitVersion(groupById.get(thid));
+            List<List<TraceItem>> versions = splitVersion(groupById.get(thid));
             int vId = 0;
-            for(List<Pair<String,String>> v : versions){
+            for(List<TraceItem> v : versions){
                 vId++;
+                if(thid == 296 && vId == 21){
+                    System.out.println("BRK");
+                }
                 NTA thModel = replacer.replace(v);
                 //writer = new BufferedWriter(new FileWriter("graph.xal"));
                 try {
@@ -52,24 +39,59 @@ public class HandleReplacement {
         }
     }
 
-    public static List<List<Pair<String,String>>> splitVersion(List<Pair<String,String>> trace){
-        List<List<Pair<String,String>>> out = new ArrayList<>();
-        List<Pair<String,String>> tmp = new ArrayList<>();
-        for(Pair<String,String> elm : trace){
+    public static HashMap<Integer,List<TraceItem>> groupById(List<TraceItem> instances, List<Integer> threadIds) {
+        HashMap<Integer,List<TraceItem>> groupById = new HashMap<>();
+        //init with empty lists each thread
+        for(Integer thid : threadIds){
+            groupById.put(thid, new ArrayList<TraceItem>());
+        }
+        // add data
+        for(TraceItem t : instances){
+            int thId = t.getThreadID();
+            List<TraceItem> vals = groupById.get(thId);
+            vals.add(t);
+        }
+        return groupById;
+    }
+
+    public static List<Integer> getThreads(List<TraceItem> traces){
+        List<Integer> threadIds = new ArrayList<>();
+        for(TraceItem t : traces){
+            int thId = t.getThreadID();
+            if(!threadIds.contains(thId))
+                threadIds.add(thId);
+        }
+        return threadIds;
+    }
+
+
+    public static List<List<TraceItem>> splitVersion(List<TraceItem> trace){
+        List<List<TraceItem>> out = new ArrayList<>();
+        List<TraceItem> tmp = new ArrayList<>();
+        for(TraceItem elm : trace){
             //is a value already there?
             boolean f = false;
-            String varName = elm.getValue0();
-            for(Pair<String,String> visited : tmp){
-                if(varName.equals(visited.getValue0())){
+            //String varName = elm.getVarName();
+            for(TraceItem visited : tmp){
+                if(visited.getLine() == elm.getLine() && visited.getVarName().equals(elm.getVarName())){
                     f = true;
                 }
             }
-            //we come across the same var? -> split
+            //we come across the same var? -> update value and split
             if(f){
                 out.add(tmp);
-                tmp = new ArrayList<>();
+                List<TraceItem> cicleHead = new ArrayList<>();
+                for(TraceItem t : tmp){
+                    if(t.getLine() == elm.getLine() && t.getVarName().equals(elm.getVarName())){
+                        cicleHead.add(elm);
+                    } else {
+                        cicleHead.add(t);
+                    }
+                }
+                tmp = cicleHead;
+            } else {
+                tmp.add(elm);
             }
-            tmp.add(elm);
         }
         out.add(tmp);
         return out;

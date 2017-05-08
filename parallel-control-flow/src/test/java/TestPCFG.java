@@ -1,5 +1,3 @@
-import PCFG.converter.IConverter;
-import PCFG.converter.ToDot;
 import PCFG.creation.IM2PCFG;
 import PCFG.structure.PCFG;
 import PCFG.structure.node.Node;

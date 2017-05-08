@@ -7,6 +7,7 @@ import uppaal.Declaration;
 import uppaal.NTA;
 import uppaal.Transition;
 import uppaal.labels.Guard;
+import uppaal.labels.Update;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +34,11 @@ public class ReplaceTraces {
     /**
      * Create a new model where it replace all the guards with the value given in replaces
      * @param replaces List of pairs: &lt;Variable,Value&gt;. It replaces every <i>Variable</i> with its <i>Value</i>.
-     * @param notClock If true, it will replace only variables that are not defined as clock variables.
+     * @param notClock
+     * If true, it will replace only variables that are not defined as clock variables.
      * @return A new NTA with the replacements.
      */
-    public NTA replace(List<Pair<String,String>> replaces, boolean notClock){
+    public NTA replace(List<TraceItem> replaces, boolean notClock){
         Cloner cloner = new Cloner();
         NTA clone = cloner.deepClone(this.model);
         List<String> clockVars = new ArrayList<>();
@@ -51,17 +53,24 @@ public class ReplaceTraces {
                 }
             }
         }
-        for(Pair<String,String> p : replaces){
-            String var = p.getValue0();
-            String val = p.getValue1();
+        for(TraceItem replace : replaces){
+            String var = replace.getVarName();
+            String val = replace.getVarValue();
+            int line   = replace.getLine();
             if(notClock && clockVars.contains(var)){
                 continue;
             }
             for(Automaton a : clone.getAutomata()){
                 for(Transition t : a.getTransitions()){
-                    Guard g  = t.getGuard();
-                    if(g != null)
-                        t.setGuard(g.toString().replace(var,val));
+                    //check if the transition is the correct one
+                    String srcName = t.getSource().getName().getName();
+                    if(!srcName.contains(line + ""))
+                        continue;
+                    Update u  = t.getUpdate();
+                    if(u != null) {
+                        t.setUpdate(u.toString().replace("{replace}", val));
+                        //System.out.println("Update t");
+                    }
                 }
             }
         }
@@ -74,7 +83,7 @@ public class ReplaceTraces {
      * @param replaces List of pairs: &lt;Variable,Value&gt;. It replaces every <i>Variable</i> with its <i>Value</i>.
      * @return A new NTA with the replacements.
      */
-    public NTA replace(List<Pair<String,String>> replaces){
+    public NTA replace(List<TraceItem> replaces){
         return replace(replaces,true);
     }
 }

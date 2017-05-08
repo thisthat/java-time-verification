@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>
-            <artifactId>PCFG</artifactId>
+            <artifactId>parallel-control-flow-graph</artifactId>
             <version>0.2.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
