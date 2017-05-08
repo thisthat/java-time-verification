@@ -26,7 +26,7 @@ public class TestSplitTraces {
         List<TraceItem> trace = groupById.get(th);
         List<List<TraceItem>> out = HandleReplacement.splitVersion(trace);
         assertEquals(9, trace.size());
-        assertEquals(3, out.size());
+        assertEquals(7, out.size());
     }
 
 
