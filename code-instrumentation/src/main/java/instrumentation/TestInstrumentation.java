@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class TestInstrumentation implements ClassFileTransformer  {
 
-    public static String filePath = System.getProperty("user.dir") +  File.separator + "traces.txt";
+
     private static final Logger LOGGER = LogManager.getLogger();
     private static Store classesToInject = Store.getInstance();
 
     public TestInstrumentation() {
-        LOGGER.debug("Storing info in {}", filePath);
+        LOGGER.debug("Storing info in {}", TestAgent.filePath);
     }
 
     public byte[] transform(ClassLoader loader, String className, Class classBeingRedefined,
@@ -32,7 +32,7 @@ public class TestInstrumentation implements ClassFileTransformer  {
 
         //the idea is, once we load the correct class, we change on the fly its bytecode
         byte[] byteCode = classfileBuffer;
-        //LOGGER.debug("Analysing class {}", className);
+        LOGGER.debug("Analysing class {}", className);
         if(classesToInject.containClass(className)){
             LOGGER.debug("Injected class {}", className);
             List<StoreItem> items = classesToInject.getClass(className);
@@ -114,7 +114,7 @@ public class TestInstrumentation implements ClassFileTransformer  {
         m.insertBefore("__thID = Thread.currentThread().getId();");
         StringBuffer src = new StringBuffer();
         src.append("try {");
-        src.append("String filename= \"" + filePath + "\";");
+        src.append("String filename= \"" + TestAgent.filePath + "\";");
         src.append("FileWriter fw = new FileWriter(filename,true);");
         src.append("fw.write(__thID");
         src.append("+ \"," + className);

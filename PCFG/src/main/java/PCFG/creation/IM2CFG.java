@@ -9,10 +9,13 @@ import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
+import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import org.javatuples.KeyValue;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -43,6 +46,7 @@ public class IM2CFG {
 	}
 
 	public List<Constraint> getConstraints(){
+		constraints.sort(Comparator.comparing(Constraint::getCategory));
 		return constraints;
 	}
 
@@ -114,4 +118,28 @@ public class IM2CFG {
 	}
 
 
+	public List<RuntimeConstraint> getRuntimeConstraints() {
+		List<RuntimeConstraint> runtimeConstraints = new ArrayList<>();
+		for(Constraint c : getConstraints()){
+			for(RuntimeConstraint r : c.getRuntimeConstraints()){
+				if(!runtimeConstraints.contains(r))
+					runtimeConstraints.add(r);
+			}
+		}
+		runtimeConstraints.sort(Comparator.comparing(RuntimeConstraint::getClassName).thenComparing(RuntimeConstraint::getLine));
+		return runtimeConstraints;
+	}
+	public List<RuntimeConstraint> getResetRuntimeConstraints() {
+		List<RuntimeConstraint> runtimeConstraints = new ArrayList<>();
+		for(Constraint c : getConstraints()){
+			if(!c.isCategory(AssignmentTimeVar.class))
+				continue;
+			for(RuntimeConstraint r : c.getRuntimeConstraints()){
+				if(!runtimeConstraints.contains(r))
+					runtimeConstraints.add(r);
+			}
+		}
+		runtimeConstraints.sort(Comparator.comparing(RuntimeConstraint::getClassName).thenComparing(RuntimeConstraint::getLine));
+		return runtimeConstraints;
+	}
 }

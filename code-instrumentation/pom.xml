@@ -76,7 +76,7 @@
                 <version>2.14</version>
                 <configuration>
                     <!--<argLine>-javaagent:target/${project.build.finalName}.jar=/Users/giovanni/repository/java-xal/code-instrumentation/src/main/resources/example.conf</argLine>-->
-                    <argLine>-javaagent:target/${project.build.finalName}.jar=/Users/giovanni/repository/java-xal/constraint.conf</argLine>
+                    <argLine>-javaagent:target/${project.build.finalName}.jar=${project.build.testOutputDirectory}/testConf/constraint.conf</argLine>
                 </configuration>
             </plugin>
 

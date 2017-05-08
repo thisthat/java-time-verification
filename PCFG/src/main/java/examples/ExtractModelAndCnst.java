@@ -10,6 +10,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -70,8 +71,11 @@ public class ExtractModelAndCnst {
 
         writer = new BufferedWriter(new FileWriter(nameConstraint));
         boolean first = true;
-        for(Constraint cnst : p.getConstraints()){
-            writer.write(cnst.runtimeConstraintList(first));
+        for(RuntimeConstraint cnst : p.getResetRuntimeConstraints()){
+            if(first){
+                writer.write("class;method;line;var\n");
+            }
+            writer.write(cnst.toString() + "\n");
             writer.flush();
             first = false;
         }

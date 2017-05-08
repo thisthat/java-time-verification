@@ -7,6 +7,7 @@ import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -129,6 +130,7 @@ public class Constraint {
     }
 
     public String runtimeConstraintList(boolean header){
+        runtimeConstraints.sort(Comparator.comparing(RuntimeConstraint::getClassName).thenComparing(RuntimeConstraint::getLine));
         StringBuilder out = new StringBuilder();
         if(header)
             out.append("class;method;line;var\n");
