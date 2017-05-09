@@ -7,7 +7,7 @@ public class AgentTest {
     public void shouldInstantiateSleepingInstance() throws InterruptedException {
 
         Testing sleeping = new Testing();
-        sleeping.randomSleep();
+        sleeping.randomSleep(true);
     }
 
     @Test

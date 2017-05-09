@@ -1,5 +1,6 @@
 package uppaal.replaceParameter;
 
+import instrumentation.TestInstrumentation;
 import uppaal.NTA;
 
 import java.util.ArrayList;
@@ -66,31 +67,40 @@ public class HandleReplacement {
         List<List<TraceItem>> out = new ArrayList<>();
         List<TraceItem> tmp = new ArrayList<>();
         for(TraceItem elm : trace){
-            //is a value already there?
-            boolean f = false;
-            //String varName = elm.getVarName();
-            for(TraceItem visited : tmp){
-                if(visited.getLine() == elm.getLine() && visited.getVarName().equals(elm.getVarName())){
-                    f = true;
+            //do we end the current method execution?
+            if(elm.getVarName().equals(TestInstrumentation.endMethod)){
+                if(tmp.size() > 0) {
+                    out.add(tmp);
+                    tmp = new ArrayList<>();
                 }
-            }
-            //we come across the same var? -> update value and split
-            if(f){
-                out.add(tmp);
-                List<TraceItem> cicleHead = new ArrayList<>();
-                for(TraceItem t : tmp){
-                    if(t.getLine() == elm.getLine() && t.getVarName().equals(elm.getVarName())){
-                        cicleHead.add(elm);
-                    } else {
-                        cicleHead.add(t);
+            } else {
+                //is a value already there?
+                boolean f = false;
+                //String varName = elm.getVarName();
+                for(TraceItem visited : tmp){
+                    if(visited.getLine() == elm.getLine() && visited.getVarName().equals(elm.getVarName())){
+                        f = true;
                     }
                 }
-                tmp = cicleHead;
-            } else {
-                tmp.add(elm);
+                //we come across the same var? -> update value and split
+                if(f){
+                    out.add(tmp);
+                    List<TraceItem> cicleHead = new ArrayList<>();
+                    for(TraceItem t : tmp){
+                        if(t.getLine() == elm.getLine() && t.getVarName().equals(elm.getVarName())){
+                            cicleHead.add(elm);
+                        } else {
+                            cicleHead.add(t);
+                        }
+                    }
+                    tmp = cicleHead;
+                } else {
+                    tmp.add(elm);
+                }
             }
         }
-        out.add(tmp);
+        if(tmp.size() > 0)
+            out.add(tmp);
         return out;
     }
 

@@ -54,6 +54,11 @@ Library created originally by ksluckow (https://github.com/ksluckow)
             <artifactId>junit</artifactId>
             <version>4.11</version>
         </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>code-instrumentation</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

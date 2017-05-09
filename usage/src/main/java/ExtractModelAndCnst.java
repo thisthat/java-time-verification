@@ -1,24 +1,29 @@
-package examples;
-
 import PCFG.converter.IConverter;
 import PCFG.converter.ToUppaal;
-import PCFG.converter.ToXAL;
 import PCFG.creation.IM2CFG;
 import PCFG.optimization.OptimizeTimeAutomata;
 import PCFG.structure.PCFG;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by giovanni on 02/05/2017.
+ */
+
+/**
+ * issue
+/Users/giovanni/repository/kafka/clients/src/main/java/org/apache/kafka/clients/consumer/internals/ConsumerCoordinator.java
+ConsumerCoordinator
+commitOffsetsSync
+kafka_3540.xml
+constraint_kafka_3540.conf
+/Users/giovanni/repository/kafka/clients/src/main/java
  */
 public class ExtractModelAndCnst {
 

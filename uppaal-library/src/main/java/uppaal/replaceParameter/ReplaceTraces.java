@@ -76,6 +76,15 @@ public class ReplaceTraces {
                 }
             }
         }
+        //if traces do not cover all, remove.
+        for(Automaton a : clone.getAutomata()){
+            for(Transition t : a.getTransitions()){
+                Update u  = t.getUpdate();
+                if(u != null && u.toString().contains("{replace}")) {
+                    t.setUpdate("");
+                }
+            }
+        }
         return clone;
     }
 

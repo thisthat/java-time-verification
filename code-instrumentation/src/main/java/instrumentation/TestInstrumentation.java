@@ -10,6 +10,8 @@ import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -18,9 +20,10 @@ import java.util.List;
  */
 public class TestInstrumentation implements ClassFileTransformer  {
 
-
+    public static final String endMethod = "--endmethod";
     private static final Logger LOGGER = LogManager.getLogger();
     private static Store classesToInject = Store.getInstance();
+    private HashSet<CtMethod> injected = new HashSet<>();
 
     public TestInstrumentation() {
         LOGGER.debug("Storing info in {}", TestAgent.filePath);
@@ -48,6 +51,10 @@ public class TestInstrumentation implements ClassFileTransformer  {
                 try {
                     CtMethod m = cc.getDeclaredMethod(item.getMethodName());
                     injectMethod(m, item);
+                    if(!injected.contains(m)){
+                        injectEnd(m,item);
+                        injected.add(m);
+                    }
 
                 } catch (Exception ex) {
                     LOGGER.error("Cannot inject the code of method {}: {}", item, ex.getMessage());
@@ -125,16 +132,38 @@ public class TestInstrumentation implements ClassFileTransformer  {
         src.append("+\"\\n\");");
         src.append("fw.close();");
         src.append("}catch (IOException e) {}");
+        /*
         try {
             m.insertAt(line, src.toString());
             return;
         } catch (CannotCompileException e){
             LOGGER.error("Cannot inject the code of method {} at line {}: {}", item, line, e.getMessage());
         }
+        */
         try {
             m.insertAt(line+1, src.toString());
         } catch (CannotCompileException e){
             LOGGER.error("Cannot inject the code of method {} at line {}: {}", item, line+1, e.getMessage());
+        }
+    }
+    private void injectEnd(CtMethod m, StoreItem item) throws CannotCompileException {
+        String methodName = m.getName();
+        String className = item.getClassName();
+        StringBuffer src = new StringBuffer();
+        src.append("try {");
+        src.append("String filename= \"" + TestAgent.filePath + "\";");
+        src.append("FileWriter fw = new FileWriter(filename,true);");
+        src.append("fw.write(__thID");
+        src.append("+ \"," + className);
+        src.append("," + methodName);
+        src.append(",-1," + TestInstrumentation.endMethod + ",-1\\n\");");
+        src.append("fw.close();");
+        src.append("}catch (IOException e) {}");
+        try {
+            m.insertAfter(src.toString());
+            return;
+        } catch (CannotCompileException e){
+            LOGGER.error("Cannot inject the code to close the method {} : {}", item, e.getMessage());
         }
     }
 }
