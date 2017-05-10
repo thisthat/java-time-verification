@@ -102,15 +102,15 @@ public class IM2CFG {
 		pcfg.addAnnotation(String.valueOf(PCFG.DefaultAnnotation.GlobalVars), attrs);
 
 
-
-		//set time constraint
-		for(Node v : pcfg.getV()){
-			for(Constraint c : constraints){
+		for(Constraint c : constraints){
+			for(Node v : pcfg.getV()){
 				if(v.equals(c)){
 					v.setConstraint(c);
 				}
 			}
 		}
+		//set time constraint
+
 
 		//optimize
 		pcfg.optimize();

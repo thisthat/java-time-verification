@@ -45,7 +45,7 @@ public class OptimizeTimeAutomata implements IOptimization {
 			if(n.getConstraint() != null) {
 				if(n.getConstraint().isCategory(AnnotatedTypes.class)){
 					//n.setResetClock(true);
-					n.getConstraint().setValue("t >= " + n.getConstraint().getValue());
+					n.getConstraint().setValue("t >= " + filterValue(n.getConstraint().getValue()));
 				}
 				if(n.getConstraint().isCategory(TimeoutResources.class)){
 
@@ -75,4 +75,11 @@ public class OptimizeTimeAutomata implements IOptimization {
 	}
 
 
+	private String filterValue(String v){
+		String out = v;
+		if(v.substring(0,1).matches("[0-9]")){
+			out = out.replaceAll("[aA-zZ]+","");
+		}
+		return out;
+	}
 }

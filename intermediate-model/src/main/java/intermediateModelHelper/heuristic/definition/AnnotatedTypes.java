@@ -72,7 +72,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 					}
 					if(timeout.length() > 1)
 						timeout = timeout.substring(0, timeout.length() - 1);
-					Constraint c = AnnotatedTypes.super.addConstraint(timeout, elm, false);
+					Constraint c = AnnotatedTypes.super.addConstraint(timeout, stm, false);
 					c.addRuntimeConstraints(new RuntimeConstraint(className, currentMethod.getName(), elm.getLine(), timeout));
 					AnnotatedTypes.super.addTimeVar(currentMethod, timeout);
 				}
