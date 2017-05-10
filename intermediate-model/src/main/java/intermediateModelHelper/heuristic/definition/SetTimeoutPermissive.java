@@ -109,11 +109,11 @@ public class SetTimeoutPermissive extends SearchTimeConstraint {
 				//check if is setting a timeout
 				//is require an input stream which has a timeout?
 				if(isReadingInputStream(elm) && isSetReadTimeoutDefined){
-					SetTimeoutPermissive.super.addConstraint("timeout", elm);
+					SetTimeoutPermissive.super.addConstraint("timeout", elm, true);
 				}
 				//check if it calls a method with timeout
 				if(requireSetTimout(elm) && isSetTimeoutDefined){
-					SetTimeoutPermissive.super.addConstraint("timeout", elm);
+					SetTimeoutPermissive.super.addConstraint("timeout", elm, true);
 				}
 			}
 		});

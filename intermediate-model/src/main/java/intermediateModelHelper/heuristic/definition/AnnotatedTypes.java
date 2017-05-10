@@ -1,6 +1,5 @@
 package intermediateModelHelper.heuristic.definition;
 
-import com.rits.cloning.Cloner;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
@@ -11,8 +10,9 @@ import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import org.junit.rules.Timeout;
 
 import java.util.List;
 
@@ -29,6 +29,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
 
 	IASTMethod currentMethod;
+	String className;
 
 	public AnnotatedTypes() {
 	}
@@ -36,6 +37,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 	@Override
 	public void setup(ASTClass c) {
 		super.setup(c);
+		className = c.getPackageName() + "." + c.getName();
 	}
 
 	/**
@@ -61,6 +63,7 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 				List<IASTRE> pars = elm.getParameters();
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
+					elm.setTimeCall(true);
 					String timeout = "";
 					TimeMethod m = getTimeOut(pointer,name, size);
 					int[] p = m.getTimeouts();
@@ -69,7 +72,8 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 					}
 					if(timeout.length() > 1)
 						timeout = timeout.substring(0, timeout.length() - 1);
-					AnnotatedTypes.super.addConstraint(timeout, elm);
+					Constraint c = AnnotatedTypes.super.addConstraint(timeout, elm, false);
+					c.addRuntimeConstraints(new RuntimeConstraint(className, currentMethod.getName(), elm.getLine(), timeout));
 					AnnotatedTypes.super.addTimeVar(currentMethod, timeout);
 				}
 			}

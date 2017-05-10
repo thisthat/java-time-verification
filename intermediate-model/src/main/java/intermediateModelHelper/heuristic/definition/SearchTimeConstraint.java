@@ -36,8 +36,8 @@ public abstract class SearchTimeConstraint {
 	 */
 	protected List<Constraint> timeConstraint = new ArrayList<>();
 	protected HashMap<IASTMethod, List<String>> timeVars = new HashMap<>();
-	private ASTClass c = null;
-	private String methodName = "";
+	protected ASTClass c = null;
+	protected String methodName = "";
 	/**
 	 * It used to set up internal resources
 	 */
@@ -79,9 +79,9 @@ public abstract class SearchTimeConstraint {
 	 * @param message Message to store with the time constraint
 	 * @param stm	The instruction to add to the list
 	 */
-	protected Constraint addConstraint(String message, IASTStm stm){
+	protected Constraint addConstraint(String message, IASTStm stm, boolean calculateRuntime){
 		int line = stm.getLine();
-		Constraint elm = new Constraint(stm, getClass(), message, line, c, methodName);
+		Constraint elm = new Constraint(stm, getClass(), message, line, c, methodName, calculateRuntime);
 		if(!timeConstraint.contains(elm))
 			timeConstraint.add( elm );
 		stm.addConstraint( elm );

@@ -3,7 +3,9 @@ package intermediateModelHelper.envirorment.temporal.structure;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
 import java.util.ArrayList;
@@ -27,21 +29,44 @@ public class Constraint {
         this.line = line;
     }
 
-    public Constraint(IASTStm elm, Class category, String value, int line, ASTClass c, String methodName) {
+    public Constraint(IASTStm elm, Class category, String value, int line, ASTClass c, String methodName){
+        this(elm,category,value,line,c,methodName,true);
+    }
+    public Constraint(IASTStm elm, Class category, String value, int line, ASTClass c, String methodName, boolean calculateRuntime) {
         this(elm, category.getCanonicalName(), value, line);
         String className = c.getPackageName() + "." + c.getName();
-        elm.visit(new DefaultASTVisitor(){
-            @Override
-            public void enterASTLiteral(ASTLiteral elm) {
-                //we should skip strings and integers
-                String val = elm.getValue();
-                if(val.startsWith("\"") || val.substring(0,1).matches("[0-9]")){
-                    return;
+        if(calculateRuntime) {
+            elm.visit(new DefaultASTVisitor() {
+                List<ASTLiteral> visited = new ArrayList<>();
+
+                @Override
+                public void enterASTMethodCall(ASTMethodCall elm) {
+                    if (!elm.isTimeCall())
+                        return;
+                    RuntimeConstraint rntCnst = new RuntimeConstraint(className, methodName, line, elm.printMethodCall());
+                    runtimeConstraints.add(rntCnst);
+                    elm.visit(new DefualtASTREVisitor() {
+                        @Override
+                        public void enterASTLiteral(ASTLiteral elm) {
+                            visited.add(elm);
+                        }
+                    });
                 }
-                RuntimeConstraint rntCnst = new RuntimeConstraint(className,methodName,line,val);
-                runtimeConstraints.add(rntCnst);
-            }
-        });
+
+                @Override
+                public void enterASTLiteral(ASTLiteral elm) {
+                    if (visited.contains(elm))
+                        return;
+                    //we should skip strings and integers
+                    String val = elm.getValue();
+                    if (val.startsWith("\"") || val.substring(0, 1).matches("[0-9]")) {
+                        return;
+                    }
+                    RuntimeConstraint rntCnst = new RuntimeConstraint(className, methodName, line, val);
+                    runtimeConstraints.add(rntCnst);
+                }
+            });
+        }
     }
 
     public String getCategory() {
@@ -74,6 +99,9 @@ public class Constraint {
 
     public void setRuntimeConstraints(List<RuntimeConstraint> runtimeConstraints) {
         this.runtimeConstraints = runtimeConstraints;
+    }
+    public void addRuntimeConstraints(RuntimeConstraint runtimeConstraints) {
+        this.runtimeConstraints.add(runtimeConstraints);
     }
 
     @Override

@@ -67,7 +67,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 		Cloner cloner = new Cloner();
 		ASTRE expr = cloner.deepClone(stm);
 		Translation.Translate(expr,e);
-		Constraint c = super.addConstraint(expr.print(), stm);
+		Constraint c = super.addConstraint(expr.print(), stm,true);
 		//Constraint edgeVersion = cloner.deepClone(c);
 		//c.setEdgeVersion(edgeVersion);
 	}

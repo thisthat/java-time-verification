@@ -57,7 +57,7 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
 					String timeout = "";
-					UndefiniteTimeout.super.addConstraint(timeout, elm);
+					UndefiniteTimeout.super.addConstraint(timeout, elm, true);
 				}
 			}
 		});

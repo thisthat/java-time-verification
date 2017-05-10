@@ -98,7 +98,22 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	@Override
 	public String print() {
 		if(isTimeCall)
-			return "{replace}";
+			return "{" + this.printMethodCall() + ":replace}";
+		StringBuffer bf = new StringBuffer();
+		if(exprCallee != null)
+			bf.append(exprCallee.print() + "." + methodName + "(");
+		else
+			bf.append(methodName + "(");
+		for(IASTRE p : parameters){
+			bf.append(p.print());
+			bf.append(",");
+		}
+		bf.subSequence(0, bf.length()-1);
+		bf.append(")");
+		return bf.toString();
+	}
+
+	public String printMethodCall() {
 		StringBuffer bf = new StringBuffer();
 		if(exprCallee != null)
 			bf.append(exprCallee.print() + "." + methodName + "(");
@@ -115,14 +130,6 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 
 	@Override
 	public void visit(ASTVisitor visitor) {
-		visitor.enterAll(this);
-		visitor.enterASTMethodCall(this);
-		if(exprCallee != null)
-			exprCallee.visit(visitor);
-		for(IASTRE p : parameters){
-			p.visit(visitor);
-		}
-		visitor.exitASTMethodCall(this);
-		visitor.exitAll(this);
+		visit((ASTREVisitor) visitor);
 	}
 }

@@ -87,8 +87,8 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 					String varName = ((ASTLiteral) l).getValue();
 					IASTVar v = env.getVar(varName);
 					if(v != null && v.isTimeCritical()){
-						addConstraint(elm);
 						addExpression(stm, elm);
+						addConstraint(elm);
 					}
 				}
 			}
@@ -97,8 +97,8 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 				String varName = elm.getNameString();
 				if(env.existVarNameTimeRelevant(varName)){
-					addConstraint(elm);
 					addExpression(stm, elm);
+					addConstraint(elm);
 				}
 			}
 		});
@@ -142,11 +142,11 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 	}
 
 	protected void addConstraint(ASTAssignment stm) {
-		super.addConstraint(stm.print(), stm);
+		super.addConstraint(stm.print(), stm, true);
 	}
 
 	private void addConstraint(ASTVariableDeclaration stm) {
-		super.addConstraint(stm.print(), stm);
+		super.addConstraint(stm.print(), stm, true);
 	}
 
 }

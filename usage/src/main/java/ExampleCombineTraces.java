@@ -24,7 +24,7 @@ import java.io.IOException;
  *
  * -fix:
 /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/kafka_3540_fix.xml
-/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/trace_test.txt
+/Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/traces1494330570156.txt
 /Users/giovanni/Documents/research/timing/issue_time/kafka_3540/instrumentation/fix/
  *
  */

@@ -17,13 +17,47 @@ import java.util.List;
  */
 
 /**
- * issue
+ +++++++++++ issue KAFKA-3540 --
+ - ecff8544dd45e8cf0fcf04f5e0e716d3e21c9f20
+ = f72203ee9223d3b724ee67bdad9912612dd72f63
 /Users/giovanni/repository/kafka/clients/src/main/java/org/apache/kafka/clients/consumer/internals/ConsumerCoordinator.java
 ConsumerCoordinator
 commitOffsetsSync
 kafka_3540.xml
 constraint_kafka_3540.conf
 /Users/giovanni/repository/kafka/clients/src/main/java
+
+ +++++++++++ issue KAFKA-4426 --
+ - ecff8544dd45e8cf0fcf04f5e0e716d3e21c9f20
+ = f72203ee9223d3b724ee67bdad9912612dd72f63
+/Users/giovanni/repository/kafka/clients/src/main/java/org/apache/kafka/clients/consumer/internals/AbstractCoordinator.java
+AbstractCoordinator
+ensureCoordinatorReady
+kafka_4426.xml
+constraint_kafka_4426.conf
+/Users/giovanni/repository/kafka/clients/src/main/java
+
+ +++++++++++ issue KAFKA-4290 --
+ - 72d5675a7cfc64a5547b921672856ea4afc4f4c2
+ = 8c367790fa1dd337a8a4bad393cd856dfcd92c31
+/Users/giovanni/repository/kafka/connect/runtime/src/main/java/org/apache/kafka/connect/runtime/distributed/WorkerCoordinator.java
+WorkerCoordinator
+poll
+kafka_4290.xml
+constraint_kafka_4290.conf
+/Users/giovanni/repository/kafka/clients/src/main/java
+
+ +++++++++++ issue KAFKA-4306 --
+ - 72d5675a7cfc64a5547b921672856ea4afc4f4c2
+ = c9e99f297f3090cd348e231dbeaf69c388de1234
+/Users/giovanni/repository/kafka/connect/runtime/src/main/java/org/apache/kafka/connect/runtime/distributed/DistributedHerder.java
+DistributedHerder
+stop
+kafka_4306.xml
+constraint_kafka_4306.conf
+/Users/giovanni/repository/kafka/clients/src/main/java
+
+
  */
 public class ExtractModelAndCnst {
 

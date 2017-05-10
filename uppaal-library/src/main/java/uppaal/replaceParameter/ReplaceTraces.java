@@ -70,7 +70,7 @@ public class ReplaceTraces {
                     if(u != null) {
                         String update = u.toString();
                         if(update.contains(var))
-                            t.setUpdate(update.replace("{replace}", val));
+                            t.setUpdate(update.replace("{" + var + ":replace}", val));
                         //System.out.println("Update t");
                     }
                 }
@@ -80,7 +80,7 @@ public class ReplaceTraces {
         for(Automaton a : clone.getAutomata()){
             for(Transition t : a.getTransitions()){
                 Update u  = t.getUpdate();
-                if(u != null && u.toString().contains("{replace}")) {
+                if(u != null && u.toString().contains(":replace}")) {
                     t.setUpdate("");
                 }
             }
