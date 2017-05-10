@@ -66,12 +66,12 @@ public class TestHeuristics {
 		));
 		assertTrue(check(
 				195,
-				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)))",
+				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)));",
 				AnnotatedTypes.class,
 				constraints
 		));
 
-		assertEquals(constraints.size(), 2);
+		assertEquals(constraints.size(), 3);
 
 	}
 
@@ -118,25 +118,25 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				16,
-				"Thread.sleep(4000)",
+				"Thread.sleep(4000);",
 				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				35,
-				"timer.schedule(task, 0, 5000)",
+				"timer.schedule(task, 0, 5000);",
 				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				38,
-				"task.wait(100)",
+				"task.wait(100);",
 				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				43,
-				"Thread.sleep(10000)",
+				"Thread.sleep(10000);",
 				AnnotatedTypes.class,
 				constraints
 		));
@@ -184,7 +184,7 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				349,
-				"Thread.sleep(500+((int)Math.random()*1000))",
+				"Thread.sleep(500+((int)Math.random()*1000));",
 				AnnotatedTypes.class,
 				constraints
 		));
@@ -221,7 +221,7 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				35,
-				"socket.connect( new InetSocketAddress( _address, 2190 ), 5000 )",
+				"socket.connect( new InetSocketAddress( _address, 2190 ), 5000 );",
 				AnnotatedTypes.class,
 				constraints
 		));
@@ -246,19 +246,19 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				86,
-				"Thread.sleep(5000)",
+				"Thread.sleep(5000);",
 				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				205,
-				"wait(100)",
+				"wait(100);",
 				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				232,
-				"createTopologyThread.sleep(1000)",
+				"createTopologyThread.sleep(1000);",
 				AnnotatedTypes.class,
 				constraints
 		));
@@ -279,19 +279,19 @@ public class TestHeuristics {
 		constraints = ah.getTimeConstraint();
 		assertTrue(check(
 				290,
-				"Thread.sleep(5000)",
+				"Thread.sleep(5000);",
 				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				293,
-				"Thread.sleep(5000)",
+				"Thread.sleep(5000);",
 				AnnotatedTypes.class,
 				constraints
 		));
 		assertTrue(check(
 				302,
-				"Thread.sleep(_class.SleepTimeout)",
+				"Thread.sleep(_class.SleepTimeout);",
 				AnnotatedTypes.class,
 				constraints
 		));
@@ -342,7 +342,7 @@ public class TestHeuristics {
 
 		assertTrue(check(
 				859,
-				"socket.connect(new InetSocketAddress(control.getHost(), control.getPort()), CONNECT_TIMEOUT)",
+				"socket.connect(new InetSocketAddress(control.getHost(), control.getPort()), CONNECT_TIMEOUT);",
 				AnnotatedTypes.class,
 				constraints
 		));
