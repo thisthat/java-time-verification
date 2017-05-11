@@ -11,7 +11,7 @@ import pkg_resources
 
 def test_extract_class_state_space():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -27,10 +27,12 @@ def test_extract_class_state_space():
     e = Engine()
     e.add_rule(r1)
     
+    bc = BoundedCollection(1000)
+
     ctx = Context()
     ctx.push({})
     domains = {
-        "b": BOUNDED_COLLECTION,
+        "b": bc,
     }
     ctx.update("abs_domains", domains)
     
@@ -44,12 +46,12 @@ def test_extract_class_state_space():
     assert ctx_post.get("state_space") is not None
     assert isinstance(ctx_post.get("state_space"), StateSpace)
 
-    assert len(ctx.get("state_space").enumerate) == BOUNDED_COLLECTION.size
+    assert len(ctx.get("state_space").enumerate) == bc.size
 
 
 def test_add_states_from_class_state_space():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -66,10 +68,12 @@ def test_add_states_from_class_state_space():
     e.add_rule(r1)
     e.add_rule(r2)
     
+    bc = BoundedCollection(1000)
+
     ctx = Context()
     ctx.push({})
     domains = {
-        "b": BOUNDED_COLLECTION,
+        "b": bc, 
     }
     ctx.update("abs_domains", domains)
     
@@ -77,13 +81,13 @@ def test_add_states_from_class_state_space():
 
     assert e.num_applications == 2, e.num_applications
     
-    assert len(ta_post.locations) == BOUNDED_COLLECTION.size
+    assert len(ta_post.locations) == bc.size
     assert len(ta_post.edges) == 0
 
 
 def test_extract_method_state_space():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
 
