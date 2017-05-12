@@ -1,6 +1,7 @@
 package server;
 
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import server.helper.PropertiesFileReader;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -32,6 +33,8 @@ public class StartServer {
 					break;
 			}
 		}
+
+		System.out.println("Version : " + PropertiesFileReader.getGitSha1());
 
 		Callable<Boolean> task = () -> {
 			try {
