@@ -1,4 +1,4 @@
-from java2ta.abstraction.domains import GT, LT, Eq, LTE, GTE, Between, \
+from java2ta.abstraction.domains import GT, LT, Eq, NotEq, LTE, GTE, Between, \
                                 split_numeric_domain, Integer, Real, \
                                 DataTypeFactory
 
@@ -46,6 +46,15 @@ def test_pred_eq():
         
     smt_assert = eq.smt_assert(var="fie")
     assert smt_assert == "(assert (= fie 0))", smt_assert
+ 
+def test_pred_not_eq():
+
+    neq = NotEq({"value":0})
+    label = neq.label(var="foo")
+    assert label == "foo != 0", label
+        
+    smt_assert = neq.smt_assert(var="fie")
+    assert smt_assert == "(assert (distinct fie 0))", smt_assert
  
  
 def test_pred_between():
@@ -162,6 +171,70 @@ def test_split_numeric_domain_small():
     assert "foo < 0" in labels
     assert "foo = 0" in labels
     assert "foo > 0" in labels
+
+
+def test_split_numeric_domain_upper_bounded():
+    """
+    In an upper-bounded numeric domain, we don't have values that are greater
+    than the greatest value passed
+    """
+    values = [-5, 0, 10]
+    pred = split_numeric_domain(values, gt_max=False)
+
+    assert len(pred) == 6
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo < -5" in labels
+    assert "foo = -5" in labels
+    assert "-5 < foo < 0" in labels
+    assert "foo = 0" in labels
+    assert "0 < foo < 10" in labels
+    assert "foo = 10" in labels
+
+
+def test_split_numeric_domain_lower_bounded():
+    """
+    In a lower-bounded numeric domain, we don't have values that are smaller
+    than the smallest value passed
+    """
+    values = [-5, 0, 10]
+    pred = split_numeric_domain(values, lt_min=False)
+
+    assert len(pred) == 6
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = -5" in labels
+    assert "-5 < foo < 0" in labels
+    assert "foo = 0" in labels
+    assert "0 < foo < 10" in labels
+    assert "foo = 10" in labels
+    assert "foo > 10" in labels
+
+
+def test_split_numeric_domain_lower_uppser_bounded():
+    """
+    In a lower-/upper- bounded numeric domain, we don't have values that are smaller
+    (resp. greater) than the smallest (resp. greatest) value passed
+    """
+    values = [-5, 0, 10]
+    pred = split_numeric_domain(values, lt_min=False, gt_max=False)
+
+    assert len(pred) == 5
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = -5" in labels
+    assert "-5 < foo < 0" in labels
+    assert "foo = 0" in labels
+    assert "0 < foo < 10" in labels
+    assert "foo = 10" in labels
+
+
 
 
 def test_split_numeric_domain_no_value():

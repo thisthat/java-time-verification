@@ -143,8 +143,9 @@ class Eq(BinaryPredicate):
     _smt_name = "="
 
 
-class NotEq(Predicate):
+class NotEq(BinaryPredicate):
     _smt_name = "distinct"
+    _label = "{var} != {value}"
 
 class Between(Predicate):    
     _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
