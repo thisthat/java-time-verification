@@ -214,7 +214,7 @@ def split_field_domain(field_name, predicates):
         assert isinstance(pred, Predicate)
     
         smt_assert = pred.smt_assert(var="(%s {var})" % field_name)
-        label = pred.label(var="var.%s" % field_name)
+        label = pred.label(var="{var}.%s" % field_name)
         fp = Predicate(pred.ctx, smt_assert=smt_assert, label=label)
         field_predicates.append(fp)
         

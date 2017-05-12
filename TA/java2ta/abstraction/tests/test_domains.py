@@ -1,6 +1,6 @@
 from java2ta.abstraction.domains import GT, LT, Eq, NotEq, LTE, GTE, Between, \
-                                split_numeric_domain, Integer, Real, \
-                                DataTypeFactory
+                                split_numeric_domain, split_eq_value, split_enum, split_field_domain, \
+                                Integer, Real, DataTypeFactory
 
 def test_pred_gt():
 
@@ -193,6 +193,13 @@ def test_split_numeric_domain_upper_bounded():
     assert "0 < foo < 10" in labels
     assert "foo = 10" in labels
 
+    assert "(assert (< foo -5))" in smt_asserts
+    assert "(assert (= foo -5))" in smt_asserts
+    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts
+    assert "(assert (and (< 0 foo) (< foo 10)))" in smt_asserts
+    assert "(assert (= foo 10))" in smt_asserts
+
 
 def test_split_numeric_domain_lower_bounded():
     """
@@ -214,6 +221,13 @@ def test_split_numeric_domain_lower_bounded():
     assert "foo = 10" in labels
     assert "foo > 10" in labels
 
+    assert "(assert (= foo -5))" in smt_asserts
+    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts
+    assert "(assert (and (< 0 foo) (< foo 10)))" in smt_asserts
+    assert "(assert (= foo 10))" in smt_asserts
+    assert "(assert (> foo 10))" in smt_asserts
+
 
 def test_split_numeric_domain_lower_uppser_bounded():
     """
@@ -234,7 +248,70 @@ def test_split_numeric_domain_lower_uppser_bounded():
     assert "0 < foo < 10" in labels
     assert "foo = 10" in labels
 
+    assert "(assert (= foo -5))" in smt_asserts
+    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts
+    assert "(assert (and (< 0 foo) (< foo 10)))" in smt_asserts
+    assert "(assert (= foo 10))" in smt_asserts
 
+
+def test_split_value_equality():
+
+    pred = split_eq_value(10)
+
+    assert len(pred) == 2
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = 10" in labels
+    assert "foo != 10" in labels
+
+    assert "(assert (= foo 10))" in smt_asserts
+    assert "(assert (distinct foo 10))" in smt_asserts
+
+def test_split_value_equality_enumeration():
+
+    values = [-5,0,100]
+    pred = split_enum(values)
+
+    assert len(pred) == len(values)
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = -5" in labels
+    assert "foo = 0" in labels
+    assert "foo = 100" in labels
+
+    assert "(assert (= foo -5))" in smt_asserts, smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts, smt_asserts
+    assert "(assert (= foo 100))" in smt_asserts, smt_asserts
+
+
+
+def test_split_field_domain():
+    values = [-5,0,100]
+    pred = split_enum(values)
+
+    assert len(pred) == len(values)
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    field_pred = split_field_domain("myfield", pred)
+
+    assert len(pred) == len(field_pred)
+    field_labels = map(lambda p: p.label(var="fie"), field_pred)
+    field_smt_asserts = map(lambda p: p.smt_assert(var="fie"), field_pred)
+
+    assert "fie.myfield = -5" in field_labels, field_labels
+    assert "fie.myfield = 0" in field_labels
+    assert "fie.myfield = 100" in field_labels
+
+    assert "(assert (= (myfield fie) -5))" in field_smt_asserts, field_smt_asserts
+    assert "(assert (= (myfield fie) 0))" in field_smt_asserts, field_smt_asserts
+    assert "(assert (= (myfield fie) 100))" in field_smt_asserts, field_smt_asserts
 
 
 def test_split_numeric_domain_no_value():
