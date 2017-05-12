@@ -1,4 +1,5 @@
 from java2ta.abstraction import AbstractAttribute, StateSpace
+from java2ta.abstraction.domains import Domain, Variable, INTEGERS, Integer, split_numeric_domain
 
 def test_abstract_attribute():
 
@@ -11,6 +12,7 @@ def test_abstract_attribute():
     assert aa.values == sorted(values), "%s vs %s" % (aa.values, values)
     assert aa.initial != initial
     assert aa.initial in aa.encoded_values
+
 
 def test_statespace():
 
@@ -56,4 +58,49 @@ def test_statespace():
     assert ss.configuration(["C", "== 0"]) == (2,1)
     assert ss.configuration(["C", "> 0"]) == (2,2)
 
+
+def test_statespace_from_variables():
+
+    foo_domain = INTEGERS
+    foo_predicates = foo_domain.predicates
+    var_foo = Variable("foo", domain=foo_domain)
+
+    abstract_values_foo = var_foo.values
+    abstract_initial_foo = var_foo.default
+
+    foo = AbstractAttribute("foo", abstract_values_foo, abstract_initial_foo)
+
+    fie_datatype = Integer()
+    fie_predicates = split_numeric_domain([-5,0,10], gt_max=False)
+    var_fie = Variable("fie", datatype=fie_datatype, predicates=fie_predicates)
+
+    abstract_values_fie = var_fie.values
+    abstract_initial_fie = var_fie.default
+
+    fie = AbstractAttribute("fie", abstract_values_fie, abstract_initial_fie)
+
+    ss = StateSpace()
+    ss.add_attribute(foo)
+    ss.add_attribute(fie)
+
+    # check attributes are returned sorted by name
+    assert ss.attributes == [ fie, foo ]
+    # check proper attributes are returned
+    assert ss.get_attribute("foo") == foo
+    assert ss.get_attribute("fie") == fie
+
+    assert isinstance(ss.enumerate, list), "Expected list. Got: %s" % ss.enumerate
+
+    assert len(ss.enumerate) == len(abstract_values_foo) * len(abstract_values_fie)
+    assert (fie.encoded_value(fie_predicates[0]), foo.encoded_value(foo_predicates[0])) in ss.enumerate
+    assert (fie.encoded_value(fie_predicates[0]), foo.encoded_value(foo_predicates[1])) in ss.enumerate
+    assert (fie.encoded_value(fie_predicates[1]), foo.encoded_value(foo_predicates[0])) in ss.enumerate
+
+    assert (fie_predicates[0], foo_predicates[0]) not in ss.enumerate
+    assert (fie_predicates[0], foo_predicates[1]) not in ss.enumerate
+    assert (fie_predicates[1], foo_predicates[0]) not in ss.enumerate
+
+    assert ss.configuration([fie_predicates[0], foo_predicates[0]]) == (fie.encoded_value(fie_predicates[0]),foo.encoded_value(foo_predicates[0]))
+    assert ss.configuration([fie_predicates[0], foo_predicates[1]]) == (fie.encoded_value(fie_predicates[0]),foo.encoded_value(foo_predicates[1]))
+    assert ss.configuration([fie_predicates[1], foo_predicates[0]]) == (fie.encoded_value(fie_predicates[1]),foo.encoded_value(foo_predicates[0]))
 

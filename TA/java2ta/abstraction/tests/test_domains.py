@@ -1,6 +1,9 @@
 from java2ta.abstraction.domains import GT, LT, Eq, NotEq, LTE, GTE, Between, \
                                 split_numeric_domain, split_eq_value, split_enum, split_field_domain, \
-                                Integer, Real, DataTypeFactory
+                                Integer, Real, DataTypeFactory, \
+                                smt_declare_rec_datatype, smt_declare_scalar, \
+                                Variable, INTEGERS, POS_INTEGERS, NATURALS, BOOLEANS, COLLECTIONS, \
+                                BoundedCollection
 
 def test_pred_gt():
 
@@ -370,3 +373,27 @@ def test_data_type_factory_distinction():
 
     assert real1.__class__ == real2.__class__
     assert real1 != real2
+
+
+def test_smt_scalar_declaration():
+    dec = smt_declare_scalar("TrafficLight", ["Red","Yellow","Green"])
+    assert dec == "(declare-datatypes () ((TrafficLight Red Yellow Green)))", dec
+
+
+def test_smt_tuple():
+    tup = smt_declare_rec_datatype("Pair", { "first":"Int", "second":"Real" })
+    assert tup == "(declare-datatypes () ((Pair (init-Pair (second Real) (first Int)))))", tup
+
+
+def test_smt_rec_datatype():
+    mylist = smt_declare_rec_datatype("List", { "head": "Int", "tail": "List" })
+    assert mylist == "(declare-datatypes () ((List (init-List (head Int) (tail List)))))"
+
+
+def test_variables():
+
+    var1 = Variable("foo", domain=INTEGERS)
+    var2 = Variable("fie", datatype=INTEGERS.datatype, predicates=INTEGERS.predicates)
+
+    assert var1.datatype == var2.datatype, "%s vs %s" % (var1.datatype, var2.datatype)
+    assert var1.predicates == var2.predicates, "%s vs %s" % (var1.predicates, var2.predicates)
