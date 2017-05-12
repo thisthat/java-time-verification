@@ -6,7 +6,7 @@ TOKEN=7YZxXyYBKvz55x1yreQ2
 MVN=`which mvn`
 
 MVN_FLAGS=-DskipTests=True
-ARTIFACT_URL=https://rtse-isys.aau.at/giovanni.liva/java-xal/builds/artifacts/development/download?job=deploy
+ARTIFACT_URL=https://rtse-isys.aau.at/giovanni.liva/java-xal/builds/artifacts/development/download?job=release
 ARTIFACT_NAME=server.zip
 
 # check for new version
@@ -36,7 +36,8 @@ if [ -z "${SERVER_JAR}" ]; then
     # the file does not exist: compile
     CURR_PWD=`pwd`
     cd ..
-    $MVN package $MVN_FLAGS
+    echo "Compile current version with maven"
+    $MVN package $MVN_FLAGS > /dev/null
     cd $CURR_PWD
     SERVER_JAR=`ls target/server-*.jar 2> /dev/null | sort -r | head -1`
 fi
