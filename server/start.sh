@@ -13,7 +13,7 @@ ARTIFACT_NAME=server.zip
 touch .head_development
 rm -fR server
 LOCAL_HEAD_DEV=`cat .head_development`
-REMOTE_HEAD_DEV=`git fetch; git log development | head -1 | cut -d ' ' -f 2`
+REMOTE_HEAD_DEV=`git fetch; git log origin/development | head -1 | cut -d ' ' -f 2`
 if [ "${LOCAL_HEAD_DEV}" != "${REMOTE_HEAD_DEV}" ]; then
     printf "Server is not update. "
     printf "Updating to "
