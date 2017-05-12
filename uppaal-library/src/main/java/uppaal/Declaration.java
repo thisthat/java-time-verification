@@ -62,7 +62,7 @@ public class Declaration extends UppaalElement{
 		declarations.add(s);
 	}
 
-	private String filter(String v) {
+	public static String filter(String v) {
 		String out = v;
 		if(v.matches("int [0-9].*")){
 			return "";

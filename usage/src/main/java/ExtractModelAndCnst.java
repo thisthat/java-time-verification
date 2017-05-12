@@ -57,16 +57,44 @@ kafka_4306.xml
 constraint_kafka_4306.conf
 /Users/giovanni/repository/kafka/clients/src/main/java
 
+ +++++++++++ issue LENS-1032 --
+ - 3828819403c7c27c25e1d7d2421d0dcc5f506cdf
+ = 389daac9a66b0cb69ac729a56b39b3aa903ad36a
+/Users/giovanni/repository/lens/lens-server/src/main/java/org/apache/lens/server/query/QueryExecutionServiceImpl.java
+QueryExecutionServiceImpl
+executeTimeoutInternal
+lens_1032.xml
+constraint_lens_1032.conf
+/Users/giovanni/repository/lens/lens-server/src/main/java
 
+
+ +++++++++++ issue FLUME-3044 --
+ - 73d87444013a656f763feb38ce20c43670dc6230
+ =
+/Users/giovanni/repository/flume/flume-ng-sinks/flume-ng-kafka-sink/src/main/java/org/apache/flume/sink/kafka/KafkaSink.java
+KafkaSink
+process
+flume_3044.xml
+constraint_flume_3044.conf
+/Users/giovanni/repository/flume/flume-ng-sinks/flume-ng-kafka-sink/src/main/java
+
+
+
+ +++++++++++ issue HBASA-17341 --
+ - e1f4aaeacdcbaffb02a08c29493601547c381941
+ = cac0904c16dde9eb7bdbb57e4a33224dd4edb77f
+/Users/giovanni/repository/hbase/hbase-server/src/main/java/org/apache/hadoop/hbase/replication/regionserver/ReplicationSource.java
+ReplicationSource
+terminate
+hbase_17341.xml
+constraint_hbase_17341.conf
+/Users/giovanni/repository/hbase/hbase-server/src/main/java
  */
 public class ExtractModelAndCnst {
 
     public static void main(String[] args) throws Exception {
-        if(args.length == 0){
-            String f =  "/Users/giovanni/repository/java-xal/code-instrumentation/src/test/java/UndefinedTimeBehaviour.java";
-            ASTClass c = JDTVisitor.parse(f,System.getProperty("user.dir")).get(0);
-            IASTMethod m = c.getAllMethods().get(0);
-            def(c,m, "graph.xml", "constraint.conf");
+        if(args.length != 6){
+            System.err.println("Usage: filePath className methodName modelName constraintName envPath");
             return;
         }
 

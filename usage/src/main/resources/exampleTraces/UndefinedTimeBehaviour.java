@@ -5,9 +5,10 @@ public class UndefinedTimeBehaviour {
     public long method_1(int x) throws Exception {
         Object a = new Object();
         //a.wait();
+        boolean flag = false;
         try{
             long duration_secs = System.currentTimeMillis()/1000;
-            if ( duration_secs == x){
+            if ( duration_secs == x && flag){
 
                 long length = 1000;
 

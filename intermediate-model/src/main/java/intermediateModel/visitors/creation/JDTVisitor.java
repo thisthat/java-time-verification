@@ -1276,7 +1276,6 @@ public class JDTVisitor extends ASTVisitor {
 		}
 
 		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
-
 		IMethodBinding method = node.resolveMethodBinding();
 		String pkg, nmm;
 		if(method != null){

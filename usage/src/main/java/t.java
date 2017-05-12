@@ -41,8 +41,9 @@ constraint_kafka_3540.conf
 public class t {
 
     public static void main(String[] args) throws Exception {
-        System.out.println(Long.MAX_VALUE);
-        System.out.println(Long.MAX_VALUE + 10);
+        String f = t.class.getClassLoader().getResource("exampleTraces/UndefinedTimeBehaviour.java").getFile();
+        List<ASTClass> cs = JDTVisitor.parse( f, f.substring(0, f.lastIndexOf("/")));
+        ExtractModelAndCnst.def(cs.get(0),cs.get(0).getAllMethods().get(0), "model.xml", "ff.txt");
     }
 
 }

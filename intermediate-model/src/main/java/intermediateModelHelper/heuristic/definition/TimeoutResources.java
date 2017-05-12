@@ -43,6 +43,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 			stm.markResetTime();
 		}
 
+		boolean[] find = {false};
 		//search for A {<,<=,>,>=} C
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
@@ -56,18 +57,22 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case notEqual:
 						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
-							addConstraint(stm, env);
+							elm.setTimeCritical(true);
+							find[0] = true;
 						}
 				}
 			}
 		});
+		if(find[0]){
+			addConstraint(stm, env);
+		}
 	}
 
 	protected void addConstraint(ASTRE stm, Env e) {
 		Cloner cloner = new Cloner();
 		ASTRE expr = cloner.deepClone(stm);
 		Translation.Translate(expr,e);
-		Constraint c = super.addConstraint(expr.print(), stm,true);
+		Constraint c = super.addConstraint(expr.print(), expr,true);
 		//Constraint edgeVersion = cloner.deepClone(c);
 		//c.setEdgeVersion(edgeVersion);
 	}

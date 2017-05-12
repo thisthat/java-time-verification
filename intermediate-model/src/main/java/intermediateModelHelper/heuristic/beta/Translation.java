@@ -22,14 +22,32 @@ public class Translation {
         expr.visit(new DefualtASTREVisitor(){
             @Override
             public void enterASTbinary(ASTBinary elm) {
-                if(elm.getOp() == IASTRE.OPERATOR.minus){
-                    IASTRE l = elm.getLeft();
-                    IASTRE r = elm.getRight();
-                    elm.setLeft(r);
-                    elm.setRight(l);
+                if(elm.isTimeCritical())
+                    return;
+                if(!hasTimeCritical(elm.getLeft())){
+                    elm.setLeft(null);
+                    elm.setOp(IASTRE.OPERATOR.empty);
+                }
+                if(!hasTimeCritical(elm.getRight())){
+                    elm.setRight(null);
+                    elm.setOp(IASTRE.OPERATOR.empty);
                 }
             }
         });
+    }
+
+    private static boolean hasTimeCritical(IASTRE left) {
+        if(left.isTimeCritical()) return true;
+        boolean[] flag = {false};
+        left.visit(new DefualtASTREVisitor(){
+            @Override
+            public void enterASTbinary(ASTBinary elm) {
+                if(elm.isTimeCritical()){
+                    flag[0] = true;
+                }
+            }
+        });
+        return flag[0];
     }
 
     public static void Translate(ASTRE re, Env e){

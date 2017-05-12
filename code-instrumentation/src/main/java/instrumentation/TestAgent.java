@@ -1,5 +1,7 @@
 package instrumentation;
 
+import instrumentation.data.Store;
+
 import java.io.File;
 import java.lang.instrument.Instrumentation;
 
@@ -16,6 +18,7 @@ public class TestAgent {
             String confPath = agentArgs;
             ReadConfFile readConfFile = new ReadConfFile(confPath);
             readConfFile.start();
+            System.out.println("Classes: " + Store.getInstance().size() + " :: " + Store.getInstance().totalSize());
         }
 
         // registers the transformer
