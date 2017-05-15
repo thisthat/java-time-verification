@@ -4,6 +4,7 @@ package intermediateModel.interfaces;
 import intermediateModel.structure.ASTVariable;
 import org.javatuples.Pair;
 
+import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
 /**
@@ -23,6 +24,6 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	boolean equalsBySignature(IASTMethod c);
 	boolean equalsBySignature(String pkg, String name, List<Pair<String,String>> signature);
 	boolean isStatic();
-	List<Pair<String,String>> getDeclaredVar();
+	List<DeclaredVar> getDeclaredVar();
 	void setDeclaredVars();
 }

@@ -11,9 +11,15 @@ import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 
@@ -31,6 +37,11 @@ public class getFile extends indexMW {
 
 	String lastFileServed = "";
 
+	private static final Logger LOGGER = LogManager.getLogger();
+
+	static {
+		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.DEBUG : Level.OFF);
+	}
 
 	class AnnotateEnv extends ParseIM {
 		@Override
@@ -47,6 +58,7 @@ public class getFile extends indexMW {
 
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+		LOGGER.debug("Request getFile on {} parameters: [{}]", name, parameters);
 		//validate input
 		boolean flag = true;
 		if(!parameters.containsKey(par1)){
@@ -71,11 +83,13 @@ public class getFile extends indexMW {
 		file = file.replace("//","/");
 		lastFileServed = file;
 
+
 		List<ASTClass> classes;
 		//Compute response
 		try {
 			classes = JDTVisitor.parse(file, base_path);
 		} catch (Exception e){
+			LOGGER.debug(e);
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
@@ -95,17 +109,27 @@ public class getFile extends indexMW {
 			for(IASTMethod m : c.getMethods()){
 				m.setDeclaredVars();
 			}
+			for(Constraint cnst : ah.getTimeConstraint()){
+				cnst.removeElm();
+			}
 		}
 		//annotate with Time
+
 
 		// send response
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
-		String response = json.writeValueAsString(classes);
+
+		String response = "";
+		try {
+			response = json.writeValueAsString(classes);
+		} catch (Exception e){
+			LOGGER.catching(e);
+		}
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();
-		os.write(response.toString().getBytes());
+		os.write(response.getBytes());
 		os.close();
 	}
 

@@ -102,4 +102,8 @@ public class Constraint {
     public Constraint getEdgeVersion(){
         return edgeVersion;
     }
+
+    public void removeElm() {
+        this.elm = null;
+    }
 }

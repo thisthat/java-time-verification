@@ -8,6 +8,7 @@ import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	boolean isSynchronized = false;
 	boolean isAbstract = false;
 	boolean isStatic = false;
-	List<Pair<String,String>> declaredVar = new ArrayList<>();
+	List<DeclaredVar> declaredVar = new ArrayList<>();
 
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
@@ -179,17 +180,27 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	}
 
 
-	public List<Pair<String, String>> getDeclaredVar() {
+	public List<DeclaredVar> getDeclaredVar() {
 		return declaredVar;
 	}
 
 	public void setDeclaredVars() {
 		declaredVar.clear();
+		HashMap<String,Integer> ids = new HashMap<>();
 		for(IASTStm stm : stms) {
 			stm.visit(new DefaultASTVisitor() {
 				@Override
 				public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
-					declaredVar.add(new Pair<>(elm.getName().getCode(), elm.getType()));
+					String name = elm.getName().getCode();
+					int c = 0;
+					if(ids.containsKey(name)){
+						c = ids.get(name);
+						c++;
+					}
+					ids.put(name,c);
+					String id = name + "_" + c;
+					DeclaredVar d = new DeclaredVar(elm.getType(), name, id);
+					declaredVar.add(d);
 				}
 			});
 		}
