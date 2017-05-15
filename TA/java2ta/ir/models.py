@@ -142,7 +142,7 @@ class Project(object):
         found = None
 
         for curr in files:
-            if curr["className"] == name:
+            if curr["name"] == name:
                 found = curr
                 break
 
@@ -250,6 +250,8 @@ class Thread(Klass):
 
     def get_ast(self):
         threads = self.project.get_threads(self.name)
+
+        assert len(threads) > 0
 
         # TODO at the moment consider only there is only one possible thread
         # with the given name. FIX ASAP

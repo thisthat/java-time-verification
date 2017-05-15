@@ -18,7 +18,7 @@ def check_is_open(project, max_seconds=30):
 
 def test_open_project():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
 
     p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -31,7 +31,7 @@ def test_open_project():
 
 def test_close_wrong_project():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
 
     p = Project("foofiedoesnotexist", "file:///%s" % test_proj_path, "localhost:9000")
 
@@ -45,7 +45,7 @@ def test_close_wrong_project():
 
 def test_close_open_project():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
 
     p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -61,7 +61,7 @@ def test_close_open_project():
 
 def test_get_files():
  
-    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
 
     p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -79,7 +79,7 @@ def test_get_files():
 
 def test_get_mains():
  
-    test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
 
     p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -97,7 +97,7 @@ def test_get_mains():
 
 def test_open_project_bigger_concurrent():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -119,7 +119,7 @@ def test_open_project_bigger_concurrent():
 
 def test_open_project_bigger_distributed():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "dist-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "dist-progs")
 
     p = Project("dist-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -171,7 +171,7 @@ def check_file(file):
 
 def test_get_files_dist():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "dist-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "dist-progs")
 
     p = Project("dist-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -190,7 +190,7 @@ def test_get_files_dist():
     assert not file_lock["abstract"] 
     assert file_lock["interface"]
     assert file_lock["name"] == "Lock"
-    assert file_lock["path"].endswith("Lock.java")
+    assert file_lock["path"].endswith("Lock.java") # TODO endswith should become ==
     assert len(file_lock["allMethods"]) == 2
 
     assert file_lock["allMethods"][0]["name"] in ["requestCS", "releaseCS"]
@@ -221,7 +221,7 @@ def test_get_files_dist():
 
 def test_get_files_by_type():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -253,7 +253,7 @@ def test_get_files_by_type():
 
 def test_thread():
  
-    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -283,7 +283,7 @@ def test_thread():
 
 def test_methods():
 
-    test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
 
     p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
 
@@ -312,5 +312,122 @@ def test_methods():
         assert "signature" in run_method.ast
         assert "exceptionsThrowed" in run_method.ast
         assert "synchronized" in run_method.ast, run_method.ast.keys()
+        assert "declaredVar" in run_method.ast
+        assert "env" in run_method.ast
+
+
+def test_declared_vars_simple():
+    """
+    Access the BCell class in BCell.java file (project 'conc-progs') and check that there   
+    are three methods, two of which without a declared variable, and one with a declared integer variable.
+    """
+    p_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
+    p = Project("conc-progs", "file://%s" % p_path, "localhost:9000")
+    p.open()
+    check_is_open(p)
+    c = p.get_class("BCell", "BCell.java")
+    assert isinstance(c, dict)
+    
+    assert c["name"] == "BCell"
+    assert c["path" ].endswith("BCell.java") # TODO endswith should become ==
+    
+    assert isinstance(c["methods"], list)
+    assert len(c["methods"]) == 3
+    
+    # beware: in principle the list of methods could be rearranged, and this should not affect the code;
+    # atm tests rely on the fact that methods are exported in the same order as they are declared within the class
+    assert c["methods"][0]["name"] == "getValue"
+    assert c["methods"][0]["declaredVar"] == [] # no var declared in the method getValue
+    
+    assert c["methods"][1]["name"] == "setValue"
+    assert c["methods"][1]["declaredVar"] == [] # no var declared in the method setValue
+    
+    assert c["methods"][2]["name"] == "swap"
+    decvars = c["methods"][2]["declaredVar"]
+    assert len(decvars) == 1 # 1 var declared in the method swap
+    assert decvars[0]["value0"] == "temp" # var name is temp
+    assert decvars[0]["value1"] == "int" # var type is int
+    
+
+
+def test_declared_vars_complex():
+
+    p_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
+    p = Project("conc-progs", "file://%s" % p_path, "localhost:9000")
+    p.open()
+    check_is_open(p)
+    c = p.get_class("ConcQueue", "ConcQueue.java")
+    assert isinstance(c, dict)
+    
+    assert c["name"] == "ConcQueue"
+    assert c["path" ].endswith("ConcQueue.java") # TODO endswith should become ==
+    
+    assert isinstance(c["methods"], list)
+    assert len(c["methods"]) == 3
+
+    assert c["methods"][0]["name"] == "ConcQueue"
+    assert c["methods"][0]["declaredVar"] == []
+
+    assert c["methods"][1]["name"] == "Enqueue"
+    dec_vars_enqueue = c["methods"][1]["declaredVar"]
+    assert len(dec_vars_enqueue) == 3
+
+    assert dec_vars_enqueue[0]["value0"] == "ltail"
+    assert dec_vars_enqueue[1]["value0"] == "lnext"
+    assert dec_vars_enqueue[2]["value0"] == "node"
+
+    assert c["methods"][2]["name"] == "Dequeue"
+    dec_vars_dequeue = c["methods"][2]["declaredVar"]
+    assert len(dec_vars_enqueue) == 4, dec_vars_enqueue
+
+    assert dec_vars_enqueue[0]["value0"] == "ltail"
+    assert dec_vars_enqueue[1]["value0"] == "lhead"
+    assert dec_vars_enqueue[2]["value0"] == "lnext"
+    assert dec_vars_enqueue[3]["value0"] == "return_val"
+
+
+
+def test_statement_env_simple():
+    p_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
+    p = Project("conc-progs", "file://%s" % p_path, "localhost:9000")
+    p.open()
+    check_is_open(p)
+    c = p.get_class("BCell", "BCell.java")
+    assert isinstance(c, dict)
+    
+    assert c["name"] == "BCell"
+    assert c["path" ].endswith("BCell.java") # TODO endswith should become ==
+    
+    assert isinstance(c["methods"], list)
+    assert len(c["methods"]) == 3
+    
+    # beware: in principle the list of methods could be rearranged, and this should not affect the code;
+    # atm tests rely on the fact that methods are exported in the same order as they are declared within the class
+
+    # the getValue and setValue methods can only see the class attribute named "value" of type "int"
+    assert c["methods"][0]["name"] == "getValue"
+    assert len(c["methods"][0]["stms"]) > 0
+    for smt in c["methods"][0]["stms"]:
+        assert len(smt["env"]) == 1
+        assert smt["env"][0]["value0"] == "temp"
+        assert smt["env"][0]["value1"] == "int"
+
+    
+    assert c["methods"][1]["name"] == "setValue"
+    assert len(c["methods"][1]["stms"]) > 0
+    for smt in c["methods"][1]["stms"]:
+        assert len(smt["env"]) == 1
+        assert smt["env"][0]["value0"] == "temp"
+        assert smt["env"][0]["value1"] == "int"
+
+    
+    assert c["methods"][2]["name"] == "swap"
+    assert len(c["methods"][1]["stms"]) > 0
+    for smt in c["methods"][1]["stms"]:
+        assert len(smt["env"]) == 2
+        assert smt["env"][0]["value0"] == "temp"
+        assert smt["env"][0]["value1"] == "int"
+        assert smt["env"][1]["value0"] == "value"
+        assert smt["env"][1]["value1"] == "int"
 
 
