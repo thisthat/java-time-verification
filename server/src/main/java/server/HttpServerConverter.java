@@ -26,7 +26,7 @@ public class HttpServerConverter {
 	private final int noOfThreads = 4;
 	private final ExecutorService httpThreadPool;
 	HttpServer server;
-	private static boolean _debug;
+	public static boolean _debug;
 
 	private static Map<String,String> lastParameters = new HashMap<>();
 
