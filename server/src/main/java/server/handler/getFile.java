@@ -11,9 +11,15 @@ import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 
@@ -31,6 +37,11 @@ public class getFile extends indexMW {
 
 	String lastFileServed = "";
 
+	private static final Logger LOGGER = LogManager.getLogger();
+
+	static {
+		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.DEBUG : Level.OFF);
+	}
 
 	class AnnotateEnv extends ParseIM {
 		@Override
@@ -47,6 +58,7 @@ public class getFile extends indexMW {
 
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+		LOGGER.debug("Request getFile on {} parameters: [{}]", name, parameters);
 		//validate input
 		boolean flag = true;
 		if(!parameters.containsKey(par1)){
@@ -65,17 +77,21 @@ public class getFile extends indexMW {
 		//get base path of project
 		MongoConnector mongo = MongoConnector.getInstance(name);
 		String base_path = mongo.getBasePath();
+		LOGGER.debug("Serving file {} on path {}", file_path, base_path);
 
 		String file = base_path + "/" + file_path;
 		//avoid bad path
 		file = file.replace("//","/");
 		lastFileServed = file;
 
+		LOGGER.debug("Parsing file {}", file);
+
 		List<ASTClass> classes;
 		//Compute response
 		try {
 			classes = JDTVisitor.parse(file, base_path);
 		} catch (Exception e){
+			LOGGER.debug("Error in parsing file {}, motivation: {}", file, e.getMessage());
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
@@ -83,6 +99,7 @@ public class getFile extends indexMW {
 			os.close();
 			return;
 		}
+		LOGGER.debug("File {} parsed successfully", file);
 		//annotate with env and time
 		for(ASTClass c : classes){
 			AnnotateEnv a = new AnnotateEnv();
@@ -95,18 +112,33 @@ public class getFile extends indexMW {
 			for(IASTMethod m : c.getMethods()){
 				m.setDeclaredVars();
 			}
+			for(Constraint cnst : ah.getTimeConstraint()){
+				cnst.removeElm();
+			}
 		}
+		LOGGER.debug("File {} annotated successfully", file);
 		//annotate with Time
+
 
 		// send response
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
-		String response = json.writeValueAsString(classes);
+		if(file.equals("/Users/giovanni/repository/clone-java-xal/java-xal/TA/java2ta/ir/tests/conc-progs/MProducerConsumer.java")){
+			System.out.println("BRK");
+		}
+		String response = "";
+		try {
+			response = json.writeValueAsString(classes);
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();
-		os.write(response.toString().getBytes());
+		os.write(response.getBytes());
 		os.close();
+		LOGGER.debug("Request ended");
 	}
 
 	@Override

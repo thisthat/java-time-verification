@@ -1,6 +1,7 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import server.handler.*;
 import server.handler.test.echoGet;
 import server.handler.test.echoHeader;
@@ -115,6 +116,7 @@ public class HttpServerConverter {
 
 	public void stop() {
 		System.out.println("server stopped at " + port);
+		closeDB();
 		server.stop(1);
 		httpThreadPool.shutdownNow();
 		try {
@@ -122,6 +124,16 @@ public class HttpServerConverter {
 		} catch (InterruptedException e) {
 			//we try but who cares
 		}
+	}
+
+	private void closeDB(){
+		MongoConnector mongo = MongoConnector.getInstance();
+		List<String> dbs = mongo.databases();
+		for(String db : dbs) {
+			MongoConnector c = MongoConnector.getInstance(db);
+			c.close();
+		}
+		mongo.close();
 	}
 
 	public void setDebug(boolean debug) {

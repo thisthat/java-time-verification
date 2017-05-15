@@ -1,11 +1,12 @@
 package server.handler;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.structure.IndexData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
+import intermediateModelHelper.indexing.structure.IndexData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.OutputData;
@@ -22,8 +23,11 @@ import java.util.Map;
  */
 public class getThreads extends indexMW {
 
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	@Override
 	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+		LOGGER.debug("Request getThread on {} parameters: [{}]", name, parameters);
 		if(!ParsePars.ParseIndexStatus(name,he)){
 			return;
 		}
