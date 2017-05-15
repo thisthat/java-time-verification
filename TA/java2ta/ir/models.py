@@ -259,9 +259,12 @@ class Thread(Klass):
         assert "className" in thread
         assert "packageName" in thread
         assert "path" in thread
-       
+      
+
+        print "curr thread: %s" % thread 
         classes_ir = self.project.get_file(thread["path"])
-        
+        #print "classes: %s" % classes_ir        
+
         found = filter(lambda ir: ir["name"] == self.name and ir["packageName"] == self.package_name, classes_ir)
     
         assert len(found) <= 1
