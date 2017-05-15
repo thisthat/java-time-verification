@@ -68,8 +68,9 @@ public class StartServer {
 	}
 
 	public void run(int port) throws IOException {
+		HttpServerConverter._debug = debug;
 		HttpServerConverter server = new HttpServerConverter(port);
-		server.setDebug(debug);
+		//server.setDebug(debug);
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> server.stop()));
 	}
 }

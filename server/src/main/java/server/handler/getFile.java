@@ -37,10 +37,10 @@ public class getFile extends indexMW {
 
 	String lastFileServed = "";
 
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = LogManager.getRootLogger();
 
-	static {
-		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.DEBUG : Level.OFF);
+	{
+		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.ALL : Level.OFF);
 	}
 
 	class AnnotateEnv extends ParseIM {
@@ -112,6 +112,7 @@ public class getFile extends indexMW {
 			for(Constraint cnst : ah.getTimeConstraint()){
 				cnst.removeElm();
 			}
+			c.setPath(file_path);
 		}
 		//annotate with Time
 
@@ -126,6 +127,7 @@ public class getFile extends indexMW {
 		} catch (Exception e){
 			LOGGER.catching(e);
 		}
+		//LOGGER.debug(response);
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();
