@@ -17,11 +17,19 @@ import java.util.Map;
  */
 public class clean extends indexMW {
 
+    openProject op = null;
+
+    public clean(openProject op) {
+        this.op = op;
+    }
 
     @Override
     protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
         MongoConnector mongo = MongoConnector.getInstance(name);
         mongo.drop();
+
+        //remove the project
+        op.delete(name);
 
         Status ok = new Status("0","");
         ObjectMapper json = ParsePars.getOutputFormat(parameters);
