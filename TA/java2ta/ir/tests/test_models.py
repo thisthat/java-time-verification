@@ -190,7 +190,7 @@ def test_get_files_dist():
     assert not file_lock["abstract"] 
     assert file_lock["interface"]
     assert file_lock["name"] == "Lock"
-    assert file_lock["path"].endswith("Lock.java") # TODO endswith should become ==
+    assert file_lock["path"] ==  "Lock.java"
     assert len(file_lock["allMethods"]) == 2
 
     assert file_lock["allMethods"][0]["name"] in ["requestCS", "releaseCS"]
@@ -313,7 +313,7 @@ def test_methods():
         assert "exceptionsThrowed" in run_method.ast
         assert "synchronized" in run_method.ast, run_method.ast.keys()
         assert "declaredVar" in run_method.ast
-        assert "env" in run_method.ast
+        assert "env" in run_method.ast["stms"][0], run_method.ast["stms"][0].keys()
 
 
 def test_declared_vars_simple():
@@ -329,7 +329,7 @@ def test_declared_vars_simple():
     assert isinstance(c, dict)
     
     assert c["name"] == "BCell"
-    assert c["path" ].endswith("BCell.java") # TODO endswith should become ==
+    assert c["path" ] == "BCell.java"
     
     assert isinstance(c["methods"], list)
     assert len(c["methods"]) == 3
@@ -360,7 +360,7 @@ def test_declared_vars_complex():
     assert isinstance(c, dict)
     
     assert c["name"] == "ConcQueue"
-    assert c["path" ].endswith("ConcQueue.java") # TODO endswith should become ==
+    assert c["path" ] == "ConcQueue.java", c["path"]
     
     assert isinstance(c["methods"], list)
     assert len(c["methods"]) == 3
@@ -378,12 +378,12 @@ def test_declared_vars_complex():
 
     assert c["methods"][2]["name"] == "Dequeue"
     dec_vars_dequeue = c["methods"][2]["declaredVar"]
-    assert len(dec_vars_enqueue) == 4, dec_vars_enqueue
+    assert len(dec_vars_dequeue) == 4, dec_vars_dequeue
 
-    assert dec_vars_enqueue[0]["name"] == "ltail"
-    assert dec_vars_enqueue[1]["name"] == "lhead"
-    assert dec_vars_enqueue[2]["name"] == "lnext"
-    assert dec_vars_enqueue[3]["name"] == "return_val"
+    assert dec_vars_dequeue[0]["name"] == "ltail"
+    assert dec_vars_dequeue[1]["name"] == "lhead"
+    assert dec_vars_dequeue[2]["name"] == "lnext"
+    assert dec_vars_dequeue[3]["name"] == "return_val"
 
 
 
@@ -396,7 +396,7 @@ def test_statement_env_simple():
     assert isinstance(c, dict)
     
     assert c["name"] == "BCell"
-    assert c["path" ].endswith("BCell.java") # TODO endswith should become ==
+    assert c["path"] == "BCell.java"
     
     assert isinstance(c["methods"], list)
     assert len(c["methods"]) == 3

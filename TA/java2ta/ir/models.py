@@ -263,7 +263,7 @@ class Thread(Klass):
         assert "path" in thread
       
 
-        print "curr thread: %s" % thread 
+        #print "curr thread: %s" % thread 
         classes_ir = self.project.get_file(thread["path"])
         #print "classes: %s" % classes_ir        
 
