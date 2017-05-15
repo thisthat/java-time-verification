@@ -345,8 +345,8 @@ def test_declared_vars_simple():
     assert c["methods"][2]["name"] == "swap"
     decvars = c["methods"][2]["declaredVar"]
     assert len(decvars) == 1 # 1 var declared in the method swap
-    assert decvars[0]["value0"] == "temp" # var name is temp
-    assert decvars[0]["value1"] == "int" # var type is int
+    assert decvars[0]["name"] == "temp" # var name is temp
+    assert decvars[0]["type"] == "int" # var type is int
     
 
 
@@ -372,18 +372,18 @@ def test_declared_vars_complex():
     dec_vars_enqueue = c["methods"][1]["declaredVar"]
     assert len(dec_vars_enqueue) == 3
 
-    assert dec_vars_enqueue[0]["value0"] == "ltail"
-    assert dec_vars_enqueue[1]["value0"] == "lnext"
-    assert dec_vars_enqueue[2]["value0"] == "node"
+    assert dec_vars_enqueue[0]["name"] == "ltail"
+    assert dec_vars_enqueue[1]["name"] == "lnext"
+    assert dec_vars_enqueue[2]["name"] == "node"
 
     assert c["methods"][2]["name"] == "Dequeue"
     dec_vars_dequeue = c["methods"][2]["declaredVar"]
     assert len(dec_vars_enqueue) == 4, dec_vars_enqueue
 
-    assert dec_vars_enqueue[0]["value0"] == "ltail"
-    assert dec_vars_enqueue[1]["value0"] == "lhead"
-    assert dec_vars_enqueue[2]["value0"] == "lnext"
-    assert dec_vars_enqueue[3]["value0"] == "return_val"
+    assert dec_vars_enqueue[0]["name"] == "ltail"
+    assert dec_vars_enqueue[1]["name"] == "lhead"
+    assert dec_vars_enqueue[2]["name"] == "lnext"
+    assert dec_vars_enqueue[3]["name"] == "return_val"
 
 
 
@@ -409,25 +409,25 @@ def test_statement_env_simple():
     assert len(c["methods"][0]["stms"]) > 0
     for smt in c["methods"][0]["stms"]:
         assert len(smt["env"]) == 1
-        assert smt["env"][0]["value0"] == "temp"
-        assert smt["env"][0]["value1"] == "int"
+        assert smt["env"][0]["name"] == "temp"
+        assert smt["env"][0]["type"] == "int"
 
     
     assert c["methods"][1]["name"] == "setValue"
     assert len(c["methods"][1]["stms"]) > 0
     for smt in c["methods"][1]["stms"]:
         assert len(smt["env"]) == 1
-        assert smt["env"][0]["value0"] == "temp"
-        assert smt["env"][0]["value1"] == "int"
+        assert smt["env"][0]["name"] == "temp"
+        assert smt["env"][0]["type"] == "int"
 
     
     assert c["methods"][2]["name"] == "swap"
     assert len(c["methods"][1]["stms"]) > 0
     for smt in c["methods"][1]["stms"]:
         assert len(smt["env"]) == 2
-        assert smt["env"][0]["value0"] == "temp"
-        assert smt["env"][0]["value1"] == "int"
-        assert smt["env"][1]["value0"] == "value"
-        assert smt["env"][1]["value1"] == "int"
+        assert smt["env"][0]["name"] == "temp"
+        assert smt["env"][0]["type"] == "int"
+        assert smt["env"][1]["name"] == "value"
+        assert smt["env"][1]["type"] == "int"
 
 
