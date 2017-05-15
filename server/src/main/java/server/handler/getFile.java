@@ -77,21 +77,19 @@ public class getFile extends indexMW {
 		//get base path of project
 		MongoConnector mongo = MongoConnector.getInstance(name);
 		String base_path = mongo.getBasePath();
-		LOGGER.debug("Serving file {} on path {}", file_path, base_path);
 
 		String file = base_path + "/" + file_path;
 		//avoid bad path
 		file = file.replace("//","/");
 		lastFileServed = file;
 
-		LOGGER.debug("Parsing file {}", file);
 
 		List<ASTClass> classes;
 		//Compute response
 		try {
 			classes = JDTVisitor.parse(file, base_path);
 		} catch (Exception e){
-			LOGGER.debug("Error in parsing file {}, motivation: {}", file, e.getMessage());
+			LOGGER.debug(e);
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
@@ -99,7 +97,6 @@ public class getFile extends indexMW {
 			os.close();
 			return;
 		}
-		LOGGER.debug("File {} parsed successfully", file);
 		//annotate with env and time
 		for(ASTClass c : classes){
 			AnnotateEnv a = new AnnotateEnv();
@@ -116,29 +113,24 @@ public class getFile extends indexMW {
 				cnst.removeElm();
 			}
 		}
-		LOGGER.debug("File {} annotated successfully", file);
 		//annotate with Time
 
 
 		// send response
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
-		if(file.equals("/Users/giovanni/repository/clone-java-xal/java-xal/TA/java2ta/ir/tests/conc-progs/MProducerConsumer.java")){
-			System.out.println("BRK");
-		}
+
 		String response = "";
 		try {
 			response = json.writeValueAsString(classes);
 		} catch (Exception e){
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			LOGGER.catching(e);
 		}
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();
 		os.write(response.getBytes());
 		os.close();
-		LOGGER.debug("Request ended");
 	}
 
 	@Override
