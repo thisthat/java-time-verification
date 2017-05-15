@@ -42,6 +42,7 @@ def test_close_wrong_project():
         # this was expected
         pass
 
+
 def test_close_open_project():
 
     test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
@@ -55,6 +56,7 @@ def test_close_open_project():
     p.clean()
 
     assert p.is_status("closed")
+
 
 
 def test_get_files():
@@ -74,6 +76,7 @@ def test_get_files():
     assert files[0] == "HelloWorld.java", files
  
 
+
 def test_get_mains():
  
     test_proj_path = pkg_resources.resource_filename(__name__, "helloworld")
@@ -90,6 +93,7 @@ def test_get_mains():
     assert mains[0]["className"] == "HelloWorld", mains
     assert mains[0]["path"] == "HelloWorld.java", mains
     assert mains[0]["packageName"] == "", main
+
 
 def test_open_project_bigger_concurrent():
 
@@ -110,6 +114,7 @@ def test_open_project_bigger_concurrent():
     assert "BoundedBuffer2.java" in files
     assert "LockTest.java" in files
     assert "LLSC.java" in files
+
 
 
 def test_open_project_bigger_distributed():
@@ -133,6 +138,7 @@ def test_open_project_bigger_distributed():
     assert "StableMutexTester.java" in files, files
     assert "MsgList.java" in files, files
     assert "Lock.java" in files, files
+
 
 def check_file(file):
 
@@ -161,6 +167,7 @@ def check_file(file):
     assert "extendClass" in file
     assert "timeCritical" in file
     assert "attributes" in file
+
 
 def test_get_files_dist():
 
@@ -211,6 +218,7 @@ def test_get_files_dist():
     assert file_leader["allMethods"][3]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"]
 
 
+
 def test_get_files_by_type():
 
     test_proj_path = pkg_resources.resource_filename(__name__, "conc-progs")
@@ -240,6 +248,7 @@ def test_get_files_by_type():
     assert files[2]["path"] in expected_paths
     assert files[3]["path"] in expected_paths
     assert files[4]["path"] in expected_paths
+
 
 
 def test_thread():
@@ -304,4 +313,4 @@ def test_methods():
         assert "exceptionsThrowed" in run_method.ast
         assert "synchronized" in run_method.ast, run_method.ast.keys()
 
-    
+
