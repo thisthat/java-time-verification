@@ -292,28 +292,41 @@ def test_methods():
 
     check_is_open(p)
   
-    threads = p.get_threads() 
+    t = Thread("MyThread","",project=p) #name=FooBar, package=.Foo
+    run_method = Method("run", t)
 
-    for ir in threads:
+    assert isinstance(run_method.ast, dict), "Every thread is supposed to have a run() method"
 
-        t = Thread(ir["className"], ir["packageName"], project=p) 
+    assert "name" in run_method.ast
+    assert "parameters" in run_method.ast
+    assert "returnType" in run_method.ast, run_method.ast.keys()
+    assert "code" in run_method.ast
+    assert "stms" in run_method.ast
+    assert "abstract" in run_method.ast
+    assert "static" in run_method.ast
+    assert "signature" in run_method.ast
+    assert "exceptionsThrowed" in run_method.ast
+    assert "synchronized" in run_method.ast, run_method.ast.keys()
+    assert "declaredVar" in run_method.ast
 
-        run_method = Method("run", t)
+    # the ast contains only a While, which is not a node of type ASTRE, thus it has no "env"
+    assert run_method.ast["stms"][0]["nodeType"] == "ASTWhile"
+    assert "env" not in run_method.ast["stms"][0] 
 
-        assert isinstance(run_method.ast, dict), "Every thread is supposed to have a run() method"
+    # the expression of the while, though, is a node of type ASTRE and has an "env"
+    assert run_method.ast["stms"][0]["expr"]["nodeType"] == "ASTRE"
+    assert "env" in run_method.ast["stms"][0]["expr"]
 
-        assert "name" in run_method.ast
-        assert "parameters" in run_method.ast
-        assert "returnType" in run_method.ast, run_method.ast.keys()
-        assert "code" in run_method.ast
-        assert "stms" in run_method.ast
-        assert "abstract" in run_method.ast
-        assert "static" in run_method.ast
-        assert "signature" in run_method.ast
-        assert "exceptionsThrowed" in run_method.ast
-        assert "synchronized" in run_method.ast, run_method.ast.keys()
-        assert "declaredVar" in run_method.ast
-        assert "env" in run_method.ast["stms"][0], run_method.ast["stms"][0].keys()
+    while_env = run_method.ast["stms"][0]["expr"]["env"]
+
+    assert len(while_env) == 3 
+    assert while_env[0]["name"] == "myId"
+    assert while_env[0]["type"] == "int"
+    assert while_env[1]["name"] == "lock"
+    assert while_env[1]["type"] == "Lock"
+    assert while_env[2]["name"] == "r"
+    assert while_env[2]["type"] == "Random"
+
 
 
 def test_declared_vars_simple():
