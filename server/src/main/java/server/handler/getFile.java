@@ -126,7 +126,7 @@ public class getFile extends indexMW {
 		} catch (Exception e){
 			LOGGER.catching(e);
 		}
-		LOGGER.debug(response);
+		//LOGGER.debug(response);
 		he.getResponseHeaders().add("Content-Type","application/json");
 		he.sendResponseHeaders(200, response.length());
 		OutputStream os = he.getResponseBody();

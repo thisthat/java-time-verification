@@ -53,7 +53,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 				if(!usedVars.contains(v.getName())){
 					usedVars.add(v.getName());
 					String t = (v.getTypePointed() != null && !v.getTypePointed().equals("")) ? v.getTypePointed() : v.getType();
-					out.add(new DeclaredVar(v.getName(), t, v.getName()));
+					out.add(new DeclaredVar(t,v.getName(), v.getName()));
 				}
 			}
 			tmp = tmp.getPrev();
