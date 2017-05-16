@@ -320,7 +320,7 @@ def test_methods():
     while_env = run_method.ast["stms"][0]["expr"]["env"]
 
     assert len(while_env) == 3 
-    assert while_env[0]["name"] == "myId"
+    assert while_env[0]["name"] == "myId", while_env
     assert while_env[0]["type"] == "int"
     assert while_env[1]["name"] == "lock"
     assert while_env[1]["type"] == "Lock"
@@ -421,26 +421,27 @@ def test_statement_env_simple():
     assert c["methods"][0]["name"] == "getValue"
     assert len(c["methods"][0]["stms"]) > 0
     for smt in c["methods"][0]["stms"]:
-        assert len(smt["env"]) == 1
-        assert smt["env"][0]["name"] == "temp"
-        assert smt["env"][0]["type"] == "int"
-
-    
+        assert smt["nodeType"] != "ASTRE"
+   
     assert c["methods"][1]["name"] == "setValue"
     assert len(c["methods"][1]["stms"]) > 0
     for smt in c["methods"][1]["stms"]:
-        assert len(smt["env"]) == 1
-        assert smt["env"][0]["name"] == "temp"
-        assert smt["env"][0]["type"] == "int"
+        assert smt["nodeType"] != "ASTRE" or "env" in smt
+        if "env" in smt:
+            assert len(smt["env"]) == 1
+            assert smt["env"][0]["name"] == "temp", smt["env"]
+            assert smt["env"][0]["type"] == "int"
 
     
     assert c["methods"][2]["name"] == "swap"
     assert len(c["methods"][1]["stms"]) > 0
     for smt in c["methods"][1]["stms"]:
-        assert len(smt["env"]) == 2
-        assert smt["env"][0]["name"] == "temp"
-        assert smt["env"][0]["type"] == "int"
-        assert smt["env"][1]["name"] == "value"
-        assert smt["env"][1]["type"] == "int"
-
+        assert smt["nodeType"] != "ASTRE" or "env" in smt
+        if "env" in smt:     
+            assert len(smt["env"]) == 2
+            assert smt["env"][0]["name"] == "temp", smt["env"]
+            assert smt["env"][0]["type"] == "int"
+            assert smt["env"][1]["name"] == "value"
+            assert smt["env"][1]["type"] == "int"
+    
 
