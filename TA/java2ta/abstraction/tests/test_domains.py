@@ -342,6 +342,11 @@ def test_integer_types():
 
     assert isinstance(int3, Integer)
 
+    # check the int are mapped onto some predefined type
+    assert len(int1.smt_declaration) == 0
+    assert len(int2.smt_declaration) == 0
+    assert len(int3.smt_declaration) == 0
+
 
 def test_data_type_factory_consistency():
 
@@ -353,6 +358,10 @@ def test_data_type_factory_consistency():
     # when the same fully-qualified type name is enquired, the
     # same DataType instance is returned
     assert real1 == real2
+
+    # check we map float and doubles to some smt native type
+    assert len(real1.smt_declaration) == 0
+    assert len(real2.smt_declaration) == 0
 
 
 def test_data_type_factory_distinction():
@@ -374,7 +383,7 @@ def test_data_type_factory_distinction():
     assert real1.__class__ == real2.__class__
     assert real1 != real2
 
-
+    
 def test_smt_scalar_declaration():
     dec = smt_declare_scalar("TrafficLight", ["Red","Yellow","Green"])
     assert dec == "(declare-datatypes () ((TrafficLight Red Yellow Green)))", dec
@@ -396,4 +405,20 @@ def test_variables():
     var2 = Variable("fie", datatype=INTEGERS.datatype, predicates=INTEGERS.predicates)
 
     assert var1.datatype == var2.datatype, "%s vs %s" % (var1.datatype, var2.datatype)
-    assert var1.predicates == var2.predicates, "%s vs %s" % (var1.predicates, var2.predicates)
+    assert var1.predicates == var2.predicates, "%s vS %s" % (var1.predicates, var2.predicates)
+
+
+def test_create_domain():
+    """
+    Test the creation of a custom domain for a class and it's attributes, each
+    attribute having its Java data-type.
+    """
+
+    f = DataTypeFactory.the_factory()
+    
+    # create a data-type for a Pointer class with attributes "ptr" and "count"
+    dt_pointer = f.from_class("Pointer", {"ptr":"java.lang.String", "count":"int"})
+
+    assert dt_pointer.name == "Pointer"
+    assert dt_pointer.smt_declaration == "(declare-datatypes () ((Pointer (init-Pointer (count Int) (ptr String)))))"
+    

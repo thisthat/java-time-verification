@@ -18,7 +18,7 @@ class DataType(object):
  
     def __init__(self, name, smt_declaration=None, smt_axioms=[]):
         self._name = name
-        self._smt_declaration = smt_declaration
+        self._smt_declaration = smt_declaration or ""
         self._smt_axioms = list(smt_axioms)
 
     def __str__(self):
@@ -31,12 +31,12 @@ class DataType(object):
 
     @property
     def smt_declaration(self):
-        declaration = self._smt_declaration 
+        declaration = self._smt_declaration
 
         if self._smt_axioms:
             declaration = declaration + "\n" + "\n".join(self._smt_axioms)
 
-        return declaration
+        return declaration or ""
 
     @property
     def smt_axioms(self):
@@ -335,6 +335,17 @@ def smt_declare_rec_datatype(name, projectors):
     return smt_declaration
 
 
+class String(DataType):
+    """
+    A String is a pair with:
+    - value (abstracted to an integer value)
+    - size (an integer value)
+    """
+    def __init__(self):
+        super(String,self).__init__(name="String", smt_declaration=smt_declare_rec_datatype("String", {"value":"Int", "len":"Int"}))
+
+
+
 class Collection(DataType):
     
     def __init__(self):
@@ -363,6 +374,7 @@ class DataTypeFactory(object):
     
     INTEGER_TYPES = [ "byte", "short", "int", "long", "java.lang.AtomicInteger", "java.lang.AtomicLong", "java.lang.BigInteger", "java.lang.Byte", "java.lang.Integer", "java.lang.Long", "java.lang.Short" ]
     REAL_TYPES = [ "float", "double", "java.lang.BigDecimal", "java.lang.Double", "java.lang.Float", ]
+    STRING_TYPES = [ "java.lang.String", ]
 
     # this is used to store the singleton instance of this data-type factory
     _the_factory = None
@@ -393,6 +405,8 @@ class DataTypeFactory(object):
                 dt = Integer()
             elif fqn in self.REAL_TYPES:
                 dt = Real()
+            elif fqn in self.STRING_TYPES:
+                dt = String()
             else:
                 dt = DataType(name=fqn)
 
@@ -417,7 +431,7 @@ class DataTypeFactory(object):
         if not dt.smt_declaration:
 
             attributes_dt = {}
-            for (attr_name, attr_fq_type) in attributes_dt.iteritems():
+            for (attr_name, attr_fq_type) in attributes.iteritems():
                 attributes_dt[attr_name] = self.from_fqn(attr_fq_type)
 
             smt_declaration = smt_declare_rec_datatype(fqn, attributes_dt)   
@@ -432,7 +446,7 @@ POS_INTEGERS = Domain(Integer(), split_numeric_domain([0,], lt_min=False))
 NATURALS = Domain(Natural(), split_numeric_domain([0,], lt_min=False))
 BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]))
 COLLECTIONS = Domain(Collection(), split_field_domain("size", split_numeric_domain([0,], lt_min=False )))
-
+STRINGS = Domain(String(), split_field_domain("len", split_numeric_domain([0,], lt_min=False))) 
 
 class BoundedCollection(Domain):
     

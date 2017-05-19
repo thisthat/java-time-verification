@@ -32,6 +32,8 @@ class ExtractStateSpace(Rule):
 
         # 1. find attributes with an associated abstract domain
         for attr in attributes:
+            assert "name" in attr
+
             name = attr["name"]
             if name in domains:
                 dom = domains[name]
@@ -86,8 +88,13 @@ class ExtractMethodStateSpace(ExtractClassStateSpace):
         
         class_attributes = klass.ast["attributes"]
         method_parameters = self.asts_in.ast["parameters"]
- 
-        return class_attributes + method_parameters       
+        method_vars = self.asts_in.ast["declaredVar"] 
+
+        #print "class attributes: %s " % class_attributes
+        #print "method parameters: %s" % method_parameters
+        #print "method vars: %s" % method_vars
+
+        return class_attributes + method_parameters + method_vars       
 
 
 class AddStates(Rule):
@@ -118,45 +125,5 @@ class AddStates(Rule):
 
         return self.asts_out
 
-
-
-class TranslateMethod(Rule):
-    """
-    This rule picks a method to be translated to a Timed Automaton, from a list
-    of methods specified in the context.
-    """
-
-    def match(self):
-        """
-        There is something to do iff:
-        - there is a list of methods to be translated
-        - there is not a method under translation, currently
-        - not all the methods have been translated
-        """
-        methods_todo = self.ctx.get("translate_methods")
-        methods_done = self.ctx.get("methods_translated")
-        curr_method = self.ctx.get("method_curr")
-
-        return isinstance(methods_todo,list) and curr_method is None and (len(set(methods_todo) - set(methods(done))) > 0)
-
-
-    def do_update_context(self, let_ctx):
-        """
-        Pick a method among those to be translated that have not been
-        processed, so far. Save the method in the 'method_curr' variable in
-        the context. Please, note that so far the rule does not make any 
-        assumption about what a method is (it may be a single name, 
-        a tuple with extra-information or an instance of some class)
-        """
-        assert self.ctx.get("method_curr") is None
-
-        methods_todo = self.ctx.get("translate_methods")
-        methods_done = self.ctx.get("methods_translated")
- 
-        missing = set(methods_todo) - set(methods_done) 
-
-        pick_method = next(iter(missing))
-
-        self.ctx.update("method_curr", pick_method)      
 
 
