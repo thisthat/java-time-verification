@@ -33,7 +33,16 @@ def translate_method_to_automaton(project, class_fqn, class_path, method_name, d
     assert isinstance(domains, dict)
 
     # check this works (case 1: no dot, case 2: one or more dots)
-    package_name, class_name = class_fqn.split(".")
+    class_name = ""
+    package_name = ""
+
+    fqn_parts = class_fqn.rsplit(".", 1)
+
+    if len(fqn_parts) == 1:
+        class_name = fqn_parts[0]
+    else:
+        package_name = fqn_parts[0]
+        class_name = fqn_parts[1]
 
     klass = Klass(class_name, package_name, "file://%s" % class_path, project)
     m = Method(method_name, klass)

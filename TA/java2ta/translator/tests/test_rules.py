@@ -212,7 +212,6 @@ def test_extract_method_space_complex():
     assert domains["lnext"].size == 2
     assert domains["return_val"].size == 2
 
-    # the next assertion fails because of issue #48 (probably a bug in the intermediate representation) TODO fix this
     assert len(ta_post.locations) == (dom_pointer.size ** 5) * STRINGS.size, "%s vs %s" % (len(ta_post.locations), (dom_pointer.size ** 5) * STRINGS.size)
     assert len(ta_post.edges) == 0
 
@@ -247,7 +246,6 @@ def test_extract_method_space_shortcut():
 
     ta = translate_method_to_automaton(p, "ConcQueue", "ConcQueue.java", "Dequeue", domains)
 
-    # the next assertion fails because of issue #48 (probably a bug in the intermediate representation) TODO fix this
     assert len(ta.locations) == (dom_pointer.size ** 5) * STRINGS.size, "%s vs %s" % (len(ta.locations), (dom_pointer.size ** 5) * STRINGS.size)
     assert len(ta.edges) == 0
 
