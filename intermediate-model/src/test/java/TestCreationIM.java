@@ -30,6 +30,14 @@ public class TestCreationIM {
 		m.setDeclaredVars();
 		assertEquals("Dequeue", m.getName());
 		assertEquals(4, m.getDeclaredVar().size());
-		System.out.println(Arrays.toString(m.getDeclaredVar().toArray()));
+		//System.out.println(Arrays.toString(m.getDeclaredVar().toArray()));
 	}
+
+	@Test
+	public void TestDeclarationAttribute() throws Exception {
+		String f = TestCreationIM.class.getClassLoader().getResource("env/ConcQueue.java").getFile();
+		ASTClass c = JDTVisitor.parse(f, f.substring(0, f.lastIndexOf("/"))).get(0);
+		assertEquals(2, c.getAttributes().size());
+	}
+
 }
