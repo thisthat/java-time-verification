@@ -142,7 +142,7 @@ class Project(object):
         found = None
 
         for curr in files:
-            if curr["className"] == name:
+            if curr["name"] == name:
                 found = curr
                 break
 
@@ -251,6 +251,8 @@ class Thread(Klass):
     def get_ast(self):
         threads = self.project.get_threads(self.name)
 
+        assert len(threads) > 0
+
         # TODO at the moment consider only there is only one possible thread
         # with the given name. FIX ASAP
         thread = threads[0]
@@ -259,9 +261,12 @@ class Thread(Klass):
         assert "className" in thread
         assert "packageName" in thread
         assert "path" in thread
-       
+      
+
+        #print "curr thread: %s" % thread 
         classes_ir = self.project.get_file(thread["path"])
-        
+        #print "classes: %s" % classes_ir        
+
         found = filter(lambda ir: ir["name"] == self.name and ir["packageName"] == self.package_name, classes_ir)
     
         assert len(found) <= 1

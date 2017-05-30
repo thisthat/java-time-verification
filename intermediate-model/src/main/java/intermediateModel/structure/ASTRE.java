@@ -43,16 +43,17 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		});
 	}
 
-	public List<Pair<String,String>> getEnv() {
+	public List<DeclaredVar> getEnv() {
 		Env tmp = this.env;
-		List<Pair<String,String>> out = new ArrayList<>();
+		List<DeclaredVar> out = new ArrayList<>();
 		List<String> usedVars = new ArrayList<>();
 		while(tmp != null){
 			List<IASTVar> vars = tmp.getVarList();
 			for(IASTVar v : vars){
 				if(!usedVars.contains(v.getName())){
 					usedVars.add(v.getName());
-					out.add(new Pair<>(v.getName(), v.getType()));
+					String t = (v.getTypePointed() != null && !v.getTypePointed().equals("")) ? v.getTypePointed() : v.getType();
+					out.add(new DeclaredVar(t,v.getName(), v.getName()));
 				}
 			}
 			tmp = tmp.getPrev();

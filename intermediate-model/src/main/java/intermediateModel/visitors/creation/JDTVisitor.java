@@ -144,25 +144,25 @@ public class JDTVisitor extends ASTVisitor {
 				VariableDeclarationFragment vf = (VariableDeclarationFragment) ovf;
 				name = vf.getName().getFullyQualifiedName();
 				expr = getExprState(vf.getInitializer());
+				int ss = 0; int st = 0;
+				ss = f.getStartPosition();
+				st = ss + f.getLength();
+				ASTAttribute attribute = new ASTAttribute(ss, st, vis, type, name, expr);
+				String pkg, nmm;
+				ITypeBinding typePointed = f.getType().resolveBinding();
+				if(typePointed != null){
+					pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
+					nmm = typePointed.getName();
+					String classPointed = pkg + "." + nmm;
+					if(classPointed.startsWith(".")){
+						classPointed = classPointed.substring(1);
+					}
+					attribute.setTypePointed(classPointed);
+					//System.out.println(node.toString() + " points to " + classPointed);
+				}
+				c.addAttribute(attribute);
 				if(vf.getInitializer() instanceof LambdaExpression ) vf.getInitializer().delete(); //avoid lambda interfeer with remaning
 			}
-			int ss = 0; int st = 0;
-			ss = f.getStartPosition();
-			st = ss + f.getLength();
-			ASTAttribute attribute = new ASTAttribute(ss, st, vis, type, name, expr);
-			String pkg, nmm;
-			ITypeBinding typePointed = f.getType().resolveBinding();
-			if(typePointed != null){
-				pkg = typePointed.getPackage() != null ? typePointed.getPackage().getName() : "";
-				nmm = typePointed.getName();
-				String classPointed = pkg + "." + nmm;
-				if(classPointed.startsWith(".")){
-					classPointed = classPointed.substring(1);
-				}
-				attribute.setTypePointed(classPointed);
-				//System.out.println(node.toString() + " points to " + classPointed);
-			}
-			c.addAttribute(attribute);
 		}
 		c.setInterface(node.isInterface());
 		packageName = packageName + "." + className;

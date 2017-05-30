@@ -18,17 +18,25 @@ class DataType(object):
  
     def __init__(self, name, smt_declaration=None, smt_axioms=[]):
         self._name = name
-        self._smt_declaration = smt_declaration
+        self._smt_declaration = smt_declaration or ""
         self._smt_axioms = list(smt_axioms)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        curr_repr = self.smt_declaration or self.name
+
+        return curr_repr
 
     @property
     def smt_declaration(self):
-        declaration = self._smt_declaration 
+        declaration = self._smt_declaration
 
         if self._smt_axioms:
             declaration = declaration + "\n" + "\n".join(self._smt_axioms)
 
-        return declaration
+        return declaration or ""
 
     @property
     def smt_axioms(self):
@@ -103,7 +111,7 @@ class Predicate(object):
         return res
     
     def __repr__(self):
-        return self._label
+        return self._smt_assert
     
     def __str__(self):
         return self._label
@@ -143,8 +151,9 @@ class Eq(BinaryPredicate):
     _smt_name = "="
 
 
-class NotEq(Predicate):
+class NotEq(BinaryPredicate):
     _smt_name = "distinct"
+    _label = "{var} != {value}"
 
 class Between(Predicate):    
     _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
@@ -213,7 +222,7 @@ def split_field_domain(field_name, predicates):
         assert isinstance(pred, Predicate)
     
         smt_assert = pred.smt_assert(var="(%s {var})" % field_name)
-        label = pred.label(var="var.%s" % field_name)
+        label = pred.label(var="{var}.%s" % field_name)
         fp = Predicate(pred.ctx, smt_assert=smt_assert, label=label)
         field_predicates.append(fp)
         
@@ -241,7 +250,14 @@ class Domain(object):
         assert isinstance(default, Predicate)
 
         self._default = default
-        self.predicates = set(predicates)
+        self.predicates = list(set(predicates))
+
+    
+    def __str__(self):
+        return "(%s, %s)" % (str(self.datatype), str(self.predicates))
+
+    def __repr__(self):
+        return "(%s, %s)" % (repr(self.datatype), repr(self.predicates))
 
     @property
     def size(self):
@@ -273,9 +289,11 @@ class Domain(object):
     def values(self):
         return self.predicates
 
+
 class Integer(DataType):
     def __init__(self):
         super(Integer,self).__init__(name="Int")
+
 
 class Natural(DataType):
     def __init__(self):
@@ -292,9 +310,16 @@ class Boolean(DataType):
 
 
 def smt_declare_scalar(name, values):
-    
-    smt_declaration = "(declare-datatypes () (%(name)s %(values)s)" % {
-        "name": name, "values": " ".join(values)
+    """
+    This function creates a valid Z3 scalar datatype only if the passed list contains all strings.
+    It does not work in case it contains numbers or keyword.
+
+    At the moment we don't check that values contains valid input values.
+    """
+    str_values = map(lambda v: str(v), values)
+
+    smt_declaration = "(declare-datatypes () ((%(name)s %(values)s)))" % {
+        "name": name, "values": " ".join(str_values)
     }
 
     return smt_declaration
@@ -303,12 +328,22 @@ def smt_declare_rec_datatype(name, projectors):
 
     dt_projectors = []
     for (attr_name, attr_dt) in projectors.iteritems():
-
         dt_projectors.append("(%(attr_name)s %(attr_type)s)" % { "attr_name":attr_name, "attr_type": attr_dt })
 
     smt_declaration = "(declare-datatypes () ((%(name)s (init-%(name)s %(attributes)s))))" % { "name": name, "attributes": " ".join(dt_projectors) }
 
     return smt_declaration
+
+
+class String(DataType):
+    """
+    A String is a pair with:
+    - value (abstracted to an integer value)
+    - size (an integer value)
+    """
+    def __init__(self):
+        super(String,self).__init__(name="String", smt_declaration=smt_declare_rec_datatype("String", {"value":"Int", "len":"Int"}))
+
 
 
 class Collection(DataType):
@@ -339,6 +374,7 @@ class DataTypeFactory(object):
     
     INTEGER_TYPES = [ "byte", "short", "int", "long", "java.lang.AtomicInteger", "java.lang.AtomicLong", "java.lang.BigInteger", "java.lang.Byte", "java.lang.Integer", "java.lang.Long", "java.lang.Short" ]
     REAL_TYPES = [ "float", "double", "java.lang.BigDecimal", "java.lang.Double", "java.lang.Float", ]
+    STRING_TYPES = [ "java.lang.String", ]
 
     # this is used to store the singleton instance of this data-type factory
     _the_factory = None
@@ -369,6 +405,8 @@ class DataTypeFactory(object):
                 dt = Integer()
             elif fqn in self.REAL_TYPES:
                 dt = Real()
+            elif fqn in self.STRING_TYPES:
+                dt = String()
             else:
                 dt = DataType(name=fqn)
 
@@ -393,7 +431,7 @@ class DataTypeFactory(object):
         if not dt.smt_declaration:
 
             attributes_dt = {}
-            for (attr_name, attr_fq_type) in attributes_dt.iteritems():
+            for (attr_name, attr_fq_type) in attributes.iteritems():
                 attributes_dt[attr_name] = self.from_fqn(attr_fq_type)
 
             smt_declaration = smt_declare_rec_datatype(fqn, attributes_dt)   
@@ -407,12 +445,8 @@ INTEGERS = Domain(Integer(), split_numeric_domain([0,]))
 POS_INTEGERS = Domain(Integer(), split_numeric_domain([0,], lt_min=False))
 NATURALS = Domain(Natural(), split_numeric_domain([0,], lt_min=False))
 BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]))
-
-##
-#STRING = Domain(["null", "not_null"])
-##
 COLLECTIONS = Domain(Collection(), split_field_domain("size", split_numeric_domain([0,], lt_min=False )))
-
+STRINGS = Domain(String(), split_field_domain("len", split_numeric_domain([0,], lt_min=False))) 
 
 class BoundedCollection(Domain):
     
@@ -420,13 +454,23 @@ class BoundedCollection(Domain):
         super(BoundedCollection,self).__init__(Collection(), split_field_domain("size", split_numeric_domain([0,max_val], lt_min=False, gt_max=False)))
 
 
+
 class Variable(object):
     
-    def __init__(self, name, domain):
+    def __init__(self, name, datatype=None, predicates=None, domain=None):
         assert isinstance(name, basestring)
-        assert isinstance(domain, Domain)
+        assert domain is None or isinstance(domain, Domain)
+        assert datatype is None or isinstance(datatype, DataType)
+        assert predicates is None or isinstance(predicates, list)    
+        assert domain is None and (predicates is not None and datatype is not None) or \
+                (domain is not None) and (predicates is None and datatype is None), "You must specify either a domain, or the datatype AND the predicates"
+        
 
         self.name = name
+        
+        if not domain:
+            domain = Domain(datatype, predicates)
+
         self.domain = domain
 
     @property
@@ -436,3 +480,11 @@ class Variable(object):
     @property
     def predicates(self):
         return self.domain.predicates
+
+    @property
+    def values(self):
+        return self.domain.predicates
+    
+    @property
+    def default(self):
+        return self.domain.default

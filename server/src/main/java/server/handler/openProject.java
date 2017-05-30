@@ -67,7 +67,7 @@ public class openProject extends indexMW {
 		MongoConnector mongo = MongoConnector.getInstance(name);
 		String base_path = "";
 		//is path mandatory?
-		if(indexProcess.containsKey(name)){
+		if(indexProcess.containsKey(name) && mongo.getBasePath() != null){
 			//no it is not
 			base_path = indexProcess.get(name).getValue1();
 		} else if(mongo.getIndexStatus()) {
@@ -130,6 +130,14 @@ public class openProject extends indexMW {
 			doesItExistsAlready = indexProcess.containsKey(name) && indexProcess.get(name).getValue0();
 		}
 		return doesItExistsAlready;
+	}
+
+	protected void delete(String name){
+		synchronized (lock){
+			if(indexProcess.containsKey(name)) {
+				indexProcess.remove(name);
+			}
+		}
 	}
 
 	@Override

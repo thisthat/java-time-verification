@@ -22,6 +22,11 @@ import java.util.Map;
  * Created by giovanni on 07/03/2017.
  */
 public class cleanAll extends BaseRoute {
+    openProject op = null;
+
+    public cleanAll(openProject op) {
+        this.op = op;
+    }
 
     @Override
     protected void handleConnection(HttpExchange he) throws IOException {
@@ -38,6 +43,7 @@ public class cleanAll extends BaseRoute {
         for(String db : dbs) {
             MongoConnector c = MongoConnector.getInstance(db);
             c.drop();
+            op.delete(db);
         }
 
         Status ok = new Status("0","");

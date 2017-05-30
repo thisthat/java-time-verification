@@ -1,6 +1,9 @@
-from java2ta.abstraction.domains import GT, LT, Eq, LTE, GTE, Between, \
-                                split_numeric_domain, Integer, Real, \
-                                DataTypeFactory
+from java2ta.abstraction.domains import GT, LT, Eq, NotEq, LTE, GTE, Between, \
+                                split_numeric_domain, split_eq_value, split_enum, split_field_domain, \
+                                Integer, Real, DataTypeFactory, \
+                                smt_declare_rec_datatype, smt_declare_scalar, \
+                                Variable, INTEGERS, POS_INTEGERS, NATURALS, BOOLEANS, COLLECTIONS, \
+                                BoundedCollection
 
 def test_pred_gt():
 
@@ -46,6 +49,15 @@ def test_pred_eq():
         
     smt_assert = eq.smt_assert(var="fie")
     assert smt_assert == "(assert (= fie 0))", smt_assert
+ 
+def test_pred_not_eq():
+
+    neq = NotEq({"value":0})
+    label = neq.label(var="foo")
+    assert label == "foo != 0", label
+        
+    smt_assert = neq.smt_assert(var="fie")
+    assert smt_assert == "(assert (distinct fie 0))", smt_assert
  
  
 def test_pred_between():
@@ -164,6 +176,147 @@ def test_split_numeric_domain_small():
     assert "foo > 0" in labels
 
 
+def test_split_numeric_domain_upper_bounded():
+    """
+    In an upper-bounded numeric domain, we don't have values that are greater
+    than the greatest value passed
+    """
+    values = [-5, 0, 10]
+    pred = split_numeric_domain(values, gt_max=False)
+
+    assert len(pred) == 6
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo < -5" in labels
+    assert "foo = -5" in labels
+    assert "-5 < foo < 0" in labels
+    assert "foo = 0" in labels
+    assert "0 < foo < 10" in labels
+    assert "foo = 10" in labels
+
+    assert "(assert (< foo -5))" in smt_asserts
+    assert "(assert (= foo -5))" in smt_asserts
+    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts
+    assert "(assert (and (< 0 foo) (< foo 10)))" in smt_asserts
+    assert "(assert (= foo 10))" in smt_asserts
+
+
+def test_split_numeric_domain_lower_bounded():
+    """
+    In a lower-bounded numeric domain, we don't have values that are smaller
+    than the smallest value passed
+    """
+    values = [-5, 0, 10]
+    pred = split_numeric_domain(values, lt_min=False)
+
+    assert len(pred) == 6
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = -5" in labels
+    assert "-5 < foo < 0" in labels
+    assert "foo = 0" in labels
+    assert "0 < foo < 10" in labels
+    assert "foo = 10" in labels
+    assert "foo > 10" in labels
+
+    assert "(assert (= foo -5))" in smt_asserts
+    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts
+    assert "(assert (and (< 0 foo) (< foo 10)))" in smt_asserts
+    assert "(assert (= foo 10))" in smt_asserts
+    assert "(assert (> foo 10))" in smt_asserts
+
+
+def test_split_numeric_domain_lower_uppser_bounded():
+    """
+    In a lower-/upper- bounded numeric domain, we don't have values that are smaller
+    (resp. greater) than the smallest (resp. greatest) value passed
+    """
+    values = [-5, 0, 10]
+    pred = split_numeric_domain(values, lt_min=False, gt_max=False)
+
+    assert len(pred) == 5
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = -5" in labels
+    assert "-5 < foo < 0" in labels
+    assert "foo = 0" in labels
+    assert "0 < foo < 10" in labels
+    assert "foo = 10" in labels
+
+    assert "(assert (= foo -5))" in smt_asserts
+    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts
+    assert "(assert (and (< 0 foo) (< foo 10)))" in smt_asserts
+    assert "(assert (= foo 10))" in smt_asserts
+
+
+def test_split_value_equality():
+
+    pred = split_eq_value(10)
+
+    assert len(pred) == 2
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = 10" in labels
+    assert "foo != 10" in labels
+
+    assert "(assert (= foo 10))" in smt_asserts
+    assert "(assert (distinct foo 10))" in smt_asserts
+
+def test_split_value_equality_enumeration():
+
+    values = [-5,0,100]
+    pred = split_enum(values)
+
+    assert len(pred) == len(values)
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    assert "foo = -5" in labels
+    assert "foo = 0" in labels
+    assert "foo = 100" in labels
+
+    assert "(assert (= foo -5))" in smt_asserts, smt_asserts
+    assert "(assert (= foo 0))" in smt_asserts, smt_asserts
+    assert "(assert (= foo 100))" in smt_asserts, smt_asserts
+
+
+
+def test_split_field_domain():
+    values = [-5,0,100]
+    pred = split_enum(values)
+
+    assert len(pred) == len(values)
+    
+    labels = map(lambda p: p.label(var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+
+    field_pred = split_field_domain("myfield", pred)
+
+    assert len(pred) == len(field_pred)
+    field_labels = map(lambda p: p.label(var="fie"), field_pred)
+    field_smt_asserts = map(lambda p: p.smt_assert(var="fie"), field_pred)
+
+    assert "fie.myfield = -5" in field_labels, field_labels
+    assert "fie.myfield = 0" in field_labels
+    assert "fie.myfield = 100" in field_labels
+
+    assert "(assert (= (myfield fie) -5))" in field_smt_asserts, field_smt_asserts
+    assert "(assert (= (myfield fie) 0))" in field_smt_asserts, field_smt_asserts
+    assert "(assert (= (myfield fie) 100))" in field_smt_asserts, field_smt_asserts
+
+
 def test_split_numeric_domain_no_value():
     """
     If we try to split a numeric interval without specifying
@@ -189,6 +342,11 @@ def test_integer_types():
 
     assert isinstance(int3, Integer)
 
+    # check the int are mapped onto some predefined type
+    assert len(int1.smt_declaration) == 0
+    assert len(int2.smt_declaration) == 0
+    assert len(int3.smt_declaration) == 0
+
 
 def test_data_type_factory_consistency():
 
@@ -200,6 +358,10 @@ def test_data_type_factory_consistency():
     # when the same fully-qualified type name is enquired, the
     # same DataType instance is returned
     assert real1 == real2
+
+    # check we map float and doubles to some smt native type
+    assert len(real1.smt_declaration) == 0
+    assert len(real2.smt_declaration) == 0
 
 
 def test_data_type_factory_distinction():
@@ -220,3 +382,43 @@ def test_data_type_factory_distinction():
 
     assert real1.__class__ == real2.__class__
     assert real1 != real2
+
+    
+def test_smt_scalar_declaration():
+    dec = smt_declare_scalar("TrafficLight", ["Red","Yellow","Green"])
+    assert dec == "(declare-datatypes () ((TrafficLight Red Yellow Green)))", dec
+
+
+def test_smt_tuple():
+    tup = smt_declare_rec_datatype("Pair", { "first":"Int", "second":"Real" })
+    assert tup == "(declare-datatypes () ((Pair (init-Pair (second Real) (first Int)))))", tup
+
+
+def test_smt_rec_datatype():
+    mylist = smt_declare_rec_datatype("List", { "head": "Int", "tail": "List" })
+    assert mylist == "(declare-datatypes () ((List (init-List (head Int) (tail List)))))"
+
+
+def test_variables():
+
+    var1 = Variable("foo", domain=INTEGERS)
+    var2 = Variable("fie", datatype=INTEGERS.datatype, predicates=INTEGERS.predicates)
+
+    assert var1.datatype == var2.datatype, "%s vs %s" % (var1.datatype, var2.datatype)
+    assert var1.predicates == var2.predicates, "%s vS %s" % (var1.predicates, var2.predicates)
+
+
+def test_create_domain():
+    """
+    Test the creation of a custom domain for a class and it's attributes, each
+    attribute having its Java data-type.
+    """
+
+    f = DataTypeFactory.the_factory()
+    
+    # create a data-type for a Pointer class with attributes "ptr" and "count"
+    dt_pointer = f.from_class("Pointer", {"ptr":"java.lang.String", "count":"int"})
+
+    assert dt_pointer.name == "Pointer"
+    assert dt_pointer.smt_declaration == "(declare-datatypes () ((Pointer (init-Pointer (count Int) (ptr String)))))"
+    
