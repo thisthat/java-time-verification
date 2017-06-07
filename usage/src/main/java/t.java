@@ -1,15 +1,8 @@
-import PCFG.converter.IConverter;
-import PCFG.converter.ToUppaal;
-import PCFG.creation.IM2CFG;
-import PCFG.optimization.OptimizeTimeAutomata;
-import PCFG.structure.PCFG;
-import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,6 +34,13 @@ constraint_kafka_3540.conf
 public class t {
 
     public static void main(String[] args) throws Exception {
+
+        System.out.println(TemporalInfo.getInstance().getImplicitResourceTimeouts().size());
+
+        if(1==1){
+            System.exit(0);
+        }
+
         String f = t.class.getClassLoader().getResource("Cache.java").getFile();
         List<ASTClass> cs = JDTVisitor.parse( f, f.substring(0, f.lastIndexOf("/")));
         ExtractModelAndCnst.def(cs.get(0),cs.get(0).getAllMethods().get(1), "model.xml", "ff.txt");

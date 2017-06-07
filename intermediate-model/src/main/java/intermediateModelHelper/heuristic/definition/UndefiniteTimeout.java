@@ -48,6 +48,7 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 		if(expr == null){
 			return;
 		}
+
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {

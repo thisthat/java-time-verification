@@ -217,8 +217,13 @@ public class CreatePCFG extends ConvertIM {
 		addState( expr );
 		this.lastLabel = "True";
 		dispachStm(stm.getStms());
+		Node endLoop = new Node("_end_iter_", stm.getExpr().getCode(), Node.TYPE.END_CICLE, stm.getStart(), stm.getEnd(), stm.getLine());
+		Edge iter = new Edge(this.lastNode , endLoop);
+		this.lastCfg.addNode(endLoop);
+		this.lastCfg.addEdge(iter);
+
 		//back to the expr
-		Edge e = new Edge( this.lastNode , expr );
+		Edge e = new Edge( endLoop, expr );
 		this.lastCfg.addEdge(e);
 		this.lastLabel = "";
 		Node endWhile = new Node("_end_while_", stm.getExpr().getCode(), Node.TYPE.END_CICLE, stm.getStart(), stm.getEnd(), stm.getLine());
@@ -495,7 +500,7 @@ public class CreatePCFG extends ConvertIM {
 			this.lastLabel = this.lastLabel + "[" + c.getValue() + "]";
 		}
 		Node node = new Node(r.getExpressionName(), r.getCode(), Node.TYPE.NORMAL, r.getStart(), r.getEnd(), r.getLine());
-		final String[] varName = {"t_" + _nTimeVar++};
+		final String[] varName = {""};
 		r.visit(new DefaultASTVisitor(){
 			@Override
 			public void enterASTAssignment(ASTAssignment elm) {
@@ -518,7 +523,7 @@ public class CreatePCFG extends ConvertIM {
 			}
 		});
 		if(r.getIsResetTime()){
-			if(r.getExpression() != null)
+			if(r.getExpression() != null && !varName[0].equals(""))
 				node.setResetClock(varName[0], true, r.getResetExpression());
 			else
 				node.setResetClock(varName[0], true);

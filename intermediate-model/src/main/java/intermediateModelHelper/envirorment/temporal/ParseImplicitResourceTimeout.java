@@ -1,7 +1,6 @@
 package intermediateModelHelper.envirorment.temporal;
 
-import intermediateModelHelper.envirorment.temporal.structure.ExplicitResourceTimeout;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
+import intermediateModelHelper.envirorment.temporal.structure.ImplicitResourceTimeout;
 
 import java.io.File;
 import java.io.InputStream;
@@ -12,27 +11,27 @@ import java.util.List;
 /**
  * Created by giovanni on 07/03/2017.
  */
-public class ParseExplicitResourceTimeout extends ParseCSV {
+public class ParseImplicitResourceTimeout extends ParseCSV {
 
-    List<ExplicitResourceTimeout> methods = new ArrayList<>();
+    List<ImplicitResourceTimeout> methods = new ArrayList<>();
 
-    public ParseExplicitResourceTimeout(String path) {
+    public ParseImplicitResourceTimeout(String path) {
         super(path);
         super.start();
     }
 
-    public ParseExplicitResourceTimeout(File file) {
+    public ParseImplicitResourceTimeout(File file) {
         super(file);
         super.start();
     }
 
-    public ParseExplicitResourceTimeout(InputStream stream) {
+    public ParseImplicitResourceTimeout(InputStream stream) {
         super(stream);
         super.start();
     }
 
 
-    public List<ExplicitResourceTimeout> getMethods(){
+    public List<ImplicitResourceTimeout> getMethods(){
         return methods;
     }
 
@@ -43,7 +42,7 @@ public class ParseExplicitResourceTimeout extends ParseCSV {
 
     @Override
     protected void handleRow(String className, String methodName, String[] signature) {
-        methods.add(new ExplicitResourceTimeout(className, methodName, Arrays.asList(signature)));
+        methods.add(new ImplicitResourceTimeout(className, methodName, Arrays.asList(signature)));
     }
 
 }

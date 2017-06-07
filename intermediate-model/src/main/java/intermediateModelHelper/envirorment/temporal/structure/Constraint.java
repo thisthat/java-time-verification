@@ -59,7 +59,7 @@ public class Constraint {
                         return;
                     //we should skip strings and integers
                     String val = elm.getValue();
-                    if (val.startsWith("\"") || val.substring(0, 1).matches("[0-9]")) {
+                    if (val.startsWith("\"") || ( val.length() > 1 && val.substring(0, 1).matches("[0-9]")) ) {
                         return;
                     }
                     RuntimeConstraint rntCnst = new RuntimeConstraint(className, methodName, line, val);
@@ -132,6 +132,14 @@ public class Constraint {
 
     public boolean isCategory(Class<? extends SearchTimeConstraint> _class){
         return this.category.equals(_class.getCanonicalName());
+    }
+
+    public boolean isCategory(Class<? extends SearchTimeConstraint>[] _class){
+        boolean f = false;
+        for(Class c : _class){
+            f = f || this.category.equals(c.getCanonicalName());
+        }
+        return f;
     }
 
     public Constraint negate() {

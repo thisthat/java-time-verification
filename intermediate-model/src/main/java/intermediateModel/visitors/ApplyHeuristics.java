@@ -162,6 +162,18 @@ public class ApplyHeuristics extends ParseIM {
 	}
 
 	@Override
+	protected void analyzeASTWhile(ASTWhile elm, Env env) {
+		super.analyzeASTWhile(elm, env);
+		super.analyze(elm.getExpr(), env);
+	}
+
+	@Override
+	protected void analyzeASTIf(ASTIf elm, Env env) {
+		super.analyzeASTIf(elm, env);
+		super.analyze(elm.getGuard(), env);
+	}
+
+	@Override
 	protected void analyzeASTRE(ASTRE r, Env env) {
 		applyStep(r, env);
 	}
@@ -187,7 +199,7 @@ public class ApplyHeuristics extends ParseIM {
 		for(SearchTimeConstraint s : strategies){
 			HashMap<IASTMethod,List<String>> tmp = s.getTimeVars();
 			if(tmp.containsKey(m)){
-				out.addAll(tmp.get(m));
+				//out.addAll(tmp.get(m));
 			}
 		}
 		return out;

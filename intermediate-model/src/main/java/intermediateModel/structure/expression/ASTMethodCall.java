@@ -67,6 +67,10 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	}
 
 	public String getClassPointed() {
+		//remove <>
+		if(classPointed != null && classPointed.contains("<")){
+			return classPointed.substring(0, classPointed.indexOf("<"));
+		}
 		return classPointed;
 	}
 
@@ -80,9 +84,10 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		visitor.enterASTMethodCall(this);
 		if(exprCallee != null)
 			exprCallee.visit(visitor);
-		for(IASTRE p : parameters){
-			p.visit(visitor);
-		}
+		if(!visitor.isExcludePars())
+			for(IASTRE p : parameters){
+				p.visit(visitor);
+			}
 		visitor.exitASTMethodCall(this);
 		visitor.exitAll(this);
 	}

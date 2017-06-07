@@ -7,16 +7,15 @@ import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
-import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
+import intermediateModelHelper.envirorment.temporal.structure.ImplicitResourceTimeout;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,13 +24,39 @@ import java.util.List;
  * @version %I%, %G%
  *
  */
-public class TimeApplication extends SearchTimeConstraint {
+public class ImplicitTimeComparisonApplication extends SearchTimeConstraint {
 
-	List<TimeUndefinedTimeout>  timeMethodsUndef = TemporalInfo.getInstance().getTimeUndefinedTimeout();
-	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
+	//TODO: Refactor names
+	class struct {
+		int start;
+		int end;
+		int line;
+
+		public struct(int start, int end, int line) {
+			this.start = start;
+			this.end = end;
+			this.line = line;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			struct struct = (struct) o;
+
+			if (start != struct.start) return false;
+			if (end != struct.end) return false;
+			return line == struct.line;
+		}
+	}
+
+	List<ImplicitResourceTimeout>  timeMethods = TemporalInfo.getInstance().getImplicitResourceTimeouts();
 
 	IASTMethod currentMethod;
 	String className;
+
+	List<struct> find = new ArrayList<>();
 
 	@Override
 	public void setup(ASTClass c) {
@@ -47,12 +72,6 @@ public class TimeApplication extends SearchTimeConstraint {
 			return;
 		}
 
-		// Return Time
-		if(CheckExpression.checkRE(stm,env)){
-			markMethod();
-		}
-
-		//Explicit Timeout
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
@@ -60,43 +79,23 @@ public class TimeApplication extends SearchTimeConstraint {
 				String name = elm.getMethodName();
 				List<IASTRE> pars = elm.getParameters();
 				int size = pars.size();
-				if(pointer != null && containTimeOut(pointer, name, size)) {
-					markMethod();
-				}
-			}
-		});
-
-		//Undefinite Timeout
-		expr.visit(new DefualtASTREVisitor(){
-			@Override
-			public void enterASTMethodCall(ASTMethodCall elm) {
-				String pointer = elm.getClassPointed();
-				String name = elm.getMethodName();
-				List<IASTRE> pars = elm.getParameters();
-				int size = pars.size();
-				if(pointer != null && containTimeOutUndef(pointer, name, size)) {
-					markMethod();
+				if(pointer != null && containTimeMethod(pointer, name, size)) {
+					markMethod(elm);
 				}
 			}
 		});
 
 	}
 
-	private boolean containTimeOutUndef(String pointer, String name, int nPars){
-		for(TimeUndefinedTimeout m : timeMethodsUndef){
-			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
-				return true;
-		}
-		return false;
+	private void markMethod(ASTMethodCall elm) {
+		struct e = new struct(elm.getStart(), elm.getEnd(), elm.getLine());
+		if(find.contains(e)) return;
+		find.add(e);
+		super.addConstraint(elm.print(), elm, false);
 	}
 
-	protected void markMethod() {
-		if(currentMethod != null)
-			currentMethod.setTimeCnst(true);
-	}
-
-	private boolean containTimeOut(String pointer, String name, int nPars){
-		for(TimeMethod m : timeMethods){
+	private boolean containTimeMethod(String pointer, String name, int nPars){
+		for(ImplicitResourceTimeout m : timeMethods){
 			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
 				return true;
 		}

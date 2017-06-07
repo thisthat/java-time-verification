@@ -63,6 +63,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 			return;
 		}
 
+
 		if(CheckExpression.checkRE(stm,env)){
 			stm.markResetTime();
 		}

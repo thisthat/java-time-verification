@@ -21,6 +21,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	List<IASTStm> stms = new ArrayList<>();
 	private List<Pair<String,String>> declaredVar = new ArrayList<>();
 	private List<String> timeVars = new ArrayList<>();
+	boolean hasTimeCnst;
 
 	public ASTConstructor(int start, int end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
@@ -168,6 +169,16 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	@Override
 	public void setTimeVars(List<String> vars) {
 		this.timeVars = vars;
+	}
+
+	@Override
+	public void setTimeCnst(boolean f) {
+		this.hasTimeCnst = f;
+	}
+
+	@Override
+	public boolean hasTimeCnst() {
+		return hasTimeCnst;
 	}
 
 	@Override

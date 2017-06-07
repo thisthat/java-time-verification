@@ -113,18 +113,26 @@ public class ToUppaal implements IConverter {
 			//time var
 			List<String> timeVarsMethod = c.getMethod().getTimeVars();
 			for(Pair<String,String> var : v.getResetVars()){
-				if(!timeVarsMethod.contains(var.getValue0()))
+				if(!timeVarsMethod.contains(var.getValue0()) && !var.getValue0().equals(""))
 					dec.add(String.format("clock %s;\n",var.getValue0()));
 			}
 		}
 		for(Edge e : c.getE()){
 			Transition t = new Transition(aut, map.get(e.getFrom()), map.get(e.getTo()));
-			if(e.getFrom().isResetClock()){
+			if(e.isResetClock()){
+				for(Pair<String,String> r : e.getResetVars()){
+					if(!r.getValue0().equals(""))
+						t.addUpdate(String.format("%s = %s", r.getValue0(), r.getValue1().equals("") ? "0" : r.getValue1()));
+				}
+			}
+			else if(e.getFrom().isResetClock()){
 				for(Pair<String,String> r : e.getFrom().getResetVars()){
-					t.addUpdate(String.format("%s = %s", r.getValue0(), r.getValue1().equals("") ? "0" : r.getValue1()));
+					if(!r.getValue0().equals(""))
+						t.addUpdate(String.format("%s = %s", r.getValue0(), r.getValue1().equals("") ? "0" : r.getValue1()));
 				}
 			}
 			Constraint cns = e.getConstraint();
+
 			if(cns != null && !cns.isCategory(UndefiniteTimeout.class) && !cns.isCategory(AssignmentTimeVar.class)){
 				//we have a cnst to represent, but if we are in an if branch, only the true branch will have it
 				String l = e.getLabel();

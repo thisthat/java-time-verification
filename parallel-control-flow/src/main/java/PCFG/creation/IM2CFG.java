@@ -12,6 +12,7 @@ import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
+import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
 import org.javatuples.KeyValue;
 import org.javatuples.Pair;
 
@@ -104,7 +105,9 @@ public class IM2CFG {
 
 		for(Constraint c : constraints){
 			for(Node v : pcfg.getV()){
-				if(v.equals(c)){
+				if(v.equals(c) || (v.getType() == Node.TYPE.WHILE_EXPR && v.weakEquals(c))){
+					v.setConstraint(c);
+				} else if(c.isCategory(UndefiniteTimeout.class) && v.weakEquals(c)){
 					v.setConstraint(c);
 				}
 			}

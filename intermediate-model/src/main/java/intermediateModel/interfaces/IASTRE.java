@@ -78,6 +78,7 @@ public interface IASTRE extends IASTVisitor {
 	String getCode();
 	int getLine();
 	boolean isTimeCritical();
+	void setTimeCritical(boolean timeCritical);
 
 	String print();
 }

@@ -22,8 +22,10 @@ public class Translation {
         expr.visit(new DefualtASTREVisitor(){
             @Override
             public void enterASTbinary(ASTBinary elm) {
-                if(elm.isTimeCritical())
+                if(elm.isTimeCritical()){
+                    propagate(elm);
                     return;
+                }
                 if(!hasTimeCritical(elm.getLeft())){
                     elm.setLeft(null);
                     elm.setOp(IASTRE.OPERATOR.empty);
@@ -32,6 +34,15 @@ public class Translation {
                     elm.setRight(null);
                     elm.setOp(IASTRE.OPERATOR.empty);
                 }
+            }
+
+            private void propagate(ASTBinary elm) {
+                elm.visit(new DefualtASTREVisitor(){
+                    @Override
+                    public void enterAll(IASTRE elm) {
+                        elm.setTimeCritical(true);
+                    }
+                });
             }
         });
     }
@@ -59,13 +70,15 @@ public class Translation {
             public void enterASTMethodCall(ASTMethodCall elm) {
                 if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
                     if(e.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), e))){
-                        elm.setMethodName("t");
-                        elm.setExprCallee(new ASTLiteral(0,0,""));
+                        //elm.setMethodName("t");
+                        //elm.setExprCallee(new ASTLiteral(0,0,""));
+                        elm.setTimeCall(true);
                     }
                 }
                 else if(e.existMethodTimeRelevant(elm.getMethodName(), getSignature(elm.getParameters(), e))){
-                    elm.setMethodName("t");
-                    elm.setExprCallee(new ASTLiteral(0,0,""));
+                    //elm.setMethodName("t");
+                    //elm.setExprCallee(new ASTLiteral(0,0,""));
+                    elm.setTimeCall(true);
                 }
             }
         });

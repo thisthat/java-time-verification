@@ -52,6 +52,11 @@ public class Node implements INode {
 		isEnd = end;
 	}
 
+    public void setResetVars(List<Pair<String,String>> resetVars) {
+        this.resetVars = resetVars;
+    }
+
+
     public enum TYPE {
 		RETURN,
 		BREAK,
@@ -155,6 +160,10 @@ public class Node implements INode {
 		this.setResetClock("t", resetClock);
 	}
 
+	public void setResetClockOnly(boolean resetClock) {
+		this.isResetClock = resetClock;
+	}
+
 	public void setResetClock(String s, boolean resetClock) {
 		this.setResetClock(s, resetClock, "");
 	}
@@ -195,6 +204,15 @@ public class Node implements INode {
 		if (getEnd()   != r.getEnd()) return equalsExpectSemiColon(c);
 		if (getLine()  != r.getLine()) return false;
 		if (getCode()  != null ? !getCode().equals(r.getCode()) : r.getCode() != null) return false;
+		return true;
+	}
+
+	public boolean weakEquals(Constraint c) {
+		IASTStm r = c.getElm();
+		if (getStart() >= r.getStart()) return false;
+		if (getEnd()   <= r.getEnd()) return false;
+		if (getLine()  != r.getLine()) return false;
+		if (getCode()  != null ? !getCode().contains(r.getCode()) : r.getCode() != null) return false;
 		return true;
 	}
 
