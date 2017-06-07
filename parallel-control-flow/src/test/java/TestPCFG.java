@@ -179,8 +179,8 @@ public class TestPCFG {
 		p.addClass(c, m);
 		PCFG g = p.buildPCFG();
 
-		assertEquals(g.getV().size(), 7);
-		assertEquals(g.getE().size(), 7);
+		assertEquals(g.getV().size(), 8);
+		assertEquals(g.getE().size(), 8);
 		assertEquals(g.getSyncNodes().size(), 0 );
 		assertEquals(g.getCFG().size(), 1 );
 		assertEquals(g.getESync().size(), 0 );

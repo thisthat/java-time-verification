@@ -71,7 +71,7 @@ public class TestHeuristics {
 				constraints
 		));
 
-		assertEquals(constraints.size(), 3);
+		assertEquals(constraints.size(), 2);
 
 	}
 
