@@ -10,7 +10,7 @@ config = {
     'download_url': 'TODO',
     'author_email': 'f.spegni@univpm.it',
     'version': '0.1',
-    'install_requires': ['nose'],
+    'install_requires': ['nose', 'Jinja2>=2.9.6'],
     'packages': ['java2ta'],
     'scripts': [],
     'name': 'projectname'

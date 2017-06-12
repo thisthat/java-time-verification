@@ -93,9 +93,13 @@ class Location(object):
         self.is_urgent = True
 
 
+    def __str__(self):
+        return self.name
+
+
 class Edge(object):
 
-    def __init__(self, source, target, ):
+    def __init__(self, source, target, label=None):
 
         assert isinstance(source, Location)
         assert isinstance(target, Location)
@@ -105,6 +109,10 @@ class Edge(object):
 
         source.outgoing.add(self)
         target.incoming.add(self)
+        self.label = label
+
+    def __str__(self):
+        return "%s -> %s" % (self.source, self.target)
 
 
 class TA(object):
@@ -117,24 +125,78 @@ class TA(object):
 
         self.name = name
         self.locations = set([])
-
+        self._location_names = dict()
+    
         for loc in locations:
             self.add_location(loc)
 
         self.edges = set([])
- 
+        self._edges_lookup = {} 
+
         for curr_edge in edges:
             self.add_edge(curr_edge)
 
         self.initial_loc = None
         self.variables = set([])
 
+
     def has_location(self, name):
+        assert isinstance(name, basestring)
+        return name in self._location_names
 
-        found = filter(lambda l: l.name == name, self.locations)
 
-        return len(found) > 0
+    def get_location(self, name):
+        assert isinstance(name, basestring)
 
+        found = self._location_names.get(name, None)
+        assert isinstance(found, Location) or found == None
+
+        return found
+
+
+    def get_or_add_location(self, loc):
+        assert isinstance(loc, basestring) or isinstance(loc, Location)
+
+        name = loc
+        if isinstance(loc, Location):
+            name = loc.name
+
+        found = self.get_location(name)
+
+        if not found:
+            new_loc = loc# Location(name)
+            if isinstance(loc, basestring):
+                new_loc = Location(name)
+
+            self.add_location(new_loc)
+            found = new_loc
+
+        assert isinstance(found, Location)
+        return found
+ 
+    
+    def get_or_add_edge(self, edge):
+        assert isinstance(edge, Edge)
+
+        source_loc = self.get_or_add_location(edge.source)
+        target_loc = self.get_or_add_location(edge.target)
+
+        found = None
+
+        if source_loc in self._edges_lookup and target_loc in self._edges_lookup[source_loc]:
+            found = self._edges_lookup[source_loc][target_loc]
+
+        if not found:
+            found = Edge(source_loc, target_loc)
+            self.add_edge(found)
+
+        # in any case, update the edge label
+        found.label = edge.label
+
+        return found
+ 
+        
+          
 
     def add_location(self, loc):
 
@@ -146,7 +208,9 @@ class TA(object):
                 raise ValueError("You are adding a location tagged as initial to a TA that already contains one initial location")
             self.initial_loc = loc
 
-        self.locations.add(loc)
+        if loc.name not in self._location_names:
+            self.locations.add(loc)
+            self._location_names[loc.name] = loc
         
 
     def add_edge(self, edge):
@@ -158,6 +222,10 @@ class TA(object):
             raise ValueError("Before adding an edge, you must add its source and target locations to the TA")
     
         self.edges.add(edge)
+
+        if not edge.source in self._edges_lookup:
+            self._edges_lookup[edge.source] = {}
+        self._edges_lookup[edge.source][edge.target] = edge
 
     def add_variable(self, var):
 

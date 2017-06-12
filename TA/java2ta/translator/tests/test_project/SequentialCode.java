@@ -9,14 +9,21 @@ public class SequentialCode {
 
     public static int foo(int initial_i, int initial_j) {
     
-        int i = initial_i;
-        int j = initial_j;
+        int i = initial_i + 1;
+        int j = initial_j - 2;
 
         i++;
         if (i > 0) {
             j = j+1;
+            i--;
         } else {
             j = j-1;
+            i++;
+        }
+
+        if (j < 0) {
+            j++;
+            j--;
         }
 
         j = j+1;

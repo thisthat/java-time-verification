@@ -1,4 +1,5 @@
 import abc
+import re
 
 from java2ta.commons.utility import partial_format, pairwise_iter
 
@@ -115,6 +116,27 @@ class Predicate(object):
     
     def __str__(self):
         return self._label
+
+    def primed(self, var_names=None, suffix="_1"):
+        assert var_names==None or isinstance(var_names, list) 
+
+        new_label = self._label
+        new_assert = self._smt_assert
+
+        if not var_names:
+            # by default, prime every "dangling" reference in the context
+            var_names = re.findall("\{[a-zA-Z]+\}", self._smt_assert) # TODO this is a hack, find a better way to handle it
+
+        for var in var_names:
+            var = var.strip("{}") # remove initial and trailing curly brackets, if present
+
+            assert isinstance(var, basestring)
+            new_assert = new_assert.replace("{%s}" % var, "{%s}%s" % (var, suffix))
+            new_label = new_label.replace("{%s}" % var, "{%s}%s" % (var, suffix))
+
+        new = Predicate(ctx=self.ctx, smt_assert=new_assert, label=new_label)
+
+        return new
 
 
 class BinaryPredicate(Predicate):
@@ -455,36 +477,36 @@ class BoundedCollection(Domain):
 
 
 
-class Variable(object):
-    
-    def __init__(self, name, datatype=None, predicates=None, domain=None):
-        assert isinstance(name, basestring)
-        assert domain is None or isinstance(domain, Domain)
-        assert datatype is None or isinstance(datatype, DataType)
-        assert predicates is None or isinstance(predicates, list)    
-        assert domain is None and (predicates is not None and datatype is not None) or \
-                (domain is not None) and (predicates is None and datatype is None), "You must specify either a domain, or the datatype AND the predicates"
-        
-
-        self.name = name
-        
-        if not domain:
-            domain = Domain(datatype, predicates)
-
-        self.domain = domain
-
-    @property
-    def datatype(self):
-        return self.domain.datatype
-
-    @property
-    def predicates(self):
-        return self.domain.predicates
-
-    @property
-    def values(self):
-        return self.domain.predicates
-    
-    @property
-    def default(self):
-        return self.domain.default
+##class Variable(object):
+##    
+##    def __init__(self, name, datatype=None, predicates=None, domain=None):
+##        assert isinstance(name, basestring)
+##        assert domain is None or isinstance(domain, Domain)
+##        assert datatype is None or isinstance(datatype, DataType)
+##        assert predicates is None or isinstance(predicates, list)    
+##        assert domain is None and (predicates is not None and datatype is not None) or \
+##                (domain is not None) and (predicates is None and datatype is None), "You must specify either a domain, or the datatype AND the predicates"
+##        
+##
+##        self.name = name
+##        
+##        if not domain:
+##            domain = Domain(datatype, predicates)
+##
+##        self.domain = domain
+##
+##    @property
+##    def datatype(self):
+##        return self.domain.datatype
+##
+##    @property
+##    def predicates(self):
+##        return self.domain.predicates
+##
+##    @property
+##    def values(self):
+##        return self.domain.predicates
+##    
+##    @property
+##    def default(self):
+##        return self.domain.default
