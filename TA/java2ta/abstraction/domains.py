@@ -3,6 +3,11 @@ import re
 
 from java2ta.commons.utility import partial_format, pairwise_iter
 
+from contracts import contract
+import logging
+
+log = logging.getLogger("main")
+
 class DataType(object): 
     """
     A DataType is the representation of the data-type as insed
@@ -61,10 +66,11 @@ class Predicate(object):
 
     __metaclass__ = abc.ABCMeta
 
-    _smt_assert = ""
+#    _smt_assert = ""
+    _smt_condition = ""
     _label = ""
 
-    def __init__(self, ctx, smt_assert=None, label=None):
+    def __init__(self, ctx, smt_condition=None, label=None): #smt_assert=None, label=None):
 
         self.ctx = dict(ctx)
 
@@ -72,8 +78,10 @@ class Predicate(object):
         self._label = partial_format(label, ctx)
 
 
-        smt_assert = smt_assert or self._smt_assert
-        self._smt_assert = partial_format(smt_assert, ctx)
+#        smt_assert = smt_assert or self._smt_assert
+#        self._smt_assert = partial_format(smt_assert, ctx)
+        smt_condition = smt_condition or self._smt_condition
+        self._smt_condition = partial_format(smt_condition, ctx)
 
 
     def label(self, **kwargs):
@@ -93,8 +101,15 @@ class Predicate(object):
 
         return res
 
-
+    
     def smt_assert(self, **kwargs):
+
+        res = "(assert %s)" % self.smt_condition(**kwargs)
+
+        return res
+
+
+    def smt_condition(self, **kwargs):
         """
         When invoking this method, the user should pass through **kwargs all the 
         missing parameters appearing in the smt assertion.
@@ -105,36 +120,39 @@ class Predicate(object):
         ctx.update(**kwargs)
 
         try:
-            res = self._smt_assert.format(**ctx)
+            res = self._smt_condition.format(**ctx) #self._smt_assert.format(**ctx)
         except KeyError, e:
             raise ValueError("You should pass the following parameters to the method: %s" % ",".join(e.args))
 
         return res
     
     def __repr__(self):
-        return self._smt_assert
+        return "(assert %s)" % self._smt_condition #self._smt_assert
     
     def __str__(self):
         return self._label
 
+    @contract(var_names="None|list", suffix="None|str")
     def primed(self, var_names=None, suffix="_1"):
-        assert var_names==None or isinstance(var_names, list) 
+#        assert var_names==None or isinstance(var_names, list) 
 
         new_label = self._label
-        new_assert = self._smt_assert
+        new_condition = self._smt_condition # self._smt_assert
 
         if not var_names:
             # by default, prime every "dangling" reference in the context
-            var_names = re.findall("\{[a-zA-Z]+\}", self._smt_assert) # TODO this is a hack, find a better way to handle it
-
+            var_names = re.findall("\{[a-zA-Z]+\}", self._smt_condition) #self._smt_assert) # TODO this is a hack, find a better way to handle it
+            # findall may return twice the same name, if 2 occurrences are there; don't consider duplicates
+            var_names = set(var_names)
+#        log.debug("Var names to be primed: %s" % var_names)
         for var in var_names:
             var = var.strip("{}") # remove initial and trailing curly brackets, if present
 
             assert isinstance(var, basestring)
-            new_assert = new_assert.replace("{%s}" % var, "{%s}%s" % (var, suffix))
+            new_condition = new_condition.replace("{%s}" % var, "{%s}%s" % (var, suffix))
             new_label = new_label.replace("{%s}" % var, "{%s}%s" % (var, suffix))
 
-        new = Predicate(ctx=self.ctx, smt_assert=new_assert, label=new_label)
+        new = Predicate(ctx=self.ctx, smt_condition=new_condition, label=new_label)
 
         return new
 
@@ -144,7 +162,8 @@ class BinaryPredicate(Predicate):
     __metaclass__ = abc.ABCMeta
 
     _smt_name = "..." # the name of the predicate in SMTlib
-    _smt_assert = "(assert ({name} {var} {value}))"
+#    _smt_assert = "(assert ({name} {var} {value}))"
+    _smt_condition = "({name} {var} {value})"
     _label = "{var} {name} {value}"
 
     def __init__(self, ctx):
@@ -178,10 +197,18 @@ class NotEq(BinaryPredicate):
     _label = "{var} != {value}"
 
 class Between(Predicate):    
-    _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
+#    _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
+    _smt_condition = "(and (< {min} {var}) (< {var} {max}))"
     _label = "{min} < {var} < {max}"
 
 
+class EqItself(Predicate):
+#    _smt_assert = "(assert (= {var} {var}))"
+    _smt_condition = "(= {var} {var})"
+    _label = "{var} = {var}"
+
+
+@contract(returns="list[M],M=2")
 def split_eq_value(value):
     
     predicates = [ Eq({"value":value}), NotEq({"value":value}) ]
@@ -198,7 +225,7 @@ def split_enum(value_list):
 
     return predicates
 
-
+@contract(split_values="list[N],N>0", lt_min=bool, gt_max=bool, returns="list[M],M>0")
 def split_numeric_domain(split_values, lt_min=True, gt_max=True):
     
     predicates = []
@@ -243,9 +270,9 @@ def split_field_domain(field_name, predicates):
     for pred in predicates:
         assert isinstance(pred, Predicate)
     
-        smt_assert = pred.smt_assert(var="(%s {var})" % field_name)
+        smt_condition = pred.smt_condition(var="(%s {var})" % field_name)
         label = pred.label(var="{var}.%s" % field_name)
-        fp = Predicate(pred.ctx, smt_assert=smt_assert, label=label)
+        fp = Predicate(pred.ctx, smt_condition=smt_condition, label=label)
         field_predicates.append(fp)
         
     return field_predicates
@@ -263,13 +290,14 @@ class Domain(object):
     - default: one predicate that is satisfied initially by the variable of the given
             datatype
     """
+    @contract(datatype=DataType, predicates="list[N],N>0", default="None|bool")
     def __init__(self, datatype, predicates, default=None):
         self.datatype = datatype
     
         if not default:
             default = predicates[0]
 
-        assert isinstance(default, Predicate)
+        assert isinstance(default, Predicate), default
 
         self._default = default
         self.predicates = list(set(predicates))
@@ -290,13 +318,31 @@ class Domain(object):
         return self._default
 
     @property
+    @contract(returns="str")
+    def smt_predicate_abstraction(self):
+        constraints = []
+
+        for pred in self.values:
+            assert isinstance(pred, Predicate)
+            constraints.append(pred.smt_condition(var="x"))
+
+        type_name = self.name
+        res = "(assert (forall ((x %s)) (or %s)))" % (type_name, " ".join(constraints))
+
+        return res
+        
+
+    @property
+    @contract(returns="str")
     def smt_declaration(self):
         smt_declaration = "<No DataType>"
 
         if self.datatype:
             smt_declaration = self.datatype.smt_declaration
 
-        return smt_declaration
+        smt_declaration = smt_declaration + "\n" + self.smt_predicate_abstraction
+
+        return smt_declaration.strip()
     
     @property    
     def name(self):
@@ -311,6 +357,11 @@ class Domain(object):
     def values(self):
         return self.predicates
 
+    def format_values(self, **ctx):
+        res = map(lambda p: p.label(**ctx), self.predicates)
+
+        return ",".join(res)
+
 
 class Integer(DataType):
     def __init__(self):
@@ -319,7 +370,7 @@ class Integer(DataType):
 
 class Natural(DataType):
     def __init__(self):
-        super(Natural, self).__init__(name="Natural", smt_axioms=["(assert (forall (x Nat) (or (= x 0) (> x 0))))"])
+        super(Natural, self).__init__(name="Nat", smt_declaration="(declare-datatypes () ((Nat (mk-natural (val Int)))))", smt_axioms=["(assert (forall ((x Nat)) (>= (val x) 0)))"])
 
 class Real(DataType):
     def __init__(self):
@@ -329,6 +380,7 @@ class Real(DataType):
 class Boolean(DataType):
     def __init__(self):
         super(Boolean,self).__init__(name="Bool")
+
 
 
 def smt_declare_scalar(name, values):
@@ -411,12 +463,13 @@ class DataTypeFactory(object):
 
         return DataTypeFactory._the_factory
 
-   
+
+    @contract(registry=DataTypeRegistry)   
     def __init__(self, registry):
-        assert isinstance(registry, DataTypeRegistry)
         self.registry = registry
 
 
+    @contract(fqn=basestring)
     def from_fqn(self, fqn, *args, **kwargs):
 
         dt = None
@@ -436,6 +489,7 @@ class DataTypeFactory(object):
 
         return dt
 
+    @contract(fqn=basestring, attributes="dict")
     def from_class(self, fqn, attributes):
         """
         Assume 'fqn' is a string denoting the full-qualified name of the class, 
@@ -461,6 +515,10 @@ class DataTypeFactory(object):
 
         return dt
 
+class Dummy(Domain):
+    @contract(datatype=DataType)
+    def __init__(self, datatype):
+        super(Dummy,self).__init__(datatype, [EqItself({})])
 
 
 INTEGERS = Domain(Integer(), split_numeric_domain([0,]))
@@ -476,37 +534,3 @@ class BoundedCollection(Domain):
         super(BoundedCollection,self).__init__(Collection(), split_field_domain("size", split_numeric_domain([0,max_val], lt_min=False, gt_max=False)))
 
 
-
-##class Variable(object):
-##    
-##    def __init__(self, name, datatype=None, predicates=None, domain=None):
-##        assert isinstance(name, basestring)
-##        assert domain is None or isinstance(domain, Domain)
-##        assert datatype is None or isinstance(datatype, DataType)
-##        assert predicates is None or isinstance(predicates, list)    
-##        assert domain is None and (predicates is not None and datatype is not None) or \
-##                (domain is not None) and (predicates is None and datatype is None), "You must specify either a domain, or the datatype AND the predicates"
-##        
-##
-##        self.name = name
-##        
-##        if not domain:
-##            domain = Domain(datatype, predicates)
-##
-##        self.domain = domain
-##
-##    @property
-##    def datatype(self):
-##        return self.domain.datatype
-##
-##    @property
-##    def predicates(self):
-##        return self.domain.predicates
-##
-##    @property
-##    def values(self):
-##        return self.domain.predicates
-##    
-##    @property
-##    def default(self):
-##        return self.domain.default

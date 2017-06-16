@@ -1,7 +1,14 @@
 from java2ta.abstraction.domains import Domain
+from contracts import contract
+
+import logging
+
+
+log = logging.getLogger("main")
 
 class AbstractAttribute(object):
 
+    @contract(name=basestring, domain=Domain, is_local="bool")
     def __init__(self, name, domain, is_local):
         """
         An AbstractAttribute has a name, a domain and is either a local attribute (i.e. declared within the
@@ -49,23 +56,30 @@ class AbstractAttribute(object):
 
     
     @property
+    @contract(returns="list(int)")
     def encoded_values(self):
         return sorted(self.enc_values.keys())
 
+    @contract(returns=int)
     def encoded_value(self, value):
         if value not in self.rev_domain:
             raise ValueError("The passed value ('%s') is not one of the allowed ones . Accepted values: %s" % (value, ",".join(self.values)))
     
         return self.rev_domain[value]
 
+    @contract(self="type(t)",returns="type(w),t=w")
     def primed(self):       
         primed_name = "%s_1" % self.name
         new_attr = AbstractAttribute(primed_name, self.domain, self.is_local)
+
+        log.debug("(%s)' => %s" % (self, new_attr))
         return new_attr
+
 
     @property
     def values(self):
         return sorted(self.rev_domain.keys())
+
 
     def value(self, encoding):
         if encoding not in self.enc_values:
@@ -73,6 +87,33 @@ class AbstractAttribute(object):
 
         return self.enc_values[encoding]
 
+    
+    @property
+    @contract(returns="None|str")
+    def smt_declaration(self):
+        res = None
+        if self.domain:
+            assert isinstance(self.domain, Domain)
+            res = self.domain.smt_declaration
+
+#            # add constraints by the domain predicates for this attribute
+#            res = res + "\n" + self.domain.smt_predicate_abstraction 
+
+        return res
+
+
+    @property
+    @contract(returns="str")
+    def smt_type_name(self):
+        res = None
+        if self.domain:
+            assert isinstance(self.domain, Domain)
+            res = self.domain.name
+
+        return res
+
+    def __str__(self):
+        return "%s : %s" % (self.name, self.domain)
 
 
 class StateSpace(object):

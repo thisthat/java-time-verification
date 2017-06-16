@@ -1,3 +1,17 @@
+from contracts import contract, new_contract
+
+@new_contract
+def is_location(obj):
+
+    if not isinstance(obj, Location):
+        raise ValueError("Expected instance of type Location")
+
+@new_contract
+def is_edge(obj):
+
+    if not isinstance(obj, Edge):
+        raise ValueError("Expected instance of type Location")
+
 class Type(object):
 
     def __init__(self, name):
@@ -38,10 +52,11 @@ class ClockType(Type):
 
 class Variable(object):
 
+    @contract(name=basestring, type=Type)
     def __init__(self, name, type):
 
-        assert isinstance(name, basestring)
-        assert isinstance(type, Type)
+#        assert isinstance(name, basestring
+#        assert isinstance(type, Type)
 
         self.name = name
         self.type = type
@@ -49,6 +64,7 @@ class Variable(object):
 
 class ClockVariable(Variable):
 
+    @contract(name=basestring)
     def __init__(self, name):
     
         super(Variable, self).__init__(name, Clock)
@@ -63,9 +79,10 @@ class ClockExpression(object):
 
 class Location(object):
 
+    @contract(name=basestring, is_initial="bool", is_urgent="bool")
     def __init__(self, name, is_initial=False, is_urgent=False):
 
-        assert isinstance(name, basestring)
+#        assert isinstance(name, basestring)
 
         self.name = name
         self.invariant = None
@@ -96,6 +113,11 @@ class Location(object):
     def __str__(self):
         return self.name
 
+
+    def __repr__(self):
+        return self.name
+
+        
 
 class Edge(object):
 

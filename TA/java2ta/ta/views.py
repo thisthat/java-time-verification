@@ -8,13 +8,14 @@ class GraphViz(object):
     def __init__(self, ta):
         self.ta = ta
 
-    def render(self):
+    def render(self, attributes):
         env = Environment(
             loader=PackageLoader("java2ta.ta", "templates"),
         )
         template = env.get_template(self.template)
 
         ctx = {
-            "ta": self.ta
+            "ta": self.ta,  
+            "attributes": attributes, 
         }
         return template.render(**ctx)
