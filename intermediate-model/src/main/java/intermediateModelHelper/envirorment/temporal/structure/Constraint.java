@@ -177,4 +177,7 @@ public class Constraint {
         return out.toString();
     }
 
+    public void removeElm() {
+        this.elm = null;
+    }
 }

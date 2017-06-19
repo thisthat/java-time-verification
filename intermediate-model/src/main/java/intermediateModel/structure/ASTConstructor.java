@@ -7,6 +7,7 @@ import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,7 +20,8 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	List<ASTVariable> parameters;
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
-	private List<Pair<String,String>> declaredVar = new ArrayList<>();
+
+	private List<DeclaredVar> declaredVar = new ArrayList<>();
 	private List<String> timeVars = new ArrayList<>();
 	boolean hasTimeCnst;
 
@@ -150,17 +152,27 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		return false;
 	}
 
-	public List<Pair<String, String>> getDeclaredVar() {
+	public List<DeclaredVar> getDeclaredVar() {
 		return declaredVar;
 	}
 
 	public void setDeclaredVars() {
 		declaredVar.clear();
+		HashMap<String,Integer> ids = new HashMap<>();
 		for(IASTStm stm : stms) {
 			stm.visit(new DefaultASTVisitor() {
 				@Override
 				public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
-					declaredVar.add(new Pair<>(elm.getName().getCode(), elm.getType()));
+					String name = elm.getName().getCode();
+					int c = 0;
+					if(ids.containsKey(name)){
+						c = ids.get(name);
+						c++;
+					}
+					ids.put(name,c);
+					String id = name + "_" + c;
+					DeclaredVar d = new DeclaredVar(elm.getType(), name, id);
+					declaredVar.add(d);
 				}
 			});
 		}

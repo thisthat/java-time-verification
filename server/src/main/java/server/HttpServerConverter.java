@@ -1,6 +1,7 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import server.handler.*;
 import server.handler.test.echoGet;
 import server.handler.test.echoHeader;
@@ -25,7 +26,7 @@ public class HttpServerConverter {
 	private final int noOfThreads = 4;
 	private final ExecutorService httpThreadPool;
 	HttpServer server;
-	private static boolean _debug;
+	public static boolean _debug;
 
 	private static Map<String,String> lastParameters = new HashMap<>();
 
@@ -65,8 +66,8 @@ public class HttpServerConverter {
 		server.createContext("/getThreads", new getThreads());
 		server.createContext("/getStatus", new getStatus(op));
 		server.createContext("/getMains", new getMains());
-		server.createContext("/clean", new clean());
-		server.createContext("/cleanAll", new cleanAll());
+		server.createContext("/clean", new clean(op));
+		server.createContext("/cleanAll", new cleanAll(op));
 
 		server.setExecutor(httpThreadPool);
 		server.start();
@@ -115,6 +116,7 @@ public class HttpServerConverter {
 
 	public void stop() {
 		System.out.println("server stopped at " + port);
+		closeDB();
 		server.stop(1);
 		httpThreadPool.shutdownNow();
 		try {
@@ -122,6 +124,16 @@ public class HttpServerConverter {
 		} catch (InterruptedException e) {
 			//we try but who cares
 		}
+	}
+
+	private void closeDB(){
+		MongoConnector mongo = MongoConnector.getInstance();
+		List<String> dbs = mongo.databases();
+		for(String db : dbs) {
+			MongoConnector c = MongoConnector.getInstance(db);
+			c.close();
+		}
+		mongo.close();
 	}
 
 	public void setDebug(boolean debug) {

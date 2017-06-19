@@ -23,8 +23,28 @@
         <module>usage</module>
     </modules>
 
+    <scm>
+        <url>https://rtse-isys.aau.at/giovanni.liva/java-xal</url>
+        <connection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</connection>
+        <developerConnection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</developerConnection>
+    </scm>
+
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
