@@ -32,7 +32,6 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	boolean hasTimeCnst;
 
 
-
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
 		super(start,end);
 		this.name = name;
