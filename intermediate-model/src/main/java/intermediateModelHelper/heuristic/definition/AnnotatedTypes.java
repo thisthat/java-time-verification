@@ -1,18 +1,24 @@
 package intermediateModelHelper.heuristic.definition;
 
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import org.junit.rules.Timeout;
 
 import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -26,13 +32,16 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 
 	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
 
+	IASTMethod currentMethod;
+	String className;
 
 	public AnnotatedTypes() {
 	}
 
 	@Override
 	public void setup(ASTClass c) {
-
+		super.setup(c);
+		className = c.getPackageName() + "." + c.getName();
 	}
 
 	/**
@@ -51,35 +60,54 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 			return;
 		}
 		expr.visit(new DefualtASTREVisitor(){
+
+			Stack<Boolean> check = new Stack<>();
+			{
+				check.push(true);
+			}
+
+			@Override
+			public void enterASTNewObject(ASTNewObject elm) {
+				if(elm.getHiddenClass() != null){
+					check.push(false);
+				}
+			}
+
+			@Override
+			public void exitASTNewObject(ASTNewObject elm) {
+				if(elm.getHiddenClass() != null){
+					check.pop();
+				}
+			}
+
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
+				if(!check.peek()) return;
+
 				String pointer = elm.getClassPointed();
 				String name = elm.getMethodName();
 				List<IASTRE> pars = elm.getParameters();
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
+					elm.setTimeCall(true);
 					String timeout = "";
 					TimeMethod m = getTimeOut(pointer,name, size);
 					int[] p = m.getTimeouts();
 					for(int i : p){
 						timeout += pars.get(i).getCode() + "+";
+						IASTVar v = env.getVar(pars.get(i).getCode());
+						if(v!=null){
+							v.setTimeCritical(true);
+						}
 					}
 					if(timeout.length() > 1)
 						timeout = timeout.substring(0, timeout.length() - 1);
-					AnnotatedTypes.super.addConstraint(timeout, elm);
+					Constraint c = AnnotatedTypes.super.addConstraint(timeout, stm, false);
+					c.addRuntimeConstraints(new RuntimeConstraint(className, currentMethod.getName(), elm.getLine(), timeout));
+					AnnotatedTypes.super.addTimeVar(currentMethod, timeout);
 				}
 			}
 		});
-	}
-
-	@Override
-	public void nextMethod(ASTMethod method, Env env) {
-
-	}
-
-	@Override
-	public void nextConstructor(ASTConstructor method, Env env) {
-
 	}
 
 	private boolean containTimeOut(String pointer, String name, int nPars){
@@ -96,6 +124,18 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 				return m;
 		}
 		return null;
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+		super.nextMethod(method, env);
+		currentMethod = method;
+	}
+
+	@Override
+	public void nextConstructor(ASTConstructor method, Env env) {
+		super.nextConstructor(method, env);
+		currentMethod = method;
 	}
 
 }

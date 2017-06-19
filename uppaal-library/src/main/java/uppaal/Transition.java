@@ -271,6 +271,10 @@ public class Transition {
 		this.setGuard(new Guard(string));
 	}
 
+	public void setUpdate(String string) {
+		this.setUpdate(new Update(string));
+	}
+
 	/************ TIGA SPECIFIC ***************/
 	
 	private boolean controllable = true;

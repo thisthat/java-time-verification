@@ -26,7 +26,11 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	boolean isSynchronized = false;
 	boolean isAbstract = false;
 	boolean isStatic = false;
+
 	List<DeclaredVar> declaredVar = new ArrayList<>();
+	List<String> timeVars = new ArrayList<>();
+	boolean hasTimeCnst;
+
 
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
@@ -204,5 +208,25 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 				}
 			});
 		}
+	}
+
+	@Override
+	public void setTimeVars(List<String> vars) {
+		this.timeVars = vars;
+	}
+
+	@Override
+	public void setTimeCnst(boolean f) {
+		hasTimeCnst = f;
+	}
+
+	@Override
+	public boolean hasTimeCnst() {
+		return hasTimeCnst;
+	}
+
+	@Override
+	public List<String> getTimeVars() {
+		return timeVars;
 	}
 }

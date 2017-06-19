@@ -217,7 +217,7 @@ public abstract class ParseIM {
 	 * @param r		{@link ASTRE} instruction to check.
 	 * @param env	{@link Env} visible by the instruction.
 	 */
-	private void analyze(ASTRE r, Env env){
+	protected void analyze(ASTRE r, Env env){
 		if(r != null && r.getExpression() != null) {
 			final ASTNewObject[] objs = {null};
 			r.getExpression().visit(new DefaultASTVisitor() {

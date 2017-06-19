@@ -56,8 +56,20 @@ public class Declaration extends UppaalElement{
 	}
 
 	public void add(String s) {
+		s = filter(s);
+		if(s.equals("") || declarations.contains(s))
+			return;
 		declarations.add(s);
 	}
+
+	public static String filter(String v) {
+		String out = v;
+		if(v.matches("int [0-9].*")){
+			return "";
+		}
+		return out;
+	}
+
 	public void remove(String s) {
 		declarations.remove(s);
 	}

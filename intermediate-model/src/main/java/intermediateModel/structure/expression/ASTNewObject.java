@@ -95,9 +95,10 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 	public void visit(ASTREVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTNewObject(this);
-		for(IASTRE p : parameters){
-			p.visit(visitor);
-		}
+		if(!visitor.isExcludePars())
+			for(IASTRE p : parameters){
+				p.visit(visitor);
+			}
 		if(this.hiddenClass != null){
 			this.hiddenClass.visit(new DefaultASTVisitor(){
 				@Override

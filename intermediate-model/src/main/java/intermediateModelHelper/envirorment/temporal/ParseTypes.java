@@ -17,16 +17,19 @@ public class ParseTypes extends ParseCSV {
 
     public ParseTypes(String path) {
         super(path);
+        super.setSplitSignature(true);
         super.start();
     }
 
     public ParseTypes(File file) {
         super(file);
+        super.setSplitSignature(true);
         super.start();
     }
 
     public ParseTypes(InputStream stream) {
         super(stream);
+        super.setSplitSignature(true);
         super.start();
     }
 

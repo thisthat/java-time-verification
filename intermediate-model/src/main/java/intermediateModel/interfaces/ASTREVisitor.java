@@ -42,4 +42,7 @@ public interface ASTREVisitor<T> {
 	void exitNotYetImplemented(NotYetImplemented elm);
 	void exitAll(IASTRE elm);
 
+
+	boolean isExcludePars();
+
 }
