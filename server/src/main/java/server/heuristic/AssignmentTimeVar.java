@@ -1,6 +1,5 @@
-package intermediateModelHelper.heuristic.definition;
+package server.heuristic;
 
-import com.rits.cloning.Cloner;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
@@ -8,16 +7,17 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.*;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
-import intermediateModelHelper.heuristic.beta.Translation;
+import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
 import java.util.List;
 

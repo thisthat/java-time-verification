@@ -29,6 +29,8 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	boolean isInterface = false;
 	boolean isAbstract = false;
 
+	public ASTClass(){}
+
 	public ASTClass(int start, int end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);
 		this.packageName = packageName;

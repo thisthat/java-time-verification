@@ -77,9 +77,12 @@ public class ApplyHeuristics extends ParseIM {
 	public void subscribe(Class<? extends SearchTimeConstraint> strategy){
 		strategiesTypes.add(strategy);
 	}
+	public void subscribe(SearchTimeConstraint objInstance) {
+		strategies.add(objInstance);
+	}
 
 	/**
-	 * This method trigger the application of the heuristic and analysis of the code.
+	 * This method trigger the application of the server.heuristic and analysis of the code.
 	 * @param c Class to analyze.
 	 */
 	public void analyze(ASTClass c){
@@ -199,7 +202,7 @@ public class ApplyHeuristics extends ParseIM {
 		for(SearchTimeConstraint s : strategies){
 			HashMap<IASTMethod,List<String>> tmp = s.getTimeVars();
 			if(tmp.containsKey(m)){
-				//out.addAll(tmp.get(m));
+				out.addAll(tmp.get(m));
 			}
 		}
 		return out;

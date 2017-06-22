@@ -6,6 +6,7 @@ import server.handler.*;
 import server.handler.test.echoGet;
 import server.handler.test.echoHeader;
 import server.handler.test.echoPost;
+import server.routes.v1.Routes;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -22,6 +23,9 @@ import java.util.concurrent.Executors;
  * @version %I%, %G%
  */
 public class HttpServerConverter {
+
+
+
 	static int port = 9000;
 	private final int noOfThreads = 4;
 	private final ExecutorService httpThreadPool;
@@ -47,27 +51,27 @@ public class HttpServerConverter {
 
 		//Test urls
 		server.createContext("/", new root());
-		server.createContext("/shutdown", new shutDown());
+		server.createContext(Routes.SHUTDOWN, new shutDown());
 		server.createContext("/test/echoHeader", new echoHeader());
 		server.createContext("/test/echoGet", new echoGet());
 		server.createContext("/test/echoPost", new echoPost());
 
 
 		//Get all java files from a project
-		server.createContext("/getAllFiles", new getAllFiles());
-		server.createContext("/getFile", new getFile());
+		server.createContext(Routes.GET_ALL_FILES, new getAllFiles());
+		server.createContext(Routes.GET_FILE, new getFile());
 
 
 		openProject op = new openProject();
 		//Start project index
-		server.createContext("/openProject", op);
-		server.createContext("/isProjectOpen", new isProjectOpen());
-		server.createContext("/getFilesByType", new getFilesByType());
-		server.createContext("/getThreads", new getThreads());
-		server.createContext("/getStatus", new getStatus(op));
-		server.createContext("/getMains", new getMains());
-		server.createContext("/clean", new clean(op));
-		server.createContext("/cleanAll", new cleanAll(op));
+		server.createContext(Routes.OPEN_PROJECT, 		op);
+		server.createContext(Routes.IS_PROJECT_OPEN, 	new isProjectOpen());
+		server.createContext(Routes.GET_FILE_BY_TYPE, 	new getFilesByType());
+		server.createContext(Routes.GET_THREADS, 		new getThreads());
+		server.createContext(Routes.GET_STATUS, 		new getStatus(op));
+		server.createContext(Routes.GET_MAINS, 			new getMains());
+		server.createContext(Routes.CLEAN, 				new clean(op));
+		server.createContext(Routes.CLEAN_ALL, 			new cleanAll(op));
 
 		server.setExecutor(httpThreadPool);
 		server.start();
