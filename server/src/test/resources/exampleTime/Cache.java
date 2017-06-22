@@ -14,4 +14,8 @@ public class Cache {
         }
         return value;
     }
+    public void write(int v){
+        value = v;
+        lastRefresh = System.currentTimeMillis();
+    }
 }

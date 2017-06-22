@@ -145,4 +145,28 @@ public class TestTimeUnit {
 		assertEquals(TimeUnit.UNKNOWN.toString().toLowerCase() ,m.at("/returnTypeUnit").asText().toLowerCase());
 	}
 
+	@Test
+	public void TestTimeUnitParameter() throws Exception {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(base_url + Routes.GET_FILE);
+		List<NameValuePair> nvps = new ArrayList<>();
+		nvps.add(new BasicNameValuePair("name", "tt"));
+		nvps.add(new BasicNameValuePair("filePath", "file://Cache.java"));
+		String json;
+		try {
+			httppost.setEntity(new UrlEncodedFormEntity(nvps));
+			CloseableHttpResponse response = httpclient.execute(httppost);
+			InputStream stream = response.getEntity().getContent();
+			json = IOUtils.toString(stream, "UTF-8");
+			//System.out.println(json);
+		} catch (Exception e) {
+			throw new Exception("Cannot connect to " + Routes.GET_FILE);
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(json);
+		JsonNode m = root.at("/0/methods/2/parameters");
+		assertEquals(1, m.size());
+		assertEquals(TimeUnit.UNKNOWN.toString().toLowerCase(), m.at("/0/unit").asText().toLowerCase());
+	}
+
 }
