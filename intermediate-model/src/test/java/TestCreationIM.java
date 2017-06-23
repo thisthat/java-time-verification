@@ -1,6 +1,7 @@
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTLabel;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.NotYetImplemented;
 import intermediateModel.visitors.DefaultASTVisitor;
@@ -40,4 +41,21 @@ public class TestCreationIM {
 		assertEquals(2, c.getAttributes().size());
 	}
 
+	@Test
+	public void TestASTLabel() throws Exception {
+		ClassLoader classLoader = TestCreationIM.class.getClassLoader();
+		String file = classLoader.getResource("annotations/Label.java").getFile();
+		List<ASTClass> cs = JDTVisitor.parse(file, file.substring(0, file.lastIndexOf("/")));
+		assertEquals(1, cs.size());
+		ASTClass c = cs.get(0);
+		final int[] nLabel = {0};
+		c.visit(new DefaultASTVisitor() {
+			@Override
+			public void enterASTLabel(ASTLabel elm) {
+				nLabel[0]++;
+				assertEquals("mywhile", elm.getLabel());
+			}
+		});
+		assertEquals(1, nLabel[0]);
+	}
 }

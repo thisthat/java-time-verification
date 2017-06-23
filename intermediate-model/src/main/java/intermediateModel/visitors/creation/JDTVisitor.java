@@ -601,6 +601,16 @@ public class JDTVisitor extends ASTVisitor {
 	}
 
 	@Override
+	public boolean visit(LabeledStatement node) {
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		String label = node.getLabel().getIdentifier();
+		ASTLabel l = new ASTLabel(start, stop, label);
+		lastMethod.addStms(l);
+		return true;
+	}
+
+	@Override
 	public boolean visit(WhileStatement node) {
 		IASTHasStms bck = lastMethod;
 		int start = node.getStartPosition();

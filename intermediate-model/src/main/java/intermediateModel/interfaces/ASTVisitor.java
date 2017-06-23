@@ -18,6 +18,7 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void enterASTForEach(ASTForEach elm);
 	void enterASTIf(ASTIf elm);
 	void enterASTImport(ASTImport elm);
+	void enterASTLabel(ASTLabel elm);
 	void enterASTMethod(ASTMethod elm);
 	void enterASTRE(ASTRE elm);
 	void enterASTReturn(ASTReturn elm);
@@ -41,6 +42,7 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void exitASTForEach(ASTForEach elm);
 	void exitASTIf(ASTIf elm);
 	void exitASTImport(ASTImport elm);
+	void exitASTLabel(ASTLabel elm);
 	void exitASTMethod(ASTMethod elm);
 	void exitASTRE(ASTRE elm);
 	void exitASTReturn(ASTReturn elm);
