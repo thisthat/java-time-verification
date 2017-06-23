@@ -13,8 +13,19 @@ public class While {
         int j = initial_j - 2;
 
         i++;
+
         while (j > 3) {
             j--;
+            
+            if (i < 5) {
+                break;
+                i += 4000;
+            }
+        }
+
+        while (j < 2) {
+            break;
+            j = j * 2;
         }
         j = i;
         return j;

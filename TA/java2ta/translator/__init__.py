@@ -1,4 +1,4 @@
-
+from contracts import contract
 
 class PC(object):
     """
@@ -12,7 +12,7 @@ class PC(object):
         if isinstance(initial, int):
             initial = str(initial)        
 
-        self.pc = initial
+        self.pc = initial.strip(".")
 
 
     def __str__(self):
@@ -32,6 +32,12 @@ class PC(object):
         
         return new
 
+    def __eq__(self, other):
+        return other and self.pc == other.pc
+
+
+    def is_prefix(self, other):
+        return other.pc.startswith("%s." % self.pc)
 
     def inc(self, to_add=1):
         assert self.pc != None

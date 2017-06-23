@@ -3,7 +3,7 @@ import re
 
 from java2ta.commons.utility import partial_format, pairwise_iter
 
-from contracts import contract
+from contracts import contract, new_contract
 import logging
 
 log = logging.getLogger("main")
@@ -276,6 +276,11 @@ def split_field_domain(field_name, predicates):
         field_predicates.append(fp)
         
     return field_predicates
+
+@new_contract
+def is_domain(obj):
+    if not isinstance(obj, Domain):
+        raise ValueError("Expected object (%s) of type Domain." % type(obj))
 
 class Domain(object):
     """
