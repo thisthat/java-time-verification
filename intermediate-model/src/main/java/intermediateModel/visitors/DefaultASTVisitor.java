@@ -60,6 +60,11 @@ public class DefaultASTVisitor extends DefualtASTREVisitor implements ASTVisitor
 	}
 
 	@Override
+	public void enterASTLabel(ASTLabel elm) {
+
+	}
+
+	@Override
 	public void enterASTMethod(ASTMethod elm) {
 
 	}
@@ -166,6 +171,11 @@ public class DefaultASTVisitor extends DefualtASTREVisitor implements ASTVisitor
 
 	@Override
 	public void exitASTImport(ASTImport elm) {
+
+	}
+
+	@Override
+	public void exitASTLabel(ASTLabel elm) {
 
 	}
 
