@@ -565,6 +565,8 @@ class SMTProb(object):
         """
         smt_code = []
         declared_types = set([])
+
+        log.debug("Attributes: %s" % self.attributes)
     
         for attr in self.attributes:
             assert isinstance(attr, AbstractAttribute), attr
@@ -1159,23 +1161,33 @@ def get_state_space_from_method(method, domains):
     # 1. get method attributes
     attributes = get_method_attributes(method)
     
+    attributes_dict = {}
+    for (attr, is_local) in attributes:
+        attributes_dict[attr] = is_local
+    
 #    print "all attributes: %s" % attributes
 #    print "domains: %s" % domains
     # 2. initialize empty state-space
     ss = StateSpace()
+##
+##    # 3. find attributes with an associated abstract domain
+##    for (attr,is_local) in attributes:
+##        assert isinstance(attr, basestring)
+##        assert isinstance(is_local, bool)
+##    
+##        if attr in domains:
+##            dom = domains[attr]
+##
+##            assert isinstance(dom, Domain)
+##
+##            abs_att = AbstractAttribute(attr, dom, is_local)# dom.values, dom.default)
+##            ss.add_attribute(abs_att)
 
-    # 3. find attributes with an associated abstract domain
-    for (attr,is_local) in attributes:
-        assert isinstance(attr, basestring)
-        assert isinstance(is_local, bool)
-    
-        if attr in domains:
-            dom = domains[attr]
-
-            assert isinstance(dom, Domain)
-
-            abs_att = AbstractAttribute(attr, dom, is_local)# dom.values, dom.default)
-            ss.add_attribute(abs_att)
+    for (name, dom_spec) in domains.iteritems():
+        (variables, domain) = dom_spec
+        is_local = map(lambda a: attributes_dict[a], variables)
+        abs_att = AbstractAttribute(variables, domain, is_local)
+        ss.add_attribute(abs_att)
 
     return ss
 

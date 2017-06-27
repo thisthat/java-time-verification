@@ -3,11 +3,14 @@
  */
 public class While {
 
+    int initial_i = 4;
+
     public static void main(String[] args) {
-        foo(-5, 5);
+        self.initial_i = -5;
+        foo(5);
     }
 
-    public static int foo(int initial_i, int initial_j) {
+    public static int foo(int initial_j) {
     
         int i = initial_i + 1;
         int j = initial_j - 2;
@@ -23,11 +26,17 @@ public class While {
             }
         }
 
-        while (j < 2) {
-            break;
-            j = j * 2;
+        outer:
+        while (j > 0) {
+            j = j * 2; 
+            while (j < 2) {
+                break outer;
+                j = j * 2;
+            }
+            j = i;
         }
-        j = i;
+
+        j = i + 1;
         return j;
     }
 }

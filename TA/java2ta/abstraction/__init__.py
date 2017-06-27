@@ -115,6 +115,9 @@ class AbstractAttribute(object):
     def __str__(self):
         return "%s : %s" % (self.name, self.domain)
 
+    def __repr__(self):
+        return str(self)
+
 
 class StateSpace(object):
 

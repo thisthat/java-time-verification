@@ -539,3 +539,16 @@ class BoundedCollection(Domain):
         super(BoundedCollection,self).__init__(Collection(), split_field_domain("size", split_numeric_domain([0,max_val], lt_min=False, gt_max=False)))
 
 
+class CompareNumbers(Domain):
+
+    @contract(data_type=DataType)
+    def __init__(self, variables, data_type): 
+        assert len(variables) == 2
+
+        predicates = [
+            LT({"var":variables[0], "value":variables[1]}),
+            Eq({"var":variables[0], "value":variables[1]}),
+            GT({"var":variables[0], "value":variables[1]}),
+        ]
+     
+        super(CompareNumbers, self).__init__(data_type, predicates)

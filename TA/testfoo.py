@@ -70,8 +70,9 @@ print "Wait 2 seconds for opening project ..."
 sleep(2)
 
 domains = {
-    "i": INTEGERS,
-    "j": INTEGERS,
+#    "i": INTEGERS,
+#    "j": INTEGERS,
+    "i_j": CompareNumbers(["i","j"], Integer()),
     "initial_i": INTEGERS,
     "initial_j": INTEGERS,
 }
