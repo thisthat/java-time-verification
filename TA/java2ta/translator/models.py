@@ -82,7 +82,10 @@ class PC(object):
     
         self.pc = parts[0] 
         return parts[1]
-    
+ 
+
+new_contract_check_type("is_pc", PC)  
+
 class ReachabilityResult(object):
 
     @contract(configurations="set(is_configuration)|list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)")

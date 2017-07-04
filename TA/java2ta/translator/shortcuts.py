@@ -649,6 +649,24 @@ class SMTProb(object):
         # TODO run the (get-unsat-core) command
         pass
 
+@contract(pc_break_stack="list[N](is_pc),N>0", break_target="string|None", returns="is_pc")
+def find_break_target(pc_break_stack, break_target):
+
+    pc_res = pc_break_stack[-1]
+
+    if break_target:
+        pc_res = None
+        pos = len(pc_break_stack)-1
+        while not pc_res and pos >= 0:
+            (identifier, pc_curr) = pc_break_stack[pos]
+            if identifier == break_target:
+                pc_res = pc_curr
+
+        if not pc_res:
+            raise ValueError("Cannot break to unknown label '%s'" % break_target)
+
+    return pc_res
+
 @contract(source="is_configuration", pc_source=PC, instr="dict", state_space=StateSpace, returns=ReachabilityResult)
 def check_reach(source, pc_source, instr, state_space, preconditions=None, postconditions=None, pc_break_stack=None):
     assert preconditions is None or isinstance(preconditions, list)
@@ -739,8 +757,6 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
 
         final_then = final_else = []
         pc_target = pc_source + 1
-
-        #pc_break_stack.append(pc_target)
 
         with SMTProb(state_space.attributes) as smt_prob:
 
@@ -835,16 +851,16 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
 
         assert "expr" in instr, instr.keys()
         assert "stms" in instr
+        assert "identifier" in instr
 
-        log.info("Check ASTWhile: '%s' %s ..." % (instr_text, pc_source))
+#        log.info("Check ASTWhile: '%s' %s ..." % (instr_text, pc_source))
 
+        while_identifier = instr["identifier"]
         stms_while = instr["stms"]
         guard = instr["expr"]
         assert "code" in guard
         assert "expression" in guard
         pc_target = pc_source + 1
-
-        #pc_break_stack.append(pc_target)
 
         with SMTProb(state_space.attributes) as smt_prob:
 
@@ -856,21 +872,18 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
             is_not_while_reachable = smt_prob.check_sat_guard(source_pred, guard=Negate(guard["expression"]))
             smt_prob.pop()
 
-        #final_while = []
         if is_while_reachable:
     
             pc_source_while = PC(pc_source.pc).push(0)
             reachable_while = [ source ]
-            #curr_pc = PC(pc_source_while.pc)
             
             preconditions.append(Precondition(guard["expression"]))
-#            (reachable_while, edges_while, final_while) = compute_reachable(reachable_while, curr_pc, stms_while, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
 
-            pc_break_stack.append(pc_target)
+            pc_break_stack.append((while_identifier, pc_target))
             rr_while = compute_reachable(reachable_while, pc_source_while, stms_while, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
             pc_break_stack.pop()
 
-            log.debug("While reachable result: %s" % rr_while)
+#            log.debug("While reachable result: %s" % rr_while)
 
             edges.extend(rr_while.edges)
             external.extend(rr_while.external_locations)
@@ -920,10 +933,17 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
 
 
     elif instr_type == "ASTBreak":
-        log.debug("ASTBreak: %s ..." % instr)
+
+        assert "target" in instr
+
+#        log.debug("ASTBreak: %s ..." % instr)
         # do nothing
-        log.info("Check ASTBreak: '%s' %s ..." % (instr_text, pc_source))
-        pc_target = pc_break_stack[-1] # get the item pushed last TODO handle the label to go with the break  #pc_break_stack.pop()
+#        log.info("Check ASTBreak: '%s' %s ..." % (instr_text, pc_source))
+#        pc_target = pc_break_stack[-1] # get the item pushed last TODO handle the label to go with the break  #pc_break_stack.pop()
+
+        break_identifier = instr["target"]
+        pc_target = find_break_target(pc_break_stack, break_identifier)
+
         assert isinstance(pc_target, PC)
 
         # new reached configuration: the current configuration, 
