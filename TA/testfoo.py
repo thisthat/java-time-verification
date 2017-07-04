@@ -71,13 +71,16 @@ def build_legend(state_space):
         check("is_abstract_attribute", attr)
         #variables = ",".join(attr.variables)
         pred_labels = []
-        for pred in attr.values:    
+        for idx_attr,pred in enumerate(attr.values):    
             check("is_predicate", pred)
-            ctx={ p_var.strip("{}"):a_var for (p_var,a_var) in zip(pred.var_names,attr.variables) }
-            print "Legend: %s -> Ctx: %s" % (pred, ctx)
-            pred_labels.append(pred.label(**ctx))
+            ctx = {}
+            for p_var,a_var in zip(pred.var_names, attr.variables):
+                key = p_var.strip("{}")
+                ctx[key] = a_var
 
-        desc = ",".join(pred_labels)
+            pred_labels.append("%s : { %s }" % (idx_attr, pred.label(**ctx)))
+
+        desc = ", ".join(pred_labels)
 
         legend.append((str(idx),desc))
 

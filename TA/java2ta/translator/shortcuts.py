@@ -920,7 +920,7 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
 
 
     elif instr_type == "ASTBreak":
-#        log.debug("ASTBreak: %s ..." % instr)
+        log.debug("ASTBreak: %s ..." % instr)
         # do nothing
         log.info("Check ASTBreak: '%s' %s ..." % (instr_text, pc_source))
         pc_target = pc_break_stack[-1] # get the item pushed last TODO handle the label to go with the break  #pc_break_stack.pop()
