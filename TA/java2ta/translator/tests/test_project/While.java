@@ -17,6 +17,7 @@ public class While {
 
         i++;
 
+        foofoo:
         while (j > 3) {
             j--;
             

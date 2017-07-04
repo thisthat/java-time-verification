@@ -847,11 +847,11 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
  
     elif instr_type == "ASTWhile":
 
-#        log.debug("ASTWhile: %s ..." % instr)
+        log.debug("ASTWhile: %s ..." % instr)
 
         assert "expr" in instr, instr.keys()
         assert "stms" in instr
-        assert "identifier" in instr
+        assert "identifier" in instr, "ASTWhile: %s" % instr
 
 #        log.info("Check ASTWhile: '%s' %s ..." % (instr_text, pc_source))
 
@@ -936,40 +936,20 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
 
         assert "target" in instr
 
-#        log.debug("ASTBreak: %s ..." % instr)
-        # do nothing
-#        log.info("Check ASTBreak: '%s' %s ..." % (instr_text, pc_source))
-#        pc_target = pc_break_stack[-1] # get the item pushed last TODO handle the label to go with the break  #pc_break_stack.pop()
-
         break_identifier = instr["target"]
         pc_target = find_break_target(pc_break_stack, break_identifier)
 
         assert isinstance(pc_target, PC)
 
-        # new reached configuration: the current configuration, 
-#        reachable.append(source)
-        # final location: source configuration with PC successive to the current block
         loc_out = build_loc(source, pc_target)
-        #final.append(loc_out)
         # new edge: from source location to final location
         edge_break = Edge(source_loc, loc_out, "break")
         edges.append(edge_break)  
-#        reachable.append(source)
-#        final.append(source)
         external.append(loc_out)
 
         # no final locations
         # (ASTBreak breaks the compositionality approach)
-
-
-#        log.debug("%s%s =[break]=> %s%s" % (source, pc_source, reachable, pc_target))
-
-
-
     elif instr_type == "ASTReturn":
-
-#        log.info("Check ASTReturn: '%s' %s ..." % (instr_text, pc_source))
-    
         # do nothing
         pass
     else:
