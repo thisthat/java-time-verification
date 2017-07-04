@@ -12,4 +12,15 @@ public class Label {
             }
         }
     }
+    public void issueReopen(){
+        outer:
+        while (j > 0) {
+            j = j * 2;
+            while (j < 2) {
+                break outer;
+                j = j * 2;
+            }
+            j = i;
+        }
+    }
 }

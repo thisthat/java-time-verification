@@ -41,6 +41,8 @@ public abstract class IASTStm implements IASTVisitor {
 	protected String code = "";
 	protected int line;
 	protected int lineEnd;
+	protected String identifier = null;
+
 	protected Constraint constraint = null;
 	//@Beta protected List<Annotation> annotations = new ArrayList<>();
 	private boolean isTimeCritical = false;
@@ -222,6 +224,14 @@ public abstract class IASTStm implements IASTVisitor {
 
 	protected IASTStm(){
 
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 	/**
