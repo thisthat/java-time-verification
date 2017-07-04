@@ -11,6 +11,7 @@ class Project(object):
         "open": "open",
     }
 
+    MAX_ATTEMPTS = 100
 
     def __init__(self, name, path=None, api_url=None):
         
@@ -45,7 +46,7 @@ class Project(object):
         return self.status == Project.STATUS_CHOICES[label]
 
 
-    def open(self):
+    def open(self, sync=False):
         
         data = {
             "name": self.name,
@@ -54,6 +55,25 @@ class Project(object):
 
         self.client.post("/openProject", data)
         self.set_status("opening")
+
+
+        if sync:
+            is_open = False
+            attempts = 1
+
+            while not is_open and attempts < Project.MAX_ATTEMPTS:
+                # wait till the project is in a final status (open or closed)
+                to_wait = (attempts/2)**2
+                log.debug("Wait %s seconds and check the project is open ..." % to_wait)
+ 
+                sleep(to_wait)
+                is_open = self.is_open()
+                attempts = attempts + 1
+                
+            if not is_open:
+                raise ValueError("The project cannot be opened after %s attempts" % attempts)
+
+            
 
     def is_open(self):
     

@@ -2,7 +2,6 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 
 from contracts import contract
 
-from java2ta.abstraction.domains import is_domain
 
 class GraphViz(object):
 
@@ -11,8 +10,8 @@ class GraphViz(object):
     def __init__(self, ta):
         self.ta = ta
 
-    @contract(attributes="dict(str:is_domain)")
-    def render(self, attributes):
+    @contract(legend="None|list(tuple(string,string))")
+    def render(self, legend):
         env = Environment(
             loader=PackageLoader("java2ta.ta", "templates"),
         )
@@ -20,6 +19,6 @@ class GraphViz(object):
 
         ctx = {
             "ta": self.ta,  
-            "attributes": attributes, 
+            "legend": legend,
         }
         return template.render(**ctx)

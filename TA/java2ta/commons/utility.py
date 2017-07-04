@@ -1,5 +1,13 @@
 import string
 import itertools
+from contracts import contract, new_contract
+
+def new_contract_check_type(contract_name, my_type):
+    def contract_check_type(obj):
+        if not isinstance(obj, my_type):
+            raise ValueError("Expected object of type '%s'. Got: '%s'" % (my_type, type(obj)))
+
+    return new_contract(contract_name, contract_check_type)
 
 class TotalDict(dict):
     """

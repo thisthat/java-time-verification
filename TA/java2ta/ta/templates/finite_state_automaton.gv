@@ -9,13 +9,13 @@ digraph finite_state_machine {
     "{{ edge.source.name }}" -> "{{ edge.target.name }}" {% if edge.label %}[label="{{ edge.label }}"]{% endif %};
     {% endfor %}
 
-{% if attributes %}
+{% if legend %}
   node[shape=plaintext]
   subgraph cluster_01 { 
-    label = "Legend of abstract states predicates";
+    label = "Legend of abstract states predicates (position: predicate)";
     key [label=<<table border="0" cellpadding="2" cellspacing="0" cellborder="0">
-{% for name,domain in attributes.iteritems() %}
-      <tr><td align="right">{{ name }} =</td><td align="left">{% for pred in domain.values %}{{ loop.index0 }} : { {{ pred.label(var=name)|e }} }, {% endfor %}</td></tr>
+{% for label,desc in legend %}
+      <tr><td align="right">{{ label|e }}:</td><td align="left">{{ desc|e }}</td></tr>
 {% endfor %}
       </table>>]
   }

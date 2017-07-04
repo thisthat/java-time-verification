@@ -1,16 +1,6 @@
 from contracts import contract, new_contract
 
-@new_contract
-def is_location(obj):
-
-    if not isinstance(obj, Location):
-        raise ValueError("Expected instance of type Location")
-
-@new_contract
-def is_edge(obj):
-
-    if not isinstance(obj, Edge):
-        raise ValueError("Expected instance of type Location")
+from java2ta.commons.utility import new_contract_check_type
 
 class Type(object):
 
@@ -52,19 +42,17 @@ class ClockType(Type):
 
 class Variable(object):
 
-    @contract(name=basestring, type=Type)
+    @contract(name="string", type=Type)
     def __init__(self, name, type):
-
-#        assert isinstance(name, basestring
-#        assert isinstance(type, Type)
 
         self.name = name
         self.type = type
 
+new_contract_check_type("is_variable", Variable)
 
 class ClockVariable(Variable):
 
-    @contract(name=basestring)
+    @contract(name="string")
     def __init__(self, name):
     
         super(Variable, self).__init__(name, Clock)
@@ -79,10 +67,8 @@ class ClockExpression(object):
 
 class Location(object):
 
-    @contract(name=basestring, is_initial="bool", is_urgent="bool")
+    @contract(name="string", is_initial="bool", is_urgent="bool")
     def __init__(self, name, is_initial=False, is_urgent=False):
-
-#        assert isinstance(name, basestring)
 
         self.name = name
         self.invariant = None
@@ -117,7 +103,8 @@ class Location(object):
     def __repr__(self):
         return self.name
 
-        
+new_contract_check_type("is_location", Location) 
+       
 
 class Edge(object):
 
@@ -136,14 +123,12 @@ class Edge(object):
     def __str__(self):
         return "%s -> %s" % (self.source, self.target)
 
+new_contract_check_type("is_edge", Edge)
 
 class TA(object):
     
+    @contract(name="string", locations="set(is_location)|list(is_location)", edges="set(is_edge)|list(is_edge)")
     def __init__(self, name, locations=[], edges=[]):
-
-        assert isinstance(name, basestring)
-        assert isinstance(locations, set) or isinstance(locations, list)
-        assert isinstance(edges, set) or isinstance(edges, list)
 
         self.name = name
         self.locations = set([])
@@ -219,7 +204,7 @@ class TA(object):
  
         
           
-
+    @contract(loc="is_location")
     def add_location(self, loc):
 
         assert isinstance(loc, Location)
@@ -234,7 +219,7 @@ class TA(object):
             self.locations.add(loc)
             self._location_names[loc.name] = loc
         
-
+    @contract(edge="is_edge")
     def add_edge(self, edge):
 
         assert isinstance(edge, Edge)
@@ -255,6 +240,8 @@ class TA(object):
     
         self.variables.add(var)
 
+new_contract_check_type("is_ta", TA)
+
 
 class NTA(object):
 
@@ -263,19 +250,18 @@ class NTA(object):
         self.tas = set([])
         self.variables = set([])
 
+    @contract(ta="is_ta")
     def add_ta(self, ta):
-    
-        assert isinstance(ta, TA)
 
         if not ta.initial_loc:
             raise ValueError("All the TAs must have an initial location")
 
         self.tas.add(ta)
 
+    @contract(var="is_variable")
     def add_variable(self, var):
-
-        assert isinstance(var, Variable)
     
         self.variables.add(var)
 
 
+new_contract_check_type("is_nta", NTA)

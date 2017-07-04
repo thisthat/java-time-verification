@@ -1,5 +1,4 @@
 from time import sleep
-from contracts import contract, new_contract
 
 import os
 import tempfile
@@ -9,14 +8,14 @@ import fcntl
 from java2ta.engine.rules import Engine
 from java2ta.engine.context import Context
 from java2ta.translator.rules import ExtractMethodStateSpace, AddStates
-from java2ta.translator import PC
+from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate
 from java2ta.ir.models import Project, Method, Klass
-from java2ta.ta.models import TA, Location, Edge, is_location, is_edge
-from java2ta.abstraction import StateSpace, AbstractAttribute
-from java2ta.abstraction.domains import Domain, Predicate
+from java2ta.ta.models import TA, Location, Edge
+from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate
 
 import sys
 import logging
+from contracts import contract, new_contract, check
 
 log = logging.getLogger("main")
 
@@ -38,7 +37,7 @@ INPUT
 OUTPUT
 - a timed automaton
 """
-@contract(project=Project, class_fqn=basestring, class_path=basestring, method_name=basestring, domains=dict, returns=TA)
+@contract(project=Project, class_fqn="string", class_path="string", method_name="string", domains="dict", returns=TA)
 def translate_method_to_automaton(project, class_fqn, class_path, method_name, domains):
 
     # check this works (case 1: no dot, case 2: one or more dots)
@@ -72,63 +71,6 @@ def translate_method_to_automaton(project, class_fqn, class_path, method_name, d
 
     return ta_post
 
-@new_contract
-def is_configuration_repr(text):
-    if not isinstance(text,basestring):
-        raise ValueError("A predicate representation must be of type 'basestring'")
-     # remove enclosing parenthesis
-    text = text.strip("()")
-    
-    for item in text.strip().split(","):
-        try:
-            int(item) # force casting of string to int; if not possible, raise an exception
-        except ValueError:
-            raise ValueError("A predicate can only contain predicate codes (of type int)")
- 
-    return True  
-
-@new_contract
-def is_predicate(pred):
-
-    if not isinstance(pred, Predicate):
-        raise ValueError("Instance of class Predicate expected")
-
-    return True
-
-@new_contract
-def is_attribute_predicate(pred):
-
-    if not isinstance(pred, AttributePredicate):
-        raise ValueError("Instance of class AttributePredicate expected")
-
-    return True
-
-
-
-@new_contract
-def is_configuration(pred):
-
-    if not isinstance(pred, tuple):
-        raise ValueError("A configuration is a tuple of int")
-    
-    for curr in pred:
-        if not isinstance(curr, int):
-            raise ValueError("A configuration can only contain int")
-
-    return True
-
-
-class ReachabilityResult(object):
-
-    @contract(configurations="list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)")
-    def __init__(self, configurations, final_locations, external_locations, edges):
-        self.configurations = configurations
-        self.final_locations = final_locations
-        self.external_locations = external_locations
-        self.edges = edges 
-
-
-
 @contract(pred="is_configuration|is_configuration_repr", pc=PC, returns=Location)
 def build_loc(pred, pc):
 
@@ -140,7 +82,6 @@ def build_loc(pred, pc):
 
 @contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space=StateSpace, returns=ReachabilityResult)
 def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=None, pc_break_stack=None):
-
     """
     INPUT:
     - source_conf : list of abstract configuration
@@ -155,6 +96,8 @@ def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=
     """
     assert preconditions is None or isinstance(preconditions, list)
 
+    log.debug("Compute reachable: source_conf=%s, pc_source=%s, instr=%s, state_space=%s, preconditions=%s, pc_break_stack=%s" % (source_conf, pc_source, instr, state_space, preconditions, pc_break_stack))
+
     edges = []
     reachable = []
     final = []
@@ -163,31 +106,34 @@ def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=
     curr_pc = PC(pc_source.pc)
     for curr_instr in instr:
 
-        log.debug("Compute reachable: %s[%s] ..." % (curr_pc, curr_instr["code"]))
+#        log.debug("Compute reachable: %s[%s] ..." % (curr_pc, curr_instr["code"]))
 
         # reachable and final must contain only information that are reached by
         # the last instruction (NB on the contrary, edges contain all the edges 
         # added by all the instructions)
-        reachable = []
+        reachable = set([])
         final = []
 
 #        log.debug("Curr PC: %s => External: %s" % (curr_pc, filter(lambda loc: loc.name.split("@")[1] == curr_pc.pc, external)))
     
+        # avoid duplicates
+        source_conf = set(source_conf)
+
         if not source_conf:
             log.warning("Exit for non reachable states at PC: %s" % curr_pc)
             break
 
         for source in source_conf:
-            # TODO in principle each invokaction of check(...) is independent from the others
-            rr = check(source, curr_pc, curr_instr, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
+            # TODO in principle each invocation of check_reach(...) is independent from the others
+            rr = check_reach(source, curr_pc, curr_instr, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
     
             edges.extend(rr.edges) #new_edges)
-            reachable.extend(rr.configurations) #new_reachable)
+            reachable = reachable | set(rr.configurations) # avoid duplicates #.extend(rr.configurations) #new_reachable)
             final.extend(rr.final_locations) #new_final)
-    
             external.extend(rr.external_locations)
 
         # next iteration starts from reached configurations, and advance PC by 1
+        log.debug("Compute reachable next iteration: (%s)%s -> (%s)%s" % (source_conf, curr_pc, reachable, curr_pc + 1))
         source_conf = reachable
         curr_pc = curr_pc + 1
 
@@ -195,7 +141,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges)
 
 
-@contract(name=basestring, instructions="list(dict)", state_space=StateSpace, returns=TA)
+@contract(name="string", instructions="list(dict)", state_space=StateSpace, returns=TA)
 def transform(name, instructions, state_space):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
@@ -223,81 +169,9 @@ def transform(name, instructions, state_space):
     return fsa
 
 
-class AttributePredicate(object):
-
-    @contract(attribute=AbstractAttribute, predicate=Predicate)
-    def __init__(self, attribute, predicate):
-
-        self.attribute = attribute
-        self.predicate = predicate
-
-
-    def smt_assert(self):
-        # TODO here we assume that all predicates have a variable {var} in them
-        return self.predicate.smt_assert(var=self.attribute.name)
- 
-    def label(self):
-        # TODO here we assume that all predicates have a variable {var} in them
-        return self.predicate.label(var=self.attribute.name)       
-
-    def __str__(self):
-        # TODO here we assume that all predicates have a variable {var} in them
-        return str(self.predicate).replace("{var}", self.attribute.name)
-
-
-    @contract(self="type(t)",returns="type(w),w=t")
-    def primed(self):
-        assert isinstance(self.predicate, Predicate)
-
-        primed_pred = self.predicate.primed(suffix="_1")
-        new_attr_pred = AttributePredicate(self.attribute, primed_pred)
-
-        return new_attr_pred
-
-
-class Cache(object):
-
-    @contract(name=basestring)
-    def __init__(self, name):
-        self._values = {}
-        self.n_hits = 0
-        self.n_tot = 0
-        self.name = name
-
-    @property
-    @contract(returns="int,>=0")
-    def n_misses(self):
-        return self.n_tot - self.n_hits    
-
-    @property
-    @contract(returns="int,>=-1")
-    def ratio(self):
-        r = -1
-        if self.n_tot > 0:
-            r = self.n_hits / self.n_tot
-        return r
-       
-    @contract(key=basestring)
-    def lookup(self, key):
-        res = None
-        self.n_tot = self.n_tot + 1
-        if key in self._values:
-            res = self._values[key]
-            self.n_hit = self.n_hits + 1
-            log.debug("Cache %s hit: %s => %s" % (self.name, key, res))
-        else:
-            log.debug("Cache %s miss: %s" % (self.name, key))
-
-        return res
-
-    @contract(key=basestring)
-    def store(self, key, new_value):
-        self._values[key] = new_value
-
-
 class SMTProb(object):
 
-    OP_DECODE = { "plus": "+", "minus": "-", "greater": ">", "less": "<"}
+    OP_DECODE = { "plus": "+", "minus": "-", "greater": ">", "less": "<", "mul": "*" }
 
     _SMT_CACHE = Cache("smt")
     _NODE_TO_SMT_CACHE = Cache("node2smt")
@@ -342,7 +216,7 @@ class SMTProb(object):
         return res
 
     @staticmethod
-    @contract(node="dict", smt=basestring)
+    @contract(node="dict", smt="string")
     def node_cache_store(node, smt):
         node_key = node["code"].strip()
         SMTProb._NODE_TO_SMT_CACHE.store(node_key, smt)
@@ -369,7 +243,7 @@ class SMTProb(object):
         key = "%s-%s-%s" % (source_key, instr_key, target_key)
         SMTProb._SMT_CACHE.store(key, res)
 
-    @contract(node="dict", returns=basestring)
+    @contract(node="dict", returns="string")
     def node_to_smt(self, node):
         assert "code" in node
 
@@ -408,8 +282,12 @@ class SMTProb(object):
                     others = []
                     for curr in self.attributes:
                         assert isinstance(curr, AbstractAttribute)
-                        if curr.name != var:
-                            others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
+#                        if curr.name != var:
+#                            others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
+                        for attr_var in curr.variables:
+                            if attr_var != var:
+                                others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
+
                     if len(others) > 0:
                         smt = "(and %s %s)" % (smt, " ".join(others))
     
@@ -424,17 +302,22 @@ class SMTProb(object):
                 smt = "(= %s_1 %s)" % (var, self.node_to_smt(rhs)) # TODO primed name
 
                 # force other primed vars to be equal to non-primed vars
+#                log.debug("Processing attributes: %s" % self.attributes)
                 others = []
                 for curr in self.attributes:
                     assert isinstance(curr, AbstractAttribute)
-                    if curr.name != var:
-                        others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
+
+#                    if curr.name != var:
+#                        others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
+#                    log.debug("Var: %s -> Attribute: %s -> Variables: %s" % (var, curr, curr.variables))
+                    for attr_var in curr.variables:
+                        if attr_var != var:
+                            others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
                 if len(others) > 0:
                     smt = "(and %s %s)" % (smt, " ".join(others))
 
             elif node_exp_type == "ASTPostOp":
                 assert "code" in node_exp
-
 
                 # var is all but the last 2 chars
                 var = node_exp["code"][:-2] 
@@ -452,8 +335,12 @@ class SMTProb(object):
                     others = []
                     for curr in self.attributes:
                         assert isinstance(curr, AbstractAttribute)
-                        if curr.name != var:
-                            others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
+#                        if curr.name != var:
+#                            others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
+                        for attr_var in curr.variables:
+                            if attr_var != var:
+                                others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
+
                     if len(others) > 0:
                         smt = "(and %s %s)" % (smt, " ".join(others))
     
@@ -496,7 +383,7 @@ class SMTProb(object):
         res = list()
       
         for pred in pred_list:
-            assert isinstance(pred, AttributePredicate)
+            check("is_attribute_predicate", pred)
         
             pred_primed = pred.primed()
 
@@ -566,7 +453,7 @@ class SMTProb(object):
         smt_code = []
         declared_types = set([])
 
-        log.debug("Attributes: %s" % self.attributes)
+#        log.debug("Attributes: %s" % self.attributes)
     
         for attr in self.attributes:
             assert isinstance(attr, AbstractAttribute), attr
@@ -581,20 +468,27 @@ class SMTProb(object):
                 declared_types.add(type_name)
     
             # declare one constant for the (straight) attribute
-            attr_declaration = "(declare-const %s %s)" % (attr.name, type_name) #attr.domain.name)
+#            attr_declaration = "(declare-const %s %s)" % (attr.name, type_name) #attr.domain.name)
+            attr_declaration = ""
+            for (var, dt) in zip(attr.variables, attr.datatypes):
+                attr_declaration = "(declare-const %s %s)\n%s" % (var, dt.name, attr_declaration)
+
             smt_code.append(attr_declaration) 
  
+#            log.debug("Check primed flag: %s" % primed) 
             if primed:       
                 # declare one constant for the primed attribute
                 primed_attr = attr.primed()
-
-                primed_attr_declaration = "(declare-const %s %s)" % (primed_attr.name, type_name) # NB type of attr and primed_attr is the same #primed_attr.domain.name)
+#                log.debug("primed attribute: %s -> %s" % (primed_attr, primed_attr.variables))
+                primed_attr_declaration = ""
+                for (primed_var, primed_dt) in zip(primed_attr.variables, primed_attr.datatypes):
+                    primed_attr_declaration = "(declare-const %s %s)\n%s" % (primed_var, primed_dt, primed_attr_declaration) # NB type of attr and primed_attr is the same #primed_attr.domain.name)
                 smt_code.append(primed_attr_declaration)
  
         return smt_code
 
 
-    @contract(source_pred="list(is_attribute_predicate)", instr="None|dict", target_pred="None|list(is_attribute_predicate)", returns=basestring)
+    @contract(source_pred="list(is_attribute_predicate)", instr="None|dict", target_pred="None|list(is_attribute_predicate)", returns="string")
     def to_smt_problem(self, source_pred, instr=None, target_pred=None, preconditions=None):
         """
         This method returns a syntattically valid SMT problem corresponding to the
@@ -660,7 +554,7 @@ class SMTProb(object):
         elif default:
             raise ValueError(default)
     
-    @contract(commands=basestring, returns=basestring)
+    @contract(commands="string", returns="string")
     def get_tool_answer(self, commands):
         """
         Receives a string containing the commands to be executed by the tool.
@@ -677,17 +571,17 @@ class SMTProb(object):
 
         return answer
 
+    @contract(source_conf="tuple", guard=Precondition, preconditions="None|list(is_precondition)", returns="bool")
     def check_sat_guard(self, source_conf, guard, preconditions=None):
-        assert isinstance(source_conf, tuple) # it is a tuple of Predicate's
-        assert isinstance(self.attributes, list)   
-        assert isinstance(guard, Precondition)
-        assert preconditions is None or isinstance(preconditions, list)
-     
+ 
+        log.debug("Received source pred (%s): %s" % (type(source_conf), source_conf)) 
+
+        check("list(is_abstract_attribute)", self.attributes)       
 
 #        log.debug("In check_sat_guard ...")  
         source_pred = conf_to_attribute_predicate(source_conf, self.attributes)
 
-        log.debug("Source pred: %s" % source_pred)
+#        log.debug("Source pred: %s" % source_pred)
         new_preconditions = [ guard ]
         if preconditions:
             new_preconditions.extend(preconditions)
@@ -706,23 +600,22 @@ class SMTProb(object):
         return smt_res
 
 
-
-
-#    @contract(source_pred="is_predicate", instr=dict, target_pred="is_predicate", returns=bool)
+    @contract(source_conf="tuple", instr="dict", target_conf="tuple", preconditions="None|list(is_precondition)", returns="bool")
     def check_sat_instr(self, source_conf, instr, target_conf, preconditions=None):
+#        assert isinstance(source_conf, tuple) # it is a tuple of Predicate's
+#        assert isinstance(target_conf, tuple) # it is a tuple of Predicate's
+#        assert isinstance(self.attributes, list)   
+#        assert preconditions is None or isinstance(preconditions, list)
 
-        # TODO at the moment we don't use the precondition
-        assert isinstance(source_conf, tuple) # it is a tuple of Predicate's
-        assert isinstance(target_conf, tuple) # it is a tuple of Predicate's
-        assert isinstance(self.attributes, list)   
-        assert preconditions is None or isinstance(preconditions, list)
+        check("list(is_abstract_attribute)", self.attributes)
 
-#        self.instr = instr
-    
         source_pred = conf_to_attribute_predicate(source_conf, self.attributes)
         target_pred = conf_to_attribute_predicate(target_conf, self.attributes)
 
-        commands = self.to_smt_problem(source_pred, instr, target_pred) + "\n" + "(check-sat)\n"
+        check("list(is_attribute_predicate)", source_pred)
+        check("list(is_attribute_predicate)", target_pred)
+
+        commands = self.to_smt_problem(source_pred, instr, target_pred, preconditions=preconditions) + "\n" + "(check-sat)\n"
 
         answer = self.get_tool_answer(commands)
         smt_res = False
@@ -756,27 +649,8 @@ class SMTProb(object):
         # TODO run the (get-unsat-core) command
         pass
 
-class Precondition(object):
-
-    def __init__(self, node):
-        assert isinstance(node, dict) or isinstance(node, Precondition)
-        self.child = node
-
-    @property
-    @contract(returns="dict")
-    def node(self):
-        if isinstance(self.child, Precondition):
-            node = self.child.node
-        else:
-            node = self.child
-
-        return node
-
-class Negate(Precondition):
-    pass
-
 @contract(source="is_configuration", pc_source=PC, instr="dict", state_space=StateSpace, returns=ReachabilityResult)
-def check(source, pc_source, instr, state_space, preconditions=None, postconditions=None, pc_break_stack=None):
+def check_reach(source, pc_source, instr, state_space, preconditions=None, postconditions=None, pc_break_stack=None):
     assert preconditions is None or isinstance(preconditions, list)
     assert pc_break_stack is None or isinstance(pc_break_stack, list)
 
@@ -866,7 +740,7 @@ def check(source, pc_source, instr, state_space, preconditions=None, postconditi
         final_then = final_else = []
         pc_target = pc_source + 1
 
-        pc_break_stack.append(pc_target)
+        #pc_break_stack.append(pc_target)
 
         with SMTProb(state_space.attributes) as smt_prob:
 
@@ -970,7 +844,7 @@ def check(source, pc_source, instr, state_space, preconditions=None, postconditi
         assert "expression" in guard
         pc_target = pc_source + 1
 
-        pc_break_stack.append(pc_target)
+        #pc_break_stack.append(pc_target)
 
         with SMTProb(state_space.attributes) as smt_prob:
 
@@ -991,7 +865,12 @@ def check(source, pc_source, instr, state_space, preconditions=None, postconditi
             
             preconditions.append(Precondition(guard["expression"]))
 #            (reachable_while, edges_while, final_while) = compute_reachable(reachable_while, curr_pc, stms_while, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
+
+            pc_break_stack.append(pc_target)
             rr_while = compute_reachable(reachable_while, pc_source_while, stms_while, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
+            pc_break_stack.pop()
+
+            log.debug("While reachable result: %s" % rr_while)
 
             edges.extend(rr_while.edges)
             external.extend(rr_while.external_locations)
@@ -1044,7 +923,7 @@ def check(source, pc_source, instr, state_space, preconditions=None, postconditi
 #        log.debug("ASTBreak: %s ..." % instr)
         # do nothing
         log.info("Check ASTBreak: '%s' %s ..." % (instr_text, pc_source))
-        pc_target = pc_break_stack.pop()
+        pc_target = pc_break_stack[-1] # get the item pushed last TODO handle the label to go with the break  #pc_break_stack.pop()
         assert isinstance(pc_target, PC)
 
         # new reached configuration: the current configuration, 
@@ -1063,16 +942,16 @@ def check(source, pc_source, instr, state_space, preconditions=None, postconditi
         # (ASTBreak breaks the compositionality approach)
 
 
-        log.debug("%s%s =[break]=> %s%s" % (source, pc_source, reachable, pc_target))
+#        log.debug("%s%s =[break]=> %s%s" % (source, pc_source, reachable, pc_target))
 
 
 
     elif instr_type == "ASTReturn":
 
-        log.info("Check ASTReturn: '%s' %s ..." % (instr_text, pc_source))
+#        log.info("Check ASTReturn: '%s' %s ..." % (instr_text, pc_source))
     
         # do nothing
-
+        pass
     else:
         #raise ValueError("Instruction type not covered: %s" % instr)
         log.warning("Instruction ignored: %s" % instr)
@@ -1084,12 +963,12 @@ def check(source, pc_source, instr, state_space, preconditions=None, postconditi
 #    return (reachable, edges, final)
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges)
 
-@contract(conf="tuple", returns="list(is_attribute_predicate)")
+@contract(conf="tuple", attributes="list(is_abstract_attribute)", returns="list(is_attribute_predicate)")
 def conf_to_attribute_predicate(conf, attributes):
     res = []
     for (attr, pred) in zip(attributes, conf):
-        assert isinstance(attr, AbstractAttribute)
-        assert isinstance(pred, Predicate)
+        check("is_abstract_attribute", attr)
+        check("is_predicate", pred)
         res.append(AttributePredicate(attr, pred))
 
     return res
@@ -1130,8 +1009,9 @@ def get_class_attributes(klass):
 
     return klass.ast["attributes"]
 
+@contract(method=Method, returns="list(string)")
 def get_method_attributes(method):
-    assert isinstance(method, Method)
+#    assert isinstance(method, Method)
     assert "parameters" in method.ast
     assert "declaredVar" in method.ast
 
@@ -1146,25 +1026,26 @@ def get_method_attributes(method):
     attributes = []
 
     for curr in klass_attributes + method_parameters:
-        attributes.append((curr["name"], False))
+#        attributes.append((curr["name"], False))
+        attributes.append(curr["name"])
     
     for curr in method_vars:
-        attributes.append((curr["name"], True))
+#        attributes.append((curr["name"], True))
+        attributes.append(curr["name"])
     
     return attributes
 
 
+@contract(method=Method, domains="list(tuple(list(string)|string,is_domain,bool))")
 def get_state_space_from_method(method, domains):
-    assert isinstance(method, Method)
-    assert isinstance(domains, dict)
 
     # 1. get method attributes
     attributes = get_method_attributes(method)
-    
-    attributes_dict = {}
-    for (attr, is_local) in attributes:
-        attributes_dict[attr] = is_local
-    
+##    
+##    attributes_dict = {}
+##    for (attr, is_local) in attributes:
+##        attributes_dict[attr] = is_local
+##    
 #    print "all attributes: %s" % attributes
 #    print "domains: %s" % domains
     # 2. initialize empty state-space
@@ -1183,22 +1064,27 @@ def get_state_space_from_method(method, domains):
 ##            abs_att = AbstractAttribute(attr, dom, is_local)# dom.values, dom.default)
 ##            ss.add_attribute(abs_att)
 
-    for (name, dom_spec) in domains.iteritems():
-        (variables, domain) = dom_spec
-        is_local = map(lambda a: attributes_dict[a], variables)
-        abs_att = AbstractAttribute(variables, domain, is_local)
+    for (var_names, domain, is_local) in domains: #.iteritems():
+        #assert isinstance(var_names, list) or isinstance(var_names, basestring), var_names
+        #assert isinstance(domain, Domain)
+        #assert isinstance(is_local, bool)
+        check('list(string)|string', var_names)
+        check('is_domain', domain)
+        check('bool', is_local)
+        
+#        assert isinstance(dom_spec, tuple)
+#        assert len(dom_spec) == 2
+#        assert isinstance(dom_spec[0], list)
+#        assert isinstance(dom_spec[1], Domain)
+
+        abs_att = AbstractAttribute(var_names, domain, is_local)
         ss.add_attribute(abs_att)
 
     return ss
 
 
-def translate_method_to_fsa(project, class_fqn, class_path, method_name, domains):
-
-    assert isinstance(project, Project)
-    assert isinstance(class_fqn, basestring)
-    assert isinstance(method_name, basestring)
-    assert isinstance(domains, dict)
-
+@contract(class_fqn="string", class_path="string", method_name="string", project=Project, returns=Method)
+def get_method(project, class_fqn, class_path, method_name):
     # check this works (case 1: no dot, case 2: one or more dots)
     class_name = ""
     package_name = ""
@@ -1214,10 +1100,13 @@ def translate_method_to_fsa(project, class_fqn, class_path, method_name, domains
     klass = Klass(class_name, package_name, "file://%s" % class_path, project)
     m = Method(method_name, klass)
 
-    state_space = get_state_space_from_method(m, domains)
+    return m
 
-    instructions = m.ast["stms"]
+@contract(method=Method, state_space=StateSpace, returns=TA)
+def translate_method_to_fsa(method, state_space):
 
-    fsa = transform(method_name, instructions, state_space)
+    instructions = method.ast["stms"]
 
-    return (m,fsa)
+    fsa = transform(method.name, instructions, state_space)
+
+    return fsa

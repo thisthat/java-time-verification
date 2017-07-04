@@ -1,6 +1,5 @@
 import abc
-from java2ta.abstraction import AbstractAttribute, StateSpace
-from java2ta.abstraction.domains import Domain
+from java2ta.abstraction.models import AbstractAttribute, StateSpace, Domain
 from java2ta.engine.rules import Rule
 from java2ta.ta.models import TA, Location, Edge
 from java2ta.ir.models import Klass, Thread, Method
