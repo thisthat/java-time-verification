@@ -236,6 +236,9 @@ class Klass(ASTNode):
     def get_ast(self):
         classes = self.project.get_file(self.path)
         
+        if not classes:
+            raise ValueError("Unable to load class. Name '%s'. Package name '%s'. Path '%s'." % (self.name, self.package_name, self.path))
+
         found = None
 
         for curr in classes:

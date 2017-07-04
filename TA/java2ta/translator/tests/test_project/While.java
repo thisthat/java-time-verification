@@ -17,16 +17,6 @@ public class While {
 
         i++;
 
-        foofoo:
-        while (j > 3) {
-            j--;
-            
-            if (i < 5) {
-                break;
-                i += 4000;
-            }
-        }
-
         outer:
         while (j > 0) {
             j = j * 2; 
@@ -34,6 +24,7 @@ public class While {
                 break outer;
                 j = j * 2;
             }
+            continue outer;
             j = i;
         }
 

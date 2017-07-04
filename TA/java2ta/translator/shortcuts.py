@@ -81,7 +81,7 @@ def build_loc(pred, pc):
     return loc
 
 @contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space=StateSpace, returns=ReachabilityResult)
-def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=None, pc_break_stack=None):
+def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=None, pc_jump_stack=None):
     """
     INPUT:
     - source_conf : list of abstract configuration
@@ -96,7 +96,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=
     """
     assert preconditions is None or isinstance(preconditions, list)
 
-    log.debug("Compute reachable: source_conf=%s, pc_source=%s, instr=%s, state_space=%s, preconditions=%s, pc_break_stack=%s" % (source_conf, pc_source, instr, state_space, preconditions, pc_break_stack))
+    log.debug("Compute reachable: source_conf=%s, pc_source=%s, instr=%s, state_space=%s, preconditions=%s, pc_jump_stack=%s" % (source_conf, pc_source, instr, state_space, preconditions, pc_jump_stack))
 
     edges = []
     reachable = []
@@ -125,7 +125,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, preconditions=
 
         for source in source_conf:
             # TODO in principle each invocation of check_reach(...) is independent from the others
-            rr = check_reach(source, curr_pc, curr_instr, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
+            rr = check_reach(source, curr_pc, curr_instr, state_space, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
     
             edges.extend(rr.edges) #new_edges)
             reachable = reachable | set(rr.configurations) # avoid duplicates #.extend(rr.configurations) #new_reachable)
@@ -649,31 +649,38 @@ class SMTProb(object):
         # TODO run the (get-unsat-core) command
         pass
 
-@contract(pc_break_stack="list[N](is_pc),N>0", break_target="string|None", returns="is_pc")
-def find_break_target(pc_break_stack, break_target):
+@contract(instr_type="string", pc_jump_stack="list[N](tuple(string|None,is_pc,is_pc)),N>0", target="string|None", returns="is_pc")
+def find_break_target(instr_type, pc_jump_stack, target):
 
-    pc_res = pc_break_stack[-1]
+    (identifier,pc_curr_continue,pc_curr_break) = pc_jump_stack[-1]
 
-    if break_target:
-        pc_res = None
-        pos = len(pc_break_stack)-1
-        while not pc_res and pos >= 0:
-            (identifier, pc_curr) = pc_break_stack[pos]
-            if identifier == break_target:
-                pc_res = pc_curr
+    if target:
+        found = False
+        pos = len(pc_jump_stack)-1
+        while not found and pos >= 0:
+            (identifier, pc_curr_continue, pc_curr_break) = pc_jump_stack[pos]
+            if identifier == target:
+                found = True
+            pos = pos - 1
 
-        if not pc_res:
-            raise ValueError("Cannot break to unknown label '%s'" % break_target)
+        if not found:
+            raise ValueError("Cannot break to unknown label '%s'" % target)
+
+
+    if instr_type == "ASTBreak":
+        pc_res = pc_curr_break
+    else:
+        pc_res = pc_curr_continue
 
     return pc_res
 
 @contract(source="is_configuration", pc_source=PC, instr="dict", state_space=StateSpace, returns=ReachabilityResult)
-def check_reach(source, pc_source, instr, state_space, preconditions=None, postconditions=None, pc_break_stack=None):
+def check_reach(source, pc_source, instr, state_space, preconditions=None, postconditions=None, pc_jump_stack=None):
     assert preconditions is None or isinstance(preconditions, list)
-    assert pc_break_stack is None or isinstance(pc_break_stack, list)
+    assert pc_jump_stack is None or isinstance(pc_jump_stack, list)
 
-    if pc_break_stack is None:
-        pc_break_stack = []
+    if pc_jump_stack is None:
+        pc_jump_stack = []
 
     if preconditions is None:
         preconditions = []
@@ -777,8 +784,8 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
             reachable_then = [ source ]
 
             preconditions.append(Precondition(guard["expression"]))
-#            (reachable_then, edges_then, final_then) = compute_reachable(reachable_then, curr_pc, stms_then, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
-            rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
+#            (reachable_then, edges_then, final_then) = compute_reachable(reachable_then, curr_pc, stms_then, state_space, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+            rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
     
             final_then = rr_then.final_locations
             edges.extend(rr_then.edges) #edges_then)
@@ -799,8 +806,8 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
             reachable_else = [ source ]
 
             preconditions.append(Negate(guard["expression"]))
-#            (reachable_else, edges_else, final_else) = compute_reachable(reachable_else, curr_pc, stms_else, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
-            rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
+#            (reachable_else, edges_else, final_else) = compute_reachable(reachable_else, curr_pc, stms_else, state_space, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+            rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
 
             final_else = rr.final_locations
        
@@ -879,9 +886,9 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
             
             preconditions.append(Precondition(guard["expression"]))
 
-            pc_break_stack.append((while_identifier, pc_target))
-            rr_while = compute_reachable(reachable_while, pc_source_while, stms_while, state_space, preconditions=preconditions, pc_break_stack=pc_break_stack)
-            pc_break_stack.pop()
+            pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
+            rr_while = compute_reachable(reachable_while, pc_source_while, stms_while, state_space, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+            pc_jump_stack.pop()
 
 #            log.debug("While reachable result: %s" % rr_while)
 
@@ -932,23 +939,33 @@ def check_reach(source, pc_source, instr, state_space, preconditions=None, postc
             reachable.append(source)
 
 
-    elif instr_type == "ASTBreak":
+    elif instr_type in [ "ASTBreak", "ASTContinue" ]:
+        # the main difference b/w ASTContinue and ASTBreak is that 
+        # the former goes back to the pc of the referred statement, while the
+        # latter goes *past* the pc of the referred statement 
 
         assert "target" in instr
 
-        break_identifier = instr["target"]
-        pc_target = find_break_target(pc_break_stack, break_identifier)
-
+        target_identifier = instr["target"]
+        pc_target = find_break_target(instr_type, pc_jump_stack, target_identifier)
         assert isinstance(pc_target, PC)
+
+        edge_label = "break" if instr_type == "ASTBreak" else "continue"
+
+        if target_identifier:
+            edge_label = "%s %s" % (edge_label, target_identifier)
+
+
+        log.debug("Found pc target (%s): %s. PC break stack: %s" % (target_identifier, pc_target, pc_jump_stack))
 
         loc_out = build_loc(source, pc_target)
         # new edge: from source location to final location
-        edge_break = Edge(source_loc, loc_out, "break")
+        edge_break = Edge(source_loc, loc_out, edge_label)
         edges.append(edge_break)  
         external.append(loc_out)
 
         # no final locations
-        # (ASTBreak breaks the compositionality approach)
+        # (ASTBreak and ASTContinue break the compositionality approach)
     elif instr_type == "ASTReturn":
         # do nothing
         pass
