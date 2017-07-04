@@ -25,8 +25,8 @@ public interface IASTRE extends IASTVisitor {
 		mod,			// %
 		and,			// &&
 		or,				// ||
-		instanceOf		// instanceOf
-		;
+		instanceOf,		// instanceOf
+		empty;
 
 
 		public String print(){
@@ -77,7 +77,8 @@ public interface IASTRE extends IASTVisitor {
 	void visit(ASTREVisitor visitor);
 	String getCode();
 	int getLine();
-
+	boolean isTimeCritical();
+	void setTimeCritical(boolean timeCritical);
 
 	String print();
 }

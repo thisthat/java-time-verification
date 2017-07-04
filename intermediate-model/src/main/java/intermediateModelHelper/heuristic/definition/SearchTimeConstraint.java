@@ -1,5 +1,6 @@
 package intermediateModelHelper.heuristic.definition;
 
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
@@ -10,6 +11,7 @@ import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ import java.util.List;
 public abstract class SearchTimeConstraint {
 
 	/**
-	 * Stores the list of {@link Triplet} of time instruction the heurisitc found.
+	 * Stores the list of {@link Triplet} of time instruction the server.heuristic found.
 	 * It saves:
 	 * <ul>
 	 *     <li>Message</li>
@@ -33,11 +35,15 @@ public abstract class SearchTimeConstraint {
 	 * </ul>
 	 */
 	protected List<Constraint> timeConstraint = new ArrayList<>();
-
+	protected HashMap<IASTMethod, List<String>> timeVars = new HashMap<>();
+	protected ASTClass c = null;
+	protected String methodName = "";
 	/**
 	 * It used to set up internal resources
 	 */
-	public abstract void setup(ASTClass c);
+	public void setup(ASTClass c){
+		this.c = c;
+	}
 
 	/**
 	 * It used to accept a Statement
@@ -51,26 +57,49 @@ public abstract class SearchTimeConstraint {
 	 * @param method	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */
-	public abstract void nextMethod(ASTMethod method, Env env);
+	public void nextMethod(ASTMethod method, Env env){
+		setMethodName(method);
+	}
 
 	/**
 	 * It used to accept a new Constructor Definition
 	 * @param method	Statement to process
 	 * @param env	Envirorment visible to that statement
 	 */
-	public abstract void nextConstructor(ASTConstructor method, Env env);
+	public void nextConstructor(ASTConstructor method, Env env){
+		setMethodName(method);
+	}
+
+	private void setMethodName(IASTMethod name){
+		methodName = name.getName();
+	}
 
 	/**
 	 * Add a constraint to the list
 	 * @param message Message to store with the time constraint
 	 * @param stm	The instruction to add to the list
 	 */
-	protected Constraint addConstraint(String message, IASTStm stm){
-		Constraint elm = new Constraint(stm, getClass(), message, stm.getLine());
+	protected Constraint addConstraint(String message, IASTStm stm, boolean calculateRuntime){
+		int line = stm.getLine();
+		Constraint elm = new Constraint(stm, getClass(), message, line, c, methodName, calculateRuntime);
 		if(!timeConstraint.contains(elm))
 			timeConstraint.add( elm );
 		stm.addConstraint( elm );
+		//add the log of the constraint
+
 		return elm;
+	}
+
+	protected void addTimeVar(IASTMethod method, String name){
+		if(timeVars.containsKey(method)){
+			List<String> l = timeVars.get(method);
+			if(!l.contains(name))
+				l.add(name);
+		} else {
+			List<String> l = new ArrayList<>();
+			l.add(name);
+			timeVars.put(method,l);
+		}
 	}
 
 	/**
@@ -81,6 +110,7 @@ public abstract class SearchTimeConstraint {
 		return timeConstraint;
 	}
 
-
-
+	public HashMap<IASTMethod, List<String>> getTimeVars() {
+		return timeVars;
+	}
 }

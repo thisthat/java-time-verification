@@ -8,6 +8,7 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.internal.compiler.lookup.*;
 import parser.Java2AST;
 import parser.UnparsableException;
 
@@ -600,6 +601,16 @@ public class JDTVisitor extends ASTVisitor {
 	}
 
 	@Override
+	public boolean visit(LabeledStatement node) {
+		int start = node.getStartPosition();
+		int stop = start + node.getLength();
+		String label = node.getLabel().getIdentifier();
+		ASTLabel l = new ASTLabel(start, stop, label);
+		lastMethod.addStms(l);
+		return true;
+	}
+
+	@Override
 	public boolean visit(WhileStatement node) {
 		IASTHasStms bck = lastMethod;
 		int start = node.getStartPosition();
@@ -913,6 +924,26 @@ public class JDTVisitor extends ASTVisitor {
 			}
 			mc.setClassPointed(classPointed);
 			//System.out.println(node.toString() + " points to " + classPointed);
+		} else {
+			ITypeBinding objType = expr.resolveTypeBinding();
+			if(objType != null){
+				IMethodBinding[] methods = objType.getDeclaredMethods();
+				for(IMethodBinding m : methods){
+					if(m.getName().equals(expr.getName().getFullyQualifiedName()) && m.getParameterTypes().length == pars.size()) {
+						ITypeBinding theClass = m.getDeclaringClass();
+						pkg = theClass.getPackage().getName();
+						nmm = theClass.getName();
+						if(nmm.contains("<")){
+							nmm = nmm.substring(0, nmm.indexOf("<"));
+						}
+						String classPointed = pkg + "." + nmm;
+						if(classPointed.startsWith(".")){
+							classPointed = classPointed.substring(1);
+						}
+						mc.setClassPointed(classPointed);
+					}
+				}
+			}
 		}
 		return mc;
 	}
@@ -1062,10 +1093,14 @@ public class JDTVisitor extends ASTVisitor {
 	}
 
 	private IASTRE mathExpression(InfixExpression expr) {
+
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		IASTRE.OPERATOR op = getOperator(expr.getOperator().toString());
+		/*if(op.equals(IASTRE.OPERATOR.mul)){
+			System.out.println("BRK");
+		}*/
 		IASTRE l = getExpr(expr.getLeftOperand());
 		IASTRE r = getExpr(expr.getRightOperand());
 		ASTBinary bin = new ASTBinary(start,stop, l, r, op);
@@ -1076,7 +1111,7 @@ public class JDTVisitor extends ASTVisitor {
 			int extstart, extstop;
 			extstart = extExpr.getStartPosition();
 			extstop = extstart + extExpr.getLength();
-			ASTBinary ext = new ASTBinary(extstart, extstop, prev, extended, op);
+			ASTBinary ext = new ASTBinary(start, extstop, prev, extended, op);
 			prev = ext;
 		}
 		return prev;
@@ -1275,8 +1310,8 @@ public class JDTVisitor extends ASTVisitor {
 			);
 		}
 
-		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
 
+		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
 		IMethodBinding method = node.resolveMethodBinding();
 		String pkg, nmm;
 		if(method != null){
@@ -1289,6 +1324,31 @@ public class JDTVisitor extends ASTVisitor {
 			}
 			mc.setClassPointed(classPointed);
 			//System.out.println(node.toString() + " points to " + classPointed);
+		} else {
+			Expression e = node.getExpression();
+			if(e != null){
+				ITypeBinding objType = e.resolveTypeBinding();
+				if(objType != null){
+					IMethodBinding[] methods = objType.getDeclaredMethods();
+					for(IMethodBinding m : methods){
+						if(m.getName().equals(node.getName().getFullyQualifiedName()) && m.getParameterTypes().length == pars.size()) {
+							ITypeBinding theClass = m.getDeclaringClass();
+							pkg = theClass.getPackage().getName();
+							nmm = theClass.getName();
+							if(nmm.contains("<")){
+								nmm = nmm.substring(0, nmm.indexOf("<"));
+							}
+							String classPointed = pkg + "." + nmm;
+							if(classPointed.startsWith(".")){
+								classPointed = classPointed.substring(1);
+							}
+							mc.setClassPointed(classPointed);
+						}
+					}
+				}
+			}
+
+
 		}
 		return mc;
 	}

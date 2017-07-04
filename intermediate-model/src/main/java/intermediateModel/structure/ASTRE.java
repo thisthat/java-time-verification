@@ -24,6 +24,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	List<String> usedVars = new ArrayList<>();
 	Env env = new Env();
 	private boolean isResetTime = false;
+	private String resetExpression = "";
 
 	public ASTRE(int start, int end, IASTRE expression) {
 		super(start, end);
@@ -158,4 +159,12 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		}
 		return bf.toString();
     }
+
+	public String getResetExpression() {
+		return resetExpression;
+	}
+
+	public void setResetExpression(String resetExpression) {
+		this.resetExpression = resetExpression;
+	}
 }

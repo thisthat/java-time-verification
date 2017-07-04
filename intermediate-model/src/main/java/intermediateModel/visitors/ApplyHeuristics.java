@@ -15,6 +15,7 @@ import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -64,6 +65,7 @@ public class ApplyHeuristics extends ParseIM {
 		//ah.subscribe(TimerType.class);
 		ah.subscribe(AnnotatedTypes.class);
 		ah.subscribe(SetTimeout.class);
+		ah.subscribe(AssignmentTimeVar.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
 	}
@@ -75,9 +77,12 @@ public class ApplyHeuristics extends ParseIM {
 	public void subscribe(Class<? extends SearchTimeConstraint> strategy){
 		strategiesTypes.add(strategy);
 	}
+	public void subscribe(SearchTimeConstraint objInstance) {
+		strategies.add(objInstance);
+	}
 
 	/**
-	 * This method trigger the application of the heuristic and analysis of the code.
+	 * This method trigger the application of the server.heuristic and analysis of the code.
 	 * @param c Class to analyze.
 	 */
 	public void analyze(ASTClass c){
@@ -127,6 +132,12 @@ public class ApplyHeuristics extends ParseIM {
 			analyzeMethod(m, eMethod);
 			analyze(m.getStms(), eMethod );
 		}
+
+		//storing vars in methodss
+		for(IASTMethod m : c.getMethods()) {
+			List<String> vars = getMethodTimeVars(m);
+			m.setTimeVars(vars);
+		}
 	}
 
 	@Override
@@ -150,7 +161,19 @@ public class ApplyHeuristics extends ParseIM {
 	@Override
 	protected void analyzeASTDoWhile(ASTDoWhile elm, Env env) {
 		super.analyze(elm.getStms(), env);
-		super.analyze(elm.getStms(), env);
+		//super.analyze(elm.getStms(), env);
+	}
+
+	@Override
+	protected void analyzeASTWhile(ASTWhile elm, Env env) {
+		super.analyzeASTWhile(elm, env);
+		super.analyze(elm.getExpr(), env);
+	}
+
+	@Override
+	protected void analyzeASTIf(ASTIf elm, Env env) {
+		super.analyzeASTIf(elm, env);
+		super.analyze(elm.getGuard(), env);
 	}
 
 	@Override
@@ -170,6 +193,17 @@ public class ApplyHeuristics extends ParseIM {
 		List<Constraint> out = new ArrayList<>();
 		for(SearchTimeConstraint s : strategies){
 			out.addAll(s.getTimeConstraint());
+		}
+		return out;
+	}
+
+	public List<String> getMethodTimeVars(IASTMethod m) {
+		List<String> out = new ArrayList<>();
+		for(SearchTimeConstraint s : strategies){
+			HashMap<IASTMethod,List<String>> tmp = s.getTimeVars();
+			if(tmp.containsKey(m)){
+				out.addAll(tmp.get(m));
+			}
 		}
 		return out;
 	}

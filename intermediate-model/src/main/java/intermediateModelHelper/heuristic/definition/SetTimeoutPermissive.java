@@ -51,6 +51,7 @@ public class SetTimeoutPermissive extends SearchTimeConstraint {
 
 	@Override
 	public void setup(ASTClass c) {
+		super.setup(c);
 		this.isSetReadTimeoutDefined = false;
 		this.isSetTimeoutDefined = false;
 
@@ -86,13 +87,6 @@ public class SetTimeoutPermissive extends SearchTimeConstraint {
 
 	}
 
-	@Override
-	public void nextMethod(ASTMethod method, Env env) {
-	}
-
-	@Override
-	public void nextConstructor(ASTConstructor method, Env env) {
-	}
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
@@ -115,11 +109,11 @@ public class SetTimeoutPermissive extends SearchTimeConstraint {
 				//check if is setting a timeout
 				//is require an input stream which has a timeout?
 				if(isReadingInputStream(elm) && isSetReadTimeoutDefined){
-					SetTimeoutPermissive.super.addConstraint("timeout", elm);
+					SetTimeoutPermissive.super.addConstraint("timeout", elm, true);
 				}
 				//check if it calls a method with timeout
 				if(requireSetTimout(elm) && isSetTimeoutDefined){
-					SetTimeoutPermissive.super.addConstraint("timeout", elm);
+					SetTimeoutPermissive.super.addConstraint("timeout", elm, true);
 				}
 			}
 		});

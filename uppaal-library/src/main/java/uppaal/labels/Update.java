@@ -18,8 +18,12 @@ public class Update extends Label {
 	}
 	
 	public Update(Update update){
-		if(update!=null)
+		if(update!=null) {
+			for(String u : update.getUpdates()){
+
+			}
 			this.updates.addAll(update.getUpdates());
+		}
 	}
 	
 	public Update(String update, int x, int y){
@@ -51,7 +55,12 @@ public class Update extends Label {
 	}
 	
 	public void add(Update update){
-		updates.addAll(update.getUpdates());
+		for(String a : update.getUpdates()){
+			if(!this.updates.contains(a)){
+				updates.add(a);
+			}
+		}
+		//updates.addAll(update.getUpdates());
 	}
 
 	public Element generateXMLElement() {

@@ -30,7 +30,7 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 
 	@Override
 	public void setup(ASTClass c) {
-
+		super.setup(c);
 	}
 
 	/**
@@ -48,6 +48,7 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 		if(expr == null){
 			return;
 		}
+
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
@@ -57,20 +58,10 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
 					String timeout = "";
-					UndefiniteTimeout.super.addConstraint(timeout, elm);
+					UndefiniteTimeout.super.addConstraint(timeout, elm, true);
 				}
 			}
 		});
-	}
-
-	@Override
-	public void nextMethod(ASTMethod method, Env env) {
-
-	}
-
-	@Override
-	public void nextConstructor(ASTConstructor method, Env env) {
-
 	}
 
 	private boolean containTimeOut(String pointer, String name, int nPars){

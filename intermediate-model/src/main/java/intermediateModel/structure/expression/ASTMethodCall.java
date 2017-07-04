@@ -17,6 +17,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
 	String classPointed = null;
+	boolean isTimeCall = false;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
 		super(start, end);
@@ -66,6 +67,10 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	}
 
 	public String getClassPointed() {
+		//remove <>
+		if(classPointed != null && classPointed.contains("<")){
+			return classPointed.substring(0, classPointed.indexOf("<"));
+		}
 		return classPointed;
 	}
 
@@ -79,15 +84,41 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		visitor.enterASTMethodCall(this);
 		if(exprCallee != null)
 			exprCallee.visit(visitor);
-		for(IASTRE p : parameters){
-			p.visit(visitor);
-		}
+		if(!visitor.isExcludePars())
+			for(IASTRE p : parameters){
+				p.visit(visitor);
+			}
 		visitor.exitASTMethodCall(this);
 		visitor.exitAll(this);
 	}
 
+	public boolean isTimeCall() {
+		return isTimeCall;
+	}
+
+	public void setTimeCall(boolean timeCall) {
+		isTimeCall = timeCall;
+	}
+
 	@Override
 	public String print() {
+		if(isTimeCall)
+			return "{" + this.printMethodCall() + ":replace}";
+		StringBuffer bf = new StringBuffer();
+		if(exprCallee != null)
+			bf.append(exprCallee.print() + "." + methodName + "(");
+		else
+			bf.append(methodName + "(");
+		for(IASTRE p : parameters){
+			bf.append(p.print());
+			bf.append(",");
+		}
+		bf.subSequence(0, bf.length()-1);
+		bf.append(")");
+		return bf.toString();
+	}
+
+	public String printMethodCall() {
 		StringBuffer bf = new StringBuffer();
 		if(exprCallee != null)
 			bf.append(exprCallee.print() + "." + methodName + "(");

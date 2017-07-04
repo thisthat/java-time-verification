@@ -12,6 +12,7 @@ import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
+import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import org.apache.logging.log4j.Level;
@@ -64,7 +65,7 @@ public class getFile extends indexMW {
 			flag = false;
 		}
 		if(!flag){
-			ParsePars.printErrorMessagePars(he);
+			ParsePars.printErrorMessagePars(he, "Expected `" + par1 + "`");
 			return;
 		}
 		String file_path = parameters.get(par1);
@@ -103,6 +104,8 @@ public class getFile extends indexMW {
 			ApplyHeuristics ah = new ApplyHeuristics();
 			ah.subscribe(AnnotatedTypes.class);
 			ah.subscribe(TimeoutResources.class);
+			ah.subscribe(AssignmentTimeVar.class);
+
 			ah.analyze(c);
 			//annotate each method
 			for(IASTMethod m : c.getMethods()){

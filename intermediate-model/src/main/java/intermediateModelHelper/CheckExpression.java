@@ -1,5 +1,6 @@
 package intermediateModelHelper;
 
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
@@ -8,6 +9,11 @@ import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.ASTVariable;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +23,8 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class CheckExpression {
+
+	static List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
 
 	/**
 	 * This method add to the definition of variable of the Env passed as parameter all the time relevant information.
@@ -46,6 +54,7 @@ public class CheckExpression {
 		if(rexp == null){
 			return false;
 		}
+
 		final boolean[] flag = {false};
 		rexp.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
@@ -57,9 +66,71 @@ public class CheckExpression {
 			public void enterASTAssignment(ASTAssignment elm) {
 				flag[0] = flag[0] || setVariableInEnv(elm, env);
 			}
+
 		});
 
 		return flag[0];
+	}
+
+	public static boolean checkMethodCall(ASTRE rexp, Env env){
+
+		if(rexp == null){
+			return false;
+		}
+		final boolean[] flag = {false};
+		rexp.getExpression().visit(new DefualtASTREVisitor(){
+			@Override
+			public void enterASTMethodCall(ASTMethodCall elm) {
+				flag[0] = flag[0] || setMethodCall(elm, env);
+			}
+
+		});
+		return flag[0];
+
+	}
+
+	private static boolean setMethodCall(ASTMethodCall elm, Env env) {
+		String pointer = elm.getClassPointed();
+		String name = elm.getMethodName();
+		List<IASTRE> pars = elm.getParameters();
+		int size = pars.size();
+		boolean flag = false;
+		if(pointer != null && containTimeOut(pointer, name, size)) {
+			flag = true;
+			elm.setTimeCall(true);
+			String timeout = "";
+			TimeMethod m = getTimeOut(pointer,name, size);
+			int[] p = m.getTimeouts();
+			for(int i : p){
+				IASTRE r = pars.get(i);
+				r.visit(new DefualtASTREVisitor(){
+					@Override
+					public void enterASTLiteral(ASTLiteral elm) {
+						IASTVar v = env.getVar(elm.getValue());
+						if(v != null){
+							v.setTimeCritical(true);
+						}
+					}
+				});
+			}
+		}
+		return flag;
+	}
+
+	private static boolean containTimeOut(String pointer, String name, int nPars){
+		for(TimeMethod m : timeMethods){
+			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
+				return true;
+		}
+		return false;
+	}
+
+	private static TimeMethod getTimeOut(String pointer, String name, int nPars){
+		for(TimeMethod m : timeMethods){
+			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
+				return m;
+		}
+		return null;
 	}
 
 	/**
@@ -95,49 +166,13 @@ public class CheckExpression {
 		var.setTimeCritical(v.isTimeCritical());
 		setVariableInEnv(var, where);
 		//check the expr
-		final boolean[] flag = {false};
-		if(v.getExpr() != null) {
-			v.getExpr().visit(new DefualtASTREVisitor() {
-				//method call
-
-				@Override
-				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
-						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
-							v.setTimeCritical(true);
-							var.setTimeCritical(true);
-							where.addVar(var);
-							flag[0] = true;
-						}
-					}
-					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
-						v.setTimeCritical(true);
-						var.setTimeCritical(true);
-						where.addVar(var);
-						flag[0] = true;
-					}
-				}
-
-				//math op between time
-				@Override
-				public void enterASTbinary(ASTBinary elm) {
-					switch (elm.getOp()){
-						case minus:
-						case plus:
-						case mul:
-						case div:
-						case mod:
-							if(checkIt(elm, where)){
-								v.setTimeCritical(true);
-								var.setTimeCritical(true);
-								where.addVar(var);
-								flag[0] = true;
-							}
-					}
-				}
-			});
+		boolean flag = checkRightHandAssignment(v.getExpr(), where);
+		if(flag){
+			v.setTimeCritical(true);
+			var.setTimeCritical(true);
+			where.addVar(var);
 		}
-		return flag[0];
+		return flag;
 	}
 
 	/**
@@ -159,23 +194,83 @@ public class CheckExpression {
 			String name = ((ASTLiteral) left).getValue();
 			IASTVar var = where.getVar(name);
 			if(var != null //should be never the case if code compiles
-					&& checkIt(v.getRight(), where)){ //if exists something time related
+					&& checkRightHandAssignment(v.getRight(), where)){ //if exists something time related
 				var.setTimeCritical(true);
 				flag[0] = true;//the assigned var is time relevant
-				v.getRight().visit(new DefualtASTREVisitor() { //and also all the var used inside the expr
-					@Override
-					public void enterASTLiteral(ASTLiteral elm) {
-						IASTVar var = where.getVar(elm.getValue());
-						if(var != null) { //avoid method call that can be literal as well
-							var.setTimeCritical(true);
-						}
-					}
-				});
+				setExprVarsTimeRelated(v.getRight(), where);
 			}
 		}
 		return flag[0];
 	}
 
+	public static boolean checkRightHandAssignment(IASTRE expr, Env where){
+		final boolean[] flag = {false};
+		if(expr != null) {
+			DefualtASTREVisitor visit = new DefualtASTREVisitor() {
+
+				//method call
+				@Override
+				public void enterASTMethodCall(ASTMethodCall elm) {
+					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
+						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
+							flag[0] = true;
+						}
+					}
+					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
+						flag[0] = true;
+					}
+				}
+
+				//math op between time
+				@Override
+				public void enterASTbinary(ASTBinary elm) {
+					switch (elm.getOp()){
+						case minus:
+						case plus:
+						case mul:
+						case div:
+						case mod:
+							if(checkIt(elm, where)){
+								flag[0] = true;
+								setExprVarsTimeRelated(elm, where);
+							}
+					}
+				}
+			};
+			visit.setExcludePars(true);
+			expr.visit(visit);
+			if(!flag[0]){
+				//check x = timeVar;
+				if(expr instanceof ASTLiteral){
+					String varName = ((ASTLiteral) expr).getValue();
+					flag[0] = where.existVarNameTimeRelevant(varName);
+				}
+			}
+		}
+		return flag[0];
+	}
+
+	private static void setExprVarsTimeRelated(IASTRE elm, Env where){
+		elm.visit(new DefualtASTREVisitor() { //and also all the var used inside the expr
+
+			List<String> varToSkip = new ArrayList<>();
+
+			@Override
+			public void enterASTAttributeAccess(ASTAttributeAccess elm) {
+				varToSkip.add(elm.getVariableName().getCode());
+			}
+
+			@Override
+			public void enterASTLiteral(ASTLiteral elm) {
+				if(varToSkip.contains(elm.getValue())) return;
+
+				IASTVar var = where.getVar(elm.getValue());
+				if(var != null) { //avoid method call that can be literal as well
+					var.setTimeCritical(true);
+				}
+			}
+		});
+	}
 	/**
 	 * The method accept a {@link IASTRE} expression and an {@link Env}.
 	 * It checks if the expression is a time relevant expression.

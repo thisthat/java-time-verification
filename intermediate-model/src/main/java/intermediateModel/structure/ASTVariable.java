@@ -1,9 +1,6 @@
 package intermediateModel.structure;
 
-import intermediateModel.interfaces.ASTVisitor;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.interfaces.IASTVisitor;
+import intermediateModel.interfaces.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -12,6 +9,7 @@ import intermediateModel.interfaces.IASTVisitor;
 public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
+	TimeUnit unit = TimeUnit.UNKNOWN;
 	private String typePointed;
 
 
@@ -64,6 +62,14 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 
 	public String getTypePointed() {
 		return typePointed;
+	}
+
+	public TimeUnit getUnit() {
+		return unit;
+	}
+
+	public void setUnit(TimeUnit unit) {
+		this.unit = unit;
 	}
 
 	public boolean equals(ASTAttribute o){

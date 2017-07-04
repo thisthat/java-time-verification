@@ -59,6 +59,7 @@ public class SetTimeout extends SearchTimeConstraint {
 
 	@Override
 	public void setup(ASTClass c) {
+		super.setup(c);
 		this.analysingConstructor = false;
 		this.isReadingWithTimeoutConstruct = false;
 		this.isReadingWithTimeout = false;
@@ -88,6 +89,7 @@ public class SetTimeout extends SearchTimeConstraint {
 
 	@Override
 	public void nextMethod(ASTMethod method, Env env) {
+		super.nextMethod(method,env);
 		this.analysingConstructor = false;
 		this.isReadingWithTimeout = false;
 		socketVariables.clear();
@@ -96,6 +98,7 @@ public class SetTimeout extends SearchTimeConstraint {
 
 	@Override
 	public void nextConstructor(ASTConstructor method, Env env) {
+		super.nextConstructor(method,env);
 		this.analysingConstructor = true;
 	}
 
@@ -141,14 +144,14 @@ public class SetTimeout extends SearchTimeConstraint {
 				}
 				//is require an input stream which has a timeout?
 				if(isReadingInputStream(elm) && (isReadingWithTimeout || isReadingWithTimeoutConstruct)){
-					SetTimeout.super.addConstraint("timeout", elm);
+					SetTimeout.super.addConstraint("timeout", elm, true);
 				}
 				//check if it calls a method with timeout
 				if(requireSetTimout(elm)){
 					IASTVar var = getVar(elm, env);
 					//check if variable was setted with timeout
 					if(socketVariables.contains(var))
-						SetTimeout.super.addConstraint("timeout", elm);
+						SetTimeout.super.addConstraint("timeout", elm, true);
 				}
 			}
 		});

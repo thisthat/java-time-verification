@@ -12,7 +12,12 @@ target
 *.png
 *.zip
 *.pdf
-[^(pom|log4j)]*.xml
+*.xml
+**/logs
+*.txt
+!pom.xml
+!log4j2.xml
+*.jar
 
 #[^log4j2]*.xml
 

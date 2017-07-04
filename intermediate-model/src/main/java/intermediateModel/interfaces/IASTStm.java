@@ -20,7 +20,7 @@ import java.util.Arrays;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public abstract class IASTStm implements IASTVisitor{
+public abstract class IASTStm implements IASTVisitor {
 
 	/**
 	 * Enum about the different visibility access level that Java offers
