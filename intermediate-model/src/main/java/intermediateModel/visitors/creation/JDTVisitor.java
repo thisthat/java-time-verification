@@ -33,6 +33,7 @@ public class JDTVisitor extends ASTVisitor {
 	private Stack<IASTHasStms> stackSwitch = new Stack<>();
 	private Stack<ASTSwitch> casewitch = new Stack<>();
 	private String path;
+	private String lastLabel = null;
 
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
@@ -417,6 +418,12 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 		ASTFor forstm = new ASTFor(start, stop);
+
+		if(this.lastLabel != null){
+			forstm.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
+
 		lastMethod.addStms(forstm);
 		lastMethod = forstm;
 		//init expr
@@ -456,6 +463,12 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		SingleVariableDeclaration v = node.getParameter();
 		int vstart = v.getStartPosition();
 		int vstop = vstart + v.getLength();
@@ -476,6 +489,9 @@ public class JDTVisitor extends ASTVisitor {
 		ASTRE expr = getExprState(node.getExpression());
 
 		ASTForEach foreach = new ASTForEach(start,stop, var, expr);
+		if(stmLabel != null){
+			foreach.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(foreach);
 		lastMethod = foreach;
 
@@ -492,8 +508,17 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTRE guard = getExprState(node.getExpression());
 		ASTIf ifstm = new ASTIf(start, stop, guard);
+		if(stmLabel != null){
+			ifstm.setIdentifier(stmLabel);
+		}
 
 		lastMethod.addStms(ifstm);
 
@@ -527,6 +552,12 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTTry elm;
 		if(node.resources().size() > 0){
 			//try with resources
@@ -538,6 +569,9 @@ public class JDTVisitor extends ASTVisitor {
 			elm = new ASTTryResources(start, stop, resources);
 		} else {
 			elm = new ASTTry(start,stop);
+		}
+		if(stmLabel != null){
+			elm.setIdentifier(stmLabel);
 		}
 		lastMethod.addStms(elm);
 
@@ -602,11 +636,7 @@ public class JDTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(LabeledStatement node) {
-		int start = node.getStartPosition();
-		int stop = start + node.getLength();
-		String label = node.getLabel().getIdentifier();
-		ASTLabel l = new ASTLabel(start, stop, label);
-		lastMethod.addStms(l);
+		this.lastLabel = node.getLabel().getIdentifier();
 		return true;
 	}
 
@@ -615,9 +645,16 @@ public class JDTVisitor extends ASTVisitor {
 		IASTHasStms bck = lastMethod;
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
 		ASTRE expr = getExprState(node.getExpression());
 		ASTWhile whilestm = new ASTWhile(start, stop, expr);
+		if(stmLabel != null){
+			whilestm.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(whilestm);
 		lastMethod = whilestm;
 
@@ -635,9 +672,17 @@ public class JDTVisitor extends ASTVisitor {
 		IASTHasStms bck = lastMethod;
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
 
 		ASTRE expr = getExprState(node.getExpression());
 		ASTDoWhile whilestm = new ASTDoWhile(start, stop, expr);
+		if(stmLabel != null){
+			whilestm.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(whilestm);
 		lastMethod = whilestm;
 
@@ -657,8 +702,17 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTRE expr = getExprState(node.getExpression());
 		ASTSwitch switchstm = new ASTSwitch(start, stop, expr);
+		if(stmLabel != null){
+			switchstm.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(switchstm);
 		casewitch.push(switchstm);
 
@@ -697,8 +751,17 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTRE expr = getExprState(node.getExpression());
 		ASTSynchronized sync = new ASTSynchronized(start, stop, expr);
+		if(stmLabel != null){
+			sync.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(sync);
 		lastMethod = sync;
 		node.getBody().accept(this);
@@ -714,21 +777,52 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(BreakStatement node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		lastMethod.addStms(new ASTBreak(start,stop));
+		ASTBreak b;
+		if(node.getLabel() != null){
+			b = new ASTBreak(start,stop, node.getLabel().getIdentifier());
+		} else {
+			b = new ASTBreak(start,stop);
+		}
+
+		if(this.lastLabel != null){
+			b.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
+		lastMethod.addStms(b);
 		return true;
 	}
 	@Override
 	public boolean visit(ContinueStatement node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		lastMethod.addStms(new ASTContinue(start,stop));
+		ASTContinue c;
+		if(node.getLabel() != null){
+			c = new ASTContinue(start, stop, node.getLabel().getIdentifier());
+		} else {
+			c = new ASTContinue(start, stop);
+		}
+		if(this.lastLabel != null){
+			c.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
+
+		lastMethod.addStms(c);
 		return true;
 	}
 	@Override
 	public boolean visit(ReturnStatement node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		lastMethod.addStms(new ASTReturn(start,stop, getExprState(node.getExpression())));
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+		ASTReturn r = new ASTReturn(start,stop, getExprState(node.getExpression()));
+		if(stmLabel != null){
+			r.setIdentifier(stmLabel);
+		}
+		lastMethod.addStms(r);
 		return true;
 	}
 
@@ -762,6 +856,10 @@ public class JDTVisitor extends ASTVisitor {
 				ASTRE re = new ASTRE(start, stop,
 						newVar
 				);
+				if(this.lastLabel != null){
+					re.setIdentifier(this.lastLabel);
+					this.lastLabel = null;
+				}
 				try {
 					bck.addStms(re);
 				} catch (Exception e){
@@ -778,6 +876,10 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(ExpressionStatement node) {
 		IASTHasStms bck = lastMethod;
 		ASTRE re = getExprState(node);
+		if(this.lastLabel != null){
+			re.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
 		try {
 			bck.addStms(re);
 		} catch (Exception e){
@@ -794,6 +896,10 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 		ASTThrow _throw = new ASTThrow(start, stop, getExprState(node.getExpression()) );
+		if(this.lastLabel != null){
+			_throw.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
 		lastMethod.addStms(_throw);
 		return true;
 	}
@@ -804,6 +910,10 @@ public class JDTVisitor extends ASTVisitor {
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
 		ASTRE expr =  new ASTRE(start, stop, getExpr(ctx));
+		if(this.lastLabel != null){
+			expr.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
 		return expr;
 	}
 
