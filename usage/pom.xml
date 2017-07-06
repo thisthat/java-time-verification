@@ -5,21 +5,21 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.3.5</version>
+        <version>0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.5</version>
     <artifactId>usage</artifactId>
     <dependencies>
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>intermediate-model</artifactId>
-            <version>0.3.5</version>
+            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>parallel-control-flow-graph</artifactId>
-            <version>0.2.3-SNAPSHOT</version>
+            <version>0.2.3</version>
         </dependency>
     </dependencies>
     <build>

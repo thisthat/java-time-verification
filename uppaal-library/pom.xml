@@ -5,7 +5,7 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.3.5</version>
+        <version>0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>uppaal-library</name>
@@ -57,7 +57,7 @@ Library created originally by ksluckow (https://github.com/ksluckow)
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>code-instrumentation</artifactId>
-            <version>0.0.1</version>
+            <version>0.1</version>
         </dependency>
     </dependencies>
     <build>

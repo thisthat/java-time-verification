@@ -5,13 +5,13 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.3.5</version>
+        <version>0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>Intermediate-Model</name>
     <packaging>jar</packaging>
     <artifactId>intermediate-model</artifactId>
-    <version>0.3.5</version>
+    <version>0.4</version>
     <description>
         The following module encapsulate all the structure of a Java source code file in an intermediate stucture that
         allows us to keep track of the information in the file and perform evaluation over it.
