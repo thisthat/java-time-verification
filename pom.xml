@@ -17,10 +17,10 @@
         <module>parallel-control-flow</module>
         <module>time-annotation</module>
         <module>server</module>
-        <module>testJUppaal</module>
         <module>uppaal-library</module>
         <module>code-instrumentation</module>
         <module>usage</module>
+        <module>correct-time-behavior</module>
     </modules>
 
     <scm>
