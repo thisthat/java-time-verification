@@ -8,12 +8,9 @@ import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.ImplicitResourceTimeout;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,13 +6,11 @@ import PCFG.structure.PCFG;
 import PCFG.structure.anonym.AnonymClass;
 import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
-import PCFG.structure.node.SyncNode;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
+import intermediateModelHelper.heuristic.definition.TimeInSignature;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
-import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +92,7 @@ public class OptimizeTimeAutomata implements IOptimization {
 	private void handleNodes(List<Node> V){
 		for(Node n : V){
 			if(n.getConstraint() != null) {
-				if(n.getConstraint().isCategory(AnnotatedTypes.class)){
+				if(n.getConstraint().isCategory(TimeInSignature.class)){
 					//n.setResetClock(true);
 					n.getConstraint().setValue("t >= " + filterValue(n.getConstraint().getValue()));
 				}
@@ -107,7 +105,7 @@ public class OptimizeTimeAutomata implements IOptimization {
 		for(Edge e : E){
 			Node n = e.getTo();
 			if(n.getConstraint() != null) {
-				if(n.getConstraint().isCategory(AnnotatedTypes.class)){
+				if(n.getConstraint().isCategory(TimeInSignature.class)){
 					e.getFrom().setResetClock(true);
 					e.setResetClock(true);
 					//n.getConstraint().setValue("t <= " + n.getConstraint().getValue());

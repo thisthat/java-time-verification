@@ -3,7 +3,6 @@ package intermediateModelHelper.heuristic.beta;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
-import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;

@@ -20,6 +20,11 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/resources/lib/com.microsoft.z3.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>intermediate-model</artifactId>
+            <version>0.4</version>
+        </dependency>
     </dependencies>
 
     <build>

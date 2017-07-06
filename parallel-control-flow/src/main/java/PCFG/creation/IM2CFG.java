@@ -10,7 +10,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
+import intermediateModelHelper.heuristic.definition.TimeInSignature;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
 import org.javatuples.KeyValue;
@@ -136,7 +136,7 @@ public class IM2CFG {
 	public List<RuntimeConstraint> getResetRuntimeConstraints() {
 		List<RuntimeConstraint> runtimeConstraints = new ArrayList<>();
 		for(Constraint c : getConstraints()){
-			if(!c.isCategory(AssignmentTimeVar.class) && !c.isCategory(AnnotatedTypes.class))
+			if(!c.isCategory(AssignmentTimeVar.class) && !c.isCategory(TimeInSignature.class))
 				continue;
 			for(RuntimeConstraint r : c.getRuntimeConstraints()){
 				if(!runtimeConstraints.contains(r))

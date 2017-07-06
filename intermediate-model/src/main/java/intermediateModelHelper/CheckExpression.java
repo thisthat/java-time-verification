@@ -1,19 +1,15 @@
 package intermediateModelHelper;
 
-import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModelHelper.envirorment.BuildEnvironment;
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.ASTVariable;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.envirorment.BuildEnvironment;
+import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +20,7 @@ import java.util.List;
  */
 public class CheckExpression {
 
-	static List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
+	static List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getMethodsWithTimeInSignature();
 
 	/**
 	 * This method add to the definition of variable of the Env passed as parameter all the time relevant information.

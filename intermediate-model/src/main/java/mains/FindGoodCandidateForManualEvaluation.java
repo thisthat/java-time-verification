@@ -1,7 +1,6 @@
 package mains;
 
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTDoWhile;
 import intermediateModel.structure.ASTWhile;
@@ -10,8 +9,6 @@ import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.indexing.IndexingProject;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 
 import java.io.File;
 import java.io.FileWriter;

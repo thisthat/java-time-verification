@@ -1,18 +1,16 @@
 package intermediateModel.visitors;
 
 
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
+import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 import intermediateModelHelper.heuristic.definition.*;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.visitors.interfaces.ParseIM;
-import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +46,7 @@ public class ApplyHeuristics extends ParseIM {
 	 * <ul>
 	 *     <li>{@link SetTimeout}</li>
 	 *     <li>{@link TimeoutResources}</li>
-	 *     <li>{@link AnnotatedTypes}</li>
+	 *     <li>{@link TimeInSignature}</li>
 	 * </ul>
 	 * @param c	Class to analyze
 	 * @return	List of time constraints with the predefined set of heuristics
@@ -63,7 +61,7 @@ public class ApplyHeuristics extends ParseIM {
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(UndefiniteTimeout.class);
 		//ah.subscribe(TimerType.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AssignmentTimeVar.class);
 		ah.analyze(c);
@@ -187,7 +185,6 @@ public class ApplyHeuristics extends ParseIM {
 			s.next(stm, env);
 		}
 	}
-
 
 	public List<Constraint> getTimeConstraint() {
 		List<Constraint> out = new ArrayList<>();

@@ -4,7 +4,6 @@ package intermediateModel.interfaces;
 import intermediateModel.structure.ASTVariable;
 import org.javatuples.Pair;
 
-import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
 /**

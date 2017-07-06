@@ -7,17 +7,9 @@ import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTMethod;
-import intermediateModelHelper.envirorment.temporal.ParseMethods;
-import intermediateModelHelper.envirorment.temporal.ParseTimeout;
-import intermediateModelHelper.envirorment.temporal.ParseTypes;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

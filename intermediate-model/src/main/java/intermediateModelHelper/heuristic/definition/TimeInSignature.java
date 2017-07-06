@@ -9,7 +9,6 @@ import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.structure.expression.ASTNewObject;
-import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
@@ -28,14 +27,14 @@ import java.util.Stack;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class AnnotatedTypes extends SearchTimeConstraint {
+public class TimeInSignature extends SearchTimeConstraint {
 
-	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
+	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getMethodsWithTimeInSignature();
 
 	IASTMethod currentMethod;
 	String className;
 
-	public AnnotatedTypes() {
+	public TimeInSignature() {
 	}
 
 	@Override
@@ -102,9 +101,9 @@ public class AnnotatedTypes extends SearchTimeConstraint {
 					}
 					if(timeout.length() > 1)
 						timeout = timeout.substring(0, timeout.length() - 1);
-					Constraint c = AnnotatedTypes.super.addConstraint(timeout, stm, false);
+					Constraint c = TimeInSignature.super.addConstraint(timeout, stm, false);
 					c.addRuntimeConstraints(new RuntimeConstraint(className, currentMethod.getName(), elm.getLine(), timeout));
-					AnnotatedTypes.super.addTimeVar(currentMethod, timeout);
+					TimeInSignature.super.addTimeVar(currentMethod, timeout);
 				}
 			}
 		});

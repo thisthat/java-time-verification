@@ -2,7 +2,6 @@ package intermediateModel.interfaces;
 
 
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import org.javatuples.Triplet;
 import parser.ASTSrc;
 
 import java.util.Arrays;

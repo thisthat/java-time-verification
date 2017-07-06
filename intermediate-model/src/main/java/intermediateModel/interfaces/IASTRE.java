@@ -1,7 +1,5 @@
 package intermediateModel.interfaces;
 
-import intermediateModel.visitors.DefualtASTREVisitor;
-
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%

@@ -1,18 +1,17 @@
 package at.aau.service.jobs;
 
-import java.io.File;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import at.aau.entity.JobEntry;
 import at.aau.entity.JobState;
 import at.aau.service.JobService;
 import at.aau.service.ProjectService;
 import at.aau.service.dto.CommitPair;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ExportChangesJob extends Thread{
 	private Long jobId;

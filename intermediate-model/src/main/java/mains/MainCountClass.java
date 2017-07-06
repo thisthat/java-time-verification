@@ -1,20 +1,10 @@
 package mains;
 
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
-import intermediateModelHelper.heuristic.definition.SetTimeout;
-import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.IndexingProject;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import org.javatuples.Triplet;
-import parser.UnparsableException;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -8,7 +8,6 @@ import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
-import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
