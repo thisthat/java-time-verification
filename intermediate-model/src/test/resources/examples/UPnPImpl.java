@@ -23,11 +23,20 @@ package com.aelitis.net.upnp.impl;
  * @author parg
  */
 
+import java.util.*;
+import java.net.*;
+import java.io.*;
+
 import com.aelitis.azureus.core.proxy.AEProxySelectorFactory;
-import com.aelitis.azureus.core.util.HTTPUtils;
-import com.aelitis.net.upnp.*;
-import com.aelitis.net.upnp.impl.device.*;
-import org.gudy.azureus2.core3.util.*;
+
+import org.gudy.azureus2.core3.util.AEMonitor;
+import org.gudy.azureus2.core3.util.AERunnable;
+import org.gudy.azureus2.core3.util.AsyncDispatcher;
+import org.gudy.azureus2.core3.util.Debug;
+import org.gudy.azureus2.core3.util.FileUtil;
+import org.gudy.azureus2.core3.util.SystemTime;
+import org.gudy.azureus2.core3.util.ThreadPool;
+import org.gudy.azureus2.core3.util.TorrentUtils;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderAdapter;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderException;
@@ -35,9 +44,9 @@ import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloaderFact
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocument;
 import org.gudy.azureus2.plugins.utils.xml.simpleparser.SimpleXMLParserDocumentException;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import com.aelitis.azureus.core.util.HTTPUtils;
+import com.aelitis.net.upnp.*;
+import com.aelitis.net.upnp.impl.device.*;
 
 public class
 UPnPImpl
