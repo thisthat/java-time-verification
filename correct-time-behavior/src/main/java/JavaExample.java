@@ -17,6 +17,7 @@ Notes:
 
 --*/
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import com.microsoft.z3.*;
@@ -2302,6 +2303,21 @@ class JavaExample
         System.out.println(e1.equals(e3));
     }
 
+
+    static {
+        String path = "/Users/giovanni/repository/java-xal/correct-time-behavior/src/main/resources/lib";
+        System.setProperty("java.library.path", path);
+        //set sys_paths to null so that java.library.path will be reevalueted next time it is needed
+        final Field sysPathsField;
+        try {
+            sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
+            sysPathsField.setAccessible(true);
+            sysPathsField.set(null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     public static void main(String[] args)
     {
         JavaExample p = new JavaExample();
