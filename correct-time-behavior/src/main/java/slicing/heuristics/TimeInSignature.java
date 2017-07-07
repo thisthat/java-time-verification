@@ -66,7 +66,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 	}
 
 	private void print(IASTStm stm) {
-		System.out.println("AssignmentTimeVar Found @" + stm.getLine());
+		System.out.println("Time in sign Found @" + stm.getLine());
 	}
 
 
