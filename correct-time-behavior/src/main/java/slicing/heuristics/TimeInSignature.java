@@ -9,6 +9,7 @@ import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeStatements;
 
 import java.util.List;
 
@@ -23,6 +24,12 @@ import java.util.List;
 public class TimeInSignature extends SearchTimeConstraint {
 
 	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getMethodsWithTimeInSignature();
+
+	TimeStatements listTimeStms;
+	public TimeInSignature() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
+
 
 	/**
 	 * @param stm	Statement to process
@@ -43,7 +50,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 				List<IASTRE> pars = elm.getParameters();
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
-					print(elm);
+					print(stm);
 				}
 			}
 		});
@@ -66,7 +73,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 	}
 
 	private void print(IASTStm stm) {
-		System.out.println("Time in sign Found @" + stm.getLine());
+		listTimeStms.addStatements(stm);
 	}
 
 

@@ -11,6 +11,7 @@ import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeStatements;
 
 /**
  * The {@link AssignmentTimeVar} searches for instances of time assignment
@@ -19,6 +20,12 @@ import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
  *
  */
 public class AssignmentTimeVar extends SearchTimeConstraint {
+
+	TimeStatements listTimeStms;
+
+	public AssignmentTimeVar() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
 
 	@Override
 	public void next(ASTRE stm, Env env) {
@@ -38,6 +45,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 					IASTVar var = env.getVar(elm.getNameString());
 					if(var != null){
 						var.setTimeCritical(true);
+						mark(stm);
 					}
 				}
 			}
@@ -52,6 +60,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 							IASTVar var = env.getVar(elm.getValue());
 							if(var != null){
 								var.setTimeCritical(true);
+								mark(stm);
 							}
 						}
 					});
@@ -61,8 +70,8 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 
 	}
 
-	private void print(IASTStm stm) {
-		System.out.println(" :: Assignment Found @" + stm.getLine());
+	private void mark(IASTStm stm) {
+		listTimeStms.addStatements(stm);
 	}
 
 }

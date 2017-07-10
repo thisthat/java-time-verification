@@ -59,13 +59,14 @@ public class ModelCreator {
     }
 
 
-    public void createVariable(String name){
+    public IntExpr createVariable(String name){
         IntExpr v = ctx.mkIntConst(name);
         BoolExpr t = ctx.mkLe(min_val, v);
         opt.Add(t);
         t = ctx.mkGe(over_max_val, v);
         opt.Add(t);
         vars.put(name, v);
+        return v;
     }
 
     public IntExpr getVar(String name) throws VarNotFoundException {
@@ -81,28 +82,27 @@ public class ModelCreator {
     }
 
     public void verifyVariable(IntExpr v) throws ModelNotCorrect {
-        Solver solver = ctx.mkSolver();
-        verify_min(solver,v);
-        verify_max(solver,v);
+        verify_min(v);
+        verify_max(v);
     }
 
-    private void verify_max(Solver solver, IntExpr v) throws ModelNotCorrect {
-        solver.push();
+    private void verify_max(IntExpr v) throws ModelNotCorrect {
+        opt.Push();
         Optimize.Handle mx = opt.MkMaximize(v);
         opt.Check();
         boolean f = validValue(mx.toString());
-        solver.pop();
+        opt.Pop();
         if(!f){
             throw new ModelNotCorrect();
         }
     }
 
-    private void verify_min(Solver solver, IntExpr v) throws ModelNotCorrect {
-        solver.push();
+    private void verify_min(IntExpr v) throws ModelNotCorrect {
+        opt.Push();
         Optimize.Handle mx = opt.MkMinimize(v);
         opt.Check();
         boolean f = validValue(mx.toString());
-        solver.pop();
+        opt.Pop();
         if(!f){
             throw new ModelNotCorrect();
         }
@@ -120,5 +120,18 @@ public class ModelCreator {
 
     public void addConstraint(BoolExpr t){
         opt.Add(t);
+    }
+
+    public Model getModel() {
+        opt.Check();
+        return opt.getModel();
+    }
+
+    public Context getCtx() {
+        return ctx;
+    }
+
+    public Optimize getOpt() {
+        return opt;
     }
 }

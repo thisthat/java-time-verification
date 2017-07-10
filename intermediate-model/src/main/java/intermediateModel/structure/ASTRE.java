@@ -122,7 +122,11 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 
 		ASTRE astre = (ASTRE) o;
 
-		return astre.getCode().equals(this.getCode());
+		if(astre.getLine() != this.getLine()) return false;
+		if(astre.getStart() != this.getStart()) return false;
+		if(astre.getEnd() != this.getEnd()) return false;
+
+		return true;
 
 	}
 

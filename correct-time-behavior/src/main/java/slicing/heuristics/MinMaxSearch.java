@@ -7,6 +7,7 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeStatements;
 
 /**
  * The {@link MinMaxSearch} searches for instances of time assignment
@@ -16,7 +17,13 @@ import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
  */
 public class MinMaxSearch extends SearchTimeConstraint {
 
-		@Override
+	TimeStatements listTimeStms;
+
+	public MinMaxSearch() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
+
+	@Override
 	public void next(ASTRE stm, Env env) {
 
 		if(stm.getExpression() == null){
@@ -28,19 +35,19 @@ public class MinMaxSearch extends SearchTimeConstraint {
 				if(elm.getClassPointed() != null && elm.getClassPointed().equals("java.lang.Math")){
 					String name = elm.getMethodName();
 					if(name.equals("min") || name.equals("max")){
-						checkForTime(elm, env);
+						checkForTime(elm, env, stm);
 					}
 				}
 			}
 		});
 	}
 
-	private void checkForTime(ASTMethodCall elm, Env env) {
+	private void checkForTime(ASTMethodCall elm, Env env, ASTRE stm) {
 		//if(1==1) return;
 		for(IASTRE exp : elm.getParameters()){
 			if(CheckExpression.checkRightHandAssignment(exp, env)){
 				elm.setTimeCritical(true);
-				System.out.println("Found max/min @" + elm.getLine());
+				listTimeStms.addStatements(stm);
 			}
 		}
 	}

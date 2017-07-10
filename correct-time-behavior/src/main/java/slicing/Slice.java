@@ -19,6 +19,9 @@ public class Slice {
     }
 
     public static void slice(ASTClass c) {
+        TimeStatements timeStms = TimeStatements.getInstance();
+        timeStms.clear();
         ah.analyze(c);
+
     }
 }
