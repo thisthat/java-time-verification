@@ -191,6 +191,7 @@ public class ManualExample {
             System.out.println(opt.getModel().toString());
             //System.out.println("deadline has value:" + mx.toString());
             err(mx.toString());
+            Model m = opt.getModel();
             System.err.append("Statistics\n\n");
             for(Statistics.Entry e : opt.getStatistics().getEntries()){
                 System.err.append(e.toString());
