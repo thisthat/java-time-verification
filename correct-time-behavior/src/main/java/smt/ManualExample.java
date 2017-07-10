@@ -26,10 +26,17 @@ public class ManualExample {
     }
 
 
+    private static IntExpr timeout;
+    private static IntExpr now;
+    private static IntExpr deadline;
+
+
     private static IntExpr max_val;
     private static IntExpr over_max_val;
     private static IntExpr min_val;
     private static FuncDecl time;
+
+    private static IntExpr timeApp;
 
     public static void main(String[] args) {
 
@@ -54,9 +61,17 @@ public class ManualExample {
         line3(ctx, opt);
         line4(ctx, opt);
 
-        Status s = opt.Check();
-        System.out.println(s.name());
-        System.out.println(opt.getModel().toString());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+
+        }
+
+        System.err.flush();
+
+//        Status s = opt.Check();
+//        System.out.println(s.name());
+//        System.out.println(opt.getModel().toString());
 
     }
 
@@ -90,24 +105,112 @@ public class ManualExample {
         opt.Add(min);
 
         time = ctx.mkFuncDecl("time", new IntSort[0], ctx.getIntSort());
-        IntExpr timeApp = (IntExpr) ctx.mkApp(time, new IntExpr[0]);
+        timeApp = (IntExpr) ctx.mkApp(time, new IntExpr[0]);
         BoolExpr t = ctx.mkEq(timeApp, ctx.mkInt(0));
         opt.Add(t);
 
     }
 
     private static void line1(Context ctx, Optimize opt) {
-
+        timeout = ctx.mkIntConst("timeout");
+        BoolExpr t = ctx.mkLe(min_val, timeout);
+        opt.Add(t);
+        t = ctx.mkGe(over_max_val, timeout);
+        opt.Add(t);
 
     }
 
     private static void line3(Context ctx, Optimize opt) {
+        now = ctx.mkIntConst("now");
+        BoolExpr t = ctx.mkEq(now, timeApp);
+        opt.Add(t);
+        t = ctx.mkLe(now, over_max_val);
+        opt.Add(t);
+        t = ctx.mkGe(now, min_val);
+        opt.Add(t);
+        Solver solver = ctx.mkSolver();
+
+        solver.push();
+        {
+            //System.out.println("\nMax Now\n");
+            Optimize.Handle mx = opt.MkMaximize(now);
+            Status s = opt.Check();
+            //System.out.println(s.name());
+            System.out.println(opt.getModel().toString());
+            //System.out.println("Now has value:" + mx.toString());
+            err(mx.toString());
+
+        }
+        solver.pop();
+
+
+        solver.push();
+        {
+            //System.out.println("\nMin Now\n");
+            Optimize.Handle mx = opt.MkMinimize(now);
+            Status s = opt.Check();
+            //System.out.println(s.name());
+            System.out.println(opt.getModel().toString());
+            //System.out.println("Now has value:" + mx.toString());
+            err(mx.toString());
+        }
+        solver.pop();
+
+
 
     }
 
     private static void line4(Context ctx, Optimize opt) {
+        deadline = ctx.mkIntConst("deadline");
+        BoolExpr t = ctx.mkEq(deadline, ctx.mkAdd(now, timeout));
+        opt.Add(t);
+        t = ctx.mkLe(deadline, over_max_val);
+        opt.Add(t);
+        t = ctx.mkGe(deadline, min_val);
+        opt.Add(t);
+        Solver solver = ctx.mkSolver();
 
+        solver.push();
+        {
+            //System.out.println("\ndeadline max\n");
+            Optimize.Handle mx = opt.MkMaximize(deadline);
+            Status s = opt.Check();
+            //System.out.println(s.name());
+            System.out.println(opt.getModel().toString());
+            //System.out.println("deadline has value:" + mx.toString());
+            err(mx.toString());
+        }
+        solver.pop();
+
+        solver.push();
+        {
+            //System.out.println("\ndeadline min\n");
+            Optimize.Handle mx = opt.MkMinimize(deadline);
+            Status s = opt.Check();
+            //System.out.println(s.name());
+            System.out.println(opt.getModel().toString());
+            //System.out.println("deadline has value:" + mx.toString());
+            err(mx.toString());
+            System.err.append("Statistics\n\n");
+            for(Statistics.Entry e : opt.getStatistics().getEntries()){
+                System.err.append(e.toString());
+                System.err.append("\n");
+            }
+            for(String st : opt.getStatistics().getKeys()){
+                //System.out.println(opt.getStatistics().get(st));
+            }
+        }
+        solver.pop();
     }
 
+    private static void err(String output){
+        if( output.equals( "9223372036854775808" )){
+            System.out.println("UNSATISFIABLE");
+        }
+        if( output.equals( "-1" )){
+            System.out.println("UNSATISFIABLE");
+        }
+        System.out.println("-----");
+    }
 
 }
