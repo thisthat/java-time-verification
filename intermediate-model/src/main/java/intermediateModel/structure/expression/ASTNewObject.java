@@ -99,7 +99,7 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 			for(IASTRE p : parameters){
 				p.visit(visitor);
 			}
-		if(this.hiddenClass != null){
+		if(this.hiddenClass != null && !visitor.isExcludeHiddenClasses()){
 			this.hiddenClass.visit(new DefaultASTVisitor(){
 				@Override
 				public void enterASTRE(ASTRE elm) {
@@ -119,7 +119,7 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
-		if(this.hiddenClass != null){
+		if(this.hiddenClass != null && !visitor.isExcludeHiddenClasses()){
 			this.hiddenClass.visit(visitor);
 		}
 		visitor.exitASTNewObject(this);

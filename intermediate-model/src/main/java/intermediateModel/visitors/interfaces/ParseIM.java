@@ -244,10 +244,11 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTDoWhile elm, Env env) {
+		analyzeASTDoWhile(elm,env);
+
 		this.analyze(elm.getStms(), new Env(env));
 		this.analyze(elm.getExpr(), new Env(env));
 
-		analyzeASTDoWhile(elm,env);
 		analyzeEveryStm(elm,env);
 	}
 
@@ -294,13 +295,15 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTIf elm, Env env) {
+		analyzeASTIf(elm, env);
+
 		Env new_env = new Env(env);
 		this.analyze(elm.getGuard(), new_env);
 		this.analyze(elm.getIfBranch().getStms(), new Env(new_env));
-		if(elm.getElseBranch() != null)
+		if(elm.getElseBranch() != null) {
 			this.analyze(elm.getElseBranch().getStms(), new Env(new_env));
+		}
 
-		analyzeASTIf(elm, env);
 		analyzeEveryStm(elm, env);
 	}
 
@@ -416,12 +419,13 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTWhile elm, Env env) {
+		analyzeASTWhile(elm, env);
+
 		Env new_env = new Env(env);
 		//new_env.addVar(new ASTVariable(-1,-1,"WHILE","WHILE"));
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
 
-		analyzeASTWhile(elm, env);
 		analyzeEveryStm(elm,env);
 	}
 

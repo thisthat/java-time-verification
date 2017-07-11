@@ -7,7 +7,7 @@ import intermediateModel.structure.*;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public interface ASTVisitor<T> extends ASTREVisitor {
+public interface ASTVisitor extends ASTREVisitor {
 	void enterASTAttribute(ASTAttribute elm);
 	void enterASTBreak(ASTBreak elm);
 	void enterASTClass(ASTClass elm);

@@ -164,6 +164,7 @@ public class CheckExpression {
 		//check the expr
 		boolean flag = checkRightHandAssignment(v.getExpr(), where);
 		if(flag){
+			v.getExpr().setTimeCritical(true);
 			v.setTimeCritical(true);
 			var.setTimeCritical(true);
 			where.addVar(var);
@@ -192,6 +193,7 @@ public class CheckExpression {
 			if(var != null //should be never the case if code compiles
 					&& checkRightHandAssignment(v.getRight(), where)){ //if exists something time related
 				var.setTimeCritical(true);
+				v.getRight().setTimeCritical(true);
 				flag[0] = true;//the assigned var is time relevant
 				setExprVarsTimeRelated(v.getRight(), where);
 			}
@@ -226,23 +228,41 @@ public class CheckExpression {
 						case mul:
 						case div:
 						case mod:
-							if(checkIt(elm, where)){
+							if(notToString(elm) && checkIt(elm, where)){
 								flag[0] = true;
 								setExprVarsTimeRelated(elm, where);
+								elm.setTimeCritical(true);
 							}
 					}
 				}
 			};
 			visit.setExcludePars(true);
+			visit.setExcludeHiddenClass(true);
 			expr.visit(visit);
 			if(!flag[0]){
 				//check x = timeVar;
 				if(expr instanceof ASTLiteral){
 					String varName = ((ASTLiteral) expr).getValue();
 					flag[0] = where.existVarNameTimeRelevant(varName);
+					expr.setTimeCritical(true);
 				}
 			}
 		}
+		return flag[0];
+	}
+
+	private static boolean notToString(ASTBinary elm) {
+		boolean[] flag = {true};
+		DefualtASTREVisitor v = new DefualtASTREVisitor() {
+			@Override
+			public void enterASTMethodCall(ASTMethodCall elm) {
+				if(elm.getMethodName().equals("toString")){
+					flag[0] = false;
+				}
+			}
+		};
+		v.setExcludeHiddenClass(true);
+		elm.visit(v);
 		return flag[0];
 	}
 
@@ -281,7 +301,7 @@ public class CheckExpression {
 	 */
 	public static boolean checkIt(IASTRE elm, Env where) {
 		final boolean[] r = {false};
-		elm.visit(new DefualtASTREVisitor(){
+		DefualtASTREVisitor v = new DefualtASTREVisitor(){
 			@Override
 			public void enterASTLiteral(ASTLiteral literal) {
 				if(where.existVarNameTimeRelevant(literal.getValue()) ) //and time critical
@@ -300,8 +320,36 @@ public class CheckExpression {
 				}
 			}
 
-		});
+		};
+		v.setExcludeHiddenClass(true);
+		elm.visit(v);
 		return r[0];
+	}
+
+	public static boolean checkBooleanTimeComparison(IASTRE expr, Env env){
+		boolean[] find = {false};
+		//search for A {<,<=,>,>=} C
+		DefualtASTREVisitor v = new DefualtASTREVisitor(){
+			@Override
+			public void enterASTbinary(ASTBinary elm) {
+				switch (elm.getOp()){
+					case less:
+					case lessEqual:
+					case greater:
+					case greaterEqual:
+					case equality:
+					case notEqual:
+						if(CheckExpression.checkIt(elm, env)){
+							expr.setTimeCritical(true);
+							elm.setTimeCritical(true);
+							find[0] = true;
+						}
+				}
+			}
+		};
+		v.setExcludeHiddenClass(true);
+		expr.visit(v);
+		return find[0];
 	}
 
 	private static List<String> getSignature(List<IASTRE> parameters, Env where){

@@ -11,13 +11,23 @@ import intermediateModel.structure.expression.*;
 public class DefualtASTREVisitor implements ASTREVisitor {
 
 	boolean excludePars = false;
+	boolean excludeHiddenClass = true;
 
 	public void setExcludePars(boolean excludePars) {
 		this.excludePars = excludePars;
 	}
 
+	public void setExcludeHiddenClass(boolean excludeHiddenClass) {
+		this.excludeHiddenClass = excludeHiddenClass;
+	}
+
 	public boolean isExcludePars() {
 		return excludePars;
+	}
+
+	@Override
+	public boolean isExcludeHiddenClasses() {
+		return excludeHiddenClass;
 	}
 
 	@Override
