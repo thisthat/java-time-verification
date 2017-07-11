@@ -31,17 +31,20 @@ public class PrintTimeVar extends SearchTimeConstraint {
 			return;
 		}
 
-		//record time vars
-		stm.visit(new DefaultASTVisitor(){
+		//record time vars avoiding going into hidden classes
+		//hidden classes are handled in ApplyHeuristics
+		DefaultASTVisitor v = new DefaultASTVisitor(){
 			@Override
 			public void enterASTLiteral(ASTLiteral elm) {
 				String name = elm.getValue();
 				if(env.existVarNameTimeRelevant(name)){
 					//System.out.print(name + " ");
-					print(stm);
+					//print(stm);
 				}
 			}
-		});
+		};
+		v.setExcludeHiddenClass(true);
+		stm.visit(v);
 
 
 	}

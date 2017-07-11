@@ -1,6 +1,6 @@
-package slicing.model;
+package slicing.model.interfaces;
 
-import slicing.model.interfaces.IReducedVisitor;
+import slicing.model.visitor.IReducedVisitor;
 
 /**
  * Created by giovanni on 11/07/2017.

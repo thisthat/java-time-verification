@@ -1,4 +1,4 @@
-package slicing.model.interfaces;
+package slicing.model.visitor;
 
 
 /**

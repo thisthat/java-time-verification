@@ -2,29 +2,23 @@ package slicing.heuristics;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.structure.expression.ASTVariableDeclaration;
-import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 import slicing.TimeStatements;
 
 /**
- * The {@link BooleanExpression} searches for instances of time assignment
+ * The {@link ReturnExpression} searches for instances of time assignment
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  *
  */
-public class BooleanExpression extends SearchTimeConstraint {
+public class ReturnExpression extends SearchTimeConstraint {
 
 	TimeStatements listTimeStms;
 
-	public BooleanExpression() {
+	public ReturnExpression() {
 		this.listTimeStms = TimeStatements.getInstance();
 	}
 
@@ -36,11 +30,7 @@ public class BooleanExpression extends SearchTimeConstraint {
 			return;
 		}
 
-		if(stm.getLine() == 80){
-			System.out.println("BRK");
-		}
-
-		if(CheckExpression.checkBooleanTimeComparison(stm.getExpression(), env)){
+		if(CheckExpression.checkRightHandAssignment(stm.getExpression(), env)){
 			mark(stm);
 		}
 	}

@@ -38,7 +38,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 		//we assume that the variable assigned is already in the environment
 		//this is assured by the class that trigger this method
 		//we only cover the case of Math.max/min because all the others are already covered
-		stm.visit(new DefaultASTVisitor(){
+		DefaultASTVisitor v = new DefaultASTVisitor(){
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 				if(elm.getExpr().isTimeCritical()){
@@ -54,7 +54,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 			public void enterASTAssignment(ASTAssignment elm) {
 				if(elm.getRight().isTimeCritical()){
 					IASTRE lexpr = elm.getLeft();
-					lexpr.visit(new DefualtASTREVisitor(){
+					DefualtASTREVisitor v = new DefualtASTREVisitor(){
 						@Override
 						public void enterASTLiteral(ASTLiteral elm) {
 							IASTVar var = env.getVar(elm.getValue());
@@ -63,10 +63,14 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 								mark(stm);
 							}
 						}
-					});
+					};
+					v.setExcludeHiddenClass(true);
+					lexpr.visit(v);
 				}
 			}
-		});
+		};
+		v.setExcludeHiddenClass(true);
+		stm.visit(v);
 
 	}
 

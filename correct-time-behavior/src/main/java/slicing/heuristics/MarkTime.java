@@ -13,7 +13,7 @@ import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
  */
 public class MarkTime extends SearchTimeConstraint {
 
-		@Override
+	@Override
 	public void next(ASTRE stm, Env env) {
 		CheckExpression.checkRE(stm,env);
 	}

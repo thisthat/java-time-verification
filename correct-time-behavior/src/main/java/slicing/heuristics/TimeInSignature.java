@@ -5,6 +5,7 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
@@ -42,7 +43,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 		if(expr == null){
 			return;
 		}
-		expr.visit(new DefualtASTREVisitor(){
+		DefualtASTREVisitor v = new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
 				String pointer = elm.getClassPointed();
@@ -51,9 +52,21 @@ public class TimeInSignature extends SearchTimeConstraint {
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
 					print(stm);
+				} else {
+					boolean flag = false;
+					for(IASTRE e : pars){
+						if(CheckExpression.checkIt(e, env)){
+							flag = true;
+						}
+					}
+					if(flag){
+						print(stm);
+					}
 				}
 			}
-		});
+		};
+		v.setExcludeHiddenClass(true);
+		expr.visit(v);
 	}
 
 	private boolean containTimeOut(String pointer, String name, int nPars){
@@ -64,13 +77,6 @@ public class TimeInSignature extends SearchTimeConstraint {
 		return false;
 	}
 
-	private TimeMethod getTimeOut(String pointer, String name, int nPars){
-		for(TimeMethod m : timeMethods){
-			if(m.getClassName().equals(pointer) && m.getMethodName().equals(name) && m.getSignature().size() == nPars)
-				return m;
-		}
-		return null;
-	}
 
 	private void print(IASTStm stm) {
 		listTimeStms.addStatements(stm);
