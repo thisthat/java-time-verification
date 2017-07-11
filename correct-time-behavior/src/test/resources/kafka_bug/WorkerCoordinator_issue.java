@@ -69,15 +69,6 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
             client.poll(Math.min(remaining, timeToNextHeartbeat(now)));
             now = System.currentTimeMillis();
 
-            //fake lines
-            Object a = new Object(){
-                @Override
-                public String toString() {
-                    long nowww = System.currentTimeMillis();
-                    return super.toString() + nowww;
-                }
-            };
-            return 10 + now;
         }
     }
 
