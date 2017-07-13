@@ -45,6 +45,24 @@ public class While extends Stm {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        While aWhile = (While) o;
+
+        if (expr != null ? !expr.equals(aWhile.expr) : aWhile.expr != null) return false;
+        return whileBody != null ? whileBody.equals(aWhile.whileBody) : aWhile.whileBody == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = expr != null ? expr.hashCode() : 0;
+        result = 31 * result + (whileBody != null ? whileBody.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public void visit(ReducedVisitor visitor) {
         visitor.enterWhile(this);
         if(expr != null)

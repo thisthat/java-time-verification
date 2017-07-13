@@ -51,4 +51,22 @@ public class ASTPostOp extends IASTStm implements IASTRE {
 		visitor.exitASTPostOp(this);
 		visitor.exitAll(this);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTPostOp astPostOp = (ASTPostOp) o;
+
+		if (var != null ? !var.equals(astPostOp.var) : astPostOp.var != null) return false;
+		return type == astPostOp.type;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = var != null ? var.hashCode() : 0;
+		result = 31 * result + (type != null ? type.hashCode() : 0);
+		return result;
+	}
 }

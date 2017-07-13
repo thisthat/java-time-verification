@@ -49,4 +49,24 @@ public class Method extends Stm {
             s.visit(visitor);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Method method = (Method) o;
+
+        if (body != null ? !body.equals(method.body) : method.body != null) return false;
+        if (name != null ? !name.equals(method.name) : method.name != null) return false;
+        return signature != null ? signature.equals(method.signature) : method.signature == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = body != null ? body.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (signature != null ? signature.hashCode() : 0);
+        return result;
+    }
 }

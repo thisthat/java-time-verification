@@ -54,6 +54,26 @@ public class If extends Stm {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        If anIf = (If) o;
+
+        if (expr != null ? !expr.equals(anIf.expr) : anIf.expr != null) return false;
+        if (ifBody != null ? !ifBody.equals(anIf.ifBody) : anIf.ifBody != null) return false;
+        return elseBody != null ? elseBody.equals(anIf.elseBody) : anIf.elseBody == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = expr != null ? expr.hashCode() : 0;
+        result = 31 * result + (ifBody != null ? ifBody.hashCode() : 0);
+        result = 31 * result + (elseBody != null ? elseBody.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public void visit(ReducedVisitor visitor) {
         visitor.enterIf(this);
         if(expr != null){

@@ -45,6 +45,24 @@ public class MethodCall extends Stm {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MethodCall that = (MethodCall) o;
+
+        if (pointedClass != null ? !pointedClass.equals(that.pointedClass) : that.pointedClass != null) return false;
+        return methodCall != null ? methodCall.equals(that.methodCall) : that.methodCall == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = pointedClass != null ? pointedClass.hashCode() : 0;
+        result = 31 * result + (methodCall != null ? methodCall.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public void visit(ReducedVisitor visitor) {
         visitor.enterMethodCall(this);
         if(methodCall != null)

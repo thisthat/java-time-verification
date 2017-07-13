@@ -60,4 +60,24 @@ public class ASTConditional extends IASTStm implements IASTRE {
 		visitor.exitASTConditional(this);
 		visitor.exitAll(this);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTConditional that = (ASTConditional) o;
+
+		if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+		if (thenExpr != null ? !thenExpr.equals(that.thenExpr) : that.thenExpr != null) return false;
+		return elseExpr != null ? elseExpr.equals(that.elseExpr) : that.elseExpr == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = expr != null ? expr.hashCode() : 0;
+		result = 31 * result + (thenExpr != null ? thenExpr.hashCode() : 0);
+		result = 31 * result + (elseExpr != null ? elseExpr.hashCode() : 0);
+		return result;
+	}
 }

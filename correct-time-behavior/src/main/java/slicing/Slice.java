@@ -39,8 +39,11 @@ public class Slice {
     private List<Stm> current;
     private List<TimeElement> timeStms;
 
-
     public static HashMap<IASTMethod, Method> slice(ASTClass c) {
+        return slice(c,true);
+    }
+
+    public static HashMap<IASTMethod, Method> slice(ASTClass c, boolean shrink) {
         TimeStatements timeStms = TimeStatements.getInstance();
         timeStms.clear();
         ah.analyze(c);
@@ -48,8 +51,10 @@ public class Slice {
         Slice slicer = new Slice(c);
         slicer.start();
         HashMap<IASTMethod,Method> slices = slicer.getSlices();
-        for(IASTMethod k : slices.keySet()){
-            Shrinker.shrink( slices.get(k) );
+        if(shrink) {
+            for (IASTMethod k : slices.keySet()) {
+                Shrinker.shrink(slices.get(k));
+            }
         }
         return slices;
     }

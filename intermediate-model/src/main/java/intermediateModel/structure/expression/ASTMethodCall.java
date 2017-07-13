@@ -150,4 +150,28 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		visitor.exitASTMethodCall(this);
 		visitor.exitAll(this);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTMethodCall that = (ASTMethodCall) o;
+
+		if (isTimeCall != that.isTimeCall) return false;
+		if (methodName != null ? !methodName.equals(that.methodName) : that.methodName != null) return false;
+		if (exprCallee != null ? !exprCallee.equals(that.exprCallee) : that.exprCallee != null) return false;
+		if (parameters != null ? !parameters.equals(that.parameters) : that.parameters != null) return false;
+		return classPointed != null ? classPointed.equals(that.classPointed) : that.classPointed == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = methodName != null ? methodName.hashCode() : 0;
+		result = 31 * result + (exprCallee != null ? exprCallee.hashCode() : 0);
+		result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
+		result = 31 * result + (classPointed != null ? classPointed.hashCode() : 0);
+		result = 31 * result + (isTimeCall ? 1 : 0);
+		return result;
+	}
 }

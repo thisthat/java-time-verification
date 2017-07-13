@@ -41,6 +41,21 @@ public class Expression extends Stm {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Expression that = (Expression) o;
+
+        return expr != null ? expr.equals(that.expr) : that.expr == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return expr != null ? expr.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return expr.print();
     }

@@ -1,11 +1,13 @@
 package shrinker;
 
+import com.rits.cloning.Cloner;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import org.junit.Before;
 import org.junit.Test;
+import slicing.Shrinker;
 import slicing.Slice;
 import slicing.TimeElement;
 import slicing.TimeStatements;
@@ -87,7 +89,45 @@ public class TestShrinker {
         assertEquals(1, second.getElseBody().size());
     }
 
+    @Test
+    public void EqualSlice() throws Exception {
+        HashMap<IASTMethod, Method> slice = Slice.slice(c);
+        assertEquals(slice.size(), 1);
+        HashMap<IASTMethod, Method> noSlice = Slice.slice(c,false);
+        assertEquals(noSlice.size(), 1);
 
+        Method m1;
+        m1 = slice.get(c.getFirstMethodByName("poll"));
+        assertNotNull(m1);
+
+        Method m2;
+        m2 = noSlice.get(c.getFirstMethodByName("poll"));
+        assertNotNull(m2);
+
+        assertFalse(m1.equals(m2));
+    }
+
+    @Test
+    public void TestIdempotent() throws Exception {
+        HashMap<IASTMethod, Method> slice = Slice.slice(c);
+        assertEquals(slice.size(), 1);
+
+        Method m;
+        m = slice.get(c.getFirstMethodByName("poll"));
+        assertNotNull(m);
+
+        Cloner cloner = new Cloner();
+        Method m2 = cloner.deepClone(m);
+        assertNotNull(m2);
+        assertTrue(m.equals(m2));
+
+        Shrinker.shrink(m);
+        assertTrue(m.equals(m2));
+        Shrinker.shrink(m);
+        assertTrue(m.equals(m2));
+        Shrinker.shrink(m2);
+        assertTrue(m.equals(m2));
+    }
 
     private String load(String s) {
         return TestShrinker.class.getClassLoader().getResource(s).getFile();

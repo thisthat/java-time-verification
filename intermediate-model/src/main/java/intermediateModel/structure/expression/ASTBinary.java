@@ -85,4 +85,24 @@ public class ASTBinary extends IASTStm implements IASTRE {
 		visitor.exitASTbinary(this);
 		visitor.exitAll(this);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTBinary astBinary = (ASTBinary) o;
+
+		if (left != null ? !left.equals(astBinary.left) : astBinary.left != null) return false;
+		if (right != null ? !right.equals(astBinary.right) : astBinary.right != null) return false;
+		return op == astBinary.op;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = left != null ? left.hashCode() : 0;
+		result = 31 * result + (right != null ? right.hashCode() : 0);
+		result = 31 * result + (op != null ? op.hashCode() : 0);
+		return result;
+	}
 }

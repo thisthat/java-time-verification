@@ -1,7 +1,6 @@
 package slicing.model;
 
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
 import slicing.model.interfaces.Stm;
 import slicing.model.visitor.ReducedVisitor;
 
@@ -48,6 +47,26 @@ public class Assignment extends Stm {
         if(right != null)
             right.visit(visitor);
         visitor.exitAssignment(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Assignment that = (Assignment) o;
+
+        if (left != null ? !left.equals(that.left) : that.left != null) return false;
+        boolean ret = right != null ? right.equals(that.right) : that.right == null;
+        return ret;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = left != null ? left.hashCode() : 0;
+        result = 31 * result + (right != null ? right.hashCode() : 0);
+        return result;
     }
 
     @Override

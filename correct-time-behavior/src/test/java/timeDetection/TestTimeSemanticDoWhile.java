@@ -56,7 +56,7 @@ public class TestTimeSemanticDoWhile {
 
     @Test
     public void TestReducedModel() throws Exception {
-        HashMap<IASTMethod, Method> slice = Slice.slice(c);
+        HashMap<IASTMethod, Method> slice = Slice.slice(c, false);
         assertEquals(slice.size(), 1);
         Method m;
         m = slice.get(c.getFirstMethodByName("poll"));

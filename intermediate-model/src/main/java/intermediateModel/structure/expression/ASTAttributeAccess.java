@@ -61,4 +61,23 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 		visitor.exitASTAttributeAccess(this);
 		visitor.exitAll(this);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTAttributeAccess that = (ASTAttributeAccess) o;
+
+		if (attributeName != null ? !attributeName.equals(that.attributeName) : that.attributeName != null)
+			return false;
+		return variableName != null ? variableName.equals(that.variableName) : that.variableName == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = attributeName != null ? attributeName.hashCode() : 0;
+		result = 31 * result + (variableName != null ? variableName.hashCode() : 0);
+		return result;
+	}
 }

@@ -82,4 +82,5 @@ public interface IASTRE extends IASTVisitor {
 	void setTimeCritical(boolean timeCritical);
 
 	String print();
+	boolean equals(Object o);
 }
