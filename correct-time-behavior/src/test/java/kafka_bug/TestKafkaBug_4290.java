@@ -28,7 +28,7 @@ public class TestKafkaBug_4290 {
         String dir = load("config/methods.csv");
         dir = dir.substring(0, dir.lastIndexOf("/"));
         TemporalInfo.getInstance().loadUserDefined(dir);
-        String f = load("semantic/SemanticTest.java");
+        String f = load("kafka_bug/WorkerCoordinator_issue.java");
         List<ASTClass> cs = JDTVisitor.parse(f, f.substring(0, f.lastIndexOf("/")));
         c = cs.get(0);
     }
@@ -43,10 +43,10 @@ public class TestKafkaBug_4290 {
         Slice.slice(c);
         List<TimeElement> l = TimeStatements.getInstance().getStms();
         assertTrue("There should be some statements", l.size()>0);
-        int[] lines = {50,51,53,56,61,64,68,69,70,76,80};
-        assertEquals(l.size(), lines.length);
+        int[] lines = {50,51,53,56,61,64,68,69,70};
+        assertEquals(lines.length, l.size());
 
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < lines.length; i++){
             assertEquals(lines[i], l.get(i).getStm().getLine());
         }
 
