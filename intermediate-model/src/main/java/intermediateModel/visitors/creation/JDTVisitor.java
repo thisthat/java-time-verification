@@ -855,6 +855,7 @@ public class JDTVisitor extends ASTVisitor {
 				ASTRE re = new ASTRE(start, stop,
 						newVar
 				);
+				checkType(re, v.getInitializer());
 				if(this.lastLabel != null){
 					re.setIdentifier(this.lastLabel);
 					this.lastLabel = null;
@@ -909,11 +910,30 @@ public class JDTVisitor extends ASTVisitor {
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
 		ASTRE expr =  new ASTRE(start, stop, getExpr(ctx));
+		checkType(expr, ctx);
 		if(this.lastLabel != null){
 			expr.setIdentifier(this.lastLabel);
 			this.lastLabel = null;
 		}
 		return expr;
+	}
+
+	private void checkType(ASTRE expr, ASTNode ctx) {
+		//check return type
+		Expression e = null;
+		if(ctx instanceof ExpressionStatement){
+			e = ((ExpressionStatement) ctx).getExpression();
+		} else if (ctx instanceof Expression){
+			e = (Expression) ctx;
+		} else {
+			System.out.println("Type: " + ctx.getClass());
+		}
+		if(e != null) {
+			ITypeBinding type = e.resolveTypeBinding();
+			if (type != null) {
+				expr.setType(type.getName());
+			}
+		}
 	}
 
 	//Helper to nullify objects

@@ -31,7 +31,7 @@ public class ReturnExpression extends SearchTimeConstraint {
 			return;
 		}
 
-		if(CheckExpression.checkRightHandAssignment(expr, env)){
+		if(CheckExpression.checkRightHandAssignment(stm, expr, env)){
 			mark(stm);
 		}
 	}

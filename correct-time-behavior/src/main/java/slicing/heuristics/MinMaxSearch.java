@@ -46,7 +46,7 @@ public class MinMaxSearch extends SearchTimeConstraint {
 	private void checkForTime(ASTMethodCall elm, Env env, ASTRE stm) {
 		//if(1==1) return;
 		for(IASTRE exp : elm.getParameters()){
-			if(CheckExpression.checkRightHandAssignment(exp, env)){
+			if(CheckExpression.checkRightHandAssignment(stm, exp, env)){
 				elm.setTimeCritical(true);
 				listTimeStms.addStatements(stm, TimeElement.Type.MinMax);
 			}

@@ -55,12 +55,12 @@ public class CheckExpression {
 		rexp.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
-				flag[0] = flag[0] || setVariableInEnv(elm, env);
+				flag[0] = flag[0] || setVariableInEnv(rexp, elm, env);
 			}
 
 			@Override
 			public void enterASTAssignment(ASTAssignment elm) {
-				flag[0] = flag[0] || setVariableInEnv(elm, env);
+				flag[0] = flag[0] || setVariableInEnv(rexp, elm, env);
 			}
 
 		});
@@ -154,7 +154,7 @@ public class CheckExpression {
 	 * @param v			Variable to check
 	 * @param where		Envirorment where to add
 	 */
-	private static boolean setVariableInEnv(ASTVariableDeclaration v, Env where){
+	private static boolean setVariableInEnv(ASTRE state, ASTVariableDeclaration v, Env where){
 		//check the type
 		ASTVariable var = new ASTVariable(v.getStart(),v.getEnd(), v.getNameString(), v.getType());
 		var.setTypePointed(v.getTypePointed());
@@ -162,7 +162,7 @@ public class CheckExpression {
 		var.setTimeCritical(v.isTimeCritical());
 		setVariableInEnv(var, where);
 		//check the expr
-		boolean flag = checkRightHandAssignment(v.getExpr(), where);
+		boolean flag = checkRightHandAssignment(state, v.getExpr(), where);
 		if(flag){
 			v.getExpr().setTimeCritical(true);
 			v.setTimeCritical(true);
@@ -184,14 +184,14 @@ public class CheckExpression {
 	 * @param v			Variable to check
 	 * @param where		Envirorment where to add
 	 */
-	private static boolean setVariableInEnv(ASTAssignment v, Env where){
+	private static boolean setVariableInEnv(ASTRE state, ASTAssignment v, Env where){
 		IASTRE left = v.getLeft();
 		final boolean[] flag = new boolean[1];
 		if(left instanceof ASTLiteral){
 			String name = ((ASTLiteral) left).getValue();
 			IASTVar var = where.getVar(name);
 			if(var != null //should be never the case if code compiles
-					&& checkRightHandAssignment(v.getRight(), where)){ //if exists something time related
+					&& checkRightHandAssignment(state, v.getRight(), where)){ //if exists something time related
 				var.setTimeCritical(true);
 				v.getRight().setTimeCritical(true);
 				flag[0] = true;//the assigned var is time relevant
@@ -201,7 +201,7 @@ public class CheckExpression {
 		return flag[0];
 	}
 
-	public static boolean checkRightHandAssignment(IASTRE expr, Env where){
+	public static boolean checkRightHandAssignment(ASTRE state, IASTRE expr, Env where){
 		final boolean[] flag = {false};
 		if(expr != null) {
 			DefualtASTREVisitor visit = new DefualtASTREVisitor() {
@@ -228,7 +228,7 @@ public class CheckExpression {
 						case mul:
 						case div:
 						case mod:
-							if(notToString(elm) && checkIt(elm, where)){
+							if(notToString(state,elm) && checkIt(elm, where)){
 								flag[0] = true;
 								setExprVarsTimeRelated(elm, where);
 								elm.setTimeCritical(true);
@@ -251,7 +251,11 @@ public class CheckExpression {
 		return flag[0];
 	}
 
-	private static boolean notToString(ASTBinary elm) {
+	private static boolean notToString(ASTRE state, ASTBinary elm) {
+		String type = state.getType();
+		if(type != null && type.equals("String")){
+			return false;
+		}
 		boolean[] flag = {true};
 		DefualtASTREVisitor v = new DefualtASTREVisitor() {
 			@Override
