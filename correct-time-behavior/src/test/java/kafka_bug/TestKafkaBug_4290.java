@@ -1,10 +1,8 @@
 package kafka_bug;
 
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import slicing.Slice;

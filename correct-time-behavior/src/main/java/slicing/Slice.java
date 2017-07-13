@@ -47,7 +47,11 @@ public class Slice {
         //debug
         Slice slicer = new Slice(c);
         slicer.start();
-        return slicer.getSlices();
+        HashMap<IASTMethod,Method> slices = slicer.getSlices();
+        for(IASTMethod k : slices.keySet()){
+            Shrinker.shrink( slices.get(k) );
+        }
+        return slices;
     }
 
     private Slice(ASTClass _class) {
