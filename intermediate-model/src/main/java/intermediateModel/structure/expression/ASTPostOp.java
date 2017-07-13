@@ -28,6 +28,9 @@ public class ASTPostOp extends IASTStm implements IASTRE {
 				'}';
 	}
 
+	public IASTRE getVar() {
+		return var;
+	}
 
 	@Override
 	public void visit(ASTREVisitor visitor) {

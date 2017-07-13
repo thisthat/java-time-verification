@@ -69,4 +69,8 @@ public class ASTPreOp extends IASTStm implements IASTRE {
 		result = 31 * result + (type != null ? type.hashCode() : 0);
 		return result;
 	}
+
+	public IASTRE getVar() {
+		return var;
+	}
 }
