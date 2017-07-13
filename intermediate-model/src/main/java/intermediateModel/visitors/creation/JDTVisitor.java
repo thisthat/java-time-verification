@@ -925,8 +925,6 @@ public class JDTVisitor extends ASTVisitor {
 			e = ((ExpressionStatement) ctx).getExpression();
 		} else if (ctx instanceof Expression){
 			e = (Expression) ctx;
-		} else {
-			System.out.println("Type: " + ctx.getClass());
 		}
 		if(e != null) {
 			ITypeBinding type = e.resolveTypeBinding();
