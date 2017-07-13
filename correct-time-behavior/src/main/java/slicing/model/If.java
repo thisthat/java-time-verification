@@ -1,6 +1,6 @@
 package slicing.model;
 
-import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.ASTIf;
 import slicing.model.interfaces.Stm;
 import slicing.model.visitor.ReducedVisitor;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class If extends Stm {
 
-    IASTRE expr = null;
+    Stm expr = null;
     List<Stm> ifBody = new ArrayList<>();
     List<Stm> elseBody = new ArrayList<>();
 
@@ -20,11 +20,20 @@ public class If extends Stm {
         super(start, end, line, lineEnd, code);
     }
 
-    public IASTRE getExpr() {
+    public If(ASTIf stm) {
+        super(  stm.getStart(),
+                stm.getEnd(),
+                stm.getLine(),
+                stm.getLineEnd(),
+                stm.getCode()
+        );
+    }
+
+    public Stm getExpr() {
         return expr;
     }
 
-    public void setExpr(IASTRE expr) {
+    public void setExpr(Stm expr) {
         this.expr = expr;
     }
 

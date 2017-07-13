@@ -11,7 +11,7 @@ import java.util.List;
 public class TimeStatements {
     private static TimeStatements instance = null;
 
-    private List<IASTStm> stms = new ArrayList<>();
+    private List<TimeElement> stms = new ArrayList<>();
 
     public static synchronized TimeStatements getInstance(){
         if(instance == null){
@@ -20,14 +20,16 @@ public class TimeStatements {
         return instance;
     }
 
-    public synchronized void addStatements(IASTStm stm){
-        if(stms.contains(stm)){
-            return;
+    public synchronized void addStatements(IASTStm stm, TimeElement.Type type){
+        for(TimeElement t : stms){
+            if(t.getStm().equals(stm))
+                return;
         }
-        stms.add(stm);
+        TimeElement te = new TimeElement(stm, type);
+        stms.add(te);
     }
 
-    public synchronized List<IASTStm> getStms(){
+    public synchronized List<TimeElement> getStms(){
         return stms;
     }
 

@@ -11,6 +11,7 @@ import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeElement;
 import slicing.TimeStatements;
 
 /**
@@ -75,7 +76,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 	}
 
 	private void mark(IASTStm stm) {
-		listTimeStms.addStatements(stm);
+		listTimeStms.addStatements(stm, TimeElement.Type.Assignment);
 	}
 
 }

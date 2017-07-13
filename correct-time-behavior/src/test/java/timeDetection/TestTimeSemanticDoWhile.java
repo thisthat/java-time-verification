@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 /**
  * Created by giovanni on 06/07/2017.
  */
-public class TestTimeSemantic {
+public class TestTimeSemanticDoWhile {
 
     ASTClass c;
 
@@ -28,7 +28,7 @@ public class TestTimeSemantic {
         String dir = load("config/methods.csv");
         dir = dir.substring(0, dir.lastIndexOf("/"));
         TemporalInfo.getInstance().loadUserDefined(dir);
-        String f = load("semantic/SemanticTest.java");
+        String f = load("semantic/DoWhile.java");
         List<ASTClass> cs = JDTVisitor.parse(f, f.substring(0, f.lastIndexOf("/")));
         c = cs.get(0);
     }
@@ -47,7 +47,7 @@ public class TestTimeSemantic {
         Slice.slice(c);
         List<TimeElement> l = TimeStatements.getInstance().getStms();
         assertTrue("There should be some statements", l.size()>0);
-        int[] lines = {50,51,53,56,61,64,68,69,70,76,80,82};
+        int[] lines = {50,51,56,61,62};
         assertEquals(l.size(), lines.length);
         for(int i = 0; i < lines.length; i++){
             assertEquals(lines[i], l.get(i).getStm().getLine());
@@ -57,43 +57,43 @@ public class TestTimeSemantic {
     @Test
     public void TestReducedModel() throws Exception {
         HashMap<IASTMethod, Method> slice = Slice.slice(c);
-        assertEquals(slice.size(), 2);
-        Method m = null;
+        assertEquals(slice.size(), 1);
+        Method m;
         m = slice.get(c.getFirstMethodByName("poll"));
         assertNotNull(m);
-        assertEquals(4, m.getBody().size());
+        assertEquals(6, m.getBody().size());
         assertEquals(Assignment.class, m.getBody().get(0).getClass());
         assertEquals(Assignment.class, m.getBody().get(1).getClass());
-        assertEquals(Assignment.class, m.getBody().get(3).getClass());
+        assertEquals(If.class, m.getBody().get(2).getClass());
+        assertEquals(If.class, m.getBody().get(3).getClass());
+        assertEquals(Assignment.class, m.getBody().get(4).getClass());
+        assertEquals(While.class, m.getBody().get(5).getClass());
 
-        assertEquals(While.class, m.getBody().get(2).getClass());
-        While wBody = (While) m.getBody().get(2);
-        assertNotNull(wBody.getExpr());
-        assertEquals(7, wBody.getWhileBody().size());
+        While w = (While) m.getBody().get(5);
+        assertEquals(3, w.getWhileBody().size());
+        assertNotNull(w.getExpr());
 
-        assertEquals(If.class, wBody.getWhileBody().get(0).getClass());
-        assertEquals(If.class, wBody.getWhileBody().get(1).getClass());
-        assertEquals(MethodCall.class, wBody.getWhileBody().get(2).getClass());
-        assertEquals(Assignment.class, wBody.getWhileBody().get(3).getClass());
-        assertEquals(MethodCall.class, wBody.getWhileBody().get(4).getClass());
-        assertEquals(Assignment.class, wBody.getWhileBody().get(5).getClass());
-        assertEquals(Expression.class, wBody.getWhileBody().get(6).getClass());
+        assertEquals(If.class, w.getWhileBody().get(0).getClass());
+        assertEquals(If.class, w.getWhileBody().get(1).getClass());
+        assertEquals(Assignment.class, w.getWhileBody().get(2).getClass());
 
-        If first;
-        If second;
-        first = (If) wBody.getWhileBody().get(0);
-        second= (If) wBody.getWhileBody().get(1);
-        assertNull(first.getExpr());
-        assertNull(second.getExpr());
+        If first = (If) w.getWhileBody().get(0);
         assertEquals(1, first.getIfBody().size());
-        assertEquals(1, second.getIfBody().size());
         assertEquals(0, first.getElseBody().size());
+        assertNull(first.getExpr());
+
+        assertEquals(Assignment.class, first.getIfBody().get(0).getClass());
+
+        If second = (If) w.getWhileBody().get(1);
+        assertEquals(0, second.getIfBody().size());
         assertEquals(0, second.getElseBody().size());
+        assertNull(second.getExpr());
+
     }
 
 
 
     private String load(String s) {
-        return TestTimeSemantic.class.getClassLoader().getResource(s).getFile();
+        return TestTimeSemanticDoWhile.class.getClassLoader().getResource(s).getFile();
     }
 }

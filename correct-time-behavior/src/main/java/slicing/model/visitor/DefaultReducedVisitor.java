@@ -1,10 +1,7 @@
 package slicing.model.visitor;
 
 import intermediateModel.visitors.DefualtASTREVisitor;
-import slicing.model.Assignment;
-import slicing.model.If;
-import slicing.model.MethodCall;
-import slicing.model.While;
+import slicing.model.*;
 
 /**
  * Created by giovanni on 11/07/2017.
@@ -32,6 +29,11 @@ public class DefaultReducedVisitor extends DefualtASTREVisitor implements Reduce
     }
 
     @Override
+    public void enterExpression(Expression elm) {
+
+    }
+
+    @Override
     public void exitAssignment(Assignment elm) {
 
     }
@@ -43,6 +45,11 @@ public class DefaultReducedVisitor extends DefualtASTREVisitor implements Reduce
 
     @Override
     public void exitMethodCall(MethodCall elm) {
+
+    }
+
+    @Override
+    public void exitExpression(Expression elm) {
 
     }
 

@@ -4,19 +4,16 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.structure.expression.ASTNewObject;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
-import intermediateModelHelper.CheckExpression;
-import intermediateModelHelper.envirorment.Env;
-import intermediateModelHelper.envirorment.EnvParameter;
 import slicing.heuristics.*;
-import slicing.model.If;
-import slicing.model.Method;
+import slicing.model.*;
 import slicing.model.interfaces.Stm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,21 +37,26 @@ public class Slice {
     private ASTClass _class;
     private HashMap<IASTMethod,Method> slices = new LinkedHashMap<>();
     private List<Stm> current;
-    private List<IASTStm> timeStms;
+    private List<TimeElement> timeStms;
 
 
-    public static void slice(ASTClass c) {
+    public static HashMap<IASTMethod, Method> slice(ASTClass c) {
         TimeStatements timeStms = TimeStatements.getInstance();
         timeStms.clear();
         ah.analyze(c);
         //debug
         Slice slicer = new Slice(c);
         slicer.start();
+        return slicer.getSlices();
     }
 
     private Slice(ASTClass _class) {
         this._class = _class;
         timeStms = TimeStatements.getInstance().getStms();
+    }
+
+    public HashMap<IASTMethod, Method> getSlices() {
+        return slices;
     }
 
     private void start() {
@@ -133,7 +135,19 @@ public class Slice {
     private void analyze(ASTNewObject stm) {
         ASTHiddenClass hc = stm.getHiddenClass();
         if(hc != null){
-            analyze(hc);
+            List<Stm> bck = current;
+
+            for(IASTMethod m : hc.getMethods()) {
+                Method mm = new Method(m.getStart(), m.getEnd(), m.getLine(), m.getLineEnd(), m.getCode());
+                mm.setName("anonymous" + hc.getIdHidden() + "_" + m.getName());
+                mm.setSignature(m.getSignature());
+                current = mm.getBody();
+                slices.put(m, mm);
+
+                analyze(hc);
+            }
+
+            current = bck;
         }
         for(IASTRE p : stm.getParameters()){
             if(p instanceof ASTNewObject){
@@ -143,13 +157,34 @@ public class Slice {
     }
 
     private void analyze(ASTWhile stm) {
-        analyze(stm.getExpr());
+        List<Stm> bck = current;
+        While w = new While(stm);
+        Stm g = getStm(stm.getExpr());
+        w.setExpr(g);
+        current.add(w);
+        current = w.getWhileBody();
+
         analyze(stm.getStms());
+
+        current = bck;
     }
 
     private void analyze(ASTDoWhile stm) {
-        analyze(stm.getExpr());
+
+        //one round as it's executed normally
         analyze(stm.getStms());
+
+        List<Stm> bck = current;
+        While w = new While(stm);
+        Stm g = getStm(stm.getExpr());
+        w.setExpr(g);
+        current.add(w);
+        current = w.getWhileBody();
+
+        analyze(stm.getStms());
+
+        current = bck;
+
     }
 
     private void analyze(ASTTry stm) {
@@ -190,11 +225,21 @@ public class Slice {
     }
 
     private void analyze(ASTIf stm) {
-        analyze(stm.getGuard());
+        List<Stm> bck = current;
+        If _if = new If(stm);
+        Stm g = getStm(stm.getGuard());
+        _if.setExpr(g);
+        current.add(_if);
+
+        current = _if.getIfBody();
         analyze(stm.getIfBranch().getStms());
+
         if(stm.getElseBranch() != null) {
+            current = _if.getElseBody();
             analyze(stm.getElseBranch().getStms());
         }
+
+        current = bck;
     }
 
     private void analyze(ASTForEach stm) {
@@ -214,12 +259,27 @@ public class Slice {
     }
 
     private void analyze(ASTRE r) {
-
-        if(valid(r)){
-            System.out.println("VALID " + r.getCode());
-        }
-
+        Stm stm = getStm(r);
+        if(stm != null)
+            current.add(stm);
         analyzeNewObj(r);
+    }
+
+    private Stm getStm(ASTRE r){
+        TimeElement te = valid(r);
+        if(te != null){
+            IASTRE stm = r.getExpression();
+            if(stm instanceof ASTVariableDeclaration || stm instanceof ASTAssignment) {
+                return handleAssignment(stm);
+            } else if(stm instanceof ASTMethodCall){
+                return handleMethodCall((ASTMethodCall)stm);
+            }
+
+            Expression e = new Expression(stm);
+            e.setExpr(stm);
+            return e;
+        }
+        return null;
     }
 
     private void analyzeNewObj(ASTRE r) {
@@ -242,15 +302,36 @@ public class Slice {
         System.err.println("Not supported, YET!");
     }
 
-    private boolean valid(ASTRE r){
+    private TimeElement valid(ASTRE r){
         int s = r.getStart();
         int e = r.getEnd();
         int l = r.getLine();
-        boolean flag = false;
-        for(IASTStm stm : this.timeStms){
+        for(TimeElement te : this.timeStms){
+            IASTStm stm = te.getStm();
             if(stm.getLine() == l && stm.getStart() == s && stm.getEnd() == e)
-                flag = true;
+                return te;
         }
-        return flag;
+        return null;
+    }
+
+    private Assignment handleAssignment(IASTRE stm) {
+        Assignment as = new Assignment(stm);
+        if(stm instanceof ASTVariableDeclaration){
+            ASTVariableDeclaration vd = (ASTVariableDeclaration) stm;
+            as.setLeft(vd.getNameString());
+            as.setRight(vd.getExpr());
+        } else {
+            ASTAssignment a = (ASTAssignment) stm;
+            as.setLeft(a.getLeft().print());
+            as.setRight(a.getRight());
+        }
+        return as;
+    }
+
+    private MethodCall handleMethodCall(ASTMethodCall stm) {
+        MethodCall mc = new MethodCall(stm);
+        mc.setPointedClass(stm.getClassPointed());
+        mc.setMethodCall(stm);
+        return mc;
     }
 }

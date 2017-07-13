@@ -12,6 +12,7 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeElement;
 import slicing.TimeStatements;
 
 /**
@@ -42,7 +43,7 @@ public class BooleanExpression extends SearchTimeConstraint {
 	}
 
 	private void mark(IASTStm stm) {
-		listTimeStms.addStatements(stm);
+		listTimeStms.addStatements(stm, TimeElement.Type.Boolean);
 	}
 
 }

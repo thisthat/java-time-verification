@@ -6,6 +6,7 @@ import intermediateModel.structure.ASTRE;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeElement;
 import slicing.TimeStatements;
 
 /**
@@ -24,19 +25,19 @@ public class ReturnExpression extends SearchTimeConstraint {
 
 	@Override
 	public void next(ASTRE stm, Env env) {
-		//works only on ASTRE
+		//works only on ASTRE Return
 		IASTRE expr = stm.getExpression();
 		if(expr == null){
 			return;
 		}
 
-		if(CheckExpression.checkRightHandAssignment(stm.getExpression(), env)){
+		if(CheckExpression.checkRightHandAssignment(expr, env)){
 			mark(stm);
 		}
 	}
 
 	private void mark(IASTStm stm) {
-		listTimeStms.addStatements(stm);
+		listTimeStms.addStatements(stm, TimeElement.Type.Return);
 	}
 
 }

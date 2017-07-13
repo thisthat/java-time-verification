@@ -1,6 +1,6 @@
 package slicing.model;
 
-import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 import slicing.model.interfaces.Stm;
 import slicing.model.visitor.ReducedVisitor;
 
@@ -12,18 +12,27 @@ import java.util.List;
  */
 public class While extends Stm {
 
-    IASTRE expr;
+    Stm expr;
     List<Stm> whileBody = new ArrayList<>();
 
     public While(int start, int end, int line, int lineEnd, String code) {
         super(start, end, line, lineEnd, code);
     }
 
-    public IASTRE getExpr() {
+    public While(IASTStm stm) {
+        super(  stm.getStart(),
+                stm.getEnd(),
+                stm.getLine(),
+                stm.getLineEnd(),
+                stm.getCode()
+        );
+    }
+
+    public Stm getExpr() {
         return expr;
     }
 
-    public void setExpr(IASTRE expr) {
+    public void setExpr(Stm expr) {
         this.expr = expr;
     }
 

@@ -13,11 +13,15 @@ import java.util.ArrayList;
 
 public class ASTHiddenClass extends ASTClass implements IASTVisitor {
 
+	private static int _numberHidden = 0;
+
 	public ASTHiddenClass(int start, int end) {
-		super(start, end, "", "", Visibility.HIDDEN, "", new ArrayList<String>());
+		super(start, end, "", "anonymous" + _numberHidden, Visibility.HIDDEN, "", new ArrayList<String>());
 	}
 
-
+	public int getIdHidden() {
+		return _numberHidden;
+	}
 
 	@Override
 	public void visit(ASTVisitor visitor) {

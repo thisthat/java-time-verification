@@ -1,6 +1,8 @@
 package slicing.model;
 
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.expression.ASTMethodCall;
 import slicing.model.interfaces.Stm;
 import slicing.model.visitor.ReducedVisitor;
 
@@ -15,6 +17,15 @@ public class MethodCall extends Stm {
 
     public MethodCall(int start, int end, int line, int lineEnd, String code) {
         super(start, end, line, lineEnd, code);
+    }
+
+    public MethodCall(IASTStm stm) {
+        super(  stm.getStart(),
+                stm.getEnd(),
+                stm.getLine(),
+                stm.getLineEnd(),
+                stm.getCode()
+        );
     }
 
     public String getPointedClass() {

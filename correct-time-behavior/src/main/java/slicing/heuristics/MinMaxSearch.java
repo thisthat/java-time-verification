@@ -7,6 +7,7 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeElement;
 import slicing.TimeStatements;
 
 /**
@@ -47,7 +48,7 @@ public class MinMaxSearch extends SearchTimeConstraint {
 		for(IASTRE exp : elm.getParameters()){
 			if(CheckExpression.checkRightHandAssignment(exp, env)){
 				elm.setTimeCritical(true);
-				listTimeStms.addStatements(stm);
+				listTimeStms.addStatements(stm, TimeElement.Type.MinMax);
 			}
 		}
 	}

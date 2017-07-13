@@ -109,11 +109,16 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 			bf.append(exprCallee.print() + "." + methodName + "(");
 		else
 			bf.append(methodName + "(");
-		for(IASTRE p : parameters){
-			bf.append(p.print());
-			bf.append(",");
+
+		for(int i = 0; i < parameters.size(); i++){
+			IASTRE p = parameters.get(i);
+			if(i != parameters.size()-1){
+				bf.append(p.print());
+				bf.append(",");
+			} else {
+				bf.append(p.print());
+			}
 		}
-		bf.subSequence(0, bf.length()-1);
 		bf.append(")");
 		return bf.toString();
 	}

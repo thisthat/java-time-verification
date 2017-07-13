@@ -10,6 +10,7 @@ import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+import slicing.TimeElement;
 import slicing.TimeStatements;
 
 import java.util.List;
@@ -79,7 +80,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 
 
 	private void print(IASTStm stm) {
-		listTimeStms.addStatements(stm);
+		listTimeStms.addStatements(stm, TimeElement.Type.Usage);
 	}
 
 

@@ -74,7 +74,10 @@ public interface IASTRE extends IASTVisitor {
 
 	void visit(ASTREVisitor visitor);
 	String getCode();
+	int getStart();
+	int getEnd();
 	int getLine();
+	int getLineEnd();
 	boolean isTimeCritical();
 	void setTimeCritical(boolean timeCritical);
 

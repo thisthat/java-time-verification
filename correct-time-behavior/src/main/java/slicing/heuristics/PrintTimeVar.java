@@ -15,6 +15,7 @@ import slicing.TimeStatements;
  * @version %I%, %G%
  *
  */
+@Deprecated
 public class PrintTimeVar extends SearchTimeConstraint {
 
 	TimeStatements listTimeStms;
@@ -50,7 +51,7 @@ public class PrintTimeVar extends SearchTimeConstraint {
 	}
 
 	private void print(IASTStm stm) {
-		this.listTimeStms.addStatements(stm);
+		//this.listTimeStms.addStatements(stm);
 		//System.out.println(" -- Time var Found @" + stm.getLine());
 	}
 

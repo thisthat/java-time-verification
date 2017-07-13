@@ -1,6 +1,7 @@
 package slicing.model;
 
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
 import slicing.model.interfaces.Stm;
 import slicing.model.visitor.ReducedVisitor;
 
@@ -14,6 +15,15 @@ public class Assignment extends Stm {
 
     public Assignment(int start, int end, int line, int lineEnd, String code) {
         super(start, end, line, lineEnd, code);
+    }
+
+    public Assignment(IASTRE stm) {
+        super(  stm.getStart(),
+                stm.getEnd(),
+                stm.getLine(),
+                stm.getLineEnd(),
+                stm.getCode()
+                );
     }
 
     public void setLeft(String left) {
@@ -38,5 +48,10 @@ public class Assignment extends Stm {
         if(right != null)
             right.visit(visitor);
         visitor.exitAssignment(this);
+    }
+
+    @Override
+    public String toString() {
+        return left + "=" + right.print();
     }
 }

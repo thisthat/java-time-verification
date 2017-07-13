@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import slicing.Slice;
+import slicing.TimeElement;
 import slicing.TimeStatements;
 
 import java.util.List;
@@ -40,13 +41,13 @@ public class TestKafkaBug_4290 {
     @Test
     public void TestListStms() throws Exception {
         Slice.slice(c);
-        List<IASTStm> l = TimeStatements.getInstance().getStms();
+        List<TimeElement> l = TimeStatements.getInstance().getStms();
         assertTrue("There should be some statements", l.size()>0);
         int[] lines = {50,51,53,56,61,64,68,69,70,76,80};
         assertEquals(l.size(), lines.length);
 
         for(int i = 0; i < 7; i++){
-            assertEquals(lines[i], l.get(i).getLine());
+            assertEquals(lines[i], l.get(i).getStm().getLine());
         }
 
     }
