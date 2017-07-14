@@ -20,6 +20,10 @@ public class ASTPreOp extends IASTStm implements IASTRE {
 		this.type = type;
 	}
 
+	public ADDDEC getType() {
+		return type;
+	}
+
 	@Override
 	public String toString() {
 		return "ASTPreOp{" +

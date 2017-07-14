@@ -4,7 +4,7 @@ package intermediateModel.interfaces;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public interface IASTRE extends IASTVisitor {
+public interface IASTRE extends IASTVisitor, IASTToken {
 	enum OPERATOR {
 		less,			// <
 		lessEqual,		// <=

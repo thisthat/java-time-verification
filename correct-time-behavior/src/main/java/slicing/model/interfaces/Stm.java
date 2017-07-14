@@ -1,11 +1,12 @@
 package slicing.model.interfaces;
 
+import intermediateModel.interfaces.IASTToken;
 import slicing.model.visitor.IReducedVisitor;
 
 /**
  * Created by giovanni on 11/07/2017.
  */
-public abstract class Stm implements IReducedVisitor {
+public abstract class Stm implements IReducedVisitor, IASTToken {
 
 
     protected int start;

@@ -28,6 +28,10 @@ public class ASTPostOp extends IASTStm implements IASTRE {
 				'}';
 	}
 
+	public ADDDEC getType() {
+		return type;
+	}
+
 	public IASTRE getVar() {
 		return var;
 	}

@@ -1,6 +1,8 @@
 package smt;
 
 import com.microsoft.z3.*;
+import intermediateModel.visitors.interfaces.ParseIM;
+import smt.exception.FunctionNotFoundException;
 import smt.exception.ModelNotCorrect;
 import smt.exception.VarNotFoundException;
 
@@ -25,6 +27,7 @@ public class ModelCreator {
     Optimize opt;
 
     HashMap<String,IntExpr> vars = new HashMap<>();
+    HashMap<String,IntExpr> functions = new HashMap<>();
 
     public ModelCreator() {
         HashMap<String, String> cfg = new HashMap<>();
@@ -58,14 +61,34 @@ public class ModelCreator {
         opt.Add(t);
     }
 
+    public IntExpr getTimeCall() {
+        return time;
+    }
+
+    public IntExpr createFunction(String methodName) {
+        IntExpr name;
+        try {
+            name = getFunction(methodName);
+        } catch (FunctionNotFoundException e) {
+            FuncDecl f = ctx.mkFuncDecl(methodName, new IntSort[0], ctx.getIntSort());
+            name = (IntExpr) ctx.mkApp(f, new IntExpr[0]);
+            functions.put(methodName, name);
+        }
+        return name;
+    }
 
     public IntExpr createVariable(String name){
-        IntExpr v = ctx.mkIntConst(name);
-        BoolExpr t = ctx.mkLe(min_val, v);
-        opt.Add(t);
-        t = ctx.mkGe(over_max_val, v);
-        opt.Add(t);
-        vars.put(name, v);
+        IntExpr v;
+        try {
+            v = getVar(name);
+        } catch (VarNotFoundException e) {
+            v = ctx.mkIntConst(name);
+            BoolExpr t = ctx.mkLe(min_val, v);
+            opt.Add(t);
+            t = ctx.mkLe(v, over_max_val);
+            opt.Add(t);
+            vars.put(name, v);
+        }
         return v;
     }
 
@@ -74,6 +97,12 @@ public class ModelCreator {
             throw new VarNotFoundException();
         }
         return vars.get(name);
+    }
+    public IntExpr getFunction(String name) throws FunctionNotFoundException {
+        if(!functions.containsKey(name)){
+            throw new FunctionNotFoundException();
+        }
+        return functions.get(name);
     }
 
     public void verifyVariable(String name) throws ModelNotCorrect, VarNotFoundException {

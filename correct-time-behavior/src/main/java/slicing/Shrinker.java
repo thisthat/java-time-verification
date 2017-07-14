@@ -83,6 +83,8 @@ public class Shrinker {
 
     private static boolean shouldKeep(If s) {
         boolean flag = false;
+        if(s.getExpr() != null)
+            flag = true;
         if(s.getIfBody().size() != 0)
             flag = true;
         if(s.getElseBody().size() != 0)

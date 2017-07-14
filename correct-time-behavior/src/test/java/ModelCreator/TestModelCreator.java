@@ -39,6 +39,24 @@ public class TestModelCreator {
     }
 
     @Test
+    public void TestMultipleVar() throws Exception {
+        ModelCreator model = new ModelCreator();
+        IntExpr v = model.createVariable("bla");
+        assertNotNull(v);
+
+        IntExpr v1 = model.createVariable("bla");
+        assertNotNull(v1);
+
+        Model m = model.getModel();
+        int found = 0;
+        for(FuncDecl f : m.getConstDecls()){
+            if(f.toString().equals("(declare-fun bla () Int)"))
+                found++;
+        }
+        assertEquals(1, found);
+    }
+
+    @Test
     public void TestInsertVar() throws Exception {
         ModelCreator model = new ModelCreator();
         IntExpr v = model.createVariable("bla");
