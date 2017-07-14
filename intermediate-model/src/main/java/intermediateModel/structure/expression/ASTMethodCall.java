@@ -92,6 +92,11 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		visitor.exitAll(this);
 	}
 
+	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
 	public boolean isTimeCall() {
 		return isTimeCall;
 	}

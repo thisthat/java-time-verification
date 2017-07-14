@@ -38,6 +38,14 @@ public class ASTUnary extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		if(op == OPERATOR.not) {
+			return expr.negate();
+		}
+		return this;
+	}
+
+	@Override
 	public String print() {
 		return op.print() + expr.print();
 	}

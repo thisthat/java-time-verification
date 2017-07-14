@@ -7,6 +7,9 @@ import intermediateModel.structure.expression.*;
 import slicing.model.*;
 import slicing.model.interfaces.Stm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by giovanni on 13/07/2017.
  */
@@ -15,12 +18,18 @@ public class TranslateReducedModel {
     private StackTraceElement[] cause = Thread.currentThread().getStackTrace();
     private ModelCreator modelCreator;
     private Context ctx;
+    private List<String> pushModel;
 
     public TranslateReducedModel() {
     }
 
+    public List<String> getPushModel() {
+        return pushModel;
+    }
+
     public Optimize convert(Method m){
         modelCreator = new ModelCreator();
+        pushModel = new ArrayList<>();
         ctx = modelCreator.getCtx();
         for(Stm s : m.getBody()) {
             convert(s);
@@ -237,11 +246,21 @@ public class TranslateReducedModel {
 
     private void handleWhile(While s) {
         // TODO Resolve the problem with multiple model
+        push();
+        if(s.getExpr() != null){
+            convert(s.getExpr());
+        }
+        for(Stm ss : s.getWhileBody()){
+            convert(ss);
+        }
+        pop();
+        Expr b = convert(s.getExpr().getExpr().negate());
+        modelCreator.addConstraint((BoolExpr) b);
     }
 
     private void handleIf(If s) {
         // TODO Resolve the problem with multiple model
-        modelCreator.getOpt().Push();
+        push();
         if(s.getIfBody().size() > 0) {
             if(s.getExpr() != null)
                 convert(s.getExpr());
@@ -249,11 +268,22 @@ public class TranslateReducedModel {
                 convert(ss);
             }
         }
-        modelCreator.getOpt().Pop();
+        pop();
+        if(s.getElseBody().size() > 0){
+            push();
+            if(s.getExpr() != null)
+                convert(s.getExpr().getExpr().negate());
+            for(Stm ss : s.getIfBody()){
+                convert(ss);
+            }
+            pop();
+        }
+
     }
 
     private void handleExpression(Expression s) {
-        convert(s.getExpr());
+        BoolExpr e = (BoolExpr) convert(s.getExpr());
+        modelCreator.addConstraint(e);
     }
 
     private void handleMethodCall(MethodCall s) {
@@ -265,6 +295,15 @@ public class TranslateReducedModel {
         Expr e = convert(s.getRight());
         BoolExpr b = ctx.mkEq(v, e);
         modelCreator.addConstraint(b);
+    }
+
+    private void push(){
+        modelCreator.getOpt().Push();
+    }
+
+    private void pop(){
+        pushModel.add(modelCreator.getOpt().toString());
+        modelCreator.getOpt().Pop();
     }
 
     private void notYet(IASTToken s){

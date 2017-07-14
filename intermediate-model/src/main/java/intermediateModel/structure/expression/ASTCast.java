@@ -46,6 +46,11 @@ public class ASTCast extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
+	@Override
 	public String print() {
 		return "(" + type + ")" + expr.print();
 	}

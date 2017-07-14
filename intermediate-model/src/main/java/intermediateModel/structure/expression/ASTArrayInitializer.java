@@ -37,6 +37,11 @@ public class ASTArrayInitializer extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
+	@Override
 	public String print() {
 		StringBuffer bf = new StringBuffer();
 		bf.append("{");

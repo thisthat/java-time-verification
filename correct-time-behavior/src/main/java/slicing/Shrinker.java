@@ -94,6 +94,8 @@ public class Shrinker {
 
     private static boolean shouldKeep(While s) {
         boolean flag = false;
+        if(s.getExpr() != null)
+            flag = true;
         if(s.getWhileBody().size() != 0)
             flag = true;
         return flag;

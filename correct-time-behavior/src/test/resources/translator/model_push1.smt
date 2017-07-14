@@ -6,6 +6,7 @@
 (declare-fun now () Int)
 (declare-fun deadline () Int)
 (declare-fun timeout () Int)
+(declare-fun remaining () Int)
 
 (assert (= max_val 9223372036854775807))
 (assert (= over_max_val 9223372036854775808))
@@ -23,7 +24,10 @@
 
 (assert (= deadline (+ now timeout)))
 
-(assert (> now deadline))
+(assert (<= now deadline))
+
+(assert (<= min_val remaining))
+(assert (<= remaining over_max_val))
 
 (check-sat)
 

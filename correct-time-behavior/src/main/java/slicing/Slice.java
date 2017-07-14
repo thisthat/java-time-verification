@@ -31,7 +31,7 @@ public class Slice {
         ah.subscribe(AssignmentTimeVar.class);
         ah.subscribe(BooleanExpression.class);
         ah.subscribe(ReturnExpression.class);
-        ah.subscribe(PrintTimeVar.class);
+        //ah.subscribe(PrintTimeVar.class);
     }
 
     private ASTClass _class;
@@ -169,7 +169,8 @@ public class Slice {
         List<Stm> bck = current;
         While w = new While(stm);
         Stm g = getStm(stm.getExpr());
-        w.setExpr(g);
+        if(g instanceof Expression)
+            w.setExpr((Expression) g);
         current.add(w);
         current = w.getWhileBody();
 
@@ -186,7 +187,8 @@ public class Slice {
         List<Stm> bck = current;
         While w = new While(stm);
         Stm g = getStm(stm.getExpr());
-        w.setExpr(g);
+        if(g instanceof Expression)
+            w.setExpr((Expression) g);
         current.add(w);
         current = w.getWhileBody();
 
@@ -237,7 +239,9 @@ public class Slice {
         List<Stm> bck = current;
         If _if = new If(stm);
         Stm g = getStm(stm.getGuard());
-        _if.setExpr(g);
+        if(g instanceof Expression)
+            _if.setExpr((Expression) g);
+        //_if.setExpr(g);
         current.add(_if);
 
         current = _if.getIfBody();

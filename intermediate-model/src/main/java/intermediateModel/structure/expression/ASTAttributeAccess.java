@@ -48,6 +48,11 @@ public class ASTAttributeAccess extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
+	@Override
 	public String print() {
 		return variableName.print() + "." + attributeName;
 	}

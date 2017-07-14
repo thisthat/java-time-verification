@@ -46,6 +46,11 @@ public class ASTPostOp extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return new ASTPostOp(start,end,var, type==ADDDEC.decrement ? ADDDEC.increment : ADDDEC.decrement);
+	}
+
+	@Override
 	public String print() {
 		return var.print() + type.print();
 	}

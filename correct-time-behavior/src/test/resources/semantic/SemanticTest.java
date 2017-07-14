@@ -80,6 +80,11 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
             return 10 + now;
         }
         long time = System.currentTimeMillis();
+
+        int i = 10;
+        while(i < 10){
+            System.out.println("lol");
+        }
     }
 
 

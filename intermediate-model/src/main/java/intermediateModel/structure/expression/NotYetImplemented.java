@@ -37,6 +37,11 @@ public class NotYetImplemented extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return null;
+	}
+
+	@Override
 	public String print() {
 		return "";
 	}

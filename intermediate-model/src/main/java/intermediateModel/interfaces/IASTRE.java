@@ -80,6 +80,7 @@ public interface IASTRE extends IASTVisitor, IASTToken {
 	int getLineEnd();
 	boolean isTimeCritical();
 	void setTimeCritical(boolean timeCritical);
+	IASTRE negate();
 
 	String print();
 	boolean equals(Object o);

@@ -40,7 +40,7 @@ public class TestShrinker {
         Slice.slice(c);
         List<TimeElement> l = TimeStatements.getInstance().getStms();
         for(TimeElement t : l){
-            //System.out.println( t.getStm().getCode() + " :: " + t.getType());
+            System.out.println( t.getStm().getCode() + " :: " + t.getType());
         }
     }
 

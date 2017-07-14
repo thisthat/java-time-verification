@@ -43,6 +43,11 @@ public class ASTPreOp extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return new ASTPreOp(start,end,var, type==ADDDEC.decrement ? ADDDEC.increment : ADDDEC.decrement);
+	}
+
+	@Override
 	public String print() {
 		return type.print() + var.print();
 	}

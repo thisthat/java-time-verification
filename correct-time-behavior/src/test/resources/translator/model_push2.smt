@@ -23,7 +23,9 @@
 
 (assert (= deadline (+ now timeout)))
 
-(assert (> now deadline))
+(assert (<= now deadline))
+
+(assert (= now time))
 
 (check-sat)
 

@@ -90,6 +90,11 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 		visitor.exitAll(this);
 	}
 
+	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
 	public void setTypePointed(String typePointed) {
 		this.typePointed = typePointed;
 	}

@@ -103,7 +103,8 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	public String toString() {
 		if(expression == null)
 			return "::RE NULL::";
-		return "::::REXP:::" + expression.toString();
+		//return "::::REXP:::" + expression.toString();
+		return expression.print();
 	}
 
 	public String toText() {

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class If extends Stm {
 
-    Stm expr = null;
+    Expression expr = null;
     List<Stm> ifBody = new ArrayList<>();
     List<Stm> elseBody = new ArrayList<>();
 
@@ -29,11 +29,11 @@ public class If extends Stm {
         );
     }
 
-    public Stm getExpr() {
+    public Expression getExpr() {
         return expr;
     }
 
-    public void setExpr(Stm expr) {
+    public void setExpr(Expression expr) {
         this.expr = expr;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class While extends Stm {
 
-    Stm expr;
+    Expression expr;
     List<Stm> whileBody = new ArrayList<>();
 
     public While(int start, int end, int line, int lineEnd, String code) {
@@ -28,11 +28,11 @@ public class While extends Stm {
         );
     }
 
-    public Stm getExpr() {
+    public Expression getExpr() {
         return expr;
     }
 
-    public void setExpr(Stm expr) {
+    public void setExpr(Expression expr) {
         this.expr = expr;
     }
 

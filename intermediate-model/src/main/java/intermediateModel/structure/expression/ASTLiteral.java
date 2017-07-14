@@ -41,6 +41,11 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
+	@Override
 	public String print() {
 		return value;
 	}

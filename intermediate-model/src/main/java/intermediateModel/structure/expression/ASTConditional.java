@@ -46,6 +46,11 @@ public class ASTConditional extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return new ASTConditional(start, end, expr.negate(), elseExpr, thenExpr);
+	}
+
+	@Override
 	public String print() {
 		return expr.print() + " ? " + thenExpr.print() + " : " + elseExpr.print();
 	}

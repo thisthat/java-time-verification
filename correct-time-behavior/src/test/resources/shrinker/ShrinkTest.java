@@ -79,6 +79,11 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
         while (true){
             System.out.println("bla bla bla");
         }
+
+        int i = 10;
+        while(i < 10){
+            System.out.println("lol");
+        }
     }
 
 
