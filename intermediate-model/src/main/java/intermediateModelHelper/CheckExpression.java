@@ -244,7 +244,8 @@ public class CheckExpression {
 				if(expr instanceof ASTLiteral){
 					String varName = ((ASTLiteral) expr).getValue();
 					flag[0] = where.existVarNameTimeRelevant(varName);
-					expr.setTimeCritical(true);
+					if(flag[0])
+						expr.setTimeCritical(true);
 				}
 			}
 		}
