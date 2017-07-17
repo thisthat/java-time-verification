@@ -63,11 +63,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 
 	@Override
 	public String toString() {
-		return "ASTMethodCall{" +
-				"methodName='" + methodName + '\'' +
-				", exprCallee=" + exprCallee +
-				", parameters=" + parameters +
-				'}';
+		return this.print();
 	}
 
 	public String getClassPointed() {
@@ -193,9 +189,9 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	}
 
 	public void addTimeVar(String name){
-		this.timePars.add(name);
+		if(!this.timePars.contains(name))
+			this.timePars.add(name);
 	}
-
 
 	public List<String> getTimePars() {
 		return timePars;

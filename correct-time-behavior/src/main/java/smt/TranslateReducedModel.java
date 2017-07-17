@@ -155,10 +155,10 @@ public class TranslateReducedModel {
     }
 
     private IntExpr handleMethodCallExpression(ASTMethodCall r) {
-        if(r.isTimeCritical()) {
-            return modelCreator.getTimeCall();
-        } else if(r.isMaxMin()){
+        if(r.isMaxMin()) {
             return convertMaxMin(r);
+        } else if(r.isTimeCritical()){
+            return modelCreator.getTimeCall();
         }
         return modelCreator.createFunction(r.getMethodName());
     }

@@ -11,6 +11,8 @@ import slicing.TimeElement;
 import slicing.TimeStatements;
 import slicing.model.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -116,7 +118,9 @@ public class TestTimeSemantic {
         MethodCall c2 = (MethodCall) wBody.getWhileBody().get(4);
 
         assertEquals(1, c1.getVariables().size());
-        assertEquals(0, c2.getVariables().size());
+        assertEquals(2, c2.getVariables().size());
+        assertEquals(new ArrayList<>(Arrays.asList("now")), c1.getVariables());
+        assertEquals(new ArrayList<>(Arrays.asList("remaining","now")), c2.getVariables());
 
     }
 

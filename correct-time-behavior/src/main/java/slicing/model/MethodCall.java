@@ -74,7 +74,8 @@ public class MethodCall extends Stm {
     }
 
     public void addVariable(String name) {
-        variables.add(name);
+        if(!variables.contains(name))
+            variables.add(name);
     }
 
     public void setVariables(List<String> variables) {
