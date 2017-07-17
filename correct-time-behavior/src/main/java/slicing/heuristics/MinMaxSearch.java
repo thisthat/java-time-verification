@@ -47,7 +47,7 @@ public class MinMaxSearch extends SearchTimeConstraint {
 		//if(1==1) return;
 		for(IASTRE exp : elm.getParameters()){
 			if(CheckExpression.checkRightHandAssignment(stm, exp, env)){
-				elm.setTimeCritical(true);
+				elm.setMaxMin(true);
 				listTimeStms.addStatements(stm, TimeElement.Type.MinMax);
 			}
 		}

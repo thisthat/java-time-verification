@@ -29,5 +29,8 @@
 (assert (<= min_val remaining))
 (assert (<= remaining over_max_val))
 
+(assert (= remaining (ite (<= 0 (- deadline now)) (- deadline now) 0)))
+(assert (= now time))
+
 (check-sat)
 

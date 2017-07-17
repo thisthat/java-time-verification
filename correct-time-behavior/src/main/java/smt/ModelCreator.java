@@ -17,6 +17,8 @@ public class ModelCreator {
     private IntExpr over_max_val;
     private IntExpr min_val;
     private IntExpr time;
+    private IntExpr max;
+    private IntExpr min;
     private FuncDecl timeFuncDec;
 
     public static String _MaxVal = "9223372036854775807";
@@ -59,6 +61,16 @@ public class ModelCreator {
         time = (IntExpr) ctx.mkApp(timeFuncDec, new IntExpr[0]);
         BoolExpr t = ctx.mkEq(time, ctx.mkInt(0));
         opt.Add(t);
+
+    }
+
+    public static Expr max2(Context ctx, ArithExpr x, ArithExpr y)
+            throws Z3Exception {
+        return ctx.mkITE(ctx.mkLe(x, y), y, x);
+    }
+    public static Expr min2(Context ctx, ArithExpr x, ArithExpr y)
+            throws Z3Exception {
+        return ctx.mkITE(ctx.mkLe(x, y), x, y);
     }
 
     public IntExpr getTimeCall() {
@@ -82,11 +94,15 @@ public class ModelCreator {
         try {
             v = getVar(name);
         } catch (VarNotFoundException e) {
-            v = ctx.mkIntConst(name);
-            BoolExpr t = ctx.mkLe(min_val, v);
-            opt.Add(t);
-            t = ctx.mkLe(v, over_max_val);
-            opt.Add(t);
+            if(name.matches("[0-9]+")){
+                v = ctx.mkInt(name);
+            } else {
+                v = ctx.mkIntConst(name);
+                BoolExpr t = ctx.mkLe(min_val, v);
+                opt.Add(t);
+                t = ctx.mkLe(v, over_max_val);
+                opt.Add(t);
+            }
             vars.put(name, v);
         }
         return v;

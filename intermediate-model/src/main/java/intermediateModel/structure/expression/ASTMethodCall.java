@@ -18,6 +18,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	List<IASTRE> parameters;
 	String classPointed = null;
 	boolean isTimeCall = false;
+	private boolean maxMin;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
 		super(start, end);
@@ -178,5 +179,13 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		result = 31 * result + (classPointed != null ? classPointed.hashCode() : 0);
 		result = 31 * result + (isTimeCall ? 1 : 0);
 		return result;
+	}
+
+	public boolean isMaxMin() {
+		return maxMin;
+	}
+
+	public void setMaxMin(boolean maxMin) {
+		this.maxMin = maxMin;
 	}
 }

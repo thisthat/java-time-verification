@@ -27,5 +27,6 @@
 
 (assert (= now time))
 
+
 (check-sat)
 

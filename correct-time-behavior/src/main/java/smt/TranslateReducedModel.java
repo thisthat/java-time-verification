@@ -20,6 +20,8 @@ public class TranslateReducedModel {
     private Context ctx;
     private List<String> pushModel;
 
+    int _fresh = 0;
+
     public TranslateReducedModel() {
     }
 
@@ -153,8 +155,19 @@ public class TranslateReducedModel {
     private IntExpr handleMethodCallExpression(ASTMethodCall r) {
         if(r.isTimeCritical()) {
             return modelCreator.getTimeCall();
+        } else if(r.isMaxMin()){
+            return convertMaxMin(r);
         }
         return modelCreator.createFunction(r.getMethodName());
+    }
+
+    private IntExpr convertMaxMin(ASTMethodCall r) {
+        ArithExpr t0 = (ArithExpr) convert(r.getParameters().get(0));
+        ArithExpr t1 = (ArithExpr) convert(r.getParameters().get(1));
+        if(r.getMethodName().equals("min")){
+            return (IntExpr) ModelCreator.min2(ctx, t0, t1);
+        }
+        return (IntExpr) ModelCreator.max2(ctx, t0, t1);
     }
 
     private IntExpr handleLiteral(ASTLiteral r) {

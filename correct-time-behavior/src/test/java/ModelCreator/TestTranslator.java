@@ -50,12 +50,12 @@ public class TestTranslator {
         List<String> models = translateReducedModel.getPushModel();
         assertEquals(3, models.size());
         Collections.reverse(models);
-        int i = 0;
+        /*int i = 0;
         for(String m : models){
             i++;
             System.out.println("Model " + i);
             System.out.println(m + "\n");
-        }
+        }*/
         String expected;
         expected = read("translator/model_push1.smt");
         assertEquals(expected, models.get(0));
