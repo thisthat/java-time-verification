@@ -8,6 +8,7 @@ import slicing.model.*;
 import slicing.model.interfaces.Stm;
 import smt.exception.ModelNotCorrect;
 import smt.exception.VarNotFoundException;
+import smt.exception.VariableNotCorrect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class TranslateReducedModel {
     private ModelCreator modelCreator;
     private Context ctx;
     private List<String> pushModel;
+    private List<VariableNotCorrect> errors;
 
     int _fresh = 0;
 
@@ -34,11 +36,16 @@ public class TranslateReducedModel {
     public Optimize convert(Method m){
         modelCreator = new ModelCreator();
         pushModel = new ArrayList<>();
+        errors = new ArrayList<>();
         ctx = modelCreator.getCtx();
         for(Stm s : m.getBody()) {
             convert(s);
         }
         return modelCreator.getOpt();
+    }
+    public List<VariableNotCorrect> check(Method m){
+        convert(m);
+        return errors;
     }
 
     private void convert(Stm s) {
@@ -264,7 +271,8 @@ public class TranslateReducedModel {
             try {
                 modelCreator.verifyVariable(v);
             } catch (ModelNotCorrect e) {
-                System.err.println("@" + s.getLine() + " " + e.getMessage());
+                errors.add( new VariableNotCorrect(v, s)  );
+                //System.err.println("@" + s.getLine() + " " + e.getMessage());
             } catch (VarNotFoundException e) {
                 //this is not a problem
             }
@@ -313,7 +321,8 @@ public class TranslateReducedModel {
             try {
                 modelCreator.verifyVariable(v);
             } catch (ModelNotCorrect e) {
-                System.err.println("@" + s.getLine() + " " + e.getMessage());
+                errors.add( new VariableNotCorrect(v, s)  );
+                //System.err.println("@" + s.getLine() + " " + e.getMessage());
             } catch (VarNotFoundException e) {
                 //this is not a problem
             }

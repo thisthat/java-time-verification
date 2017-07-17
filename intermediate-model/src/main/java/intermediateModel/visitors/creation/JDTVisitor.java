@@ -36,9 +36,8 @@ public class JDTVisitor extends ASTVisitor {
 
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
-	@Deprecated
 	public static List<ASTClass> parse(String filename){
-		return parse(filename, "");
+		return parse(filename, filename.substring(0, filename.lastIndexOf("/")));
 	}
 
 	public static List<ASTClass> parse(String filename, String projectPath) {
