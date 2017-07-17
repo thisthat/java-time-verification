@@ -63,6 +63,7 @@ public class CheckExpression {
 				flag[0] = flag[0] || setVariableInEnv(rexp, elm, env);
 			}
 
+
 		});
 
 		return flag[0];
@@ -212,6 +213,13 @@ public class CheckExpression {
 					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
 						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
 							flag[0] = true;
+						} else if (elm.getClassPointed().equals("java.lang.Math")){
+							String name = elm.getMethodName();
+							if(name.equals("min") || name.equals("max")){
+								if(checkMinMaxTime(elm, where, state)){
+									flag[0] = true;
+								}
+							}
 						}
 					}
 					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
@@ -250,6 +258,18 @@ public class CheckExpression {
 			}
 		}
 		return flag[0];
+	}
+
+	public static boolean checkMinMaxTime(ASTMethodCall elm, Env where, ASTRE state) {
+		boolean f = false;
+		for(IASTRE exp : elm.getParameters()){
+			if(CheckExpression.checkRightHandAssignment(state, exp, where)){
+				elm.setMaxMin(true);
+				elm.setTimeCritical(true);
+				f = true;
+			}
+		}
+		return f;
 	}
 
 	private static boolean notToString(ASTRE state, ASTBinary elm) {

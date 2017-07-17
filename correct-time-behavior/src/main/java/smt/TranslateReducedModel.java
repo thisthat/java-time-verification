@@ -6,6 +6,8 @@ import intermediateModel.interfaces.IASTToken;
 import intermediateModel.structure.expression.*;
 import slicing.model.*;
 import slicing.model.interfaces.Stm;
+import smt.exception.ModelNotCorrect;
+import smt.exception.VarNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -258,6 +260,15 @@ public class TranslateReducedModel {
 
 
     private void handleWhile(While s) {
+        for(String v : s.getTimeVars()){
+            try {
+                modelCreator.verifyVariable(v);
+            } catch (ModelNotCorrect e) {
+                System.err.println("@" + s.getLine() + " " + e.getMessage());
+            } catch (VarNotFoundException e) {
+                //this is not a problem
+            }
+        }
         push();
         if(s.getExpr() != null){
             convert(s.getExpr());
@@ -298,6 +309,15 @@ public class TranslateReducedModel {
     }
 
     private void handleMethodCall(MethodCall s) {
+        for(String v : s.getVariables()){
+            try {
+                modelCreator.verifyVariable(v);
+            } catch (ModelNotCorrect e) {
+                System.err.println("@" + s.getLine() + " " + e.getMessage());
+            } catch (VarNotFoundException e) {
+                //this is not a problem
+            }
+        }
         convert(s.getMethodCall());
     }
 

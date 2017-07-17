@@ -6,6 +6,9 @@ import intermediateModel.structure.expression.ASTMethodCall;
 import slicing.model.interfaces.Stm;
 import slicing.model.visitor.ReducedVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by giovanni on 11/07/2017.
  */
@@ -13,7 +16,7 @@ public class MethodCall extends Stm {
 
     String pointedClass;
     IASTRE methodCall;
-
+    List<String> variables = new ArrayList<>();
 
     public MethodCall(int start, int end, int line, int lineEnd, String code) {
         super(start, end, line, lineEnd, code);
@@ -68,5 +71,17 @@ public class MethodCall extends Stm {
         if(methodCall != null)
             methodCall.visit(visitor);
         visitor.exitMethodCall(this);
+    }
+
+    public void addVariable(String name) {
+        variables.add(name);
+    }
+
+    public void setVariables(List<String> variables) {
+        this.variables = variables;
+    }
+
+    public List<String> getVariables() {
+        return variables;
     }
 }

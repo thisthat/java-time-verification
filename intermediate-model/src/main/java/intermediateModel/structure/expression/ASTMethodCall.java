@@ -5,6 +5,7 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,8 +17,10 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	private String methodName;
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
+	List<String> timePars = new ArrayList<>();
 	String classPointed = null;
 	boolean isTimeCall = false;
+	boolean isMinMax = false;
 	private boolean maxMin;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
@@ -187,5 +190,14 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 
 	public void setMaxMin(boolean maxMin) {
 		this.maxMin = maxMin;
+	}
+
+	public void addTimeVar(String name){
+		this.timePars.add(name);
+	}
+
+
+	public List<String> getTimePars() {
+		return timePars;
 	}
 }

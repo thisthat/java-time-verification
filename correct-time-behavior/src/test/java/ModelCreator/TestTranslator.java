@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import slicing.Slice;
 import slicing.model.Method;
+import smt.ModelCreator;
 import smt.TranslateReducedModel;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class TestTranslator {
 
     @Before
     public void setUp() throws Exception {
+        ModelCreator._debug_ = !true;
         String code = load("translator/code.java");
         model = read("translator/model.smt");
         ASTClass c = JDTVisitor.parse(code, code.substring(0, code.lastIndexOf("/"))).get(0);

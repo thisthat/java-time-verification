@@ -1,7 +1,7 @@
 package smt;
 
 import com.microsoft.z3.*;
-import intermediateModel.visitors.interfaces.ParseIM;
+import slicing.model.interfaces.Stm;
 import smt.exception.FunctionNotFoundException;
 import smt.exception.ModelNotCorrect;
 import smt.exception.VarNotFoundException;
@@ -24,6 +24,8 @@ public class ModelCreator {
     public static String _MaxVal = "9223372036854775807";
     public static String _NotValidMax = "9223372036854775808";
     public static String _NotValidMin = "-1";
+
+    public static boolean _debug_ = false;
 
     Context ctx;
     Optimize opt;
@@ -135,10 +137,13 @@ public class ModelCreator {
         opt.Push();
         Optimize.Handle mx = opt.MkMaximize(v);
         opt.Check();
+        if(_debug_){
+            System.out.println("MAX: " + v.getSExpr() + " = " + mx.toString());
+        }
         boolean f = validValue(mx.toString());
         opt.Pop();
         if(!f){
-            throw new ModelNotCorrect();
+            throw new ModelNotCorrect(v.getSExpr());
         }
     }
 
@@ -146,10 +151,13 @@ public class ModelCreator {
         opt.Push();
         Optimize.Handle mx = opt.MkMinimize(v);
         opt.Check();
+        if(_debug_){
+            System.out.println("MIN: " + v.getSExpr() + " = " + mx.toString());
+        }
         boolean f = validValue(mx.toString());
         opt.Pop();
         if(!f){
-            throw new ModelNotCorrect();
+            throw new ModelNotCorrect(v.getSExpr());
         }
     }
 

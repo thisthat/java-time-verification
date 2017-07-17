@@ -91,7 +91,34 @@ public class TestTimeSemantic {
         assertEquals(0, second.getElseBody().size());
     }
 
+    @Test
+    public void TestTimeVariableInMethodCall() throws Exception {
+        HashMap<IASTMethod, Method> slice = Slice.slice(c);
+        assertEquals(slice.size(), 2);
+        Method m = null;
+        m = slice.get(c.getFirstMethodByName("poll"));
+        assertNotNull(m);
+        assertEquals(4, m.getBody().size());
+        assertEquals(Assignment.class, m.getBody().get(0).getClass());
+        assertEquals(Assignment.class, m.getBody().get(1).getClass());
+        assertEquals(Assignment.class, m.getBody().get(3).getClass());
 
+        assertEquals(While.class, m.getBody().get(2).getClass());
+        While wBody = (While) m.getBody().get(2);
+        assertNotNull(wBody.getExpr());
+        assertEquals(7, wBody.getWhileBody().size());
+
+
+        assertEquals(MethodCall.class, wBody.getWhileBody().get(2).getClass());
+        assertEquals(MethodCall.class, wBody.getWhileBody().get(4).getClass());
+
+        MethodCall c1 = (MethodCall) wBody.getWhileBody().get(2);
+        MethodCall c2 = (MethodCall) wBody.getWhileBody().get(4);
+
+        assertEquals(1, c1.getVariables().size());
+        assertEquals(0, c2.getVariables().size());
+
+    }
 
     private String load(String s) {
         return TestTimeSemantic.class.getClassLoader().getResource(s).getFile();

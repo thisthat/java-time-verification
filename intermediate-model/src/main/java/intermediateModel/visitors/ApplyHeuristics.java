@@ -160,18 +160,19 @@ public class ApplyHeuristics extends ParseIM {
 	protected void analyzeASTDoWhile(ASTDoWhile elm, Env env) {
 		super.analyze(elm.getStms(), env);
 		//super.analyze(elm.getStms(), env);
+		applyStepWhileExpr(elm.getExpr(), env, elm);
 	}
 
 	@Override
 	protected void analyzeASTWhile(ASTWhile elm, Env env) {
 		super.analyzeASTWhile(elm, env);
-		super.analyze(elm.getExpr(), env);
+		applyStepWhileExpr(elm.getExpr(), env, elm);
 	}
 
 	@Override
 	protected void analyzeASTIf(ASTIf elm, Env env) {
 		super.analyzeASTIf(elm, env);
-		super.analyze(elm.getGuard(), env);
+		applyStepIFExpr(elm.getGuard(), env);
 	}
 
 	@Override
@@ -183,6 +184,18 @@ public class ApplyHeuristics extends ParseIM {
 		if(stm == null) return;
 		for(SearchTimeConstraint s : strategies){
 			s.next(stm, env);
+		}
+	}
+	private void applyStepIFExpr(ASTRE stm, Env env){
+		if(stm == null) return;
+		for(SearchTimeConstraint s : strategies){
+			s.nextIfExpr(stm, env);
+		}
+	}
+	private void applyStepWhileExpr(ASTRE stm, Env env, ASTWhile w){
+		if(stm == null) return;
+		for(SearchTimeConstraint s : strategies){
+			s.nextWhileExpr(stm, env, w);
 		}
 	}
 

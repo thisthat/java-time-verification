@@ -14,6 +14,7 @@ public class While extends Stm {
 
     Expression expr;
     List<Stm> whileBody = new ArrayList<>();
+    List<String> timeVarsInExpr = new ArrayList<>();
 
     public While(int start, int end, int line, int lineEnd, String code) {
         super(start, end, line, lineEnd, code);
@@ -71,5 +72,12 @@ public class While extends Stm {
             s.visit(visitor);
         }
         visitor.exitWhile(this);
+    }
+
+    public List<String> getTimeVars() {
+        return timeVarsInExpr;
+    }
+    public void addTimeVar(String name){
+        this.timeVarsInExpr.add(name);
     }
 }

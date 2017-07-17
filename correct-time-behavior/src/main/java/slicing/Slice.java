@@ -26,12 +26,12 @@ public class Slice {
     static ApplyHeuristics ah = new ApplyHeuristics();
     static {
         ah.subscribe(MarkTime.class);
-        ah.subscribe(MinMaxSearch.class);
         ah.subscribe(TimeInSignature.class);
         ah.subscribe(AssignmentTimeVar.class);
         ah.subscribe(BooleanExpression.class);
+        ah.subscribe(MinMaxSearch.class);
         ah.subscribe(ReturnExpression.class);
-        //ah.subscribe(PrintTimeVar.class);
+        ah.subscribe(AddTimeVarToTimeExpression.class);
     }
 
     private ASTClass _class;
@@ -168,6 +168,9 @@ public class Slice {
     private void analyze(ASTWhile stm) {
         List<Stm> bck = current;
         While w = new While(stm);
+        for(String v : stm.getTimeVars()){
+            w.addTimeVar(v);
+        }
         Stm g = getStm(stm.getExpr());
         if(g instanceof Expression)
             w.setExpr((Expression) g);
@@ -186,6 +189,9 @@ public class Slice {
 
         List<Stm> bck = current;
         While w = new While(stm);
+        for(String v : stm.getTimeVars()){
+            w.addTimeVar(v);
+        }
         Stm g = getStm(stm.getExpr());
         if(g instanceof Expression)
             w.setExpr((Expression) g);
@@ -345,6 +351,7 @@ public class Slice {
         MethodCall mc = new MethodCall(stm);
         mc.setPointedClass(stm.getClassPointed());
         mc.setMethodCall(stm);
+        mc.setVariables(stm.getTimePars());
         return mc;
     }
 }

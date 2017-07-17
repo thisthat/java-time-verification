@@ -21,6 +21,16 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 		this.excludeHiddenClass = excludeHiddenClass;
 	}
 
+	public DefualtASTREVisitor setExcludeHiddenClassContinuos(boolean excludeHiddenClass) {
+		this.excludeHiddenClass = excludeHiddenClass;
+		return this;
+	}
+
+	public DefualtASTREVisitor setExcludeParsContinuos(boolean excludePars) {
+		this.excludePars = excludePars;
+		return this;
+	}
+
 	public boolean isExcludePars() {
 		return excludePars;
 	}
