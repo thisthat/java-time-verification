@@ -19,8 +19,8 @@ public class TestIndexing {
 
 
 	public List<ASTClass> init(String filename) throws Exception {
-		Java2AST a = new Java2AST( filename );
-		a.convertToAST();
+		Java2AST a = new Java2AST( filename , true);
+
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);
