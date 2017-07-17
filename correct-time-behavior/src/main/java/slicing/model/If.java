@@ -60,6 +60,8 @@ public class If extends Stm {
 
         If anIf = (If) o;
 
+        if(!super.equals(o)) return false;
+
         if (expr != null ? !expr.equals(anIf.expr) : anIf.expr != null) return false;
         if (ifBody != null ? !ifBody.equals(anIf.ifBody) : anIf.ifBody != null) return false;
         return elseBody != null ? elseBody.equals(anIf.elseBody) : anIf.elseBody == null;

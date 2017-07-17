@@ -46,6 +46,7 @@ public class Expression extends Stm {
         if (o == null || getClass() != o.getClass()) return false;
 
         Expression that = (Expression) o;
+        if(!super.equals(o)) return false;
 
         return expr != null ? expr.equals(that.expr) : that.expr == null;
     }

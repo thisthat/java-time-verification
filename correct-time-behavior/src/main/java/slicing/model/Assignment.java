@@ -51,15 +51,15 @@ public class Assignment extends Stm {
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Assignment that = (Assignment) o;
 
+        if(!super.equals(o)) return false;
+
         if (left != null ? !left.equals(that.left) : that.left != null) return false;
-        boolean ret = right != null ? right.equals(that.right) : that.right == null;
-        return ret;
+        return right != null ? right.equals(that.right) : that.right == null;
     }
 
     @Override

@@ -245,7 +245,6 @@ public class TranslateReducedModel {
 
 
     private void handleWhile(While s) {
-        // TODO Resolve the problem with multiple model
         push();
         if(s.getExpr() != null){
             convert(s.getExpr());
@@ -259,7 +258,6 @@ public class TranslateReducedModel {
     }
 
     private void handleIf(If s) {
-        // TODO Resolve the problem with multiple model
         push();
         if(s.getIfBody().size() > 0) {
             if(s.getExpr() != null)

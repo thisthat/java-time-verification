@@ -52,4 +52,28 @@ public abstract class Stm implements IReducedVisitor, IASTToken {
     public int getEnd() {
         return end;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Stm stm = (Stm) o;
+
+        if (start != stm.start) return false;
+        if (end != stm.end) return false;
+        if (line != stm.line) return false;
+        if (lineEnd != stm.lineEnd) return false;
+        return code != null ? code.equals(stm.code) : stm.code == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = start;
+        result = 31 * result + end;
+        result = 31 * result + line;
+        result = 31 * result + lineEnd;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        return result;
+    }
 }

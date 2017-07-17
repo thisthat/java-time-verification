@@ -50,7 +50,7 @@ public class MethodCall extends Stm {
         if (o == null || getClass() != o.getClass()) return false;
 
         MethodCall that = (MethodCall) o;
-
+        if(!super.equals(o)) return false;
         if (pointedClass != null ? !pointedClass.equals(that.pointedClass) : that.pointedClass != null) return false;
         return methodCall != null ? methodCall.equals(that.methodCall) : that.methodCall == null;
     }

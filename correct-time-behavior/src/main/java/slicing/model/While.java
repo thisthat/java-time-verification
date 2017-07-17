@@ -50,7 +50,7 @@ public class While extends Stm {
         if (o == null || getClass() != o.getClass()) return false;
 
         While aWhile = (While) o;
-
+        if(!super.equals(o)) return false;
         if (expr != null ? !expr.equals(aWhile.expr) : aWhile.expr != null) return false;
         return whileBody != null ? whileBody.equals(aWhile.whileBody) : aWhile.whileBody == null;
     }

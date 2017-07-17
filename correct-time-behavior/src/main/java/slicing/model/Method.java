@@ -56,7 +56,7 @@ public class Method extends Stm {
         if (o == null || getClass() != o.getClass()) return false;
 
         Method method = (Method) o;
-
+        if(!super.equals(o)) return false;
         if (body != null ? !body.equals(method.body) : method.body != null) return false;
         if (name != null ? !name.equals(method.name) : method.name != null) return false;
         return signature != null ? signature.equals(method.signature) : method.signature == null;
