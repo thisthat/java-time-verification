@@ -80,6 +80,9 @@ public abstract class ParseIM {
 	public void start(IASTMethod m, Env e){
 		analyze(m.getStms(), e);
 	}
+	public void start(List<IASTStm> m, Env e){
+		analyze(m, e);
+	}
 
 
 

@@ -19,8 +19,19 @@ public class SingleFile {
         List<ASTClass> result = JDTVisitor.parse(file, root);
         for(ASTClass c : result){
             ClassAnalyzer ca = new ClassAnalyzer(c);
+            ca.setGetModel(true);
             try {
                 HashMap<IASTMethod, List<VariableNotCorrect>> err = ca.getErrors();
+                for(IASTMethod m : err.keySet()){
+                    for (VariableNotCorrect v : err.get(m)) {
+                        System.out.println(v.getVarName() + "@" + v.getWhere().getLine());
+                        System.out.println("Min");
+                        System.out.println(v.getMinModel());
+                        System.out.println("Max");
+                        System.out.println(v.getMaxModel());
+                        System.out.println("____");
+                    }
+                }
             }catch (Exception x) {
                 System.out.println("In file " + c.getPath());
                 throw x;

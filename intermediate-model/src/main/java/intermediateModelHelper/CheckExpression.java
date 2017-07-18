@@ -329,8 +329,10 @@ public class CheckExpression {
 		DefualtASTREVisitor v = new DefualtASTREVisitor(){
 			@Override
 			public void enterASTLiteral(ASTLiteral literal) {
-				if(where.existVarNameTimeRelevant(literal.getValue()) ) //and time critical
+				if(where.existVarNameTimeRelevant(literal.getValue()) ) {//and time critical
 					r[0] = true;
+					literal.setTimeCritical(true);
+				}
 			}
 
 			@Override
@@ -338,10 +340,12 @@ public class CheckExpression {
 				if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
 					if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
 						r[0] = true;
+						elm.setTimeCritical(true);
 					}
 				}
 				else if(where.existMethodTimeRelevant(elm.getMethodName(), getSignature(elm.getParameters(), where))){
 					r[0] = true;
+					elm.setTimeCritical(true);
 				}
 			}
 
@@ -365,7 +369,7 @@ public class CheckExpression {
 					case equality:
 					case notEqual:
 						if(CheckExpression.checkIt(elm, env)){
-							expr.setTimeCritical(true);
+							//expr.setTimeCritical(true);
 							elm.setTimeCritical(true);
 							find[0] = true;
 						}

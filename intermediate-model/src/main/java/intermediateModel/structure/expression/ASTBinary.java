@@ -130,4 +130,12 @@ public class ASTBinary extends IASTStm implements IASTRE {
 		result = 31 * result + (op != null ? op.hashCode() : 0);
 		return result;
 	}
+
+	@Override
+	public void setTimeCritical(boolean timeCritical) {
+		super.setTimeCritical(timeCritical);
+		left.setTimeCritical(timeCritical);
+		right.setTimeCritical(timeCritical);
+
+	}
 }

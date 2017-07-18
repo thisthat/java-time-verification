@@ -24,6 +24,7 @@ public class TranslateReducedModel {
     private List<String> pushModel;
     private List<VariableNotCorrect> errors;
     private boolean saveModel = false;
+    private boolean stop = false;
 
     public void saveModel(boolean f) {
         this.saveModel = f;
@@ -42,6 +43,7 @@ public class TranslateReducedModel {
     }
 
     public Optimize convert(Method m){
+        stop = false;
         modelCreator = new ModelCreator();
         pushModel = new ArrayList<>();
         errors = new ArrayList<>();
@@ -57,6 +59,11 @@ public class TranslateReducedModel {
     }
 
     private void convert(Stm s) {
+        if(s.getLine() == 190){
+            System.out.println("BRK");
+        }
+        if(stop)
+            return;
         if(s instanceof Assignment){
             handleAssignment((Assignment) s);
         } else if(s instanceof DoWhile){
@@ -69,7 +76,9 @@ public class TranslateReducedModel {
             handleMethodCall((MethodCall) s);
         } else if(s instanceof While){
             handleWhile((While) s);
-        } else {
+        } else if(s instanceof Stop){
+            stop = true;
+        }else {
             notYet(s);
         }
     }
@@ -134,7 +143,11 @@ public class TranslateReducedModel {
         Expr e = null;
         switch (r.getOp()) {
             case not:
-                e = ctx.mkNot((BoolExpr) convert(r.getExpr(), RetType.BOOL));
+                Expr cnv = convert(r.getExpr(), RetType.BOOL);
+                if(cnv instanceof IntExpr){
+                    cnv = ctx.mkBool(true);
+                }
+                e = ctx.mkNot((BoolExpr) cnv);
                 modelCreator.addConstraint((BoolExpr) e);
                 break;
             case minus:
@@ -387,6 +400,12 @@ public class TranslateReducedModel {
                 convert(ss);
             }
             pop();
+        } else {
+            //there is no else
+            if(s.getExpr() != null){
+                IASTRE expr = s.getExpr().getExpr().negate();
+                convert(expr, RetType.BOOL);
+            }
         }
 
     }
@@ -394,12 +413,13 @@ public class TranslateReducedModel {
     private void handleExpression(Expression s) {
         Expr e = convert(s.getExpr(), RetType.BOOL);
         BoolExpr b;
-        if(e instanceof IntExpr){
+        if (e instanceof IntExpr) {
             b = ctx.mkGe((ArithExpr) e, ctx.mkInt(0));
         } else {
             b = (BoolExpr) e;
         }
         modelCreator.addConstraint(b);
+
     }
 
     private void handleMethodCall(MethodCall s) {

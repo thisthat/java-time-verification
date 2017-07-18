@@ -38,9 +38,10 @@ public class ClassAnalyzer {
         PathGenerator pg = new PathGenerator();
         List<Method> analyze = pg.generate(m);
         translateReducedModel.saveModel(getModel);
-
+        List<VariableNotCorrect> tmp;
         for(Method mm : analyze) {
-            out.addAll(translateReducedModel.check(mm));
+            tmp = translateReducedModel.check(mm);
+            out.addAll(tmp);
         }
         return out;
     }

@@ -27,7 +27,9 @@ public class ModelAndValue {
                     for (VariableNotCorrect v : vars) {
                         if(!v.getVarName().equals(args[3]))
                             continue;
+                        System.out.println("Min");
                         System.out.println(v.getMinModel());
+                        System.out.println("Max");
                         System.out.println(v.getMaxModel());
                         System.out.println("________");
                     }

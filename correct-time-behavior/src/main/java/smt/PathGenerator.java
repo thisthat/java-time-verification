@@ -57,6 +57,8 @@ public class PathGenerator {
     }
 
     private void handleIf(If s) {
+        if(s.getExpr() != null)
+            return; //only if we do not have time in the if
         Method m = cloner.deepClone(original);
         remove(m, s.getIfBody());
         if(s.getElseBody() != null && s.getElseBody().size() == 0) {

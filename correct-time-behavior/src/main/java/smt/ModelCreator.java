@@ -131,11 +131,13 @@ public class ModelCreator {
     }
 
     public void verifyVariable(IntExpr v) throws ModelNotCorrect {
-        verify_min(v);
-        verify_max(v);
+        boolean min = verify_min(v);
+        boolean max = verify_max(v);
+        if(!min)
+            throw new ModelNotCorrect(v.getSExpr());
     }
 
-    private void verify_max(IntExpr v) throws ModelNotCorrect {
+    private boolean verify_max(IntExpr v) throws ModelNotCorrect {
         opt.Push();
         Optimize.Handle mx = opt.MkMaximize(v);
         opt.Check();
@@ -145,12 +147,10 @@ public class ModelCreator {
         }
         boolean f = validValue(mx.toString());
         opt.Pop();
-        if(!f){
-            throw new ModelNotCorrect(v.getSExpr());
-        }
+        return f;
     }
 
-    private void verify_min(IntExpr v) throws ModelNotCorrect {
+    private boolean verify_min(IntExpr v) throws ModelNotCorrect {
         opt.Push();
         Optimize.Handle mx = opt.MkMinimize(v);
         opt.Check();
@@ -160,9 +160,7 @@ public class ModelCreator {
         }
         boolean f = validValue(mx.toString());
         opt.Pop();
-        if(!f){
-            throw new ModelNotCorrect(v.getSExpr());
-        }
+        return f;
     }
 
     private boolean validValue(String val){

@@ -221,7 +221,8 @@ public class Slice {
     }
 
     private void analyze(ASTThrow stm) {
-        analyze(stm.getExpr());
+        Stop s = new Stop(stm.getStart(), stm.getEnd(), stm.getLine(), stm.getLineEnd(), stm.getCode());
+        current.add(s);
     }
 
     private void analyze(ASTSynchronized stm) {
@@ -237,8 +238,11 @@ public class Slice {
     }
 
     private void analyze(ASTReturn stm) {
-        if(stm.getExpr() != null)
+        if(stm.getExpr() != null) {
             analyze(stm.getExpr());
+            Stop s = new Stop(stm.getStart(), stm.getEnd(), stm.getLine(), stm.getLineEnd(), stm.getCode());
+            current.add(s);
+        }
     }
 
     private void analyze(ASTIf stm) {
@@ -277,11 +281,12 @@ public class Slice {
         }
     }
 
-    private void analyze(ASTRE r) {
+    private boolean analyze(ASTRE r) {
         Stm stm = getStm(r);
         if(stm != null)
             current.add(stm);
         analyzeNewObj(r);
+        return stm != null;
     }
 
     private Stm getStm(ASTRE r){
