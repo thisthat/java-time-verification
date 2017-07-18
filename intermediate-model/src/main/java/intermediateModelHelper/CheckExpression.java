@@ -137,10 +137,10 @@ public class CheckExpression {
 	 * @param where		Envirorment where to add
 	 */
 	public static boolean setVariableInEnv(ASTVariable v, Env where){
-		boolean flag = BuildEnvironment.getInstance().hasVarTypeTimeRelated(v);
-		v.setTimeCritical( flag );
+		//boolean flag = BuildEnvironment.getInstance().hasVarTypeTimeRelated(v);
+		//v.setTimeCritical( flag );
 		where.addVar(v);
-		return flag;
+		return v.isTimeCritical();
 	}
 
 	/**

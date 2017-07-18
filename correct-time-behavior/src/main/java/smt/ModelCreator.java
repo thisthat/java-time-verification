@@ -1,7 +1,6 @@
 package smt;
 
 import com.microsoft.z3.*;
-import slicing.model.interfaces.Stm;
 import smt.exception.FunctionNotFoundException;
 import smt.exception.ModelNotCorrect;
 import smt.exception.VarNotFoundException;
@@ -17,13 +16,14 @@ public class ModelCreator {
     private IntExpr over_max_val;
     private IntExpr min_val;
     private IntExpr time;
-    private IntExpr max;
-    private IntExpr min;
     private FuncDecl timeFuncDec;
 
     public static String _MaxVal = "9223372036854775807";
     public static String _NotValidMax = "9223372036854775808";
     public static String _NotValidMin = "-1";
+
+    private String lastMinModel = "";
+    private String lastMaxModel = "";
 
     public static boolean _debug_ = false;
 
@@ -98,6 +98,8 @@ public class ModelCreator {
         } catch (VarNotFoundException e) {
             if(name.matches("[0-9]+")){
                 v = ctx.mkInt(name);
+            } else if(name.matches("[0-9]+\\.[0-9]+")){
+                v = ctx.mkInt(name);
             } else {
                 v = ctx.mkIntConst(name);
                 BoolExpr t = ctx.mkLe(min_val, v);
@@ -137,6 +139,7 @@ public class ModelCreator {
         opt.Push();
         Optimize.Handle mx = opt.MkMaximize(v);
         opt.Check();
+        this.lastMaxModel = opt.toString();
         if(_debug_){
             System.out.println("MAX: " + v.getSExpr() + " = " + mx.toString());
         }
@@ -151,6 +154,7 @@ public class ModelCreator {
         opt.Push();
         Optimize.Handle mx = opt.MkMinimize(v);
         opt.Check();
+        this.lastMinModel = opt.toString();
         if(_debug_){
             System.out.println("MIN: " + v.getSExpr() + " = " + mx.toString());
         }
@@ -172,7 +176,12 @@ public class ModelCreator {
     }
 
     public void addConstraint(BoolExpr t){
-        opt.Add(t);
+        try {
+            opt.Add(t);
+        } catch (Exception e){
+            System.out.println("BRK");
+            throw e;
+        }
     }
 
     public Model getModel() {
@@ -186,5 +195,13 @@ public class ModelCreator {
 
     public Optimize getOpt() {
         return opt;
+    }
+
+    public String getLastMinModel() {
+        return lastMinModel;
+    }
+
+    public String getLastMaxModel() {
+        return lastMaxModel;
     }
 }

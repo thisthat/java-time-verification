@@ -8,10 +8,27 @@ import slicing.model.interfaces.Stm;
 public class VariableNotCorrect {
     String varName;
     Stm where;
+    String minModel = "";
+    String maxModel = "";
 
     public VariableNotCorrect(String varName, Stm where) {
         this.varName = varName;
         this.where = where;
+    }
+
+    public VariableNotCorrect(String varName, Stm where, String min, String max) {
+        this.varName = varName;
+        this.where = where;
+        this.minModel = min;
+        this.maxModel = max;
+    }
+
+    public String getMinModel() {
+        return minModel;
+    }
+
+    public String getMaxModel() {
+        return maxModel;
     }
 
     public String getVarName() {

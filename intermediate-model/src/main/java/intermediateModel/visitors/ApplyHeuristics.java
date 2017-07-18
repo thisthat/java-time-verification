@@ -140,6 +140,15 @@ public class ApplyHeuristics extends ParseIM {
 
 	@Override
 	protected void analyzeMethod(IASTMethod method, Env e) {
+		//mark env with time
+		MarkTime mk = new MarkTime();
+		ParseIM parser = new ParseIM() {
+			@Override
+			protected void analyze(ASTRE r, Env env) {
+				mk.next(r, env);
+			}
+		};
+		parser.start(method, new Env(e));
 		if(method instanceof ASTConstructor) {
 			for(SearchTimeConstraint s : strategies){
 				s.nextConstructor((ASTConstructor) method,e);

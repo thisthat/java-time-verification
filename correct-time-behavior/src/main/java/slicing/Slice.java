@@ -185,10 +185,10 @@ public class Slice {
     private void analyze(ASTDoWhile stm) {
 
         //one round as it's executed normally
-        analyze(stm.getStms());
+        //analyze(stm.getStms());
 
         List<Stm> bck = current;
-        While w = new While(stm);
+        DoWhile w = new DoWhile(stm);
         for(String v : stm.getTimeVars()){
             w.addTimeVar(v);
         }
@@ -318,10 +318,15 @@ public class Slice {
     }
 
     private void analyze(IASTStm stm) {
+        if(stm instanceof ASTContinue || stm instanceof  ASTBreak)
+            return;
         System.err.println("Not supported, YET!");
+        System.err.println(stm.getCode());
     }
 
     private TimeElement valid(ASTRE r){
+        if(r == null)
+            return null;
         int s = r.getStart();
         int e = r.getEnd();
         int l = r.getLine();

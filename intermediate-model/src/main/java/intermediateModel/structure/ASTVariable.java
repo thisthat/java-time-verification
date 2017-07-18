@@ -81,4 +81,5 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 		visitor.enterASTVariable(this);
 		visitor.exitASTVariable(this);
 	}
+
 }

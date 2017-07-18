@@ -27,6 +27,10 @@ public class DefaultReducedVisitor extends DefualtASTREVisitor implements Reduce
     public void enterWhile(While elm) {
 
     }
+    @Override
+    public void enterDoWhile(DoWhile elm) {
+
+    }
 
     @Override
     public void enterExpression(Expression elm) {
@@ -55,6 +59,11 @@ public class DefaultReducedVisitor extends DefualtASTREVisitor implements Reduce
 
     @Override
     public void exitWhile(While elm) {
+
+    }
+
+    @Override
+    public void exitDoWhile(DoWhile elm) {
 
     }
 }

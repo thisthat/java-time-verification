@@ -172,6 +172,14 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		return out;
 	}
 
+	public String fullName(){
+		String out = packageName + "." + name;
+		if(out.startsWith(".")){
+			out = out.substring(1);
+		}
+		return out;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

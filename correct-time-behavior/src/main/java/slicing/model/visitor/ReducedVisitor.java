@@ -11,11 +11,13 @@ public interface ReducedVisitor extends ASTREVisitor {
     void enterIf(If elm);
     void enterMethodCall(MethodCall elm);
     void enterWhile(While elm);
+    void enterDoWhile(DoWhile elm);
     void enterExpression(Expression elm);
     void exitAssignment(Assignment elm);
     void exitIf(If elm);
     void exitMethodCall(MethodCall elm);
     void exitWhile(While elm);
+    void exitDoWhile(DoWhile elm);
     void exitExpression(Expression elm);
 
 }

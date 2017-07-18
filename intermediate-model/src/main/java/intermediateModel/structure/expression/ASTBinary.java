@@ -88,6 +88,7 @@ public class ASTBinary extends IASTStm implements IASTRE {
 
 		}
 		ASTBinary out = new ASTBinary(start,end, left.negate(), right.negate(), _op);
+		out.setTimeCritical(this.isTimeCritical());
 		return out;
 	}
 

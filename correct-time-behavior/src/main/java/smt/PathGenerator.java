@@ -2,7 +2,6 @@ package smt;
 
 import com.rits.cloning.Cloner;
 import slicing.Shrinker;
-import slicing.Slice;
 import slicing.model.Expression;
 import slicing.model.If;
 import slicing.model.Method;

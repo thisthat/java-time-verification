@@ -77,6 +77,11 @@ public abstract class ParseIM {
 		}
 	}
 
+	public void start(IASTMethod m, Env e){
+		analyze(m.getStms(), e);
+	}
+
+
 
 	protected void analyzeMethod(IASTMethod method, Env e){
 		if(method instanceof ASTConstructor || method.isStatic()){

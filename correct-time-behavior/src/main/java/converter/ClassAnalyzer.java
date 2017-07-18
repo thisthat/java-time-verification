@@ -4,6 +4,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import slicing.Slice;
 import slicing.model.Method;
+import smt.PathGenerator;
 import smt.TranslateReducedModel;
 import smt.exception.VariableNotCorrect;
 
@@ -18,6 +19,7 @@ public class ClassAnalyzer {
 
     private final TranslateReducedModel translateReducedModel;
     HashMap<IASTMethod, Method> reducedModel = new HashMap<>();
+    private boolean getModel = false;
 
     public ClassAnalyzer(ASTClass c) {
         reducedModel = Slice.slice(c);
@@ -32,14 +34,31 @@ public class ClassAnalyzer {
     }
 
     public List<VariableNotCorrect> getErrors(Method m){
-        return translateReducedModel.check(m);
+        List<VariableNotCorrect> out = new ArrayList<>();
+        PathGenerator pg = new PathGenerator();
+        List<Method> analyze = pg.generate(m);
+        translateReducedModel.saveModel(getModel);
+
+        for(Method mm : analyze) {
+            out.addAll(translateReducedModel.check(mm));
+        }
+        return out;
     }
 
     public HashMap<IASTMethod, List<VariableNotCorrect>> getErrors(){
         HashMap<IASTMethod, List<VariableNotCorrect>> out = new HashMap<>();
         for(IASTMethod m : reducedModel.keySet()){
-            out.put(m, getErrors(m));
+            try {
+                out.put(m, getErrors(m));
+            } catch (Exception e){
+                System.out.println("Problem in" + m.getName() + "@" + m.getLine());
+                throw e;
+            }
         }
         return out;
+    }
+
+    public void setGetModel(boolean getModel) {
+        this.getModel = getModel;
     }
 }

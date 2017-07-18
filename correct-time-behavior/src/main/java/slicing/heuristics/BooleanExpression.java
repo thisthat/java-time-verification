@@ -3,6 +3,7 @@ package slicing.heuristics;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAssignment;
 import intermediateModel.structure.expression.ASTLiteral;
@@ -27,6 +28,11 @@ public class BooleanExpression extends SearchTimeConstraint {
 
 	public BooleanExpression() {
 		this.listTimeStms = TimeStatements.getInstance();
+	}
+
+	@Override
+	public void nextMethod(ASTMethod method, Env env) {
+		super.nextMethod(method, env);
 	}
 
 	@Override

@@ -23,8 +23,16 @@ public class TranslateReducedModel {
     private Context ctx;
     private List<String> pushModel;
     private List<VariableNotCorrect> errors;
+    private boolean saveModel = false;
 
-    int _fresh = 0;
+    public void saveModel(boolean f) {
+        this.saveModel = f;
+    }
+
+    private enum RetType {
+        INT, BOOL
+    }
+
 
     public TranslateReducedModel() {
     }
@@ -51,6 +59,8 @@ public class TranslateReducedModel {
     private void convert(Stm s) {
         if(s instanceof Assignment){
             handleAssignment((Assignment) s);
+        } else if(s instanceof DoWhile){
+            handleDoWhile((DoWhile) s);
         } else if(s instanceof Expression){
             handleExpression((Expression) s);
         } else if(s instanceof If){
@@ -64,7 +74,7 @@ public class TranslateReducedModel {
         }
     }
 
-    private Expr convert(IASTRE r){
+    private Expr convert(IASTRE r, RetType t){
         if(r instanceof ASTArrayInitializer){
             return handleArrayInitializer((ASTArrayInitializer)r);
         } else if(r instanceof ASTAssignment){
@@ -72,9 +82,9 @@ public class TranslateReducedModel {
         } else if(r instanceof ASTAttributeAccess){
             return handleAttributeAccess((ASTAttributeAccess)r);
         } else if(r instanceof ASTBinary){
-            return handleBinary((ASTBinary) r);
+            return handleBinary((ASTBinary) r, t);
         } else if(r instanceof ASTCast){
-            return handleCast((ASTCast) r);
+            return handleCast((ASTCast) r, t);
         } else if(r instanceof ASTConditional){
             return handleConditional((ASTConditional) r);
         } else if(r instanceof ASTLiteral){
@@ -104,7 +114,7 @@ public class TranslateReducedModel {
      ***************************/
     private Expr handleMultipleVarDec(ASTVariableMultipleDeclaration r) {
         for(IASTRE rr : r.getVars()) {
-            convert(rr);
+            convert(rr, RetType.BOOL);
         }
         return ctx.mkBool(true);
     }
@@ -113,20 +123,22 @@ public class TranslateReducedModel {
         String varName = r.getNameString();
         IntExpr var = modelCreator.createVariable(varName);
         if(r.getExpr() != null) {
-            BoolExpr b = ctx.mkEq(var, convert(r.getExpr()));
+            BoolExpr b = ctx.mkEq(var, convert(r.getExpr(), RetType.BOOL));
             modelCreator.addConstraint(b);
             return b;
         }
         return var;
     }
 
-    private BoolExpr handleUnary(ASTUnary r) {
-        BoolExpr e = null;
+    private Expr handleUnary(ASTUnary r) {
+        Expr e = null;
         switch (r.getOp()) {
             case not:
-                e = ctx.mkNot((BoolExpr) convert(r.getExpr()));
-                modelCreator.addConstraint(e);
+                e = ctx.mkNot((BoolExpr) convert(r.getExpr(), RetType.BOOL));
+                modelCreator.addConstraint((BoolExpr) e);
                 break;
+            case minus:
+                return ctx.mkSub( ctx.mkInt(0), (ArithExpr) convert(r.getExpr(), RetType.INT));
         }
         return e;
     }
@@ -171,8 +183,8 @@ public class TranslateReducedModel {
     }
 
     private IntExpr convertMaxMin(ASTMethodCall r) {
-        ArithExpr t0 = (ArithExpr) convert(r.getParameters().get(0));
-        ArithExpr t1 = (ArithExpr) convert(r.getParameters().get(1));
+        ArithExpr t0 = (ArithExpr) convert(r.getParameters().get(0), RetType.INT);
+        ArithExpr t1 = (ArithExpr) convert(r.getParameters().get(1), RetType.INT);
         if(r.getMethodName().equals("min")){
             return (IntExpr) ModelCreator.min2(ctx, t0, t1);
         }
@@ -185,64 +197,112 @@ public class TranslateReducedModel {
     }
 
     private Expr handleConditional(ASTConditional r) {
-        return ctx.mkBool(true);
+        if(r.isTimeCritical()){
+            return modelCreator.getTimeCall();
+        }
+        return ctx.mkInt(-1);
     }
 
-    private Expr handleCast(ASTCast r) {
-        return ctx.mkBool(true);
+    private Expr handleCast(ASTCast r, RetType t) {
+        return convert(r.getExpr(), t);
     }
 
-    private Expr handleBinary(ASTBinary r) {
+    private Expr handleBinary(ASTBinary r, RetType t) {
         Expr e = null;
+        if(!r.isTimeCritical() && t == RetType.BOOL){
+            return ctx.mkBool(true);
+        }
         switch (r.getOp()){
             case plus:
                 e = ctx.mkAdd(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr)convert(r.getLeft(), t),
+                        (ArithExpr) convert(r.getRight(), t)
                 );
                 break;
             case minus:
                 e = ctx.mkSub(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr)convert(r.getLeft(), t),
+                        (ArithExpr) convert(r.getRight(), t)
                 );
                 break;
             case less:
                 e = ctx.mkLt(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr)convert(r.getLeft(), t),
+                        (ArithExpr) convert(r.getRight(), t)
                 );
                 break;
             case lessEqual:
                 e = ctx.mkLe(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr)convert(r.getLeft(), t),
+                        (ArithExpr) convert(r.getRight(), t)
                 );
                 break;
             case greater:
                 e = ctx.mkGt(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr)convert(r.getLeft(), t),
+                        (ArithExpr) convert(r.getRight(), t)
                 );
                 break;
             case greaterEqual:
                 e = ctx.mkGe(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr)convert(r.getLeft(), t),
+                        (ArithExpr) convert(r.getRight(), t)
                 );
+                break;
+            case equality:
+                e = ctx.mkEq(
+                        convert(r.getLeft(), t),
+                        convert(r.getRight(), t)
+                );
+                break;
+            case notEqual:
+                e = ctx.mkNot(ctx.mkEq(
+                        convert(r.getLeft(), t),
+                        convert(r.getRight(), t)
+                ));
                 break;
             case mul:
                 e = ctx.mkMul(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr)convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
             case div:
                 e = ctx.mkDiv(
-                        (ArithExpr)convert(r.getLeft()),
-                        (ArithExpr) convert(r.getRight())
+                        (ArithExpr) convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
+            case and: {
+                BoolExpr left, right;
+                if (r.getLeft().isTimeCritical()) {
+                    left = (BoolExpr) convert(r.getLeft(), RetType.BOOL);
+                } else {
+                    left = ctx.mkBool(true);
+                }
+                if (r.getRight().isTimeCritical()) {
+                    right = (BoolExpr) convert(r.getRight(), RetType.BOOL);
+                } else {
+                    right = ctx.mkBool(true);
+                }
+                e = ctx.mkAnd(left, right);
+                break;
+            }
+            case or: {
+                BoolExpr left, right;
+                if (r.getLeft().isTimeCritical()) {
+                    left = (BoolExpr) convert(r.getLeft(), RetType.BOOL);
+                } else {
+                    left = ctx.mkBool(true);
+                }
+                if (r.getRight().isTimeCritical()) {
+                    right = (BoolExpr) convert(r.getRight(), RetType.BOOL);
+                } else {
+                    right = ctx.mkBool(true);
+                }
+                e = ctx.mkOr(left, right);
+                break;
+            }
         }
         return e;
     }
@@ -271,7 +331,10 @@ public class TranslateReducedModel {
             try {
                 modelCreator.verifyVariable(v);
             } catch (ModelNotCorrect e) {
-                errors.add( new VariableNotCorrect(v, s)  );
+                if (this.saveModel)
+                    errors.add(new VariableNotCorrect(v, s, modelCreator.getLastMinModel(), modelCreator.getLastMaxModel()));
+                else
+                    errors.add(new VariableNotCorrect(v, s));
                 //System.err.println("@" + s.getLine() + " " + e.getMessage());
             } catch (VarNotFoundException e) {
                 //this is not a problem
@@ -285,8 +348,25 @@ public class TranslateReducedModel {
             convert(ss);
         }
         pop();
-        Expr b = convert(s.getExpr().getExpr().negate());
-        modelCreator.addConstraint((BoolExpr) b);
+        if(s.getExpr() != null) {
+            Expr b = convert(s.getExpr().getExpr().negate(), RetType.BOOL);
+            modelCreator.addConstraint((BoolExpr) b);
+        }
+    }
+
+    private void handleDoWhile(DoWhile s) {
+        push();
+        if(s.getExpr() != null){
+            convert(s.getExpr());
+        }
+        for(Stm ss : s.getWhileBody()){
+            convert(ss);
+        }
+        pop();
+        if(s.getExpr() != null) {
+            Expr b = convert(s.getExpr().getExpr().negate(), RetType.BOOL);
+            modelCreator.addConstraint((BoolExpr) b);
+        }
     }
 
     private void handleIf(If s) {
@@ -302,7 +382,7 @@ public class TranslateReducedModel {
         if(s.getElseBody().size() > 0){
             push();
             if(s.getExpr() != null)
-                convert(s.getExpr().getExpr().negate());
+                convert(s.getExpr().getExpr().negate(), RetType.BOOL);
             for(Stm ss : s.getIfBody()){
                 convert(ss);
             }
@@ -312,8 +392,14 @@ public class TranslateReducedModel {
     }
 
     private void handleExpression(Expression s) {
-        BoolExpr e = (BoolExpr) convert(s.getExpr());
-        modelCreator.addConstraint(e);
+        Expr e = convert(s.getExpr(), RetType.BOOL);
+        BoolExpr b;
+        if(e instanceof IntExpr){
+            b = ctx.mkGe((ArithExpr) e, ctx.mkInt(0));
+        } else {
+            b = (BoolExpr) e;
+        }
+        modelCreator.addConstraint(b);
     }
 
     private void handleMethodCall(MethodCall s) {
@@ -321,20 +407,24 @@ public class TranslateReducedModel {
             try {
                 modelCreator.verifyVariable(v);
             } catch (ModelNotCorrect e) {
-                errors.add( new VariableNotCorrect(v, s)  );
+                if (this.saveModel)
+                    errors.add(new VariableNotCorrect(v, s, modelCreator.getLastMinModel(), modelCreator.getLastMaxModel()));
+                else
+                    errors.add(new VariableNotCorrect(v, s));
                 //System.err.println("@" + s.getLine() + " " + e.getMessage());
             } catch (VarNotFoundException e) {
                 //this is not a problem
             }
         }
-        convert(s.getMethodCall());
+        convert(s.getMethodCall(), RetType.INT);
     }
 
     private void handleAssignment(Assignment s) {
         IntExpr v = modelCreator.createVariable(s.getLeft());
-        Expr e = convert(s.getRight());
+        Expr e = convert(s.getRight(), RetType.INT);
         BoolExpr b = ctx.mkEq(v, e);
         modelCreator.addConstraint(b);
+
     }
 
     private void push(){

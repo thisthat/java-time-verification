@@ -61,15 +61,12 @@ public class TestTimeSemanticDoWhile {
         Method m;
         m = slice.get(c.getFirstMethodByName("poll"));
         assertNotNull(m);
-        assertEquals(6, m.getBody().size());
+        assertEquals(3, m.getBody().size());
         assertEquals(Assignment.class, m.getBody().get(0).getClass());
         assertEquals(Assignment.class, m.getBody().get(1).getClass());
-        assertEquals(If.class, m.getBody().get(2).getClass());
-        assertEquals(If.class, m.getBody().get(3).getClass());
-        assertEquals(Assignment.class, m.getBody().get(4).getClass());
-        assertEquals(While.class, m.getBody().get(5).getClass());
+        assertEquals(DoWhile.class, m.getBody().get(2).getClass());
 
-        While w = (While) m.getBody().get(5);
+        DoWhile w = (DoWhile) m.getBody().get(2);
         assertEquals(3, w.getWhileBody().size());
         assertNotNull(w.getExpr());
 

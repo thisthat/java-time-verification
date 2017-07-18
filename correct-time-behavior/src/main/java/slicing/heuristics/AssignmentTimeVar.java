@@ -42,7 +42,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 		DefaultASTVisitor v = new DefaultASTVisitor(){
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
-				if(elm.getExpr().isTimeCritical()){
+				if(elm.getExpr() != null && elm.getExpr().isTimeCritical()){
 					IASTVar var = env.getVar(elm.getNameString());
 					if(var != null){
 						var.setTimeCritical(true);
@@ -53,7 +53,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 
 			@Override
 			public void enterASTAssignment(ASTAssignment elm) {
-				if(elm.getRight().isTimeCritical()){
+				if(elm.getRight() != null && elm.getRight().isTimeCritical()){
 					IASTRE lexpr = elm.getLeft();
 					DefualtASTREVisitor v = new DefualtASTREVisitor(){
 						@Override
