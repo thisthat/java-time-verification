@@ -62,10 +62,14 @@ LOG_CONFIG = {
 
 logging.config.dictConfig(LOG_CONFIG)
 
-@contract(state_space=StateSpace)
+log = logging.getLogger("main")
+
+@contract(state_space="is_state_space")
 def build_legend(state_space):
 
     legend = []
+
+    log.debug("Build legend. Attributes: %s" % state_space.attributes)
 
     for (idx,attr) in enumerate(state_space.attributes):
         check("is_abstract_attribute", attr)
@@ -82,24 +86,23 @@ def build_legend(state_space):
 
         desc = ", ".join(pred_labels)
 
+        log.debug("Legend: (%s,%s) : %s" % (idx,attr,desc)) 
         legend.append((str(idx),desc))
 
     return legend
 
 
-proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", "test_project"))
-
-proj_url = "file://%s" % proj_path
-
-p = Project("test_project", proj_url, "localhost:9000")
-p.open()
-
-#print "Wait 2 seconds for opening project ..."
-#sleep(2)
+proj_name = "dist-progs" # test_project
+proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.ir.tests", proj_name))
+#proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
+class_name = "RingLeader" # DoWhile, While, Short, SequentialCode
+file_name = "RingLeader.java" # DoWhile.java, While.java, Short.java, SequentialCode.java
+method_name = "handleMsg"
 
 i_lt_j = LT().rename(var="var_1",value="var_2")
-i_eq_j = Eq().rename(var="var_1",value="var_2")
 i_gt_j = GT().rename(var="var_1",value="var_2")
+i_eq_j = Eq().rename(var="var_1",value="var_2")
+i_neq_j = NotEq().rename(var="var_1",value="var_2")
 
 # each tuple in the domain has the following structure:
 # (variable names, domain, is_local)
@@ -107,12 +110,26 @@ domains = [
 #    "i": INTEGERS,
 #    "j": INTEGERS,
 #    (["i","j"], DomainProduct(var_1=INTEGERS, var_2=INTEGERS)),
-    (["i","j"], CompareVariables(datatypes=[Integer(), Integer()], predicates=[i_eq_j, i_lt_j, i_gt_j]), True),
-    ("initial_i", INTEGERS, False),
-    ("initial_j", INTEGERS, False),
+#    (["i","j"], CompareVariables(datatypes=[Integer(), Integer()], predicates=[i_eq_j, i_lt_j, i_gt_j]), True),
+#    ("initial_i", INTEGERS, False),
+#    ("initial_j", INTEGERS, False),
+#    ("number", INTEGERS, False),
+    ("leaderId", INTEGERS, False),
+    ("next", INTEGERS, False),
+    ("awake", BOOLEANS, False),
+    ("src", INTEGERS, False),
+    ("tag", STRINGS, False),
+#    ("j", INTEGERS, True),
+    (["j","number"], CompareVariables(datatypes=[Integer(), Integer()], predicates=[i_eq_j, i_neq_j]), False),
 ]
 
-m = get_method(p, "While", "While.java", "foo")
+
+# start code
+
+p = Project(proj_name, "file://%s" % proj_path, "localhost:9000")
+
+p.open()
+m = get_method(p, class_name, file_name, method_name)
 
 ss = get_state_space_from_method(m, domains)
 
@@ -120,9 +137,7 @@ fsa = translate_method_to_fsa(m, ss)
 
 legend = build_legend(ss)
 
-#(m, fsa) = translate_method_to_fsa(p, "While", "While.java", "foo", domains)
-#(m, fsa) = translate_method_to_fsa(p, "SequentialCode", "SequentialCode.java", "foo", domains)
-#(m, fsa) = translate_method_to_fsa(p, "Short", "Short.java", "foo", domains)
+log.debug("Final legend: %s" % legend)
 
 print "FSA: %d locations, %d edges" % (len(fsa.locations), len(fsa.edges))
 

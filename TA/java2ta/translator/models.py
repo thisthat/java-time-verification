@@ -109,60 +109,53 @@ class AttributePredicate(object):
     @contract(attribute="is_abstract_attribute", predicate="is_predicate")
     def __init__(self, attribute, predicate):
 
-        self.attribute = attribute
-        self.predicate = predicate
+        self._attribute = attribute
+        self._predicate = predicate
+        self._ctx = self._get_context()
+
+    @property
+    @contract(returns="is_abstract_attribute")
+    def attribute(self):
+        return self._attribute
+
+    @property
+    @contract(returns="is_predicate")
+    def predicate(self):
+        return self._predicate
 
 
-    def get_context(self):
-
+    def _get_context(self):
+        check("is_predicate", self.predicate)
         assert len(self.predicate.var_names) == 0 or len(self.predicate.var_names) == len(self.attribute.variables), "%s vs %s" % (self.predicate, self.attribute)
 
         ctx = {}
         for (pred_var, attr_var) in zip(self.predicate.var_names, self.attribute.variables):
+            check("string", pred_var)
+            check("string", attr_var)
             pred_var_name = pred_var.strip("{}")
             ctx[pred_var_name] = attr_var
-
-#        log.debug("Predicate: %s. Attribute: %s. Context: %s." % (self.predicate, self.attribute, ctx))
 
         return ctx
 
 
+    @contract(returns="string")
     def smt_assert(self):
-        # TODO here we assume that all predicates have a variable {var} in them
-#        assert len(self.predicate.var_names) <= 1, self.predicate
+        check("is_predicate", self.predicate)
+        #ctx = self.get_context()
 
-        ctx = self.get_context()
-
-#        ctx = {}
-#        if len(self.predicate.var_names) == 1:
-#            var_name = list(self.predicate.var_names)[0].strip("{}")
-#            ctx = { var_name: self.attribute.name }
+        return self.predicate.smt_assert(**(self._ctx)) #var=self.attribute.name)
  
-        return self.predicate.smt_assert(**ctx) #var=self.attribute.name)
- 
+    @contract(returns="string")
     def label(self):
-        # TODO here we assume that all predicates have a variable {var} in them
-##        assert len(self.predicate.var_names) <= 1, self.predicate
-##        ctx = {}
-##        if len(self.predicate.var_names) == 1:
-##            var_name = list(self.predicate.var_names)[0].strip("{}")
-##            ctx = { var_name: self.attribute.name }
-
-        ctx = self.get_context()
-        return self.predicate.label(**ctx) #var=self.attribute.name)       
+        #ctx = self.get_context()
+        check("is_predicate", self_predicate)
+        return self.predicate.label(**(self._ctx)) #var=self.attribute.name)       
 
     def __str__(self):
-        # TODO here we assume that all predicates have a variable {var} in them
-##        assert len(self.predicate.var_names) <= 1, self.predicate
-##        res = str(self.predicate)
-##
-##        if len(self.predicate.var_names) == 1:
-##            var_name = list(self.predicate.var_names)[0]
-##            res = res.replace(var_name, self.attribute.name) #"{var}", self.attribute.name)
-        ctx = self.get_context()
+        #ctx = self.get_context()
 
         res = str(self.predicate)
-        for pred_var, attr_val in ctx.iteritems():
+        for pred_var, attr_val in self._ctx.iteritems():
             res = res.replace("{%s}" % pred_var, attr_var)
 
         return res

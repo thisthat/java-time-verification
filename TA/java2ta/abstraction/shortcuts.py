@@ -191,6 +191,6 @@ POS_INTEGERS = Domain(Integer(), split_numeric_domain([0,], lt_min=False))
 NATURALS = Domain(Natural(), split_numeric_domain([0,], lt_min=False))
 BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]))
 COLLECTIONS = Domain(Collection(), split_field_domain("size", split_numeric_domain([0,], lt_min=False )))
-STRINGS = Domain(String(), split_field_domain("len", split_numeric_domain([0,], lt_min=False))) 
+STRINGS = Domain(String(), split_field_domain("str.len", split_numeric_domain([0,], lt_min=False))) 
 
 

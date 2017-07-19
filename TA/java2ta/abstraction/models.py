@@ -83,7 +83,7 @@ class String(DataType):
     - size (an integer value)
     """
     def __init__(self):
-        super(String,self).__init__(name="String", smt_declaration=smt_declare_rec_datatype("String", {"value":"Int", "len":"Int"}))
+        super(String,self).__init__(name="String") #, smt_declaration=smt_declare_rec_datatype("String", {"value":"Int", "len":"Int"}))
 
 
 
@@ -91,7 +91,6 @@ class Collection(DataType):
     
     def __init__(self):
         super(Collection, self).__init__("Collection", smt_declaration=smt_declare_rec_datatype("Collection", {"size":"Int"}))
-
 
 
 
@@ -401,7 +400,7 @@ class Domain(object):
         default = default or predicates[0]
 
         self._default = default
-        self.predicates = list(set(predicates))
+        self.predicates = predicates #list(set(predicates))
 
     @property
     @contract(returns="list(is_data_type)")
@@ -610,7 +609,7 @@ class AbstractAttribute(object):
     @contract(returns=int)
     def encoded_value(self, value):
         if value not in self.rev_domain:
-            raise ValueError("The passed value ('%s') is not one of the allowed ones . Accepted values: %s" % (value, ",".join(self.values)))
+            raise ValueError("The passed value ('%s') is not one of the allowed ones . Accepted values: %s" % (value, ",".join(map(lambda v: str(v), self.values))))
     
         return self.rev_domain[value]
 
@@ -625,10 +624,14 @@ class AbstractAttribute(object):
 
 
     @property
+    @contract(returns="list(is_predicate)")
     def values(self):
-        return sorted(self.rev_domain.keys())
+#        return sorted(self.rev_domain.keys())  
+
+        return self.domain.values
 
 
+    @contract(encoding="int",returns="is_predicate")
     def value(self, encoding):
         if encoding not in self.enc_values:
             raise ValueError("The passed encoding ('%s') is not one of the allowed ones. Accepted encodings: %s" % (encoding, ",".join(self.encoded_values)))
@@ -825,18 +828,16 @@ class StateSpace(object):
 
         Use this method to **decode** the attributes values from a given configuration.
         """
-
-#        assert isinstance(configuration, tuple)
-
         check("list(is_abstract_attribute)", self.attributes)
-        attributes = self.attributes
 
-        if len(configuration) != len(attributes):
-            raise Exception("Statespace has %s attributes, thus it can decode configurations with %s elements. Got configuration with %s elements" % (len(attributes), len(attributes), len(configuration)))
+        if len(configuration) != len(self.attributes):
+            raise Exception("Statespace has %s attributes, thus it can decode configurations with %s elements. Got configuration with %s elements" % (len(self.attributes), len(self.attributes), len(configuration)))
 
         decoded = ()
-        for (att,conf_val) in zip(attributes, configuration):
+        for (att,conf_val) in zip(self.attributes, configuration):
             decoded += (att.value(conf_val), )
+
+        log.debug("Decode configuration: %s vs attributes %s. Result: %s" % (configuration, self.attributes, decoded))
 
         return decoded
 
@@ -849,7 +850,6 @@ class StateSpace(object):
         Use this method to **encode** the attribute values into a configuration
         """
         check("list(is_abstract_attribute)", self.attributes)
-#        attributes = self.attributes
 
         if len(values) != len(self.attributes):
             raise Exception("Statespace has %s attributes, thus it can encode lists of values with %s elements. Got list of values %s elements" % (len(self.attributes), len(self.attributes), len(values)))
@@ -861,7 +861,7 @@ class StateSpace(object):
 
         return conf
 
-
+new_contract_check_type("is_state_space", StateSpace)
 
 
 class DomainProduct(CompareVariables):
