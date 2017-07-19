@@ -59,9 +59,6 @@ public class TranslateReducedModel {
     }
 
     private void convert(Stm s) {
-        if(s.getLine() == 190){
-            System.out.println("BRK");
-        }
         if(stop)
             return;
         if(s instanceof Assignment){

@@ -174,12 +174,7 @@ public class ModelCreator {
     }
 
     public void addConstraint(BoolExpr t){
-        try {
-            opt.Add(t);
-        } catch (Exception e){
-            System.out.println("BRK");
-            throw e;
-        }
+        opt.Add(t);
     }
 
     public Model getModel() {

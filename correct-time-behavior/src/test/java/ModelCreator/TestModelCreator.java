@@ -123,8 +123,9 @@ public class TestModelCreator {
         IntExpr v = model.createVariable("bla");
         Context c = model.getCtx();
         //model.addConstraint( c.mkLe(v, c.mkInt(10)) );
-        model.addConstraint( c.mkLe(c.mkInt(1), v) );
+        model.addConstraint( c.mkLe(v, c.mkInt(1)) );
         model.verifyVariable(v);
+        System.out.println(model.getLastMinModel());
     }
 
 

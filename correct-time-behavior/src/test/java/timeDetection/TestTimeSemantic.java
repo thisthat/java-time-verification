@@ -71,7 +71,7 @@ public class TestTimeSemantic {
         assertEquals(While.class, m.getBody().get(2).getClass());
         While wBody = (While) m.getBody().get(2);
         assertNotNull(wBody.getExpr());
-        assertEquals(7, wBody.getWhileBody().size());
+        assertEquals(8, wBody.getWhileBody().size());
 
         assertEquals(If.class, wBody.getWhileBody().get(0).getClass());
         assertEquals(If.class, wBody.getWhileBody().get(1).getClass());
@@ -80,6 +80,7 @@ public class TestTimeSemantic {
         assertEquals(MethodCall.class, wBody.getWhileBody().get(4).getClass());
         assertEquals(Assignment.class, wBody.getWhileBody().get(5).getClass());
         assertEquals(Expression.class, wBody.getWhileBody().get(6).getClass());
+        assertEquals(Stop.class, wBody.getWhileBody().get(7).getClass());
 
         If first;
         If second;
@@ -108,7 +109,7 @@ public class TestTimeSemantic {
         assertEquals(While.class, m.getBody().get(2).getClass());
         While wBody = (While) m.getBody().get(2);
         assertNotNull(wBody.getExpr());
-        assertEquals(7, wBody.getWhileBody().size());
+        assertEquals(8, wBody.getWhileBody().size());
 
 
         assertEquals(MethodCall.class, wBody.getWhileBody().get(2).getClass());
