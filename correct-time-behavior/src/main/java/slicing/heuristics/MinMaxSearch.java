@@ -40,7 +40,7 @@ public class MinMaxSearch extends SearchTimeConstraint {
 					}
 				}
 			}
-		});
+		}.setExcludeHiddenClassContinuos(true));
 	}
 
 	private void checkForTime(ASTMethodCall elm, Env env, ASTRE stm) {

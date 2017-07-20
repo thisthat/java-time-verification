@@ -99,7 +99,7 @@ public class ModelCreator {
             if(name.matches("[0-9]+")){
                 v = ctx.mkInt(name);
             } else if(name.matches("[0-9]+\\.[0-9]+")){
-                v = ctx.mkInt(name);
+                v = ctx.mkReal2Int(ctx.mkReal(name));
             } else {
                 v = ctx.mkIntConst(name);
                 BoolExpr t = ctx.mkLe(min_val, v);

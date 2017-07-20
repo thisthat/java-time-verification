@@ -23,6 +23,7 @@ public interface IASTRE extends IASTVisitor, IASTToken {
 		mod,			// %
 		and,			// &&
 		or,				// ||
+		xor,			// ^
 		instanceOf,		// instanceOf
 		empty;
 

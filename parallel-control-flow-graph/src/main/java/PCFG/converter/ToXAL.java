@@ -169,9 +169,6 @@ public class ToXAL implements IConverter {
 			if(r == null || r.getExpression() == null){
 				return;
 			}
-		/*if(r.getLine() == 147){
-			System.out.println("BRK");
-		} else { return; }*/
 			r.getExpression().visit(new DefualtASTREVisitor(){
 
 				@Override

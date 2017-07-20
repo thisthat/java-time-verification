@@ -223,40 +223,46 @@ public class TranslateReducedModel {
             return ctx.mkBool(true);
         }
         switch (r.getOp()){
+            case mod:
+                e = ctx.mkMod(
+                        (IntExpr) convert(r.getLeft(), RetType.INT),
+                        (IntExpr) convert(r.getRight(), RetType.INT)
+                );
+                break;
             case plus:
                 e = ctx.mkAdd(
-                        (ArithExpr)convert(r.getLeft(), t),
-                        (ArithExpr) convert(r.getRight(), t)
+                        (ArithExpr) convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
             case minus:
                 e = ctx.mkSub(
-                        (ArithExpr)convert(r.getLeft(), t),
-                        (ArithExpr) convert(r.getRight(), t)
+                        (ArithExpr)convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
             case less:
                 e = ctx.mkLt(
-                        (ArithExpr)convert(r.getLeft(), t),
-                        (ArithExpr) convert(r.getRight(), t)
+                        (ArithExpr)convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
             case lessEqual:
                 e = ctx.mkLe(
-                        (ArithExpr)convert(r.getLeft(), t),
-                        (ArithExpr) convert(r.getRight(), t)
+                        (ArithExpr)convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
             case greater:
                 e = ctx.mkGt(
-                        (ArithExpr)convert(r.getLeft(), t),
-                        (ArithExpr) convert(r.getRight(), t)
+                        (ArithExpr)convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
             case greaterEqual:
                 e = ctx.mkGe(
-                        (ArithExpr)convert(r.getLeft(), t),
-                        (ArithExpr) convert(r.getRight(), t)
+                        (ArithExpr)convert(r.getLeft(), RetType.INT),
+                        (ArithExpr) convert(r.getRight(), RetType.INT)
                 );
                 break;
             case equality:
@@ -313,6 +319,29 @@ public class TranslateReducedModel {
                 e = ctx.mkOr(left, right);
                 break;
             }
+            /*case xor: {
+                Expr ll = convert(r.getLeft(), t);
+                Expr rr = convert(r.getRight(), t);
+                BitVecExpr left;
+                BitVecExpr right;
+                if (ll instanceof IntExpr) {
+                    left = ctx.mkInt2BV(32, (IntExpr) ll);
+                } else {
+                    left = (BitVecExpr) ll;
+                }
+                if (ll instanceof IntExpr) {
+                    right = ctx.mkInt2BV(32, (IntExpr) rr);
+                } else {
+                    right = (BitVecExpr) rr;
+                }
+                e = ctx.mkBVXOR(left, right);
+                break;
+            }*/
+            default:
+                if(t == RetType.INT)
+                    e = ctx.mkInt(0);
+                else
+                    e = ctx.mkBool(true);
         }
         return e;
     }
@@ -360,7 +389,8 @@ public class TranslateReducedModel {
         pop();
         if(s.getExpr() != null) {
             Expr b = convert(s.getExpr().getExpr().negate(), RetType.BOOL);
-            modelCreator.addConstraint((BoolExpr) b);
+            if(b instanceof BoolExpr)
+                modelCreator.addConstraint((BoolExpr) b);
         }
     }
 
@@ -375,7 +405,8 @@ public class TranslateReducedModel {
         pop();
         if(s.getExpr() != null) {
             Expr b = convert(s.getExpr().getExpr().negate(), RetType.BOOL);
-            modelCreator.addConstraint((BoolExpr) b);
+            if(b instanceof BoolExpr)
+                modelCreator.addConstraint((BoolExpr) b);
         }
     }
 
@@ -416,7 +447,6 @@ public class TranslateReducedModel {
             b = (BoolExpr) e;
         }
         modelCreator.addConstraint(b);
-
     }
 
     private void handleMethodCall(MethodCall s) {
@@ -439,8 +469,10 @@ public class TranslateReducedModel {
     private void handleAssignment(Assignment s) {
         IntExpr v = modelCreator.createVariable(s.getLeft());
         Expr e = convert(s.getRight(), RetType.INT);
-        BoolExpr b = ctx.mkEq(v, e);
-        modelCreator.addConstraint(b);
+        if(e instanceof IntExpr){
+            BoolExpr b = ctx.mkEq(v, e);
+            modelCreator.addConstraint(b);
+        }
 
     }
 

@@ -16,6 +16,7 @@ public class SingleFile {
     public static void main(String[] args) {
         String file = args[0];
         String root = args[1];
+        System.out.println(file);
         List<ASTClass> result = JDTVisitor.parse(file, root);
         for(ASTClass c : result){
             ClassAnalyzer ca = new ClassAnalyzer(c);

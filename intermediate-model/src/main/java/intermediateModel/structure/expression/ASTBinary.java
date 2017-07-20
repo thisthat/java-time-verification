@@ -69,7 +69,7 @@ public class ASTBinary extends IASTStm implements IASTRE {
 
 	@Override
 	public IASTRE negate() {
-		OPERATOR _op = OPERATOR.empty;
+		OPERATOR _op = this.op;
 		switch (this.getOp()){
 			case not: 	_op = OPERATOR.not; 	break;
 			case or: 	_op = OPERATOR.and; 	break;

@@ -10,10 +10,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.io.FileUtils.readFileToString;
 
@@ -26,6 +23,8 @@ import static org.apache.commons.io.FileUtils.readFileToString;
  */
 
 public class Java2AST {
+
+	private static Map<String, List<String>> cacheClassPathProject = new HashMap<>();
 
     private String filename;
 	private String projectPath = "";
@@ -76,6 +75,9 @@ public class Java2AST {
 	}
 
 	private List<String> compute() {
+    	if(cacheClassPathProject.containsKey(this.projectPath))
+    		return cacheClassPathProject.get(this.projectPath);
+
     	List<String> out = new ArrayList<>();
 
 		Collection<File> dirs = FileUtils.listFilesAndDirs(new File(this.projectPath), TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY);
@@ -86,7 +88,7 @@ public class Java2AST {
 			}
 		}
 		out.add(System.getProperty("java.home") + "/lib");
-
+		cacheClassPathProject.put(this.projectPath, out);
 		return out;
 	}
 
@@ -107,10 +109,9 @@ public class Java2AST {
      *
      * @throws IOException
      */
-    private void initParser() throws IOException {
+    public void initParser() throws IOException {
 
 		String[] sources = new String[]{ this.projectPath };
-		this.classPath.add(System.getProperty("java.home") + "/lib");
 		String[] classPath = this.classPath.toArray(new String[0]);
 //				new String[]{ System.getProperty("java.home") + "/lib"};
 
@@ -152,8 +153,15 @@ public class Java2AST {
 		ASTSrc.getInstance().setJDT(contextJDT);
     }
 
+	public void setClassPath(List<String> classPath) {
+		this.classPath = classPath;
+	}
+
 	public char[] getSource() {
 		return source;
 	}
 
+	public void dispose() {
+		System.gc();
+	}
 }

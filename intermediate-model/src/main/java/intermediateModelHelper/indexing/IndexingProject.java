@@ -3,11 +3,14 @@ package intermediateModelHelper.indexing;
 import com.google.common.collect.Iterators;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.envirorment.temporal.CollectReturnTimeMethods;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -193,6 +196,27 @@ public class IndexingProject {
 		);
 		Iterator<File> i = files.iterator();
 		return i;
+	}
+
+	public static List<TimeTypes> getMethodReturnTime(String name, String base_path, boolean save){
+		File dir = new File(base_path);
+		String[] filter = {"java"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator<File> i = files.iterator();
+		List<TimeTypes> out = new ArrayList<>();
+		CollectReturnTimeMethods collectReturnTimeMethods = new CollectReturnTimeMethods(save, name);
+		while (i.hasNext()) {
+			String filename = i.next().getAbsolutePath();
+			List<ASTClass> result = JDTVisitor.parse(filename, base_path);
+			for(ASTClass c : result){
+				out.addAll(collectReturnTimeMethods.index(c));
+			}
+		}
+		return out;
 	}
 
 	/**

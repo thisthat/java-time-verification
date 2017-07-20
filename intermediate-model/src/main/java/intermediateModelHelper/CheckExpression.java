@@ -351,6 +351,7 @@ public class CheckExpression {
 
 		};
 		v.setExcludeHiddenClass(true);
+		v.setExcludePars(true);
 		elm.visit(v);
 		return r[0];
 	}
