@@ -467,13 +467,19 @@ public class TranslateReducedModel {
     }
 
     private void handleAssignment(Assignment s) {
-        IntExpr v = modelCreator.createVariable(s.getLeft());
-        Expr e = convert(s.getRight(), RetType.INT);
-        if(e instanceof IntExpr){
-            BoolExpr b = ctx.mkEq(v, e);
-            modelCreator.addConstraint(b);
+        try {
+            IntExpr v = modelCreator.createVariable(s.getLeft());
+            if (s.getRight() != null) {
+                Expr e = convert(s.getRight(), RetType.INT);
+                if (e instanceof IntExpr) {
+                    BoolExpr b = ctx.mkEq(v, e);
+                    modelCreator.addConstraint(b);
+                }
+            }
+        }catch(Exception x){
+            System.out.println("BRK");
+            throw x;
         }
-
     }
 
     private void push(){
@@ -486,7 +492,8 @@ public class TranslateReducedModel {
     }
 
     private void notYet(IASTToken s){
-        System.err.println("Not Yet Implemented :: [" + s.getStart() +"]" + s.getCode() + " @ " + s.getLine() + "--" + cause[2]);
+        if(s != null)
+            System.err.println("Not Yet Implemented :: [" + s.getStart() +"]" + s.getCode() + " @ " + s.getLine() + "--" + cause[2]);
     }
 
 }

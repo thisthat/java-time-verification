@@ -26,6 +26,11 @@
             <artifactId>correct-time-behavior</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>server</artifactId>
+            <version>0.2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

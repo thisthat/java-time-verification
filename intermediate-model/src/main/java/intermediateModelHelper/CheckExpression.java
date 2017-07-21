@@ -210,20 +210,22 @@ public class CheckExpression {
 				//method call
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
-						if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
-							flag[0] = true;
-						} else if (elm.getClassPointed().equals("java.lang.Math")){
-							String name = elm.getMethodName();
-							if(name.equals("min") || name.equals("max")){
-								if(checkMinMaxTime(elm, where, state)){
-									flag[0] = true;
+					if(notToString(state, elm)){
+						if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
+							if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
+								flag[0] = true;
+							} else if (elm.getClassPointed().equals("java.lang.Math")){
+								String name = elm.getMethodName();
+								if(name.equals("min") || name.equals("max")){
+									if(checkMinMaxTime(elm, where, state)){
+										flag[0] = true;
+									}
 								}
 							}
 						}
-					}
-					else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
-						flag[0] = true;
+						else if(where.existMethodTimeRelevant( elm.getMethodName(), getSignature(elm.getParameters(), where) )){
+							flag[0] = true;
+						}
 					}
 				}
 
@@ -272,9 +274,9 @@ public class CheckExpression {
 		return f;
 	}
 
-	private static boolean notToString(ASTRE state, ASTBinary elm) {
+	private static boolean notToString(ASTRE state, IASTRE elm) {
 		String type = state.getType();
-		if(type != null && type.equals("String")){
+		if(type != null && (type.equals("String") || type.equals("java.lang.String"))){
 			return false;
 		}
 		boolean[] flag = {true};

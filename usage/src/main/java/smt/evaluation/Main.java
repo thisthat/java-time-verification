@@ -2,6 +2,7 @@ package smt.evaluation;
 
 import converter.ClassAnalyzer;
 import converter.Statistic;
+import debugger.Debugger;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
@@ -25,13 +26,23 @@ import java.util.List;
 public class Main {
 
     public static long timeSpent, timeSpentWriting, timeSpentInit, start, end;
+    static Debugger debug = Debugger.getInstance();
 
     public static void main(String[] args) throws IOException {
         if(args.length < 3){
             System.out.println("Usage with: name root_path output_path");
             System.exit(0);
         }
+        try {
+            new Main().do_job(args);
+        } catch (Exception e){
 
+        } finally {
+            debug.stop();
+        }
+    }
+
+    public void do_job(String[] args) throws Exception {
         timeSpent = 0;
         timeSpentWriting = 0;
         //get root path
@@ -44,16 +55,26 @@ public class Main {
 
         //index return times
         {
-            long s = System.currentTimeMillis();
-            List<TimeTypes> t = IndexingProject.getMethodReturnTime(name, root_path, true);
-            long e = System.currentTimeMillis();
-            timeSpentInit = (e - s);
-            System.out.println(String.format("Get %d methods", t.size()));
-            System.out.println("Took: " + timeSpentInit + "ms");
-            for(TimeTypes tt : t){
-                System.out.println(tt.toString());
+            File loadFromHD = new File("config/" + name + "_types.csv");
+            if(loadFromHD.exists()){
+                debug.log("Indexing types from file: " + loadFromHD.getAbsolutePath());
+                long s = System.currentTimeMillis();
+                TemporalInfo.getInstance().loadUserTypes(loadFromHD.getAbsolutePath());
+                long e = System.currentTimeMillis();
+                timeSpentInit = (e - s);
+            } else {
+                long s = System.currentTimeMillis();
+                debug.log("Indexing types of the project");
+                List<TimeTypes> t = IndexingProject.getMethodReturnTime(name, root_path, true);
+                long e = System.currentTimeMillis();
+                timeSpentInit = (e - s);
+                System.out.println(String.format("Get %d methods", t.size()));
+                System.out.println("Took: " + timeSpentInit + "ms");
+                for (TimeTypes tt : t) {
+                    System.out.println(tt.toString());
+                }
+                TemporalInfo.getInstance().addTimeTypes(t);
             }
-            TemporalInfo.getInstance().addTimeTypes(t);
         }
 
         //get all files
@@ -77,6 +98,7 @@ public class Main {
         long init = System.currentTimeMillis();
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
+            debug.log("Working on " + filename);
             nFiles++;
             //each class
             List<ASTClass> result = JDTVisitor.parse(filename, root_path);
@@ -86,7 +108,7 @@ public class Main {
                 ClassAnalyzer ca = new ClassAnalyzer(c);
                 HashMap<IASTMethod, List<VariableNotCorrect>> err = new HashMap<>();
                 try {
-                     err = ca.getErrors();
+                    err = ca.getErrors();
                 } catch (Exception e){
                     System.out.println("Error in class " + c.fullName());
                     System.out.println(c.getPath());

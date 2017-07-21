@@ -52,6 +52,10 @@ public class TemporalInfo {
         timeUndefinedTimeout.addAll(   new ParseUndefinedTimeout  (dir + "undefinedTimeout.csv").getMethods());
     }
 
+    public void loadUserTypes(String file){
+        timeTypes.addAll(new ParseTypes(file).getMethods());
+    }
+
 
     public static synchronized TemporalInfo getInstance(){
         if(instance == null) {
