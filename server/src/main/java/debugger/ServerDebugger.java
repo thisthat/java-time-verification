@@ -28,7 +28,6 @@ public class ServerDebugger {
 
 
 	int port = 0;
-	private final int noOfThreads = 4;
 	private final ExecutorService httpThreadPool;
 	HttpServer server;
 
@@ -43,7 +42,7 @@ public class ServerDebugger {
 		server = HttpServer.create(addr, 0);
 		this.port = addr.getPort();
 
-		httpThreadPool = Executors.newFixedThreadPool(this.noOfThreads);
+		httpThreadPool = Executors.newFixedThreadPool(2);
 
 		//Debug urls
 		server.createContext("/", OutputLogs.getInstance());

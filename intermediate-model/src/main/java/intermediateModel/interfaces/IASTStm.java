@@ -44,7 +44,7 @@ public abstract class IASTStm implements IASTVisitor, IASTToken {
 
 	protected Constraint constraint = null;
 	//@Beta protected List<Annotation> annotations = new ArrayList<>();
-	private boolean isTimeCritical = false;
+	protected boolean isTimeCritical = false;
 	/**
 	 * Retrive the time constraint of the current Node
 	 * @return the information of the time constraint with &lt;line, message, class that detected the constraint&gt;

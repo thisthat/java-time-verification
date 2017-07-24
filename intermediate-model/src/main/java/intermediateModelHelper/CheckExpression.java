@@ -210,7 +210,7 @@ public class CheckExpression {
 				//method call
 				@Override
 				public void enterASTMethodCall(ASTMethodCall elm) {
-					if(notToString(state, elm)){
+					if(isValidType(state, elm)){
 						if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
 							if(where.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), where))){
 								flag[0] = true;
@@ -238,7 +238,7 @@ public class CheckExpression {
 						case mul:
 						case div:
 						case mod:
-							if(notToString(state,elm) && checkIt(elm, where)){
+							if(isValidType(state,elm) && checkIt(elm, where)){
 								flag[0] = true;
 								setExprVarsTimeRelated(elm, where);
 								elm.setTimeCritical(true);
@@ -274,9 +274,12 @@ public class CheckExpression {
 		return f;
 	}
 
-	private static boolean notToString(ASTRE state, IASTRE elm) {
+	private static boolean isValidType(ASTRE state, IASTRE elm) {
 		String type = state.getType();
 		if(type != null && (type.equals("String") || type.equals("java.lang.String"))){
+			return false;
+		}
+		if(type != null && (type.equals("boolean") || type.equals("Boolean"))){
 			return false;
 		}
 		boolean[] flag = {true};

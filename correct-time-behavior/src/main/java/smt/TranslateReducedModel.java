@@ -220,7 +220,8 @@ public class TranslateReducedModel {
     private Expr handleBinary(ASTBinary r, RetType t) {
         Expr e = null;
         if(!r.isTimeCritical() && t == RetType.BOOL){
-            return ctx.mkBool(true);
+            if(!r.getLeft().isTimeCritical() && !r.getRight().isTimeCritical())
+                return ctx.mkBool(true);
         }
         switch (r.getOp()){
             case mod:
@@ -432,7 +433,15 @@ public class TranslateReducedModel {
             //there is no else
             if(s.getExpr() != null){
                 IASTRE expr = s.getExpr().getExpr().negate();
-                convert(expr, RetType.BOOL);
+                //expr.setTimeCritical(true);
+                Expr e = convert(expr, RetType.BOOL);
+                BoolExpr b;
+                if (e instanceof IntExpr) {
+                    b = ctx.mkGe((ArithExpr) e, ctx.mkInt(0));
+                } else {
+                    b = (BoolExpr) e;
+                }
+                modelCreator.addConstraint(b);
             }
         }
 
@@ -477,7 +486,7 @@ public class TranslateReducedModel {
                 }
             }
         }catch(Exception x){
-            System.out.println("BRK");
+            System.out.println("Error in assignment line: " + s.getLine());
             throw x;
         }
     }

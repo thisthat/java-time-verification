@@ -13,12 +13,17 @@ public class Debugger {
     private int port = 0;
     private List<String> ip = new ArrayList<>();
     ServerDebugger server;
+    String name;
 
     public static synchronized Debugger getInstance(){
         if(instance == null) {
             instance = new Debugger();
         }
         return instance;
+    }
+
+    public void setName(String name) {
+        OutputLogs.getInstance().setName(name);
     }
 
     private Debugger() {
@@ -44,6 +49,10 @@ public class Debugger {
         } catch (Exception e) {
             System.err.println("Cannot instantiate the debugger");
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void stop(){

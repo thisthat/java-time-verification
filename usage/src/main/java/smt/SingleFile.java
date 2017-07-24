@@ -4,8 +4,10 @@ import converter.ClassAnalyzer;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import smt.exception.VariableNotCorrect;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +18,12 @@ public class SingleFile {
     public static void main(String[] args) {
         String file = args[0];
         String root = args[1];
+        String name = args[2];
         System.out.println(file);
+        File loadFromHD = new File("config/" + name + "_types.csv");
+        if(loadFromHD.exists()){
+            TemporalInfo.getInstance().loadUserTypes(loadFromHD.getAbsolutePath());
+        }
         List<ASTClass> result = JDTVisitor.parse(file, root);
         for(ASTClass c : result){
             ClassAnalyzer ca = new ClassAnalyzer(c);

@@ -47,6 +47,7 @@ public class Main {
         timeSpentWriting = 0;
         //get root path
         String name = args[0];
+        debug.setName(name);
         String root_path = args[1];
         String output = args[2];
         if(!output.endsWith("/")){
@@ -98,6 +99,7 @@ public class Main {
         long init = System.currentTimeMillis();
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
+            if(filename.contains("/src/test/")) continue; //skip tests
             debug.log("Working on " + filename);
             nFiles++;
             //each class
@@ -112,7 +114,9 @@ public class Main {
                 } catch (Exception e){
                     System.out.println("Error in class " + c.fullName());
                     System.out.println(c.getPath());
-                    throw e;
+                    System.out.println(e.getMessage());
+                    debug.log("Error in file:" + filename);
+                    //throw e;
                 }
                 start();
                 atLeastOneError = false;
@@ -143,6 +147,7 @@ public class Main {
         }
         long ending = System.currentTimeMillis() - init ;
         writer.close();
+        debug.log("--FINISH--");
         timeSpent = ending - timeSpentWriting;
         System.out.println("Initialization: " + timeSpentInit);
         System.out.println("Total Writing: " + timeSpentWriting);

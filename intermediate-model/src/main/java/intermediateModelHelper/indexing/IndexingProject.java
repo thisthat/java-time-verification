@@ -211,6 +211,8 @@ public class IndexingProject {
 		CollectReturnTimeMethods collectReturnTimeMethods = new CollectReturnTimeMethods(save, name);
 		while (i.hasNext()) {
 			String filename = i.next().getAbsolutePath();
+			if(filename.contains("/src/test/"))
+				continue;
 			List<ASTClass> result = JDTVisitor.parse(filename, base_path);
 			for(ASTClass c : result){
 				out.addAll(collectReturnTimeMethods.index(c));
