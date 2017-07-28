@@ -43,7 +43,7 @@ public abstract class ParseCSV {
         this.separator = separator;
     }
 
-    protected void start(){
+    public void start(){
         try {
             if (isStream) {
                 start(new InputStreamReader(stream));
@@ -70,7 +70,10 @@ public abstract class ParseCSV {
                         }
                         handleRow(row[0],row[1], signature);
                     } else {
-                        handleRow(row[0],row[1], new String[0]);
+                        if(splitSignature)
+                            handleRow(row[0],row[1], new String[0]);
+                        else
+                            handleRow(row[0],row[1], new String[]{ row[2] }  );
                     }
 
                 }

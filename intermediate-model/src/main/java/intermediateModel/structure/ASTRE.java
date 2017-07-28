@@ -144,6 +144,8 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTRE(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		if(expression != null)
 			expression.visit(visitor);
 		visitor.exitASTRE(this);

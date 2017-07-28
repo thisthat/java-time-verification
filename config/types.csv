@@ -1,4 +1,0 @@
-Class;Name;Signature;Ret Type
-org.apache.kafka.common.utils.Time;milliseconds;;long
-org.apache.kafka.common.utils.Time;hiResClockMs;;long
-org.apache.kafka.common.utils.Time;nanoseconds;;long

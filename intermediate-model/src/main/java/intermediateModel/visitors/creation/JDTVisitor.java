@@ -67,10 +67,7 @@ public class JDTVisitor extends ASTVisitor {
 		}
 		Java2AST a = null;
 		try {
-			a = new Java2AST(filename, false, projectPath);
-			a.setClassPath(new ArrayList<>());
-			a.initParser();
-			a.convertToAST();
+			a = new Java2AST(filename, true, projectPath, new ArrayList<>());
 		}
 		catch (IOException e) {}
 		catch (UnparsableException e) {
@@ -1326,7 +1323,9 @@ public class JDTVisitor extends ASTVisitor {
 				if(node instanceof MethodDeclaration){
 					ASTClass bck = lastClass;
 					lastClass = c;
+					IASTHasStms bckm = lastMethod;
 					((MethodDeclaration) node).accept(this);
+					lastMethod = bckm;
 					lastClass = bck;
 				}
 			}

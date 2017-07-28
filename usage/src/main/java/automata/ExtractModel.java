@@ -1,3 +1,5 @@
+package automata;
+
 import PCFG.converter.IConverter;
 import PCFG.converter.ToUppaal;
 import PCFG.creation.IM2CFG;

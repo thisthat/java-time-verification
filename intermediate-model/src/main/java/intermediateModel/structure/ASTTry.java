@@ -116,6 +116,8 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 
 		@Override
 		public void visit(ASTVisitor visitor) {
+			visitor.enterSTM(this);
+			visitor.exitSTM(this);
 			expr.visit(visitor);
 			for(IASTStm s : stms){
 				s.visit(visitor);
@@ -162,6 +164,8 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 
 		@Override
 		public void visit(ASTVisitor visitor) {
+			visitor.enterSTM(this);
+			visitor.exitSTM(this);
 			for(IASTStm s : stms){
 				s.visit(visitor);
 			}
@@ -234,6 +238,8 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTTry(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		tryBranch.visit(visitor);
 		for(ASTCatchBranch c : getCatchBranch()){
 			c.visit(visitor);

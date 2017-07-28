@@ -76,6 +76,8 @@ public class ASTWhile extends IASTStm implements IASTHasStms, IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTWhile(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		expr.visit(visitor);
 		for(IASTStm s : stms){
 			s.visit(visitor);

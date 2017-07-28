@@ -38,6 +38,8 @@ public class ASTContinue extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTContinue(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		visitor.exitASTContinue(this);
 	}
 }

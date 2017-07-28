@@ -123,6 +123,8 @@ public class ASTFor extends IASTStm implements IASTHasStms, IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTFor(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		for(ASTRE e : init){
 			e.visit(visitor);
 		}

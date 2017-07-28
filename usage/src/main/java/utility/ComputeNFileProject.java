@@ -1,12 +1,10 @@
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
+package utility;
+
 import intermediateModelHelper.indexing.IndexingProject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by giovanni on 31/05/2017.

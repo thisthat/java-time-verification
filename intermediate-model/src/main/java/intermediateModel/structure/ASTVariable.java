@@ -79,6 +79,8 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTVariable(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		visitor.exitASTVariable(this);
 	}
 

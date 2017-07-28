@@ -26,6 +26,8 @@ public class ASTHiddenClass extends ASTClass implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTHiddenClass(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		for(IASTMethod m : methods){
 			m.visit(visitor);
 		}

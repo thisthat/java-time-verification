@@ -124,8 +124,8 @@ public class Java2AST {
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 		parserJDT.setCompilerOptions(options);
 
-		//if(!this.projectPath.equals(""))
-		parserJDT.setEnvironment(classPath, sources, new String[]{"UTF-8"}, true);
+		if(classPath.length > 0)
+			parserJDT.setEnvironment(classPath, sources, new String[]{"UTF-8"}, true);
 
 		parserJDT.setResolveBindings(true);
 		parserJDT.setBindingsRecovery(true);
