@@ -1312,7 +1312,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTIdentifier(start, stop, expr.toString());
+		return new ASTLiteral(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(ArrayAccess expr) {
@@ -1333,14 +1333,14 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTIdentifier(start, stop, expr.toString());
+		return new ASTLiteral(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(NumberLiteral expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTIdentifier(start, stop, expr.toString());
+		return new ASTLiteral(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(ThisExpression expr) {
@@ -1354,7 +1354,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTIdentifier(start, stop, expr.getEscapedValue());
+		return new ASTLiteral(start, stop, expr.getEscapedValue());
 	}
 
 	private IASTRE assignment(Assignment expr) {

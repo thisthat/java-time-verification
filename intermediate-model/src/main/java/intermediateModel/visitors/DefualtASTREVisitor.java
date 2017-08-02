@@ -56,6 +56,11 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 	}
 
 	@Override
+	public void enterASTLiteral(ASTLiteral elm) {
+
+	}
+
+	@Override
 	public void enterASTMethodCall(ASTMethodCall elm) {
 
 	}
@@ -132,6 +137,11 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 
 	@Override
 	public void exitASTIdentifier(ASTIdentifier elm) {
+
+	}
+
+	@Override
+	public void exitASTLiteral(ASTLiteral elm) {
 
 	}
 
