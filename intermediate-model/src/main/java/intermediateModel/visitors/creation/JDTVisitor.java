@@ -40,8 +40,12 @@ public class JDTVisitor extends ASTVisitor {
 		return parse(filename, filename.substring(0, filename.lastIndexOf("/")));
 	}
 
-	public static List<ASTClass> parse(String filename, String projectPath) {
-		if(cache.containsKey(filename)){
+	public static List<ASTClass> parse(String filename, String project_path) {
+		return parse(filename, project_path, true);
+	}
+
+	public static List<ASTClass> parse(String filename, String projectPath, boolean shouldCache) {
+		if(shouldCache && cache.containsKey(filename)){
 			return cache.get(filename);
 		}
 		Java2AST a = null;
@@ -57,12 +61,13 @@ public class JDTVisitor extends ASTVisitor {
 		a.dispose();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
-		cache.put(filename, v.listOfClasses);
+		if(shouldCache)
+			cache.put(filename, v.listOfClasses);
 		return v.listOfClasses;
 	}
 
-	public static List<ASTClass> parseSpecial(String filename, String projectPath) {
-		if(cache.containsKey(filename)){
+	public static List<ASTClass> parseSpecial(String filename, String projectPath, boolean shouldCache) {
+		if(shouldCache && cache.containsKey(filename)){
 			return cache.get(filename);
 		}
 		Java2AST a = null;
@@ -77,7 +82,8 @@ public class JDTVisitor extends ASTVisitor {
 		CompilationUnit result = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
-		cache.put(filename, v.listOfClasses);
+		if(shouldCache)
+			cache.put(filename, v.listOfClasses);
 		return v.listOfClasses;
 	}
 

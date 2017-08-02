@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class Main {
 
-    public static long timeSpent, timeSpentWriting, timeSpentInit, start, end;
+    public static long timeSpent, timeSpentWriting, timeSpentInit, timeSpentParsing, start, end;
     static Debugger debug = Debugger.getInstance();
 
     public static void main(String[] args) throws IOException {
@@ -36,7 +36,7 @@ public class Main {
         try {
             new Main().do_job(args);
         } catch (Exception e){
-
+            System.out.println(e.getMessage());
         } finally {
             debug.stop();
         }
@@ -45,6 +45,7 @@ public class Main {
     public void do_job(String[] args) throws Exception {
         timeSpent = 0;
         timeSpentWriting = 0;
+        timeSpentParsing = 0;
         //get root path
         String name = args[0];
         debug.setName(name);
@@ -95,7 +96,7 @@ public class Main {
         boolean atLeastOneError;
 
         List<String> errors = new ArrayList<>();
-
+        long sParse,eParse;
         long init = System.currentTimeMillis();
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
@@ -103,18 +104,21 @@ public class Main {
             debug.log("Working on " + filename);
             nFiles++;
             //each class
-            List<ASTClass> result = JDTVisitor.parse(filename, root_path);
+            sParse = System.currentTimeMillis();
+            List<ASTClass> result = JDTVisitor.parse(filename, root_path, false);
+            eParse = System.currentTimeMillis();
+            timeSpentParsing += (eParse - sParse);
             for(ASTClass c : result){
                 nClass++;
-                nMethod = nMethod + c.getMethods().size();
+                nMethod = nMethod + c.getCountMethod();
                 ClassAnalyzer ca = new ClassAnalyzer(c);
                 HashMap<IASTMethod, List<VariableNotCorrect>> err = new HashMap<>();
                 try {
                     err = ca.getErrors();
-                } catch (Exception e){
+                } catch (Exception x){
                     System.out.println("Error in class " + c.fullName());
                     System.out.println(c.getPath());
-                    System.out.println(e.getMessage());
+                    System.out.println(x.getMessage());
                     debug.log("Error in file:" + filename);
                     //throw e;
                 }
@@ -150,11 +154,13 @@ public class Main {
         debug.log("--FINISH--");
         timeSpent = ending - timeSpentWriting;
         System.out.println("Initialization: " + timeSpentInit);
+        System.out.println("Parsing: " + timeSpentParsing);
         System.out.println("Total Writing: " + timeSpentWriting);
         System.out.println("Total Net: " + timeSpent);
         System.out.println("Total Time: " + ending);
         BufferedWriter stats = new BufferedWriter(new FileWriter(name + ".log"));
         stats.write("\nTime Writing: " + timeSpentWriting + "ms");
+        stats.write("\nTime Parsing: " + timeSpentParsing + "ms");
         stats.write("\nTime Net: " + timeSpent + "ms");
         stats.write("\nTotal Time: " + ending + "ms");
         stats.write("\n# Files: " + nFiles);

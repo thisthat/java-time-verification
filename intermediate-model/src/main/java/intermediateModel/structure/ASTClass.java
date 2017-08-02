@@ -4,6 +4,7 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
+import intermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -314,4 +315,27 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		}
 		return false;
     }
+
+    public int getCountMethod() {
+		class counter extends DefaultASTVisitor {
+			int c = 0;
+
+			@Override
+			public void enterASTMethod(ASTMethod elm) {
+				c++;
+			}
+
+			@Override
+			public void enterASTConstructor(ASTConstructor elm) {
+				c++;
+			}
+
+			public int count(ASTClass z) {
+				c = 0;
+				z.visit(this);
+				return c;
+			}
+		}
+		return new counter().count(this);
+	}
 }

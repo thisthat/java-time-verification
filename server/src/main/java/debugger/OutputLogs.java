@@ -2,18 +2,20 @@ package debugger;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import server.handler.middleware.BaseRoute;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class OutputLogs implements HttpHandler {
     private static OutputLogs instance = null;
-    private List<String> logs = new ArrayList<>();
+    private final static int _MAX = 50;
+    private String[] logs = new String[_MAX];
+    private int position = 0;
     private static String name = "";
     private static String scripts = "<script>setTimeout(function(){\n" +
             "   window.location.reload(1);\n" +
@@ -30,7 +32,11 @@ public class OutputLogs implements HttpHandler {
     }
 
     public void add(String msg){
-        logs.add(msg);
+        logs[position] = msg;
+        position++;
+        if(position >= _MAX){
+            position = 0;
+        }
     }
 
     @Override
@@ -40,8 +46,12 @@ public class OutputLogs implements HttpHandler {
         parseQuery(query, parameters);
         StringBuilder sb = new StringBuilder();
         sb.append(header);
-        for(String m : logs){
-            sb.append(m);
+        for(int i = 0; i < logs.length; i++){
+            if(logs[i] != null)
+                sb.append(logs[i]);
+            if(i == (position-1)){
+                sb.append("\n________\n");
+            }
             sb.append("\n");
         }
         sb.append("</textarea>");

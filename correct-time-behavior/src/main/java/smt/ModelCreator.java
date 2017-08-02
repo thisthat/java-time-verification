@@ -132,7 +132,7 @@ public class ModelCreator {
 
     public void verifyVariable(IntExpr v) throws ModelNotCorrect {
         boolean min = verify_min(v);
-        boolean max = verify_max(v);
+        //boolean max = verify_max(v);
         if(!min)
             throw new ModelNotCorrect(v.getSExpr());
     }

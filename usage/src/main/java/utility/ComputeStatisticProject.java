@@ -47,7 +47,7 @@ public class ComputeStatisticProject {
         System.out.println("Project: " + name);
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
-            List<ASTClass> result = JDTVisitor.parseSpecial(filename, path);
+            List<ASTClass> result = JDTVisitor.parseSpecial(filename, path, true);
             for(ASTClass c : result){
                 n_class++;
                 n_class_method += c.getMethods().size();
