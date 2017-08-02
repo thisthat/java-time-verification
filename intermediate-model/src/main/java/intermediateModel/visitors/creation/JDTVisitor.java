@@ -8,7 +8,6 @@ import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.internal.compiler.lookup.*;
 import parser.Java2AST;
 import parser.UnparsableException;
 
@@ -1014,7 +1013,7 @@ public class JDTVisitor extends ASTVisitor {
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		String name = expr.getName().getFullyQualifiedName();
-		IASTRE exprCallee = new ASTLiteral(start, start+5, "super");
+		IASTRE exprCallee = new ASTIdentifier(start, start+5, "super");
 		List<IASTRE> pars = new ArrayList<>();
 		for(Object p : expr.arguments()){
 			pars.add(
@@ -1198,7 +1197,7 @@ public class JDTVisitor extends ASTVisitor {
 		IASTRE.OPERATOR op = IASTRE.OPERATOR.instanceOf;
 		IASTRE l = getExpr(expr.getLeftOperand());
 		Type t = expr.getRightOperand();
-		IASTRE r = new ASTLiteral(t.getStartPosition(), t.getStartPosition()+t.getLength(), t.toString());
+		IASTRE r = new ASTIdentifier(t.getStartPosition(), t.getStartPosition()+t.getLength(), t.toString());
 		return new ASTBinary(start,stop, l, r, op);
 	}
 
@@ -1305,7 +1304,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 
@@ -1313,49 +1312,49 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(ArrayAccess expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.getArray().toString());
+		return new ASTIdentifier(start, stop, expr.getArray().toString());
 	}
 
 	private IASTRE literal(TypeLiteral expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(BooleanLiteral expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(NumberLiteral expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(ThisExpression expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(StringLiteral expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.getEscapedValue());
+		return new ASTIdentifier(start, stop, expr.getEscapedValue());
 	}
 
 	private IASTRE assignment(Assignment expr) {
@@ -1404,7 +1403,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.getIdentifier());
+		return new ASTIdentifier(start, stop, expr.getIdentifier());
 	}
 
 	private IASTRE methodInvocation(MethodInvocation node) {

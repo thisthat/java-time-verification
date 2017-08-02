@@ -2,13 +2,12 @@ package intermediateModel.structure;
 
 import intermediateModel.interfaces.*;
 import intermediateModel.structure.expression.ASTBinary;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
-import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		if(this.expression == null) return;
 		expression.visit(new DefualtASTREVisitor(){
 			@Override
-			public void enterASTLiteral(ASTLiteral elm) {
+			public void enterASTIdentifier(ASTIdentifier elm) {
 				usedVars.add(elm.getValue());
 			}
 		});
@@ -71,7 +70,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 			final String[] var_name = new String[1];
 			((ASTVariableDeclaration) expression).getName().visit(new DefaultASTVisitor(){
 				@Override
-				public void enterASTLiteral(ASTLiteral elm) {
+				public void enterASTIdentifier(ASTIdentifier elm) {
 					var_name[0] = elm.getValue();
 				}
 			});
@@ -84,8 +83,8 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 		if(expression instanceof ASTMethodCall){
 			return "call_to_" + ((ASTMethodCall) expression).getMethodName();
 		}
-		if(expression instanceof ASTLiteral){
-			return ((ASTLiteral) expression).getValue();
+		if(expression instanceof ASTIdentifier){
+			return ((ASTIdentifier) expression).getValue();
 		}
 		return expression.getClass().getSimpleName();// + "_" + _ID++;
 	}

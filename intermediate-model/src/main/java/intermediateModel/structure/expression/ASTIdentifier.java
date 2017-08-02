@@ -9,10 +9,10 @@ import intermediateModel.interfaces.IASTStm;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTLiteral extends IASTStm implements IASTRE {
+public class ASTIdentifier extends IASTStm implements IASTRE {
 	private String value;
 
-	public ASTLiteral(int start, int end, String value) {
+	public ASTIdentifier(int start, int end, String value) {
 		super(start, end);
 		this.value = value;
 	}
@@ -35,8 +35,8 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 	@Override
 	public void visit(ASTREVisitor visitor) {
 		visitor.enterAll(this);
-		visitor.enterASTLiteral(this);
-		visitor.exitASTLiteral(this);
+		visitor.enterASTIdentifier(this);
+		visitor.exitASTIdentifier(this);
 		visitor.exitAll(this);
 	}
 
@@ -48,8 +48,8 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
-		visitor.enterASTLiteral(this);
-		visitor.exitASTLiteral(this);
+		visitor.enterASTIdentifier(this);
+		visitor.exitASTIdentifier(this);
 		visitor.exitAll(this);
 	}
 }
