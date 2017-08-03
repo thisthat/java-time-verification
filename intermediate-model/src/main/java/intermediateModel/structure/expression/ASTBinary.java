@@ -144,4 +144,17 @@ public class ASTBinary extends IASTStm implements IASTRE {
 	public void setTimeCriticalNoChild(boolean timeCritical) {
 		super.setTimeCritical(timeCritical);
 	}
+
+    public boolean isBool() {
+		switch (op) {
+			case less:
+			case lessEqual:
+			case greater:
+			case greaterEqual:
+			case equality:
+			case notEqual:
+				return true;
+		}
+		return false;
+    }
 }

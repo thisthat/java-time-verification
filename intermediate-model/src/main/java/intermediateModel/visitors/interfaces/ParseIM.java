@@ -443,7 +443,7 @@ public abstract class ParseIM {
 	 * @param elm	{@link ASTHiddenClass} instruction to check.
 	 * @param env	{@link Env} visible by the instruction.
 	 */
-	private void analyze(ASTHiddenClass elm, Env env) {
+	protected void analyze(ASTHiddenClass elm, Env env) {
 		EnvBase oldBase = base_env;
 		Env new_env = this.createBaseEnv(elm, new EnvBase(env));
 		//Env new_env = build_base_env.buildEnvClass(elm, env);
@@ -460,7 +460,7 @@ public abstract class ParseIM {
 			this.analyze(m.getStms(), eMethod);
 		}
 		analyzeEveryStm(elm, env);
-		endAnalyzeHiddenClass(elm, env);
+		endAnalyzeHiddenClass(elm, new_env);
 		base_env = oldBase;
 	}
 

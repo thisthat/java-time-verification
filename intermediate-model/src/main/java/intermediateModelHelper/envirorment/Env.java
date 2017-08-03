@@ -52,6 +52,15 @@ public class Env {
 		return varList;
 	}
 
+
+	public List<IASTVar> getAllVarList(){
+		List<IASTVar> output = new ArrayList<>();
+		output.addAll(varList);
+		if(prev != null)
+			output.addAll(prev.getAllVarList());
+		return output;
+	}
+
 	/**
 	 * Ge the previous Env (could be null)
 	 * @return The Env where we build on the top of

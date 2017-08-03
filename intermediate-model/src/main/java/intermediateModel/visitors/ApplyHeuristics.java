@@ -2,6 +2,7 @@ package intermediateModel.visitors;
 
 
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
@@ -110,11 +111,7 @@ public class ApplyHeuristics extends ParseIM {
 		Env base = super.createBaseEnv(c);
 		ExtractTimeAttribute timeAttribute = new ExtractTimeAttribute(c);
 		for(IASTVar p : timeAttribute.getTimeAttributes()){
-			if(base.existVarName(p.getName())){
-				IASTVar v = base.getVar(p.getName());
-				v.setTimeCritical(true);
-				storeTimeAttr(c, v, base);
-			}
+			storeTimeAttr(c, p, base);
 		}
 		if(__DEBUG__){
 			System.out.println("List of TIMED ATTRIBUTEs : " + timeAttribute.getTimeAttributes().size());
@@ -151,13 +148,21 @@ public class ApplyHeuristics extends ParseIM {
 		if(!timeAttrs.containsKey(c)){
 			timeAttrs.put(c, new ArrayList<>());
 		}
-		if(v.getExpr() == null)
-			return;
 		ASTRE e = v.getExpr();
+		if(v.getExpr() == null && v.getType().equals("long")){
+			if(!(v instanceof ASTAttribute)) {
+				return;
+			}
+			ASTAttribute a = (ASTAttribute) v;
+			e = new ASTRE(a.getStart(), a.getEnd(), new ASTLiteral(a.getStart(), a.getEnd(), "0"));
+		}
+		if(e == null)
+			return;
+		IASTRE expr = e.getExpression();
 		ASTRE re = new ASTRE(e.getStart(), e.getEnd(), new ASTVariableDeclaration(
 			e.getStart(), e.getEnd(), v.getType(),
 				new ASTLiteral(e.getStart(), e.getEnd(), v.getName()),
-			e.getExpression()
+			expr
 		));
 		analyze(re, env);
 		timeAttrs.get(c).add(re);

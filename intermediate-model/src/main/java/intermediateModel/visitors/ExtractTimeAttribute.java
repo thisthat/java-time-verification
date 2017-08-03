@@ -3,6 +3,7 @@ package intermediateModel.visitors;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
@@ -27,13 +28,18 @@ public class ExtractTimeAttribute extends ParseIM {
     @Override
     public void start(ASTClass c) {
         timeAttributes.clear();
-        Env finalEnv = this.createBaseEnv(c);
-        for(IASTVar v : finalEnv.getVarList()){
-            if(!v.isTimeCritical()){
-                continue;
+        int size;
+        do {
+            size = timeAttributes.size();
+            Env finalEnv = this.createBaseEnv(c);
+            for (IASTVar v : finalEnv.getVarList()) {
+                if (!v.isTimeCritical()) {
+                    continue;
+                }
+                if (!timeAttributes.contains(v))
+                    timeAttributes.add(v);
             }
-            timeAttributes.add(v);
-        }
+        } while(size != timeAttributes.size());
     }
 
     public List<IASTVar> getTimeAttributes() {
@@ -50,6 +56,26 @@ public class ExtractTimeAttribute extends ParseIM {
             super.analyze(m.getStms(), eMethod);
         }
         return base_env;
+    }
+
+    @Override
+    protected void endAnalyzeHiddenClass(ASTHiddenClass elm, Env env) {
+        int size;
+        do {
+            size = timeAttributes.size();
+            for (IASTMethod m : elm.getMethods()) {
+                Env eMethod = new Env(env);
+                eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
+                super.analyze(m.getStms(), eMethod);
+            }
+            for (IASTVar v : env.getAllVarList()) {
+                if (!v.isTimeCritical()) {
+                    continue;
+                }
+                if (!timeAttributes.contains(v))
+                    timeAttributes.add(v);
+            }
+        } while(size != timeAttributes.size());
     }
 
     @Override

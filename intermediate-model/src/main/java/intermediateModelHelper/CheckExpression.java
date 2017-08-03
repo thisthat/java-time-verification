@@ -191,6 +191,11 @@ public class CheckExpression {
 		if(left instanceof ASTLiteral){
 			String name = ((ASTLiteral) left).getValue();
 			IASTVar var = where.getVar(name);
+			if(var != null && var.isTimeCritical() && v.getRight() instanceof ASTLiteral){
+				IASTVar vright = where.getVar(((ASTLiteral) v.getRight()).getValue());
+				if(vright != null)
+					vright.setTimeCritical(true);
+			}
 			if(var != null //should be never the case if code compiles
 					&& checkRightHandAssignment(state, v.getRight(), where)){ //if exists something time related
 				var.setTimeCritical(true);
@@ -358,6 +363,18 @@ public class CheckExpression {
 		v.setExcludeHiddenClass(true);
 		v.setExcludePars(true);
 		elm.visit(v);
+		if(r[0] && elm instanceof ASTBinary){
+			final boolean[] isString = {false};
+			elm.visit(new DefualtASTREVisitor(){
+				@Override
+				public void enterASTLiteral(ASTLiteral elm) {
+					String v = elm.getValue();
+					if(v.startsWith("\"") && v.endsWith("\""))
+						isString[0] = true;
+				}
+			}.setExcludeHiddenClassContinuos(true));
+			return !isString[0];
+		}
 		return r[0];
 	}
 
@@ -383,6 +400,7 @@ public class CheckExpression {
 			}
 		};
 		v.setExcludeHiddenClass(true);
+		v.setExcludePars(true);
 		expr.visit(v);
 		return find[0];
 	}

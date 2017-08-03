@@ -3,6 +3,7 @@ package slicing.heuristics;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
@@ -56,7 +57,9 @@ public class TimeInSignature extends SearchTimeConstraint {
 				} else {
 					boolean flag = false;
 					for(IASTRE e : pars){
-						if(CheckExpression.checkIt(e, env)){
+						if(e instanceof ASTBinary && ((ASTBinary) e).isBool()){
+							continue;
+						} else if(CheckExpression.checkIt(e, env)){
 							flag = true;
 						}
 					}

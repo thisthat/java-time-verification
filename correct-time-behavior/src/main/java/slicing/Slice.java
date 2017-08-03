@@ -94,7 +94,8 @@ public class Slice {
     private void analyzeAttribute(ASTRE expr) {
         if(expr != null && expr.getExpression() != null) {
             Stm a = handleAssignment(expr.getExpression());
-            current.add(a);
+            if(!current.contains(a))
+                current.add(a);
         }
     }
 
@@ -164,11 +165,15 @@ public class Slice {
             current = mm.getBody();
             slices.put(m, mm);
 
-            if(timeAttributes.containsKey(hc)){
-                for(ASTRE v : timeAttributes.get(hc)){
-                    analyzeAttribute(v);
+            ASTClass parent = hc;
+            do{
+                if(timeAttributes.containsKey(parent)){
+                    for(ASTRE v : timeAttributes.get(parent)){
+                        analyzeAttribute(v);
+                    }
                 }
-            }
+                parent = parent.getParent();
+            } while (parent != null);
 
             analyze(m);
 
