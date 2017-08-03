@@ -11,7 +11,7 @@
 (assert (= max_val 9223372036854775807))
 (assert (= over_max_val 9223372036854775808))
 (assert (= min_val (- 1)))
-(assert (= time 0))
+(assert (and (>= time 0) (<= time max_val)))
 
 (assert (<= min_val now))
 (assert (<= now over_max_val))

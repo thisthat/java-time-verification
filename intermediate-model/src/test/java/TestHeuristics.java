@@ -143,29 +143,6 @@ public class TestHeuristics {
 
 	}
 
-	@Test
-	public void TestMCGroupImpl() throws Exception {
-		String filename = getClass().getClassLoader().getResource("examples/MCGroupImpl.java").getFile();
-		List<ASTClass> cs = init(filename);
-		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(SetTimeout.class);
-		ah.subscribe(TimeInSignature.class);
-		ah.analyze(cs.get(0));
-
-		List<Constraint> constraints = ah.getTimeConstraint();
-
-
-		assertTrue(check(
-				817,
-				"socket.receive( packet )",
-				SetTimeout.class,
-				constraints
-		));
-
-		assertEquals(constraints.size(), 1);
-
-	}
 
 	@Test
 	public void TestProjectServiceImpl() throws Exception {

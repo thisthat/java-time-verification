@@ -151,6 +151,8 @@ public class ApplyHeuristics extends ParseIM {
 		if(!timeAttrs.containsKey(c)){
 			timeAttrs.put(c, new ArrayList<>());
 		}
+		if(v.getExpr() == null)
+			return;
 		ASTRE e = v.getExpr();
 		ASTRE re = new ASTRE(e.getStart(), e.getEnd(), new ASTVariableDeclaration(
 			e.getStart(), e.getEnd(), v.getType(),
