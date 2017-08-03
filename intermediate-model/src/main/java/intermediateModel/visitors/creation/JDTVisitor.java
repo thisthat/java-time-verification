@@ -1304,7 +1304,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTIdentifier(start, stop, expr.toString());
+		return new ASTLiteral(start, stop, expr.toString());
 	}
 
 
