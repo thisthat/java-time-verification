@@ -3,13 +3,12 @@ package slicing;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTMethodCall;
-import intermediateModel.structure.expression.ASTNewObject;
-import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModelHelper.CheckExpression;
 import slicing.heuristics.*;
 import slicing.model.*;
 import slicing.model.interfaces.Stm;
@@ -25,6 +24,7 @@ public class Slice {
 
     static ApplyHeuristics ah = new ApplyHeuristics();
     static {
+        //ah.set__DEBUG__(true);
         ah.subscribe(MarkTime.class);
         ah.subscribe(TimeInSignature.class);
         ah.subscribe(AssignmentTimeVar.class);
@@ -38,6 +38,7 @@ public class Slice {
     private HashMap<IASTMethod,Method> slices = new LinkedHashMap<>();
     private List<Stm> current;
     private List<TimeElement> timeStms;
+    private HashMap<ASTClass, List<ASTRE>> timeAttributes;
 
     public static HashMap<IASTMethod, Method> slice(ASTClass c) {
         return slice(c,true);
@@ -49,6 +50,7 @@ public class Slice {
         ah.analyze(c);
         //debug
         Slice slicer = new Slice(c);
+        slicer.setTimeAttributes(ah.getTimeAttrs());
         slicer.start();
         HashMap<IASTMethod,Method> slices = slicer.getSlices();
         if(shrink) {
@@ -64,6 +66,10 @@ public class Slice {
         timeStms = TimeStatements.getInstance().getStms();
     }
 
+    public void setTimeAttributes(HashMap<ASTClass, List<ASTRE>> timeAttributes) {
+        this.timeAttributes = timeAttributes;
+    }
+
     public HashMap<IASTMethod, Method> getSlices() {
         return slices;
     }
@@ -76,7 +82,19 @@ public class Slice {
             mm.setSignature(m.getSignature());
             current = mm.getBody();
             slices.put(m, mm);
+            if(timeAttributes.containsKey(_class)){
+                for(ASTRE v : timeAttributes.get(_class)){
+                    analyzeAttribute(v);
+                }
+            }
             analyze(m);
+        }
+    }
+
+    private void analyzeAttribute(ASTRE expr) {
+        if(expr != null && expr.getExpression() != null) {
+            Stm a = handleAssignment(expr.getExpression());
+            current.add(a);
         }
     }
 
@@ -135,28 +153,35 @@ public class Slice {
         }
     }
 
-    private void analyze(ASTHiddenClass stm) {
-        for(IASTMethod m : stm.getAllMethods()){
+    private void analyze(ASTHiddenClass hc) {
+        List<Stm> bck = current;
+
+        for(IASTMethod m : hc.getMethods()) {
+            List<Stm> bckMethod = bck;
+            Method mm = new Method(m.getStart(), m.getEnd(), m.getLine(), m.getLineEnd(), m.getCode());
+            mm.setName("anonymous" + hc.getIdHidden() + "_" + m.getName());
+            mm.setSignature(m.getSignature());
+            current = mm.getBody();
+            slices.put(m, mm);
+
+            if(timeAttributes.containsKey(hc)){
+                for(ASTRE v : timeAttributes.get(hc)){
+                    analyzeAttribute(v);
+                }
+            }
+
             analyze(m);
+
+            bck = bckMethod;
         }
+
+        current = bck;
     }
 
     private void analyze(ASTNewObject stm) {
         ASTHiddenClass hc = stm.getHiddenClass();
         if(hc != null){
-            List<Stm> bck = current;
-
-            for(IASTMethod m : hc.getMethods()) {
-                Method mm = new Method(m.getStart(), m.getEnd(), m.getLine(), m.getLineEnd(), m.getCode());
-                mm.setName("anonymous" + hc.getIdHidden() + "_" + m.getName());
-                mm.setSignature(m.getSignature());
-                current = mm.getBody();
-                slices.put(m, mm);
-
-                analyze(hc);
-            }
-
-            current = bck;
+            analyze(hc);
         }
         for(IASTRE p : stm.getParameters()){
             if(p instanceof ASTNewObject){
@@ -316,7 +341,7 @@ public class Slice {
                         objs[0] = elm;
                     }
                 }
-            });
+            }.setExcludeHiddenClassContinuos(true));
             if(objs[0] != null)
                 analyze(objs[0]);
         }

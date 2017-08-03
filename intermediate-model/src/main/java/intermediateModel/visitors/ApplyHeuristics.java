@@ -5,6 +5,8 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.BuildEnvironment;
@@ -32,11 +34,16 @@ public class ApplyHeuristics extends ParseIM {
 	protected List<SearchTimeConstraint> strategies = new ArrayList<>();
 	protected List<Class<? extends SearchTimeConstraint>> strategiesTypes = new ArrayList<>();
 
+	HashMap<ASTClass,List<ASTRE>> timeAttrs = new HashMap();
 	public ApplyHeuristics(){
 		build_base_env = BuildEnvironment.getInstance();
 	}
 	public ApplyHeuristics(BuildEnvironment env) {
 		this.build_base_env = env;
+	}
+
+	public HashMap<ASTClass, List<ASTRE>> getTimeAttrs() {
+		return timeAttrs;
 	}
 
 	/**
@@ -84,6 +91,7 @@ public class ApplyHeuristics extends ParseIM {
 	 * @param c Class to analyze.
 	 */
 	public void analyze(ASTClass c){
+		timeAttrs.clear();
 		//instantiate the strategies
 		strategies.clear();
 		for(Class<? extends SearchTimeConstraint> type : strategiesTypes){
@@ -105,6 +113,7 @@ public class ApplyHeuristics extends ParseIM {
 			if(base.existVarName(p.getName())){
 				IASTVar v = base.getVar(p.getName());
 				v.setTimeCritical(true);
+				storeTimeAttr(c, v, base);
 			}
 		}
 		if(__DEBUG__){
@@ -136,6 +145,20 @@ public class ApplyHeuristics extends ParseIM {
 			List<String> vars = getMethodTimeVars(m);
 			m.setTimeVars(vars);
 		}
+	}
+
+	private void storeTimeAttr(ASTClass c, IASTVar v, Env env) {
+		if(!timeAttrs.containsKey(c)){
+			timeAttrs.put(c, new ArrayList<>());
+		}
+		ASTRE e = v.getExpr();
+		ASTRE re = new ASTRE(e.getStart(), e.getEnd(), new ASTVariableDeclaration(
+			e.getStart(), e.getEnd(), v.getType(),
+				new ASTLiteral(e.getStart(), e.getEnd(), v.getName()),
+			e.getExpression()
+		));
+		analyze(re, env);
+		timeAttrs.get(c).add(re);
 	}
 
 	@Override
@@ -182,6 +205,24 @@ public class ApplyHeuristics extends ParseIM {
 	protected void analyzeASTIf(ASTIf elm, Env env) {
 		super.analyzeASTIf(elm, env);
 		applyStepIFExpr(elm.getGuard(), env);
+	}
+
+	@Override
+	protected void analyzeASTHiddenClass(ASTHiddenClass elm, Env env) {
+		ExtractTimeAttribute timeAttribute = new ExtractTimeAttribute(elm);
+		for(IASTVar p : timeAttribute.getTimeAttributes()){
+			if(env.existVarName(p.getName())){
+				IASTVar v = env.getVar(p.getName());
+				v.setTimeCritical(true);
+				storeTimeAttr(elm, v, env);
+			}
+		}
+		if(__DEBUG__){
+			System.out.println("List of TIMED ATTRIBUTEs : " + timeAttribute.getTimeAttributes().size());
+			for(IASTVar p : timeAttribute.getTimeAttributes()){
+				System.out.format("\t %s %s\n", p.getName(), p.getType());
+			}
+		}
 	}
 
 	@Override

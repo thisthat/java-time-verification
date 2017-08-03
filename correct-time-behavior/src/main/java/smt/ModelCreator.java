@@ -61,7 +61,10 @@ public class ModelCreator {
 
         timeFuncDec = ctx.mkFuncDecl("time", new IntSort[0], ctx.getIntSort());
         time = (IntExpr) ctx.mkApp(timeFuncDec, new IntExpr[0]);
-        BoolExpr t = ctx.mkEq(time, ctx.mkInt(0));
+        BoolExpr t = ctx.mkAnd(
+                ctx.mkGe(time, ctx.mkInt(0)),
+                ctx.mkLe(time, max_val)
+                );
         opt.Add(t);
 
     }
