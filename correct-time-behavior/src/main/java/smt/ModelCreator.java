@@ -156,6 +156,9 @@ public class ModelCreator {
     private boolean verify_min(IntExpr v) throws ModelNotCorrect {
         opt.Push();
         Optimize.Handle mx = opt.MkMinimize(v);
+        Params p = ctx.mkParams();
+        p.add("timeout", 600);
+        opt.setParameters(p);
         opt.Check();
         this.lastMinModel = opt.toString();
         if(_debug_){

@@ -59,10 +59,7 @@ public abstract class ParseIM {
 		for (ASTStatic s : c.getStaticInit()) {
 			analyze(s.getStms(), base_env);
 		}
-		//is c subclass of smth?
-		if(c.getParent() != null){
-			base_env = createBaseEnv(c.getParent(), base_env);
-		}
+
 		return base_env;
 	}
 
@@ -448,9 +445,7 @@ public abstract class ParseIM {
 		Env new_env = this.createBaseEnv(elm, new EnvBase(env));
 		//Env new_env = build_base_env.buildEnvClass(elm, env);
 		//check static
-		for (ASTStatic s : elm.getStaticInit()) {
-			this.analyze(s.getStms(), new_env);
-		}
+
 		analyzeASTHiddenClass(elm, new_env);
 		//check method
 		for (IASTMethod m : elm.getMethods()) {

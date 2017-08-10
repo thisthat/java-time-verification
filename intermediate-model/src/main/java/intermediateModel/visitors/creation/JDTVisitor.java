@@ -1283,8 +1283,10 @@ public class JDTVisitor extends ASTVisitor {
 			st = hc.getStartPosition();
 			sp = st + hc.getLength();
 			ASTHiddenClass c = new ASTHiddenClass(st, sp);
-			c.setParent(lastClass);
-			c.setPath(lastClass.getPath());
+			if(lastClass != null) {
+				c.setParent(lastClass);
+				c.setPath(lastClass.getPath());
+			}
 			obj.setHiddenClass(c);
 			//attributes of the hidden class + methods
 			for(Object node : hc.bodyDeclarations()){

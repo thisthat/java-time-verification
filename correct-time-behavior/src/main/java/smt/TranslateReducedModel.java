@@ -409,6 +409,19 @@ public class TranslateReducedModel {
             if(b instanceof BoolExpr)
                 modelCreator.addConstraint((BoolExpr) b);
         }
+        for(String v : s.getTimeVars()){
+            try {
+                modelCreator.verifyVariable(v);
+            } catch (ModelNotCorrect e) {
+                if (this.saveModel)
+                    errors.add(new VariableNotCorrect(v, s, modelCreator.getLastMinModel(), modelCreator.getLastMaxModel()));
+                else
+                    errors.add(new VariableNotCorrect(v, s));
+                //System.err.println("@" + s.getLine() + " " + e.getMessage());
+            } catch (VarNotFoundException e) {
+                //this is not a problem
+            }
+        }
     }
 
     private void handleIf(If s) {

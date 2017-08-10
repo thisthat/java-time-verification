@@ -367,7 +367,12 @@ public class Env {
 		}
 		//is not here, search in the previous ones
 		if(prev != null){
-			return prev.existMethodTimeRelevant(classPointed, methodName, signature);
+			try {
+				return prev.existMethodTimeRelevant(classPointed, methodName, signature);
+			} catch (StackOverflowError e){
+				System.out.println("ehh");
+				throw e;
+			}
 		} else {
 			return false;
 		}
