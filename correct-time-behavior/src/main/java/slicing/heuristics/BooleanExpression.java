@@ -2,14 +2,8 @@ package slicing.heuristics;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.structure.expression.ASTVariableDeclaration;
-import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;

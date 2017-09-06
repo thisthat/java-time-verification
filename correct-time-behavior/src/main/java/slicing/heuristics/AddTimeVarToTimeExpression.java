@@ -48,7 +48,7 @@ public class AddTimeVarToTimeExpression extends SearchTimeConstraint {
 							mark(v, call);
 						}
 					}
-				}.setExcludeHiddenClassContinuos(true));
+				}.setExcludeHiddenClassContinuos(true));//.setExcludeParsContinuos(true));
 			}
 		};
 		v.setExcludeHiddenClass(true);
@@ -69,6 +69,9 @@ public class AddTimeVarToTimeExpression extends SearchTimeConstraint {
 	}
 
 	private void mark(IASTVar var, ASTMethodCall call) {
+
+		if(call.getExprCallee() != null && var.getName().equals(call.getExprCallee().print()))
+			return;
 		call.addTimeVar(var.getName());
 	}
 

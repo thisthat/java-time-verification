@@ -83,7 +83,7 @@ public class GeneralOnlyCFGMain {
 
 	public void run() throws Exception {
 		//String f =  "/Users/giovanni/repository/sources/progs/oMPC.java";
-		String f =  "/Users/giovanni/repository/hbase/hbase-server/src/main/java/org/apache/hadoop/hbase/regionserver/wal/SyncFuture.java";
+		String f =  "/Users/giovanni/repository/testPHPDebug/Monitor.java";
 		//String f = "/Users/giovanni/repository/sources/github/elasticsearch/test/framework/src/main/java/org/elasticsearch/test/disruption/SlowClusterStateProcessing.java";
 		String base = f.substring(0, f.lastIndexOf("/"));
 		//String base = "/Users/giovanni/repository/sources/github/elasticsearch/test/framework/src/main/java/org/elasticsearch/test/";
@@ -92,7 +92,7 @@ public class GeneralOnlyCFGMain {
 		ASTClass c = classes.get(0);
 		IM2CFG p = new IM2CFG();
 		//p.addClass(c, c.getMethods().get(1));
-		p.addClass(c, c.getFirstMethodByName("get"));
+		p.addClass(c, c.getFirstMethodByName("main"));
 		//p.addClass(c, c.getFirstMethodByName("interruptClusterStateProcessing"));
 		PCFG graph = p.buildPCFG();
 		graph.optimize();

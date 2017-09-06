@@ -194,8 +194,16 @@ public class JDTVisitor extends ASTVisitor {
 		c.setInterface(node.isInterface());
 		packageName = packageName + "." + className;
 		stackPackage.push(packageName);
-
-		c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
+		if(stackClasses.size() > 0){
+			ASTClass parent = stackClasses.peek();
+			c.setParent(parent);
+			for(ASTAttribute a : parent.getAttributes()){
+				c.addAttribute(a);
+			}
+		} else {
+			c.setParent(null);
+		}
+		//c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
 
 		listOfClasses.add(c);
 		stackClasses.push(c);

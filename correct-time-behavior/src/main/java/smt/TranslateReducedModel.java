@@ -7,6 +7,7 @@ import intermediateModel.structure.expression.*;
 import slicing.model.*;
 import slicing.model.interfaces.Stm;
 import smt.exception.ModelNotCorrect;
+import smt.exception.ModelTimeout;
 import smt.exception.VarNotFoundException;
 import smt.exception.VariableNotCorrect;
 
@@ -23,6 +24,7 @@ public class TranslateReducedModel {
     private Context ctx;
     private List<String> pushModel;
     private List<VariableNotCorrect> errors;
+    private List<String> timeout;
     private boolean saveModel = false;
     private boolean stop = false;
 
@@ -47,6 +49,7 @@ public class TranslateReducedModel {
         modelCreator = new ModelCreator();
         pushModel = new ArrayList<>();
         errors = new ArrayList<>();
+        timeout = new ArrayList<>();
         ctx = modelCreator.getCtx();
         for(Stm s : m.getBody()) {
             convert(s);
@@ -54,7 +57,14 @@ public class TranslateReducedModel {
         return modelCreator.getOpt();
     }
     public List<VariableNotCorrect> check(Method m){
+        timeout = new ArrayList<>();
         convert(m);
+        if(ModelCreator._debug_ && timeout.size() > 0) {
+            System.err.println("Model timeout");
+            for(String txt : timeout){
+                System.err.println(txt);
+            }
+        }
         return errors;
     }
 
@@ -187,6 +197,7 @@ public class TranslateReducedModel {
         if(r.isMaxMin()) {
             return convertMaxMin(r);
         } else if(r.isTimeCritical()){
+            //TODO
             return modelCreator.getTimeCall();
         }
         return modelCreator.createFunction(r.getMethodName());
@@ -348,7 +359,7 @@ public class TranslateReducedModel {
     }
 
     private Expr handleAttributeAccess(ASTAttributeAccess r) {
-        return modelCreator.createVariable(r.getVariableName().print());
+        return modelCreator.createVariable(r.print());
     }
 
     private Expr handleAssignmentExpression(ASTAssignment r) {
@@ -365,19 +376,24 @@ public class TranslateReducedModel {
      ***************************/
 
 
+    private void storeError(String var, Stm where){
+        if (this.saveModel)
+            errors.add(new VariableNotCorrect(var, where, modelCreator.getLastMinModel(), modelCreator.getLastMaxModel()));
+        else
+            errors.add(new VariableNotCorrect(var, where));
+    }
 
     private void handleWhile(While s) {
         for(String v : s.getTimeVars()){
             try {
                 modelCreator.verifyVariable(v);
             } catch (ModelNotCorrect e) {
-                if (this.saveModel)
-                    errors.add(new VariableNotCorrect(v, s, modelCreator.getLastMinModel(), modelCreator.getLastMaxModel()));
-                else
-                    errors.add(new VariableNotCorrect(v, s));
+                storeError(v,s);
                 //System.err.println("@" + s.getLine() + " " + e.getMessage());
             } catch (VarNotFoundException e) {
                 //this is not a problem
+            } catch (ModelTimeout e){
+                timeout.add(e.getMessage());
             }
         }
         push();
@@ -420,6 +436,8 @@ public class TranslateReducedModel {
                 //System.err.println("@" + s.getLine() + " " + e.getMessage());
             } catch (VarNotFoundException e) {
                 //this is not a problem
+            } catch (ModelTimeout e){
+                timeout.add(e.getMessage());
             }
         }
     }
@@ -436,9 +454,19 @@ public class TranslateReducedModel {
         pop();
         if(s.getElseBody().size() > 0){
             push();
-            if(s.getExpr() != null)
-                convert(s.getExpr().getExpr().negate(), RetType.BOOL);
-            for(Stm ss : s.getIfBody()){
+            if(s.getExpr() != null){
+                IASTRE expr = s.getExpr().getExpr().negate();
+                //expr.setTimeCritical(true);
+                Expr e = convert(expr, RetType.BOOL);
+                BoolExpr b;
+                if (e instanceof IntExpr) {
+                    b = ctx.mkGe((ArithExpr) e, ctx.mkInt(0));
+                } else {
+                    b = (BoolExpr) e;
+                }
+                modelCreator.addConstraint(b);
+            }
+            for(Stm ss : s.getElseBody()){
                 convert(ss);
             }
             pop();
@@ -476,13 +504,12 @@ public class TranslateReducedModel {
             try {
                 modelCreator.verifyVariable(v);
             } catch (ModelNotCorrect e) {
-                if (this.saveModel)
-                    errors.add(new VariableNotCorrect(v, s, modelCreator.getLastMinModel(), modelCreator.getLastMaxModel()));
-                else
-                    errors.add(new VariableNotCorrect(v, s));
+                storeError(v,s);
                 //System.err.println("@" + s.getLine() + " " + e.getMessage());
             } catch (VarNotFoundException e) {
                 //this is not a problem
+            } catch (ModelTimeout e){
+                timeout.add(e.getMessage());
             }
         }
         convert(s.getMethodCall(), RetType.INT);

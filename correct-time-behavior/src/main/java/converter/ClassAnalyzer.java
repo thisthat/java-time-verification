@@ -34,6 +34,9 @@ public class ClassAnalyzer {
     }
 
     public List<VariableNotCorrect> getErrors(Method m){
+        if(m.getLine() == 671){
+            System.out.println("BRK");
+        }
         List<VariableNotCorrect> out = new ArrayList<>();
         PathGenerator pg = new PathGenerator();
         List<Method> analyze = pg.generate(m);

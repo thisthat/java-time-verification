@@ -1,10 +1,7 @@
 package intermediateModel.visitors;
 
 
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
+import intermediateModel.interfaces.*;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
@@ -126,6 +123,7 @@ public class ApplyHeuristics extends ParseIM {
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			analyzeMethod(m, eMethod);
 			analyze(m.getStms(), eMethod );
+			analyze(m.getStms(), eMethod );
 		}
 
 		//then methods
@@ -134,6 +132,7 @@ public class ApplyHeuristics extends ParseIM {
 			Env eMethod = new Env(base);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			analyzeMethod(m, eMethod);
+			analyze(m.getStms(), eMethod );
 			analyze(m.getStms(), eMethod );
 		}
 
@@ -154,7 +153,7 @@ public class ApplyHeuristics extends ParseIM {
 				return;
 			}
 			ASTAttribute a = (ASTAttribute) v;
-			e = new ASTRE(a.getStart(), a.getEnd(), new ASTLiteral(a.getStart(), a.getEnd(), "0"));
+			e = new ASTRE(a.getStart(), a.getEnd(), new ASTLiteral(a.getStart(), a.getEnd(), "1"));
 		}
 		if(e == null)
 			return;
@@ -192,7 +191,6 @@ public class ApplyHeuristics extends ParseIM {
 
 	@Override
 	protected void analyzeEveryStm(IASTStm elm, Env env) {
-
 	}
 
 	@Override

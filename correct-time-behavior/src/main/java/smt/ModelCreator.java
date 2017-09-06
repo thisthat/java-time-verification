@@ -3,6 +3,7 @@ package smt;
 import com.microsoft.z3.*;
 import smt.exception.FunctionNotFoundException;
 import smt.exception.ModelNotCorrect;
+import smt.exception.ModelTimeout;
 import smt.exception.VarNotFoundException;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class ModelCreator {
 
     public static String _MaxVal = "9223372036854775807";
     public static String _NotValidMax = "9223372036854775808";
-    public static String _NotValidMin = "-1";
+    public static String _NotValidMin = "-100";
 
     private String lastMinModel = "";
     private String lastMaxModel = "";
@@ -101,8 +102,11 @@ public class ModelCreator {
         } catch (VarNotFoundException e) {
             if(name.matches("[0-9]+")){
                 v = ctx.mkInt(name);
-            } else if(name.matches("[0-9]+\\.[0-9]+")){
+            } else if(name.matches("[0-9]+\\.[0-9]+")) {
                 v = ctx.mkReal2Int(ctx.mkReal(name));
+            } else if(name.matches("[0-9]+L")){
+                String val = name.substring(0, name.length()-1);
+                v = ctx.mkInt(val);
             } else {
                 v = ctx.mkIntConst(name);
                 BoolExpr t = ctx.mkLe(min_val, v);
@@ -128,19 +132,19 @@ public class ModelCreator {
         return functions.get(name);
     }
 
-    public void verifyVariable(String name) throws ModelNotCorrect, VarNotFoundException {
+    public void verifyVariable(String name) throws ModelNotCorrect, VarNotFoundException, ModelTimeout {
         IntExpr v = this.getVar(name);
         this.verifyVariable(v);
     }
 
-    public void verifyVariable(IntExpr v) throws ModelNotCorrect {
+    public void verifyVariable(IntExpr v) throws ModelNotCorrect, ModelTimeout {
         boolean min = verify_min(v);
         //boolean max = verify_max(v);
         if(!min)
             throw new ModelNotCorrect(v.getSExpr());
     }
 
-    private boolean verify_max(IntExpr v) throws ModelNotCorrect {
+    private boolean verify_max(IntExpr v) throws ModelNotCorrect, ModelTimeout {
         opt.Push();
         Optimize.Handle mx = opt.MkMaximize(v);
         opt.Check();
@@ -148,32 +152,36 @@ public class ModelCreator {
         if(_debug_){
             System.out.println("MAX: " + v.getSExpr() + " = " + mx.toString());
         }
-        boolean f = validValue(mx.toString());
+        boolean f = validValue(mx.toString(), v.toString());
         opt.Pop();
         return f;
     }
 
-    private boolean verify_min(IntExpr v) throws ModelNotCorrect {
+    private boolean verify_min(IntExpr v) throws ModelNotCorrect, ModelTimeout {
         opt.Push();
         Optimize.Handle mx = opt.MkMinimize(v);
         Params p = ctx.mkParams();
-        p.add("timeout", 600);
+        p.add("timeout", 6000);
         opt.setParameters(p);
         opt.Check();
         this.lastMinModel = opt.toString();
         if(_debug_){
             System.out.println("MIN: " + v.getSExpr() + " = " + mx.toString());
         }
-        boolean f = validValue(mx.toString());
+        boolean f = validValue(mx.toString(), v.toString());
         opt.Pop();
         return f;
     }
 
-    private boolean validValue(String val){
+    private boolean validValue(String val, String var) throws ModelTimeout {
+        if(val.equals("(* (- 1) oo)")){
+            throw new ModelTimeout(var);
+        }
         if( val.equals( _NotValidMax )){
             return false;
         }
-        if( val.equals( _NotValidMin )){
+
+        if( val.startsWith( "-" )){
             return false;
         }
         return true;

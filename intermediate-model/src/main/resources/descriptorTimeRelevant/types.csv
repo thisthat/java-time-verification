@@ -110,6 +110,8 @@ java.util.concurrent.TimeUnit;toMinutes;long;long
 java.util.concurrent.TimeUnit;toHours;long;long
 java.util.concurrent.TimeUnit;toDays;long;long
 java.util.concurrent.TimeUnit;excessNanos;long;long
+java.util.concurrent.ThreadLocalRandom;nextInt;int;int
+java.util.concurrent.ThreadLocalRandom;nextLong;int;int
 java.util.Date;getTime;;long
 java.util.Calendar;getTimeInMillis;;long
 java.sql.Timestamp;getNanos;;long

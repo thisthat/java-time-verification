@@ -38,7 +38,8 @@ public class SingleFile {
                         System.out.println(v.getMinModel());
                     }
                 }
-            }catch (Exception x) {
+
+            } catch (Exception x) {
                 System.out.println("In file " + c.getPath());
                 throw x;
             }

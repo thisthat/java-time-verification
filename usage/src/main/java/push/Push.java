@@ -36,6 +36,6 @@ public class Push {
 
     }
     public static void main(String[] args) throws Exception {
-        new Push().send(User.giovanni, "ciao");
+        new Push().send(User.jack, "se mi leggi sei frocio");
     }
 }

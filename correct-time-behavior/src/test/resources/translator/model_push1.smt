@@ -31,6 +31,6 @@
 
 (assert (= remaining (ite (<= 0 (- deadline now)) (- deadline now) 0)))
 (assert (= now time))
-
+(set-option :opt.timeout 6000)
 (check-sat)
 

@@ -26,7 +26,7 @@
 (assert (<= now deadline))
 
 (assert (= now time))
-
+(set-option :opt.timeout 6000)
 
 (check-sat)
 

@@ -17,6 +17,7 @@ target
 *.txt
 !pom.xml
 !log4j2.xml
+User.java
 
 
 #[^log4j2]*.xml
