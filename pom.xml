@@ -32,26 +32,7 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.12</version>
-                <executions>
-                    <execution>
-                        <id>regex-property</id>
-                        <goals>
-                            <goal>regex-property</goal>
-                        </goals>
-                        <configuration>
-                            <name>maven.test.skip</name>
-                            <value>${project.artifactId}</value>
-                            <regex>(xal)|(parallel-control-flow-graph)|(time-annotation)|(server)|(uppaal-library)|(code-instrumentation)|(usage)</regex>
-                            <replacement>true</replacement>
-                            <failIfNoMatch>false</failIfNoMatch>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
@@ -71,7 +52,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <debug>true</debug>
+                    <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
                 <version>3.3</version>
             </plugin>

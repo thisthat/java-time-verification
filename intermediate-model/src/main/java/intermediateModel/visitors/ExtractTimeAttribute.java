@@ -1,10 +1,14 @@
 package intermediateModel.visitors;
 
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
@@ -49,13 +53,33 @@ public class ExtractTimeAttribute extends ParseIM {
     @Override
     protected EnvBase createBaseEnv(ASTClass c){
         super.createBaseEnv(c);
+        for(IASTVar v : base_env.getVarList()){
+            if(timeAttributes.contains(v)){
+                v.setTimeCritical(true);
+            }
+        }
         //check method
         for (IASTMethod m : c.getMethods()) {
             Env eMethod = new Env(base_env);
             eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
             super.analyze(m.getStms(), eMethod);
         }
+        //check attributes
+        for(ASTAttribute a : c.getAttributes()){
+            analyzeAttribute(a, base_env);
+        }
         return base_env;
+    }
+
+    private void analyzeAttribute(ASTAttribute a, EnvBase base_env) {
+        if(a.isTimeCritical() && a.getExpr() != null){
+            IASTRE expr = a.getExpr().getExpression();
+            int s = a.getStart();
+            int e = a.getEnd();
+            ASTAssignment ass = new ASTAssignment(s, e, new ASTLiteral(s, e, a.getName()), expr, IASTRE.OPERATOR.equal);
+            ASTRE re = new ASTRE(s, e, ass);
+            CheckExpression.checkRE(re, base_env);
+        }
     }
 
     @Override
