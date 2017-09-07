@@ -35,7 +35,7 @@ public class MinMaxSearch extends SearchTimeConstraint {
 			public void enterASTMethodCall(ASTMethodCall elm) {
 				if(elm.getClassPointed() != null && elm.getClassPointed().equals("java.lang.Math")){
 					String name = elm.getMethodName();
-					if(name.equals("min") || name.equals("max")){
+					if(name.equals("min") || name.equals("max") || name.equals("abs")){
 						checkForTime(elm, env, stm);
 					}
 				}

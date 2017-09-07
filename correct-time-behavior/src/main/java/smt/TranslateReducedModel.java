@@ -205,6 +205,9 @@ public class TranslateReducedModel {
 
     private IntExpr convertMaxMin(ASTMethodCall r) {
         ArithExpr t0 = (ArithExpr) convert(r.getParameters().get(0), RetType.INT);
+        if(r.getMethodName().equals("abs")){
+            return (IntExpr) ModelCreator.abs(ctx, t0);
+        }
         ArithExpr t1 = (ArithExpr) convert(r.getParameters().get(1), RetType.INT);
         if(r.getMethodName().equals("min")){
             return (IntExpr) ModelCreator.min2(ctx, t0, t1);

@@ -78,6 +78,10 @@ public class ModelCreator {
             throws Z3Exception {
         return ctx.mkITE(ctx.mkLe(x, y), x, y);
     }
+    public static Expr abs(Context ctx, ArithExpr x)
+            throws Z3Exception {
+        return ctx.mkITE(ctx.mkLe(x, ctx.mkInt(0)), ctx.mkUnaryMinus(x), x);
+    }
 
     public IntExpr getTimeCall() {
         return time;
