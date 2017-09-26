@@ -304,7 +304,9 @@ public abstract class ParseIM {
 
 		Env new_env = new Env(env);
 		this.analyze(elm.getGuard(), new_env);
-		this.analyze(elm.getIfBranch().getStms(), new Env(new_env));
+		Env e = new Env(new_env);
+		this.analyze(elm.getIfBranch().getStms(), e);
+		this.analyze(elm.getIfBranch().getStms(), e);
 		if(elm.getElseBranch() != null) {
 			this.analyze(elm.getElseBranch().getStms(), new Env(new_env));
 		}

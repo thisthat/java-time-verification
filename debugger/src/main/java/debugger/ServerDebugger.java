@@ -1,21 +1,10 @@
 package debugger;
 
 import com.sun.net.httpserver.HttpServer;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import server.handler.*;
-import server.handler.test.echoGet;
-import server.handler.test.echoHeader;
-import server.handler.test.echoPost;
-import server.routes.v1.Routes;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

@@ -18,7 +18,7 @@
             <artifactId>z3</artifactId>
             <version>4.5.1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/com.microsoft.z3.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/lib/com.microsoft.z3.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>

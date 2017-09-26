@@ -76,8 +76,9 @@ public class CollectReturnTimeMethods extends ParseIM {
         if(store){
             try {
                 File f = new File("config/" + this.storeName + "_types.csv");
+                boolean exists = f.exists();
                 BufferedWriter writer = new BufferedWriter(new FileWriter("config/" + this.storeName + "_types.csv", true));
-                if(!f.exists())
+                if(!exists)
                     writer.write("Class;Name;Signature;Ret Type\n");
                 for(TimeTypes t : output){
                     writer.write(t.toString());

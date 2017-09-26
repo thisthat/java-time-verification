@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class SingleFile {
     public static void main(String[] args) {
+        //ModelCreator._debug_ = true;
         String file = args[0];
         String root = args[1];
         String name = args[2];

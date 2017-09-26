@@ -68,6 +68,11 @@
             <artifactId>cloning</artifactId>
             <version>1.9.3</version>
         </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>debugger</artifactId>
+            <version>0.4</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

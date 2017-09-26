@@ -21,6 +21,7 @@
         <module>code-instrumentation</module>
         <module>usage</module>
         <module>correct-time-behavior</module>
+        <module>debugger</module>
     </modules>
 
     <scm>

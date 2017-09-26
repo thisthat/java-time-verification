@@ -1,6 +1,6 @@
 package debugger;
 
-import server.helper.PropertiesFileReader;
+import helper.PropertiesFileReader;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

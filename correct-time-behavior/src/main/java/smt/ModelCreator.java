@@ -165,7 +165,7 @@ public class ModelCreator {
         opt.Push();
         Optimize.Handle mx = opt.MkMinimize(v);
         Params p = ctx.mkParams();
-        p.add("timeout", 6000);
+        p.add("timeout", 9000);
         opt.setParameters(p);
         opt.Check();
         this.lastMinModel = opt.toString();
@@ -184,7 +184,6 @@ public class ModelCreator {
         if( val.equals( _NotValidMax )){
             return false;
         }
-
         if( val.startsWith( "-" )){
             return false;
         }
