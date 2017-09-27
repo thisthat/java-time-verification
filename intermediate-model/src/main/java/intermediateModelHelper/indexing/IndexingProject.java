@@ -8,7 +8,6 @@ import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.FileUtils;
-import debugger.Debugger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class IndexingProject {
 	protected String projectName;
 	protected boolean skipTest = true;
 	protected boolean showUpdates = false;
-	static Debugger debug = Debugger.getInstance();
+	//static Debugger debug = Debugger.getInstance();
 	/**
 	 * Construct the db given the project name.
 	 * @param name	Project Name
@@ -214,7 +213,7 @@ public class IndexingProject {
 			String filename = i.next().getAbsolutePath();
 			if(filename.contains("/src/test/"))
 				continue;
-			debug.log("processing " + filename);
+			//debug.log("processing " + filename);
 			List<ASTClass> result = JDTVisitor.parse(filename, base_path);
 			for(ASTClass c : result){
 				out.addAll(collectReturnTimeMethods.index(c));

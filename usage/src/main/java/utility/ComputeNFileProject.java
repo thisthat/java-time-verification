@@ -1,10 +1,13 @@
 package utility;
 
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.IndexingProject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by giovanni on 31/05/2017.
@@ -20,13 +23,13 @@ public class ComputeNFileProject {
         System.out.println("Project: " + name);
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
-            //List<ASTClass> result = JDTVisitor.parseSpecial(filename, path);
-            //for(ASTClass c : result){
-              //  n_class++;
-                //n_method += c.getMethods().size();
+            List<ASTClass> result = JDTVisitor.parseSpecial(filename, path, false);
+            for(ASTClass c : result){
+                n_class++;
+                n_method += c.getCountMethod();
                 //compute time
             //
-            // }
+            }
             n_file++;
         }
         System.out.println("#File:        " + n_file);
