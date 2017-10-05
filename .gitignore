@@ -18,6 +18,7 @@ target
 !pom.xml
 !log4j2.xml
 *.jar
+/config/*.csv
 
 #[^log4j2]*.xml
 

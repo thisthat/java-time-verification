@@ -29,6 +29,7 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void enterASTTryResources(ASTTryResources elm);
 	void enterASTVariable(ASTVariable elm);
 	void enterASTWhile(ASTWhile elm);
+	void enterASTDeadline(ASTDeadline elm);
 	void enterASTHiddenClass(ASTHiddenClass astHiddenClass);
 
 	void exitASTAttribute(ASTAttribute elm);
@@ -52,5 +53,6 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void exitASTTryResources(ASTTryResources elm);
 	void exitASTVariable(ASTVariable elm);
 	void exitASTWhile(ASTWhile elm);
+	void exitASTDeadline(ASTDeadline elm);
 	void exitASTHiddenClass(ASTHiddenClass astHiddenClass);
 }
