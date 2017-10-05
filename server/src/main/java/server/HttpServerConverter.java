@@ -72,6 +72,7 @@ public class HttpServerConverter {
 		server.createContext(Routes.GET_MAINS, 			new getMains());
 		server.createContext(Routes.CLEAN, 				new clean(op));
 		server.createContext(Routes.CLEAN_ALL, 			new cleanAll(op));
+		server.createContext(Routes.EXAMPLE_DEADLINE, 	new exampleDeadline());
 
 		server.setExecutor(httpThreadPool);
 		server.start();

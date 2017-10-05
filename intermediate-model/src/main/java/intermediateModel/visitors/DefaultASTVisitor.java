@@ -116,6 +116,11 @@ public class DefaultASTVisitor extends DefualtASTREVisitor implements ASTVisitor
 	}
 
 	@Override
+	public void enterASTDeadline(ASTDeadline elm) {
+
+	}
+
+	@Override
 	public void enterASTHiddenClass(ASTHiddenClass astHiddenClass) {
 
 	}
@@ -222,6 +227,11 @@ public class DefaultASTVisitor extends DefualtASTREVisitor implements ASTVisitor
 
 	@Override
 	public void exitASTWhile(ASTWhile elm) {
+
+	}
+
+	@Override
+	public void exitASTDeadline(ASTDeadline elm) {
 
 	}
 

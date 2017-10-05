@@ -16,4 +16,5 @@ public class Routes {
     public static final String GET_MAINS = version + "getMains";
     public static final String CLEAN = version + "clean";
     public static final String CLEAN_ALL = version + "cleanAll";
+    public static final String EXAMPLE_DEADLINE = version + "example_deadline";
 }

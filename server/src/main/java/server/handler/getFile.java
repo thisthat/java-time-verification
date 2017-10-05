@@ -43,7 +43,7 @@ public class getFile extends indexMW {
 		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.ALL : Level.OFF);
 	}
 
-	class AnnotateEnv extends ParseIM {
+	static class AnnotateEnv extends ParseIM {
 		@Override
 		public void start(ASTClass c) {
 			super.start(c);

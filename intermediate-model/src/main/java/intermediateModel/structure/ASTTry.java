@@ -40,6 +40,10 @@ public class ASTTry extends IASTStm implements IASTVisitor {
 			return out;
 		}
 
+		public void setStms(List<IASTStm> stms){
+			this.stms = stms;
+		}
+
 		@Override
 		public List<IASTStm> getStms() {
 			return stms;
