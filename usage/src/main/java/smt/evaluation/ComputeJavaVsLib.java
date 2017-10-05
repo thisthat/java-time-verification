@@ -1,5 +1,6 @@
-package utility;
+package smt.evaluation;
 
+import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefaultASTVisitor;
@@ -22,6 +23,8 @@ import java.util.List;
  */
 public class ComputeJavaVsLib {
 
+    static Debugger debug = Debugger.getInstance();
+
     public ComputeJavaVsLib(String name, String path, String jars, String user, String libs) throws IOException {
         // construct classpath - jars + /main/src/ folders
         List<String> jar_path = Java2AST.getJars(jars);
@@ -36,6 +39,8 @@ public class ComputeJavaVsLib {
 
 
         System.out.println("Project: " + name);
+        debug.setName(name);
+
         final long[] java_calls = {0};
         final long[] libs_calls = {0};
 
@@ -43,6 +48,9 @@ public class ComputeJavaVsLib {
 
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
+            //if(!filename.equals("/Users/giovanni/Documents/research/correct_behavior/repositories/kafka/tools/src/main/java/org/apache/kafka/tools/VerifiableConsumer.java"))
+            //    continue;
+            debug.log("[" + java_calls[0] + "," + libs_calls[0] + "] Processing " + filename);
             Java2AST a = null;
             try {
                 a = new Java2AST(filename, true, path, jar_path);
@@ -60,22 +68,21 @@ public class ComputeJavaVsLib {
                         for(TimeTypes u : java_api){
                             if(u.isMethodCall(elm)) {
                                 java_calls[0]++;
-                                return;
+                                break;
                             }
                         }
                         for(TimeTypes u : lib_api){
                             if(u.isMethodCall(elm)) {
                                 libs_calls[0]++;
-                                return;
+                                break;
                             }
                         }
                     }
                 });
             }
-
-            System.out.println("Java Time Calls: " + java_calls[0]);
-            System.out.println("Libs Time Calls: " + libs_calls[0]);
         }
+        System.out.println("Java Time Calls: " + java_calls[0]);
+        System.out.println("Libs Time Calls: " + libs_calls[0]);
 
     }
 
@@ -89,6 +96,14 @@ public class ComputeJavaVsLib {
         String jars = args[2];
         String user = args[3];
         String lib = args[4];
-        new ComputeJavaVsLib(path, name, jars, user, lib);
+        try {
+            new ComputeJavaVsLib(path, name, jars, user, lib);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            debug.stop();
+        }
+
     }
 }

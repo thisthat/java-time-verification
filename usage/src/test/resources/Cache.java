@@ -1,9 +1,12 @@
+import intermediateModel.structure.ASTClass;
+
 public class Cache {
     int value;
     long lastRefresh;
     static final int MAX_TIME = 10*60*1000;//10minutes
     public Cache(){
         value = readValue();
+        new ASTClass().getAttributes();
         lastRefresh = System.currentTimeMillis();
     }
     public int read(){

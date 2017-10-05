@@ -1,5 +1,7 @@
 package intermediateModelHelper.envirorment.temporal.structure;
 
+import intermediateModel.structure.expression.ASTMethodCall;
+
 import java.util.List;
 
 /**
@@ -23,5 +25,14 @@ public class TimeTypes extends TimeInfo {
             }
         }
         return String.format("%s;%s;%s;long", className, methodName, sign.toString());
+    }
+
+    public boolean isMethodCall(ASTMethodCall m) {
+        if(m.getClassPointed() == null) return false;
+        if(m.getMethodName() == null) return false;
+        if(!m.getClassPointed().equals(className)) return false;
+        if(!m.getMethodName().equals(methodName)) return false;
+        //if(m.getParameters().size() != signature.size()) return false;
+        return true;
     }
 }

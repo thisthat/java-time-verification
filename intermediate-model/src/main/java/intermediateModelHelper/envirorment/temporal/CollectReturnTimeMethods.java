@@ -68,9 +68,12 @@ public class CollectReturnTimeMethods extends ParseIM {
         //then methods
         for(IASTMethod m : c.getMethods()){
             if(m instanceof ASTConstructor) continue;
-            Env eMethod = new Env(base);
-            eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
-            analyzeMethod(m, eMethod);
+            String ret = m.getReturnType();
+            if(ret.equals("long") || ret.equals("int") || ret.equals("Long") || ret.equals("Integer")) {
+                Env eMethod = new Env(base);
+                eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
+                analyzeMethod(m, eMethod);
+            }
             //analyze(m.getStms(), eMethod );
         }
         if(store){

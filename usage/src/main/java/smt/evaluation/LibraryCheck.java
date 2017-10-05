@@ -23,7 +23,8 @@ public class LibraryCheck {
         try {
             new LibraryCheck().do_job(args);
         } catch (Exception e){
-
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         } finally {
             debug.stop();
         }
@@ -37,11 +38,11 @@ public class LibraryCheck {
         debug.setName(name);
         String root_path = args[1];
 
-
+        System.out.println("Started " + name);
         //index return times
         {
             long s = System.currentTimeMillis();
-            debug.log("Indexing types of the project");
+            debug.log("Indexing types of the project " + name);
             List<TimeTypes> tt = IndexingProject.getMethodReturnTime(name + "_libraries", root_path, true);
             long e = System.currentTimeMillis();
             timeSpentInit += (e - s);

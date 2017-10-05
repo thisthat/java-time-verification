@@ -1,6 +1,7 @@
 package intermediateModelHelper.indexing;
 
 import com.google.common.collect.Iterators;
+import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.CollectReturnTimeMethods;
@@ -40,6 +41,7 @@ public class IndexingProject {
 	public IndexingProject(String name) {
 		this.db = MongoConnector.getInstance(name);
 		this.projectName = name;
+
 	}
 
 	/**
@@ -209,14 +211,21 @@ public class IndexingProject {
 		Iterator<File> i = files.iterator();
 		List<TimeTypes> out = new ArrayList<>();
 		CollectReturnTimeMethods collectReturnTimeMethods = new CollectReturnTimeMethods(save, name);
+		Debugger debug = Debugger.getInstance();
 		while (i.hasNext()) {
 			String filename = i.next().getAbsolutePath();
 			if(filename.contains("/src/test/"))
 				continue;
-			//debug.log("processing " + filename);
-			List<ASTClass> result = JDTVisitor.parse(filename, base_path);
-			for(ASTClass c : result){
-				out.addAll(collectReturnTimeMethods.index(c));
+			debug.log("processing " + filename);
+			try {
+				List<ASTClass> result = JDTVisitor.parse(filename, base_path, false);
+				for (ASTClass c : result) {
+					out.addAll(collectReturnTimeMethods.index(c));
+				}
+			} catch (Exception e) {
+				System.out.println("Error with " + filename);
+				System.out.println(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return out;

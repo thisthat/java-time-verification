@@ -78,17 +78,36 @@ public class Java2AST {
     	if(cacheClassPathProject.containsKey(this.projectPath))
     		return cacheClassPathProject.get(this.projectPath);
 
-    	List<String> out = new ArrayList<>();
+		List<String> out = getClassPath(this.projectPath);
+		cacheClassPathProject.put(this.projectPath, out);
+		return out;
+	}
 
-		Collection<File> dirs = FileUtils.listFilesAndDirs(new File(this.projectPath), TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY);
-
+	public static List<String> getClassPath(String base){
+		List<String> out = new ArrayList<>();
+		Collection<File> dirs = FileUtils.listFilesAndDirs(new File(base), TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY);
 		for(File s : dirs){
 			if(s.toString().endsWith("src/main/java")){
 				out.add(s.toString());
 			}
 		}
 		out.add(System.getProperty("java.home") + "/lib");
-		cacheClassPathProject.put(this.projectPath, out);
+		return out;
+	}
+
+	public static List<String> getJars(String base){
+		File dir = new File(base);
+		String[] filter = {"jar"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator<File> i = files.iterator();
+		List<String> out = new ArrayList<>();
+		while(i.hasNext()){
+			out.add(i.next().getAbsolutePath());
+		}
 		return out;
 	}
 
