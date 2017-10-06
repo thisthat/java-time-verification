@@ -17,4 +17,5 @@ public class Routes {
     public static final String CLEAN = version + "clean";
     public static final String CLEAN_ALL = version + "cleanAll";
     public static final String EXAMPLE_DEADLINE = version + "example_deadline";
+    public static final String EXAMPLE_NEIGHBORS = version + "example_neighbors";
 }
