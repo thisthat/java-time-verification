@@ -1,5 +1,9 @@
 import requests
 
+import logging
+
+log = logging.getLogger("client")
+
 class APIError(Exception):
     pass
 
@@ -34,7 +38,15 @@ class RestfulAPIClient(object):
 
             full_url = "%s?%s" % (full_url, "&".join(querystring))
 
+        log.debug("GET: url=%s" % (full_url,))
+
         resp = requests.get(full_url)
+
+        debug_text = resp.text
+        if len(debug_text) > 100:
+            debug_text = debug_text[:100] + "..."
+
+        log.debug("Response: (%s) %s" % (resp.status_code, debug_text))
 
         if resp.status_code != 200:
             raise APIError("GET /{}/ {}".format(url, resp.status_code))
@@ -49,7 +61,14 @@ class RestfulAPIClient(object):
             url = url[1:]
 
         full_url = "%s://%s/%s" % (self.protocol, self.base_url, url)
+
+        log.debug("POST: url=%s, data=%s" % (full_url,data))
         resp = requests.post(full_url, data)
+
+        debug_text = resp.text
+        if len(debug_text) > 100:
+            debug_text = debug_text[:100] + "..."
+        log.debug("Response: (%s) %s" % (resp.status_code, debug_text))
 
         if resp.status_code != 200:
             raise APIError("POST {} {} : {}".format(full_url, resp.status_code, data))

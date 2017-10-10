@@ -6,7 +6,7 @@ digraph finite_state_machine {
     node [shape = circle];
 
     {% for edge in ta.edges %}
-    "{{ edge.source.name }}" -> "{{ edge.target.name }}" {% if edge.label %}[label="{{ edge.label }}"]{% endif %};
+    "{{ edge.source.name }}" -> "{{ edge.target.name }}" {% if edge.label %}[label="{{ edge.label|replace('"','\'') }}"]{% endif %};
     {% endfor %}
 
 {% if legend %}

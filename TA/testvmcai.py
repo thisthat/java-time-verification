@@ -43,7 +43,7 @@ LOG_CONFIG = {
             "formatter": "brief",
             "mode": "a",
             "level": "DEBUG",
-            "filename": "testfoo.log"
+            "filename": "testvmcai.log"
         },
         "console": {
             "formatter": "precise",
@@ -57,7 +57,7 @@ LOG_CONFIG = {
             "level": "WARNING",
             "maxBytes": 10240000,
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": "testfoo.log"
+            "filename": "testvmcai.log"
         }
     }
 }
@@ -106,6 +106,8 @@ string_contains = ([ "(declare_const tmp Int)" , "(assert (= {res} (= (value {lh
 KnowledgeBase.add_method("java.lang.String", "equals", string_equals)
 KnowledgeBase.add_method("java.lang.String", "contains", string_contains)
 KnowledgeBase.add_method("java.io.PrintStream", "println", ([], "(assert (= 1 1)", Boolean()))
+KnowledgeBase.add_method("example.TestNeighbors", "send_icmp_request", ([], "(assert (= 1 1))", Boolean()))
+KnowledgeBase.add_method("example.TestNeighbors", "receive_icmp_reply", ([], "(assert (= 1 1))", Boolean()))
 
 # start to analyse the code
 
@@ -123,10 +125,10 @@ tag_values = split_enum([ literal_to_smt("'leader'"), literal_to_smt("'election'
 
 proj_name = "test_project" # "dist-progs" # test_project 
 #proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.ir.tests", proj_name))
-proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
-class_name = "MethodCall" #"RingLeader" # DoWhile, While, Short, SequentialCode
-file_name = "MethodCall.java"# "RingLeader.java" # DoWhile.java, While.java, Short.java, SequentialCode.java
-method_name = "foo" #"handleMsg"
+proj_path =  "example_neighbors.json" #os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
+class_name = "example.TestNeighbors" #"RingLeader" # DoWhile, While, Short, SequentialCode
+file_name = "TestNeighbors.java"# "RingLeader.java" # DoWhile.java, While.java, Short.java, SequentialCode.java
+method_name = "is_alive" #"handleMsg"
 
 
 # next we ask for a "list" of abstract predicates, that compose an "abstract domain". An abstract predicates P
@@ -141,8 +143,10 @@ method_name = "foo" #"handleMsg"
 # each tuple in the domain has the following structure:
 # (variable names, domain, is_local)
 domains = [
-#    "i": INTEGERS,
-#    "j": INTEGERS,
+    ("address", Dummy(Integer()), False),
+    ("timeout", Dummy(Integer()), False),
+    ("res",BOOLEANS,True), # local variable for storing returned result
+    ("exception_inv", BOOLEANS, True), # local variable for detecting excetion raised
 #    (["i","j"], DomainProduct(var_1=INTEGERS, var_2=INTEGERS)),
 #    (["i","j"], CompareVariables(datatypes=[Integer(), Integer()], predicates=[i_eq_j, i_lt_j, i_gt_j]), True),
 #    ("initial_i", INTEGERS, False),
@@ -154,16 +158,6 @@ domains = [
 #    ("src", INTEGERS, False),
 #    ("leader", Dummy(AbsString()), False),
 #    ("election", Dummy(AbsString()), False),
-#    (["leader","election"], CompareVariables(datatypes=[AbsString(),AbsString()], predicates=[i_strneq_j]), False),
-    ("tag", Domain(AbsString(), split_field_domain(tag_values, var="value")), False),
-
-    (["tag","'leader'"], CompareVariables(datatypes=[AbsString(),AbsString()], predicates=[i_eq_j, i_neq_j]), False),
-    (["tag","'election'"], CompareVariables(datatypes=[AbsString(),AbsString()], predicates=[i_eq_j, i_neq_j]), False),
-
-#    (["tag","leader"], CompareVariables(datatypes=[AbsString(), AbsString()], predicates=[i_streq_j, i_strneq_j]), False),
-#    (["tag","election"], CompareVariables(datatypes=[AbsString(), AbsString()], predicates=[i_streq_j, i_strneq_j]), False),
-#    ("j", INTEGERS, True),
-    (["j","number"], CompareVariables(datatypes=[Integer(), Integer()], predicates=[i_eq_j, i_neq_j]), False),
 ]
 
 
@@ -171,7 +165,7 @@ domains = [
 # of predicates. here the tool does not need any further input.
 # start code
 
-p = Project(proj_name, "file://%s" % proj_path, "localhost:9000")
+p = DummyProject(proj_name, "file://%s" % proj_path, "localhost:9000")
 
 p.open()
 #m = get_method(p, class_name, file_name, method_name)

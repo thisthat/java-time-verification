@@ -156,9 +156,15 @@ class AttributePredicate(object):
 
         res = str(self.predicate)
         for pred_var, attr_val in self._ctx.iteritems():
-            res = res.replace("{%s}" % pred_var, attr_var)
+            res = res.replace("{%s}" % pred_var, attr_val)
 
         return res
+
+    def __unicode__(self):
+        return str(self)
+
+    def __repr__(self):
+        return str(self)
 
 
     @contract(self="type(t)",returns="type(w),w=t")
@@ -214,12 +220,6 @@ class Cache(object):
 
 
 
-##@new_contract
-##def is_precondition(obj):
-##    if not isinstance(obj, Precondition):
-##        raise ValueError("Expected Precondition, not %s" % type(obj))
-##
-
 class Precondition(object):
 
     def __init__(self, node):
@@ -236,9 +236,78 @@ class Precondition(object):
 
         return node
 
+    def __str__(self):
+        return "%s" % self.child
+
 new_contract_check_type("is_precondition", Precondition)
 
 class Negate(Precondition):
     pass
+
+class FreshNames(object):
+
+    _COUNTER = 1000
+
+    @staticmethod
+    @contract(prefix="string", returns="string")
+    def get_name(prefix):
+        return "%s_%s" % (prefix, FreshNames.get_id())
+
+    @staticmethod
+    @contract(returns="int")
+    def get_id():
+        curr_id = FreshNames._COUNTER
+        FreshNames._COUNTER = FreshNames._COUNTER + 1
+        return curr_id
+
+
+class KnowledgeBase(object):
+
+    KB = {}
+ 
+    @staticmethod   
+    @contract(class_name="string", method_name="string", knowledge="tuple(list(string),string,is_data_type)")
+    def add_method(class_name, method_name, knowledge):
+
+        if class_name not in KnowledgeBase.KB:
+            KnowledgeBase.KB[class_name] = {}
+
+        if method_name in KnowledgeBase.KB[class_name]:
+            raise ValueError("You already provided an interpretation for method (%s,%s)" % (class_name, method_name))
+
+        KnowledgeBase.KB[class_name][method_name] = knowledge
+
+        
+    @staticmethod
+    @contract(class_name="string", method_name="string", returns="bool")
+    def has_method(class_name, method_name):
+        res = (class_name in KnowledgeBase.KB and method_name in KnowledgeBase.KB[class_name])
+        return res
+
+    @staticmethod
+    @contract(class_name="string", method_name="string", res_var="string", params="dict(string:string)", lhs_var="string", returns="tuple(list(string),string,is_data_type)")
+    def get_method(class_name, method_name, res_var, params, lhs_var):
+
+        assert KnowledgeBase.has_method(class_name, method_name)
+
+        check("tuple(list(string),string,is_data_type)", KnowledgeBase.KB[class_name][method_name])
+
+        (kb_smt_declarations, kb_smt_assertion,dt) = KnowledgeBase.KB[class_name][method_name]
+
+        ctx = dict(params)
+        ctx["res"] = res_var
+        ctx["lhs"] = lhs_var
+    
+        log.debug("Context: %s" % ctx)
+        fun_replace = lambda x,y: x.replace("{%s}" % y, ctx[y])
+
+        smt_declarations = []
+        smt_assertion = reduce(fun_replace, ctx, kb_smt_assertion) #kb_smt_assertion.replace("{res}", res_var)
+
+        for curr in kb_smt_declarations:
+            curr_smt_declaration = reduce(fun_replace, ctx, curr)
+            smt_declarations.append(curr_smt_declaration)
+
+        return smt_declarations, smt_assertion, dt
 
 

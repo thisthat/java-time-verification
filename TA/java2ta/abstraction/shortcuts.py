@@ -3,31 +3,43 @@ import re
 import itertools
 
 from java2ta.commons.utility import partial_format, pairwise_iter
-from java2ta.abstraction.models import DataType, DataTypeUnion, Predicate, And, GT, LT, Eq, NotEq, EqItself, Dummy, Integer, Real, String, Natural, Boolean, Collection, BoundedCollection, Dummy, Domain
-from contracts import contract, new_contract
+from java2ta.abstraction.models import DataType, DataTypeUnion, Predicate, And, GT, LT, Eq, NotEq, EqItself, Dummy, Integer, Real, Z3String, AbsString, Natural, Boolean, Collection, BoundedCollection, Dummy, Domain, SymbolTable
+from contracts import contract, check
 import logging
 
 log = logging.getLogger("main")
+##
+##@contract(returns="list[M],M=2")
+##def split_eq_value(value, var=None):
+##    
+##    ctx={"value":value}
+##    if var:
+##        ctx["var"] = var
+##    predicates = [ Eq(**ctx), NotEq(**ctx) ]
+##
+##    return predicates
 
-@contract(returns="list[M],M=2")
+@contract(returns="list[M](is_predicate),M=2")
 def split_eq_value(value, var=None):
-    
-    ctx={"value":value}
-    if var:
-        ctx["var"] = var
-    predicates = [ Eq(**ctx), NotEq(**ctx) ]
+    return split_enum([value], case_else=True, var=var)
 
-    return predicates
-
-
-def split_enum(value_list):
+@contract(value_list="list[M](string)", returns="list[N](is_predicate),N<=M+1,N>=M")
+def split_enum(value_list, case_else=False, var=None):
 
     predicates = []
 
     for curr in value_list:
+        ctx = { "value": curr }
+        if var:
+            ctx["var"] = var
 #        predicates.append(Eq({"value":curr}))
-        predicates.append(Eq(value=curr))
+        predicates.append(Eq(**ctx))
 
+    if case_else:
+        ctx = { "value": " ".join(value_list) }
+        if var:
+            ctx["var"] = var
+        predicates.append(NotEq(**ctx))
 
     return predicates
 
@@ -64,8 +76,11 @@ def split_numeric_domain(split_values, lt_min=True, gt_max=True):
     
     return predicates
 
-@contract(field_name="string", predicates="list(is_predicate)")
-def split_field_domain(field_name, predicates):
+#@contract(field_name="string", predicates="list(is_predicate)")
+#def split_field_domain(field_name, predicates):
+
+@contract(predicates="list(is_predicate)", var_fields="dict(string:string)")
+def split_field_domain(predicates, **var_fields):
     """
     This method takes as input a list of Predicate's for a generic {var} and make it 
     a list of predicates over ({field_name} {var}). This is the way to encode the
@@ -74,23 +89,11 @@ def split_field_domain(field_name, predicates):
     In this implementation we assume that all predicates have a free parameter, in their
     assertions, named {var}.
     """
-#    assert isinstance(field_name, basestring)
-#    assert isinstance(predicates, list)
-
     field_predicates = []
     for pred in predicates:
-        assert isinstance(pred, Predicate)
+        check("is_predicate", pred)
     
-        assert len(pred.var_names) == 1, "Expected predicate with single variable. Got: %s" % pred
-
-        var_name = list(pred.var_names)[0].strip("{}")
-        ctx_smt = { var_name:"(%s {%s})" % (field_name, var_name) }
-        ctx_label = { var_name: "{%s}.%s" % (var_name, field_name) }
-        smt_condition = pred.smt_condition(**ctx_smt) #var="(%s {var})" % field_name)
-        label = pred.label(**ctx_label) #var="{var}.%s" % field_name)
-
-#        print "pred context: %s" % pred.ctx
-        fp = Predicate(smt_condition=smt_condition, label=label, **pred.ctx)
+        fp = pred.copy().wrap_fields(**var_fields)
         field_predicates.append(fp)
         
     return field_predicates
@@ -112,6 +115,18 @@ class DataTypeRegistry(dict):
             DataTypeRegistry._the_registry = DataTypeRegistry()
         
         return DataTypeRegistry._the_registry
+
+ 
+def smt_declare_rec_datatype(name, projectors):
+
+    dt_projectors = []
+    for (attr_name, attr_dt) in projectors.iteritems():
+        dt_projectors.append("(%(attr_name)s %(attr_type)s)" % { "attr_name":attr_name, "attr_type": attr_dt })
+
+    smt_declaration = "(declare-datatypes () ((%(name)s (init-%(name)s %(attributes)s))))" % { "name": name, "attributes": " ".join(dt_projectors) }
+
+    return smt_declaration
+
 
 
 class DataTypeFactory(object):
@@ -151,7 +166,7 @@ class DataTypeFactory(object):
             elif fqn in self.REAL_TYPES:
                 dt = Real()
             elif fqn in self.STRING_TYPES:
-                dt = String()
+                dt = AbsString()
             else:
                 dt = DataType(name=fqn)
 
@@ -190,7 +205,9 @@ INTEGERS = Domain(Integer(), split_numeric_domain([0,]))
 POS_INTEGERS = Domain(Integer(), split_numeric_domain([0,], lt_min=False))
 NATURALS = Domain(Natural(), split_numeric_domain([0,], lt_min=False))
 BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]))
-COLLECTIONS = Domain(Collection(), split_field_domain("size", split_numeric_domain([0,], lt_min=False )))
-STRINGS = Domain(String(), split_field_domain("str.len", split_numeric_domain([0,], lt_min=False))) 
+COLLECTIONS = Domain(Collection(), split_field_domain(split_numeric_domain([0,], lt_min=False ),var="size"))
 
+# TODO not use default Z3 strings because it looks like they "slow down" the sat/unsat query enormously (check why and what's a better abstraction; perhaps leave STRINGS as it is, and introduce a MY_STRINGS domain, also useful to compare the results in the two cases)
+Z3_STRINGS = Domain(Z3String(), split_field_domain(split_numeric_domain([0,], lt_min=False),var="str.len")) 
+STRINGS = Domain(AbsString(), split_field_domain(split_numeric_domain([0,],lt_min=False),var="size"))
 
