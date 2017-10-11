@@ -2,22 +2,35 @@ from contracts import contract, new_contract
 
 from java2ta.commons.utility import new_contract_check_type
 
+import logging
+
+log = logging.getLogger("main")
+
 class Type(object):
 
     def __init__(self, name):
         self.name = name
 
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return unicode(self.name)
+
 class Int(Type):
 
     def __init__(self):
 
-        super(Type, self).__init__("int")
+        super(Int, self).__init__("int")
 
 class Bool(Type):
 
     def __init__(self):
 
-        super(Type, self).__init__("bool")
+        super(Bool, self).__init__("bool")
 
 class BoundedInt(Type):
 
@@ -28,7 +41,7 @@ class BoundedInt(Type):
 
         self.min_val = min_val
         self.max_val = max_val
-        super(Type, self).__init__("int[%s,%s]" % (min_val,max_val))
+        super(BoundedInt, self).__init__("int[%s,%s]" % (min_val,max_val))
 
     def values(self):
         return xrange(self.min_val, self.max_val+1)
@@ -37,7 +50,7 @@ class BoundedInt(Type):
 class ClockType(Type):
     
     def __init__(self):
-        super(Type, self).__init__("clock")
+        super(ClockType, self).__init__("clock")
 
 
 class Variable(object):
@@ -48,6 +61,15 @@ class Variable(object):
         self.name = name
         self.type = type
 
+    def __repr__(self):
+        return "%s : %s" % (self.name, self.type)
+
+    def __str__(self):
+        return "%s : %s" % (self.name, self.type)
+
+    def __unicode__(self):
+        return u"%s : %s" % (self.name, self.type)
+
 new_contract_check_type("is_variable", Variable)
 
 class ClockVariable(Variable):
@@ -55,7 +77,7 @@ class ClockVariable(Variable):
     @contract(name="string")
     def __init__(self, name):
     
-        super(Variable, self).__init__(name, Clock)
+        super(ClockVariable, self).__init__(name, ClockType())
 
 
 class ClockExpression(object):
@@ -63,6 +85,12 @@ class ClockExpression(object):
     def __init__(self, exp=""):
     
         self.exp = exp
+
+    def __str__(self):
+        self.exp
+
+    def __unicode__(self):
+        return unicode(self.exp)
 
 
 class Location(object):
@@ -108,7 +136,7 @@ new_contract_check_type("is_location", Location)
 
 class Edge(object):
 
-    def __init__(self, source, target, label=None):
+    def __init__(self, source, target, label=None, guard=None, reset=None, clock_variables=None, variables=None):
 
         assert isinstance(source, Location)
         assert isinstance(target, Location)
@@ -119,6 +147,11 @@ class Edge(object):
         source.outgoing.add(self)
         target.incoming.add(self)
         self.label = label
+        self.guard = guard
+        self.reset = reset
+
+        self.clock_variables = clock_variables or set([])
+        self.variables = variables or set([])
 
     def __str__(self):
         return "%s -> %s" % (self.source, self.target)
@@ -144,8 +177,16 @@ class TA(object):
             self.add_edge(curr_edge)
 
         self.initial_loc = None
-        self.variables = set([])
+        self._variables = dict()
+        self._clock_variables = dict() 
+    
+    @property
+    def variables(self):
+        return self._variables.values()
 
+    @property
+    def clock_variables(self):
+        return self._clock_variables.values()
 
     def has_location(self, name):
         assert isinstance(name, basestring)
@@ -181,9 +222,15 @@ class TA(object):
         assert isinstance(found, Location)
         return found
  
-    
+   
     def get_or_add_edge(self, edge):
         assert isinstance(edge, Edge)
+
+        for cv in edge.clock_variables:
+            self.add_clock_variable(cv)
+
+        for v in edge.variables:
+            self.add_variable(v)
 
         source_loc = self.get_or_add_location(edge.source)
         target_loc = self.get_or_add_location(edge.target)
@@ -194,7 +241,7 @@ class TA(object):
             found = self._edges_lookup[source_loc][target_loc]
 
         if not found:
-            found = Edge(source_loc, target_loc)
+            found = Edge(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables)
             self.add_edge(found)
 
         # in any case, update the edge label
@@ -234,11 +281,60 @@ class TA(object):
             self._edges_lookup[edge.source] = {}
         self._edges_lookup[edge.source][edge.target] = edge
 
+    def get_or_add_variables(self, name, type):
+        
+        c = Variable(name, type)
+        self.add_clock_variable(name)
+ 
     def add_variable(self, var):
-
         assert isinstance(var, Variable)
-    
-        self.variables.add(var)
+
+        log.debug(u"Add variable: %s" % unicode(var))
+
+        if var.name not in self._variables:
+            self._variables[var.name] = var
+
+    def add_clock_variable(self, var):
+        assert isinstance(var, ClockVariable)
+
+        log.debug(u"Add clock: %s" % unicode(var))
+
+
+        # do not insert duplicate clock variables
+        if var.name not in self._clock_variables:
+            self._clock_variables[var.name] = var
+
+
+    def close(self):
+        """
+        The operation of closing a TA does the following:
+        1. call pseudo-initial a location that has no entering transition
+        2. if a single pseudo-initial location exists, makes it initial
+        3. if multiple pseudo-initial locations exist, create an initial
+            location and add a non-deterministic edge towards each of
+            the pseudo-initial locations
+        """
+
+        if self.initial_loc != None:
+            return    
+
+        pseudo_initial = filter(lambda loc: len(loc.incoming) == 0, self.locations)
+
+        if len(pseudo_initial) == 1:
+            initial = pseudo_initial[0]
+            initial.set_initial()
+        elif len(pseudo_initial) == 0:
+            raise ValueError("Cannot handle automaton with circular states")
+        else:
+            # len(pseudo_initial) > 0
+            initial = Location("initial", initial=True)
+            self.add_location(initial)
+            
+            for loc in pseudo_initial:
+                e = Edge(initial, loc)
+                self.add_edge(e)
+
+        self.initial_loc = initial
 
 new_contract_check_type("is_ta", TA)
 

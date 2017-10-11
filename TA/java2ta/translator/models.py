@@ -3,7 +3,7 @@ import logging
 
 from java2ta.commons.utility import new_contract_check_type
 from java2ta.abstraction.models import AbstractAttribute, Predicate
-
+from java2ta.ta.models import ClockVariable, Variable, Int
 
 log = logging.getLogger("main")
 
@@ -94,6 +94,11 @@ class ReachabilityResult(object):
         self.final_locations = final_locations
         self.external_locations = external_locations
         self.edges = edges 
+
+        self.locations = set([])
+        for e in edges:
+            self.locations.add(e.source)
+            self.locations.add(e.target)
 
     def __str__(self):
         return "Configurations: {%s}, Final locations: {%s}, External locations: {%s}, Edges: {%s}" % (self.configurations, self.final_locations, self.external_locations, self.edges)
@@ -247,6 +252,7 @@ class Negate(Precondition):
 class FreshNames(object):
 
     _COUNTER = 1000
+    clock_variables = {}
 
     @staticmethod
     @contract(prefix="string", returns="string")
@@ -259,6 +265,42 @@ class FreshNames(object):
         curr_id = FreshNames._COUNTER
         FreshNames._COUNTER = FreshNames._COUNTER + 1
         return curr_id
+
+    @staticmethod
+    @contract(pc="is_pc", prefix="string")
+    def enter_clock_variable(pc, prefix=""):
+        cv_name = "%s%s" % (prefix, pc)
+        cv = ClockVariable(cv_name)
+
+        lower = Variable("%s_lower" % cv.name, Int())
+        upper = Variable("%s_upper" % cv.name, Int())
+
+        FreshNames.clock_variables[pc] = (cv, lower, upper)
+
+        return (cv, lower, upper)
+
+    @staticmethod
+    @contract(pc="is_pc", prefix="string")
+    def get_clock_variable(pc, prefix=""):
+
+        (cv, lower, upper) = FreshNames.clock_variables.get(pc, (None,None,None))
+
+        if not cv:
+            (cv, lower, upper) = FreshNames.enter_clock_variable(pc, prefix=prefix)
+
+        return cv
+
+    @staticmethod
+    @contract(pc="is_pc", prefix="string")
+    def get_clock_bound(pc, prefix=""):
+
+        (cv, lower, upper) = FreshNames.clock_variables.get(pc, (None,None,None))
+
+        if not cv:
+            (cv, lower, upper) = FreshNames.enter_clock_variable(pc, prefix=prefix)
+
+        return (lower, upper)
+
 
 
 class KnowledgeBase(object):

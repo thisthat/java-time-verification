@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pkg_resources
 import os
 import subprocess
@@ -12,7 +13,9 @@ from java2ta.translator.shortcuts import *
 from java2ta.translator.models import KnowledgeBase
 from java2ta.abstraction.shortcuts import *
 from java2ta.abstraction.models import *
-from java2ta.ta.views import GraphViz
+from java2ta.ta.views import GraphViz, Uppaal
+
+CURRFILE=os.path.basename(__file__)
 
 LOG_CONFIG = {
     "version": 1,
@@ -43,7 +46,7 @@ LOG_CONFIG = {
             "formatter": "brief",
             "mode": "a",
             "level": "DEBUG",
-            "filename": "testvmcai.log"
+            "filename": CURRFILE + ".log",
         },
         "console": {
             "formatter": "precise",
@@ -57,7 +60,7 @@ LOG_CONFIG = {
             "level": "WARNING",
             "maxBytes": 10240000,
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": "testvmcai.log"
+            "filename": CURRFILE + ".log",
         }
     }
 }
@@ -161,7 +164,7 @@ domains = [
 ]
 
 
-# here the tool "fetch" the specified method, and buils a finite state automaton (FSA) using the passed list
+# here the tool "fetch" the specified method, and buils a finite state automaton (TA) using the passed list
 # of predicates. here the tool does not need any further input.
 # start code
 
@@ -173,24 +176,31 @@ m = p.get_method(class_name, file_name, method_name)
 
 ss = get_state_space_from_method(m, domains)
 
-fsa = translate_method_to_fsa(m, ss)
+ta = translate_method_to_ta(m, ss)
+ta.close()
 
 legend = build_legend(ss)
 
 log.debug("Final legend: %s" % legend)
 
-print "FSA: %d locations, %d edges" % (len(fsa.locations), len(fsa.edges))
+print "TA: %d locations, %d edges" % (len(ta.locations), len(ta.edges))
 
-# here we pass the FSA to a renderer (GraphViz) which produces a graphical representation of it. Some input
+# here we pass the TA to a renderer (GraphViz) which produces a graphical representation of it. Some input
 # may be required to the user (e.g. the type and name of output file)
 
-gv = GraphViz(fsa)
-with open("testfoo.gv", "w+") as out_f:
-    out_f.write(gv.render(legend))
+gv = GraphViz(ta, legend)
+gv.save(CURRFILE + ".gv")
 
-(graph,) = pydot.graph_from_dot_file('testfoo.gv')
-graph.write_pdf('testfoo.pdf')
-graph.write_svg('testfoo.svg')
+log.debug("TA variables: %s" % map(lambda v: str(v), ta.variables))
+
+log.debug("TA clock variables: %s" % map(lambda v: str(v), ta.clock_variables))
+
+uppaal = Uppaal(ta, legend)
+uppaal.save(CURRFILE + ".xml")
+
+(graph,) = pydot.graph_from_dot_file(CURRFILE + ".gv")
+graph.write_pdf(CURRFILE + ".pdf")
+graph.write_svg(CURRFILE + ".svg")
 
 # this is used to open the produced output file. The user may desire a command for opening the produced output file
-subprocess.call(["xdg-open", "testfoo.svg"])
+subprocess.call(["xdg-open", CURRFILE + ".svg"])

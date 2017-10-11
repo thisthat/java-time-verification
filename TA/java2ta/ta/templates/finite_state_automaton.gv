@@ -1,7 +1,7 @@
 digraph finite_state_machine {
     rankdir=LR;
     {% if ta.initial_loc %}
-    node [shape = doublecircle]; {{ ta.initial_loc.name }};
+    node [shape = doublecircle] "{{ ta.initial_loc.name }}";
     {% endif %}
     node [shape = circle];
 

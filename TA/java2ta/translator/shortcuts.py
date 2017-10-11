@@ -11,7 +11,7 @@ from java2ta.engine.context import Context
 from java2ta.translator.rules import ExtractMethodStateSpace, AddStates
 from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames
 from java2ta.ir.models import Project, Method, Klass
-from java2ta.ta.models import TA, Location, Edge
+from java2ta.ta.models import TA, Location, Edge, ClockExpression
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable
 from java2ta.abstraction.shortcuts import DataTypeFactory
 
@@ -149,7 +149,7 @@ def transform(name, instructions, state_space, project):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
     # this note just to keep track of this "oddity"
-    fsa = TA(name)
+    ta = TA(name)
 
     log.info("State space attributes:")
     for attr in state_space.attributes:
@@ -167,9 +167,9 @@ def transform(name, instructions, state_space, project):
         for e in rr.edges:
             assert isinstance(e, Edge), e
 
-            fsa.get_or_add_edge(e)
+            ta.get_or_add_edge(e)
 
-    return fsa
+    return ta
 
 
 
@@ -1279,12 +1279,15 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         # begin BIG-HACK-FOR-DETECTING-EXCEPTION-LOCATIONS
         found_exception_locs = [] 
         found_exception_confs = []
-        for curr_edge in rr_try.edges:
-            log.debug("Check edge goes to exception: %s" % curr_edge)
-            (edge_source_conf,edge_source_pc) = parse_location(curr_edge.target)
-            if int(edge_source_conf[1]) == 1:
-                found_exception_locs.append(curr_edge.target)
-                found_exception_confs.append(edge_source_conf)
+        
+#        for curr_edge in rr_try.edges:
+#            log.debug("Check edge goes to exception: %s" % curr_edge)
+#            (edge_source_conf,edge_source_pc) = parse_location(curr_edge.target)
+        for loc in rr_try.locations:
+            (loc_conf, loc_pc) = parse_location(loc)
+            if int(loc_conf[1]) == 1:
+                found_exception_locs.append(loc)
+                found_exception_confs.append(loc_conf)
         # end BIG-HACK-...
 
         log.debug("Found exception states: %s" % found_exception_locs)
@@ -1337,14 +1340,27 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 #        exception_conf = tuple_replace(source, 1, 1) # first 1 is the position of "exception", second 1 encodes true
 #        exception_loc = build_loc(exception_conf, pc_source, state_space)
 
-        for curr_edge in rr_deadline.edges: #final_locations: #configurations:
-            loc = curr_edge.target
+#        for curr_edge in rr_deadline.edges: #final_locations: #configurations:
+#            loc = curr_edge.target
+        for loc in rr_deadline.locations:
             #assert isinstance(state_conf, Configuration)
             #loc = build_loc(state_conf, pc_source, state_space)
             (loc_conf, loc_pc) = parse_location(loc)
+
+            clock = FreshNames.get_clock_variable(pc_source, prefix="deadline")
+            (clock_lower, clock_upper) = FreshNames.get_clock_bound(pc_source)
+
+            # add an invariant 
+            invariant = "%s <= %s" % (clock.name, clock_upper.name)
+            loc.set_invariant(ClockExpression(invariant))
+
+            # add a transition to an exception location, if the deadline is passed
             exception_conf = tuple_replace(loc_conf, 1, 1)
             exception_loc = build_loc(exception_conf, loc_pc, state_space)
-            edges.append(Edge(loc, exception_loc, "deadline > b"))
+
+            
+            guard = "%s >= %s" % (clock.name, clock_upper.name)
+            edges.append(Edge(loc, exception_loc, label=guard, guard=ClockExpression(guard), clock_variables=[clock], variables=[clock_lower,clock_upper]))
             external.append(exception_loc)
             reachable.append(exception_conf)
 
@@ -1501,13 +1517,13 @@ def get_state_space_from_method(method, domains):
 ##    return m
 
 @contract(method=Method, state_space="is_state_space", returns=TA)
-def translate_method_to_fsa(method, state_space):
+def translate_method_to_ta(method, state_space):
 
     instructions = method.ast["stms"]
 
-    fsa = transform(method.name, instructions, state_space, method.project)
+    ta = transform(method.name, instructions, state_space, method.project)
 
-    return fsa
+    return ta
 
 
 @contract(lit_value="string", returns="string")
