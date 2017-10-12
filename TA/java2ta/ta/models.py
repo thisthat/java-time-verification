@@ -80,18 +80,18 @@ class ClockVariable(Variable):
         super(ClockVariable, self).__init__(name, ClockType())
 
 
-class ClockExpression(object):
-
-    def __init__(self, exp=""):
-    
-        self.exp = exp
-
-    def __str__(self):
-        self.exp
-
-    def __unicode__(self):
-        return unicode(self.exp)
-
+##class ClockExpression(object):
+##
+##    def __init__(self, exp=""):
+##    
+##        self.exp = exp
+##
+##    def __str__(self):
+##        self.exp
+##
+##    def __unicode__(self):
+##        return unicode(self.exp)
+##
 
 class Location(object):
 
@@ -107,9 +107,10 @@ class Location(object):
         self.is_urgent = is_urgent
 
 
+    @contract(cexp="string")
     def set_invariant(self, cexp):
         
-        assert isinstance(cexp, ClockExpression)
+#        assert isinstance(cexp, ClockExpression)
 
         self.invariant = cexp
 

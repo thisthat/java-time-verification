@@ -11,7 +11,7 @@ from java2ta.engine.context import Context
 from java2ta.translator.rules import ExtractMethodStateSpace, AddStates
 from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames
 from java2ta.ir.models import Project, Method, Klass
-from java2ta.ta.models import TA, Location, Edge, ClockExpression
+from java2ta.ta.models import TA, Location, Edge
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable
 from java2ta.abstraction.shortcuts import DataTypeFactory
 
@@ -120,7 +120,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
 
         for source in source_conf:
             # TODO in principle each invocation of check_reach(...) is independent from the others
-            rr = check_reach(source, curr_pc, curr_instr, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+            rr = check_reach(source, curr_pc, curr_instr, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
     
             edges.extend(rr.edges)
             reachable = reachable | set(rr.configurations) # use sets and set unions to avoid duplicates
@@ -852,7 +852,7 @@ def tuple_replace(curr_tuple, pos, value):
     new_values[pos] = value
     return tuple(new_values)
 
-@contract(source="is_configuration", pc_source=PC, instr="dict", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", postconditions="list(is_precondition)|None", deadlines="list(tuple(string,string))|None", returns=ReachabilityResult)
+@contract(source="is_configuration", pc_source=PC, instr="dict", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", postconditions="list(is_precondition)|None", deadlines="list(is_pc)|None", returns=ReachabilityResult)
 def check_reach(source, pc_source, instr, state_space, project, preconditions=None, postconditions=None, pc_jump_stack=None, deadlines=None):
     assert preconditions is None or isinstance(preconditions, list)
     assert pc_jump_stack is None or isinstance(pc_jump_stack, list)
@@ -978,7 +978,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             reachable_then = [ source ]
 
             preconditions.append(Precondition(guard["expression"]))
-            rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+            rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()    
 
             final_then = rr_then.final_locations
@@ -1000,7 +1000,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             reachable_else = [ source ]
 
             preconditions.append(Negate(guard["expression"]))
-            rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+            rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()
 
             final_else = rr_else.final_locations
@@ -1067,7 +1067,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             preconditions.append(Precondition(guard["expression"]))
             pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
             
-            rr_while = compute_reachable(reachable_while, pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+            rr_while = compute_reachable(reachable_while, pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             
             pc_jump_stack.pop()
             preconditions.pop()
@@ -1127,7 +1127,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         pc_source_while = PC(pc_source.pc).push("0")
 
         pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
-        rr_while = compute_reachable([source], pc_source_while, stms_while, state_space, project, preconditions, pc_jump_stack)
+        rr_while = compute_reachable([source], pc_source_while, stms_while, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
         pc_jump_stack.pop()
 
         edges.extend(rr_while.edges)
@@ -1166,7 +1166,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                     
                     preconditions.append(Precondition(guard["expression"]))
                     pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
-                    rr_while_back = compute_reachable([conf_final], pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack)
+                    rr_while_back = compute_reachable([conf_final], pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
                     pc_jump_stack.pop()
                     preconditions.pop()
         
@@ -1263,7 +1263,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         # recursive call on the try branch
         stms_try = instr["tryBranch"]["stms"]
         pc_source_try = PC(pc_source.pc).push("0").push("0")
-        rr_try = compute_reachable([source], pc_source_try, stms_try, state_space, project, preconditions, pc_jump_stack)
+        rr_try = compute_reachable([source], pc_source_try, stms_try, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
         edges.extend(rr_try.edges)
         external.extend(rr_try.external_locations)
     
@@ -1294,7 +1294,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         stms_catch = instr["catchBranch"][0]["stms"] # HACK assume there is exactly 1 catchBranch
         pc_source_catch = PC(pc_source.pc).push("1").push("0")
         log.debug("Compute reachable in catch ...")
-        rr_catch = compute_reachable(found_exception_confs, pc_source_catch, stms_catch, state_space, project, preconditions, pc_jump_stack)
+        rr_catch = compute_reachable(found_exception_confs, pc_source_catch, stms_catch, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
 
         # add edge from exception states in the try block, to the begin of the catch block
         for excp_loc in found_exception_locs:   
@@ -1323,8 +1323,9 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
         stms_deadline = instr["stms"]
         pc_source_deadline = PC(pc_source.pc).push("0")
-        deadlines.append(("a","b")) # HACK
-        rr_deadline = compute_reachable([source],pc_source_deadline, stms_deadline, state_space, project, preconditions, pc_jump_stack, deadlines)
+        deadlines.append(pc_source) 
+        rr_deadline = compute_reachable([source],pc_source_deadline, stms_deadline, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
+        deadlines.pop()
         edges.extend(rr_deadline.edges)
     
         # add edges from source to the begin of the deadline
@@ -1336,34 +1337,40 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
         pc_target = pc_source + 1
 
+        for loc in rr_deadline.final_locations:
+            (loc_conf, loc_pc) = parse_location(loc)
+            post_loc = build_loc(loc_conf, pc_target)
+            e = Edge(loc, post_loc)
+            edges.append(e)
+
         # add edges from intermediate locations to exception state
 #        exception_conf = tuple_replace(source, 1, 1) # first 1 is the position of "exception", second 1 encodes true
 #        exception_loc = build_loc(exception_conf, pc_source, state_space)
 
 #        for curr_edge in rr_deadline.edges: #final_locations: #configurations:
 #            loc = curr_edge.target
-        for loc in rr_deadline.locations:
-            #assert isinstance(state_conf, Configuration)
-            #loc = build_loc(state_conf, pc_source, state_space)
-            (loc_conf, loc_pc) = parse_location(loc)
-
-            clock = FreshNames.get_clock_variable(pc_source, prefix="deadline")
-            (clock_lower, clock_upper) = FreshNames.get_clock_bound(pc_source)
-
-            # add an invariant 
-            invariant = "%s <= %s" % (clock.name, clock_upper.name)
-            loc.set_invariant(ClockExpression(invariant))
-
-            # add a transition to an exception location, if the deadline is passed
-            exception_conf = tuple_replace(loc_conf, 1, 1)
-            exception_loc = build_loc(exception_conf, loc_pc, state_space)
-
-            
-            guard = "%s >= %s" % (clock.name, clock_upper.name)
-            edges.append(Edge(loc, exception_loc, label=guard, guard=ClockExpression(guard), clock_variables=[clock], variables=[clock_lower,clock_upper]))
-            external.append(exception_loc)
-            reachable.append(exception_conf)
-
+##        for loc in rr_deadline.locations:
+##            #assert isinstance(state_conf, Configuration)
+##            #loc = build_loc(state_conf, pc_source, state_space)
+##            (loc_conf, loc_pc) = parse_location(loc)
+##
+##            clock = FreshNames.get_clock_variable(pc_source, prefix="deadline")
+##            (clock_lower, clock_upper) = FreshNames.get_clock_bound(pc_source)
+##
+##            # add an invariant 
+##            invariant = "%s <= %s" % (clock.name, clock_upper.name)
+##            loc.set_invariant(ClockExpression(invariant))
+##
+##            # add a transition to an exception location, if the deadline is passed
+##            exception_conf = tuple_replace(loc_conf, 1, 1)
+##            exception_loc = build_loc(exception_conf, loc_pc, state_space)
+##
+##            
+##            guard = "%s >= %s" % (clock.name, clock_upper.name)
+##            edges.append(Edge(loc, exception_loc, label=guard, guard=ClockExpression(guard), clock_variables=[clock], variables=[clock_lower,clock_upper]))
+##            external.append(exception_loc)
+##            reachable.append(exception_conf)
+##
         log.debug("Final deadline locations: %s" % final_deadline)
         for loc in final_deadline:
             log.debug("Deadline check final loc: %s" % loc)
@@ -1380,9 +1387,49 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         #raise ValueError("Instruction type not covered: %s" % instr)
         log.warning("Instruction ignored (%s): %s" % (instr_type, instr))
 
-    
+   
     assert (len(reachable) >= 0 and len(edges) >= 0 and len(final) == 0) or (len(reachable) > 0 and len(edges) > 0 and len(final) > 0), "# reachable: %s, # edges: %s, # final: %s. Instruction: %s" % (len(reachable), len(edges), len(final), instr)
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges)
+    rr = ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges)
+
+    # handle stack of deadlines
+    log.debug("Curr deadlines: %s" % deadlines)
+
+    curr_edges = list(rr.edges)
+    for pc in deadlines:
+        log.debug("Curr locations: %s" % rr.locations)
+        cv = FreshNames.get_clock_variable(pc, "deadline")
+        (lower, upper) = FreshNames.get_clock_bound(pc, "deadline")
+
+        for loc in rr.locations:
+            # add invariant for states 
+            inv = "%s <= %s" % (cv.name, upper.name)
+            if loc.invariant:
+                inv = "(%s) and (%s)" % (loc.invariant, inv)
+            loc.set_invariant(inv)
+
+            # add exception location and edge to it
+            (loc_conf, loc_pc) = parse_location(loc)
+            exc_conf = tuple_replace(loc_conf, 1, 1)
+            exc_loc = build_loc(exc_conf, loc_pc, state_space)
+            
+            guard = "%s >= %s" % (cv.name, upper.name)
+            e = Edge(loc, exc_loc, guard=guard, label=guard)
+    
+            rr.edges.append(e)
+
+        for e in curr_edges: #rr.edges:
+            # add temporal guards in edge
+            guard = "(%s >= %s) and (%s <= %s)" % (cv.name, lower.name, cv.name, upper.name)
+            label = guard
+            if e.guard:
+                guard = "(%s) and (%s)" % (guard, e.guard)
+            if e.label:
+                label = "(%s) and (%s)" % (label, e.label)
+            e.guard = guard
+            e.label = label
+            
+            
+    return rr
 
 @contract(pc_target='is_pc',reachable='list(is_configuration)',final='list(is_location)',external='list(is_location)')
 def check_closure(pc_target,reachable,final,external):
