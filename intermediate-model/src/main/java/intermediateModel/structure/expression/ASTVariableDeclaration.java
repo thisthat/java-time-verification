@@ -58,8 +58,8 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 
 
 	public String getNameString() {
-		if(name instanceof ASTLiteral)
-			return ((ASTLiteral) name).getValue();
+		if(name instanceof ASTIdentifier)
+			return ((ASTIdentifier) name).getValue();
 		return "--not yet define--";
 	}
 
