@@ -11,6 +11,15 @@ import java.util.List;
  * @version %I%, %G%
  */
 public interface IASTMethod extends IASTHasStms, IASTVisitor {
+
+	enum AccessModifier {
+		PUBLIC,
+		PRIVATE,
+		PROTECTED,
+	}
+
+	AccessModifier getAccessModifier();
+	void setAccessModifier(AccessModifier v);
 	List<ASTVariable> getParameters();
 	String getName();
 	List<String> getExceptionsThrowed();

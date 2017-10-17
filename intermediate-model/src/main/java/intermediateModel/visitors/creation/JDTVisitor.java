@@ -416,6 +416,7 @@ public class JDTVisitor extends ASTVisitor {
 		boolean isSync = false;
 		boolean isAbs = false;
 		boolean isStatic = false;
+		IASTMethod.AccessModifier visibility = IASTMethod.AccessModifier.PRIVATE;
 		for(Object m : node.modifiers()){
 			if(m instanceof Modifier){
 				Modifier modifier = (Modifier)m;
@@ -428,6 +429,12 @@ public class JDTVisitor extends ASTVisitor {
 				if(modifier.isStatic()){
 					isStatic = true;
 				}
+				if(modifier.isPublic()) {
+					visibility = IASTMethod.AccessModifier.PUBLIC;
+				}
+				if(modifier.isProtected()){
+					visibility = IASTMethod.AccessModifier.PROTECTED;
+				}
 			}
 		}
 
@@ -438,6 +445,7 @@ public class JDTVisitor extends ASTVisitor {
 		} else {
 			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync, isAbs, isStatic);
 		}
+		method.setAccessModifier(visibility);
 		lastClass.addMethod(method);
 		lastMethod = method;
 		//stackMethods.push(method);
