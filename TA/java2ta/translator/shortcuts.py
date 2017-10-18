@@ -11,7 +11,7 @@ from java2ta.engine.context import Context
 from java2ta.translator.rules import ExtractMethodStateSpace, AddStates
 from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames
 from java2ta.ir.models import Project, Method, Klass
-from java2ta.ta.models import TA, Location, Edge
+from java2ta.ta.models import TA, Location, Edge, ClockVariable
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable
 from java2ta.abstraction.shortcuts import DataTypeFactory
 
@@ -55,22 +55,12 @@ def translate_method_to_automaton(project, class_fqn, class_path, method_name, d
 
     return ta_post
 
-#@contract(pred="is_configuration|is_configuration_repr", pc=PC, returns=Location)
-#@contract(pred="list(is_predicate)", pc="is_pc", returns="is_location")
-@contract(conf="is_configuration", pc="is_pc", state_space="is_state_space", returns="is_location")
-def build_loc(conf, pc, state_space):
+@contract(conf="is_configuration", pc="is_pc", returns="is_location")
+def build_loc(conf, pc):
 
     
-    #if not isinstance(pred, Predicate):
-    #    pred = state_space.value(pred)
-
-    #check("is_predicate", pred)
-
-#    conf = state_space.configuration(pred)    
-
     loc_name = "%s%s" % (conf, pc) #(pred, pc)
 
-#    loc_name = "%s%s" % (",".join(map(lambda p: str(p),pred)), pc)
     loc = Location(loc_name)
 
     return loc
@@ -97,6 +87,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
     final = []
     external = []
     edges = []
+    variables = set([])
 
     if deadlines is None:
         deadlines = []
@@ -126,7 +117,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
             reachable = reachable | set(rr.configurations) # use sets and set unions to avoid duplicates
             final.extend(rr.final_locations) 
             external.extend(rr.external_locations)
-
+            variables = variables | rr.variables
         
         log.debug("Check reachable at %s: %s from %s" % (curr_pc, reachable, source_conf))
         if len(reachable) == 0:
@@ -141,7 +132,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
 
 #    assert (len(reachable) >= 0 and len(edges) >= 0 and len(final) == 0) or (len(reachable) > 0 and len(edges) > 0 and len(final) > 0)
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
 
 
 @contract(name="string", instructions="list(dict)", state_space="is_state_space", project="is_project", returns=TA)
@@ -163,11 +154,29 @@ def transform(name, instructions, state_space, project):
 
     log.info("reachable: %s, final: %s, external: %s" % (rr.configurations, rr.final_locations, rr.external_locations))
 
+    # add variables and clock variables to the automaton
+    for var in rr.variables:
+        if isinstance(var, ClockVariable):
+            if not ta.has_clock_variable(var):
+                ta.add_clock_variable(var)
+            else:
+                log.warning("Skip adding clock variable for the second time: %s" % var)
+        else:
+            if not ta.has_variable(var):
+                ta.add_variable(var)
+            else:
+                log.warning("Skip adding variable for the second time: %s" % var)
+
+    # add edges to the automaton; when adding edges, it also add
+    # the locations
     if len(rr.edges) > 0:
         for e in rr.edges:
             assert isinstance(e, Edge), e
 
             ta.get_or_add_edge(e)
+
+    # determine whether there exists an initial location, or create one
+    ta.close()
 
     return ta
 
@@ -184,8 +193,6 @@ class SMTProb(object):
     def __init__(self, attributes, project):
 
         self.attributes = attributes
-        self._assert_preconditions = []
-        self._assertions = None
         self._project = project
 
         self._cmd = subprocess.Popen(["z3", "-in"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
@@ -249,16 +256,23 @@ class SMTProb(object):
         SMTProb._SMT_CACHE.store(key, res)
 
     @contract(node="dict", returns="tuple(list(string),string)")
-    def node_to_smt(self, node):
+    def node_to_smt(self, node, exclude_frame=None):
         """
         This method returns a pair of strings: the first contains auxiliary declarations (e.g. constants,
         datatypes, ...) and the second contains the BODY of the actual assertion.
+
+        The exclude_frame is a list of program variables that should be
+        excluded when computing the local frame condition (e.g. because
+        they are affected by the statement represented by the node)
 
         TODO perhaps we can simplify this to just return a list(string); at the moment I don't see a reason
         of "separating" the final assertion (second element of the tuple) from the previous declarations (first
         element of the tuple)
         """
         assert "code" in node
+
+        if not exclude_frame:
+            exclude_frame = []
 
         cache_found = SMTProb.node_cache_lookup(node)
 
@@ -292,7 +306,9 @@ class SMTProb(object):
                 rhs = node_exp["expr"]
 
                 if rhs is not None:
-                    rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs)
+                    exclude_frame.append(var)
+                    rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs, exclude_frame)
+                    exclude_frame.pop()
                     smt_declarations.extend(rhs_smt_declarations)
                     smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
 
@@ -303,9 +319,9 @@ class SMTProb(object):
 #                        if curr.name != var:
 #                            others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
                         for attr_var in curr.variables:
-                            if attr_var != var:
+                            if attr_var != var and attr_var not in exclude_frame:
                                 #others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
-                                smt_declarations.append("(assert (= %s_1 %s))" % (attr_var, attr_var)) # TODO primed names
+                                smt_declarations.append("(assert (= %s_1 %s)) ; ASTVariableDeclaration frame condition" % (attr_var, attr_var)) # TODO primed names
 
 #                    if len(others) > 0:
 #                        smt_assertion = "(and %s %s)" % (smt_assertion, " ".join(others))
@@ -319,7 +335,10 @@ class SMTProb(object):
                 var = node_exp["left"]["value"]
                 rhs = node_exp["right"]
     
+                exclude_frame.append(var)
                 rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs)
+                exclude_frame.pop()
+
                 smt_declarations.extend(rhs_smt_declarations)
                 smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
 
@@ -333,9 +352,9 @@ class SMTProb(object):
 #                        others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
 #                    log.debug("Var: %s -> Attribute: %s -> Variables: %s" % (var, curr, curr.variables))
                     for attr_var in curr.variables:
-                        if attr_var != var:
+                        if attr_var != var and attr_var not in exclude_frame:
                             #others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
-                            smt_declarations.append("(assert (= %s_1 %s))" % (attr_var, attr_var)) # TODO primed names
+                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition" % (attr_var, attr_var)) # TODO primed names
 #                if len(others) > 0:
 #                    smt_assertion = "(and %s %s)" % (smt_assertion, " ".join(others))
 
@@ -365,16 +384,13 @@ class SMTProb(object):
                                 #others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
                                 smt_declarations.append("(assert (= %s_1 %s))" % (attr_var, attr_var)) # TODO primed names
 
-                    if len(others) > 0:
-                        smt_assertion = "(and %s %s)" % (smt, " ".join(others))
-    
-
+#                    if len(others) > 0:
+#                        smt_assertion = "(and %s %s)" % (smt, " ".join(others))
                 else:
                     log.warning("Interpret PL post-op expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                     smt_assertion = node_exp["code"]
             elif node_exp_type == "ASTMethodCall":
                 smt_declarations, smt_assertion = self.node_to_smt(node_exp)
-
             else:
                 log.warning("Interpret PL expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                 smt_assertion = node_exp["code"]
@@ -412,7 +428,7 @@ class SMTProb(object):
 #            log.debug("Callee: %s" % node["exprCallee"])
             check("is_project", self._project)
             method_name = node["methodName"] 
-            class_name = node["classPointed"] or "example.TestNeighbors" # HACK # TODO I guess this is a heuristic and the actual class of the object can only be determined at run-time, thus the user should be able to specify this information with some input
+            class_name = node["classPointed"] or "-" # or "example.TestNeighbors" # HACK # TODO I guess this is a heuristic and the actual class of the object can only be determined at run-time, thus the user should be able to specify this information with some input
  
             par_ctx = {}   
             for (par_id,par) in enumerate(node["parameters"]):
@@ -425,29 +441,32 @@ class SMTProb(object):
             # TODO check: if is a method we handle directly, do it; otherwise, look for its
             # IR by inquiring the service           
             log.debug("Check knowledge base: (%s,%s)" % (class_name, method_name))
+
             has_direct_method = KnowledgeBase.has_method(class_name, method_name)
 
-            # resolve lhs of method call (i.e. the callee)
-            lhs_smt_declarations,lhs_smt_assertion = self.node_to_smt(node["exprCallee"])
-            smt_declarations.extend(lhs_smt_declarations)
+            lhs_smt_assertion = ""
+            if node["exprCallee"] is not None:
+                # resolve lhs of method call (i.e. the callee)
+                lhs_smt_declarations,lhs_smt_assertion = self.node_to_smt(node["exprCallee"])
+                smt_declarations.extend(lhs_smt_declarations)
  
-            tmp_var_name = FreshNames.get_name(prefix=method_name)
-      
+            tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
+  
             method_smt_declarations = []
             if has_direct_method:
                 (method_smt_declarations, method_smt_assertion, smt_dt) = KnowledgeBase.get_method(class_name,method_name,tmp_var_name,par_ctx,lhs_smt_assertion)
             else:
                 class_path = "%s.java" % class_name # TODO this in general could be different
-    #            class_fqn = "" # TODO this could be different
                 method = self._project.get_method(class_name, class_path, method_name)
+                log.debug("Class %s, path %s, method %s => %s" % (class_name, class_path, method_name, method))
                 method_ast = method.get_ast()
                 assert "returnType" in method_ast
-    
+
                 method_type = method_ast["returnType"]
-    
+
                 dtfactory = DataTypeFactory.the_factory()
                 smt_dt = dtfactory.from_fqn(method_type)
-    
+
                 log.debug("Invoke method %s:%s (class name: %s, class path: %s) => SMT type: %s" % (method_name, method_type, class_name, class_path, smt_dt))
                 log.debug(method_ast.keys())
 
@@ -456,17 +475,15 @@ class SMTProb(object):
             check("list(is_abstract_attribute)", self.attributes)
             for curr in self.attributes:
                 check("is_abstract_attribute", curr)
-#                assert isinstance(curr, AbstractAttribute)
-
-#                    if curr.name != var:
-#                        others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
-#                    log.debug("Var: %s -> Attribute: %s -> Variables: %s" % (var, curr, curr.variables))
                 for attr_var in curr.variables:
-                    smt_declarations.append("(assert (= %s_1 %s))" % (attr_var, attr_var)) # TODO primed name
-       
+                    if attr_var not in exclude_frame:
+                        smt_declarations.append("(assert (= %s_1 %s)) ; ASTMethodCall frame condition" % (attr_var, attr_var)) # TODO primed name
+   
 
             # add the auxiliary declarations
+            log.debug("Method call aux var: %s => %s" % (method_name, tmp_var_name))
             smt_declarations.append( "(declare-const %s %s)" % (tmp_var_name, smt_dt))
+            log.debug("Method call smt declarations: %s" % method_smt_declarations)
             smt_declarations.extend(method_smt_declarations)
 
             # store the returned value for this case
@@ -494,15 +511,6 @@ class SMTProb(object):
             res.append(pred_primed)
 
         return res
-
-    @contract(expression="dict")
-    def add_precondition(self, expression):
-#        assert isinstance(self._assert_preconditions, list)
-#        assert isinstance(expression, dict)
-
-        check("list(string,string)", self._assert_preconditions)
-
-        self._assert_precoditions.extend(self.node_to_smt(expression))
 
 
     @contract(pre="is_precondition", returns="tuple(list(string),string)")
@@ -533,45 +541,29 @@ class SMTProb(object):
  
 
     @contract(source_pred="list(is_attribute_predicate)", instr="dict|None", target_pred="list(is_attribute_predicate)|None", preconditions="None|list(is_precondition)")
-    def assertions(self, source_pred, instr=None, target_pred=None, preconditions=None):
+    def combine_assertions(self, source_pred, instr=None, target_pred=None, preconditions=None):
+        """
+        Given a predicate on the source, an instruction, a predicate on
+        the target, and a list of preconditions, build a list of SMT
+        assertions corresponding to the problem we will submit to the   
+        solver.
+        """
     
         assertions = []
         
         assertions.extend(source_pred)
 
-        check("list(string,string)", self._assert_preconditions)
-#        assertions.extend(self._assert_preconditions)
-        for pre_smt_declaration, pre_smt_assertion in self._assert_preconditions:
-            assertions.append(pre_smt_declaration)
-            assertions.append(pre_smt_assertion)
-  
         if preconditions:
        
-#            log.debug("Before preconditions: %s" % assertions)
-   
             for pre in preconditions:
-#                assert isinstance(pre, Precondition)
-
-##                smt_pre = None
-##                if isinstance(pre, Negate):
-##                    pre_node = self.node_to_smt(pre.node)
-##                    smt_pre = "(assert (not %s))" % pre_node
-##                else:
-##                    pre_node = self.node_to_smt(pre.node)
-##                    smt_pre = "(assert %s)" % pre_node
-##
-##                log.debug("Pre: %s => %s" % (pre, smt_pre))
     
                 smt_declarations,smt_pre = self.precondition_to_smt(pre)
                 assertions.extend(smt_declarations)
                 assertions.append(smt_pre)
         
-#            log.debug("After preconditions: %s" % assertions)
-
         # SMT assertions about the target predicates require that:
         # - if instruction does something, target predicates use primed vars
-        # - if instroction does not do anything, target predicates use same vars as soure predicates   
-#        target_pred = self.target_pred
+        # - if instruction does not do anything, target predicates use same vars as source predicates   
 
         if instr is not None:
             smt_instr_declarations, smt_instr_assertion = self.node_to_smt(instr)
@@ -677,13 +669,15 @@ class SMTProb(object):
         smt_code.extend(self.get_smt_attribute_declaration(primed=do_primed))     
 
         # add problem assertions derived from source state, instruction, target state
-        for curr in self.assertions(source_pred, instr=instr, target_pred=target_pred, preconditions=preconditions):
+        for curr in self.combine_assertions(source_pred, instr=instr, target_pred=target_pred, preconditions=preconditions):
             if isinstance(curr, AttributePredicate):
                 smt_code.append(curr.smt_assert())
             elif isinstance(curr, basestring):
                 smt_code.append(curr)
             else:
                 raise ValueError("Don't know how to handle assertion (%s): %s" % (type(curr), curr))
+
+        smt_code.append("(check-sat)")
 
         return "\n".join(smt_code)
 
@@ -735,7 +729,7 @@ class SMTProb(object):
         """ 
         self._log_smt(commands)
 
-        self._cmd.stdin.write(commands)
+        self._cmd.stdin.write(commands + "\n")
 
         answer = self._get_output()
         err_msg = self._get_error()
@@ -744,26 +738,26 @@ class SMTProb(object):
 
         return answer
 
-    @contract(source_conf="tuple", guard=Precondition, preconditions="None|list(is_precondition)", returns="bool")
+    @contract(source_pred="tuple", guard=Precondition, preconditions="None|list(is_precondition)", returns="bool")
 #    @contract(source_conf="is_configuration", guard=Precondition, preconditions="None|list(is_precondition)", returns="bool")
-    def check_sat_guard(self, source_conf, guard, preconditions=None):
+    def check_sat_guard(self, source_pred, guard, preconditions=None):
  
 #        log.debug("Received source pred (%s): %s" % (type(source_conf), source_conf)) 
 
         check("list(is_abstract_attribute)", self.attributes)       
 #        log.debug("In check_sat_guard ...")  
-        source_pred = conf_to_attribute_predicate(source_conf, self.attributes)
+        source_attpred = conf_to_attribute_predicate(source_pred, self.attributes)
 
-#        log.debug("Source pred: %s" % source_pred)
+#        log.debug("Source pred: %s" % source_attpred)
         new_preconditions = [ guard ]
         if preconditions:
             new_preconditions.extend(preconditions)
-        commands = self.to_smt_problem(source_pred, preconditions=new_preconditions) + "\n" + "(check-sat)\n"
+        commands = self.to_smt_problem(source_attpred, preconditions=new_preconditions)
 
 
         answer = self.get_tool_answer(commands)
 
-        log.debug("check guard: %s vs %s, given: %s ? %s" % (source_pred,guard,preconditions, answer))
+        log.debug("check guard: %s vs %s, given: %s ? %s" % (source_attpred,guard,preconditions, answer))
 
         smt_res = False
         if answer.strip() == "sat":
@@ -776,18 +770,18 @@ class SMTProb(object):
         return smt_res
 
 
-    @contract(source_conf="tuple", instr="dict", target_conf="tuple", preconditions="None|list(is_precondition)", returns="bool")
-    def check_sat_instr(self, source_conf, instr, target_conf, preconditions=None):
+    @contract(source_pred="tuple", instr="dict", target_pred="tuple", preconditions="None|list(is_precondition)", returns="bool")
+    def check_sat_instr(self, source_pred, instr, target_pred, preconditions):
 
         check("list(is_abstract_attribute)", self.attributes)
 
-        source_pred = conf_to_attribute_predicate(source_conf, self.attributes)
-        target_pred = conf_to_attribute_predicate(target_conf, self.attributes)
+        source_attpred = conf_to_attribute_predicate(source_pred, self.attributes)
+        target_attpred = conf_to_attribute_predicate(target_pred, self.attributes)
 
-        check("list(is_attribute_predicate)", source_pred)
-        check("list(is_attribute_predicate)", target_pred)
+        check("list(is_attribute_predicate)", source_attpred)
+        check("list(is_attribute_predicate)", target_attpred)
 
-        commands = self.to_smt_problem(source_pred, instr, target_pred, preconditions=preconditions) + "\n" + "(check-sat)\n"
+        commands = self.to_smt_problem(source_attpred, instr, target_attpred, preconditions=preconditions)
 
         answer = self.get_tool_answer(commands)
         smt_res = False
@@ -883,31 +877,34 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
     instr_type = instr["nodeType"]
     source_pred = state_space.value(source)
-    source_loc = build_loc(source, pc_source, state_space) #build_loc(source, pc_source)
+    source_loc = build_loc(source, pc_source)
 
     # begin 
-    # res contains a list of reachable configurations, a list of Edge's, and a list of final Location's
+    # res contains a list of reachable configurations, a list of Edge's, a list of final Location's, and a list of variables
     reachable = []
     edges = []
     final = []
     external = []
+    variables = set([])
  
     pc_target = None
    
     if instr_type == "ASTRE":
+        """
+        This is the case of "simple" statements
+        """
 
 #        log.info("Check ASTRE: '%s' %s ..." % (instr_text, pc_source))
-
+##
         node_exp_type = instr["expression"]["nodeType"]
-        log.debug("Found ASTRE instruction (%s)" % node_exp_type)
-
+        log.debug("Found ASTRE statement (%s)" % node_exp_type)
 
         pc_target = pc_source + 1
 
         for target in state_space.enumerate:
             assert isinstance(target, tuple)
 
-            log.debug("check: (%s,%s) -[%s]?-> (%s,%s)" % (source,pc_source,instr_label,target,pc_target))
+            log.debug("check statement: (%s,%s) -[%s]?-> (%s,%s)" % (source,pc_source,instr_label,target,pc_target))
 
 
             target_pred = state_space.value(target)
@@ -919,23 +916,19 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                     is_sat = cache_found
                 else:
                     smt_prob.push()
-                    is_sat = smt_prob.check_sat_instr(source_pred, instr, target_pred, preconditions=preconditions)
+                    is_sat = smt_prob.check_sat_instr(source_pred, instr, target_pred, preconditions)
                     smt_prob.pop()
                     SMTProb.smt_cache_store(source, instr, target, is_sat)
         
-                log.debug("Instruction SAT: %s" % is_sat)
+                log.debug("Statement SAT: %s" % is_sat)
                 if is_sat:
-                    target_loc = build_loc(target, pc_target, state_space) #(target, pc_target)
+                    target_loc = build_loc(target, pc_target)
                     edge_label = instr["code"]
                     edge = Edge(source_loc, target_loc, edge_label)
      
                     reachable.append(target)
                     edges.append(edge) 
                     final.append(target_loc)
-
-        log.debug("ASTRE final: %s" % final)
-        log.debug("ASTRE reachable: %s" % reachable)
-        log.debug("ASTRE edges: %s" % edges)
         
     elif instr_type == "ASTIf":
         assert "guard" in instr
@@ -981,11 +974,12 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()    
 
+            variables |= rr_then.variables
             final_then = rr_then.final_locations
             edges.extend(rr_then.edges) #edges_then)
 
             # add ed edge from source to the begin of the "then" branch
-            then_loc = build_loc(source, pc_source_then, state_space) #(source, pc_source_then)
+            then_loc = build_loc(source, pc_source_then)
             edge_then = Edge(source_loc, then_loc, "if (%s)" % guard["code"])
  
             # add an edge to the set of resulting edges       
@@ -1003,13 +997,14 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()
 
+            variables |= rr_else
             final_else = rr_else.final_locations
        
             edges.extend(rr_else.edges) #edges_else)
             external.extend(rr_else.external_locations)
     
             # add en edge from source to the begin of the "else" branch
-            else_loc = build_loc(source, pc_source_else, state_space) #(source, pc_source_else)
+            else_loc = build_loc(source, pc_source_else)
             edge_else = Edge(source_loc, else_loc, "else (not(%s))" % guard["code"])
             # add an edge to the results
             edges.append(edge_else)
@@ -1025,7 +1020,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             (state_final_conf, pc_final) = parse_location(loc)
 
             # the end-if location has the same predicate of the reached final state, but the pc of the line after the if-statement
-            end_if_loc = build_loc(state_final_conf, pc_target, state_space)            
+            end_if_loc = build_loc(state_final_conf, pc_target)            
 
             # add edges and final locations to the results
             edges.append(Edge(loc, end_if_loc, "endif"))
@@ -1047,68 +1042,83 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         assert "expression" in guard
         pc_target = pc_source + 1
 
-        # determine whether the guard and/or its negation are satisfiable
-        with SMTProb(state_space.attributes, project) as smt_prob:
+        tovisit_sources = [ source, ]
+        visited_sources = []
 
-            smt_prob.push()
-            is_while_reachable = smt_prob.check_sat_guard(source_pred, guard=Precondition(guard["expression"]))
-            smt_prob.pop()
+        pc_source_while = PC(pc_source.pc).push(0)
+
+        while len(tovisit_sources) > 0:
+            curr_source_conf = tovisit_sources.pop()
+            curr_source_loc = build_loc(curr_source_conf, pc_source)
+
+            visited_sources.append(curr_source_conf)
+            curr_source_pred = state_space.value(curr_source_conf)
+
+            # determine whether the guard and/or its negation are satisfiable
+            with SMTProb(state_space.attributes, project) as smt_prob:
     
-            smt_prob.push()
-            is_not_while_reachable = smt_prob.check_sat_guard(source_pred, guard=Negate(guard["expression"]))
-            smt_prob.pop()
-
-        # the guard is satisfiable: enter the block
-        if is_while_reachable:
+                smt_prob.push()
+                is_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Precondition(guard["expression"]))
+                smt_prob.pop()
+        
+                smt_prob.push()
+                is_not_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Negate(guard["expression"]))
+                smt_prob.pop()
     
-            pc_source_while = PC(pc_source.pc).push(0)
-            reachable_while = [ source ]
-            
-            preconditions.append(Precondition(guard["expression"]))
-            pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
-            
-            rr_while = compute_reachable(reachable_while, pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
-            
-            pc_jump_stack.pop()
-            preconditions.pop()
-
-#            log.debug("While reachable result: %s" % rr_while)
-
-            edges.extend(rr_while.edges)
-            external.extend(rr_while.external_locations)
+            # the guard is satisfiable: enter the block
+            if is_while_reachable:
+        
+                preconditions.append(Precondition(guard["expression"]))
+                pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
+                
+                rr_while = compute_reachable([ curr_source_conf, ], pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+                
+                variables |= rr_while.variables
+                pc_jump_stack.pop()
+                preconditions.pop()
     
-            # add edge from source to the begin of the while
-            # TODO at the moment we don't take advantage of the while-guard as precondition
-            while_loc = build_loc(source, pc_source_while, state_space)# (source, pc_source_while)
-            while_edge = Edge(source_loc, while_loc, "while (%s)" % guard["code"])
-            edges.append(while_edge)
-
-            # if entered the while loop, for each final location of while, create an edge out of the while loop and an edge at the beginning of the while itself
-            # TODO this is an overapproximation (every final state can repeat the loop and/or exit); invoke the compute_reachable(...) procedure to "unfold" the loop (beware of endless loops)
-            for loc in rr_while.final_locations: #final_while:
-                assert isinstance(loc, Location)
-                (state_final_conf, pc_final) = parse_location(loc)
-
-                loc_out = build_loc(state_final_conf, pc_target, state_space)
-                edge_out = Edge(loc, loc_out, "end while")
-                edges.append(edge_out)
-                final.append(loc_out)
-                reachable.append(state_final_conf)
+    #            log.debug("While reachable result: %s" % rr_while)
     
-                loc_restart = build_loc(state_final_conf, pc_source, state_space)
-                edge_restart = Edge(loc, loc_restart)
-                edges.append(edge_restart)
+                edges.extend(rr_while.edges)
+                external.extend(rr_while.external_locations)
+        
+                # add edge from source to the begin of the while
+                # TODO at the moment we don't take advantage of the while-guard as precondition
+                while_loc = build_loc(curr_source_conf, pc_source_while)
+                while_edge = Edge(curr_source_loc, while_loc, "while (%s)" % guard["code"])
+                edges.append(while_edge)
+ 
+                # every final state is used as starting point for a new iteration of the 
+                # saturation algorithm of the while block   
+                for loc in rr_while.final_locations: 
+
+                    assert isinstance(loc, Location)
+                    (state_final_conf, pc_final) = parse_location(loc)
     
-        # the negation of the guard is satisfiable: jump over the block
-        if is_not_while_reachable:
+                    # go back to a new evaluation of the while condition (with the current configuration)
+                    loc_back = build_loc(state_final_conf, pc_source)
+                    edge_back = Edge(loc, loc_back, "end while")
+                    edges.append(edge_back)
+    
+                    log.debug("Curr while final: %s vs %s" % (state_final_conf, visited_sources))
+    
+                    # in case the configuration has not been visited before
+                    # by an iteration of the while, then visit it
+                    if state_final_conf not in visited_sources:
+                        # unroll a new (abstract) while loop
+                        tovisit_sources.append(state_final_conf)
+                       
 
-            # add edge from source to the end of the while
-            while_neg_loc = build_loc(source, pc_target, state_space) #(source, pc_target)
-            while_neg_edge = Edge(source_loc, while_neg_loc, "not (%s)" % guard["code"])
-            edges.append(while_neg_edge)
-            final.append(while_neg_loc)
-            reachable.append(source)
-
+            # the negation of the guard is satisfiable: jump over the block
+            if is_not_while_reachable:
+    
+                # add edge from source to the end of the while
+                curr_source_neg_loc = build_loc(curr_source_conf, pc_target)
+                while_exit_edge = Edge(curr_source_loc, curr_source_neg_loc, "not (%s)" % guard["code"])
+                edges.append(while_exit_edge)
+                final.append(curr_source_neg_loc)
+                reachable.append(curr_source_conf)
+    
         check_closure(pc_target, reachable, final, external)
 
     elif instr_type == "ASTDoWhile":
@@ -1130,11 +1140,12 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         rr_while = compute_reachable([source], pc_source_while, stms_while, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
         pc_jump_stack.pop()
 
+        variables |= rr_while.variables
         edges.extend(rr_while.edges)
         external.extend(rr_while.external_locations)
 
         # add an edge that "falls" inside the while block, from outside
-        do_loc = build_loc(source, pc_source_while, state_space)
+        do_loc = build_loc(source, pc_source_while)
         do_edge = Edge(source_loc, do_loc, "do")
         edges.append(do_edge)
 
@@ -1170,12 +1181,13 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                     pc_jump_stack.pop()
                     preconditions.pop()
         
+                    variables |= rr_while_back.variables
                     edges.extend(rr_while_back.edges)
                     external.extend(rr_while_back.external_locations)
             
                     # add edge from current location to the begin of the while
                     # TODO at the moment we don't take advantage of the while-guard as precondition
-                    while_loc = build_loc(conf_final, pc_source_while, state_space)# (source, pc_source_while)
+                    while_loc = build_loc(conf_final, pc_source_while)
                     while_edge = Edge(loc_final, while_loc, "while (%s)" % guard["code"])
                     edges.append(while_edge)
         
@@ -1185,13 +1197,13 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                         assert isinstance(loc, Location)
                         (state_final_conf, pc_final) = parse_location(loc)
         
-                        loc_out = build_loc(state_final_conf, pc_target, state_space)
+                        loc_out = build_loc(state_final_conf, pc_target)
                         edge_out = Edge(loc, loc_out, "end while")
                         edges.append(edge_out)
                         final.append(loc_out)
                         reachable.append(state_final_conf)
             
-                        loc_restart = build_loc(state_final_conf, pc_source, state_space)
+                        loc_restart = build_loc(state_final_conf, pc_source)
                         edge_restart = Edge(loc, loc_restart)
                         edges.append(edge_restart)
             
@@ -1199,7 +1211,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             if is_not_while_reachable:
 
                 # add edge from current location to the end of the while
-                while_neg_loc = build_loc(conf_final, pc_target, state_space)
+                while_neg_loc = build_loc(conf_final, pc_target)
                 while_neg_edge = Edge(loc_final, while_neg_loc, "not (%s)" % guard["code"])
                 edges.append(while_neg_edge)
                 final.append(while_neg_loc)
@@ -1226,7 +1238,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
         log.debug("Found pc target (%s): %s. PC break stack: %s" % (target_identifier, pc_target, pc_jump_stack))
 
-        loc_out = build_loc(source, pc_target, state_space) #(source, pc_target)
+        loc_out = build_loc(source, pc_target)
         # new edge: from source location to final location
         edge_break = Edge(source_loc, loc_out, edge_label)
         edges.append(edge_break)  
@@ -1246,7 +1258,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             state_loc = tuple_replace(state_loc, 2, 1) # 2 is the position of "res, 1 encodes false
         # end BIG-FRAGILE-HACK
         pc_target = pc_source + 1
-        return_loc = build_loc(source, pc_target, state_space)
+        return_loc = build_loc(source, pc_target)
         edges.append(Edge(source_loc,return_loc))
         reachable.append(state_loc)
 #        final.append(source_loc)
@@ -1264,11 +1276,13 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         stms_try = instr["tryBranch"]["stms"]
         pc_source_try = PC(pc_source.pc).push("0").push("0")
         rr_try = compute_reachable([source], pc_source_try, stms_try, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
+
+        variables |= rr_try.variables
         edges.extend(rr_try.edges)
         external.extend(rr_try.external_locations)
     
         # add edge from source to the begin of the try
-        try_loc = build_loc(source, pc_source_try, state_space)
+        try_loc = build_loc(source, pc_source_try)
         try_edge = Edge(source_loc, try_loc, "")
         edges.append(try_edge)
 
@@ -1296,10 +1310,11 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         log.debug("Compute reachable in catch ...")
         rr_catch = compute_reachable(found_exception_confs, pc_source_catch, stms_catch, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
 
+        variables |= rr_catch.variables
         # add edge from exception states in the try block, to the begin of the catch block
         for excp_loc in found_exception_locs:   
             (excp_conf, excp_pc) = parse_location(excp_loc)
-            catch_excp_loc = build_loc(excp_conf, pc_source_catch, state_space)
+            catch_excp_loc = build_loc(excp_conf, pc_source_catch)
             edges.append(Edge(excp_loc, catch_excp_loc, "catch"))
 
         final_catch = rr_catch.final_locations
@@ -1310,7 +1325,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
             assert isinstance(loc, Location)
             (state_loc, pc_loc) = parse_location(loc)
-            end_try_loc = build_loc(state_loc, pc_target, state_space)
+            end_try_loc = build_loc(state_loc, pc_target)
             edges.append(Edge(loc, end_try_loc))       
             final.append(end_try_loc)
             reachable.append(state_loc)
@@ -1321,15 +1336,23 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
         assert "stms" in instr
 
+        # add a clock variable, its lower bound, and its upper bound 
+        cv = FreshNames.get_clock_variable(pc_source, prefix="dl")
+        (lower, upper) = FreshNames.get_clock_bounds(pc_source, prefix="dl")
+        variables = variables | set([ cv, lower, upper ])
+
+        # explore recursively the reachable states
         stms_deadline = instr["stms"]
         pc_source_deadline = PC(pc_source.pc).push("0")
         deadlines.append(pc_source) 
         rr_deadline = compute_reachable([source],pc_source_deadline, stms_deadline, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
+
         deadlines.pop()
+        variables |= rr_deadline.variables
         edges.extend(rr_deadline.edges)
     
         # add edges from source to the begin of the deadline
-        deadline_loc = build_loc(source, pc_source_deadline, state_space)
+        deadline_loc = build_loc(source, pc_source_deadline)
         deadline_edge = Edge(source_loc, deadline_loc, "")
         edges.append(deadline_edge)
 
@@ -1343,43 +1366,73 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             e = Edge(loc, post_loc)
             edges.append(e)
 
-        # add edges from intermediate locations to exception state
-#        exception_conf = tuple_replace(source, 1, 1) # first 1 is the position of "exception", second 1 encodes true
-#        exception_loc = build_loc(exception_conf, pc_source, state_space)
-
-#        for curr_edge in rr_deadline.edges: #final_locations: #configurations:
-#            loc = curr_edge.target
-##        for loc in rr_deadline.locations:
-##            #assert isinstance(state_conf, Configuration)
-##            #loc = build_loc(state_conf, pc_source, state_space)
-##            (loc_conf, loc_pc) = parse_location(loc)
-##
-##            clock = FreshNames.get_clock_variable(pc_source, prefix="deadline")
-##            (clock_lower, clock_upper) = FreshNames.get_clock_bound(pc_source)
-##
-##            # add an invariant 
-##            invariant = "%s <= %s" % (clock.name, clock_upper.name)
-##            loc.set_invariant(ClockExpression(invariant))
-##
-##            # add a transition to an exception location, if the deadline is passed
-##            exception_conf = tuple_replace(loc_conf, 1, 1)
-##            exception_loc = build_loc(exception_conf, loc_pc, state_space)
-##
-##            
-##            guard = "%s >= %s" % (clock.name, clock_upper.name)
-##            edges.append(Edge(loc, exception_loc, label=guard, guard=ClockExpression(guard), clock_variables=[clock], variables=[clock_lower,clock_upper]))
-##            external.append(exception_loc)
-##            reachable.append(exception_conf)
-##
         log.debug("Final deadline locations: %s" % final_deadline)
         for loc in final_deadline:
             log.debug("Deadline check final loc: %s" % loc)
             assert isinstance(loc, Location)
             (state_loc, pc_loc) = parse_location(loc)
-            end_deadline_loc = build_loc(state_loc, pc_target, state_space)
+            end_deadline_loc = build_loc(state_loc, pc_target)
             edges.append(Edge(loc, end_deadline_loc))       
             final.append(end_deadline_loc)
             reachable.append(state_loc)
+
+        check_closure(pc_target, reachable, final, external)
+
+    elif instr_type == "ASTForEach":
+
+        foreach_identifier = instr["identifier"]
+        stms_foreach = instr["stms"]
+        pc_target = pc_source + 1
+
+        pc_source_foreach = PC(pc_source.pc).push(0)
+
+        tovisit_sources = [ source, ]
+        visited_sources = []
+
+        while len(tovisit_sources) > 0:
+
+            curr_source_conf = tovisit_sources.pop()
+
+            visited_sources.append(curr_source_conf)
+        
+            reachable_foreach = [ curr_source_conf ]    
+            pc_jump_stack.append((foreach_identifier, pc_source_foreach, pc_target))
+            
+            rr_foreach = compute_reachable(reachable_foreach, pc_source_foreach, stms_foreach, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+            
+            variables |= rr_foreach.variables
+            pc_jump_stack.pop()
+
+            begin_foreach_loc = build_loc(source, pc_source_foreach)
+
+            edges.extend(rr_foreach.edges)
+            edges.append(Edge(source_loc, begin_foreach_loc, "for each"))
+
+            for loc in rr_foreach.final_locations:
+                # each final location should either quit the loop, or restart
+                assert isinstance(loc, Location)
+                (state_final_conf, pc_final) = parse_location(loc)
+
+                loc_out = build_loc(state_final_conf, pc_target)
+                edge_out = Edge(loc, loc_out, "end foreach")
+                edges.append(edge_out)
+                final.append(loc_out)
+                reachable.append(state_final_conf)
+
+                log.debug("Curr foreach final: %s vs %s" % (state_final_conf, visited_sources))
+
+                # add an edge restarting the foreach loop
+                loc_restart = build_loc(state_final_conf, pc_source_foreach)
+                edge_restart = Edge(loc, loc_restart, "for each")
+                edges.append(edge_restart)
+
+                # in case the configuration has not been visited before
+                # by an iteration of the foreach, then visit it
+                if state_final_conf not in visited_sources:
+                    tovisit_sources.append(state_final_conf)
+
+
+
 
         check_closure(pc_target, reachable, final, external)
 
@@ -1389,7 +1442,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
    
     assert (len(reachable) >= 0 and len(edges) >= 0 and len(final) == 0) or (len(reachable) > 0 and len(edges) > 0 and len(final) > 0), "# reachable: %s, # edges: %s, # final: %s. Instruction: %s" % (len(reachable), len(edges), len(final), instr)
-    rr = ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges)
+    rr = ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
 
     # handle stack of deadlines
     log.debug("Curr deadlines: %s" % deadlines)
@@ -1398,7 +1451,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
     for pc in deadlines:
         log.debug("Curr locations: %s" % rr.locations)
         cv = FreshNames.get_clock_variable(pc, "deadline")
-        (lower, upper) = FreshNames.get_clock_bound(pc, "deadline")
+        (lower, upper) = FreshNames.get_clock_bounds(pc, "deadline")
 
         for loc in rr.locations:
             # add invariant for states 
@@ -1410,7 +1463,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             # add exception location and edge to it
             (loc_conf, loc_pc) = parse_location(loc)
             exc_conf = tuple_replace(loc_conf, 1, 1)
-            exc_loc = build_loc(exc_conf, loc_pc, state_space)
+            exc_loc = build_loc(exc_conf, loc_pc)
             
             guard = "%s >= %s" % (cv.name, upper.name)
             e = Edge(loc, exc_loc, guard=guard, label=guard)
@@ -1449,12 +1502,14 @@ def check_closure(pc_target,reachable,final,external):
             reachable.append(state_ext_conf)
  
 
-@contract(conf="tuple", attributes="list(is_abstract_attribute)", returns="list(is_attribute_predicate)")
-def conf_to_attribute_predicate(conf, attributes):
+@contract(conf_predicates="tuple", attributes="list(is_abstract_attribute)", returns="list(is_attribute_predicate)")
+def conf_to_attribute_predicate(conf_predicates, attributes): #conf, attributes):
     res = []
-    for (attr, pred) in zip(attributes, conf):
+#    for (attr, pred) in zip(attributes, conf):
+    for (pred, attr) in zip(conf_predicates, attributes):
         check("is_abstract_attribute", attr)
         check("is_predicate", pred)
+ 
         res.append(AttributePredicate(attr, pred))
 
     return res

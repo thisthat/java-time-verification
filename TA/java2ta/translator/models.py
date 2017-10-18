@@ -88,12 +88,13 @@ new_contract_check_type("is_pc", PC)
 
 class ReachabilityResult(object):
 
-    @contract(configurations="set(is_configuration)|list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)")
-    def __init__(self, configurations, final_locations, external_locations, edges):
+    @contract(configurations="set(is_configuration)|list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)", variables="set(is_variable)")
+    def __init__(self, configurations, final_locations, external_locations, edges, variables):
         self._configurations = set(configurations)
         self.final_locations = final_locations
         self.external_locations = external_locations
         self.edges = edges 
+        self.variables = variables
 
         self.locations = set([])
         for e in edges:
@@ -148,16 +149,14 @@ class AttributePredicate(object):
         check("is_predicate", self.predicate)
         #ctx = self.get_context()
 
-        return self.predicate.smt_assert(**(self._ctx)) #var=self.attribute.name)
+        return self.predicate.smt_assert(**(self._ctx))
  
     @contract(returns="string")
     def label(self):
-        #ctx = self.get_context()
         check("is_predicate", self_predicate)
-        return self.predicate.label(**(self._ctx)) #var=self.attribute.name)       
+        return self.predicate.label(**(self._ctx))
 
     def __str__(self):
-        #ctx = self.get_context()
 
         res = str(self.predicate)
         for pred_var, attr_val in self._ctx.iteritems():
@@ -257,7 +256,7 @@ class FreshNames(object):
     @staticmethod
     @contract(prefix="string", returns="string")
     def get_name(prefix):
-        return "%s_%s" % (prefix, FreshNames.get_id())
+        return "%s%s" % (prefix, FreshNames.get_id())
 
     @staticmethod
     @contract(returns="int")
@@ -269,11 +268,12 @@ class FreshNames(object):
     @staticmethod
     @contract(pc="is_pc", prefix="string")
     def enter_clock_variable(pc, prefix=""):
-        cv_name = "%s%s" % (prefix, pc)
+#        cv_name = "%s%s" % (prefix, pc)
+        cv_name = FreshNames.get_name(prefix)
         cv = ClockVariable(cv_name)
 
-        lower = Variable("%s_lower" % cv.name, Int())
-        upper = Variable("%s_upper" % cv.name, Int())
+        lower = Variable("%s_lo" % cv.name, Int())
+        upper = Variable("%s_up" % cv.name, Int())
 
         FreshNames.clock_variables[pc] = (cv, lower, upper)
 
@@ -292,7 +292,7 @@ class FreshNames(object):
 
     @staticmethod
     @contract(pc="is_pc", prefix="string")
-    def get_clock_bound(pc, prefix=""):
+    def get_clock_bounds(pc, prefix=""):
 
         (cv, lower, upper) = FreshNames.clock_variables.get(pc, (None,None,None))
 

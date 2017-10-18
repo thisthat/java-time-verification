@@ -129,11 +129,7 @@ tag_values = split_enum([ literal_to_smt("'leader'"), literal_to_smt("'election'
 ### here the user inputs begin. first we ask for the "coordinates" of the method to be analyzed
 
 proj_name = "test_project" # "dist-progs" # test_project 
-#proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.ir.tests", proj_name))
-proj_path =  "example_neighbors.json" #os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
-#class_name = "example.TestNeighbors" #"RingLeader" # DoWhile, While, Short, SequentialCode
-file_name = "TestNeighbors.java"# "RingLeader.java" # DoWhile.java, While.java, Short.java, SequentialCode.java
-#method_name = "is_alive" #"handleMsg"
+proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
 
 
 # next we ask for a "list" of abstract predicates, that compose an "abstract domain". An abstract predicates P
@@ -145,63 +141,73 @@ file_name = "TestNeighbors.java"# "RingLeader.java" # DoWhile.java, While.java, 
 # a boolean configuration of them, e.g.: P_1 and not P_2 and ... and not P_M. Given M predicates, there exist
 # 2^M abstract states.
 
-method_names = [
-#    "example.TestNeighbors.is_alive",
-    "example.TestNeighbors.run",
-]
-
 # each tuple in the domain has the following structure:
 # (variable names, domain, is_local)
-domains = [
-    ("address", Dummy(Integer()), False),
-    ("timeout", Dummy(Integer()), False),
-    ("res",BOOLEANS,True), # local variable for storing returned result
-    ("exception_inv", BOOLEANS, True), # local variable for detecting excetion raised
-    ("isAlive", BOOLEANS, True),
+domain_foo = [
+    ("initial_i", INTEGERS, False),
+    ("initial_j", INTEGERS, False),
+    ("i", INTEGERS, True),
+    ("j", Domain(Integer(), split_numeric_domain([ 0, 2 ])), True)
 ]
 
-# here the tool "fetch" the specified method, and buils a finite state automaton (TA) using the passed list
+domain_fie = [
+    ("initial_i", INTEGERS, False),
+    ("initial_j", INTEGERS, False),
+    ("i", INTEGERS, True),
+    ("j", Domain(Integer(), split_numeric_domain([ 0, 2 ])), True)
+]
+
+
+method_specs = [
+#    ("While.foo", domain_foo), 
+    ("While.fie", domain_fie),
+]
+
+
+# here the tool opens the project and "fetches" the specified methods, and buils a finite state automaton (TA) using the passed list
 # of predicates. here the tool does not need any further input.
 # start code
 
-p = DummyProject(proj_name, "file://%s" % proj_path, "localhost:9000")
+p = Project(proj_name, "file://%s" % proj_path, "localhost:9000")
 
 p.open()
 
 method_kb = {}
 
-for curr in method_names:
-    parts = curr.split(".")
+for (method_name, method_domain) in method_specs:
+    parts = method_name.split(".")
     method_name = parts[-1] # the method name is the last component
     class_name = ".".join(parts[:-1]) # the FQN for the class is all the previous one
-    log.debug("%s (%s) -> %s + %s" % (curr, parts, class_name, method_name))
+    log.debug("%s (%s) -> %s + %s" % (method_name, parts, class_name, method_name))
 
-    file_name = "%s.Java" % class_name # HACK TODO change this!
+    file_name = "%s.java" % class_name # HACK TODO change this!
 
     m = p.get_method(class_name, file_name, method_name)
 
-    ss = get_state_space_from_method(m, domains)
+    log.debug("Method AST: %s" % m.get_ast())
+
+    ss = get_state_space_from_method(m, method_domain)
 
     ta = translate_method_to_ta(m, ss)
     
-    method_kb[curr] = ta
+    method_kb[method_name] = ta
 
     legend = build_legend(ss)
 
-    log.debug("Method legend (%s): %s" % (curr, legend))
+    log.debug("Method legend (%s): %s" % (method_name, legend))
 
-    print "TA for method %s: %d locations, %d edges" % (curr, len(ta.locations), len(ta.edges))
+    print "TA for method %s: %d locations, %d edges" % (method_name, len(ta.locations), len(ta.edges))
 
 # here we pass the TA to a renderer (GraphViz) which produces a graphical representation of it. Some input
 # may be required to the user (e.g. the type and name of output file)
 
     gv = GraphViz(ta, legend)
-    gv.save(curr + ".gv")
+    gv.save(method_name + ".gv")
 
 #    log.debug("TA variables: %s" % map(lambda v: str(v), ta.variables))
 
 #    log.debug("TA clock variables: %s" % map(lambda v: str(v), ta.clock_variables))
 
     uppaal = Uppaal(ta, legend)
-    uppaal.save(curr + ".xml")
+    uppaal.save(method_name + ".xml")
 

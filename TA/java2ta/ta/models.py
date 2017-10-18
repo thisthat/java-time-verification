@@ -79,6 +79,7 @@ class ClockVariable(Variable):
     
         super(ClockVariable, self).__init__(name, ClockType())
 
+new_contract_check_type("is_clock_variable", ClockVariable)
 
 ##class ClockExpression(object):
 ##
@@ -185,14 +186,19 @@ class TA(object):
     def variables(self):
         return self._variables.values()
 
+    def has_variable(self, name):
+        return name in self._variables
+
     @property
     def clock_variables(self):
         return self._clock_variables.values()
 
+    def has_clock_variable(self, name):
+        return name in self._clock_variables
+
     def has_location(self, name):
         assert isinstance(name, basestring)
         return name in self._location_names
-
 
     def get_location(self, name):
         assert isinstance(name, basestring)
@@ -282,11 +288,11 @@ class TA(object):
             self._edges_lookup[edge.source] = {}
         self._edges_lookup[edge.source][edge.target] = edge
 
-    def get_or_add_variables(self, name, type):
-        
-        c = Variable(name, type)
-        self.add_clock_variable(name)
- 
+##    def get_or_add_variable(self, name, type):
+##        
+##        c = Variable(name, type)
+##        self.add_clock_variable(name)
+## 
     def add_variable(self, var):
         assert isinstance(var, Variable)
 
@@ -299,7 +305,6 @@ class TA(object):
         assert isinstance(var, ClockVariable)
 
         log.debug(u"Add clock: %s" % unicode(var))
-
 
         # do not insert duplicate clock variables
         if var.name not in self._clock_variables:
@@ -321,21 +326,26 @@ class TA(object):
 
         pseudo_initial = filter(lambda loc: len(loc.incoming) == 0, self.locations)
 
+        initial = None
+
         if len(pseudo_initial) == 1:
             initial = pseudo_initial[0]
             initial.set_initial()
         elif len(pseudo_initial) == 0:
-            raise ValueError("Cannot handle automaton with circular states")
+#           TODO what to do in this case?
+            log.warning("The timed automaton has no pseudo-initial location. Not sure what to do ...")
+#            raise ValueError("Cannot handle automaton with circular states")
         else:
             # len(pseudo_initial) > 0
-            initial = Location("initial", initial=True)
+            initial = Location("initial", is_initial=True)
             self.add_location(initial)
             
             for loc in pseudo_initial:
                 e = Edge(initial, loc)
                 self.add_edge(e)
 
-        self.initial_loc = initial
+        if initial:
+            self.initial_loc = initial
 
 new_contract_check_type("is_ta", TA)
 

@@ -3,45 +3,53 @@ import re
 import itertools
 
 from java2ta.commons.utility import partial_format, pairwise_iter
-from java2ta.abstraction.models import DataType, DataTypeUnion, Predicate, And, GT, LT, Eq, NotEq, EqItself, Dummy, Integer, Real, Z3String, AbsString, Natural, Boolean, Collection, BoundedCollection, Dummy, Domain, SymbolTable
+from java2ta.abstraction.models import DataType, DataTypeUnion, Predicate, And, Between, GT, LT, Eq, NotEq, EqItself, Dummy, Integer, Real, Z3String, AbsString, Natural, Boolean, Collection, BoundedCollection, Dummy, Domain, SymbolTable
 from contracts import contract, check
 import logging
 
 log = logging.getLogger("main")
-##
-##@contract(returns="list[M],M=2")
-##def split_eq_value(value, var=None):
-##    
-##    ctx={"value":value}
-##    if var:
-##        ctx["var"] = var
-##    predicates = [ Eq(**ctx), NotEq(**ctx) ]
-##
-##    return predicates
 
-@contract(returns="list[M](is_predicate),M=2")
-def split_eq_value(value, var=None):
-    return split_enum([value], case_else=True, var=var)
+@contract(value="string|int", var="string|None", returns="is_predicate")
+def noteq_predicate(value, var=None):
+    kwargs = { "value": value }
+    if var:
+        kwargs["var"] = var
+
+    return NotEq(**kwargs)
+
+@contract(value="string|int", var="string|None", returns="is_predicate")
+def eq_predicate(value, var=None):
+    kwargs = { "value": value }
+    if var:
+        kwargs["var"] = var
+
+    return Eq(**kwargs)
 
 @contract(value_list="list[M](string)", returns="list[N](is_predicate),N<=M+1,N>=M")
 def split_enum(value_list, case_else=False, var=None):
 
     predicates = []
 
-    for curr in value_list:
-        ctx = { "value": curr }
-        if var:
-            ctx["var"] = var
-#        predicates.append(Eq({"value":curr}))
-        predicates.append(Eq(**ctx))
+    for value in value_list:
+#        ctx = { "value": curr }
+#        if var:
+#            ctx["var"] = var
+#        predicates.append(Eq(**ctx))
+        predicates.append(eq_predicate(value, var))
 
     if case_else:
-        ctx = { "value": " ".join(value_list) }
-        if var:
-            ctx["var"] = var
-        predicates.append(NotEq(**ctx))
+#        ctx = { "value": " ".join(value_list) }
+#        if var:
+#            ctx["var"] = var
+#        predicates.append(NotEq(**ctx))
+        value = " ".join(value_list)
+        predicates.append(noteq_predicate(value, var))
 
     return predicates
+
+@contract(returns="list[M](is_predicate),M=2")
+def split_eq_value(value, var=None):
+    return split_enum([value], case_else=True, var=var)
 
 #@contract(split_values="list[N],N>0", lt_min=bool, gt_max=bool, returns="list[M],M>0")
 def split_numeric_domain(split_values, lt_min=True, gt_max=True):
@@ -59,14 +67,15 @@ def split_numeric_domain(split_values, lt_min=True, gt_max=True):
             lt_min_pred = LT(value=first)
             predicates.append(lt_min_pred)
 
-        for (curr,succ) in pairwise_iter(split_values):
+        for (value,succ) in pairwise_iter(split_values):
 #            predicates.append(Eq({"value":curr}))
-            predicates.append(Eq(value=curr))
+#            predicates.append(Eq(value=curr))
+            predicates.append(eq_predicate(value))
 
     
             if succ != None:
 #                predicates.append(Between({"min":curr,"max":succ}))
-                predicates.append(Between(min=curr,max=succ))
+                predicates.append(Between(min=value,max=succ))
   
         if gt_max:
             last = split_values[-1]
@@ -134,6 +143,7 @@ class DataTypeFactory(object):
     INTEGER_TYPES = [ "byte", "short", "int", "long", "java.lang.AtomicInteger", "java.lang.AtomicLong", "java.lang.BigInteger", "java.lang.Byte", "java.lang.Integer", "java.lang.Long", "java.lang.Short" ]
     REAL_TYPES = [ "float", "double", "java.lang.BigDecimal", "java.lang.Double", "java.lang.Float", ]
     STRING_TYPES = [ "java.lang.String", ]
+    BOOL_TYPES = [ "boolean", ]
 
     # this is used to store the singleton instance of this data-type factory
     _the_factory = None
@@ -163,6 +173,8 @@ class DataTypeFactory(object):
         else:
             if fqn in self.INTEGER_TYPES:
                 dt = Integer()
+            elif fqn in self.BOOL_TYPES:
+                dt = Boolean()
             elif fqn in self.REAL_TYPES:
                 dt = Real()
             elif fqn in self.STRING_TYPES:
@@ -201,10 +213,10 @@ class DataTypeFactory(object):
         return dt
 
 ## TODO restore the following code
-INTEGERS = Domain(Integer(), split_numeric_domain([0,]))
-POS_INTEGERS = Domain(Integer(), split_numeric_domain([0,], lt_min=False))
-NATURALS = Domain(Natural(), split_numeric_domain([0,], lt_min=False))
-BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]))
+INTEGERS = Domain(Integer(), split_numeric_domain([0,]), default=eq_predicate(0))
+POS_INTEGERS = Domain(Integer(), split_numeric_domain([0,], lt_min=False), default=eq_predicate(0))
+NATURALS = Domain(Natural(), split_numeric_domain([0,], lt_min=False), default=eq_predicate(0))
+BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]), default=eq_predicate("false"))
 COLLECTIONS = Domain(Collection(), split_field_domain(split_numeric_domain([0,], lt_min=False ),var="size"))
 
 # TODO not use default Z3 strings because it looks like they "slow down" the sat/unsat query enormously (check why and what's a better abstraction; perhaps leave STRINGS as it is, and introduce a MY_STRINGS domain, also useful to compare the results in the two cases)

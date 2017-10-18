@@ -150,7 +150,6 @@ class Predicate(object):
 
     __metaclass__ = abc.ABCMeta
 
-#    _smt_assert = ""
     _smt_condition = ""
     _label = ""
 
@@ -165,6 +164,14 @@ class Predicate(object):
         smt_condition = smt_condition or self._smt_condition
         self._smt_condition = partial_format(smt_condition, ctx)
  
+    def __eq__(self, other):
+
+        return not predicates_differ(self, other)
+
+    def __ne__(self, other):
+        return predicates_differ(self, other)
+
+
     def copy(self):
         return copy.deepcopy(self)
         
@@ -279,6 +286,25 @@ class Predicate(object):
         return new
 
 new_contract_check_type("is_predicate", Predicate)
+
+@contract(left="is_predicate|None", right="is_predicate|None", returns="bool")
+def predicates_differ(left, right):
+
+    differ = False
+
+    if (left is None and right is not None) or (left is not None and right is None):
+        differ = True
+    elif left.__class__ != right.__class__:
+        differ = True
+    else:
+        for key,value_left in left.__dict__.iteritems():
+            value_right = getattr(right, key)
+            if value_left != value_right:
+                differ = True
+                break
+
+    return differ
+    
 
 
 class And(Predicate):
@@ -434,12 +460,29 @@ class Domain(object):
     - default: one predicate that is satisfied initially by the variable of the given
             datatype
     """
-    @contract(datatype="is_data_type", predicates="list[N](is_predicate),N>0")
+    @contract(datatype="is_data_type", predicates="list[N](is_predicate),N>0", default="is_predicate|None")
     def __init__(self, datatype, predicates, default=None):
 
         self.datatype = datatype
-    
-        default = default or predicates[0]
+ 
+        if default:
+            # store the predicate equivalent to the one
+            # specified as default (this is important
+            # because we want to ensure that this.default
+            # is one of the instances in this.predicates) 
+            found_default = None
+
+            for pred in predicates:
+                if pred == default: 
+                    found_default = pred
+                    break
+
+            if found_default:
+                default = found_default
+            else:
+                raise ValueError("The default domain value should be one of the passed predicates")
+        else:
+            default = predicates[0]
 
         self._default = default
         self.predicates = predicates #list(set(predicates))
@@ -467,41 +510,14 @@ class Domain(object):
     def default(self):
         return self._default
 
-##    @property
-##    @contract(returns="string")
-##    def smt_predicate_abstraction(self):
-##        constraints = []
-##
-##        ctx = {}
-## 
-##        check("list(is_predicate)", self.predicates)   
-##        for pred in self.predicates:
-##
-##            assert len(pred.var_names) == 1, "Expected predicates with single variable. Got: %s" % pred
-##            for v in pred.var_names:
-##                var_name = v.strip("{}")
-##                ctx[var_name] = var_name
-##
-##
-##        for pred in self.predicates:
-##            constraints.append(pred.smt_condition(**ctx))
-##
-##        assert len(ctx.keys()) == 1, "All predicates should use the same variable. Got: %s" % ctx
-##        type_name = self.name
-##        res = "(assert (forall ((%s %s)) (or %s)))" % (ctx.keys()[0], type_name, " ".join(constraints))
-##
-##        return res
-##        
 
     @property
     @contract(returns="list(string)")
     def smt_declarations(self):
-        res = [] #"<No DataType>"
+        res = []
 
         if self.datatype:
             res = [ self.datatype.smt_declaration.strip() ]
-
-#        smt_declaration = smt_declaration + "\n" + self.smt_predicate_abstraction
 
         return res
  
@@ -553,39 +569,6 @@ class CompareVariables(Domain):
     def datatypes(self):
         return self.datatype.datatypes
     
-##    @property
-##    @contract(returns="string")
-##    def smt_predicate_abstraction(self):
-##        check("list(is_predicate)", self.predicates)
-##
-##        constraints = []
-##
-##        # prepare a dummy context (replace every variable with its own name)
-##        ctx = {}
-##        for pred in self.predicates: #values:
-##            assert isinstance(pred, Predicate)
-###            print "pred: %s ; var names: %s" % (pred, pred.var_names)
-##            for v in pred.var_names:
-##                var_name = v.strip("{}")
-##                ctx[var_name] = var_name
-##
-##        for pred in self.values:
-##            assert isinstance(pred, Predicate)
-###            print "curr pred: %s" % pred
-##            constraints.append(pred.smt_condition(**ctx))
-##
-##        # quantified variables
-##        qv = []
-###        print "ctx = %s, predicates = %s" % (ctx, self.predicates)
-##        for idx,dt in enumerate(self.datatypes):
-##            var_name = "var_%s" % (idx+1)
-##            qv.append("(%s %s)" % (ctx[var_name], dt))
-##
-###        type_name = self.name
-###        res = "(assert (forall ((x %s)) (or %s)))" % (type_name, " ".join(constraints))
-##        res = "(assert (forall (%s) (or %s)))" % (" ".join(qv), " ".join(constraints))
-##
-##        return res
 
     @property
     def values(self):

@@ -38,7 +38,7 @@ class ASTNode(object):
         if not self._ast:
             self._ast = self.get_ast()
 
-            assert isinstance(self._ast, dict)
+            assert isinstance(self._ast, dict), self._ast
 
         return self._ast
 
@@ -85,7 +85,7 @@ class Klass(ASTNode):
         if not found:
             full_name = self.name
             if self.package_name:
-                full_name = "%s.%s" % (self.package_name, self.full_name)
+                full_name = "%s.%s" % (self.package_name, full_name)
 
             raise Exception("It was not possible to import class '%s' from file '%s'" % (full_name, self.path))
 
@@ -130,7 +130,7 @@ class Thread(Klass):
         if len(found) == 0:
             full_name = self.name
             if self.package_name:
-                full_name = "%s.%s" % (self.package_name, self.full_name)
+                full_name = "%s.%s" % (self.package_name, full_name)
 
             raise Exception("It was not possible to import class '%s' from file '%s'" % (full_name, self.path))
 
