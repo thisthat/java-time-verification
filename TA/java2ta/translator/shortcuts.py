@@ -65,7 +65,7 @@ def build_loc(conf, pc):
 
     return loc
 
-@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", returns=ReachabilityResult)
+@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list[N](dict), N > 0", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", returns=ReachabilityResult)
 def compute_reachable(source_conf, pc_source, instr, state_space, project, preconditions=None, pc_jump_stack=None, deadlines=None):
     """
     INPUT:
@@ -92,8 +92,12 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
     if deadlines is None:
         deadlines = []
 
+    log.debug("Instructions: %s. PC: %s" % (instr, pc_source.pc))
+
     curr_pc = PC(pc_source.pc)
     for curr_instr in instr:
+
+#        log.debug("Check instruction: %s" % curr_instr)
 
         # reachable and final must contain only information that are reached by
         # the last instruction (NB on the contrary, edges contain all the edges 
@@ -112,17 +116,19 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
         for source in source_conf:
             # TODO in principle each invocation of check_reach(...) is independent from the others
             rr = check_reach(source, curr_pc, curr_instr, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
-    
+            log.debug("Check reach: source=%s, result=%s" % (source, rr))    
+
             edges.extend(rr.edges)
             reachable = reachable | set(rr.configurations) # use sets and set unions to avoid duplicates
             final.extend(rr.final_locations) 
             external.extend(rr.external_locations)
             variables = variables | rr.variables
         
-        log.debug("Check reachable at %s: %s from %s" % (curr_pc, reachable, source_conf))
+#        log.debug("Check reachable at %s: %s from %s" % (curr_pc, reachable, source_conf))
         if len(reachable) == 0:
             # in this case the current instruction interrupts the flow of instructions; thus, we
             # must ignore the following instructions
+            log.warning("Instruction interrupts flow: %s. Source conf: %s. PC: %s" % (curr_instr["code"], source_conf, curr_pc))
             break
 
         # next iteration starts from reached configurations, and advance PC by 1
@@ -135,7 +141,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
 
 
-@contract(name="string", instructions="list(dict)", state_space="is_state_space", project="is_project", returns=TA)
+@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", returns=TA)
 def transform(name, instructions, state_space, project):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
@@ -184,10 +190,21 @@ def transform(name, instructions, state_space, project):
 
 class SMTProb(object):
 
-    OP_DECODE = { "plus": "+", "minus": "-", "greater": ">", "less": "<", "mul": "*", "equality": "=" }
+    OP_DECODE = { "plus": "+", "minus": "-", "greater": ">", "less": "<", "mul": "*", "equality": "=", "and": "and", "or": "or", "notEqual": "distinct" }
 
     _SMT_CACHE = Cache("smt")
     _NODE_TO_SMT_CACHE = Cache("node2smt")
+    _DISABLE_NODE_CACHE = True # now it seems that there are some bugs; add this flag to easily come back (also useful for comparing execution with and without cache)
+
+    _engine = None
+
+    @staticmethod
+    def init_engine(*args, **kwargs):
+        SMTProb._engine = SMTProb(*args, **kwargs)
+
+    @staticmethod
+    def the_engine():
+        return SMTProb._engine
 
     @contract(attributes="list", project="is_project")
     def __init__(self, attributes, project):
@@ -200,6 +217,10 @@ class SMTProb(object):
         # set stderr as non-blocking
         flags = fcntl.fcntl(self._cmd.stderr, fcntl.F_GETFL) # get current p.stdout flags
         fcntl.fcntl(self._cmd.stderr, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+
+    def __del__(self):
+        if self._cmd:
+            self._cmd.terminate()
 
 
     def __enter__(self):
@@ -223,6 +244,9 @@ class SMTProb(object):
     @contract(node="dict", returns="None|*")
     def node_cache_lookup(node): 
 
+        if SMTProb._DISABLE_NODE_CACHE:
+            return None
+
         node_key = node["code"].strip()
         res = SMTProb._NODE_TO_SMT_CACHE.lookup(node_key)
         return res
@@ -230,6 +254,9 @@ class SMTProb(object):
     @staticmethod
     @contract(node="dict", obj="*")
     def node_cache_store(node, obj):
+        if SMTProb._DISABLE_NODE_CACHE:
+            return
+
         node_key = node["code"].strip()
         SMTProb._NODE_TO_SMT_CACHE.store(node_key, obj)
         
@@ -256,7 +283,7 @@ class SMTProb(object):
         SMTProb._SMT_CACHE.store(key, res)
 
     @contract(node="dict", returns="tuple(list(string),string)")
-    def node_to_smt(self, node, exclude_frame=None):
+    def node_to_smt(self, node, frame=None):
         """
         This method returns a pair of strings: the first contains auxiliary declarations (e.g. constants,
         datatypes, ...) and the second contains the BODY of the actual assertion.
@@ -271,8 +298,12 @@ class SMTProb(object):
         """
         assert "code" in node
 
-        if not exclude_frame:
-            exclude_frame = []
+        log.debug("Node to smt: %s" % node["code"])
+
+#        if not exclude_frame:
+#            exclude_frame = []
+        if not frame:
+            frame = []
 
         cache_found = SMTProb.node_cache_lookup(node)
 
@@ -290,9 +321,7 @@ class SMTProb(object):
             assert "nodeType" in node["expression"]
 
             node_exp = node["expression"]
-    
             node_exp_type = node["expression"]["nodeType"]
-            #smt = None      
 
             log.debug("Found ASTRE node (%s)" % node_exp_type)
 
@@ -306,26 +335,24 @@ class SMTProb(object):
                 rhs = node_exp["expr"]
 
                 if rhs is not None:
-                    exclude_frame.append(var)
-                    rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs, exclude_frame)
-                    exclude_frame.pop()
-                    smt_declarations.extend(rhs_smt_declarations)
-                    smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
-
+                    new_frame = list(frame)
+                    try:
+                        # remove var if present in frame/new_frame
+                        new_frame.remove(var) 
+                    except ValueError:
+                        # do nothing
+                        pass
+                    rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs, new_frame)
+                    if rhs_smt_assertion:
+                        smt_declarations.extend(rhs_smt_declarations)
+                        smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
                     # force other primed vars to be equal to non-primed vars
-                    #others = []
                     for curr in self.attributes:
                         assert isinstance(curr, AbstractAttribute)
-#                        if curr.name != var:
-#                            others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
                         for attr_var in curr.variables:
-                            if attr_var != var and attr_var not in exclude_frame:
-                                #others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
+                            if attr_var != var and attr_var in frame:
                                 smt_declarations.append("(assert (= %s_1 %s)) ; ASTVariableDeclaration frame condition" % (attr_var, attr_var)) # TODO primed names
 
-#                    if len(others) > 0:
-#                        smt_assertion = "(and %s %s)" % (smt_assertion, " ".join(others))
-    
             elif node_exp_type == "ASTAssignment":
                 assert "right" in node_exp
                 assert "left" in node_exp
@@ -335,28 +362,25 @@ class SMTProb(object):
                 var = node_exp["left"]["value"]
                 rhs = node_exp["right"]
     
-                exclude_frame.append(var)
-                rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs)
-                exclude_frame.pop()
-
-                smt_declarations.extend(rhs_smt_declarations)
-                smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
+                new_frame = list(frame)
+                try:
+                    # remove var if present in frame/new_frame
+                    new_frame.remove(var)
+                except ValueError:
+                    # do nothing
+                    pass
+                rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs, new_frame)
+                if rhs_smt_declaration:
+                    smt_declarations.extend(rhs_smt_declarations)
+                    smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
 
                 # force other primed vars to be equal to non-primed vars
-#                log.debug("Processing attributes: %s" % self.attributes)
-                #others = []
                 for curr in self.attributes:
                     assert isinstance(curr, AbstractAttribute)
 
-#                    if curr.name != var:
-#                        others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
-#                    log.debug("Var: %s -> Attribute: %s -> Variables: %s" % (var, curr, curr.variables))
                     for attr_var in curr.variables:
-                        if attr_var != var and attr_var not in exclude_frame:
-                            #others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
+                        if attr_var != var and attr_var in frame:
                             smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition" % (attr_var, attr_var)) # TODO primed names
-#                if len(others) > 0:
-#                    smt_assertion = "(and %s %s)" % (smt_assertion, " ".join(others))
 
             elif node_exp_type == "ASTPostOp":
                 assert "code" in node_exp
@@ -390,7 +414,7 @@ class SMTProb(object):
                     log.warning("Interpret PL post-op expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                     smt_assertion = node_exp["code"]
             elif node_exp_type == "ASTMethodCall":
-                smt_declarations, smt_assertion = self.node_to_smt(node_exp)
+                smt_declarations, smt_assertion = self.node_to_smt(node_exp, frame) #exclude_frame)
             else:
                 log.warning("Interpret PL expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                 smt_assertion = node_exp["code"]
@@ -408,12 +432,13 @@ class SMTProb(object):
             left = node["left"]
             right = node["right"]
 
-            lhs_smt_declarations, lhs_smt_assertion = self.node_to_smt(left)
-            rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(right)
+            lhs_smt_declarations, lhs_smt_assertion = self.node_to_smt(left, frame) #exclude_frame)
+            rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(right, frame) #exclude_frame)
 
-            smt_declarations.extend(lhs_smt_declarations)
-            smt_declarations.extend(rhs_smt_declarations)
-            smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
+            if lhs_smt_declarations and rhs_smt_declarations:
+                smt_declarations.extend(lhs_smt_declarations)
+                smt_declarations.extend(rhs_smt_declarations)
+                smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
         elif node_type == "ASTLiteral":
             # at the moment an ASTLiberal can be an actual literal
             # or an identifier; I hope this will be fixed in the
@@ -432,7 +457,7 @@ class SMTProb(object):
  
             par_ctx = {}   
             for (par_id,par) in enumerate(node["parameters"]):
-                (par_smt_declarations, par_smt_assert) = self.node_to_smt(par)
+                (par_smt_declarations, par_smt_assert) = self.node_to_smt(par, frame) #exclude_frame)
                 smt_declarations.extend(par_smt_declarations)
                 #smt_declarations.append(par_smt_assert)
                 par_name = "par_%s" % par_id
@@ -447,7 +472,7 @@ class SMTProb(object):
             lhs_smt_assertion = ""
             if node["exprCallee"] is not None:
                 # resolve lhs of method call (i.e. the callee)
-                lhs_smt_declarations,lhs_smt_assertion = self.node_to_smt(node["exprCallee"])
+                lhs_smt_declarations,lhs_smt_assertion = self.node_to_smt(node["exprCallee"], frame) #exclude_frame)
                 smt_declarations.extend(lhs_smt_declarations)
  
             tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
@@ -473,11 +498,16 @@ class SMTProb(object):
             # add frame condition: all variables are left untouched (NB this is true only for read-only methods; in general methods could change the status of some of the state variables)
 
             check("list(is_abstract_attribute)", self.attributes)
+    
+            log.debug("Frame condition in ASTMethodCall: %s" % frame) #exclude_frame)
             for curr in self.attributes:
                 check("is_abstract_attribute", curr)
                 for attr_var in curr.variables:
-                    if attr_var not in exclude_frame:
-                        smt_declarations.append("(assert (= %s_1 %s)) ; ASTMethodCall frame condition" % (attr_var, attr_var)) # TODO primed name
+                    log.debug("Check var in frame: %s vs %s" % (attr_var, frame)) #exclude_frame))
+                    if attr_var in frame: #not in exclude_frame:
+                        smt_declarations.append("(assert (= %s_1 %s)) ; ASTMethodCall frame condition (%s)" % (attr_var, attr_var, frame )) #exclude_frame)) # TODO primed name
+                    else:
+                        log.debug("Var excluded: %s" % attr_var)
    
 
             # add the auxiliary declarations
@@ -488,10 +518,15 @@ class SMTProb(object):
 
             # store the returned value for this case
             smt_assertion = tmp_var_name
- 
+        elif node_type == "ASTNewObject":
+            smt_assertion = ""
+        elif node_type == "ASTCast":
+            smt_assertion = ""   
         else:
-            log.warning("Interpret PL code (%s) as SMT code: %s ..." % (node["code"], node))
-            smt_assertion = node["code"]
+#            log.warning("Interpret PL code (%s) as SMT code: %s ..." % (node["code"], node))
+#            smt_assertion = node["code"]
+            log.warning("Do not know how the SMT interpretation of code (%s): %s" % (node["code"], node))
+            smt_assertion = ""
 
         SMTProb.node_cache_store(node, (smt_declarations,smt_assertion))
 
@@ -527,16 +562,20 @@ class SMTProb(object):
         smt_assertion = "" #None
         if isinstance(pre, Negate):
             pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node)
-            smt_assertion = "(assert (not %s))" % pre_smt_assertion
+#            smt_assertion = "(assert (not %s))" % pre_smt_assertion
         else:
             pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node)
+#            smt_assertion = "(assert %s)" % pre_smt_assertion
+
+        if pre_smt_assertion:
+            if isinstance(pre, Negate):
+                pre_smt_assertion = "(not %s)" % pre_smt_assertion
+
+#        assert(len(smt_assertion)>0)
             smt_assertion = "(assert %s)" % pre_smt_assertion
+            smt_declarations.extend(pre_smt_declarations)
 
-        assert(len(smt_assertion)>0)
-
-        smt_declarations.extend(pre_smt_declarations)
-
-        log.debug("Pre: %s => (%s,%s)" % (pre, smt_declarations, smt_assertion))
+##        log.debug("Pre: %s => (%s,%s)" % (pre, smt_declarations, smt_assertion))
         return smt_declarations, smt_assertion
  
 
@@ -551,34 +590,49 @@ class SMTProb(object):
     
         assertions = []
         
+        assertions.append("; begin encoding source state")
         assertions.extend(source_pred)
+        assertions.append("; end encoding source state")
 
         if preconditions:
        
+            assertions.append("; begin encoding precondition")
             for pre in preconditions:
     
                 smt_declarations,smt_pre = self.precondition_to_smt(pre)
                 assertions.extend(smt_declarations)
                 assertions.append(smt_pre)
+            assertions.append("; end encoding precondition")
         
         # SMT assertions about the target predicates require that:
         # - if instruction does something, target predicates use primed vars
         # - if instruction does not do anything, target predicates use same vars as source predicates   
 
         if instr is not None:
-            smt_instr_declarations, smt_instr_assertion = self.node_to_smt(instr)
+            # pass the entire environment as the frame of variables to
+            # be preserved; it is a responsibility of node_to_smt to 
+            # remove some variables, if they are modified by (part of)
+            # the processed instruction
+            frame_variables = []
+            for attr in source_pred:    
+                frame_variables.extend(attr.predicate.var_names)
+            smt_instr_declarations, smt_instr_assertion = self.node_to_smt(instr, frame_variables)
 
-            if smt_instr_declarations:
-                assertions.extend(smt_instr_declarations)
+            assertions.append("; begin encoding instruction: %s" % instr["code"])
 
             if smt_instr_assertion: # is not None: # also discard the case of empty strings (should never happen, though)
+                assertions.extend(smt_instr_declarations)
                 instr_assert = "(assert %s)" % smt_instr_assertion
                 assertions.append(instr_assert)
+
+            assertions.append("; end encoding instruction: %s" % instr["code"])
 
             if target_pred is not None:
                 target_pred_primed = self.primed(target_pred)
 
+                assertions.append("; begin encoding target state")
                 assertions.extend(target_pred_primed)
+                assertions.append("; end encoding target state")
 
         return assertions
  
@@ -663,10 +717,14 @@ class SMTProb(object):
         assert (instr is None and target_pred is None) or (instr is not None and target_pred is not None)
         smt_code = []
         
+        smt_code.append("; begin declarations of attributes of source and target states")
+
         # add declaration of attributes and their types
-        #do_primed = (target_pred is not None)
-        do_primed = True
+        do_primed = (target_pred is not None)
+        #do_primed = True
         smt_code.extend(self.get_smt_attribute_declaration(primed=do_primed))     
+
+        smt_code.append("; end declarations of attributes of source and target states")
 
         # add problem assertions derived from source state, instruction, target state
         for curr in self.combine_assertions(source_pred, instr=instr, target_pred=target_pred, preconditions=preconditions):
@@ -757,7 +815,7 @@ class SMTProb(object):
 
         answer = self.get_tool_answer(commands)
 
-        log.debug("check guard: %s vs %s, given: %s ? %s" % (source_attpred,guard,preconditions, answer))
+        log.debug("check guard: %s vs %s, given: %s ? %s" % (source_attpred,guard.code,preconditions, answer))
 
         smt_res = False
         if answer.strip() == "sat":
@@ -970,6 +1028,8 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         if (is_then_reachable):
             reachable_then = [ source ]
 
+#            log.debug("ASTIf then statements: (%s) %s" % (len(stms_then), stms_then))
+    
             preconditions.append(Precondition(guard["expression"]))
             rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()    
@@ -1100,7 +1160,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                     edge_back = Edge(loc, loc_back, "end while")
                     edges.append(edge_back)
     
-                    log.debug("Curr while final: %s vs %s" % (state_final_conf, visited_sources))
+#                    log.debug("Curr while final: %s vs %s" % (state_final_conf, visited_sources))
     
                     # in case the configuration has not been visited before
                     # by an iteration of the while, then visit it
@@ -1378,7 +1438,10 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
         check_closure(pc_target, reachable, final, external)
 
-    elif instr_type == "ASTForEach":
+    elif instr_type == "ASTForEach" or instr_type == "ASTFor":
+
+        assert "identifier" in instr
+        assert "stms" in instr
 
         foreach_identifier = instr["identifier"]
         stms_foreach = instr["stms"]
@@ -1419,7 +1482,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                 final.append(loc_out)
                 reachable.append(state_final_conf)
 
-                log.debug("Curr foreach final: %s vs %s" % (state_final_conf, visited_sources))
+#                log.debug("Curr foreach final: %s vs %s" % (state_final_conf, visited_sources))
 
                 # add an edge restarting the foreach loop
                 loc_restart = build_loc(state_final_conf, pc_source_foreach)
@@ -1430,9 +1493,6 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                 # by an iteration of the foreach, then visit it
                 if state_final_conf not in visited_sources:
                     tovisit_sources.append(state_final_conf)
-
-
-
 
         check_closure(pc_target, reachable, final, external)
 
@@ -1449,7 +1509,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
     curr_edges = list(rr.edges)
     for pc in deadlines:
-        log.debug("Curr locations: %s" % rr.locations)
+#        log.debug("Curr locations: %s" % rr.locations)
         cv = FreshNames.get_clock_variable(pc, "deadline")
         (lower, upper) = FreshNames.get_clock_bounds(pc, "deadline")
 

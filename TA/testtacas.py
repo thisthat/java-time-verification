@@ -23,7 +23,7 @@ LOG_CONFIG = {
         "level": "DEBUG",
         "handlers": [
             "console",
-            "file",
+#            "file",
             "debugfile"
         ]
     },
@@ -42,7 +42,7 @@ LOG_CONFIG = {
     "handlers": {
         "debugfile": {
             "class": "logging.FileHandler",
-            "formatter": "brief",
+            "formatter": "precise", #"brief",
             "mode": "a",
             "level": "DEBUG",
             "filename": CURRFILE + ".log",
@@ -104,14 +104,18 @@ def build_legend(state_space):
 # this "knowledge" of the String.equals method works only when composing an object of type String with a constant
 # string (a literal)
 string_equals = ([ "(assert (= {res} (= (value {lhs}) {par_0})))" ], "{res}", Boolean())
+string_length = ([ "(assert (= {res} (size {lhs})))" ], "{res}", Integer())
 string_contains = ([ "(declare_const tmp Int)" , "(assert (= {res} (= (value {lhs}) (* (value {par_0}) tmp))))" ], "{res}", Boolean())
 KnowledgeBase.add_method("java.lang.String", "equals", string_equals)
 KnowledgeBase.add_method("java.lang.String", "contains", string_contains)
-KnowledgeBase.add_method("java.io.PrintStream", "println", ([], "(assert (= 1 1)", Boolean()))
+KnowledgeBase.add_method("java.lang.String", "length", string_length)
 KnowledgeBase.add_method("java.lang.Thread", "sleep", ([], "(assert (= 1 1))", Boolean()))
-KnowledgeBase.add_method("-", "send_icmp_request", ([], "(assert (= 1 1))", Boolean()))
-KnowledgeBase.add_method("-", "receive_icmp_reply", ([], "(assert (= 1 1))", Boolean()))
-KnowledgeBase.add_method("-", "setAlive", ([], "(assert (= 1 1))", Boolean()))
+KnowledgeBase.add_method("java.lang.Integer", "parseInt", ([], "(assert (= 1 1))", Integer()))
+KnowledgeBase.add_method("java.lang.Long", "parseLong", ([], "(assert (= 1 1))", Integer()))
+
+
+
+
 
 
 # start to analyse the code
@@ -121,14 +125,9 @@ i_gt_j = GT().rename(var="var_1",value="var_2")
 i_eq_j = Eq().rename(var="var_1",value="var_2")
 i_neq_j = NotEq().rename(var="var_1",value="var_2")
 
-#i_streq_j = Eq().rename(var="var_1",value="var_2").wrap_fields(var_1="value",var_2="value")
-#i_strneq_j = NotEq().rename(var="var_1",value="var_2").wrap_fields(var_1="value", var_2="value")
-tag_values = split_enum([ literal_to_smt("'leader'"), literal_to_smt("'election'") ], case_else=True)
-
-
 ### here the user inputs begin. first we ask for the "coordinates" of the method to be analyzed
 
-proj_name = "test_project" # "dist-progs" # test_project 
+proj_name = "jetty"
 proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
 
 
@@ -143,24 +142,24 @@ proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.translator
 
 # each tuple in the domain has the following structure:
 # (variable names, domain, is_local)
-domain_foo = [
-    ("initial_i", INTEGERS, False),
-    ("initial_j", INTEGERS, False),
-    ("i", INTEGERS, True),
-    ("j", Domain(Integer(), split_numeric_domain([ 0, 2 ])), True)
-]
-
-domain_fie = [
-    ("initial_i", INTEGERS, False),
-    ("initial_j", INTEGERS, False),
-    ("i", INTEGERS, True),
-    ("j", Domain(Integer(), split_numeric_domain([ 0, 2 ])), True)
+domain_dump = [
+    # method parameters
+    ("data", STRINGS, False),
+    ("dribble", STRINGS, False),
+    ("flush", Dummy(Boolean()), False),
+    ("response", Dummy(Object()), False),
+    ("chars", STRINGS, False),
+    ("block", Dummy(AbsString()), False),
+    # method local variables
+    ("d", INTEGERS, True),
+    ("b", INTEGERS, True),  
+    ("buf", Dummy(Object()), True),
+    ("out",Dummy(Object()), True),
 ]
 
 
 method_specs = [
-#    ("While.foo", domain_foo), 
-    ("While.fie", domain_fie),
+    ("com.acme.Dump.dump", "Dump.java", domain_dump), 
 ]
 
 
@@ -174,13 +173,11 @@ p.open()
 
 method_kb = {}
 
-for (method_name, method_domain) in method_specs:
+for (method_name, file_name, method_domain) in method_specs:
     parts = method_name.split(".")
     method_name = parts[-1] # the method name is the last component
     class_name = ".".join(parts[:-1]) # the FQN for the class is all the previous one
     log.debug("%s (%s) -> %s + %s" % (method_name, parts, class_name, method_name))
-
-    file_name = "%s.java" % class_name # HACK TODO change this!
 
     m = p.get_method(class_name, file_name, method_name)
 
@@ -203,7 +200,7 @@ for (method_name, method_domain) in method_specs:
 # here we pass the TA to a renderer (GraphViz) which produces a graphical representation of it. Some input
 # may be required to the user (e.g. the type and name of output file)
 
-    gv = GraphViz(ta, legend, False)
+    gv = GraphViz(ta, legend)
     gv.save(method_name + ".gv")
 
 #    log.debug("TA variables: %s" % map(lambda v: str(v), ta.variables))

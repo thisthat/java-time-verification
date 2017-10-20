@@ -107,8 +107,21 @@ class TARenderer(object):
 
 class GraphViz(TARenderer):
 
+    def __init__(self, ta, legend=None, show_pc=True):
+        self.show_pc = show_pc
+        super(GraphViz, self).__init__(ta, legend)
+ 
+    @contract(loc="is_location", returns="string")
+    def get_loc_name(self, loc):
+        loc_name = loc.name
+        if not self.show_pc:
+            loc_name = re.sub(r'\@[0-9\.]+$', "", loc_name)
+
+        return loc_name
+   
     def render(self, *args, **kwargs):
         ta = self.ta
+    
         g = Digraph(ta.name)
         g.attr(rankdir="TD")
 
@@ -117,7 +130,8 @@ class GraphViz(TARenderer):
             if loc.is_initial:
                 node_attrs["peripheries"] = "2"
 
-            g.node(loc.name, **node_attrs)
+            loc_name = self.get_loc_name(loc)
+            g.node(loc.name, label=loc_name, **node_attrs)
 
         for e in ta.edges:
             g.edge(e.source.name, e.target.name, label=e.label)
@@ -147,7 +161,7 @@ class GraphViz(TARenderer):
         log.debug("Saved: %s -> %s" % (path, plain_path))
         return plain_path
 
-def loc_name(name):
+def uppaal_loc_name(name):
     """
     This will be used as filter for converting location names to valid
     Uppaal location identifiers/names
@@ -155,11 +169,11 @@ def loc_name(name):
     return unicode(name).replace("(","loc_").replace(")@", "_at_").replace(", ","_").replace(".","_")
 
 
-def var_name(name):
+def uppaal_var_name(name):
     return re.sub("(|)","", re.sub("@|,|\.","_", unicode(name)))
 
 
-def get_loc_position(position_map):
+def uppaal_get_loc_position(position_map):
     def get_x(loc):
         loc_name = loc
         if isinstance(loc, Location):
@@ -206,5 +220,5 @@ class Uppaal(TARenderer):
 
         position_map = self.get_position_map()
         log.debug("Position map: %s" % position_map)
-        (loc_x, loc_y) = get_loc_position(position_map)
-        return { "loc_name": loc_name, "var_name": var_name, "loc_x": loc_x, "loc_y": loc_y }
+        (loc_x, loc_y) = uppaal_get_loc_position(position_map)
+        return { "loc_name": uppaal_loc_name, "var_name": uppaal_var_name, "loc_x": loc_x, "loc_y": loc_y }

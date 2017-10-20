@@ -1,3 +1,4 @@
+import re
 from contracts import contract, new_contract
 
 from java2ta.commons.utility import new_contract_check_type
@@ -107,6 +108,16 @@ class Location(object):
         self.is_initial = is_initial
         self.is_urgent = is_urgent
 
+    def equals_modulo_pc(self, location):
+        """
+        TODO not sure this is the right place for this
+        check; after all, a TA knows nothing of PC's.
+        Perhaps we should move the entire minimization step
+        before creating the TA
+        """
+        curr_name = re.sub(r"\@[0-9\.]+$", "", self.name)
+        loc_name = re.sub(r"\@[0-9\.]+$", "", location.name)
+        return curr_name == loc_name
 
     @contract(cexp="string")
     def set_invariant(self, cexp):
@@ -272,7 +283,18 @@ class TA(object):
         if loc.name not in self._location_names:
             self.locations.add(loc)
             self._location_names[loc.name] = loc
-        
+     
+    @contract(loc="is_location")
+    def del_location(self, loc):
+        if loc.is_initial:
+            if self.initial_loc == loc:
+                self.initial_loc = None
+            else:
+                raise ValueError("Location is initial, but is not the TA initial location")
+
+        self.locations.discard(loc)
+        self._location_names.pop(loc.name, None)
+   
     @contract(edge="is_edge")
     def add_edge(self, edge):
 
@@ -288,11 +310,24 @@ class TA(object):
             self._edges_lookup[edge.source] = {}
         self._edges_lookup[edge.source][edge.target] = edge
 
-##    def get_or_add_variable(self, name, type):
-##        
-##        c = Variable(name, type)
-##        self.add_clock_variable(name)
-## 
+        
+
+    @contract(edge="is_edge")
+    def del_edge(self, edge):
+        
+        if edge.source in self._edges_lookup:
+            if edge.target in self._edges_lookup[edge.source]:
+                self._edges_lookup[edge.source].pop(edge.target)
+            if len(self._edges_lookup[edge.source]) == 0:
+                self._edges_lookup.pop(edge.source)
+
+        log.debug("Edge source outgoing: %s" % edge.source.outgoing)
+        log.debug("Edge target incoming: %s" % edge.target.incoming)
+        edge.source.outgoing.discard(edge)
+        edge.target.incoming.discard(edge)
+
+        self.edges.discard(edge)
+
     def add_variable(self, var):
         assert isinstance(var, Variable)
 
@@ -346,6 +381,20 @@ class TA(object):
 
         if initial:
             self.initial_loc = initial
+
+    def sanity_check(self):
+        for loc in self.locations:
+            for e in loc.outgoing:
+                if e.source != loc: 
+                    raise ValueError("Location %s has outgoing edge with different source location" % (loc, e))
+
+            for e in loc.incoming:  
+                if e.target != loc:
+                    raise ValueError("Location %s has incoming edge with different target location" % (loc, e))
+
+    def minimize(self):
+        # TODO
+        pass       
 
 new_contract_check_type("is_ta", TA)
 

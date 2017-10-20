@@ -109,6 +109,17 @@ class AbsString(DataType):
         super(AbsString, self).__init__("AbsString", smt_declaration=smt_declaration, smt_var_axioms=["(assert (>= (size {var}) 0))"])
 
 
+class Object(DataType):
+
+    def __init__(self):
+        from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
+
+        smt_declaration = smt_declare_rec_datatype("Object", {"isnull":"Bool",}) 
+        super(Object, self).__init__("Object", smt_declaration=smt_declaration)
+
+
+    
+
 class Collection(DataType):
     
     def __init__(self): 

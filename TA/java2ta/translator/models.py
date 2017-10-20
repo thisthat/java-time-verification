@@ -240,6 +240,11 @@ class Precondition(object):
 
         return node
 
+    @property
+    @contract(returns="string")
+    def code(self):
+        return self.node["code"]
+
     def __str__(self):
         return "%s" % self.child
 
