@@ -31,4 +31,24 @@ public class While {
         j = i + 1;
         return j;
     }
+
+    public static int fie(int initial_j) {
+    
+        int i = initial_i + 1;
+        int j = initial_j - 2;
+
+        i++;
+
+        while (j > 0) {
+            j = j * 2; 
+            while (j < 2) {
+                j = j * 2;
+            }
+            j = i;
+        }
+
+        j = i + 1;
+        return j;
+    }
+
 }

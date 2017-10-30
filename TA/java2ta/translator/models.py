@@ -3,7 +3,7 @@ import logging
 
 from java2ta.commons.utility import new_contract_check_type
 from java2ta.abstraction.models import AbstractAttribute, Predicate
-
+from java2ta.ta.models import ClockVariable, Variable, Int
 
 log = logging.getLogger("main")
 
@@ -88,12 +88,18 @@ new_contract_check_type("is_pc", PC)
 
 class ReachabilityResult(object):
 
-    @contract(configurations="set(is_configuration)|list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)")
-    def __init__(self, configurations, final_locations, external_locations, edges):
+    @contract(configurations="set(is_configuration)|list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)", variables="set(is_variable)")
+    def __init__(self, configurations, final_locations, external_locations, edges, variables):
         self._configurations = set(configurations)
         self.final_locations = final_locations
         self.external_locations = external_locations
         self.edges = edges 
+        self.variables = variables
+
+        self.locations = set([])
+        for e in edges:
+            self.locations.add(e.source)
+            self.locations.add(e.target)
 
     def __str__(self):
         return "Configurations: {%s}, Final locations: {%s}, External locations: {%s}, Edges: {%s}" % (self.configurations, self.final_locations, self.external_locations, self.edges)
@@ -143,22 +149,26 @@ class AttributePredicate(object):
         check("is_predicate", self.predicate)
         #ctx = self.get_context()
 
-        return self.predicate.smt_assert(**(self._ctx)) #var=self.attribute.name)
+        return self.predicate.smt_assert(**(self._ctx))
  
     @contract(returns="string")
     def label(self):
-        #ctx = self.get_context()
         check("is_predicate", self_predicate)
-        return self.predicate.label(**(self._ctx)) #var=self.attribute.name)       
+        return self.predicate.label(**(self._ctx))
 
     def __str__(self):
-        #ctx = self.get_context()
 
         res = str(self.predicate)
         for pred_var, attr_val in self._ctx.iteritems():
-            res = res.replace("{%s}" % pred_var, attr_var)
+            res = res.replace("{%s}" % pred_var, attr_val)
 
         return res
+
+    def __unicode__(self):
+        return str(self)
+
+    def __repr__(self):
+        return str(self)
 
 
     @contract(self="type(t)",returns="type(w),w=t")
@@ -214,12 +224,6 @@ class Cache(object):
 
 
 
-##@new_contract
-##def is_precondition(obj):
-##    if not isinstance(obj, Precondition):
-##        raise ValueError("Expected Precondition, not %s" % type(obj))
-##
-
 class Precondition(object):
 
     def __init__(self, node):
@@ -236,9 +240,121 @@ class Precondition(object):
 
         return node
 
+    @property
+    @contract(returns="string")
+    def code(self):
+        return self.node["code"]
+
+    def __str__(self):
+        return "%s" % self.child
+
 new_contract_check_type("is_precondition", Precondition)
 
 class Negate(Precondition):
     pass
+
+class FreshNames(object):
+
+    _COUNTER = 1000
+    clock_variables = {}
+
+    @staticmethod
+    @contract(prefix="string", returns="string")
+    def get_name(prefix):
+        return "%s%s" % (prefix, FreshNames.get_id())
+
+    @staticmethod
+    @contract(returns="int")
+    def get_id():
+        curr_id = FreshNames._COUNTER
+        FreshNames._COUNTER = FreshNames._COUNTER + 1
+        return curr_id
+
+    @staticmethod
+    @contract(pc="is_pc", prefix="string")
+    def enter_clock_variable(pc, prefix=""):
+#        cv_name = "%s%s" % (prefix, pc)
+        cv_name = FreshNames.get_name(prefix)
+        cv = ClockVariable(cv_name)
+
+        lower = Variable("%s_lo" % cv.name, Int())
+        upper = Variable("%s_up" % cv.name, Int())
+
+        FreshNames.clock_variables[pc] = (cv, lower, upper)
+
+        return (cv, lower, upper)
+
+    @staticmethod
+    @contract(pc="is_pc", prefix="string")
+    def get_clock_variable(pc, prefix=""):
+
+        (cv, lower, upper) = FreshNames.clock_variables.get(pc, (None,None,None))
+
+        if not cv:
+            (cv, lower, upper) = FreshNames.enter_clock_variable(pc, prefix=prefix)
+
+        return cv
+
+    @staticmethod
+    @contract(pc="is_pc", prefix="string")
+    def get_clock_bounds(pc, prefix=""):
+
+        (cv, lower, upper) = FreshNames.clock_variables.get(pc, (None,None,None))
+
+        if not cv:
+            (cv, lower, upper) = FreshNames.enter_clock_variable(pc, prefix=prefix)
+
+        return (lower, upper)
+
+
+
+class KnowledgeBase(object):
+
+    KB = {}
+ 
+    @staticmethod   
+    @contract(class_name="string", method_name="string", knowledge="tuple(list(string),string,is_data_type)")
+    def add_method(class_name, method_name, knowledge):
+
+        if class_name not in KnowledgeBase.KB:
+            KnowledgeBase.KB[class_name] = {}
+
+        if method_name in KnowledgeBase.KB[class_name]:
+            raise ValueError("You already provided an interpretation for method (%s,%s)" % (class_name, method_name))
+
+        KnowledgeBase.KB[class_name][method_name] = knowledge
+
+        
+    @staticmethod
+    @contract(class_name="string", method_name="string", returns="bool")
+    def has_method(class_name, method_name):
+        res = (class_name in KnowledgeBase.KB and method_name in KnowledgeBase.KB[class_name])
+        return res
+
+    @staticmethod
+    @contract(class_name="string", method_name="string", res_var="string", params="dict(string:string)", lhs_var="string", returns="tuple(list(string),string,is_data_type)")
+    def get_method(class_name, method_name, res_var, params, lhs_var):
+
+        assert KnowledgeBase.has_method(class_name, method_name)
+
+        check("tuple(list(string),string,is_data_type)", KnowledgeBase.KB[class_name][method_name])
+
+        (kb_smt_declarations, kb_smt_assertion,dt) = KnowledgeBase.KB[class_name][method_name]
+
+        ctx = dict(params)
+        ctx["res"] = res_var
+        ctx["lhs"] = lhs_var
+    
+        log.debug("Context: %s" % ctx)
+        fun_replace = lambda x,y: x.replace("{%s}" % y, ctx[y])
+
+        smt_declarations = []
+        smt_assertion = reduce(fun_replace, ctx, kb_smt_assertion) #kb_smt_assertion.replace("{res}", res_var)
+
+        for curr in kb_smt_declarations:
+            curr_smt_declaration = reduce(fun_replace, ctx, curr)
+            smt_declarations.append(curr_smt_declaration)
+
+        return smt_declarations, smt_assertion, dt
 
 

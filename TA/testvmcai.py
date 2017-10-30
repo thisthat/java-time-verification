@@ -1,7 +1,7 @@
+#!/usr/bin/env python
 import pkg_resources
 import os
 import subprocess
-import pydot
 import logging
 import logging.config
 
@@ -12,7 +12,9 @@ from java2ta.translator.shortcuts import *
 from java2ta.translator.models import KnowledgeBase
 from java2ta.abstraction.shortcuts import *
 from java2ta.abstraction.models import *
-from java2ta.ta.views import GraphViz
+from java2ta.ta.views import GraphViz, Uppaal
+
+CURRFILE=os.path.basename(__file__)
 
 LOG_CONFIG = {
     "version": 1,
@@ -43,7 +45,7 @@ LOG_CONFIG = {
             "formatter": "brief",
             "mode": "a",
             "level": "DEBUG",
-            "filename": "testfoo.log"
+            "filename": CURRFILE + ".log",
         },
         "console": {
             "formatter": "precise",
@@ -57,7 +59,7 @@ LOG_CONFIG = {
             "level": "WARNING",
             "maxBytes": 10240000,
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": "testfoo.log"
+            "filename": CURRFILE + ".log",
         }
     }
 }
@@ -106,6 +108,11 @@ string_contains = ([ "(declare_const tmp Int)" , "(assert (= {res} (= (value {lh
 KnowledgeBase.add_method("java.lang.String", "equals", string_equals)
 KnowledgeBase.add_method("java.lang.String", "contains", string_contains)
 KnowledgeBase.add_method("java.io.PrintStream", "println", ([], "(assert (= 1 1)", Boolean()))
+KnowledgeBase.add_method("java.lang.Thread", "sleep", ([], "(assert (= 1 1))", Boolean()))
+KnowledgeBase.add_method("-", "send_icmp_request", ([], "(assert (= 1 1))", Boolean()))
+KnowledgeBase.add_method("-", "receive_icmp_reply", ([], "(assert (= 1 1))", Boolean()))
+KnowledgeBase.add_method("-", "setAlive", ([], "(assert (= 1 1))", Boolean()))
+
 
 # start to analyse the code
 
@@ -123,10 +130,10 @@ tag_values = split_enum([ literal_to_smt("'leader'"), literal_to_smt("'election'
 
 proj_name = "test_project" # "dist-progs" # test_project 
 #proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.ir.tests", proj_name))
-proj_path =  os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
-class_name = "MethodCall" #"RingLeader" # DoWhile, While, Short, SequentialCode
-file_name = "MethodCall.java"# "RingLeader.java" # DoWhile.java, While.java, Short.java, SequentialCode.java
-method_name = "foo" #"handleMsg"
+proj_path =  "example_neighbors.json" #os.path.abspath(pkg_resources.resource_filename("java2ta.translator.tests", proj_name))
+#class_name = "example.TestNeighbors" #"RingLeader" # DoWhile, While, Short, SequentialCode
+file_name = "TestNeighbors.java"# "RingLeader.java" # DoWhile.java, While.java, Short.java, SequentialCode.java
+#method_name = "is_alive" #"handleMsg"
 
 
 # next we ask for a "list" of abstract predicates, that compose an "abstract domain". An abstract predicates P
@@ -138,65 +145,63 @@ method_name = "foo" #"handleMsg"
 # a boolean configuration of them, e.g.: P_1 and not P_2 and ... and not P_M. Given M predicates, there exist
 # 2^M abstract states.
 
+method_names = [
+#    "example.TestNeighbors.is_alive",
+    "example.TestNeighbors.run",
+]
+
 # each tuple in the domain has the following structure:
 # (variable names, domain, is_local)
 domains = [
-#    "i": INTEGERS,
-#    "j": INTEGERS,
-#    (["i","j"], DomainProduct(var_1=INTEGERS, var_2=INTEGERS)),
-#    (["i","j"], CompareVariables(datatypes=[Integer(), Integer()], predicates=[i_eq_j, i_lt_j, i_gt_j]), True),
-#    ("initial_i", INTEGERS, False),
-#    ("initial_j", INTEGERS, False),
-#    ("number", INTEGERS, False),
-#    ("leaderId", INTEGERS, False),
-#    ("next", INTEGERS, False),
-#    ("awake", BOOLEANS, False),
-#    ("src", INTEGERS, False),
-#    ("leader", Dummy(AbsString()), False),
-#    ("election", Dummy(AbsString()), False),
-#    (["leader","election"], CompareVariables(datatypes=[AbsString(),AbsString()], predicates=[i_strneq_j]), False),
-    ("tag", Domain(AbsString(), split_field_domain(tag_values, var="value")), False),
-
-    (["tag","'leader'"], CompareVariables(datatypes=[AbsString(),AbsString()], predicates=[i_eq_j, i_neq_j]), False),
-    (["tag","'election'"], CompareVariables(datatypes=[AbsString(),AbsString()], predicates=[i_eq_j, i_neq_j]), False),
-
-#    (["tag","leader"], CompareVariables(datatypes=[AbsString(), AbsString()], predicates=[i_streq_j, i_strneq_j]), False),
-#    (["tag","election"], CompareVariables(datatypes=[AbsString(), AbsString()], predicates=[i_streq_j, i_strneq_j]), False),
-#    ("j", INTEGERS, True),
-    (["j","number"], CompareVariables(datatypes=[Integer(), Integer()], predicates=[i_eq_j, i_neq_j]), False),
+    ("address", Dummy(Integer()), False),
+    ("timeout", Dummy(Integer()), False),
+    ("res",BOOLEANS,True), # local variable for storing returned result
+    ("exception_inv", BOOLEANS, True), # local variable for detecting excetion raised
+    ("isAlive", BOOLEANS, True),
 ]
 
-
-# here the tool "fetch" the specified method, and buils a finite state automaton (FSA) using the passed list
+# here the tool "fetch" the specified method, and buils a finite state automaton (TA) using the passed list
 # of predicates. here the tool does not need any further input.
 # start code
 
-p = Project(proj_name, "file://%s" % proj_path, "localhost:9000")
+p = DummyProject(proj_name, "file://%s" % proj_path, "localhost:9000")
 
 p.open()
-#m = get_method(p, class_name, file_name, method_name)
-m = p.get_method(class_name, file_name, method_name)
 
-ss = get_state_space_from_method(m, domains)
+method_kb = {}
 
-fsa = translate_method_to_fsa(m, ss)
+for curr in method_names:
+    parts = curr.split(".")
+    method_name = parts[-1] # the method name is the last component
+    class_name = ".".join(parts[:-1]) # the FQN for the class is all the previous one
+    log.debug("%s (%s) -> %s + %s" % (curr, parts, class_name, method_name))
 
-legend = build_legend(ss)
+    file_name = "%s.Java" % class_name # HACK TODO change this!
 
-log.debug("Final legend: %s" % legend)
+    m = p.get_method(class_name, file_name, method_name)
 
-print "FSA: %d locations, %d edges" % (len(fsa.locations), len(fsa.edges))
+    ss = get_state_space_from_method(m, domains)
 
-# here we pass the FSA to a renderer (GraphViz) which produces a graphical representation of it. Some input
+    ta = translate_method_to_ta(m, ss)
+    
+    method_kb[curr] = ta
+
+    legend = build_legend(ss)
+
+    log.debug("Method legend (%s): %s" % (curr, legend))
+
+    print "TA for method %s: %d locations, %d edges" % (curr, len(ta.locations), len(ta.edges))
+
+# here we pass the TA to a renderer (GraphViz) which produces a graphical representation of it. Some input
 # may be required to the user (e.g. the type and name of output file)
 
-gv = GraphViz(fsa)
-with open("testfoo.gv", "w+") as out_f:
-    out_f.write(gv.render(legend))
+    gv = GraphViz(ta, legend)
+    gv.save(curr + ".gv")
 
-(graph,) = pydot.graph_from_dot_file('testfoo.gv')
-graph.write_pdf('testfoo.pdf')
-graph.write_svg('testfoo.svg')
+#    log.debug("TA variables: %s" % map(lambda v: str(v), ta.variables))
 
-# this is used to open the produced output file. The user may desire a command for opening the produced output file
-subprocess.call(["xdg-open", "testfoo.svg"])
+#    log.debug("TA clock variables: %s" % map(lambda v: str(v), ta.clock_variables))
+
+    uppaal = Uppaal(ta, legend)
+    uppaal.save(curr + ".xml")
+

@@ -1,12 +1,12 @@
 digraph finite_state_machine {
     rankdir=LR;
     {% if ta.initial_loc %}
-    node [shape = doublecircle]; {{ ta.initial_loc.name }};
+    node [shape = doublecircle] "{{ ta.initial_loc.name }}";
     {% endif %}
     node [shape = circle];
 
     {% for edge in ta.edges %}
-    "{{ edge.source.name }}" -> "{{ edge.target.name }}" {% if edge.label %}[label="{{ edge.label }}"]{% endif %};
+    "{{ edge.source.name }}" -> "{{ edge.target.name }}" {% if edge.label %}[label="{{ edge.label|replace('"','\'') }}"]{% endif %};
     {% endfor %}
 
 {% if legend %}

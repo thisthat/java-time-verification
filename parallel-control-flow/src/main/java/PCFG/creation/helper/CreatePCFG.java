@@ -9,17 +9,15 @@ import PCFG.structure.edge.Edge;
 import PCFG.structure.node.Node;
 import PCFG.structure.node.SyncNode;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.interfaces.ConvertIM;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import org.javatuples.KeyValue;
-import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -506,7 +504,7 @@ public class CreatePCFG extends ConvertIM {
 			public void enterASTAssignment(ASTAssignment elm) {
 				elm.getLeft().visit(new DefaultASTVisitor() {
 					@Override
-					public void enterASTLiteral(ASTLiteral elm) {
+					public void enterASTIdentifier(ASTIdentifier elm) {
 						varName[0] = elm.getValue();
 					}
 				});
@@ -516,7 +514,7 @@ public class CreatePCFG extends ConvertIM {
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 				elm.getName().visit(new DefaultASTVisitor() {
 					@Override
-					public void enterASTLiteral(ASTLiteral elm) {
+					public void enterASTIdentifier(ASTIdentifier elm) {
 						varName[0] = elm.getValue();
 					}
 				});

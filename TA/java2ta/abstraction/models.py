@@ -1,4 +1,5 @@
 import re
+import copy
 import abc
 from contracts import contract, new_contract, check
 import logging
@@ -22,10 +23,20 @@ class DataType(object):
     - classes -> recursive structures
     """
  
-    def __init__(self, name, smt_declaration=None, smt_axioms=[]):
+    @contract(name="string", smt_declaration="string|None", smt_var_axioms="list(string)")
+    def __init__(self, name, smt_declaration=None, smt_var_axioms=[]):
+        """
+        smt_axioms should contain lists of SMT assertions with a reference to 
+        {var}, the variable of the current type. The {var} placeholder will be
+        replaced with the variable name, for each variable of the current type.
+        """
         self._name = name
         self._smt_declaration = smt_declaration or ""
-        self._smt_axioms = list(smt_axioms)
+#        self._smt_var_axioms = list(smt_var_axioms)
+        self._smt_var_axioms = []
+
+        for ax in smt_var_axioms:
+            self.add_smt_var_axiom(ax)
 
     def __str__(self):
         return self.name
@@ -36,23 +47,36 @@ class DataType(object):
         return curr_repr
 
     @property
+    @contract(returns="string")
     def smt_declaration(self):
-        declaration = self._smt_declaration
+#        declaration = self._smt_declaration
+#
+#        if self._smt_var_axioms:
+#            declaration = declaration + "\n" + "\n".join(self._smt_var_axioms)
+#
+#        return declaration or ""
+        return self._smt_declaration or ""
 
-        if self._smt_axioms:
-            declaration = declaration + "\n" + "\n".join(self._smt_axioms)
+#    @property
+    @contract(var_name="string", returns="string")
+    def smt_var_axioms(self, var_name):
+        """
+        Replace every occurrence of {var} with the variable name
+        """
+        var_axioms = map(lambda a: a.replace("{var}", var_name), self._smt_var_axioms)
 
-        return declaration or ""
-
-    @property
-    def smt_axioms(self):
-        return self._smt_axioms
+        return "\n".join(var_axioms)
 
     def set_smt_declaration(self, smt_declaration):
         self._smt_declaration = smt_declaration
 
-    def add_axiom(self, axiom):
-        self._smt_axioms.append(axiom)
+    @contract(axiom="string")
+    def add_smt_var_axiom(self, axiom):
+        check("list(string)", self._smt_var_axioms)
+
+        if "{var}" not in axiom:
+            raise ValueError("An SMT axiom should contain a placeholder {var} in it")
+        self._smt_var_axioms.append(axiom)
 
     @property
     def name(self):
@@ -64,32 +88,42 @@ class DataType(object):
 
 new_contract_check_type("is_data_type", DataType)
 
-def smt_declare_rec_datatype(name, projectors):
-
-    dt_projectors = []
-    for (attr_name, attr_dt) in projectors.iteritems():
-        dt_projectors.append("(%(attr_name)s %(attr_type)s)" % { "attr_name":attr_name, "attr_type": attr_dt })
-
-    smt_declaration = "(declare-datatypes () ((%(name)s (init-%(name)s %(attributes)s))))" % { "name": name, "attributes": " ".join(dt_projectors) }
-
-    return smt_declaration
 
 
-
-class String(DataType):
+class Z3String(DataType):
     """
     A String is a pair with:
     - value (abstracted to an integer value)
     - size (an integer value)
     """
     def __init__(self):
-        super(String,self).__init__(name="String") #, smt_declaration=smt_declare_rec_datatype("String", {"value":"Int", "len":"Int"}))
+        super(Z3String,self).__init__(name="String") 
 
 
+class AbsString(DataType):
+
+    def __init__(self):
+        from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
+
+        smt_declaration = smt_declare_rec_datatype("AbsString", {"size":"Int","value":"Int"}) 
+        super(AbsString, self).__init__("AbsString", smt_declaration=smt_declaration, smt_var_axioms=["(assert (>= (size {var}) 0))"])
+
+
+class Object(DataType):
+
+    def __init__(self):
+        from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
+
+        smt_declaration = smt_declare_rec_datatype("Object", {"isnull":"Bool",}) 
+        super(Object, self).__init__("Object", smt_declaration=smt_declaration)
+
+
+    
 
 class Collection(DataType):
     
-    def __init__(self):
+    def __init__(self): 
+        from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
         super(Collection, self).__init__("Collection", smt_declaration=smt_declare_rec_datatype("Collection", {"size":"Int"}))
 
 
@@ -103,30 +137,30 @@ class DataTypeUnion(DataType):
         check("list(is_data_type)", self.datatypes)
 
         name = "" #"_".join(map(lambda dt: dt.name, datatypes))
-        smt_axioms = []
+        union_smt_var_axioms = []
         smt_declaration = "" #"\n".join(map(lambda dt: dt.smt_declaration, datatypes)) # TODO this should be replaced by a tuple
-        
+ 
+        # TODO here we introduce duplicated datatypes declarations       
         for dt in datatypes:
             if len(name) == 0:
                 name = dt.name
             else:
                 name = "%s_%s" % (name, dt.name)
 
-            smt_axioms.extend(dt.smt_axioms)
+            union_smt_var_axioms.extend(dt._smt_var_axioms)
 
             if len(smt_declaration) == 0:
                 smt_declaration = dt.smt_declaration
             else:
                 smt_declaration = "%s\n%s".strip() % (smt_declaration, dt.smt_declaration)
 
-        super(DataTypeUnion, self).__init__(name, smt_declaration, smt_axioms)
+        super(DataTypeUnion, self).__init__(name, smt_declaration, union_smt_var_axioms)
 
 
 class Predicate(object):
 
     __metaclass__ = abc.ABCMeta
 
-#    _smt_assert = ""
     _smt_condition = ""
     _label = ""
 
@@ -140,7 +174,18 @@ class Predicate(object):
 
         smt_condition = smt_condition or self._smt_condition
         self._smt_condition = partial_format(smt_condition, ctx)
-    
+ 
+    def __eq__(self, other):
+
+        return not predicates_differ(self, other)
+
+    def __ne__(self, other):
+        return predicates_differ(self, other)
+
+
+    def copy(self):
+        return copy.deepcopy(self)
+        
     @contract(returns="string")
     def label(self, **kwargs):
         """
@@ -192,6 +237,20 @@ class Predicate(object):
     def __str__(self):
         return self._label
 
+
+    def wrap_fields(self, **var_fields):
+        ctx_smt = {}
+        ctx_label = {}
+
+        for var,field in var_fields.iteritems():
+            ctx_smt[var] = "(%s {%s})" % (field,var)
+            ctx_label[var] = "{%s}.%s" % (var,field)
+
+        self._smt_condition = partial_format(self._smt_condition, ctx_smt)
+        self._label = partial_format(self._label, ctx_label)
+    
+        return self
+
     @property
     @contract(returns="set(string)")
     def var_names(self):
@@ -238,6 +297,25 @@ class Predicate(object):
         return new
 
 new_contract_check_type("is_predicate", Predicate)
+
+@contract(left="is_predicate|None", right="is_predicate|None", returns="bool")
+def predicates_differ(left, right):
+
+    differ = False
+
+    if (left is None and right is not None) or (left is not None and right is None):
+        differ = True
+    elif left.__class__ != right.__class__:
+        differ = True
+    else:
+        for key,value_left in left.__dict__.iteritems():
+            value_right = getattr(right, key)
+            if value_left != value_right:
+                differ = True
+                break
+
+    return differ
+    
 
 
 class And(Predicate):
@@ -373,7 +451,8 @@ class EqItself(Predicate):
     _smt_condition = "(= {var} {var})"
     _label = "{var} = {var}"
 
-
+#    def __init__(self, **ctx):
+#        super(EqItself,self).__init__(**ctx)
 
 
 #UNKNOWN = Eq(var="1", value="1")
@@ -392,15 +471,33 @@ class Domain(object):
     - default: one predicate that is satisfied initially by the variable of the given
             datatype
     """
-    @contract(datatype="is_data_type", predicates="list[N](is_predicate),N>0")
+    @contract(datatype="is_data_type", predicates="list[N](is_predicate),N>0", default="is_predicate|None")
     def __init__(self, datatype, predicates, default=None):
 
         self.datatype = datatype
-    
-        default = default or predicates[0]
+ 
+        if default:
+            # store the predicate equivalent to the one
+            # specified as default (this is important
+            # because we want to ensure that this.default
+            # is one of the instances in this.predicates) 
+            found_default = None
+
+            for pred in predicates:
+                if pred == default: 
+                    found_default = pred
+                    break
+
+            if found_default:
+                default = found_default
+            else:
+                raise ValueError("The default domain value should be one of the passed predicates")
+        else:
+            default = predicates[0]
 
         self._default = default
         self.predicates = predicates #list(set(predicates))
+
 
     @property
     @contract(returns="list(is_data_type)")
@@ -424,44 +521,29 @@ class Domain(object):
     def default(self):
         return self._default
 
-    @property
-    @contract(returns="string")
-    def smt_predicate_abstraction(self):
-        constraints = []
-
-        ctx = {}
- 
-        check("list(is_predicate)", self.predicates)   
-        for pred in self.predicates:
-
-            assert len(pred.var_names) == 1, "Expected predicates with single variable. Got: %s" % pred
-            for v in pred.var_names:
-                var_name = v.strip("{}")
-                ctx[var_name] = var_name
-
-
-        for pred in self.predicates:
-            constraints.append(pred.smt_condition(**ctx))
-
-        assert len(ctx.keys()) == 1, "All predicates should use the same variable. Got: %s" % ctx
-        type_name = self.name
-        res = "(assert (forall ((%s %s)) (or %s)))" % (ctx.keys()[0], type_name, " ".join(constraints))
-
-        return res
-        
 
     @property
-    @contract(returns="string")
-    def smt_declaration(self):
-        smt_declaration = "<No DataType>"
+    @contract(returns="list(string)")
+    def smt_declarations(self):
+        res = []
 
         if self.datatype:
-            smt_declaration = self.datatype.smt_declaration
+            res = [ self.datatype.smt_declaration.strip() ]
 
-        smt_declaration = smt_declaration + "\n" + self.smt_predicate_abstraction
+        return res
+ 
 
-        return smt_declaration.strip()
-    
+    @property
+    @contract(returns="list(string)")
+    def smt_type_names(self):
+        res = []
+
+        if self.datatype:
+            res = [ self.datatype.name ]
+
+        return res
+
+  
     @property    
     def name(self):
         name = "<No DataType>"
@@ -470,6 +552,8 @@ class Domain(object):
             name = self.datatype.name
 
         return name
+
+
 
     @property
     def values(self):
@@ -481,9 +565,10 @@ new_contract_check_type("is_domain", Domain)
 
 class CompareVariables(Domain):
 
-    @contract(predicates="list(is_predicate)", datatypes="list(is_data_type)", default="None|is_predicate")
-    def __init__(self, predicates, datatypes, default=None):
-        
+    @contract(datatypes="list(is_data_type)", predicates="list(is_predicate)", default="None|is_predicate")
+    def __init__(self, datatypes, predicates, default=None):
+
+
         datatype = DataTypeUnion(*datatypes)
     
         default = default or predicates[0] #UNKNOWN # predicates[0] 
@@ -495,56 +580,42 @@ class CompareVariables(Domain):
     def datatypes(self):
         return self.datatype.datatypes
     
-    @property
-    @contract(returns="string")
-    def smt_predicate_abstraction(self):
-        check("list(is_predicate)", self.predicates)
-
-        constraints = []
-
-        # prepare a dummy context (replace every variable with its own name)
-        ctx = {}
-        for pred in self.predicates: #values:
-            assert isinstance(pred, Predicate)
-#            print "pred: %s ; var names: %s" % (pred, pred.var_names)
-            for v in pred.var_names:
-                var_name = v.strip("{}")
-                ctx[var_name] = var_name
-
-        for pred in self.values:
-            assert isinstance(pred, Predicate)
-#            print "curr pred: %s" % pred
-            constraints.append(pred.smt_condition(**ctx))
-
-        # quantified variables
-        qv = []
-#        print "ctx = %s, predicates = %s" % (ctx, self.predicates)
-        for idx,dt in enumerate(self.datatypes):
-            var_name = "var_%s" % (idx+1)
-            qv.append("(%s %s)" % (ctx[var_name], dt))
-
-#        type_name = self.name
-#        res = "(assert (forall ((x %s)) (or %s)))" % (type_name, " ".join(constraints))
-        res = "(assert (forall (%s) (or %s)))" % (" ".join(qv), " ".join(constraints))
-
-        return res
 
     @property
     def values(self):
         return self.predicates
 
 
+    @property
+    @contract(returns="list(string)")
+    def smt_type_names(self):
+        res = []
+        for dt in self.datatypes:
+            res.append(dt.name)
+
+        return res
+
+    @property
+    @contract(returns="list(string)")
+    def smt_declarations(self):
+
+        res = []
+        for dt in self.datatypes:
+            res.append(dt.smt_declaration)
+
+        return res
+
  
 class BoundedCollection(Domain):
     
     def __init__(self, max_val):
-        super(BoundedCollection,self).__init__(Collection(), split_field_domain("size", split_numeric_domain([0,max_val], lt_min=False, gt_max=False)))
+        super(BoundedCollection,self).__init__(Collection(), split_field_domain(split_numeric_domain([0,max_val], lt_min=False, gt_max=False),var="size"))
 
 
 class Dummy(Domain):
     @contract(datatype=DataType)
     def __init__(self, datatype):
-        super(Dummy,self).__init__(datatype, [EqItself({})])
+        super(Dummy,self).__init__(datatype=datatype, predicates=[EqItself()]) #{})])
 
 
 
@@ -640,13 +711,13 @@ class AbstractAttribute(object):
 
     
     @property
-    @contract(returns="None|string")
-    def smt_declaration(self):
-        res = None
+    @contract(returns="list(string)") #None|string")
+    def smt_declarations(self):
+        res = [] #None
         if self.domain:
 #            assert isinstance(self.domain, Domain)
             check("is_domain", self.domain)
-            res = self.domain.smt_declaration
+            res = self.domain.smt_declarations
 
 #            # add constraints by the domain predicates for this attribute
 #            res = res + "\n" + self.domain.smt_predicate_abstraction 
@@ -655,13 +726,13 @@ class AbstractAttribute(object):
 
 
     @property
-    @contract(returns="string")
-    def smt_type_name(self):
-        res = None
+    @contract(returns="list(string)") #string")
+    def smt_type_names(self):
+        res = [] # None
         if self.domain:
 #            assert isinstance(self.domain, Domain)
             check("is_domain", self.domain)
-            res = self.domain.name
+            res = self.domain.smt_type_names #name
 
         return res
 
@@ -892,9 +963,14 @@ class Integer(DataType):
         super(Integer,self).__init__(name="Int")
 
 
-class Natural(DataType):
+#class Natural(DataType):
+class Natural(Integer):
     def __init__(self):
-        super(Natural, self).__init__(name="Nat", smt_declaration="(declare-datatypes () ((Nat (mk-natural (val Int)))))", smt_axioms=["(assert (forall ((x Nat)) (>= (val x) 0)))"])
+#        super(Natural, self).__init__(name="Nat", smt_declaration="(declare-datatypes () ((Nat (mk-natural (val Int)))))", smt_axioms=["(assert (forall ((x Nat)) (>= (val x) 0)))"])
+
+        super(Natural, self).__init__()
+
+        self.add_smt_var_axiom("(assert (>= {var} 0))")
 
 class Real(DataType):
     def __init__(self):
@@ -923,3 +999,28 @@ def smt_declare_scalar(name, values):
     return smt_declaration
 
 
+class SymbolTable(object):
+
+    LITERALS = {}
+
+    _COUNTER = 1
+
+
+    @staticmethod
+    @contract(value="string", returns="int")
+    def add_literal(value):
+        if value not in SymbolTable.LITERALS:
+            SymbolTable.LITERALS[value] = SymbolTable._COUNTER  #FreshNames.get_id()
+            SymbolTable._COUNTER = SymbolTable._COUNTER + 1
+            log.debug("Update symbol table: %s => %s" % (value, SymbolTable.LITERALS[value]))
+
+        return SymbolTable.LITERALS[value]
+
+
+    @staticmethod
+    @contract(value="string", returns="string")
+    def get_literal(value):
+        if value not in SymbolTable.LITERALS:
+            raise ValueError("Literal '%s' does not exist")
+
+        return SymbolTable.LITERALS[value]
