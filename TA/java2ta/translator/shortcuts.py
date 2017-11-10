@@ -60,7 +60,6 @@ def build_loc(conf, pc):
 
     
     loc_name = "%s%s" % (conf, pc) #(pred, pc)
-
     loc = Location(loc_name)
 
     return loc
@@ -1057,7 +1056,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()
 
-            variables |= rr_else
+            variables |= rr_else.variables
             final_else = rr_else.final_locations
        
             edges.extend(rr_else.edges) #edges_else)
@@ -1578,7 +1577,7 @@ def conf_to_attribute_predicate(conf_predicates, attributes): #conf, attributes)
 @contract(loc="is_location", returns="tuple(is_configuration,is_pc)")
 def parse_location(loc):
     loc_label, pc_label = loc.name.split("@") # TODO this depends on how the location name is built
-    conf = tuple(map(int, loc_label.strip("()").split(",")))
+    conf = tuple(map(int, loc_label.strip("(),").split(","))) # NB the parameter "()," means: remove any opening/closing parenthesis and comma, to handle the case of single element tuples, e.g. (0,) 
     pc = PC(pc_label)
     return (conf, pc)
 

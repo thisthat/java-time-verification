@@ -148,12 +148,17 @@ class GraphViz(TARenderer):
         return g
 
 
-    def save(self, path):
+    def open(self):
 
         g = self.render()
+        g.format = "pdf"
         g.view()
 
     def save_plain(self, path):
+        log.warning("deprecated: use save instead ...")
+        return self.save(path)
+
+    def save(self, path):
     
         g = self.render()
         g.format = "plain"
