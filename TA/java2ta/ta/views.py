@@ -134,7 +134,6 @@ class GraphViz(TARenderer):
                 node_attrs["peripheries"] = "2"
 
             loc_name = self.get_loc_name(loc)
-            log.debug("loc name: %s" % loc_name)
             g.node(loc.name, label=loc_name, **node_attrs)
 
         for e in ta.edges:
@@ -167,7 +166,6 @@ class GraphViz(TARenderer):
         g = self.render()
         g.format = "plain"
         plain_path = g.render(path, view=False, cleanup=True)
-        log.debug("Saved: %s -> %s" % (path, plain_path))
         return plain_path
 
 def uppaal_loc_name(name):
@@ -183,6 +181,12 @@ def uppaal_var_name(name):
 
 
 def uppaal_get_loc_position(position_map):
+
+    # take the maximum value of y
+    y_values = map(lambda pos: float(pos[1]), position_map.values())
+    y_max = int(max(y_values) * 100)
+    y_min = int(min(y_values) * 100)
+    
     def get_x(loc):
         loc_name = loc
         if isinstance(loc, Location):
@@ -193,7 +197,9 @@ def uppaal_get_loc_position(position_map):
         loc_name = loc
         if isinstance(loc, Location):
             loc_name = loc.name
-        return int(float(position_map[loc_name][1]) * 100)
+        y_curr = int(float(position_map[loc_name][1]) * 100)
+
+        return y_max - y_curr
 
     return (get_x, get_y)
 
@@ -211,9 +217,7 @@ class Uppaal(TARenderer):
         with open(temp_plain_path, "r") as temp_plain_file:
             for line in temp_plain_file:
                 # shlex split by spaces, if not appearing in quotes
-                log.debug("Line: %s" % line)
                 parts = shlex.split(line)
-                log.debug("Parts: %s" % parts)
             
                 if parts[0] == "node":
                     position_map[parts[1]] = (parts[2], parts[3])
@@ -228,7 +232,6 @@ class Uppaal(TARenderer):
     def get_filters(self):
 
         position_map = self.get_position_map()
-        log.debug("Position map: %s" % position_map)
         (loc_x, loc_y) = uppaal_get_loc_position(position_map)
         return { "loc_name": uppaal_loc_name, "var_name": uppaal_var_name, "loc_x": loc_x, "loc_y": loc_y }
 
