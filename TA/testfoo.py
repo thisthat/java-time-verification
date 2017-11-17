@@ -179,7 +179,7 @@ m = p.get_method(class_name, file_name, method_name)
 
 ss = get_state_space_from_method(m, domains)
 
-fsa = translate_method_to_fsa(m, ss)
+fsa = translate_method_to_ta(m, ss)
 
 legend = build_legend(ss)
 

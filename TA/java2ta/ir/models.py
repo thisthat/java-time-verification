@@ -1,5 +1,6 @@
 import abc
 from contracts import contract
+from time import sleep
 
 import json
 from java2ta.commons.utility import new_contract_check_type
@@ -177,11 +178,12 @@ class Project(object):
 
     MAX_ATTEMPTS = 100
 
-    def __init__(self, name, path=None, api_url=None):
+    def __init__(self, name, path=None, url=None, api_url=None):
         
         self.name = name
         self.path = path
         self.status = Project.STATUS_CHOICES["closed"]
+        self.url = url 
 
         api_url = api_url or Project.DEFAULT_URL
 
@@ -211,33 +213,44 @@ class Project(object):
 
 
     def open(self, sync=False):
-        
+     
+#        print "open (path=%s)" % self.path
+        if self.path:
+            # when opening a project with a path, clean any existing
+            # project with the same name on the server
+            self.clean()
+   
         data = {
             "name": self.name,
             "path": self.path,
         }
 
         self.client.post("/openProject", data)
+#        print "set project as opening .."
         self.set_status("opening")
-
 
         if sync:
             is_open = False
             attempts = 1
 
-            while not is_open and attempts < Project.MAX_ATTEMPTS:
+            while self.status == "opening" and attempts < Project.MAX_ATTEMPTS:
                 # wait till the project is in a final status (open or closed)
                 to_wait = (attempts/2)**2
                 log.debug("Wait %s seconds and check the project is open ..." % to_wait)
  
                 sleep(to_wait)
-                is_open = self.is_open()
+#                is_open = self.is_open()   
+                self.is_open()
                 attempts = attempts + 1
                 
-            if not is_open:
-                raise ValueError("The project cannot be opened after %s attempts" % attempts)
+#            if not is_open:
+#                raise ValueError("The project cannot be opened after %s attempts" % attempts)
 
-            
+            if self.status == "closed":
+                raise ValueError("The server cannot open the project after %s attempts" % attempts)
+
+            assert self.status == "open"
+                       
 
     def is_open(self):
     
@@ -247,9 +260,9 @@ class Project(object):
             return False
         else:
             curr_status = self.client.post("/getStatus", { "name":self.name })
-
             assert "status" in curr_status, "Wrong status information."
 
+#            print "curr status: %s" % curr_status
             if curr_status["status"] == "error":
                 description = curr_status["description"]
                 raise Exception("Error when getting project status: %s" % description)

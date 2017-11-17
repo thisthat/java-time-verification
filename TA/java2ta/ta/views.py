@@ -12,6 +12,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from graphviz import Digraph, Graph
 from contracts import contract
 from java2ta.ta.models import Location
+import subprocess
 
 import logging
 
@@ -72,7 +73,9 @@ class TARenderer(object):
 
     def save(self, path):
         self.path = path
+        print "before rendering ..."
         render = self.render()
+        print "after rendering ..."
         # save the graph text on file
         with open(path, "w+") as out_f:
             out_f.write(render)
@@ -131,6 +134,7 @@ class GraphViz(TARenderer):
                 node_attrs["peripheries"] = "2"
 
             loc_name = self.get_loc_name(loc)
+            log.debug("loc name: %s" % loc_name)
             g.node(loc.name, label=loc_name, **node_attrs)
 
         for e in ta.edges:
@@ -154,9 +158,9 @@ class GraphViz(TARenderer):
         g.format = "pdf"
         g.view()
 
-    def save_plain(self, path):
-        log.warning("deprecated: use save instead ...")
-        return self.save(path)
+##    def save_plain(self, path):
+##        log.warning("deprecated: use save instead ...")
+##        return self.save(path)
 
     def save(self, path):
     
@@ -200,7 +204,7 @@ class Uppaal(TARenderer):
 
         temp_gv_file = tempfile.NamedTemporaryFile(delete=False, suffix=".gv")
         gv = GraphViz(self.ta)
-        temp_plain_path = gv.save_plain(temp_gv_file.name)
+        temp_plain_path = gv.save(temp_gv_file.name)
 
         position_map = {}
 
@@ -227,3 +231,11 @@ class Uppaal(TARenderer):
         log.debug("Position map: %s" % position_map)
         (loc_x, loc_y) = uppaal_get_loc_position(position_map)
         return { "loc_name": uppaal_loc_name, "var_name": uppaal_var_name, "loc_x": loc_x, "loc_y": loc_y }
+
+    def open(self):
+
+        if not self.path:
+            raise ValueError("You must save it before")
+
+        subprocess.call(["uppaal",self.path])
+

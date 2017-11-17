@@ -57,9 +57,12 @@ def translate_method_to_automaton(project, class_fqn, class_path, method_name, d
 
 @contract(conf="is_configuration", pc="is_pc", returns="is_location")
 def build_loc(conf, pc):
-
     
-    loc_name = "%s%s" % (conf, pc) #(pred, pc)
+    # convert the conf to a list of string, and join the items
+    # using ","
+    conf_string = ",".join(map(str, conf))
+    loc_name = "(%s)%s" % (conf_string, pc)
+#    log.debug("conf: %s, loc name: %s" % (conf_string, loc_name))
     loc = Location(loc_name)
 
     return loc
