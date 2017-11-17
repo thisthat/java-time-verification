@@ -237,5 +237,6 @@ class Uppaal(TARenderer):
         if not self.path:
             raise ValueError("You must save it before")
 
-        subprocess.call(["uppaal",self.path])
+        # launch uppaal in background
+        subprocess.Popen(["uppaal",self.path])
 
