@@ -437,10 +437,14 @@ class SMTProb(object):
             lhs_smt_declarations, lhs_smt_assertion = self.node_to_smt(left, frame) #exclude_frame)
             rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(right, frame) #exclude_frame)
 
+            log.debug("left: %s, frame: %s, left declarations: %s, left smt: %s" % (left, frame, lhs_smt_declarations, lhs_smt_assertion))
+            log.debug("right: %s, frame: %s, right declarations: %s, right smt: %s" % (right, frame, rhs_smt_declarations, rhs_smt_assertion))
+
             if lhs_smt_declarations and rhs_smt_declarations:
                 smt_declarations.extend(lhs_smt_declarations)
                 smt_declarations.extend(rhs_smt_declarations)
-                smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
+                
+            smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
         elif node_type == "ASTLiteral":
             # at the moment an ASTLiberal can be an actual literal
             # or an identifier; I hope this will be fixed in the
@@ -569,6 +573,8 @@ class SMTProb(object):
             pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node)
 #            smt_assertion = "(assert %s)" % pre_smt_assertion
 
+        log.debug("pre node: %s, declarations: %s, smt: %s" % (pre.node, pre_smt_declarations, pre_smt_assertion))
+
         if pre_smt_assertion:
             if isinstance(pre, Negate):
                 pre_smt_assertion = "(not %s)" % pre_smt_assertion
@@ -604,6 +610,7 @@ class SMTProb(object):
                 smt_declarations,smt_pre = self.precondition_to_smt(pre)
                 assertions.extend(smt_declarations)
                 assertions.append(smt_pre)
+                log.debug("pre: %s, assertions: %s, smt: %s" % (pre, smt_declarations, smt_pre))
             assertions.append("; end encoding precondition")
         
         # SMT assertions about the target predicates require that:
