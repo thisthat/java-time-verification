@@ -52,6 +52,15 @@ class ASTNode(object):
         """
         pass
 
+    @property
+    @contract(returns="bool")
+    def exists(self):
+        """
+        This property forces to load the ast (it is likely that loading the current object
+        AST we force also the ancestor ASTs to be loaded)
+        """
+        return self.ast != None
+
 
 class Klass(ASTNode):
 
@@ -77,6 +86,7 @@ class Klass(ASTNode):
             assert "name" in curr
             assert "packageName" in curr
 
+            log.debug("Check: class name=%s, class package name=%s, looked name=%s, looked package name=%s" % (curr["name"], curr["packageName"], self.name, self.package_name))
             #print "check class, package name: %s, %s" % (curr["name"], curr["packageName"])
 
             if curr["name"] == self.name and \
@@ -163,6 +173,8 @@ class Method(ASTNode):
         if len(found) > 0:
             res = found[0]
         return res
+
+    
 
 new_contract_check_type("is_method", Method)
 

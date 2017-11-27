@@ -73,9 +73,7 @@ class TARenderer(object):
 
     def save(self, path):
         self.path = path
-        print "before rendering ..."
         render = self.render()
-        print "after rendering ..."
         # save the graph text on file
         with open(path, "w+") as out_f:
             out_f.write(render)
@@ -173,7 +171,7 @@ def uppaal_loc_name(name):
     This will be used as filter for converting location names to valid
     Uppaal location identifiers/names
     """
-    return unicode(name).replace("(","loc_").replace(")@", "_at_").replace(", ","_").replace(".","_")
+    return unicode(name).replace("(","loc_").replace(")@", "_at_").replace(",","_").replace(".","_").replace(" ","")
 
 
 def uppaal_var_name(name):

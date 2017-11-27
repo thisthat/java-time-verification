@@ -129,6 +129,10 @@ class AttributePredicate(object):
     def predicate(self):
         return self._predicate
 
+    @property
+    @contract(returns="list(string)")
+    def variables(self):
+        return self.attribute.variables
 
     def _get_context(self):
         check("is_predicate", self.predicate)

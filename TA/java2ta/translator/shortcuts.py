@@ -19,7 +19,33 @@ import sys
 import logging
 from contracts import contract, new_contract, check
 
-log = logging.getLogger("main")
+log = logging.getLogger(__name__)
+log_smt = logging.getLogger("smt")
+
+class ForgottenVariableException(Exception):
+        
+    def __init__(self, var_name, *args, **kwargs):
+        self.var_name = var_name
+        super(ForgottenVariableException,self).__init__(*args, **kwargs)
+
+class UnknownSMTInterpretationException(Exception):
+
+    def __init__(self, node, *args, **kwargs):
+        self.node = node
+        msg = "Unknown SMT interpretation for code (%s): %s" % (node["nodeType"], node["code"], )
+        super(UnknownSMTInterpretationException, self).__init__(msg, *args, **kwargs)
+
+
+@contract(attr_predicates="None|list(is_attribute_predicate)", returns="set(string)")
+def pred_to_env(attr_predicates):
+
+    res = set([])
+
+    if attr_predicates is not None:
+        for attr_pred in attr_predicates:
+            res = res or set(attr_pred.variables)
+
+    return res
 
 @contract(project=Project, class_fqn="string", class_path="string", method_name="string", domains="dict", returns=TA)
 def translate_method_to_automaton(project, class_fqn, class_path, method_name, domains):
@@ -211,6 +237,7 @@ class SMTProb(object):
     @contract(attributes="list", project="is_project")
     def __init__(self, attributes, project):
 
+        self._line_num = 0
         self.attributes = attributes
         self._project = project
 
@@ -284,8 +311,8 @@ class SMTProb(object):
         key = "%s-%s-%s" % (source_key, instr_key, target_key)
         SMTProb._SMT_CACHE.store(key, res)
 
-    @contract(node="dict", returns="tuple(list(string),string)")
-    def node_to_smt(self, node, frame=None):
+    @contract(node="dict", env="set(string)", returns="tuple(list(string),string)")
+    def node_to_smt(self, node, env, primed=False, frame=None):
         """
         This method returns a pair of strings: the first contains auxiliary declarations (e.g. constants,
         datatypes, ...) and the second contains the BODY of the actual assertion.
@@ -300,10 +327,8 @@ class SMTProb(object):
         """
         assert "code" in node
 
-        log.debug("Node to smt: %s" % node["code"])
+        log.debug("Node to smt: %s. Frame: %s" % (node["code"], frame))
 
-#        if not exclude_frame:
-#            exclude_frame = []
         if not frame:
             frame = []
 
@@ -333,8 +358,11 @@ class SMTProb(object):
                 assert "value" in node_exp["name"]
                 assert "expr" in node_exp
 
-                var = node_exp["name"]["value"] # TODO check that the LHS is always obtained in this way 
+                var = node_exp["name"]["value"] # TODO check that the LHS is always obtained in this way
                 rhs = node_exp["expr"]
+
+                if var not in env:
+                    raise ForgottenVariableException(var)
 
                 if rhs is not None:
                     new_frame = list(frame)
@@ -344,7 +372,7 @@ class SMTProb(object):
                     except ValueError:
                         # do nothing
                         pass
-                    rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs, new_frame)
+                    rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs, env, new_frame)
                     if rhs_smt_assertion:
                         smt_declarations.extend(rhs_smt_declarations)
                         smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
@@ -363,7 +391,13 @@ class SMTProb(object):
 
                 var = node_exp["left"]["value"]
                 rhs = node_exp["right"]
-    
+
+                # if var not in the environment, it means we are abstracting from it completely
+                # (i.e. we are forgetting it)
+                log.debug("Check variable in env: %s vs %s" % (var, env))
+                if var not in env:
+                    raise ForgottenVariableException(var)
+
                 new_frame = list(frame)
                 try:
                     # remove var if present in frame/new_frame
@@ -371,7 +405,8 @@ class SMTProb(object):
                 except ValueError:
                     # do nothing
                     pass
-                rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs, new_frame)
+
+                rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs, env, new_frame)
                 if rhs_smt_declaration:
                     smt_declarations.extend(rhs_smt_declarations)
                     smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
@@ -400,23 +435,17 @@ class SMTProb(object):
                         smt_assertion = "(= %s_1 (- %s 1))" % (var, var) # TODO primed name
 
                     # force other primed vars to be equal to non-primed vars
-                    #others = []
                     for curr in self.attributes:
                         assert isinstance(curr, AbstractAttribute)
-#                        if curr.name != var:
-#                            others.append("(= %s_1 %s)" % (curr.name, curr.name)) # TODO primed name
                         for attr_var in curr.variables:
                             if attr_var != var:
-                                #others.append("(= %s_1 %s)" % (attr_var, attr_var)) # TODO primed name
                                 smt_declarations.append("(assert (= %s_1 %s))" % (attr_var, attr_var)) # TODO primed names
 
-#                    if len(others) > 0:
-#                        smt_assertion = "(and %s %s)" % (smt, " ".join(others))
                 else:
                     log.warning("Interpret PL post-op expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                     smt_assertion = node_exp["code"]
             elif node_exp_type == "ASTMethodCall":
-                smt_declarations, smt_assertion = self.node_to_smt(node_exp, frame) #exclude_frame)
+                smt_declarations, smt_assertion = self.node_to_smt(node_exp, env, frame)
             else:
                 log.warning("Interpret PL expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                 smt_assertion = node_exp["code"]
@@ -434,8 +463,8 @@ class SMTProb(object):
             left = node["left"]
             right = node["right"]
 
-            lhs_smt_declarations, lhs_smt_assertion = self.node_to_smt(left, frame) #exclude_frame)
-            rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(right, frame) #exclude_frame)
+            lhs_smt_declarations, lhs_smt_assertion = self.node_to_smt(left, env, frame)
+            rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(right, env, frame)
 
             log.debug("left: %s, frame: %s, left declarations: %s, left smt: %s" % (left, frame, lhs_smt_declarations, lhs_smt_assertion))
             log.debug("right: %s, frame: %s, right declarations: %s, right smt: %s" % (right, frame, rhs_smt_declarations, rhs_smt_assertion))
@@ -445,12 +474,18 @@ class SMTProb(object):
                 smt_declarations.extend(rhs_smt_declarations)
                 
             smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
-        elif node_type == "ASTLiteral":
-            # at the moment an ASTLiberal can be an actual literal
-            # or an identifier; I hope this will be fixed in the
-            # future, by the IR
+        elif node_type == "ASTIdentifier":
             assert "value" in node
-            log.debug("Dump literal: %s" % node)
+
+            var = node["value"]
+    
+            if var not in env:
+                raise ForgottenVariableException(var)
+
+            smt_assertion = var
+        elif node_type == "ASTLiteral":
+            assert "value" in node
+            #log.debug("Dump literal: %s" % node)
             lit_value = literal_to_smt(node["value"])
             smt_assertion = lit_value
         elif node_type == "ASTMethodCall":
@@ -463,7 +498,7 @@ class SMTProb(object):
  
             par_ctx = {}   
             for (par_id,par) in enumerate(node["parameters"]):
-                (par_smt_declarations, par_smt_assert) = self.node_to_smt(par, frame) #exclude_frame)
+                (par_smt_declarations, par_smt_assert) = self.node_to_smt(par, env, frame) #exclude_frame)
                 smt_declarations.extend(par_smt_declarations)
                 #smt_declarations.append(par_smt_assert)
                 par_name = "par_%s" % par_id
@@ -478,7 +513,7 @@ class SMTProb(object):
             lhs_smt_assertion = ""
             if node["exprCallee"] is not None:
                 # resolve lhs of method call (i.e. the callee)
-                lhs_smt_declarations,lhs_smt_assertion = self.node_to_smt(node["exprCallee"], frame) #exclude_frame)
+                lhs_smt_declarations,lhs_smt_assertion = self.node_to_smt(node["exprCallee"], env, frame) #exclude_frame)
                 smt_declarations.extend(lhs_smt_declarations)
  
             tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
@@ -531,8 +566,8 @@ class SMTProb(object):
         else:
 #            log.warning("Interpret PL code (%s) as SMT code: %s ..." % (node["code"], node))
 #            smt_assertion = node["code"]
-            log.warning("Do not know how the SMT interpretation of code (%s): %s" % (node["code"], node))
-            smt_assertion = ""
+            raise UnknownSMTInterpretationException(node) #"Do not know the SMT interpretation of code (%s): %s" % (node["code"], node))
+#            smt_assertion = ""
 
         SMTProb.node_cache_store(node, (smt_declarations,smt_assertion))
 
@@ -554,8 +589,8 @@ class SMTProb(object):
         return res
 
 
-    @contract(pre="is_precondition", returns="tuple(list(string),string)")
-    def precondition_to_smt(self, pre):
+    @contract(pre="is_precondition", env="set(string)", returns="tuple(list(string),string)")
+    def precondition_to_smt(self, pre, env):
         """
         Returns the same output of node_to_smt(...) for the passed Precondition.
 
@@ -567,10 +602,10 @@ class SMTProb(object):
         smt_declarations = [] #None
         smt_assertion = "" #None
         if isinstance(pre, Negate):
-            pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node)
+            pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node, env)
 #            smt_assertion = "(assert (not %s))" % pre_smt_assertion
         else:
-            pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node)
+            pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node, env)
 #            smt_assertion = "(assert %s)" % pre_smt_assertion
 
         log.debug("pre node: %s, declarations: %s, smt: %s" % (pre.node, pre_smt_declarations, pre_smt_assertion))
@@ -602,12 +637,14 @@ class SMTProb(object):
         assertions.extend(source_pred)
         assertions.append("; end encoding source state")
 
+        env = pred_to_env(source_pred) or pred_to_env(target_pred)
+
         if preconditions:
        
             assertions.append("; begin encoding precondition")
             for pre in preconditions:
     
-                smt_declarations,smt_pre = self.precondition_to_smt(pre)
+                smt_declarations,smt_pre = self.precondition_to_smt(pre, env)
                 assertions.extend(smt_declarations)
                 assertions.append(smt_pre)
                 log.debug("pre: %s, assertions: %s, smt: %s" % (pre, smt_declarations, smt_pre))
@@ -624,10 +661,17 @@ class SMTProb(object):
             # the processed instruction
             frame_variables = []
             for attr in source_pred:    
-                frame_variables.extend(attr.predicate.var_names)
-            smt_instr_declarations, smt_instr_assertion = self.node_to_smt(instr, frame_variables)
+                log.debug("Instruction: %s. Predicate: %s. Variables: %s." % (instr["code"], attr.predicate, attr.variables))
+                frame_variables.extend(attr.variables)
 
             assertions.append("; begin encoding instruction: %s" % instr["code"])
+
+            smt_instr_declarations = None
+            smt_instr_assertion = None
+            try:
+                smt_instr_declarations, smt_instr_assertion = self.node_to_smt(instr, env, frame_variables)
+            except ForgottenVariableException, e:
+                assertions.append("; cannot compute SMT model for instruction because one variable has been forgotten: %s" % e.var_name)
 
             if smt_instr_assertion: # is not None: # also discard the case of empty strings (should never happen, though)
                 assertions.extend(smt_instr_declarations)
@@ -735,6 +779,8 @@ class SMTProb(object):
 
         smt_code.append("; end declarations of attributes of source and target states")
 
+#        env = pred_to_env(source_pred) or pred_to_env(target_pred) # take the union of the two environments
+
         # add problem assertions derived from source state, instruction, target state
         for curr in self.combine_assertions(source_pred, instr=instr, target_pred=target_pred, preconditions=preconditions):
             if isinstance(curr, AttributePredicate):
@@ -769,16 +815,19 @@ class SMTProb(object):
     @contract(commands="list(string)|string", is_input="bool")
     def _log_smt(self, commands, is_input=True):
 
-        head = "SMT<<"
-        if not is_input:
-            head = "SMT>>"
+        line_format = "**<< {line}"
+        if is_input:
+            line_format = "{line_num}>> {line}"
 
         if isinstance(commands, basestring):
             commands = commands.split("\n")
 
-        for line in commands:
-            if line:
-                log.debug("%s %s" % (head,line))
+        for curr_command in commands:
+            if curr_command:
+                if is_input:
+                    self._line_num = self._line_num + 1
+                line = line_format.format(line=curr_command,line_num=self._line_num)
+                log_smt.debug(line)
 
 
     def _check_error(self, line, default=None):
@@ -799,6 +848,7 @@ class SMTProb(object):
         self._cmd.stdin.write(commands + "\n")
 
         answer = self._get_output()
+
         err_msg = self._get_error()
         if err_msg:
             sys.stderr.write(err_msg)
@@ -806,33 +856,34 @@ class SMTProb(object):
         return answer
 
     @contract(source_pred="tuple", guard=Precondition, preconditions="None|list(is_precondition)", returns="bool")
-#    @contract(source_conf="is_configuration", guard=Precondition, preconditions="None|list(is_precondition)", returns="bool")
     def check_sat_guard(self, source_pred, guard, preconditions=None):
  
-#        log.debug("Received source pred (%s): %s" % (type(source_conf), source_conf)) 
-
         check("list(is_abstract_attribute)", self.attributes)       
-#        log.debug("In check_sat_guard ...")  
         source_attpred = conf_to_attribute_predicate(source_pred, self.attributes)
 
-#        log.debug("Source pred: %s" % source_attpred)
         new_preconditions = [ guard ]
         if preconditions:
             new_preconditions.extend(preconditions)
-        commands = self.to_smt_problem(source_attpred, preconditions=new_preconditions)
 
+        try:
+            commands = self.to_smt_problem(source_attpred, preconditions=new_preconditions)
+            answer = self.get_tool_answer(commands)
 
-        answer = self.get_tool_answer(commands)
-
-        log.debug("check guard: %s vs %s, given: %s ? %s" % (source_attpred,guard.code,preconditions, answer))
-
-        smt_res = False
-        if answer.strip() == "sat":
-            smt_res = True
-        elif answer.strip() == "unsat":
+            log.debug("check guard: %s vs %s, given: %s ? %s" % (source_attpred,guard.code,preconditions, answer))
+    
             smt_res = False
-        else:
-            self._check_error(answer, default="Unknown value")
+            if answer.strip() == "sat":
+                smt_res = True
+            elif answer.strip() == "unsat":
+                smt_res = False
+            else:
+                self._check_error(answer, default="Unknown value")
+
+        except ForgottenVariableException, e:
+            # conservative abstraction: assume that if a required 
+            # variable has been abstracted, then the formula is 
+            # satisfiable
+            smt_res = True
 
         return smt_res
 
@@ -848,16 +899,22 @@ class SMTProb(object):
         check("list(is_attribute_predicate)", source_attpred)
         check("list(is_attribute_predicate)", target_attpred)
 
-        commands = self.to_smt_problem(source_attpred, instr, target_attpred, preconditions=preconditions)
+        try:
+            commands = self.to_smt_problem(source_attpred, instr, target_attpred, preconditions=preconditions)
+            answer = self.get_tool_answer(commands)
 
-        answer = self.get_tool_answer(commands)
-        smt_res = False
-        if answer.strip() == "sat":
-            smt_res = True
-        elif answer.strip() == "unsat":
             smt_res = False
-        else:
-            self._check_error(answer, default="Unknown value")
+            if answer.strip() == "sat":
+                smt_res = True
+            elif answer.strip() == "unsat":
+                smt_res = False
+            else:
+                self._check_error(answer, default="Unknown value")
+        except ForgottenVariableException, e:
+            # conservative abstraction: if a needed variable has been
+            # abstracted, assume the problem is satisfiable
+            smt_res = True
+
 
         return smt_res
 
@@ -1025,20 +1082,16 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             assert "expression" in guard
 
             smt_prob.push()
-
             is_then_reachable = smt_prob.check_sat_guard(source_pred, guard=Precondition(guard["expression"]))
             smt_prob.pop()
 
             smt_prob.push()
             is_else_reachable = smt_prob.check_sat_guard(source_pred, guard=Negate(guard["expression"])) 
             smt_prob.pop()
-
     
         if (is_then_reachable):
             reachable_then = [ source ]
 
-#            log.debug("ASTIf then statements: (%s) %s" % (len(stms_then), stms_then))
-    
             preconditions.append(Precondition(guard["expression"]))
             rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()    
@@ -1587,7 +1640,11 @@ def conf_to_attribute_predicate(conf_predicates, attributes): #conf, attributes)
 @contract(loc="is_location", returns="tuple(is_configuration,is_pc)")
 def parse_location(loc):
     loc_label, pc_label = loc.name.split("@") # TODO this depends on how the location name is built
-    conf = tuple(map(int, loc_label.strip("(),").split(","))) # NB the parameter "()," means: remove any opening/closing parenthesis and comma, to handle the case of single element tuples, e.g. (0,) 
+
+    loc_label = loc_label.strip("(),")
+    conf = tuple()
+    if len(loc_label) > 0:
+        conf = tuple(map(int, loc_label.strip("(),").split(","))) # NB the parameter "()," means: remove any opening/closing parenthesis and comma, to handle the case of single element tuples, e.g. (0,) 
     pc = PC(pc_label)
     return (conf, pc)
 
