@@ -138,7 +138,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
         source_conf = set(source_conf)
 
         if not source_conf:
-            log.warning("Exit for non reachable states at PC: %s" % curr_pc)
+            log.debug("Exit for non reachable states at PC: %s" % curr_pc)
             break
 
         for source in source_conf:
@@ -156,7 +156,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
         if len(reachable) == 0:
             # in this case the current instruction interrupts the flow of instructions; thus, we
             # must ignore the following instructions
-            log.warning("Instruction interrupts flow: %s. Source conf: %s. PC: %s" % (curr_instr["code"], source_conf, curr_pc))
+            log.debug("Instruction interrupts flow: %s. Source conf: %s. PC: %s" % (curr_instr["code"], source_conf, curr_pc))
             break
 
         # next iteration starts from reached configurations, and advance PC by 1
@@ -218,7 +218,7 @@ def transform(name, instructions, state_space, project):
 
 class SMTProb(object):
 
-    OP_DECODE = { "plus": "+", "minus": "-", "greater": ">", "less": "<", "mul": "*", "equality": "=", "and": "and", "or": "or", "notEqual": "distinct" }
+    OP_DECODE = { "plus": "+", "minus": "-", "greater": ">", "less": "<", "mul": "*", "equality": "=", "and": "and", "or": "or", "notEqual": "distinct", "lessEqual": "<=", "greaterEqual": ">=" }
 
     _SMT_CACHE = Cache("smt")
     _NODE_TO_SMT_CACHE = Cache("node2smt")
@@ -387,7 +387,8 @@ class SMTProb(object):
                 assert "right" in node_exp
                 assert "left" in node_exp
                 assert "nodeType" in node_exp["left"]
-                assert node_exp["left"]["nodeType"] == "ASTLiteral"
+#                assert node_exp["left"]["nodeType"] == "ASTLiteral", "Expected ASTLiteral, found: %s" % node_exp["left"]["nodeType"]
+                assert node_exp["left"]["nodeType"] == "ASTIdentifier"
 
                 var = node_exp["left"]["value"]
                 rhs = node_exp["right"]
@@ -1421,7 +1422,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 #            (edge_source_conf,edge_source_pc) = parse_location(curr_edge.target)
         for loc in rr_try.locations:
             (loc_conf, loc_pc) = parse_location(loc)
-            if int(loc_conf[1]) == 1:
+            if len(loc_conf) > 2 and int(loc_conf[1]) == 1:
                 found_exception_locs.append(loc)
                 found_exception_confs.append(loc_conf)
         # end BIG-HACK-...
