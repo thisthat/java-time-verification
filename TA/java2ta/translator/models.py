@@ -18,42 +18,46 @@ class PC(object):
         if isinstance(initial, int):
             initial = str(initial)        
 
-        self.pc = initial.strip(".")
+        self.__pc = initial.strip(".")
 
+    @property
+    def pc(self):
+        return self.__pc
 
     def __str__(self):
-        return "@%s" % self.pc
-
+        return "@%s" % self.__pc
 
     def __repr__(self):
-        return "@%s" % self.pc
+        return "@%s" % self.__pc
 
     def __add__(self, other):
         
         assert isinstance(other, int)
         assert other >= 0
 
-        new = PC(initial=self.pc)
+        new = PC(initial=self.__pc)
         new.inc(other)
         
         return new
 
     def __eq__(self, other):
-        return other and self.pc == other.pc
+        return other and self.__pc == other.pc
 
+    def __hash__(self):
+        return hash(self.__pc)
 
     def is_prefix(self, other):
-        return other.pc.startswith("%s." % self.pc)
+        return other.pc.startswith("%s." % self.__pc)
 
     def inc(self, to_add=1):
-        assert self.pc != None
+        assert self.__pc != None
         assert isinstance(to_add, int)
         assert to_add >= 0
 
         prefix = ""
         last = ""
     
-        parts = self.pc.rsplit(".", 1)
+        parts = self.__pc.rsplit(".", 1)
     
         if len(parts) == 1:
             last = parts[0]
@@ -64,23 +68,23 @@ class PC(object):
         if len(prefix) > 0:
             res = "%s.%s" % (prefix, res)
 
-        self.pc = res
+        self.__pc = res
     
     def push(self, new):
-        assert self.pc != None
+        assert self.__pc != None
         
-        self.pc = "%s.%s" % (self.pc, new)
+        self.__pc = "%s.%s" % (self.__pc, new)
         return self
     
     def pop(self):
-        assert self.pc != None
+        assert self.__pc != None
 
-        parts = self.pc.rsplit(".", 1)
+        parts = self.__pc.rsplit(".", 1)
     
         if len(parts) <= 1:
-            raise ValueError("Cannot pop pc value: %s" % self.pc)
+            raise ValueError("Cannot pop pc value: %s" % self.__pc)
     
-        self.pc = parts[0] 
+        self.__pc = parts[0] 
         return parts[1]
  
 

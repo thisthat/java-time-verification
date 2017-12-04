@@ -124,7 +124,7 @@ class GraphViz(TARenderer):
         ta = self.ta
     
         g = Digraph(ta.name)
-        g.attr(rankdir="TD")
+        g.attr(rankdir="TB")
 
         for loc in ta.locations:
             node_attrs = { "shape": "rect", "style": "rounded" }
@@ -151,8 +151,11 @@ class GraphViz(TARenderer):
 
     def open(self):
 
+        log.debug("Before rendering graph ...")
         g = self.render()
+        log.debug("Graph source: %s" % g.source)
         g.format = "pdf"
+        log.debug("Before viewing graph ...")
         g.view()
 
 ##    def save_plain(self, path):

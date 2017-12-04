@@ -81,20 +81,26 @@ def translate_method_to_automaton(project, class_fqn, class_path, method_name, d
 
     return ta_post
 
+@contract(conf="is_configuration", pc="is_pc", returns="string")
+def build_loc_name(conf, pc):
+    conf_string = ",".join(map(str, conf))
+    loc_name = "(%s)%s" % (conf_string, pc)
+    return loc_name
+
 @contract(conf="is_configuration", pc="is_pc", returns="is_location")
 def build_loc(conf, pc):
     
     # convert the conf to a list of string, and join the items
     # using ","
-    conf_string = ",".join(map(str, conf))
-    loc_name = "(%s)%s" % (conf_string, pc)
+    loc_name = build_loc_name(conf, pc)
 #    log.debug("conf: %s, loc name: %s" % (conf_string, loc_name))
     loc = Location(loc_name)
 
     return loc
 
-@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list[N](dict), N > 0", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", returns=ReachabilityResult)
-def compute_reachable(source_conf, pc_source, instr, state_space, project, preconditions=None, pc_jump_stack=None, deadlines=None):
+#@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list[N](dict), N > 0", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", returns=ReachabilityResult)
+@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space="is_state_space", project="is_project", visited_locations="set(string)", preconditions="list(is_precondition)|None", returns=ReachabilityResult)
+def compute_reachable(source_conf, pc_source, instr, state_space, project, visited_locations, preconditions=None, pc_jump_stack=None, deadlines=None):
     """
     INPUT:
     - source_conf : list of abstract configuration
@@ -122,6 +128,11 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
 
     log.debug("Instructions: %s. PC: %s" % (instr, pc_source.pc))
 
+    if len(instr) == 0:
+        # empty block case
+        reachable = set(source_conf)
+        final = map(lambda c: build_loc(c, pc_source), source_conf) # create a location for each configuration
+
     curr_pc = PC(pc_source.pc)
     for curr_instr in instr:
 
@@ -135,15 +146,23 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, preco
         final = []
 
         # use sets in order to avoid duplicates
-        source_conf = set(source_conf)
+        source_conf = sorted(set(source_conf))
 
         if not source_conf:
             log.debug("Exit for non reachable states at PC: %s" % curr_pc)
             break
 
         for source in source_conf:
+
+            loc_name = build_loc_name(source, curr_pc)
+            log.debug("Check location already visited: %s vs %s" % (loc_name, visited_locations))
+            if loc_name in visited_locations:
+                # location already visited, skip it
+                continue
+
+            log.debug("Check reach problem: source=%s%s, instr=%s, preconditions=%s, visited locations: %s" % (source, curr_pc, curr_instr["code"], preconditions, visited_locations))
             # TODO in principle each invocation of check_reach(...) is independent from the others
-            rr = check_reach(source, curr_pc, curr_instr, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+            rr = check_reach(source, curr_pc, curr_instr, state_space, project, visited_locations, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             log.debug("Check reach: source=%s, result=%s" % (source, rr))    
 
             edges.extend(rr.edges)
@@ -183,10 +202,14 @@ def transform(name, instructions, state_space, project):
     reach = dict()
     pc_source = PC(initial="0")
     source_conf = state_space.initial_configurations
+    visited_locations = set([]) # initially, no location is visited
 
-    rr = compute_reachable(source_conf, pc_source, instructions, state_space, project)
+    log.debug("Initial configurations: %s" % sorted(set(source_conf)))
+
+    rr = compute_reachable(source_conf, pc_source, instructions, state_space, project, visited_locations)
 
     log.info("reachable: %s, final: %s, external: %s" % (rr.configurations, rr.final_locations, rr.external_locations))
+    log.info("visited locations: %s" % visited_locations)
 
     # add variables and clock variables to the automaton
     for var in rr.variables:
@@ -201,6 +224,8 @@ def transform(name, instructions, state_space, project):
             else:
                 log.warning("Skip adding variable for the second time: %s" % var)
 
+    log.debug("all variables added to automaton ...")
+
     # add edges to the automaton; when adding edges, it also add
     # the locations
     if len(rr.edges) > 0:
@@ -209,8 +234,12 @@ def transform(name, instructions, state_space, project):
 
             ta.get_or_add_edge(e)
 
+    log.debug("all edges added to automaton ...")
+
     # determine whether there exists an initial location, or create one
     ta.close()
+
+    log.debug("automaton closed")
 
     return ta
 
@@ -248,8 +277,9 @@ class SMTProb(object):
         fcntl.fcntl(self._cmd.stderr, fcntl.F_SETFL, flags | os.O_NONBLOCK)
 
     def __del__(self):
-        if self._cmd:
-            self._cmd.terminate()
+        cmd = getattr(self, "_cmd", None)
+        if cmd:
+            cmd.terminate()
 
 
     def __enter__(self):
@@ -971,8 +1001,8 @@ def tuple_replace(curr_tuple, pos, value):
     new_values[pos] = value
     return tuple(new_values)
 
-@contract(source="is_configuration", pc_source=PC, instr="dict", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", postconditions="list(is_precondition)|None", deadlines="list(is_pc)|None", returns=ReachabilityResult)
-def check_reach(source, pc_source, instr, state_space, project, preconditions=None, postconditions=None, pc_jump_stack=None, deadlines=None):
+@contract(source="is_configuration", pc_source=PC, instr="dict", state_space="is_state_space", project="is_project", visited_locations="set(string)", preconditions="list(is_precondition)|None", postconditions="list(is_precondition)|None", deadlines="list(is_pc)|None", returns=ReachabilityResult)
+def check_reach(source, pc_source, instr, state_space, project, visited_locations, preconditions=None, postconditions=None, pc_jump_stack=None, deadlines=None):
     assert preconditions is None or isinstance(preconditions, list)
     assert pc_jump_stack is None or isinstance(pc_jump_stack, list)
     assert deadlines is None or isinstance(deadlines, list)
@@ -1003,6 +1033,10 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
     instr_type = instr["nodeType"]
     source_pred = state_space.value(source)
     source_loc = build_loc(source, pc_source)
+
+    log.debug("Add source to visited locations: %s. Previous visited locations: %s. Num visited locations: %s." % (source_loc, visited_locations, len(visited_locations)))
+    assert source_loc.name not in visited_locations, "Location %s already visited" % source_loc.name
+    visited_locations.add(source_loc.name)
 
     # begin 
     # res contains a list of reachable configurations, a list of Edge's, a list of final Location's, and a list of variables
@@ -1094,7 +1128,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             reachable_then = [ source ]
 
             preconditions.append(Precondition(guard["expression"]))
-            rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+            rr_then = compute_reachable(reachable_then, pc_source_then, stms_then, state_space, project, visited_locations, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()    
 
             variables |= rr_then.variables
@@ -1117,7 +1151,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             reachable_else = [ source ]
 
             preconditions.append(Negate(guard["expression"]))
-            rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+            rr_else = compute_reachable(reachable_else, pc_source_else, stms_else, state_space, project, visited_locations, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             preconditions.pop()
 
             variables |= rr_else.variables
@@ -1166,7 +1200,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         pc_target = pc_source + 1
 
         tovisit_sources = [ source, ]
-        visited_sources = []
+#        visited_sources = []
 
         pc_source_while = PC(pc_source.pc).push(0)
 
@@ -1174,7 +1208,10 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
             curr_source_conf = tovisit_sources.pop()
             curr_source_loc = build_loc(curr_source_conf, pc_source)
 
-            visited_sources.append(curr_source_conf)
+            assert curr_source_loc not in visited_locations, "Location in ASTWhile already visited: %s" % curr_source_loc.name
+
+#            visited_sources.append(curr_source_conf)
+            #visited_locations.add(curr_source_loc)
             curr_source_pred = state_space.value(curr_source_conf)
 
             # determine whether the guard and/or its negation are satisfiable
@@ -1194,7 +1231,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                 preconditions.append(Precondition(guard["expression"]))
                 pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
                 
-                rr_while = compute_reachable([ curr_source_conf, ], pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+                rr_while = compute_reachable([ curr_source_conf, ], pc_source_while, stms_while, state_space, project, visited_locations, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
                 
                 variables |= rr_while.variables
                 pc_jump_stack.pop()
@@ -1227,7 +1264,8 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
     
                     # in case the configuration has not been visited before
                     # by an iteration of the while, then visit it
-                    if state_final_conf not in visited_sources:
+#                    if state_final_conf not in visited_sources:
+                    if loc.name not in visited_locations:
                         # unroll a new (abstract) while loop
                         tovisit_sources.append(state_final_conf)
                        
@@ -1247,7 +1285,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
     elif instr_type == "ASTDoWhile":
         assert "expr" in instr, instr.keys()
         assert "stms" in instr
-        assert "identifier" in instr, "ASTWhile: %s" % instr
+        assert "identifier" in instr, "ASTDoWhile: %s" % instr
 
         while_identifier = instr["identifier"]
         stms_while = instr["stms"]
@@ -1260,7 +1298,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         pc_source_while = PC(pc_source.pc).push("0")
 
         pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
-        rr_while = compute_reachable([source], pc_source_while, stms_while, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
+        rr_while = compute_reachable([source], pc_source_while, stms_while, state_space, project, visited_locations, preconditions, pc_jump_stack, deadlines=deadlines)
         pc_jump_stack.pop()
 
         variables |= rr_while.variables
@@ -1300,7 +1338,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
                     
                     preconditions.append(Precondition(guard["expression"]))
                     pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
-                    rr_while_back = compute_reachable([conf_final], pc_source_while, stms_while, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+                    rr_while_back = compute_reachable([conf_final], pc_source_while, stms_while, state_space, project, visited_locations, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
                     pc_jump_stack.pop()
                     preconditions.pop()
         
@@ -1398,7 +1436,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         # recursive call on the try branch
         stms_try = instr["tryBranch"]["stms"]
         pc_source_try = PC(pc_source.pc).push("0").push("0")
-        rr_try = compute_reachable([source], pc_source_try, stms_try, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
+        rr_try = compute_reachable([source], pc_source_try, stms_try, state_space, project, visited_locations, preconditions, pc_jump_stack, deadlines=deadlines)
 
         variables |= rr_try.variables
         edges.extend(rr_try.edges)
@@ -1431,9 +1469,11 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         stms_catch = instr["catchBranch"][0]["stms"] # HACK assume there is exactly 1 catchBranch
         pc_source_catch = PC(pc_source.pc).push("1").push("0")
         log.debug("Compute reachable in catch ...")
-        rr_catch = compute_reachable(found_exception_confs, pc_source_catch, stms_catch, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
+        rr_catch = compute_reachable(found_exception_confs, pc_source_catch, stms_catch, state_space, project, visited_locations, preconditions, pc_jump_stack, deadlines=deadlines)
 
         variables |= rr_catch.variables
+        edges.extend(rr_catch.edges) # TODO check this
+
         # add edge from exception states in the try block, to the begin of the catch block
         for excp_loc in found_exception_locs:   
             (excp_conf, excp_pc) = parse_location(excp_loc)
@@ -1468,7 +1508,7 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         stms_deadline = instr["stms"]
         pc_source_deadline = PC(pc_source.pc).push("0")
         deadlines.append(pc_source) 
-        rr_deadline = compute_reachable([source],pc_source_deadline, stms_deadline, state_space, project, preconditions, pc_jump_stack, deadlines=deadlines)
+        rr_deadline = compute_reachable([source],pc_source_deadline, stms_deadline, state_space, project, visited_locations, preconditions, pc_jump_stack, deadlines=deadlines)
 
         deadlines.pop()
         variables |= rr_deadline.variables
@@ -1513,18 +1553,23 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
         pc_source_foreach = PC(pc_source.pc).push(0)
 
         tovisit_sources = [ source, ]
-        visited_sources = []
+#        visited_sources = []
 
         while len(tovisit_sources) > 0:
 
             curr_source_conf = tovisit_sources.pop()
+            curr_source_loc = build_loc(curr_source_conf, pc_source)
 
-            visited_sources.append(curr_source_conf)
+            assert curr_source_loc not in visited_locations, "Location in ASTFor/ASTForEach already visited: %s" % curr_source_loc.name
+
+
+#            visited_sources.append(curr_source_conf)
+            #visited_locations.add(curr_source_loc)
         
             reachable_foreach = [ curr_source_conf ]    
             pc_jump_stack.append((foreach_identifier, pc_source_foreach, pc_target))
             
-            rr_foreach = compute_reachable(reachable_foreach, pc_source_foreach, stms_foreach, state_space, project, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+            rr_foreach = compute_reachable(reachable_foreach, pc_source_foreach, stms_foreach, state_space, project, visited_locations, preconditions=preconditions, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             
             variables |= rr_foreach.variables
             pc_jump_stack.pop()
@@ -1554,7 +1599,8 @@ def check_reach(source, pc_source, instr, state_space, project, preconditions=No
 
                 # in case the configuration has not been visited before
                 # by an iteration of the foreach, then visit it
-                if state_final_conf not in visited_sources:
+#                if state_final_conf not in visited_sources:
+                if loc.name not in visited_locations:
                     tovisit_sources.append(state_final_conf)
 
         check_closure(pc_target, reachable, final, external)
