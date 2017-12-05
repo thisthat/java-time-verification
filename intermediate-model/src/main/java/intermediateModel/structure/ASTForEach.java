@@ -82,6 +82,8 @@ public class ASTForEach  extends IASTStm implements IASTHasStms, IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTForEach(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		var.visit(visitor);
 		expr.visit(visitor);
 		for(IASTStm s : stms){

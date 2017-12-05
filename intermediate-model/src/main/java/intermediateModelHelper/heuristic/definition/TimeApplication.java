@@ -7,13 +7,10 @@ import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
-import intermediateModel.structure.expression.ASTNewObject;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.envirorment.temporal.structure.RuntimeConstraint;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 
@@ -28,7 +25,7 @@ import java.util.List;
 public class TimeApplication extends SearchTimeConstraint {
 
 	List<TimeUndefinedTimeout>  timeMethodsUndef = TemporalInfo.getInstance().getTimeUndefinedTimeout();
-	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getTimeMethods();
+	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getMethodsWithTimeInSignature();
 
 	IASTMethod currentMethod;
 	String className;

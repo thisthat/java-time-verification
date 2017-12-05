@@ -1,15 +1,16 @@
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModelHelper.indexing.structure.IndexMethod;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.Java2AST;
-import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
+import org.junit.Test;
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -18,8 +19,8 @@ public class TestIndexing {
 
 
 	public List<ASTClass> init(String filename) throws Exception {
-		Java2AST a = new Java2AST( filename );
-		a.convertToAST();
+		Java2AST a = new Java2AST( filename , true);
+
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);

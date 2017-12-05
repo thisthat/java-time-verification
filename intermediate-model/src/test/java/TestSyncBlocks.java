@@ -1,16 +1,16 @@
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexSyncBlock;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

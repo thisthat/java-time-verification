@@ -4,7 +4,6 @@ package intermediateModel.interfaces;
 import intermediateModel.structure.ASTVariable;
 import org.javatuples.Pair;
 
-import javax.lang.model.type.DeclaredType;
 import java.util.List;
 
 /**
@@ -12,6 +11,15 @@ import java.util.List;
  * @version %I%, %G%
  */
 public interface IASTMethod extends IASTHasStms, IASTVisitor {
+
+	enum AccessModifier {
+		PUBLIC,
+		PRIVATE,
+		PROTECTED,
+	}
+
+	AccessModifier getAccessModifier();
+	void setAccessModifier(AccessModifier v);
 	List<ASTVariable> getParameters();
 	String getName();
 	List<String> getExceptionsThrowed();
@@ -21,6 +29,7 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	int getLineEnd();
 	int getStart();
 	int getEnd();
+	String getCode();
 	boolean equalsBySignature(IASTMethod c);
 	boolean equalsBySignature(String pkg, String name, List<Pair<String,String>> signature);
 	boolean isStatic();

@@ -1,13 +1,17 @@
 package intermediateModelHelper.indexing;
 
 import com.google.common.collect.Iterators;
+import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.envirorment.temporal.CollectReturnTimeMethods;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +33,7 @@ public class IndexingProject {
 	protected String projectName;
 	protected boolean skipTest = true;
 	protected boolean showUpdates = false;
-
+	//static Debugger debug = Debugger.getInstance();
 	/**
 	 * Construct the db given the project name.
 	 * @param name	Project Name
@@ -37,6 +41,7 @@ public class IndexingProject {
 	public IndexingProject(String name) {
 		this.db = MongoConnector.getInstance(name);
 		this.projectName = name;
+
 	}
 
 	/**
@@ -193,6 +198,37 @@ public class IndexingProject {
 		);
 		Iterator<File> i = files.iterator();
 		return i;
+	}
+
+	public static List<TimeTypes> getMethodReturnTime(String name, String base_path, boolean save){
+		File dir = new File(base_path);
+		String[] filter = {"java"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator<File> i = files.iterator();
+		List<TimeTypes> out = new ArrayList<>();
+		CollectReturnTimeMethods collectReturnTimeMethods = new CollectReturnTimeMethods(save, name);
+		Debugger debug = Debugger.getInstance();
+		while (i.hasNext()) {
+			String filename = i.next().getAbsolutePath();
+			if(filename.contains("/src/test/"))
+				continue;
+			debug.log("processing " + filename);
+			try {
+				List<ASTClass> result = JDTVisitor.parse(filename, base_path, false);
+				for (ASTClass c : result) {
+					out.addAll(collectReturnTimeMethods.index(c));
+				}
+			} catch (Exception e) {
+				System.out.println("Error with " + filename);
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return out;
 	}
 
 	/**

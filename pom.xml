@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>java-xal</groupId>
     <artifactId>java-xal</artifactId>
-    <version>0.3.5</version>
+    <version>0.4</version>
     <name>Parent</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,13 +14,14 @@
         <module>java-parser</module>
         <module>xal</module>
         <module>intermediate-model</module>
-        <module>parallel-control-flow</module>
+        <module>parallel-control-flow-graph</module>
         <module>time-annotation</module>
         <module>server</module>
-        <module>testJUppaal</module>
         <module>uppaal-library</module>
         <module>code-instrumentation</module>
         <module>usage</module>
+        <module>correct-time-behavior</module>
+        <module>debugger</module>
     </modules>
 
     <scm>
@@ -32,6 +33,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
@@ -51,7 +53,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <debug>true</debug>
+                    <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
                 <version>3.3</version>
             </plugin>

@@ -41,7 +41,7 @@ public class TestFromAST2Java {
         String base_path = System.getProperty("user.dir");
         base_path += "/src/main/resources/OnlyMethod.java";
         System.out.println(base_path);
-        Java2AST f2j = new Java2AST(base_path);
+        Java2AST f2j = new Java2AST(base_path, true);
         f2j.convertToAST();
     }
 
@@ -50,32 +50,19 @@ public class TestFromAST2Java {
         String base_path = System.getProperty("user.dir");
         base_path += "/src/main/resources/HelloWorld.java";
         System.out.println(base_path);
-        Java2AST f2j = new Java2AST(base_path);
+        Java2AST f2j = new Java2AST(base_path, true);
         f2j.convertToAST();
     }
 
-    //@Test
-    public void testCorrectRoundTrip() throws Exception {
-        String[] test = new String[test_files.length - 1];
-        int j = 0;
-        for(int i = 0; i < test_files.length; i++){
-            if(!test_files[i].contains("Only")){
-                test[j++] = test_files[i];
-            }
-        }
-        for(String file : test){
-            System.out.println(file);
-            Java2AST f2j = new Java2AST(file,  true);
-            File file1 = new File(file);
-            //File file2 = f2j.convert2Java();
-            /* TODO : Remove comments from both files to correctly check when they are equal
-            assertEquals("The files differ!",
-                    readFileToString(file1, "utf-8"),
-                    readFileToString(file2, "utf-8")
-            );
-            */
-        }
+
+    @Test
+    public void RunIT() throws Exception {
+        String project = "/Users/giovanni/repository/kafka";
+        String file = "/Users/giovanni/repository/kafka/clients/src/main/java/org/apache/kafka/clients/producer/KafkaProducer.java";
+        Java2AST ast = new Java2AST(file, true, project);
 
     }
+
+
 
 }

@@ -43,6 +43,8 @@ public class ASTReturn extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTReturn(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		if(expr != null)
 			expr.visit(visitor);
 		visitor.exitASTReturn(this);

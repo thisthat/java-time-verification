@@ -1,9 +1,9 @@
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexData;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Pair;
 import org.junit.After;

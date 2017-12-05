@@ -99,7 +99,7 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 			for(IASTRE p : parameters){
 				p.visit(visitor);
 			}
-		if(this.hiddenClass != null){
+		if(this.hiddenClass != null && !visitor.isExcludeHiddenClasses()){
 			this.hiddenClass.visit(new DefaultASTVisitor(){
 				@Override
 				public void enterASTRE(ASTRE elm) {
@@ -113,17 +113,44 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
+	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTNewObject(this);
 		for(IASTRE p : parameters){
 			p.visit(visitor);
 		}
-		if(this.hiddenClass != null){
+		if(this.hiddenClass != null && !visitor.isExcludeHiddenClasses()){
 			this.hiddenClass.visit(visitor);
 		}
 		visitor.exitASTNewObject(this);
 		visitor.exitAll(this);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTNewObject that = (ASTNewObject) o;
+
+		if (isArray != that.isArray) return false;
+		if (parameters != null ? !parameters.equals(that.parameters) : that.parameters != null) return false;
+		if (typeName != null ? !typeName.equals(that.typeName) : that.typeName != null) return false;
+		return hiddenClass != null ? hiddenClass.equals(that.hiddenClass) : that.hiddenClass == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = parameters != null ? parameters.hashCode() : 0;
+		result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
+		result = 31 * result + (isArray ? 1 : 0);
+		result = 31 * result + (hiddenClass != null ? hiddenClass.hashCode() : 0);
+		return result;
 	}
 }
 

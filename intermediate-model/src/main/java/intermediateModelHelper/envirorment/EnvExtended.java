@@ -1,11 +1,11 @@
 package intermediateModelHelper.envirorment;
 
 
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModelHelper.types.ResolveTypes;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
 
 import java.util.List;
 

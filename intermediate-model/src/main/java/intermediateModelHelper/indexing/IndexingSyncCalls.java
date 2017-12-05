@@ -1,10 +1,10 @@
 package intermediateModelHelper.indexing;
 
+import intermediateModel.structure.ASTClass;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexSyncCall;
 import intermediateModelHelper.indexing.structure.SyncMethodCall;
-import intermediateModel.structure.ASTClass;
 
 import java.util.ArrayList;
 import java.util.List;

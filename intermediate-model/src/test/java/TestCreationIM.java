@@ -1,14 +1,13 @@
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTWhile;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
-import org.junit.Test;
 
-import java.util.*;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

@@ -1,22 +1,20 @@
-import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.*;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.envirorment.temporal.structure.Constraint;
+import intermediateModelHelper.heuristic.definition.TimeInSignature;
+import intermediateModelHelper.heuristic.definition.SetTimeout;
+import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexData;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.javatuples.Triplet;
-import org.junit.Test;
-import parser.Java2AST;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -36,7 +34,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(SetTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 
@@ -51,7 +49,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(SetTimeout.class);
 		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 		List<Constraint> constraints = ah.getTimeConstraint();
@@ -67,7 +65,7 @@ public class TestHeuristics {
 		assertTrue(check(
 				195,
 				"TimeUnit.MILLISECONDS.sleep(Math.max(0, sleepMillis.addAndGet(-50)));",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 
@@ -83,7 +81,7 @@ public class TestHeuristics {
 		ah.set__DEBUG__(true);
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 		MongoOptions.getInstance().setDbName("TestShowBug18");
 		IndexingFile indexing = new IndexingFile();
@@ -110,7 +108,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 		List<Constraint> constraints = ah.getTimeConstraint();
@@ -119,25 +117,25 @@ public class TestHeuristics {
 		assertTrue(check(
 				16,
 				"Thread.sleep(4000);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertTrue(check(
 				35,
 				"timer.schedule(task, 0, 5000);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertTrue(check(
 				38,
 				"task.wait(100);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertTrue(check(
 				43,
 				"Thread.sleep(10000);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 
@@ -145,29 +143,6 @@ public class TestHeuristics {
 
 	}
 
-	@Test
-	public void TestMCGroupImpl() throws Exception {
-		String filename = getClass().getClassLoader().getResource("examples/MCGroupImpl.java").getFile();
-		List<ASTClass> cs = init(filename);
-		ApplyHeuristics ah = new ApplyHeuristics();
-		ah.subscribe(TimeoutResources.class);
-		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
-		ah.analyze(cs.get(0));
-
-		List<Constraint> constraints = ah.getTimeConstraint();
-
-
-		assertTrue(check(
-				817,
-				"socket.receive( packet )",
-				SetTimeout.class,
-				constraints
-		));
-
-		assertEquals(constraints.size(), 1);
-
-	}
 
 	@Test
 	public void TestProjectServiceImpl() throws Exception {
@@ -176,7 +151,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 		List<Constraint> constraints = ah.getTimeConstraint();
@@ -185,7 +160,7 @@ public class TestHeuristics {
 		assertTrue(check(
 				349,
 				"Thread.sleep(500+((int)Math.random()*1000));",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertEquals(constraints.size(), 1);
@@ -199,7 +174,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 		List<Constraint> constraints = ah.getTimeConstraint();
@@ -213,7 +188,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 		List<Constraint> constraints = ah.getTimeConstraint();
@@ -222,7 +197,7 @@ public class TestHeuristics {
 		assertTrue(check(
 				35,
 				"socket.connect( new InetSocketAddress( _address, 2190 ), 5000 );",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertEquals(constraints.size(), 1);
@@ -237,7 +212,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		List<Constraint> constraints;
 		//First class
 		ah.analyze(cs.get(0));
@@ -247,19 +222,19 @@ public class TestHeuristics {
 		assertTrue(check(
 				86,
 				"Thread.sleep(5000);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertTrue(check(
 				205,
 				"wait(100);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertTrue(check(
 				232,
 				"createTopologyThread.sleep(1000);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertEquals(constraints.size(), 3);
@@ -280,19 +255,19 @@ public class TestHeuristics {
 		assertTrue(check(
 				290,
 				"Thread.sleep(5000);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertTrue(check(
 				293,
 				"Thread.sleep(5000);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertTrue(check(
 				302,
 				"Thread.sleep(_class.SleepTimeout);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 
@@ -305,7 +280,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 		List<Constraint> constraints = ah.getTimeConstraint();
 		assertEquals(constraints.size(), 0);
@@ -319,7 +294,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 		List<Constraint> constraints = ah.getTimeConstraint();
@@ -334,7 +309,7 @@ public class TestHeuristics {
 		ApplyHeuristics ah = new ApplyHeuristics();
 		ah.subscribe(TimeoutResources.class);
 		ah.subscribe(SetTimeout.class);
-		ah.subscribe(AnnotatedTypes.class);
+		ah.subscribe(TimeInSignature.class);
 		ah.analyze(cs.get(0));
 
 		List<Constraint> constraints = ah.getTimeConstraint();
@@ -343,7 +318,7 @@ public class TestHeuristics {
 		assertTrue(check(
 				859,
 				"socket.connect(new InetSocketAddress(control.getHost(), control.getPort()), CONNECT_TIMEOUT);",
-				AnnotatedTypes.class,
+				TimeInSignature.class,
 				constraints
 		));
 		assertEquals(constraints.size(), 1);

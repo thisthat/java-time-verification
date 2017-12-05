@@ -2,7 +2,6 @@ package intermediateModel.interfaces;
 
 
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import org.javatuples.Triplet;
 import parser.ASTSrc;
 
 import java.util.Arrays;
@@ -20,7 +19,7 @@ import java.util.Arrays;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public abstract class IASTStm implements IASTVisitor {
+public abstract class IASTStm implements IASTVisitor, IASTToken {
 
 	/**
 	 * Enum about the different visibility access level that Java offers
@@ -45,7 +44,7 @@ public abstract class IASTStm implements IASTVisitor {
 
 	protected Constraint constraint = null;
 	//@Beta protected List<Annotation> annotations = new ArrayList<>();
-	private boolean isTimeCritical = false;
+	protected boolean isTimeCritical = false;
 	/**
 	 * Retrive the time constraint of the current Node
 	 * @return the information of the time constraint with &lt;line, message, class that detected the constraint&gt;

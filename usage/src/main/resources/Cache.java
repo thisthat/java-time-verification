@@ -14,4 +14,13 @@ public class Cache {
         }
         return value;
     }
+
+    private int readValue() {
+        return (int)(Math.random()*100);
+    }
+
+    public static void main(String[] args) {
+        Cache c = new Cache();
+        c.read();
+    }
 }

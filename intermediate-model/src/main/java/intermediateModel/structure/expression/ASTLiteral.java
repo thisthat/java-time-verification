@@ -41,6 +41,11 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
+	@Override
 	public String print() {
 		return value;
 	}
@@ -51,5 +56,20 @@ public class ASTLiteral extends IASTStm implements IASTRE {
 		visitor.enterASTLiteral(this);
 		visitor.exitASTLiteral(this);
 		visitor.exitAll(this);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTLiteral that = (ASTLiteral) o;
+
+		return value != null ? value.equals(that.value) : that.value == null;
+	}
+
+	@Override
+	public int hashCode() {
+		return value != null ? value.hashCode() : 0;
 	}
 }

@@ -11,7 +11,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
+import intermediateModelHelper.heuristic.definition.TimeInSignature;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
@@ -102,7 +102,7 @@ public class getFile extends indexMW {
 			AnnotateEnv a = new AnnotateEnv();
 			a.start(c);
 			ApplyHeuristics ah = new ApplyHeuristics();
-			ah.subscribe(AnnotatedTypes.class);
+			ah.subscribe(TimeInSignature.class);
 			ah.subscribe(TimeoutResources.class);
 			ah.subscribe(AssignmentTimeVar.class);
 
