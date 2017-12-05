@@ -12,7 +12,6 @@ import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import server.handler.middleware.ParsePars;
@@ -61,7 +60,7 @@ public class exampleDeadline implements HttpHandler {
             getFile.AnnotateEnv a = new getFile.AnnotateEnv();
             a.start(c);
             ApplyHeuristics ah = new ApplyHeuristics();
-            ah.subscribe(AnnotatedTypes.class);
+            //ah.subscribe(AnnotatedTypes.class);
             ah.subscribe(TimeoutResources.class);
             ah.subscribe(AssignmentTimeVar.class);
 

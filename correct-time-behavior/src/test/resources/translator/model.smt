@@ -25,7 +25,7 @@
 
 (assert (> now deadline))
 
-(set-option :opt.timeout 6000)
+(set-option :opt.timeout 9000)
 
 (check-sat)
 

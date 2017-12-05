@@ -6,13 +6,15 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.*;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTDeadline;
+import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.ASTTry;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import server.handler.middleware.ParsePars;
@@ -60,7 +62,7 @@ public class exampleTestNeighbours implements HttpHandler {
             getFile.AnnotateEnv a = new getFile.AnnotateEnv();
             a.start(c);
             ApplyHeuristics ah = new ApplyHeuristics();
-            ah.subscribe(AnnotatedTypes.class);
+            //ah.subscribe(AnnotatedTypes.class);
             ah.subscribe(TimeoutResources.class);
             ah.subscribe(AssignmentTimeVar.class);
 

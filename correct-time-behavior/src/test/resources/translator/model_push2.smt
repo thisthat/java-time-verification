@@ -9,7 +9,7 @@
 
 (assert (= max_val 9223372036854775807))
 (assert (= over_max_val 9223372036854775808))
-(assert (= min_val (- 100)))
+(assert (= min_val (- 9223372036854775808)))
 (assert (and (>= time 0) (<= time max_val)))
 
 (assert (<= min_val now))
@@ -26,7 +26,7 @@
 (assert (<= now deadline))
 
 (assert (= now time))
-(set-option :opt.timeout 6000)
+(set-option :opt.timeout 9000)
 
 (check-sat)
 

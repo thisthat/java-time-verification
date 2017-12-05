@@ -44,7 +44,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 				IASTVar var = env.getVar(elm.getNameString());
-				if(var != null && elm.getExpr() != null && (var.isTimeCritical() || elm.getExpr().isTimeCritical())){
+				if(var != null && elm.getExpr() != null && elm.getExpr().isTimeCritical()){
 					var.setTimeCritical(true);
 					mark(stm);
 				}

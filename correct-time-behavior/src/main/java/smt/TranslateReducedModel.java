@@ -122,7 +122,7 @@ public class TranslateReducedModel {
         } else {
             notYet(r);
         }
-        return ctx.mkInt("-100");
+        return ctx.mkInt("-9223372036854775808");
     }
 
     /***************************

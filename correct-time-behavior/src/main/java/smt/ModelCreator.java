@@ -21,7 +21,7 @@ public class ModelCreator {
 
     public static String _MaxVal = "9223372036854775807";
     public static String _NotValidMax = "9223372036854775808";
-    public static String _NotValidMin = "-100";
+    public static String _NotValidMin = "-9223372036854775808";
 
     private String lastMinModel = "";
     private String lastMaxModel = "";
