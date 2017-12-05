@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by giovanni on 17/07/2017.
  */
-public class Main {
+public class SLOCSlice {
 
     public static long timeSpent, timeSpentWriting, timeSpentInit, timeSpentParsing, start, end;
     static Debugger debug = Debugger.getInstance();
