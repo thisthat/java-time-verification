@@ -93,7 +93,7 @@ public class getFile extends indexMW {
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
+			os.write(response.getBytes());
 			os.close();
 			return;
 		}
