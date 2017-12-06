@@ -73,6 +73,10 @@ class Klass(ASTNode):
         self.path = path
         self.package_name = package_name
 
+    @property
+    def fqname(self):
+        return "%s.%s" % (self.package_name, self.name)
+
     def get_ast(self):
         classes = self.project.get_file(self.path)
         
@@ -159,6 +163,10 @@ class Method(ASTNode):
 
         super(Method, self).__init__(name, klass.project, parent=klass)
         self.klass = klass
+
+    @property
+    def fqname(self):
+        return "%s.%s" % (self.klass.fqname, self.name)
 
     def get_ast(self):
         methods = self.klass.ast["methods"]

@@ -108,8 +108,9 @@ class TARenderer(object):
 
 class GraphViz(TARenderer):
 
-    def __init__(self, ta, legend=None, show_pc=True):
+    def __init__(self, ta, legend=None, show_pc=True, type="pdf"):
         self.show_pc = show_pc
+        self.type = type
         super(GraphViz, self).__init__(ta, legend)
  
     @contract(loc="is_location", returns="string")
@@ -154,7 +155,7 @@ class GraphViz(TARenderer):
         log.debug("Before rendering graph ...")
         g = self.render()
         log.debug("Graph source: %s" % g.source)
-        g.format = "pdf"
+        g.format = self.type #"pdf"
         log.debug("Before viewing graph ...")
         g.view()
 

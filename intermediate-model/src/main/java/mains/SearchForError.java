@@ -1,13 +1,8 @@
 package mains;
 
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-
-import java.util.List;
 
 
 /**

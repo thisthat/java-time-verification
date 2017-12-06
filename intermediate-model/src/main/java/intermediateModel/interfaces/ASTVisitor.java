@@ -7,7 +7,7 @@ import intermediateModel.structure.*;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public interface ASTVisitor<T> extends ASTREVisitor {
+public interface ASTVisitor extends ASTREVisitor {
 	void enterASTAttribute(ASTAttribute elm);
 	void enterASTBreak(ASTBreak elm);
 	void enterASTClass(ASTClass elm);
@@ -29,7 +29,9 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void enterASTTryResources(ASTTryResources elm);
 	void enterASTVariable(ASTVariable elm);
 	void enterASTWhile(ASTWhile elm);
+	void enterASTDeadline(ASTDeadline elm);
 	void enterASTHiddenClass(ASTHiddenClass astHiddenClass);
+	void enterSTM(IASTStm s);
 
 	void exitASTAttribute(ASTAttribute elm);
 	void exitASTBreak(ASTBreak elm);
@@ -52,5 +54,7 @@ public interface ASTVisitor<T> extends ASTREVisitor {
 	void exitASTTryResources(ASTTryResources elm);
 	void exitASTVariable(ASTVariable elm);
 	void exitASTWhile(ASTWhile elm);
+	void exitASTDeadline(ASTDeadline elm);
 	void exitASTHiddenClass(ASTHiddenClass astHiddenClass);
+	void exitSTM(IASTStm s);
 }

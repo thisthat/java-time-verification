@@ -7,7 +7,7 @@ import intermediateModel.structure.expression.*;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public interface ASTREVisitor<T> {
+public interface ASTREVisitor {
 	void enterASTArrayInitializer(ASTArrayInitializer elm);
 	void enterASTAssignment(ASTAssignment elm);
 	void enterASTAttributeAccess(ASTAttributeAccess elm);
@@ -46,5 +46,6 @@ public interface ASTREVisitor<T> {
 
 
 	boolean isExcludePars();
+	boolean isExcludeHiddenClasses();
 
 }

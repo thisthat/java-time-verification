@@ -13,6 +13,5 @@ public class AgentTest {
     @Test
     public void name() throws Exception {
         new UndefinedTimeBehaviour().method_1(100);
-
     }
 }

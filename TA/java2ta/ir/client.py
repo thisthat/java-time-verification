@@ -2,7 +2,7 @@ import requests
 
 import logging
 
-log = logging.getLogger("client")
+log = logging.getLogger(__name__)
 
 class APIError(Exception):
     pass
@@ -38,7 +38,7 @@ class RestfulAPIClient(object):
 
             full_url = "%s?%s" % (full_url, "&".join(querystring))
 
-        log.debug("GET: url=%s" % (full_url,))
+        log.info("GET: url=%s" % (full_url,))
 
         resp = requests.get(full_url)
 
@@ -46,14 +46,13 @@ class RestfulAPIClient(object):
         if len(debug_text) > 100:
             debug_text = debug_text[:100] + "..."
 
-        log.debug("Response: (%s) %s" % (resp.status_code, debug_text))
+        log.info("Response: (%s) %s" % (resp.status_code, debug_text))
 
         if resp.status_code != 200:
             raise APIError("GET /{}/ {}".format(url, resp.status_code))
-            
+    
+        log.debug("JSON: %s" % (resp.json(),))        
         return resp.json()
-
-
 
     def post(self, url, data={}):
         

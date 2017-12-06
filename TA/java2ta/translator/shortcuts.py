@@ -438,7 +438,7 @@ class SMTProb(object):
                     pass
 
                 rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs, env, new_frame)
-                if rhs_smt_declaration:
+                if rhs_smt_assertion:
                     smt_declarations.extend(rhs_smt_declarations)
                     smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
 

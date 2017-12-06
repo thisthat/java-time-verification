@@ -1,13 +1,11 @@
 package server.handler;
 
-import intermediateModelHelper.indexing.IndexingProject;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import com.sun.net.httpserver.HttpExchange;
+import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import server.handler.middleware.indexMW;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

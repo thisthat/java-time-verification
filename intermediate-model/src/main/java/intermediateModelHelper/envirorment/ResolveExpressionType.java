@@ -1,12 +1,12 @@
 package intermediateModelHelper.envirorment;
 
-import intermediateModelHelper.types.ResolveTypes;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseRE;
+import intermediateModelHelper.types.ResolveTypes;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

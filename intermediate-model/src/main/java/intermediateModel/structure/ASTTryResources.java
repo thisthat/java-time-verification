@@ -55,6 +55,8 @@ public class ASTTryResources extends ASTTry implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTTryResources(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		for(ASTRE r : resources){
 			r.visit(visitor);
 		}

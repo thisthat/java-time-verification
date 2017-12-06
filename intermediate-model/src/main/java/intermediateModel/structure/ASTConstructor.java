@@ -1,9 +1,9 @@
 package intermediateModel.structure;
 
+import intermediateModel.interfaces.*;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModelHelper.types.DataTreeType;
-import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	private List<DeclaredVar> declaredVar = new ArrayList<>();
 	private List<String> timeVars = new ArrayList<>();
 	boolean hasTimeCnst;
+	private AccessModifier visibility;
 
 	public ASTConstructor(int start, int end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
@@ -63,6 +64,15 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		return name;
 	}
 
+
+	@Override
+	public AccessModifier getAccessModifier() {
+		return visibility;
+	}
+
+	public void setAccessModifier(AccessModifier v) {
+		this.visibility = v;
+	}
 
 	public List<ASTVariable> getParameters() {
 		return parameters;

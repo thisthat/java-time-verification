@@ -2,14 +2,11 @@ package intermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTConstructor;
-import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 
 import java.util.List;

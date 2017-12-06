@@ -15,6 +15,7 @@ import java.util.List;
 public class ASTWhile extends IASTStm implements IASTHasStms, IASTVisitor {
 	List<IASTStm> stms = new ArrayList<IASTStm>();;
 	ASTRE expr;
+	List<String> timeVarsInExpr = new ArrayList<>();
 
 	public ASTWhile(int start, int end) {
 		super(start, end);
@@ -75,10 +76,20 @@ public class ASTWhile extends IASTStm implements IASTHasStms, IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTWhile(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		expr.visit(visitor);
 		for(IASTStm s : stms){
 			s.visit(visitor);
 		}
 		visitor.exitASTWhile(this);
+	}
+
+    public void addTimeVar(String name) {
+		this.timeVarsInExpr.add(name);
+    }
+
+	public List<String> getTimeVars() {
+		return timeVarsInExpr;
 	}
 }

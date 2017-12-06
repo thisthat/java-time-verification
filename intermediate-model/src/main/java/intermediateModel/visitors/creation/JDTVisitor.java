@@ -36,13 +36,16 @@ public class JDTVisitor extends ASTVisitor {
 
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
-	@Deprecated
 	public static List<ASTClass> parse(String filename){
-		return parse(filename, "");
+		return parse(filename, filename.substring(0, filename.lastIndexOf("/")));
 	}
 
-	public static List<ASTClass> parse(String filename, String projectPath) {
-		if(cache.containsKey(filename)){
+	public static List<ASTClass> parse(String filename, String project_path) {
+		return parse(filename, project_path, true);
+	}
+
+	public static List<ASTClass> parse(String filename, String projectPath, boolean shouldCache) {
+		if(shouldCache && cache.containsKey(filename)){
 			return cache.get(filename);
 		}
 		Java2AST a = null;
@@ -55,9 +58,32 @@ public class JDTVisitor extends ASTVisitor {
 			return new ArrayList<>();
 		}
 		CompilationUnit result = a.getContextJDT();
+		a.dispose();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
-		cache.put(filename, v.listOfClasses);
+		if(shouldCache)
+			cache.put(filename, v.listOfClasses);
+		return v.listOfClasses;
+	}
+
+	public static List<ASTClass> parseSpecial(String filename, String projectPath, boolean shouldCache) {
+		if(shouldCache && cache.containsKey(filename)){
+			return cache.get(filename);
+		}
+		Java2AST a = null;
+		try {
+			a = new Java2AST(filename, true, projectPath, new ArrayList<>());
+		}
+		catch (IOException e) {}
+		catch (UnparsableException e) {
+			//cannot parse the file
+			return new ArrayList<>();
+		}
+		CompilationUnit result = a.getContextJDT();
+		JDTVisitor v = new JDTVisitor(result, filename);
+		result.accept(v);
+		if(shouldCache)
+			cache.put(filename, v.listOfClasses);
 		return v.listOfClasses;
 	}
 
@@ -168,8 +194,16 @@ public class JDTVisitor extends ASTVisitor {
 		c.setInterface(node.isInterface());
 		packageName = packageName + "." + className;
 		stackPackage.push(packageName);
-
-		c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
+		if(stackClasses.size() > 0){
+			ASTClass parent = stackClasses.peek();
+			c.setParent(parent);
+			for(ASTAttribute a : parent.getAttributes()){
+				c.addAttribute(a);
+			}
+		} else {
+			c.setParent(null);
+		}
+		//c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
 
 		listOfClasses.add(c);
 		stackClasses.push(c);
@@ -382,6 +416,7 @@ public class JDTVisitor extends ASTVisitor {
 		boolean isSync = false;
 		boolean isAbs = false;
 		boolean isStatic = false;
+		IASTMethod.AccessModifier visibility = IASTMethod.AccessModifier.PRIVATE;
 		for(Object m : node.modifiers()){
 			if(m instanceof Modifier){
 				Modifier modifier = (Modifier)m;
@@ -394,6 +429,12 @@ public class JDTVisitor extends ASTVisitor {
 				if(modifier.isStatic()){
 					isStatic = true;
 				}
+				if(modifier.isPublic()) {
+					visibility = IASTMethod.AccessModifier.PUBLIC;
+				}
+				if(modifier.isProtected()){
+					visibility = IASTMethod.AccessModifier.PROTECTED;
+				}
 			}
 		}
 
@@ -404,6 +445,7 @@ public class JDTVisitor extends ASTVisitor {
 		} else {
 			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync, isAbs, isStatic);
 		}
+		method.setAccessModifier(visibility);
 		lastClass.addMethod(method);
 		lastMethod = method;
 		//stackMethods.push(method);
@@ -855,6 +897,7 @@ public class JDTVisitor extends ASTVisitor {
 				ASTRE re = new ASTRE(start, stop,
 						newVar
 				);
+				checkType(re, v.getInitializer());
 				if(this.lastLabel != null){
 					re.setIdentifier(this.lastLabel);
 					this.lastLabel = null;
@@ -863,7 +906,6 @@ public class JDTVisitor extends ASTVisitor {
 					bck.addStms(re);
 				} catch (Exception e){
 					//lambda expression in a attribute definition -> skip
-					//System.out.println("BRK");
 				}
 			}
 		}
@@ -883,7 +925,6 @@ public class JDTVisitor extends ASTVisitor {
 			bck.addStms(re);
 		} catch (Exception e){
 			//lambda expression in a attribute definition -> skip
-			//System.out.println("BRK");
 		}
 		lastMethod = bck;
 		return true;
@@ -909,11 +950,28 @@ public class JDTVisitor extends ASTVisitor {
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
 		ASTRE expr =  new ASTRE(start, stop, getExpr(ctx));
+		checkType(expr, ctx);
 		if(this.lastLabel != null){
 			expr.setIdentifier(this.lastLabel);
 			this.lastLabel = null;
 		}
 		return expr;
+	}
+
+	private void checkType(ASTRE expr, ASTNode ctx) {
+		//check return type
+		Expression e = null;
+		if(ctx instanceof ExpressionStatement){
+			e = ((ExpressionStatement) ctx).getExpression();
+		} else if (ctx instanceof Expression){
+			e = (Expression) ctx;
+		}
+		if(e != null) {
+			ITypeBinding type = e.resolveTypeBinding();
+			if (type != null) {
+				expr.setType(type.getName());
+			}
+		}
 	}
 
 	//Helper to nullify objects
@@ -1207,9 +1265,6 @@ public class JDTVisitor extends ASTVisitor {
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		IASTRE.OPERATOR op = getOperator(expr.getOperator().toString());
-		/*if(op.equals(IASTRE.OPERATOR.mul)){
-			System.out.println("BRK");
-		}*/
 		IASTRE l = getExpr(expr.getLeftOperand());
 		IASTRE r = getExpr(expr.getRightOperand());
 		ASTBinary bin = new ASTBinary(start,stop, l, r, op);
@@ -1244,6 +1299,10 @@ public class JDTVisitor extends ASTVisitor {
 			st = hc.getStartPosition();
 			sp = st + hc.getLength();
 			ASTHiddenClass c = new ASTHiddenClass(st, sp);
+			if(lastClass != null) {
+				c.setParent(lastClass);
+				c.setPath(lastClass.getPath());
+			}
 			obj.setHiddenClass(c);
 			//attributes of the hidden class + methods
 			for(Object node : hc.bodyDeclarations()){
@@ -1259,7 +1318,6 @@ public class JDTVisitor extends ASTVisitor {
 							Modifier m = (Modifier) f.modifiers().get(i);
 							vis = Getter.visibility(m.toString());
 						} catch (Exception e){
-							System.out.println("BRK");
 						}
 					}*/
 					String typeF = f.getType().toString();
@@ -1291,7 +1349,9 @@ public class JDTVisitor extends ASTVisitor {
 				if(node instanceof MethodDeclaration){
 					ASTClass bck = lastClass;
 					lastClass = c;
+					IASTHasStms bckm = lastMethod;
 					((MethodDeclaration) node).accept(this);
+					lastMethod = bckm;
 					lastClass = bck;
 				}
 			}
@@ -1478,6 +1538,11 @@ public class JDTVisitor extends ASTVisitor {
 			case "||": return IASTRE.OPERATOR.or;
 			case "&&": return IASTRE.OPERATOR.and;
 			case "%": return IASTRE.OPERATOR.mod;
+			case "^": return IASTRE.OPERATOR.xor;
+			case "<<": return IASTRE.OPERATOR.shiftLeft;
+			case ">>": return IASTRE.OPERATOR.shiftRight;
+			case ">>>": return IASTRE.OPERATOR.shiftRight;
+			case "<<<": return IASTRE.OPERATOR.shiftLeft;
 		}
 		return IASTRE.OPERATOR.equal;
 	}

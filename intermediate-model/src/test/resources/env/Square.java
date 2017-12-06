@@ -1,5 +1,3 @@
-import Rectangle;
-
 public class Square extends Rectangle {
 
 	int size;

@@ -1,6 +1,7 @@
 package intermediateModel.visitors;
 
 import intermediateModel.interfaces.ASTVisitor;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
 
 /**
@@ -116,7 +117,17 @@ public class DefaultASTVisitor extends DefualtASTREVisitor implements ASTVisitor
 	}
 
 	@Override
+	public void enterASTDeadline(ASTDeadline elm) {
+
+	}
+
+	@Override
 	public void enterASTHiddenClass(ASTHiddenClass astHiddenClass) {
+
+	}
+
+	@Override
+	public void enterSTM(IASTStm s) {
 
 	}
 
@@ -226,7 +237,17 @@ public class DefaultASTVisitor extends DefualtASTREVisitor implements ASTVisitor
 	}
 
 	@Override
+	public void exitASTDeadline(ASTDeadline elm) {
+
+	}
+
+	@Override
 	public void exitASTHiddenClass(ASTHiddenClass astHiddenClass) {
+
+	}
+
+	@Override
+	public void exitSTM(IASTStm s) {
 
 	}
 

@@ -1,5 +1,8 @@
 package parser;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -7,7 +10,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.io.FileUtils.readFileToString;
 
@@ -21,8 +24,11 @@ import static org.apache.commons.io.FileUtils.readFileToString;
 
 public class Java2AST {
 
+	private static Map<String, List<String>> cacheClassPathProject = new HashMap<>();
+
     private String filename;
 	private String projectPath = "";
+	private List<String> classPath = new ArrayList<>();
     private boolean isParsed = false;
 
     //lexer&parser
@@ -38,23 +44,6 @@ public class Java2AST {
 	}
 
     private CompilationUnit contextJDT;
-
-    /**
-     * Constructor that accept only the file to parse. It will initialize the Lexer and Parser.
-     * It does <b>not</b> handle any IO Error
-     *
-     * @param filename      Path of the file to parse
-     * @throws IOException  Exception in the case some filesystem problems will arise
-     */
-	public Java2AST(String filename) throws IOException {
-		this.filename = filename;
-		initParser();
-	}
-	public Java2AST(String filename, String projectPath) throws IOException {
-		this.filename = filename;
-		this.projectPath = projectPath;
-		initParser();
-	}
 
     /**
      * Constructor that accept the file to parse and a flag.
@@ -78,6 +67,54 @@ public class Java2AST {
 	public Java2AST(String filename, boolean parse, String projectPath) throws IOException, UnparsableException {
 		this.filename = filename;
 		this.projectPath = projectPath;
+		this.classPath = compute();
+		initParser();
+		if(parse){
+			convertToAST();
+		}
+	}
+
+	private List<String> compute() {
+    	if(cacheClassPathProject.containsKey(this.projectPath))
+    		return cacheClassPathProject.get(this.projectPath);
+
+		List<String> out = getClassPath(this.projectPath);
+		cacheClassPathProject.put(this.projectPath, out);
+		return out;
+	}
+
+	public static List<String> getClassPath(String base){
+		List<String> out = new ArrayList<>();
+		Collection<File> dirs = FileUtils.listFilesAndDirs(new File(base), TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY);
+		for(File s : dirs){
+			if(s.toString().endsWith("src/main/java")){
+				out.add(s.toString());
+			}
+		}
+		out.add(System.getProperty("java.home") + "/lib");
+		return out;
+	}
+
+	public static List<String> getJars(String base){
+		File dir = new File(base);
+		String[] filter = {"jar"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator<File> i = files.iterator();
+		List<String> out = new ArrayList<>();
+		while(i.hasNext()){
+			out.add(i.next().getAbsolutePath());
+		}
+		return out;
+	}
+
+	public Java2AST(String filename, boolean parse, String projectPath, List<String> classPath) throws IOException, UnparsableException {
+		this.filename = filename;
+		this.projectPath = projectPath;
+		this.classPath = classPath;
 		initParser();
 		if(parse){
 			convertToAST();
@@ -91,10 +128,11 @@ public class Java2AST {
      *
      * @throws IOException
      */
-    private void initParser() throws IOException {
+    public void initParser() throws IOException {
 
 		String[] sources = new String[]{ this.projectPath };
-		String[] classPath = new String[]{ System.getProperty("java.home") + "/lib"};
+		String[] classPath = this.classPath.toArray(new String[0]);
+//				new String[]{ System.getProperty("java.home") + "/lib"};
 
 		File file1 = new File(this.filename);
 		String source = readFileToString(file1, "utf-8");
@@ -105,8 +143,8 @@ public class Java2AST {
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 		parserJDT.setCompilerOptions(options);
 
-		//if(!this.projectPath.equals(""))
-		parserJDT.setEnvironment(classPath, sources, new String[]{"UTF-8"}, true);
+		if(classPath.length > 0)
+			parserJDT.setEnvironment(classPath, sources, new String[]{"UTF-8"}, true);
 
 		parserJDT.setResolveBindings(true);
 		parserJDT.setBindingsRecovery(true);
@@ -118,6 +156,7 @@ public class Java2AST {
 
 		parserJDT.setSource(source.toCharArray());
     }
+
 
 	/**
 	 * It converts the java source file into the AST representation.
@@ -133,8 +172,15 @@ public class Java2AST {
 		ASTSrc.getInstance().setJDT(contextJDT);
     }
 
+	public void setClassPath(List<String> classPath) {
+		this.classPath = classPath;
+	}
+
 	public char[] getSource() {
 		return source;
 	}
 
+	public void dispose() {
+		System.gc();
+	}
 }

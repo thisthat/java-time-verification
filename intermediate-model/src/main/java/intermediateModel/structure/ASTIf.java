@@ -152,6 +152,8 @@ public class ASTIf extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTIf(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		guard.visit(visitor);
 		ifBranch.visit(visitor);
 		if(elseBranch != null)

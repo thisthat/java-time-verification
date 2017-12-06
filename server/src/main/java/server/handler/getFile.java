@@ -11,7 +11,7 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
+import intermediateModelHelper.heuristic.definition.TimeInSignature;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
@@ -43,7 +43,7 @@ public class getFile extends indexMW {
 		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.ALL : Level.OFF);
 	}
 
-	class AnnotateEnv extends ParseIM {
+	static class AnnotateEnv extends ParseIM {
 		@Override
 		public void start(ASTClass c) {
 			super.start(c);
@@ -87,13 +87,13 @@ public class getFile extends indexMW {
 		List<ASTClass> classes;
 		//Compute response
 		try {
-			classes = JDTVisitor.parse(file, base_path);
+			classes = JDTVisitor.parse(file, base_path, true);
 		} catch (Exception e){
 			LOGGER.debug(e);
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
+			os.write(response.getBytes());
 			os.close();
 			return;
 		}
@@ -102,7 +102,7 @@ public class getFile extends indexMW {
 			AnnotateEnv a = new AnnotateEnv();
 			a.start(c);
 			ApplyHeuristics ah = new ApplyHeuristics();
-			ah.subscribe(AnnotatedTypes.class);
+			ah.subscribe(TimeInSignature.class);
 			ah.subscribe(TimeoutResources.class);
 			ah.subscribe(AssignmentTimeVar.class);
 

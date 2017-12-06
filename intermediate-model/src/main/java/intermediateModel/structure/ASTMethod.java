@@ -30,6 +30,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<DeclaredVar> declaredVar = new ArrayList<>();
 	List<String> timeVars = new ArrayList<>();
 	boolean hasTimeCnst;
+	AccessModifier visibility = AccessModifier.PRIVATE;
 
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
@@ -85,6 +86,15 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 
 	public void setReturnTypeUnit(TimeUnit returnTypeUnit) {
 		this.returnTypeUnit = returnTypeUnit;
+	}
+
+	@Override
+	public AccessModifier getAccessModifier() {
+		return visibility;
+	}
+
+	public void setAccessModifier(AccessModifier v) {
+		this.visibility = v;
 	}
 
 	public List<ASTVariable> getParameters() {

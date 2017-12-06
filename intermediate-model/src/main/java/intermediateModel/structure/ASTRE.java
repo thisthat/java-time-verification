@@ -24,6 +24,7 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	Env env = new Env();
 	private boolean isResetTime = false;
 	private String resetExpression = "";
+	private String type;
 
 	public ASTRE(int start, int end, IASTRE expression) {
 		super(start, end);
@@ -102,7 +103,8 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	public String toString() {
 		if(expression == null)
 			return "::RE NULL::";
-		return "::::REXP:::" + expression.toString();
+		//return "::::REXP:::" + expression.toString();
+		return expression.print();
 	}
 
 	public String toText() {
@@ -122,7 +124,11 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 
 		ASTRE astre = (ASTRE) o;
 
-		return astre.getCode().equals(this.getCode());
+		if(astre.getLine() != this.getLine()) return false;
+		if(astre.getStart() != this.getStart()) return false;
+		if(astre.getEnd() != this.getEnd()) return false;
+
+		return true;
 
 	}
 
@@ -138,6 +144,8 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTRE(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		if(expression != null)
 			expression.visit(visitor);
 		visitor.exitASTRE(this);
@@ -165,5 +173,13 @@ public class ASTRE extends IASTStm implements IASTVisitor {
 
 	public void setResetExpression(String resetExpression) {
 		this.resetExpression = resetExpression;
+	}
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+	public String getType() {
+		return type;
 	}
 }

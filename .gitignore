@@ -18,6 +18,9 @@ target
 !pom.xml
 !log4j2.xml
 *.jar
+=======
+User.java
+
 
 #[^log4j2]*.xml
 
@@ -25,3 +28,6 @@ project_eval/
 evaluation/src/main/nodejs/evaluation_recall/node_modules/
 dependency-reduced-pom.xml
 public/
+config/
+outputDir/
+outputDirTmp/

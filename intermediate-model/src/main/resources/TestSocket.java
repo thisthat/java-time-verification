@@ -1,8 +1,4 @@
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.ServerSocket;
-import java.net.URLConnection;
-import java.net.Socket;
+import java.net.*;
 
 public class ABC {
 

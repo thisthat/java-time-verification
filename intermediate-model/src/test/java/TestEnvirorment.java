@@ -1,3 +1,8 @@
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.EnvBase;
@@ -6,11 +11,6 @@ import intermediateModelHelper.envirorment.EnvParameter;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.*;
-import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.javatuples.Triplet;
 import org.junit.After;
@@ -20,9 +20,7 @@ import parser.Java2AST;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 /**
@@ -63,8 +61,7 @@ public class TestEnvirorment {
 	}
 
 	public List<ASTClass> init(String filename) throws Exception {
-		Java2AST a = new Java2AST( filename );
-		a.convertToAST();
+		Java2AST a = new Java2AST( filename, true );
 		CompilationUnit ast = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(ast, filename);
 		ast.accept(v);

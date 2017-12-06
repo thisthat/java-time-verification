@@ -1,10 +1,6 @@
 
 package com.aelitis.azureus.plugins.net.buddy.swt;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 public class
 BuddyPluginViewBetaChat
 		implements ChatListener {

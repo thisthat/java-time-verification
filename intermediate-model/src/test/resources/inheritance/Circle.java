@@ -1,5 +1,3 @@
-import Shape;
-
 public class Circle extends Shape {
 
 	// initialize this Square's length, width to the constructor's argument

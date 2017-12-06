@@ -5,13 +5,13 @@
     <parent>
         <artifactId>java-xal</artifactId>
         <groupId>java-xal</groupId>
-        <version>0.3.5</version>
+        <version>0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>Intermediate-Model</name>
     <packaging>jar</packaging>
     <artifactId>intermediate-model</artifactId>
-    <version>0.3.5</version>
+    <version>0.4</version>
     <description>
         The following module encapsulate all the structure of a Java source code file in an intermediate stucture that
         allows us to keep track of the information in the file and perform evaluation over it.
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>java-parser</artifactId>
-            <version>1.2</version>
+            <version>1.3</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -67,6 +67,11 @@
             <groupId>uk.com.robust-it</groupId>
             <artifactId>cloning</artifactId>
             <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>java-xal</groupId>
+            <artifactId>debugger</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
     <build>

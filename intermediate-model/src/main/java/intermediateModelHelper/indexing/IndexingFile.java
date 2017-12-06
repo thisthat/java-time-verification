@@ -1,5 +1,10 @@
 package intermediateModelHelper.indexing;
 
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.*;
+import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.EnvBase;
@@ -8,11 +13,6 @@ import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModelHelper.indexing.structure.IndexMethod;
 import intermediateModelHelper.indexing.structure.IndexParameter;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.*;
-import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
 import java.util.List;
