@@ -124,3 +124,15 @@ org.gudy.azureus2.core3.util.SystemTime;getHighPrecisionCounter;;long
 org.apache.hadoop.util.Time;now;;long
 org.apache.hadoop.hbase.util.EnvironmentEdge;currentTime;;long
 org.apache.hadoop.hbase.util.EnvironmentEdgeManager;currentTime;;long
+org.apache.kafka.connect.util.MockTime;milliseconds;;long
+org.apache.kafka.connect.util.MockTime;hiResClockMs;;long
+org.apache.kafka.test.Microbenchmarks;systemMillis;int;long
+org.apache.kafka.test.Microbenchmarks;systemNanos;int;long
+org.apache.kafka.common.utils.MockTime;hiResClockMs;;long
+org.apache.kafka.clients.consumer.internals.AbstractCoordinator.GroupCoordinatorMetrics;GroupCoordinatorMetrics;Metrics,String;long
+org.apache.kafka.common.utils.SystemTime;milliseconds;;long
+org.apache.kafka.common.utils.SystemTime;hiResClockMs;;long
+org.apache.kafka.common.utils.SystemTime;nanoseconds;;long
+org.apache.kafka.common.utils.Time;milliseconds;;long
+org.apache.kafka.common.utils.Time;hiResClockMs;;long
+org.apache.kafka.common.utils.Time;nanoseconds;;long

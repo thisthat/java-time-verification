@@ -87,7 +87,7 @@ public class getFile extends indexMW {
 		List<ASTClass> classes;
 		//Compute response
 		try {
-			classes = JDTVisitor.parse(file, base_path);
+			classes = JDTVisitor.parse(file, base_path, true);
 		} catch (Exception e){
 			LOGGER.debug(e);
 			String response = "File not found!";
