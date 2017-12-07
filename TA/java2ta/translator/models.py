@@ -324,6 +324,8 @@ class KnowledgeBase(object):
     @contract(class_name="string", method_name="string", knowledge="tuple(list(string),string,is_data_type)")
     def add_method(class_name, method_name, knowledge):
 
+        class_name = "-" # TODO this is a hack, remove ASAP
+
         if class_name not in KnowledgeBase.KB:
             KnowledgeBase.KB[class_name] = {}
 
@@ -336,14 +338,18 @@ class KnowledgeBase(object):
     @staticmethod
     @contract(class_name="string", method_name="string", returns="bool")
     def has_method(class_name, method_name):
-        res = (class_name in KnowledgeBase.KB and method_name in KnowledgeBase.KB[class_name])
+        class_name = "-" # TODO this is a hack, remove when the class of a callee method is recognized correctly
+        res = (class_name in KnowledgeBase.KB and method_name in KnowledgeBase.KB[class_name]) 
+
         return res
 
     @staticmethod
     @contract(class_name="string", method_name="string", res_var="string", params="dict(string:string)", lhs_var="string", returns="tuple(list(string),string,is_data_type)")
     def get_method(class_name, method_name, res_var, params, lhs_var):
 
-        assert KnowledgeBase.has_method(class_name, method_name)
+        class_name = "-" # TODO this is a hack, remove ASAP
+
+        assert KnowledgeBase.has_method(class_name, method_name), "Class %s has no method %s" % (class_name, method_name)
 
         check("tuple(list(string),string,is_data_type)", KnowledgeBase.KB[class_name][method_name])
 

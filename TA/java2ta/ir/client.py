@@ -73,7 +73,7 @@ class RestfulAPIClient(object):
             raise APIError("POST {} {} : {}".format(full_url, resp.status_code, data))
 
 #        print "returned text:\n%s" % resp.text
-            
+        log.debug("JSON: %s" % (resp.json(),))        
         return resp.json()
 
     
