@@ -21,7 +21,9 @@ import java.util.Arrays;
  */
 public abstract class IASTStm implements IASTVisitor, IASTToken {
 
-	/**
+
+
+    /**
 	 * Enum about the different visibility access level that Java offers
 	 */
 	public enum Visibility {
@@ -62,6 +64,10 @@ public abstract class IASTStm implements IASTVisitor, IASTToken {
 	public void addConstraint(Constraint c){
 		isTimeCritical = true;
 		constraint = c;
+	}
+
+	public void removeCnstr() {
+		constraint = null;
 	}
 
 	public String getNodeType() {

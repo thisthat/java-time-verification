@@ -100,13 +100,17 @@ public class ASTNewObject extends IASTStm implements IASTRE {
 				p.visit(visitor);
 			}
 		if(this.hiddenClass != null && !visitor.isExcludeHiddenClasses()){
-			this.hiddenClass.visit(new DefaultASTVisitor(){
-				@Override
-				public void enterASTRE(ASTRE elm) {
-					if(elm.getExpression() != null)
-						elm.getExpression().visit(visitor);
-				}
-			});
+			if(visitor instanceof ASTVisitor) {
+				this.hiddenClass.visit((ASTVisitor) visitor);
+			} else {
+				this.hiddenClass.visit(new DefaultASTVisitor() {
+					@Override
+					public void enterASTRE(ASTRE elm) {
+						if (elm.getExpression() != null)
+							elm.getExpression().visit(visitor);
+					}
+				});
+			}
 		}
 		visitor.exitASTNewObject(this);
 		visitor.exitAll(this);

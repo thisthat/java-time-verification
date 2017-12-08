@@ -4,9 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
@@ -22,6 +27,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
+import server.helper.PropertiesFileReader;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -54,6 +60,32 @@ public class getFile extends indexMW {
 			super.analyzeASTRE(r, env);
 			r.setEnv(env);
 		}
+	}
+
+	static class RemoveCnt extends DefaultASTVisitor {
+		public RemoveCnt() {
+			super.setExcludeHiddenClass(false);
+		}
+
+		@Override
+			public void enterSTM(IASTStm s) {
+				s.removeCnstr();
+			}
+
+			@Override
+			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
+				elm.removeCnstr();
+			}
+
+			@Override
+			public void enterASTAssignment(ASTAssignment elm) {
+				elm.removeCnstr();
+			}
+
+			@Override
+			public void enterASTHiddenClass(ASTHiddenClass astHiddenClass) {
+				astHiddenClass.setParent(null);
+			}
 	}
 
 	@Override
@@ -110,11 +142,13 @@ public class getFile extends indexMW {
 			//annotate each method
 			for(IASTMethod m : c.getMethods()){
 				m.setDeclaredVars();
+				m.visit(new RemoveCnt());
 			}
 			for(Constraint cnst : ah.getTimeConstraint()){
 				cnst.removeElm();
 			}
 			c.setPath(file_path);
+			c.setVersion(PropertiesFileReader.getGitSha1());
 		}
 		//annotate with Time
 
@@ -128,6 +162,7 @@ public class getFile extends indexMW {
 			response = json.writeValueAsString(classes);
 		} catch (Exception e){
 			LOGGER.catching(e);
+			System.err.println(e.getMessage());
 		}
 		//LOGGER.debug(response);
 		he.getResponseHeaders().add("Content-Type","application/json");
