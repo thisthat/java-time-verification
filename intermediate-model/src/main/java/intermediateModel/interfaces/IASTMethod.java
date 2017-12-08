@@ -39,5 +39,6 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	void setTimeVars(List<String> vars);
 	void setTimeCnst(boolean f);
 	boolean hasTimeCnst();
+	void setSouceCode(String s);
 
 }

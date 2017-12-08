@@ -27,6 +27,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
+import server.helper.PropertiesFileReader;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -147,6 +148,7 @@ public class getFile extends indexMW {
 				cnst.removeElm();
 			}
 			c.setPath(file_path);
+			c.setVersion(PropertiesFileReader.getGitSha1());
 		}
 		//annotate with Time
 
