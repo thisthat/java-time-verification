@@ -1,7 +1,10 @@
 package intermediateModel.visitors;
 
 
-import intermediateModel.interfaces.*;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
@@ -69,6 +72,21 @@ public class ApplyHeuristics extends ParseIM {
 		ah.subscribe(TimeInSignature.class);
 		ah.subscribe(SetTimeout.class);
 		ah.subscribe(AssignmentTimeVar.class);
+		ah.analyze(c);
+		return ah.getTimeConstraint();
+	}
+
+	public static List<Constraint> getConstraintV2(ASTClass c){
+		//return new ArrayList<>();
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.set__DEBUG__(false);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.MarkTime.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.TimeInSignature.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.AssignmentTimeVar.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.BooleanExpression.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.MinMaxSearch.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.ReturnExpression.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.AddTimeVarToTimeExpression.class);
 		ah.analyze(c);
 		return ah.getTimeConstraint();
 	}
@@ -257,7 +275,11 @@ public class ApplyHeuristics extends ParseIM {
 	public List<Constraint> getTimeConstraint() {
 		List<Constraint> out = new ArrayList<>();
 		for(SearchTimeConstraint s : strategies){
-			out.addAll(s.getTimeConstraint());
+			List<Constraint> cnsts = s.getTimeConstraint();
+			for(Constraint c : cnsts){
+				if(!out.contains(c))
+					out.add(c);
+			}
 		}
 		return out;
 	}

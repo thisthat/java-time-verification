@@ -70,7 +70,7 @@ public abstract class ParseIM {
 		set_class(c);
 		EnvBase base = createBaseEnv(c);
 		for (IASTMethod m : c.getMethods()) {
-			analyze(m.getStms(), new Env(base));
+			analyzeMethod(m, base);
 		}
 	}
 
@@ -99,6 +99,7 @@ public abstract class ParseIM {
 		Env eMethod = new EnvParameter(e, method.getName());
 		eMethod = CheckExpression.checkPars(method.getParameters(), eMethod);
 		analyze(method.getStms(), eMethod);
+		postAnalyzeASTMethod(method, eMethod);
 	}
 
 	protected void analyzeMethod(IASTMethod method){
@@ -249,10 +250,12 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTDoWhile elm, Env env) {
-		analyzeASTDoWhile(elm,env);
+		Env new_env = new Env(env);
+		this.analyze(elm.getStms(), new_env);
+		this.analyze(elm.getExpr(), new_env);
 
-		this.analyze(elm.getStms(), new Env(env));
-		this.analyze(elm.getExpr(), new Env(env));
+		analyzeASTDoWhile(elm,env);
+		postAnalyzeASTDoWhile(elm, new_env);
 
 		analyzeEveryStm(elm,env);
 	}
@@ -275,6 +278,7 @@ public abstract class ParseIM {
 		}
 
 		analyzeASTFor(elm,env);
+		postAnalyzeASTFor(elm, new_env);
 		analyzeEveryStm(elm,env);
 	}
 
@@ -290,6 +294,7 @@ public abstract class ParseIM {
 		this.analyze(elm.getStms(), new_env);
 
 		analyzeASTForEach(elm, env);
+		postAnalyzeASTForEach(elm, new_env);
 		analyzeEveryStm(elm, env);
 	}
 
@@ -300,17 +305,20 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTIf elm, Env env) {
-		analyzeASTIf(elm, env);
 
 		Env new_env = new Env(env);
 		this.analyze(elm.getGuard(), new_env);
 		Env e = new Env(new_env);
 		this.analyze(elm.getIfBranch().getStms(), e);
 		this.analyze(elm.getIfBranch().getStms(), e);
+		postAnalyzeIfBranch(elm.getIfBranch(), e);
 		if(elm.getElseBranch() != null) {
-			this.analyze(elm.getElseBranch().getStms(), new Env(new_env));
+			Env elseEnv = new Env(new_env);
+			this.analyze(elm.getElseBranch().getStms(), elseEnv);
+			postAnalyzeElseBranch(elm.getElseBranch(), elseEnv);
 		}
 
+		analyzeASTIf(elm, env);
 		analyzeEveryStm(elm, env);
 	}
 
@@ -356,6 +364,7 @@ public abstract class ParseIM {
 
 		analyzeASTSynchronized(elm,env);
 		analyzeEveryStm(elm,env);
+		postAnalyzeASTSynchronized(elm, new_env);
 	}
 
 	/**
@@ -366,8 +375,8 @@ public abstract class ParseIM {
 	private void analyze(ASTThrow elm, Env env) {
 		this.analyze(elm.getExpr(), env);
 
-		analyzeEveryStm(elm,env);
 		analyzeASTThrow(elm, env);
+		analyzeEveryStm(elm,env);
 	}
 
 	/**
@@ -385,12 +394,15 @@ public abstract class ParseIM {
 			Env new_env_catch = new Env(env);
 			new_env_catch.addVar(catchBranch.getExpr());
 			analyze( catchBranch.getStms(), new_env_catch );
+			postAnalyzeASTCatch(catchBranch, new_env_catch);
 		}
-		if(elm.getFinallyBranch() != null)
+		if(elm.getFinallyBranch() != null) {
 			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
-
+			postAnalyzeASTFinally(elm.getFinallyBranch(), new_env_finally);
+		}
 		analyzeASTTry(elm,env);
 		analyzeEveryStm(elm,env);
+		postAnalyzeASTTry(elm, new_env_try);
 	}
 
 	/**
@@ -412,12 +424,15 @@ public abstract class ParseIM {
 			Env new_env_catch = new Env(env_resource);
 			new_env_catch.addVar(catchBranch.getExpr());
 			analyze( catchBranch.getStms(), new_env_catch );
+			postAnalyzeASTCatch(catchBranch, new_env_catch);
 		}
-		if(elm.getFinallyBranch() != null)
+		if(elm.getFinallyBranch() != null) {
 			analyze(elm.getFinallyBranch().getStms(), new_env_finally);
-
+			postAnalyzeASTFinally(elm.getFinallyBranch(), new_env_finally);
+		}
 		analyzeASTTryResources(elm,env);
 		analyzeEveryStm(elm,env);
+		postAnalyzeASTTryResources(elm, new_env_try);
 	}
 
 	/**
@@ -426,15 +441,17 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTWhile elm, Env env) {
-		analyzeASTWhile(elm, env);
 
 		Env new_env = new Env(env);
 		//new_env.addVar(new ASTVariable(-1,-1,"WHILE","WHILE"));
 		this.analyze(elm.getExpr(), new_env);
 		this.analyze(elm.getStms(), new_env);
 
+		analyzeASTWhile(elm, env);
+		postAnalyzeASTWhile(elm, new_env);
 		analyzeEveryStm(elm,env);
 	}
+
 
 	/**
 	 * We have a hidden class, thus we iterate over its methods with a new env.
@@ -583,4 +600,23 @@ public abstract class ParseIM {
 	 */
 	protected void analyzeEveryStm(IASTStm elm, Env env){};
 
+	protected void analyzeIfBranch(ASTIf.ASTIfStms ifBranch, Env env){}
+	protected void analyzeElseBranch(ASTIf.ASTElseStms elseBranch, Env env){}
+
+
+	/**
+	 * POST ANALYSIS
+	 */
+	protected void postAnalyzeASTWhile(ASTWhile elm, Env new_env) {}
+	protected void postAnalyzeASTTryResources(ASTTryResources elm, Env new_env_try) { }
+	protected void postAnalyzeASTFinally(ASTTry.ASTFinallyBranch finallyBranch, Env new_env_finally) { }
+	protected void postAnalyzeASTTry(ASTTry elm, Env new_env_try) { }
+	protected void postAnalyzeASTCatch(ASTTry.ASTCatchBranch catchBranch, Env new_env_catch) { }
+	protected void postAnalyzeASTSynchronized(ASTSynchronized elm, Env new_env) { }
+	protected void postAnalyzeElseBranch(ASTIf.ASTElseStms elseBranch, Env elseEnv) { }
+	protected void postAnalyzeIfBranch(ASTIf.ASTIfStms ifBranch, Env e) { }
+	protected void postAnalyzeASTForEach(ASTForEach elm, Env new_env) { }
+	protected void postAnalyzeASTFor(ASTFor elm, Env new_env) { }
+	protected void postAnalyzeASTDoWhile(ASTDoWhile elm, Env new_env) { }
+	protected void postAnalyzeASTMethod(IASTMethod elm, Env new_env) { }
 }
