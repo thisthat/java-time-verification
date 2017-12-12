@@ -31,6 +31,9 @@ public abstract class ParseIM {
 	protected BuildEnvironment build_base_env = BuildEnvironment.getInstance();
 	protected ASTClass _class;
 
+	private String lastClass;
+	private String lastMethod;
+
 
 	public ParseIM(ASTClass _class) {
 		this._class = _class;
@@ -43,7 +46,15 @@ public abstract class ParseIM {
 		this._class = _class;
 	}
 
-	/**
+    protected String getLastClass() {
+        return lastClass;
+    }
+
+    protected String getLastMethod() {
+        return lastMethod;
+    }
+
+    /**
 	 * The following method creates the basic environment for a class.
 	 * It goes through the def of all stms and set if variables are time related.
 	 * At the end of the execution of the method we know if an attribute is time reletad or not.
@@ -67,6 +78,7 @@ public abstract class ParseIM {
 	 * For anonymous definition
 	 */
 	public void start(ASTClass c){
+	    this.lastClass = c.fullName();
 		set_class(c);
 		EnvBase base = createBaseEnv(c);
 		for (IASTMethod m : c.getMethods()) {
@@ -84,6 +96,7 @@ public abstract class ParseIM {
 
 
 	protected void analyzeMethod(IASTMethod method, Env e){
+	    this.lastMethod = method.getName();
 		if(method instanceof ASTConstructor || method.isStatic()){
 			//we have to process also the initialization of expressions
 			for(ASTAttribute a : this._class.getAttributes()){
@@ -460,6 +473,9 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	protected void analyze(ASTHiddenClass elm, Env env) {
+	    String tmpClass = this.lastClass;
+	    String tmpMethod = this.lastMethod;
+	    this.lastClass = elm.fullName();
 		EnvBase oldBase = base_env;
 		Env new_env = this.createBaseEnv(elm, new EnvBase(env));
 		//Env new_env = build_base_env.buildEnvClass(elm, env);
@@ -476,6 +492,8 @@ public abstract class ParseIM {
 		analyzeEveryStm(elm, env);
 		endAnalyzeHiddenClass(elm, new_env);
 		base_env = oldBase;
+		this.lastClass = tmpClass;
+		this.lastMethod = tmpMethod;
 	}
 
 	/**
