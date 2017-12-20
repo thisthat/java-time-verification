@@ -2,8 +2,13 @@ package daikon.annotation;
 
 import intermediateModel.interfaces.IASTVar;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WatchingPoints {
     private class Point {
@@ -62,17 +67,9 @@ public class WatchingPoints {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Point point = (Point) o;
-            return line == point.line &&
-                    Objects.equals(className, point.className) &&
-                    Objects.equals(methodName, point.methodName) &&
-                    Objects.equals(vars, point.vars);
+            return line == point.line;
         }
 
-        @Override
-        public int hashCode() {
-
-            return Objects.hash(className, methodName, line, vars);
-        }
     }
 
     Set<Point> variables = new HashSet<>();
