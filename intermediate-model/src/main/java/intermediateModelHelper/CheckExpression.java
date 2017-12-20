@@ -47,6 +47,7 @@ public class CheckExpression {
 	 *
 	 */
 	public static boolean checkRE(ASTRE rexp, Env env){
+
 		if(rexp == null){
 			return false;
 		}

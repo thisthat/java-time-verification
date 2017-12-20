@@ -140,8 +140,8 @@ public class ApplyHeuristics extends ParseIM {
 			Env eMethod = new Env(base);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			analyzeMethod(m, eMethod);
-			analyze(m.getStms(), eMethod );
-			analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
 		}
 
 		//then methods
@@ -150,8 +150,8 @@ public class ApplyHeuristics extends ParseIM {
 			Env eMethod = new Env(base);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			analyzeMethod(m, eMethod);
-			analyze(m.getStms(), eMethod );
-			analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
 		}
 
 		//storing vars in methodss
@@ -205,6 +205,7 @@ public class ApplyHeuristics extends ParseIM {
 				s.nextMethod((ASTMethod) method,e);
 			}
 		}
+		super.analyzeMethod(method, e);
 	}
 
 	@Override

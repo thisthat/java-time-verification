@@ -5653,7 +5653,7 @@ SubscriptionManagerImpl
 			
 			if ( torrent.getSize() > update_size + 10*1024 ){
 			
-				log( "Subscription download abandoned, torrent size is " + torrent.getSize() + ", underlying data size is " + update_size );
+				log( "Subscription download abandoned, torrent size is " + torrent.getSize() + ", underlying preprocess size is " + update_size );
 				
 				return( null );
 			}

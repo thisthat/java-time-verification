@@ -77,7 +77,7 @@ public class GenerateMethodSyncCallList extends ParseIM {
 	}
 
 	/**
-	 * It connects to the mongodb and prepare the data in order to resolve the from which
+	 * It connects to the mongodb and prepare the preprocess in order to resolve the from which
 	 * objects the method calls are coming from.
 	 */
 	private void processImports() {

@@ -7,6 +7,7 @@ import java.util.List;
  * @version %I%, %G%
  */
 public interface IASTHasStms {
-	public void addStms(IASTStm stm);
+	void addStms(IASTStm stm);
 	List<IASTStm> getStms();
+	int getLineEnd();
 }

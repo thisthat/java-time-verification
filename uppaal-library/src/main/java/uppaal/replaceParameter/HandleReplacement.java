@@ -43,7 +43,7 @@ public class HandleReplacement {
         for(Integer thid : threadIds){
             groupById.put(thid, new ArrayList<TraceItem>());
         }
-        // add data
+        // add preprocess
         for(TraceItem t : instances){
             int thId = t.getThreadID();
             List<TraceItem> vals = groupById.get(thId);

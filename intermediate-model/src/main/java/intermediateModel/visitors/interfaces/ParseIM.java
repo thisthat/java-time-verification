@@ -237,6 +237,9 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	protected void analyze(ASTRE r, Env env){
+		if(r.getLine() == 871){
+			System.out.println("BRK");
+		}
 		if(r != null && r.getExpression() != null) {
 			final ASTNewObject[] objs = {null};
 			r.getExpression().visit(new DefaultASTVisitor() {
@@ -251,6 +254,8 @@ public abstract class ParseIM {
 				analyze(objs[0], env);
 		}
 		CheckExpression.checkRE(r, env);
+		if(r != null && r.getExpression() != null)
+			CheckExpression.checkIt(r.getExpression(), env);
 
 		analyzeASTRE(r,env);
 		analyzeEveryStm(r,env);
@@ -318,7 +323,6 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	private void analyze(ASTIf elm, Env env) {
-
 		Env new_env = new Env(env);
 		this.analyze(elm.getGuard(), new_env);
 		Env e = new Env(new_env);
@@ -327,6 +331,7 @@ public abstract class ParseIM {
 		postAnalyzeIfBranch(elm.getIfBranch(), e);
 		if(elm.getElseBranch() != null) {
 			Env elseEnv = new Env(new_env);
+			this.analyze(elm.getElseBranch().getStms(), elseEnv);
 			this.analyze(elm.getElseBranch().getStms(), elseEnv);
 			postAnalyzeElseBranch(elm.getElseBranch(), elseEnv);
 		}

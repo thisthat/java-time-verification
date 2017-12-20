@@ -3,9 +3,7 @@ package daikon.annotation;
 import intermediateModel.interfaces.IASTVar;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class WatchingPoints {
     private class Point {
@@ -40,8 +38,40 @@ public class WatchingPoints {
         @Override
         public String toString() {
             StringBuffer sb = new StringBuffer();
-            sb.append(String.format("%s;%s;%d;%s\n", className, methodName, line, Arrays.toString(vars.toArray())));
+            sb.append(String.format("%s;%s;%d;%s\n", className, methodName, line, printVars()));
             return sb.toString();
+        }
+
+        private String printVars() {
+            StringBuffer sb = new StringBuffer();
+            sb.append("[");
+            IASTVar[] varsArray = vars.toArray(new IASTVar[0]);
+            for(int i = 0; i < varsArray.length; i++){
+                IASTVar v = varsArray[i];
+                sb.append(v.getName());
+                if(i != vars.size() -1){
+                    sb.append(",");
+                }
+            }
+            sb.append("]");
+            return sb.toString();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Point point = (Point) o;
+            return line == point.line &&
+                    Objects.equals(className, point.className) &&
+                    Objects.equals(methodName, point.methodName) &&
+                    Objects.equals(vars, point.vars);
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(className, methodName, line, vars);
         }
     }
 
@@ -72,16 +102,25 @@ public class WatchingPoints {
         return out;
     }
 
+    public void add(WatchingPoints w){
+        this.variables.addAll(w.variables);
+    }
+
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        for(Point p : variables)
+        Point[] ps = variables.toArray(new Point[0]);
+        Arrays.sort(ps, Comparator.comparingInt(Point::getLine));
+        for(int i = 0; i < ps.length; i++) {
+            Point p = ps[i];
             sb.append(p.toString());
+        }
         return sb.toString();
     }
 
-    public void toFile(String filename){
+    public void toCSV(String filename){
         try(  BufferedWriter writer = new BufferedWriter(new FileWriter( filename))){
+            writer.write("Class;Method;Line;ListVars\n");
             writer.write(this.toString());
         }  catch (IOException e) {
             System.err.printf("Couldn't write to file [%s]\n", filename);
