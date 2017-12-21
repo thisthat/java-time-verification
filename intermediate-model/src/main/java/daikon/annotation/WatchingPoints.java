@@ -79,6 +79,8 @@ public class WatchingPoints {
     Set<Point> variables = new TreeSet<>();
 
     public void addWatchingPoint(String className, String methodName, int line, Set<IASTVar> variableName){
+        if(className.equals("anonymous0"))
+            return;
         Point p = new Point(className, methodName, line, variableName);
         if(!variables.contains(p))
             variables.add(p);
