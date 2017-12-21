@@ -5,13 +5,10 @@ import intermediateModel.interfaces.IASTVar;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class WatchingPoints {
-    private class Point {
+    private class Point implements Comparable {
         String className;
         String methodName;
         int line;
@@ -67,15 +64,24 @@ public class WatchingPoints {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Point point = (Point) o;
-            return line == point.line;
+            return this.line == point.line;
         }
 
+        @Override
+        public int compareTo(Object o) {
+            if (this == o) return 0;
+            if (o == null || getClass() != o.getClass()) return 0;
+            Point point = (Point) o;
+            return this.line - point.line;
+        }
     }
 
-    Set<Point> variables = new HashSet<>();
+    Set<Point> variables = new TreeSet<>();
 
     public void addWatchingPoint(String className, String methodName, int line, Set<IASTVar> variableName){
-        variables.add(new Point(className, methodName, line, variableName));
+        Point p = new Point(className, methodName, line, variableName);
+        if(!variables.contains(p))
+            variables.add(p);
     }
 
     public int size(){

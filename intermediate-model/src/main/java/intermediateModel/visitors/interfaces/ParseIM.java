@@ -64,7 +64,7 @@ public abstract class ParseIM {
 		return createBaseEnv(c, new EnvBase());
 	}
 
-	private EnvBase createBaseEnv(ASTClass c, EnvBase e){
+	protected EnvBase createBaseEnv(ASTClass c, EnvBase e){
 		base_env = (EnvBase) build_base_env.buildEnvClass(c, e);
 		//check static
 		for (ASTStatic s : c.getStaticInit()) {
@@ -237,9 +237,6 @@ public abstract class ParseIM {
 	 * @param env	{@link Env} visible by the instruction.
 	 */
 	protected void analyze(ASTRE r, Env env){
-		if(r.getLine() == 871){
-			System.out.println("BRK");
-		}
 		if(r != null && r.getExpression() != null) {
 			final ASTNewObject[] objs = {null};
 			r.getExpression().visit(new DefaultASTVisitor() {
