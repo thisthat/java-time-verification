@@ -189,8 +189,13 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	}
 
 	public String fullName(){
-		String out = packageName + "." + name;
-		if(out.startsWith(".")){
+		String out;
+		if(this.parent != null) {
+			out = packageName + "$" + name;
+		} else {
+			out = packageName + "." + name;
+		}
+		if(out.startsWith(".") || out.startsWith("$")){
 			out = out.substring(1);
 		}
 		return out;

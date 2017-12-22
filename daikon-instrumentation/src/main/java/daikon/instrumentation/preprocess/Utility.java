@@ -8,6 +8,11 @@ public class Utility {
         return className.replace("/",".");
     }
     public static String convertPkgNametoJava(String className){
-        return className.replace(".","/");
+        String out = className.replace(".","/");
+        String lastPart = out.substring(out.lastIndexOf("/"));
+        if(Character.isUpperCase(lastPart.charAt(0))){
+            out = out.substring(0, out.lastIndexOf("/")) + "$" +lastPart;
+        }
+        return out;
     }
 }

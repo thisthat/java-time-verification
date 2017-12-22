@@ -85,6 +85,7 @@ public class ReadConfFile {
         String[] vars = varList.split(",");
         className = Utility.convertPkgNametoJava(className);
         watchPoints.addWatchingPoint(className, methodName, line, vars);
+        LOGGER.debug("Watching: {}.{}@{}", className, methodName, line);
 
     }
 

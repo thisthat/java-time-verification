@@ -1,7 +1,7 @@
 package daikon.instrumentation.preprocess;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 
 public class WatchPoints {
 
@@ -15,7 +15,7 @@ public class WatchPoints {
         return instance;
     }
 
-    Set<WatchPoint> points = new HashSet<>();
+    List<WatchPoint> points = new ArrayList<>();
 
     public void addWatchingPoint(String className, String methodName, int line, Set<String> variableName){
         points.add(new WatchPoint(className, methodName, line, variableName));
@@ -26,7 +26,9 @@ public class WatchPoints {
         for(String v : variableName){
             vars.add(v);
         }
-        points.add(new WatchPoint(className, methodName, line, vars));
+        WatchPoint p = new WatchPoint(className, methodName, line, vars);
+        if(!points.contains(p))
+            points.add(p);
     }
 
     public int size(){
@@ -41,8 +43,8 @@ public class WatchPoints {
         return false;
     }
 
-    public Set<String> getMethodDefinitions(String className){
-        Set<String> out = new HashSet<>();
+    public List<String> getMethodDefinitions(String className){
+        List<String> out = new ArrayList<>();
         for(WatchPoint p : points){
             if(p.isTheOne(className))
                 out.add(p.printAsMethodDef());
@@ -50,12 +52,18 @@ public class WatchPoints {
         return out;
     }
 
-    public Set<WatchPoint> getWatchPoints(String className){
-        Set<WatchPoint> out = new HashSet<>();
+    public List<WatchPoint> getWatchPoints(String className){
+        List<WatchPoint> out = new ArrayList<>();
         for(WatchPoint p : points){
             if(p.isTheOne(className))
                 out.add(p);
         }
+        out.sort(new Comparator<WatchPoint>() {
+            @Override
+            public int compare(WatchPoint o1, WatchPoint o2) {
+                return o1.line - o2.line;
+            }
+        });
         return out;
     }
 

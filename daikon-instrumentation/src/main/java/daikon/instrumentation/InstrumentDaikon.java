@@ -1,19 +1,15 @@
 package daikon.instrumentation;
 
+import daikon.instrumentation.preprocess.Utility;
 import daikon.instrumentation.preprocess.WatchPoint;
 import daikon.instrumentation.preprocess.WatchPoints;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
-import javassist.CtNewMethod;
+import javassist.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.List;
 import java.util.Set;
 
 
@@ -26,32 +22,41 @@ public class InstrumentDaikon implements ClassFileTransformer  {
 
 
     @Override
-    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
         byte[] byteCode = classfileBuffer;
         //LOGGER.debug("Analysing class {}", className);
+        ClassPool pool = ClassPool.getDefault();
+        LOGGER.debug(className);
         if(watchPoints.shouldWatch(className)){
-            LOGGER.debug("Editing bytecode of class {}", className);
+            LOGGER.debug("Editing bytecode of class {}", Utility.convertJavaToPkgName(className));
             try {
-                Set<String> getMethodDefs = watchPoints.getMethodDefinitions(className);
-                CtClass cc = ClassPool.getDefault().get(className);
+                List<String> getMethodDefs = watchPoints.getMethodDefinitions(className);
+                CtClass cc = pool.get(Utility.convertJavaToPkgName(className));
+                LOGGER.debug(pool);
+                LOGGER.debug("Writing: {}", cc.getClassFile());
                 //generating the invariant_%line%(_%vars%)+ methods
-                DataOutputStream out = new DataOutputStream(new FileOutputStream("Base.class"));
+                //DataOutputStream out = new DataOutputStream(new FileOutputStream("Base.class"));
                 int version = 0;
-                cc.getClassFile().write(out);
+                //cc.getClassFile().write(out);
                 for(String m : getMethodDefs) {
+                    //LOGGER.debug("Creating the method {}", m);
                     CtMethod mNew = CtNewMethod.make(m, cc);
                     cc.addMethod(mNew);
-                    LOGGER.debug("Injected method: " + m);
+                    //LOGGER.debug("Injected method: " + m);
                 }
                 //generating the method calls
-                Set<WatchPoint> points = watchPoints.getWatchPoints(className);
+                List<WatchPoint> points = watchPoints.getWatchPoints(className);
                 for(WatchPoint p : points){
                     String methodName = p.getMethodName();
-                    CtMethod method = cc.getDeclaredMethod(methodName);
-                    method.insertAt(p.getLine(), p.printAsMethodCall());
-                    out = new DataOutputStream(new FileOutputStream("Base_" + version++ + ".class"));
-                    cc.getClassFile().write(out);
-                    LOGGER.debug("[V:{}]Injected call: " + p.printAsMethodCall(), version);
+                    try {
+                        CtMethod method = cc.getDeclaredMethod(methodName);
+                        method.insertAt(p.getLine() - 1, p.printAsMethodCall());
+                    } catch (Exception e){
+                        LOGGER.debug("[V:{}]Injecting call {} @ {}", version++, p.printAsMethodCall(), p.getLine());
+                        LOGGER.debug("Could be constructor");
+                    }
+                    //out = new DataOutputStream(new FileOutputStream("Base_" + version++ + ".class"));
+                    //cc.getClassFile().write(out);
                 }
                 cc.writeFile();
                 byteCode = cc.toBytecode();
@@ -59,8 +64,11 @@ public class InstrumentDaikon implements ClassFileTransformer  {
                 LOGGER.debug("Injection for class {} completed!", className);
 
             } catch (Exception e){
-                LOGGER.debug("[FAIL] Injection failed");
-                LOGGER.debug(e);
+                LOGGER.debug("[FAIL] Injection failed: {}", className);
+                LOGGER.debug(e.getMessage());
+                LOGGER.debug("STACK TRACE");
+                for(StackTraceElement s : e.getStackTrace())
+                    LOGGER.debug(s);
             }
         }
         return byteCode;

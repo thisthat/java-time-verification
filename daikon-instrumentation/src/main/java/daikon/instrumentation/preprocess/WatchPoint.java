@@ -9,7 +9,7 @@ public class WatchPoint {
     int line;
     Set<String> vars;
 
-    public WatchPoint(String className, String methodName, int line, Set<String> vars) {
+    public WatchPoint(String className, String methodName, int line, Set<String> vars)  {
         this.className = className;
         this.methodName = methodName;
         this.line = line;
@@ -73,5 +73,12 @@ public class WatchPoint {
             pars = pars.substring(0, pars.length()-1);
         }
         return String.format("{%s(%s);}", name.toString(), pars);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof WatchPoint)) return false;
+        WatchPoint p = (WatchPoint)o;
+        return this.line == p.line;
     }
 }
