@@ -1,6 +1,18 @@
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
 
-
+	public void smallTest(){
+		int monthToUse = thisMonth - 1 + months;
+		if (thisMonth > 0 && monthToUse < 0) {
+			if (Math.signum(months + iMax) == Math.signum(months)) {
+				yearToUse--;
+				months += iMax;
+			} else {
+				yearToUse++;
+				months -= iMax;
+			}
+			monthToUse = thisMonth - 1 + months;
+		}
+	}
 	public synchronized void dowhileexample(){
 		int count = 1;
 		do {
@@ -24,76 +36,6 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 
 	@Deprecated
 	private Test(int i, int k) {
-/*
-		sb.append((flag & FLAG_MUSTREFRESH) > 0 ? 'M' : onlySet ? ' ' : 'm');
-
-		k.getElm().toString();
-
-		if(token.value instanceof String){
-			String key=(String)token.value;
-			valueStack.push(key);
-			status=S_PASSED_PAIR_KEY;
-			statusStack.push(new Integer(status));
-		}
-		else{
-			status=S_IN_ERROR;
-		}
-
-		int y = 10;
-		return (String[])list.toArray( new String[list.size()] ) ;
-		int x = 1==2 ? 10 : 20;
-
-		String[] resultArray = { text } ;
-		if(-1 > 2){
-			return strings[i];
-
-			return super.toString() ;
-		}
-
-		if(1 && 1 < 2 || 3 >= 7){
-			return 0;
-		}
-
-		if(!(0 < 2)){
-			return 1;
-		}
-
-		Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
-
-
-		for (int j = 0; j < 10; j++) {
-			j = i << 1 + (40 * 48 / 10);
-			l.add(INetTopologyService.class);
-		}
-
-		for(int j : listOfElms){
-			j = i >> 1;
-		}
-
-		if(i > 0){
-			Collection<Class<? extends IFloodlightService>> l = new ArrayList<Class<? extends IFloodlightService>>();
-			j = 1+2;
-		}
-		else
-			j = 3+2;
-		System.out.print("str");
-		try {
-			System.out.print("str");System.out.print("str");
-		} catch(Exception e){
-			throw new Exception("Exc");System.out.print("str");
-		} catch(IOException e){
-			throw new Exception("IO Exc");System.out.print("str");
-		} finally {
-			System.err.print("Eccezione lanciata");System.out.print("str");
-			System.err.print("Eccezione lanciata");System.out.print("str");
-		}
-
-		while(true){
-			List<IASTStm> stmttt = new ArrayList<IASTStm>();
-			System.out.print(stmttt.toString());
-			continue;
-		}
-*/
 
 		int month = 8;
 		String monthString;

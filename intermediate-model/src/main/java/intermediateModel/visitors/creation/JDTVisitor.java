@@ -5,6 +5,7 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -1267,6 +1268,10 @@ public class JDTVisitor extends ASTVisitor {
 		IASTRE.OPERATOR op = getOperator(expr.getOperator().toString());
 		IASTRE l = getExpr(expr.getLeftOperand());
 		IASTRE r = getExpr(expr.getRightOperand());
+		if(op == IASTRE.OPERATOR.sprecial){
+			op = IASTRE.OPERATOR.equal;
+			r = handleSpecialOperator(l,r, expr.getOperator().toString(), start, stop);
+		}
 		ASTBinary bin = new ASTBinary(start,stop, l, r, op);
 		IASTRE prev = bin;
 		for(Object o : expr.extendedOperands()){
@@ -1280,6 +1285,8 @@ public class JDTVisitor extends ASTVisitor {
 		}
 		return prev;
 	}
+
+
 
 	private IASTRE newObject(ClassInstanceCreation expr) {
 		int start, stop;
@@ -1424,6 +1431,10 @@ public class JDTVisitor extends ASTVisitor {
 		IASTRE.OPERATOR op = getOperator(expr.getOperator().toString());
 		IASTRE l = getExpr(expr.getLeftHandSide());
 		IASTRE r = getExpr(expr.getRightHandSide());
+		if(op == IASTRE.OPERATOR.sprecial){
+			op = IASTRE.OPERATOR.equal;
+			r = handleSpecialOperator(l,r, expr.getOperator().toString(), start, stop);
+		}
 		return new ASTAssignment(start, stop, l, r, op );
 	}
 
@@ -1544,7 +1555,30 @@ public class JDTVisitor extends ASTVisitor {
 			case ">>>": return IASTRE.OPERATOR.shiftRight;
 			case "<<<": return IASTRE.OPERATOR.shiftLeft;
 		}
-		return IASTRE.OPERATOR.equal;
+		return IASTRE.OPERATOR.sprecial;
+	}
+
+	private IASTRE handleSpecialOperator(IASTRE l, IASTRE r, String op, int s, int e) {
+		if(op.length() < 2)
+			return r;
+		final String[] var = {""};
+		l.visit(new DefualtASTREVisitor(){
+			@Override
+			public void enterASTLiteral(ASTLiteral elm) {
+				var[0] = elm.getValue();
+			}
+		});
+		String varName = var[0];
+		if(varName.trim().equals("")){
+			return r;
+		}
+		String opBase = op.substring(0, op.length()-1);
+		IASTRE.OPERATOR newOp = getOperator(opBase);
+		return new ASTBinary(s,e,
+				new ASTLiteral(r.getStart(), r.getStart()+varName.length(), varName),
+				r,
+				newOp
+		);
 	}
 
 }
