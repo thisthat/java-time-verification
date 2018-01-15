@@ -802,16 +802,38 @@ class StateSpace(object):
 #        assert isinstance(res, AbstractAttribute)
         return res
 
+    @contract(returns="list(is_abstract_attribute)")
+    def get_attributes(self, var_name=None):
+        """
+        Return the attributes in the state space that contain the specified variable.
+        If no variable name is given, return all the attributes of the state space.
+        """
+ 
+        res = []
+        if var_name:
+            for attr in self._attributes:
+                if var_name in attr.variables:
+                    res.append(attr)
+        else:
+            res = self._attributes.values()   
+
+        check("list(is_abstract_attribute)", res)
+
+        sort_by_name = lambda att: att.name
+        return sorted(res, key=sort_by_name) 
+ 
+
     @property
     @contract(returns="list(is_abstract_attribute)")
     def attributes(self):
         """
         Return the attributes that make the state space, in alphabetical order.
         """
-        sort_by_name = lambda att: att.name
+#        sort_by_name = lambda att: att.name
 
-        return sorted(self._attributes.values(), key=sort_by_name)
- 
+#        return sorted(self._attributes.values(), key=sort_by_name) 
+        return self.get_attributes()
+
     @property   
     @contract(returns="list(is_configuration)")
     def enumerate(self):

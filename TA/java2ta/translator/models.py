@@ -319,9 +319,10 @@ class FreshNames(object):
 class KnowledgeBase(object):
 
     KB = {}
+    NOW = set([])
  
     @staticmethod   
-    @contract(class_name="string", method_name="string", knowledge="tuple(list(string),string,is_data_type)")
+    @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),string)")
     def add_method(class_name, method_name, knowledge):
 
         class_name = "-" # TODO this is a hack, remove ASAP
@@ -344,31 +345,51 @@ class KnowledgeBase(object):
         return res
 
     @staticmethod
-    @contract(class_name="string", method_name="string", res_var="string", params="dict(string:string)", lhs_var="string", returns="tuple(list(string),string,is_data_type)")
-    def get_method(class_name, method_name, res_var, params, lhs_var):
+#    @contract(class_name="string", method_name="string", res_var="string", params="dict(string:string)", lhs_var="string", returns="tuple(list(string),string,is_data_type)")
+#    def get_method(class_name, method_name, res_var, params, lhs_var):
+    @contract(class_name="string", method_name="string", returns="tuple(is_data_type,list(string),list(string),string)")
+    def get_method(class_name, method_name): #, params, lhs_var):
 
         class_name = "-" # TODO this is a hack, remove ASAP
 
         assert KnowledgeBase.has_method(class_name, method_name), "Class %s has no method %s" % (class_name, method_name)
 
-        check("tuple(list(string),string,is_data_type)", KnowledgeBase.KB[class_name][method_name])
+        check("tuple(is_data_type,list(string),list(string),string)", KnowledgeBase.KB[class_name][method_name])
 
-        (kb_smt_declarations, kb_smt_assertion,dt) = KnowledgeBase.KB[class_name][method_name]
+        (dt, parameters_signature, method_env, smt_interpretation) = KnowledgeBase.KB[class_name][method_name]
+        log.debug("Knowledge base datatype: %s" % dt)
+        log.debug("Knowledge base parameters signature: %s" % parameters_signature)
+        log.debug("Knowledge base method env: %s" % method_env)
+        log.debug("Knowledge base smt interpretation: %s" % smt_interpretation)
 
-        ctx = dict(params)
-        ctx["res"] = res_var
-        ctx["lhs"] = lhs_var
+        return (dt, parameters_signature, method_env, smt_interpretation)
+##        ctx = dict(params)
+##        ctx["res"] = res_var
+##        ctx["lhs"] = lhs_var
+##    
+##        log.debug("Context: %s" % ctx)
+##        fun_replace = lambda x,y: x.replace("{%s}" % y, ctx[y])
+##
+##        smt_declarations = []
+##        smt_assertion = reduce(fun_replace, ctx, kb_smt_assertion) #kb_smt_assertion.replace("{res}", res_var)
+##
+##        for curr in kb_smt_declarations:
+##            curr_smt_declaration = reduce(fun_replace, ctx, curr)
+##            smt_declarations.append(curr_smt_declaration)
+##
+##        log.debug("Final smt declaration: %s" % smt_declarations)
+##        log.debug("Final smt assertion: %s" % smt_assertion)
+##        return smt_declarations, smt_assertion, dt
+
+    def set_now_method(self, class_fqn, method_name):
+        """
+        A now-method must exists first in KB, and then we add it
+        to the set of now-methods.
+        """
+        m = self.get_method(class_fqn, method_name)
+        KnowledgeBase.NOW.add(m)
+
+    def unset_now_method(self, class_fqn, method_name):
     
-        log.debug("Context: %s" % ctx)
-        fun_replace = lambda x,y: x.replace("{%s}" % y, ctx[y])
-
-        smt_declarations = []
-        smt_assertion = reduce(fun_replace, ctx, kb_smt_assertion) #kb_smt_assertion.replace("{res}", res_var)
-
-        for curr in kb_smt_declarations:
-            curr_smt_declaration = reduce(fun_replace, ctx, curr)
-            smt_declarations.append(curr_smt_declaration)
-
-        return smt_declarations, smt_assertion, dt
-
-
+        m = self.get_method(class_fqn, method_name)
+        KnowledgeBase.NOW.delete(m)
