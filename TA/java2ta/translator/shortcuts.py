@@ -1836,7 +1836,11 @@ def get_state_space_from_method(method, domains):
 @contract(method=Method, state_space="is_state_space", returns=TA)
 def translate_method_to_ta(method, state_space):
 
-    instructions = method.ast["stms"]
+    #instructions = method.ast["stms"]
+    instructions = method.instructions
+
+    if len(instructions) == 0:
+        raise ValueError("The passed method has no instructions. This is not allowed.")
 
     ta = transform(method.name, instructions, state_space, method.project)
 

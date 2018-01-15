@@ -182,6 +182,13 @@ class Method(ASTNode):
             res = found[0]
         return res
 
+    @property
+    def instructions(self):
+        return self.ast["stms"]
+
+    @property
+    def has_instructions(self):
+        return len(self.instructions) > 0
     
 
 new_contract_check_type("is_method", Method)
