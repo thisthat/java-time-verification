@@ -714,8 +714,8 @@ class SMTProb(object):
         return smt_declarations, smt_assertion
  
 
-    @contract(source_pred="list(is_attribute_predicate)", instr="dict|None", target_pred="list(is_attribute_predicate)|None", preconditions="None|list(is_precondition)")
-    def combine_assertions(self, source_pred, instr=None, target_pred=None, preconditions=None):
+    @contract(source_pred="list(is_attribute_predicate)", instr="dict|None", target_pred="list(is_attribute_predicate)|None", preconditions="None|list(is_precondition)", guard="None|is_precondition")
+    def combine_assertions(self, source_pred, instr=None, target_pred=None, preconditions=None, guard=None):
         """
         Given a predicate on the source, an instruction, a predicate on
         the target, and a list of preconditions, build a list of SMT
@@ -756,7 +756,23 @@ class SMTProb(object):
                 except ForgottenVariableException, e:
                     assertions.append("; skip precondition because of forgotten variable (%s)" % pre.node["code"])
             assertions.append("; end encoding precondition")
-        
+ 
+
+        # distinguish between guard and preconditions; the preconditions
+        # are the "past" guards, in the same block; the guard is the 
+        # "current" precondition; if guard is set, we are checking 
+        # whether the source state satisfies it
+        if guard is not None:
+            assertions.append("; begin encoding guard")
+            try:
+                smt_declarations,smt_guard = self.precondition_to_smt(guard, env)
+                assertions.extend(smt_declarations)
+                assertions.append(smt_guard)
+                log.debug("guard: %s, assertions: %s, smt: %s" % (guard, smt_declarations, smt_guard))
+            except ForgottenVariableException, e:
+                assertions.append("; skip guard because of forgotten variable (%s)" % guard.node["code"])
+            assertions.append("; end encoding guard")
+       
         # SMT assertions about the target predicates require that:
         # - if instruction does something, target predicates use primed vars
         # - if instruction does not do anything, target predicates use same vars as source predicates   
@@ -869,15 +885,15 @@ class SMTProb(object):
         return smt_code
 
 
-    @contract(source_pred="list(is_attribute_predicate)", instr="None|dict", target_pred="None|list(is_attribute_predicate)", returns="string")
-    def to_smt_problem(self, source_pred, instr=None, target_pred=None, preconditions=None):
+    @contract(source_pred="list(is_attribute_predicate)", instr="None|dict", target_pred="None|list(is_attribute_predicate)", guard="None|is_precondition", returns="list(string)")
+    def to_smt_problem(self, source_pred, instr=None, target_pred=None, preconditions=None, guard=None):
         """
         This method returns a syntattically valid SMT problem corresponding to the
         collected assertions and instruction.
 
         TODO atm, this only covers Z3 syntax
         """
-        assert (instr is None and target_pred is None) or (instr is not None and target_pred is not None)
+        assert (instr is None and target_pred is None and guard is not None) or (instr is not None and target_pred is not None and guard is None)
         smt_code = []
         
         smt_code.append("; begin declarations of attributes of source and target states")
@@ -892,7 +908,7 @@ class SMTProb(object):
 #        env = pred_to_env(source_pred) or pred_to_env(target_pred) # take the union of the two environments
 
         # add problem assertions derived from source state, instruction, target state
-        for curr in self.combine_assertions(source_pred, instr=instr, target_pred=target_pred, preconditions=preconditions):
+        for curr in self.combine_assertions(source_pred, instr=instr, target_pred=target_pred, preconditions=preconditions, guard=guard):
             if isinstance(curr, AttributePredicate):
                 smt_code.append(curr.smt_assert())
             elif isinstance(curr, basestring):
@@ -902,7 +918,8 @@ class SMTProb(object):
 
         smt_code.append("(check-sat)")
 
-        return "\n".join(smt_code)
+#        return "\n".join(smt_code)
+        return smt_code
 
     
     def _get_error(self):
@@ -947,14 +964,16 @@ class SMTProb(object):
         elif default:
             raise ValueError(default)
     
-    @contract(commands="string", returns="string")
+    @contract(commands="list(string)", returns="string")
     def get_tool_answer(self, commands):
         """
-        Receives a string containing the commands to be executed by the tool.
+        Receives a list of commands to be executed by the tool.
         Returns the text output of the tool.
         """ 
+
         self._log_smt(commands)
 
+        commands = "\n".join(commands)
         self._cmd.stdin.write(commands + "\n")
 
         answer = self._get_output()
@@ -970,13 +989,14 @@ class SMTProb(object):
  
         check("list(is_abstract_attribute)", self.attributes)       
         source_attpred = conf_to_attribute_predicate(source_pred, self.attributes)
-
-        new_preconditions = [ guard ]
-        if preconditions:
-            new_preconditions.extend(preconditions)
+        
+#        new_preconditions = [ guard ]
+#        if preconditions:
+#            new_preconditions.extend(preconditions)
 
         try:
-            commands = self.to_smt_problem(source_attpred, preconditions=new_preconditions)
+            commands = self.to_smt_problem(source_attpred, guard=guard) #, preconditions=new_preconditions)
+
             answer = self.get_tool_answer(commands)
 
             log.debug("check guard: %s vs %s, given: %s ? %s" % (source_attpred,guard.code,preconditions, answer))
