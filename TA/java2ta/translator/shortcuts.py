@@ -23,6 +23,12 @@ from contracts import contract, new_contract, check
 log = logging.getLogger(__name__)
 log_smt = logging.getLogger("smt")
 
+class IdentifierAsLiteralException(Exception):
+    
+    def __init__(self, identifier, *args, **kwargs):
+        self.identifier = identifier
+        super(IdentifierAsLiteralException, self).__init__(*args, **kwargs)
+
 class ForgottenVariableException(Exception):
         
     def __init__(self, var_name, *args, **kwargs):
@@ -53,7 +59,7 @@ def pred_to_env(attr_predicates):
 
     if attr_predicates is not None:
         for attr_pred in attr_predicates:
-            res = res or set(attr_pred.variables)
+            res = res | set(attr_pred.variables)
 
     return res
 
@@ -473,6 +479,9 @@ class SMTProb(object):
                 var = node_exp["code"][:-2] 
                 # op is given by the last 2 chars
                 op = node_exp["code"][-2:]
+
+                if var not in env:
+                    raise ForgottenVariableException(var)
     
                 if op in [ "++", "--" ]:
                     if op == "++":
@@ -533,7 +542,17 @@ class SMTProb(object):
         elif node_type == "ASTLiteral":
             assert "value" in node
             #log.debug("Dump literal: %s" % node)
-            lit_value = literal_to_smt(node["value"])
+            try:
+                lit_value = literal_to_smt(node["value"])
+            except IdentifierAsLiteralException as e:
+                # this is a tail of bug described in issue #57 ;
+                # leave a warning log to ease the debugging
+                lit_value = e.identifier
+                log.warning("Passed identifier as literal. This should not happen: %s. Line: %s. Start: %s. End: %s" % (lit_value, node["line"], node["start"], node["end"]))                
+                if lit_value not in env:
+                    raise ForgottenVariableException(lit_value)
+
+
             smt_assertion = lit_value
         elif node_type == "ASTMethodCall":
             log.debug("Node: %s" % node)
@@ -671,12 +690,9 @@ class SMTProb(object):
     
         smt_declarations = [] #None
         smt_assertion = "" #None
-        if isinstance(pre, Negate):
-            pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node, env)
-#            smt_assertion = "(assert (not %s))" % pre_smt_assertion
-        else:
-            pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node, env)
-#            smt_assertion = "(assert %s)" % pre_smt_assertion
+
+#        try:
+        pre_smt_declarations, pre_smt_assertion = self.node_to_smt(pre.node, env)
 
         log.debug("pre node: %s, declarations: %s, smt: %s" % (pre.node, pre_smt_declarations, pre_smt_assertion))
 
@@ -687,7 +703,11 @@ class SMTProb(object):
 #        assert(len(smt_assertion)>0)
             smt_assertion = "(assert %s)" % pre_smt_assertion
             smt_declarations.extend(pre_smt_declarations)
-
+##        except ForgottenVariableException, e:
+##            log.warning("Skip precondition because of forgotten variable: %s" % e.var_name)
+##            smt_assertion = ""
+##            smt_declarations = []
+##
 ##        log.debug("Pre: %s => (%s,%s)" % (pre, smt_declarations, smt_assertion))
         return smt_declarations, smt_assertion
  
@@ -707,17 +727,20 @@ class SMTProb(object):
         assertions.extend(source_pred)
         assertions.append("; end encoding source state")
 
-        env = pred_to_env(source_pred) or pred_to_env(target_pred)
+        env = pred_to_env(source_pred) | pred_to_env(target_pred)
 
         if preconditions:
        
             assertions.append("; begin encoding precondition")
             for pre in preconditions:
     
-                smt_declarations,smt_pre = self.precondition_to_smt(pre, env)
-                assertions.extend(smt_declarations)
-                assertions.append(smt_pre)
-                log.debug("pre: %s, assertions: %s, smt: %s" % (pre, smt_declarations, smt_pre))
+                try:
+                    smt_declarations,smt_pre = self.precondition_to_smt(pre, env)
+                    assertions.extend(smt_declarations)
+                    assertions.append(smt_pre)
+                    log.debug("pre: %s, assertions: %s, smt: %s" % (pre, smt_declarations, smt_pre))
+                except ForgottenVariableException, e:
+                    assertions.append("; skip precondition because of forgotten variable (%s)" % pre.node["code"])
             assertions.append("; end encoding precondition")
         
         # SMT assertions about the target predicates require that:
@@ -1855,7 +1878,7 @@ def literal_to_smt(lit_value):
     if lit_value in [ "True", "False" ]:
         # this match Java boolean values
         res = lit_value.lower()
-    elif re.match("^[0-9]+(\.[0-9]+)$|^\.[0-9]+$", lit_value): #lit_value.isdigit():
+    elif re.match("^[0-9]+(\.[0-9]+)?$|^\.[0-9]+$", lit_value): #lit_value.isdigit():
         # this matches Java integer values and float values
         res = lit_value
     elif lit_value == "null": 
@@ -1865,7 +1888,9 @@ def literal_to_smt(lit_value):
         res = "%s" % SymbolTable.add_literal(lit_value[1:-1])
     elif re.match("^[a-zA-Z0-9_]+$", lit_value):
         # this match an identifier, not really a literal
-        res = lit_value
+#        res = lit_value
+#        log.warning("Passed an identifier as literal, this should not happen: %s" % lit_value)
+        raise IdentifierAsLiteralException(lit_value)
     else:
         # don't know what literal is
         log.warning("Don't know how to handle literal '%s'" % lit_value)
