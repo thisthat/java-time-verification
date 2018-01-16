@@ -674,7 +674,7 @@ UPnPImpl
 				throw ((UPnPException) e);
 			}
 
-			throw (new UPnPException("Root device location '" + url + "' - data read failed", e));
+			throw (new UPnPException("Root device location '" + url + "' - preprocess read failed", e));
 
 		} finally {
 

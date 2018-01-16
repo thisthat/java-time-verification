@@ -25,10 +25,11 @@ public interface IASTRE extends IASTVisitor, IASTToken {
 		or,				// ||
 		xor,			// ^
 		instanceOf,		// instanceOf
+		sprecial, 		// +=, -=, *=, ....
 		empty;
 
 
-		public String print(){
+        public String print(){
 			switch (this){
 				case less: return "<";
 				case lessEqual: return "<=";

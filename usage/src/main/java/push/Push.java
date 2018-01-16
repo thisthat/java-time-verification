@@ -22,7 +22,7 @@ public class Push {
         String strJsonBody = "{"
                 +   "\"app_id\": \"09dbf63c-a667-4326-b22e-685d6192b100\","
                 +   "\"include_player_ids\": [\"" + user.getId() + "\"],"
-                +   "\"data\": {\"foo\": \"bar\"},"
+                +   "\"preprocess\": {\"foo\": \"bar\"},"
                 +   "\"contents\": {\"en\": \"" + message + "\"}"
                 + "}";
 

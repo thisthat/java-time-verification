@@ -32,6 +32,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	ASTClass parent = null;
 	boolean isInterface = false;
 	boolean isAbstract = false;
+	List<ASTClass> child = new ArrayList<>();
 
 	public ASTClass(){}
 
@@ -60,6 +61,8 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public void setParent(ASTClass c){
 		this.parent = c;
+		if(c != null)
+			c.registerChild(this);
 	}
 
 	public void setPath(String path) {
@@ -186,8 +189,13 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	}
 
 	public String fullName(){
-		String out = packageName + "." + name;
-		if(out.startsWith(".")){
+		String out;
+		if(this.parent != null) {
+			out = packageName + "$" + name;
+		} else {
+			out = packageName + "." + name;
+		}
+		if(out.startsWith(".") || out.startsWith("$")){
 			out = out.substring(1);
 		}
 		return out;
@@ -349,5 +357,14 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 			}
 		}
 		return new counter().count(this);
+	}
+
+	public void registerChild(ASTClass c){
+		if(!child.contains(c))
+			this.child.add(c);
+	}
+
+	public List<ASTClass> getChilds() {
+		return child;
 	}
 }

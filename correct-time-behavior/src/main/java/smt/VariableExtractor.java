@@ -46,8 +46,8 @@ public class VariableExtractor extends DefaultReducedVisitor {
 
     @Override
     public void enterASTAssignment(ASTAssignment elm) {
-        if(elm.getLeft() instanceof ASTLiteral)
-            add(((ASTLiteral) elm.getLeft()).getValue());
+        if(elm.getLeft() instanceof ASTIdentifier)
+            add(((ASTIdentifier) elm.getLeft()).getValue());
     }
 
     @Override
@@ -57,42 +57,42 @@ public class VariableExtractor extends DefaultReducedVisitor {
 
     @Override
     public void enterASTbinary(ASTBinary elm) {
-        if(elm.getLeft() instanceof ASTLiteral)
-            add(((ASTLiteral) elm.getLeft()).getValue());
-        if(elm.getRight() instanceof ASTLiteral)
-            add(((ASTLiteral) elm.getRight()).getValue());
+        if(elm.getLeft() instanceof ASTIdentifier)
+            add(((ASTIdentifier) elm.getLeft()).getValue());
+        if(elm.getRight() instanceof ASTIdentifier)
+            add(((ASTIdentifier) elm.getRight()).getValue());
     }
 
     @Override
-    public void enterASTLiteral(ASTLiteral elm) {
-        //super.enterASTLiteral(elm);
+    public void enterASTIdentifier(ASTIdentifier elm) {
+        //super.enterASTIdentifier(elm);
     }
 
     @Override
     public void enterASTMethodCall(ASTMethodCall elm) {
-        if(elm.getExprCallee() instanceof  ASTLiteral){
-            add(((ASTLiteral) elm.getExprCallee()).getValue());
+        if(elm.getExprCallee() instanceof  ASTIdentifier){
+            add(((ASTIdentifier) elm.getExprCallee()).getValue());
         }
     }
 
     @Override
     public void enterASTPostOp(ASTPostOp elm) {
-        if(elm.getVar() instanceof ASTLiteral) {
-            add(((ASTLiteral) elm.getVar()).getValue());
+        if(elm.getVar() instanceof ASTIdentifier) {
+            add(((ASTIdentifier) elm.getVar()).getValue());
         }
     }
 
     @Override
     public void enterASTPreOp(ASTPreOp elm) {
-        if(elm.getVar() instanceof ASTLiteral) {
-            add(((ASTLiteral) elm.getVar()).getValue());
+        if(elm.getVar() instanceof ASTIdentifier) {
+            add(((ASTIdentifier) elm.getVar()).getValue());
         }
     }
 
     @Override
     public void enterASTUnary(ASTUnary elm) {
-        if(elm.getExpr() instanceof ASTLiteral) {
-            add(((ASTLiteral) elm.getExpr()).getValue());
+        if(elm.getExpr() instanceof ASTIdentifier) {
+            add(((ASTIdentifier) elm.getExpr()).getValue());
         }
     }
 

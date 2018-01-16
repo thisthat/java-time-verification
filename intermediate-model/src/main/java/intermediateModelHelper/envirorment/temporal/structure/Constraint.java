@@ -113,7 +113,7 @@ public class Constraint {
 
         if (line != that.line) return false;
         if (elm != null ? !elm.equals(that.elm) : that.elm != null) return false;
-        if (category != null ? !category.equals(that.category) : that.category != null) return false;
+        //if (category != null ? !category.equals(that.category) : that.category != null) return false;
         return value != null ? value.equals(that.value) : that.value == null;
     }
 

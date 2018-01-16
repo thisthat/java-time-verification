@@ -204,7 +204,7 @@ MagnetURIHandlerImpl
 										        		
 											       		Logger.log(new LogEvent(LOGID, LogEvent.LT_WARNING,
 											       				"MagnetURIHandler: connect from "
-											       				+ "'" + address + "': no data read"));
+											       				+ "'" + address + "': no preprocess read"));
 									        		
 										        	}
 										        	
@@ -832,7 +832,7 @@ MagnetURIHandlerImpl
 				if (Logger.isEnabled())
 					Logger.log(new LogEvent(LOGID, "MagnetURIHandler: download of '"
 							+ encoded
-							+ "' completes, data "
+							+ "' completes, preprocess "
 							+ (data == null ? "not found"
 									: ("found, length = " + data.length))));
 
@@ -1154,7 +1154,7 @@ MagnetURIHandlerImpl
 			});
 			write4Bytes(os, fileSize);
 			write4Bytes(os, 0);
-			write4Bytes(os, 54); // data pos
+			write4Bytes(os, 54); // preprocess pos
 
 			write4Bytes(os, 40); // header size
 			write4Bytes(os, width);

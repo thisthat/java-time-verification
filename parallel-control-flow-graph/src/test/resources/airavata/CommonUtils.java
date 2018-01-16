@@ -205,8 +205,8 @@ public class CommonUtils {
                     if (isAdd) {
                         curatorClient.setData().withVersion(-1).forPath(path, String.valueOf(changeCountMap.get(path)).getBytes());
                     } else {
-                        // This is not possible, but we handle in case there any data zookeeper communication failure
-                        logger.warn("Couldn't reduce job count in " + path + " as it returns null data. Hence reset the job count to 0");
+                        // This is not possible, but we handle in case there any preprocess zookeeper communication failure
+                        logger.warn("Couldn't reduce job count in " + path + " as it returns null preprocess. Hence reset the job count to 0");
                         curatorClient.setData().withVersion(-1).forPath(path, "0".getBytes());
                     }
                 } else {

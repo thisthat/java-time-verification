@@ -104,7 +104,7 @@ public abstract class IASTStm implements IASTVisitor, IASTToken {
 
 	/**
 	 * Calculate the source code of the node.
-	 * It tries to use the ANTLRv4 Token data structure to retrieve the source code.
+	 * It tries to use the ANTLRv4 Token preprocess structure to retrieve the source code.
 	 * If they are not available it uses the {@link ASTSrc} class.
 	 */
 	protected void calculateSourceCode(){

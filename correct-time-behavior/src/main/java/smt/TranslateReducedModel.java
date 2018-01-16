@@ -105,6 +105,8 @@ public class TranslateReducedModel {
             return handleConditional((ASTConditional) r);
         } else if(r instanceof ASTLiteral){
             return handleLiteral((ASTLiteral) r);
+        } else if(r instanceof ASTIdentifier){
+            return handleIdentifier((ASTIdentifier) r);
         } else if(r instanceof ASTMethodCall){
             return handleMethodCallExpression((ASTMethodCall) r);
         } else if(r instanceof ASTNewObject){
@@ -216,6 +218,11 @@ public class TranslateReducedModel {
     }
 
     private IntExpr handleLiteral(ASTLiteral r) {
+        IntExpr e = modelCreator.createVariable(r.getValue());
+        return e;
+    }
+
+    private IntExpr handleIdentifier(ASTIdentifier r) {
         IntExpr e = modelCreator.createVariable(r.getValue());
         return e;
     }

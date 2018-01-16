@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The following class is used to save some data in a MongoDB.
- * The data stored for a class consists in:
+ * The following class is used to save some preprocess in a MongoDB.
+ * The preprocess stored for a class consists in:
  * <ul>
  *     <li>List of methods {@link IndexMethod}</li>
  *     <li>List of synchronized methods {@link IndexMethod}</li>

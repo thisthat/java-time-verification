@@ -251,7 +251,7 @@ public class VuzeActivitiesEntry
 
 				Map<?, ?>	vuze_map = (Map<?, ?>)torrent_map.get( "vuze" );
 				
-				// remove any non-standard stuff (e.g. resume data)
+				// remove any non-standard stuff (e.g. resume preprocess)
 
 				torrent_to_send.removeAdditionalProperties();
 

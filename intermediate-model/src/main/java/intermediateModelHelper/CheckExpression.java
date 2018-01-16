@@ -6,7 +6,6 @@ import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.ASTVariable;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
@@ -47,6 +46,7 @@ public class CheckExpression {
 	 *
 	 */
 	public static boolean checkRE(ASTRE rexp, Env env){
+
 		if(rexp == null){
 			return false;
 		}
@@ -191,8 +191,8 @@ public class CheckExpression {
 		if(left instanceof ASTIdentifier){
 			String name = ((ASTIdentifier) left).getValue();
 			IASTVar var = where.getVar(name);
-			if(var != null && var.isTimeCritical() && v.getRight() instanceof ASTLiteral){
-				IASTVar vright = where.getVar(((ASTLiteral) v.getRight()).getValue());
+			if(var != null && var.isTimeCritical() && v.getRight() instanceof ASTIdentifier){
+				IASTVar vright = where.getVar(((ASTIdentifier) v.getRight()).getValue());
 				if(vright != null)
 					vright.setTimeCritical(true);
 			}
@@ -338,7 +338,7 @@ public class CheckExpression {
 		final boolean[] r = {false};
 		DefualtASTREVisitor v = new DefualtASTREVisitor(){
 			@Override
-			public void enterASTLiteral(ASTLiteral literal) {
+			public void enterASTIdentifier(ASTIdentifier literal) {
 				if(where.existVarNameTimeRelevant(literal.getValue()) ) {//and time critical
 					r[0] = true;
 					literal.setTimeCritical(true);

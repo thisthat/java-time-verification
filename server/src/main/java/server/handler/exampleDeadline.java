@@ -7,7 +7,7 @@ import com.sun.net.httpserver.HttpHandler;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.*;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
@@ -34,7 +34,7 @@ public class exampleDeadline implements HttpHandler {
         zclass = classes.get(0);
         int start = 113;
         int end = 232;
-        ASTRE timeout = new ASTRE(122, 129, new ASTLiteral(122, 129, "timeout"));
+        ASTRE timeout = new ASTRE(122, 129, new ASTIdentifier(122, 129, "timeout"));
         final ASTWhile[] exp_deadline = new ASTWhile[1];
         zclass.visit(new DefaultASTVisitor(){
             @Override

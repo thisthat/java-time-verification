@@ -49,8 +49,8 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 		mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (savedInstanceState != null && savedInstanceState.getBoolean("start FOG")==false){
         	startFOGassistant.setEnabled(savedInstanceState.getBoolean("start FOG"));
-        	data = savedInstanceState.getFloatArray("data");
-        	ap_data = savedInstanceState.getFloatArray("ap data");
+        	data = savedInstanceState.getFloatArray("preprocess");
+        	ap_data = savedInstanceState.getFloatArray("ap preprocess");
         	i = savedInstanceState.getInt("i");
         	sm.registerListener(this, mAccelerometer , ApplicationUtility.Ts);
         	intent = new Intent(this, CueService.class);
@@ -155,7 +155,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 				data[k]=data[k+ApplicationUtility.sliding];
 			}
 			i=ApplicationUtility.nWindow-ApplicationUtility.sliding;
-			//Log.d(ApplicationUtility.APPTAG, "primo camp: " + data[0] + " secondo camp: " + data[ApplicationUtility.sliding]);
+			//Log.d(ApplicationUtility.APPTAG, "primo camp: " + preprocess[0] + " secondo camp: " + preprocess[ApplicationUtility.sliding]);
 		}
 		
 	}
@@ -170,8 +170,8 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 	protected void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		outState.putBoolean("start FOG", startFOGassistant.isEnabled());
-		outState.putFloatArray("data", data);
-		outState.putFloatArray("ap data", ap_data);
+		outState.putFloatArray("preprocess", data);
+		outState.putFloatArray("ap preprocess", ap_data);
 		outState.putInt("i", i);
 	}
 	

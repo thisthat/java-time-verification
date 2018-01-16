@@ -1575,7 +1575,7 @@ class JavaExample
         System.out.println("Expr: " + ite);
     }
 
-    // / Create an enumeration data type.
+    // / Create an enumeration preprocess type.
 
     public void enumExample(Context ctx) throws TestFailedException
     {

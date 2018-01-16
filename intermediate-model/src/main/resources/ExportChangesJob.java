@@ -88,7 +88,7 @@ public class ExportChangesJob extends Thread{
 //				}
 //				br.close();
 				
-				//another apriori data approach
+				//another apriori preprocess approach
 				List<String> distinctChanges = projectService.getDistinctChanges(projectId);
 				f =new File("/Users/chris/Desktop/exportDistinctTable.csv");
 				ps = new PrintStream(f);
