@@ -20,6 +20,8 @@ import sys
 import logging
 from contracts import contract, new_contract, check
 
+PROCESS_PRECONDITIONS = False # see the bug in processing preconditions, before re-enabling that code
+
 log = logging.getLogger(__name__)
 log_smt = logging.getLogger("smt")
 
@@ -729,7 +731,19 @@ class SMTProb(object):
 
         env = pred_to_env(source_pred) | pred_to_env(target_pred)
 
-        if preconditions:
+        if PROCESS_PRECONDITIONS and preconditions:
+            """
+            This piece of code adds a set of preconditions to the 
+            predicates of the source state. This is buggy, though, 
+            because does not handle the case where the precondition 
+            is an expression on some variable, say foo, and the variable
+            foo has been assigned to some other value before the current
+            instruction. This may lead to inconsistencies (i.e. unsat
+            constraints) between the source state predicate and the 
+            precondition predicates.
+
+            TODO fix this before setting PROCESS_PRECONDITIONS to True
+            """
        
             assertions.append("; begin encoding precondition")
             for pre in preconditions:
