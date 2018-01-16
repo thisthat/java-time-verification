@@ -3,6 +3,7 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTWhile;
 import intermediateModel.structure.expression.ASTBinary;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 
@@ -93,6 +94,7 @@ public class TestCreationIM {
 		assertNotNull(w.getExpr());
 		IASTRE exp = w.getExpr().getExpression();
 		assertEquals(ASTBinary.class, exp.getClass());
-		assertEquals(AST);
+		ASTBinary b = (ASTBinary) exp;
+		assertEquals(ASTIdentifier.class, b.getLeft().getClass());
 	}
 }

@@ -27,7 +27,7 @@ public class ASTIdentifier extends IASTStm implements IASTRE {
 
 	@Override
 	public String toString() {
-		return "ASTLiteral{" +
+		return "ASTIdentifier{" +
 				"value='" + value + '\'' +
 				'}';
 	}
@@ -38,6 +38,11 @@ public class ASTIdentifier extends IASTStm implements IASTRE {
 		visitor.enterASTIdentifier(this);
 		visitor.exitASTIdentifier(this);
 		visitor.exitAll(this);
+	}
+
+	@Override
+	public IASTRE negate() {
+		return this;
 	}
 
 	@Override
