@@ -14,6 +14,7 @@ public interface ASTREVisitor {
 	void enterASTbinary(ASTBinary elm);
 	void enterASTCast(ASTCast elm);
 	void enterASTConditional(ASTConditional elm);
+	void enterASTIdentifier(ASTIdentifier elm);
 	void enterASTLiteral(ASTLiteral elm);
 	void enterASTMethodCall(ASTMethodCall elm);
 	void enterASTNewObject(ASTNewObject elm);
@@ -31,6 +32,7 @@ public interface ASTREVisitor {
 	void exitASTbinary(ASTBinary elm);
 	void exitASTCast(ASTCast elm);
 	void exitASTConditional(ASTConditional elm);
+	void exitASTIdentifier(ASTIdentifier elm);
 	void exitASTLiteral(ASTLiteral elm);
 	void exitASTMethodCall(ASTMethodCall elm);
 	void exitASTNewObject(ASTNewObject elm);

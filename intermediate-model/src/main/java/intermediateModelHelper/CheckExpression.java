@@ -1,12 +1,12 @@
 package intermediateModelHelper;
 
+
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.ASTVariable;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModelHelper.envirorment.BuildEnvironment;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
@@ -103,7 +103,7 @@ public class CheckExpression {
 				IASTRE r = pars.get(i);
 				r.visit(new DefualtASTREVisitor(){
 					@Override
-					public void enterASTLiteral(ASTLiteral elm) {
+					public void enterASTIdentifier(ASTIdentifier elm) {
 						IASTVar v = env.getVar(elm.getValue());
 						if(v != null){
 							v.setTimeCritical(true);
@@ -189,8 +189,8 @@ public class CheckExpression {
 	private static boolean setVariableInEnv(ASTRE state, ASTAssignment v, Env where){
 		IASTRE left = v.getLeft();
 		final boolean[] flag = new boolean[1];
-		if(left instanceof ASTLiteral){
-			String name = ((ASTLiteral) left).getValue();
+		if(left instanceof ASTIdentifier){
+			String name = ((ASTIdentifier) left).getValue();
 			IASTVar var = where.getVar(name);
 			if(var != null && var.isTimeCritical() && v.getRight() instanceof ASTLiteral){
 				IASTVar vright = where.getVar(((ASTLiteral) v.getRight()).getValue());
@@ -257,8 +257,8 @@ public class CheckExpression {
 			expr.visit(visit);
 			if(!flag[0]){
 				//check x = timeVar;
-				if(expr instanceof ASTLiteral){
-					String varName = ((ASTLiteral) expr).getValue();
+				if(expr instanceof ASTIdentifier){
+					String varName = ((ASTIdentifier) expr).getValue();
 					flag[0] = where.existVarNameTimeRelevant(varName);
 					if(flag[0])
 						expr.setTimeCritical(true);
@@ -313,7 +313,7 @@ public class CheckExpression {
 			}
 
 			@Override
-			public void enterASTLiteral(ASTLiteral elm) {
+			public void enterASTIdentifier(ASTIdentifier elm) {
 				if(varToSkip.contains(elm.getValue())) return;
 
 				IASTVar var = where.getVar(elm.getValue());

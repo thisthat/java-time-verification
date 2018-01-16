@@ -1072,7 +1072,7 @@ public class JDTVisitor extends ASTVisitor {
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		String name = expr.getName().getFullyQualifiedName();
-		IASTRE exprCallee = new ASTLiteral(start, start+5, "super");
+		IASTRE exprCallee = new ASTIdentifier(start, start+5, "super");
 		List<IASTRE> pars = new ArrayList<>();
 		for(Object p : expr.arguments()){
 			pars.add(
@@ -1256,7 +1256,7 @@ public class JDTVisitor extends ASTVisitor {
 		IASTRE.OPERATOR op = IASTRE.OPERATOR.instanceOf;
 		IASTRE l = getExpr(expr.getLeftOperand());
 		Type t = expr.getRightOperand();
-		IASTRE r = new ASTLiteral(t.getStartPosition(), t.getStartPosition()+t.getLength(), t.toString());
+		IASTRE r = new ASTIdentifier(t.getStartPosition(), t.getStartPosition()+t.getLength(), t.toString());
 		return new ASTBinary(start,stop, l, r, op);
 	}
 
@@ -1386,14 +1386,14 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.getArray().toString());
+		return new ASTIdentifier(start, stop, expr.getArray().toString());
 	}
 
 	private IASTRE literal(TypeLiteral expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(BooleanLiteral expr) {
@@ -1414,7 +1414,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(StringLiteral expr) {
@@ -1474,7 +1474,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.getIdentifier());
+		return new ASTIdentifier(start, stop, expr.getIdentifier());
 	}
 
 	private IASTRE methodInvocation(MethodInvocation node) {

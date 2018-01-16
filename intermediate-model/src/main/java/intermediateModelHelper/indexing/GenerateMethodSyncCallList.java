@@ -279,8 +279,8 @@ public class GenerateMethodSyncCallList extends ParseIM {
 					if(t.equals("this")) { t = _class.getName(); }
 					searchInParent(t,actual_pars, methodCalled, r, inMethod, inSignature, inMethodPkg, inMethodClass);
 				}
-				if(expr instanceof ASTLiteral){
-					String varName = ((ASTLiteral) expr).getValue();
+				if(expr instanceof ASTIdentifier){
+					String varName = ((ASTIdentifier) expr).getValue();
 					literalAccess(methodCalled, actual_pars, pkg2, r, inMethod, inSignature, inMethodPkg, inMethodClass, varName, env);
 				}
 				if(expr instanceof ASTMethodCall){

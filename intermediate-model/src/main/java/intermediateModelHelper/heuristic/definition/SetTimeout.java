@@ -7,7 +7,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
@@ -172,8 +172,8 @@ public class SetTimeout extends SearchTimeConstraint {
 	}
 
 	private IASTVar getVar(ASTMethodCall elm, Env env){
-		if(elm.getExprCallee() instanceof ASTLiteral){
-			String varName = ((ASTLiteral) elm.getExprCallee()).getValue();
+		if(elm.getExprCallee() instanceof ASTIdentifier){
+			String varName = ((ASTIdentifier) elm.getExprCallee()).getValue();
 			IASTVar var = env.getVar(varName);
 			return var;
 		}

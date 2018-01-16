@@ -85,7 +85,7 @@ class ResolveExpressionType extends ParseRE {
 	@Override
 	protected Object analyze(ASTAttributeAccess r) {
 		IASTRE var = r.getVariableName();
-		if(var instanceof ASTLiteral && ((ASTLiteral) var).getValue().equals("this")){
+		if(var instanceof ASTIdentifier && ((ASTIdentifier) var).getValue().equals("this")){
 			IASTVar v = e.getVar(r.getAttributeName());
 			if(v == null){
 				//TODO when we add the inheritated env this will never be the case
@@ -96,7 +96,7 @@ class ResolveExpressionType extends ParseRE {
 		final String[] t = new String[1];
 		r.getVariableName().visit(new DefualtASTREVisitor(){
 			@Override
-			public void enterASTLiteral(ASTLiteral elm) {
+			public void enterASTIdentifier(ASTIdentifier elm) {
 				t[0] = elm.getValue();
 			}
 		});
@@ -160,8 +160,8 @@ class ResolveExpressionType extends ParseRE {
 	}
 
 	@Override
-	protected Object analyze(ASTLiteral r) {
-		String expr = ((ASTLiteral) r).getValue();
+	protected Object analyze(ASTIdentifier r) {
+		String expr = ((ASTIdentifier) r).getValue();
 		try{
 			Integer.parseInt(expr);
 			return "int";
