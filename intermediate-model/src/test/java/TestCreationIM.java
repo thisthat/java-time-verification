@@ -1,12 +1,16 @@
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTWhile;
+import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 
 /**
@@ -73,5 +77,22 @@ public class TestCreationIM {
 		});
 		assertEquals(1, nLabel[0]);
 
+	}
+
+	@Test
+	public void TestLiteralInExpr() throws Exception {
+		ClassLoader classLoader = TestCreationIM.class.getClassLoader();
+		String file = classLoader.getResource("examples/SmallTest.java").getFile();
+		List<ASTClass> cs = JDTVisitor.parse(file, file.substring(0, file.lastIndexOf("/")));
+		assertEquals(1, cs.size());
+		ASTClass c = cs.get(0);
+		IASTMethod m = c.getFirstMethodByName("testWhileVar");
+		assertEquals(2, m.getStms().size());
+		assertEquals(ASTWhile.class, m.getStms().get(1).getClass());
+		ASTWhile w = (ASTWhile) m.getStms().get(1);
+		assertNotNull(w.getExpr());
+		IASTRE exp = w.getExpr().getExpression();
+		assertEquals(ASTBinary.class, exp.getClass());
+		assertEquals(AST);
 	}
 }

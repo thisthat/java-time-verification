@@ -94,4 +94,16 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 
 	}
 
+	public void testWhileVar(int a, int b){
+		int i = 10;
+		while(i > 0){
+			i--;
+			if(i % 3 == 0)
+				a++;
+			else
+				b++;
+		}
+	}
+
+
 }
