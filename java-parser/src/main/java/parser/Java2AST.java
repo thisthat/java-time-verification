@@ -85,10 +85,13 @@ public class Java2AST {
 
 	public static List<String> getClassPath(String base){
 		List<String> out = new ArrayList<>();
-		Collection<File> dirs = FileUtils.listFilesAndDirs(new File(base), TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY);
-		for(File s : dirs){
-			if(s.toString().endsWith("src/main/java")){
-				out.add(s.toString());
+		File f = new File(base);
+		if(!base.equals("") && f.isDirectory()) {
+			Collection<File> dirs = FileUtils.listFilesAndDirs(f, TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY);
+			for (File s : dirs) {
+				if (s.toString().endsWith("src/main/java")) {
+					out.add(s.toString());
+				}
 			}
 		}
 		out.add(System.getProperty("java.home") + "/lib");

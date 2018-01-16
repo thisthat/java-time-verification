@@ -54,12 +54,24 @@ public class JDTVisitor extends ASTVisitor {
 		try {
 			a = new Java2AST(filename, true, projectPath);
 		}
-		catch (IOException e) {}
+		catch (IOException e) {
+			System.out.println("Fail to create the parser");
+			System.err.println(e.getMessage());
+			e.printStackTrace(System.err);
+		}
 		catch (UnparsableException e) {
 			//cannot parse the file
 			return new ArrayList<>();
 		}
-		CompilationUnit result = a.getContextJDT();
+		CompilationUnit result = null;
+		try {
+			result = a.getContextJDT();
+		} catch (NullPointerException e){
+			System.out.println("Fail to create the tree");
+			System.err.println(e.getMessage());
+			e.printStackTrace(System.err);
+			return new ArrayList<>();
+		}
 		a.dispose();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);

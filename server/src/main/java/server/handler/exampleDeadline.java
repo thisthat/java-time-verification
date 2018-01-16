@@ -29,7 +29,7 @@ public class exampleDeadline implements HttpHandler {
     private ASTClass zclass;
 
     public exampleDeadline() {
-        file_path = exampleDeadline.class.getClassLoader().getResource("deadline.java").getFile();
+        file_path = getClass().getClassLoader().getResource("deadline.java").getFile();
         classes = JDTVisitor.parse(file_path, file_path.substring(0, file_path.lastIndexOf("/")));
         zclass = classes.get(0);
         int start = 113;
