@@ -7,7 +7,7 @@ import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTImport;
 import intermediateModel.structure.expression.ASTAttributeAccess;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
@@ -109,7 +109,7 @@ public class ResolveTypes {
 		IASTRE calee = expr.getExprCallee();
 		if(calee == null){
 			//local method call
-			calee = new ASTLiteral(-1,-1, "this");
+			calee = new ASTIdentifier(-1,-1, "this");
 		}
 		String methodCalled = expr.getMethodName();
 		List<Pair<String,String>> actual_pars = new ArrayList<Pair<String,String>>();
@@ -127,7 +127,7 @@ public class ResolveTypes {
 			final String[] varTypeHelper = new String[1];
 			((ASTAttributeAccess) calee).getVariableName().visit(new DefualtASTREVisitor(){
 				@Override
-				public void enterASTLiteral(ASTLiteral elm) {
+				public void enterASTIdentifier(ASTIdentifier elm) {
 					varTypeHelper[0] = elm.getValue();
 				}
 			});
@@ -185,8 +185,8 @@ public class ResolveTypes {
 				}
 			}
 		}
-		if(calee instanceof ASTLiteral){
-			String varName = ((ASTLiteral) calee).getValue();
+		if(calee instanceof ASTIdentifier){
+			String varName = ((ASTIdentifier) calee).getValue();
 			if(varName.equals("this")){
 				String type = localSearch(_class, methodCalled, actual_pars, imports);
 				IndexData imp = ResolveTypes.getPackageFromImports(imports, type);
@@ -376,8 +376,8 @@ public class ResolveTypes {
 		//5 cases: this, var, methodCall(), Smth.class, Smth.attribute
 		Pair<String,String> out = new Pair<>("","");
 		//cases: this, var, Smth.class, ClassName.this
-		if(expr instanceof ASTLiteral){
-			String val = ((ASTLiteral) expr).getValue();
+		if(expr instanceof ASTIdentifier){
+			String val = ((ASTIdentifier) expr).getValue();
 			if(val.equals("this") || val.endsWith(".this")) {
 				out = new Pair<>(c.getPackageName(), c.getName());
 			}
@@ -416,8 +416,8 @@ public class ResolveTypes {
 		if(expr instanceof ASTAttributeAccess){
 			IASTRE var = ((ASTAttributeAccess) expr).getVariableName();
 			String attribute = ((ASTAttributeAccess) expr).getAttributeName();
-			if (var instanceof ASTLiteral) {
-				String varName = ((ASTLiteral) var).getValue();
+			if (var instanceof ASTIdentifier) {
+				String varName = ((ASTIdentifier) var).getValue();
 				if(varName.equals("this")){
 					varName = attribute;
 				}

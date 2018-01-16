@@ -23,14 +23,13 @@ import intermediateModel.structure.ASTImport;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAttributeAccess;
 import intermediateModel.structure.expression.ASTCast;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.UndefiniteTimeout;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModelHelper.indexing.structure.IndexMethod;
 import intermediateModelHelper.types.ResolveTypes;
@@ -73,7 +72,7 @@ public class ToXAL implements IConverter {
 		}
 
 		/**
-		 * It connects to the mongodb and prepare the data in order to resolve the from which
+		 * It connects to the mongodb and prepare the preprocess in order to resolve the from which
 		 * objects the method calls are coming from.
 		 */
 		private void processImports() {
@@ -204,8 +203,8 @@ public class ToXAL implements IConverter {
 						if(t.equals("this")) { t = _class.getName(); }
 						searchInParent(t,actual_pars, methodCalled, r);
 					}
-					if(expr instanceof ASTLiteral){
-						String varName = ((ASTLiteral) expr).getValue();
+					if(expr instanceof ASTIdentifier){
+						String varName = ((ASTIdentifier) expr).getValue();
 						literalAccess(methodCalled, actual_pars, pkg2, r, varName, env);
 					}
 					if(expr instanceof ASTMethodCall){

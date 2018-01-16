@@ -134,9 +134,13 @@ public class getFile extends indexMW {
 			AnnotateEnv a = new AnnotateEnv();
 			a.start(c);
 			ApplyHeuristics ah = new ApplyHeuristics();
-			ah.subscribe(TimeInSignature.class);
-			ah.subscribe(TimeoutResources.class);
-			ah.subscribe(AssignmentTimeVar.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.MarkTime.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.TimeInSignature.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.AssignmentTimeVar.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.BooleanExpression.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.MinMaxSearch.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.ReturnExpression.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.AddTimeVarToTimeExpression.class);
 
 			ah.analyze(c);
 			//annotate each method

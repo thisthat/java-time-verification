@@ -165,7 +165,12 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 
 		if (isTimeCall != that.isTimeCall) return false;
 		if (methodName != null ? !methodName.equals(that.methodName) : that.methodName != null) return false;
-		if (exprCallee != null ? !exprCallee.equals(that.exprCallee) : that.exprCallee != null) return false;
+		//if (exprCallee != null ? !exprCallee.equals(that.exprCallee) : that.exprCallee != null) return false;
+		if(exprCallee != null){
+			return exprCallee.equals(that.exprCallee);
+		} else {
+			if(that.exprCallee != null) return false;
+		}
 		if (parameters != null ? !parameters.equals(that.parameters) : that.parameters != null) return false;
 		return classPointed != null ? classPointed.equals(that.classPointed) : that.classPointed == null;
 	}

@@ -1,8 +1,8 @@
 package intermediateModelHelper.indexing.structure;
 
 /**
- * The following class is used to save some data in a MongoDB.
- * The data stored  consists in:
+ * The following class is used to save some preprocess in a MongoDB.
+ * The preprocess stored  consists in:
  * <ul>
  *     <li>Type of the parameter</li>
  *     <li>Name of the parameter</li>

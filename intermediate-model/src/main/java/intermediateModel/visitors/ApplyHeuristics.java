@@ -1,8 +1,12 @@
 package intermediateModel.visitors;
 
 
-import intermediateModel.interfaces.*;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.interfaces.ParseIM;
@@ -73,6 +77,21 @@ public class ApplyHeuristics extends ParseIM {
 		return ah.getTimeConstraint();
 	}
 
+	public static List<Constraint> getConstraintV2(ASTClass c){
+		//return new ArrayList<>();
+		ApplyHeuristics ah = new ApplyHeuristics();
+		ah.set__DEBUG__(false);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.MarkTime.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.TimeInSignature.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.AssignmentTimeVar.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.BooleanExpression.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.MinMaxSearch.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.ReturnExpression.class);
+		ah.subscribe(intermediateModelHelper.heuristic.v2.AddTimeVarToTimeExpression.class);
+		ah.analyze(c);
+		return ah.getTimeConstraint();
+	}
+
 	public void set__DEBUG__(boolean __DEBUG__) {
 		this.__DEBUG__ = __DEBUG__;
 	}
@@ -122,8 +141,8 @@ public class ApplyHeuristics extends ParseIM {
 			Env eMethod = new Env(base);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			analyzeMethod(m, eMethod);
-			analyze(m.getStms(), eMethod );
-			analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
 		}
 
 		//then methods
@@ -132,8 +151,8 @@ public class ApplyHeuristics extends ParseIM {
 			Env eMethod = new Env(base);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			analyzeMethod(m, eMethod);
-			analyze(m.getStms(), eMethod );
-			analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
+			//analyze(m.getStms(), eMethod );
 		}
 
 		//storing vars in methodss
@@ -160,7 +179,7 @@ public class ApplyHeuristics extends ParseIM {
 		IASTRE expr = e.getExpression();
 		ASTRE re = new ASTRE(e.getStart(), e.getEnd(), new ASTVariableDeclaration(
 			e.getStart(), e.getEnd(), v.getType(),
-				new ASTLiteral(e.getStart(), e.getEnd(), v.getName()),
+				new ASTIdentifier(e.getStart(), e.getEnd(), v.getName()),
 			expr
 		));
 		analyze(re, env);
@@ -187,6 +206,7 @@ public class ApplyHeuristics extends ParseIM {
 				s.nextMethod((ASTMethod) method,e);
 			}
 		}
+		super.analyzeMethod(method, e);
 	}
 
 	@Override
@@ -257,7 +277,11 @@ public class ApplyHeuristics extends ParseIM {
 	public List<Constraint> getTimeConstraint() {
 		List<Constraint> out = new ArrayList<>();
 		for(SearchTimeConstraint s : strategies){
-			out.addAll(s.getTimeConstraint());
+			List<Constraint> cnsts = s.getTimeConstraint();
+			for(Constraint c : cnsts){
+				if(!out.contains(c))
+					out.add(c);
+			}
 		}
 		return out;
 	}

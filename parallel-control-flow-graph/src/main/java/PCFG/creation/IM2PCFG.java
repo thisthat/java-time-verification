@@ -100,7 +100,7 @@ public class IM2PCFG {
 	}
 
 	public PCFG buildPCFG(){
-		//init data
+		//init preprocess
 		this.indexs.clear();
 		List<KeyValue<IASTMethod,ASTClass>> classes = pcfgBuilder.getClasses();
 		for(KeyValue<IASTMethod,ASTClass> k : classes){

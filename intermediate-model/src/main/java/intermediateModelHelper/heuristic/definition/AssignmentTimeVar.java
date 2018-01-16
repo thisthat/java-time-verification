@@ -8,10 +8,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTLiteral;
-import intermediateModel.structure.expression.ASTMethodCall;
-import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.CheckExpression;
@@ -71,7 +68,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 		//record time vars
 		stm.visit(new DefaultASTVisitor(){
 			@Override
-			public void enterASTLiteral(ASTLiteral elm) {
+			public void enterASTIdentifier(ASTIdentifier elm) {
 				String name = elm.getValue();
 				if(env.existVarNameTimeRelevant(name)){
 					AssignmentTimeVar.super.addTimeVar(currentMethod, name);
@@ -84,8 +81,8 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 			@Override
 			public void enterASTAssignment(ASTAssignment elm) {
 				IASTRE l = elm.getLeft();
-				if(l instanceof ASTLiteral){
-					String varName = ((ASTLiteral) l).getValue();
+				if(l instanceof ASTIdentifier){
+					String varName = ((ASTIdentifier) l).getValue();
 					IASTVar v = env.getVar(varName);
 					if(v != null && v.isTimeCritical()){
 						addExpression(stm, elm);

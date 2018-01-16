@@ -87,11 +87,11 @@ public class IndexingProject {
 	 * Start the indexing from the <b>base_path</b> passed as parameter.
 	 * It iterates on the directory and sub-directories searching for Java files.
 	 * @param base_path	Path from where start to search for Java files.
-	 * @param deleteOld	If true delete the database so we have fresh data.
+	 * @param deleteOld	If true delete the database so we have fresh preprocess.
 	 * @return	The number of file parsed. <u>IT IS NOT THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
 	 */
 	public int indexProject(String base_path, boolean deleteOld){
-		//remove old data
+		//remove old preprocess
 		db.setIndexStart();
 		if(deleteOld) delete();
 		Iterator i = getJavaFiles(base_path);
@@ -235,7 +235,7 @@ public class IndexingProject {
 	 * Start the indexing from the <b>base_path</b> passed as parameter.
 	 * It iterates on the directory and sub-directories searching for Java files.
 	 * @param base_path	Path from where start to search for Java files.
-	 * @param delete	If true delete the database so we have fresh data.
+	 * @param delete	If true delete the database so we have fresh preprocess.
 	 * @return			A {@link Future} that will contain soon or late the number of file parsed. <u>IT WILL NOT RETURN THE NUMBER OF CLASSES INSERTED IN THE DATABASE</u>
 	 */
 	public Future<Integer> asyncIndexProject(String base_path, boolean delete){

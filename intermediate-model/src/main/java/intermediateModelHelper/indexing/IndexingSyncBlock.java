@@ -83,7 +83,7 @@ public class IndexingSyncBlock extends ParseIM {
 	}
 
 	/**
-	 * It connects to the mongodb and prepare the data in order to resolve the from which
+	 * It connects to the mongodb and prepare the preprocess in order to resolve the from which
 	 * objects the method calls are coming from.
 	 */
 	private void processImports(ASTClass c) {
@@ -201,8 +201,8 @@ public class IndexingSyncBlock extends ParseIM {
 				return sync.getExpr().equals(v.getName()) && sync.getExprType().equals(v.getType());
 			}
 			private boolean checkIASTRE(IASTRE e, Env env){
-				if(e instanceof ASTLiteral){
-					ASTLiteral lit = (ASTLiteral) e;
+				if(e instanceof ASTIdentifier){
+					ASTIdentifier lit = (ASTIdentifier) e;
 					if(lit.getValue().equals(sync.getExpr())){
 						if(lit.getCode().endsWith("]")){ //does it work like that?
 							//We should think about gettin' in touch with the concrete types of the program and do not abstract from them. At least arrays...

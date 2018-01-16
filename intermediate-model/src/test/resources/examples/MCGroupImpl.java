@@ -630,7 +630,7 @@ MCGroupImpl
 	
 					mc_sock.setNetworkInterface( network_interface );
 					
-					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", data = " + new String(data));
+					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", preprocess = " + new String(preprocess));
 					
 					DatagramPacket packet = new DatagramPacket(data, data.length, group_address.getAddress(), group_port );
 					
@@ -734,7 +734,7 @@ MCGroupImpl
 					
 					byte[]	data = param_data.replaceAll("%AZINTERFACE%", an_address.getHostAddress()).getBytes();
 					
-					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", data = " + new String(data));
+					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", preprocess = " + new String(preprocess));
 					
 					DatagramPacket packet = new DatagramPacket(data, data.length, group_address.getAddress(), group_port );
 					
@@ -854,7 +854,7 @@ MCGroupImpl
 		byte[]	data 	= packet.getData();
 		int		len		= packet.getLength();
 		
-		// System.out.println( "receive: add = " + local_address + ", data = " + new String( data, 0, len ));
+		// System.out.println( "receive: add = " + local_address + ", preprocess = " + new String( preprocess, 0, len ));
 
 		adapter.received( 
 				network_interface, 
@@ -878,7 +878,7 @@ MCGroupImpl
 		
 		DatagramSocket	reply_socket	= null;
 			
-		// System.out.println( "sendToMember: add = " + address + ", data = " +new String( data ));
+		// System.out.println( "sendToMember: add = " + address + ", preprocess = " +new String( preprocess ));
 
 		try{
 			reply_socket = new DatagramSocket( null );
