@@ -6,6 +6,7 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.interfaces.ParseIM;
@@ -178,7 +179,7 @@ public class ApplyHeuristics extends ParseIM {
 		IASTRE expr = e.getExpression();
 		ASTRE re = new ASTRE(e.getStart(), e.getEnd(), new ASTVariableDeclaration(
 			e.getStart(), e.getEnd(), v.getType(),
-				new ASTLiteral(e.getStart(), e.getEnd(), v.getName()),
+				new ASTIdentifier(e.getStart(), e.getEnd(), v.getName()),
 			expr
 		));
 		analyze(re, env);

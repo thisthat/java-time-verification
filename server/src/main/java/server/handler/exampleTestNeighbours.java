@@ -10,7 +10,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTDeadline;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.ASTTry;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
@@ -36,7 +36,7 @@ public class exampleTestNeighbours implements HttpHandler {
         classes = JDTVisitor.parse(file_path, file_path.substring(0, file_path.lastIndexOf("/")));
         zclass = classes.get(0);
 
-        ASTRE timeout = new ASTRE(187, 194, new ASTLiteral(187, 194, "timeout"));
+        ASTRE timeout = new ASTRE(187, 194, new ASTIdentifier(187, 194, "timeout"));
         ASTDeadline d = new ASTDeadline(178, 341, timeout);
 
         zclass.visit(new DefaultASTVisitor(){

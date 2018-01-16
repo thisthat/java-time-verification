@@ -5,7 +5,7 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
@@ -49,7 +49,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 					IASTRE lexpr = elm.getLeft();
 					DefualtASTREVisitor v = new DefualtASTREVisitor(){
 						@Override
-						public void enterASTLiteral(ASTLiteral elm) {
+						public void enterASTIdentifier(ASTIdentifier elm) {
 							IASTVar var = env.getVar(elm.getValue());
 							if(var != null){
 								var.setTimeCritical(true);

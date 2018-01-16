@@ -8,7 +8,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
@@ -100,7 +100,7 @@ public class ExtractTimeAttribute extends ParseIM {
             IASTRE expr = a.getExpr().getExpression();
             int s = a.getStart();
             int e = a.getEnd();
-            ASTAssignment ass = new ASTAssignment(s, e, new ASTLiteral(s, e, a.getName()), expr, IASTRE.OPERATOR.equal);
+            ASTAssignment ass = new ASTAssignment(s, e, new ASTIdentifier(s, e, a.getName()), expr, IASTRE.OPERATOR.equal);
             ASTRE re = new ASTRE(s, e, ass);
             CheckExpression.checkRE(re, env);
         }

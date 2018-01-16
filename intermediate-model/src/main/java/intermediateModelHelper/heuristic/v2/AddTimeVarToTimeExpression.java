@@ -4,7 +4,7 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.ASTWhile;
-import intermediateModel.structure.expression.ASTLiteral;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
@@ -35,8 +35,9 @@ public class AddTimeVarToTimeExpression extends SearchTimeConstraint {
 			@Override
 			public void enterASTMethodCall(ASTMethodCall call) {
 				call.visit(new DefualtASTREVisitor(){
+
 					@Override
-					public void enterASTLiteral(ASTLiteral elm) {
+					public void enterASTIdentifier(ASTIdentifier elm) {
 						IASTVar v = env.getVar(elm.getValue());
 						if(v != null && v.isTimeCritical()){
 							mark(v, call);
@@ -52,8 +53,9 @@ public class AddTimeVarToTimeExpression extends SearchTimeConstraint {
 	@Override
 	public void nextWhileExpr(ASTRE stm, Env env, ASTWhile w) {
 		stm.getExpression().visit(new DefualtASTREVisitor(){
+
 			@Override
-			public void enterASTLiteral(ASTLiteral elm) {
+			public void enterASTIdentifier(ASTIdentifier elm) {
 				IASTVar v = env.getVar(elm.getValue());
 				if(v != null && v.isTimeCritical()){
 					w.addTimeVar(v.getName());

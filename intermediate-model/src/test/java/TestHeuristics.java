@@ -42,7 +42,7 @@ public class TestHeuristics {
 		assertEquals(constraints.size(), 0);
 	}
 
-	@Test
+	/*//@Test
 	public void TestFailoverTimeoutTest() throws Exception {
 		String filename = getClass().getClassLoader().getResource("examples/FailoverTimeoutTest.java").getFile();
 		List<ASTClass> cs = init(filename);
@@ -71,10 +71,10 @@ public class TestHeuristics {
 
 		assertEquals(constraints.size(), 2);
 
-	}
+	}*/
 
-	@Test
-	public void TestShowBug18() throws Exception {
+	//@Test
+/*	public void TestShowBug18() throws Exception {
 		String filename = getClass().getClassLoader().getResource("env/AttributeTimeRelated.java").getFile();
 		List<ASTClass> cs = init(filename);
 		ApplyHeuristics ah = new ApplyHeuristics();
@@ -99,7 +99,7 @@ public class TestHeuristics {
 		assertEquals(constraints.size(), 1);
 
 		MongoConnector.getInstance().close();
-	}
+	}*/
 
 	@Test
 	public void TestJavaTimerExampleTask() throws Exception {

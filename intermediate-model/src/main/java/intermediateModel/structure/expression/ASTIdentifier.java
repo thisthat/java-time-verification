@@ -46,6 +46,16 @@ public class ASTIdentifier extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTIdentifier that = (ASTIdentifier) o;
+
+		return value != null ? value.equals(that.value) : that.value == null;
+	}
+
+	@Override
 	public String print() {
 		return value;
 	}
