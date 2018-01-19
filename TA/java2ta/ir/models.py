@@ -156,25 +156,47 @@ class Thread(Klass):
 
         return found[0]
 
-
 class Method(ASTNode):
 
-    def __init__(self, name, klass):
+    @contract(name="string") #parent="is_klass|is_ir_varaible") # TODO we cannot specify contract is_ir_variable because there is a circular dependency b/w is_ir_variable and is_method; fix function "new_contract_check_type" to take also strings with fully qualified names of types in place of taking directly the class
+    def __init__(self, name, parent):
  
         assert isinstance(name, basestring)       
-        assert isinstance(klass, Klass)
 
-        super(Method, self).__init__(name, klass.project, parent=klass)
+        klass = None
+        variable = None
+
+        if isinstance(parent, Klass):
+            klass = parent
+        elif isinstance(parent, Variable):
+            variable = parent
+        else:
+            raise ValueError("The parent element can either be a Klass or a Variable")
+
+        super(Method, self).__init__(name, parent.project, parent=parent)
+
         self.klass = klass
+        self.variable = variable
 
     @property
+    @contract(returns="string")
     def fqname(self):
-        return "%s.%s" % (self.klass.fqname, self.name)
+        assert hasattr(self.parent, "fqname")
+        return "%s.%s" % (self.parent.fqname, self.name)
 
+    @contract(returns="dict")
     def get_ast(self):
-        methods = self.klass.ast["methods"]
+        assert self.klass is not None or self.variable is not None
 
-        log.debug("Looking method: %s" % self.name)
+        methods = []
+
+        if self.klass is not None:
+            methods = self.klass.ast["methods"]
+        else:
+            # thus self.variable is not None
+            methods = self.variable.ast["expr"]["hiddenClass"]["methods"]
+
+#        log.debug("Looking method: %s" % self.name)
         found = filter(lambda m: m["name"] == self.name, methods)
 
         # TODO at the moment we only take the first method with the given name
@@ -186,21 +208,25 @@ class Method(ASTNode):
         return res
 
     @property
+    @contract(returns="list(dict)")
     def instructions(self):
         return self.ast["stms"]
 
     @property
+    @contract(returns="bool")
     def has_instructions(self):
         return len(self.instructions) > 0
     
 
 new_contract_check_type("is_method", Method)
 
+
+
 class Variable(ASTNode):
 
     @contract(name="string", method="is_method")
     def __init__(self, name, method):
-        self.name = name
+        super(Variable, self).__init__(name, method.project, parent=method)
         self.method = method
 
     @property
@@ -235,6 +261,8 @@ class Variable(ASTNode):
             
 
 new_contract_check_type("is_ir_variable", Variable)
+
+
 
 class Project(object):
 
@@ -431,9 +459,9 @@ class Project(object):
     @contract(returns="list(dict)")
     def get_classes(self):
         """
-        Due to memory space limitation, it is not possible to return all
-        the classes ASTs. Thus we return only a dictionary containing the
-        following keys:
+        In order not to waste memory space limitation, we do not return 
+        all the classes ASTs. Instead, we return only a dictionary 
+        containing the following keys:
         'className', 'name', 'package'
         With this information is possible to invoke the get_class
         method, for the desired classes.

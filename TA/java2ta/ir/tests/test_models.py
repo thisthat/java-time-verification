@@ -463,7 +463,7 @@ def test_classes():
         class_path = "%s.java" % c["className"]
         klass = Klass(c["className"], c["packageName"], "file://%s" % class_path, p)
 
-        ast = klass.get_ast()
+        ast = klass.ast
 
         assert isinstance(ast, dict)
         assert "name" in ast
@@ -489,7 +489,7 @@ def test_variable():
     v = Variable("temp", m)
     assert v.fqname == "%s.%s" % (m.fqname, "temp"), "variable: %s, method: %s" % (v.fqname, m.fqname)
 
-    var_ast = v.get_ast()
+    var_ast = v.ast
     assert isinstance(var_ast, dict)
     assert "name" in var_ast, var_ast
     assert "type" in var_ast, var_ast
@@ -519,7 +519,7 @@ def test_variable_with_anonymous_class():
     v = Variable("varfoo", m)
     assert v.fqname == "%s.%s" % (m.fqname, v.name), "variable: %s, method: %s" % (v.fqname, m.fqname)
 
-    var_ast = v.get_ast()
+    var_ast = v.ast
     assert isinstance(var_ast, dict)
     assert "name" in var_ast, var_ast
     assert "type" in var_ast, var_ast
@@ -543,4 +543,28 @@ def test_variable_with_anonymous_class():
 
 
 def test_inner_method():
-    assert False # TODO
+
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
+
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    c = Klass("HelloWorld","", "HelloWorld.java",project=p)
+    m = Method("fie", c)
+
+    # maxseq is a local variable of the method "doSwap"
+    v = Variable("varfoo", m)
+ 
+    m_inner = Method("mymethod", v)
+
+    assert m_inner.ast is not None
+    assert m_inner.ast["nodeType"] == "ASTMethod"
+    assert "stms" in m_inner.ast
+    assert m_inner.ast["name"] == "mymethod"
+    assert len(m_inner.ast["stms"]) == 1
+    assert m_inner.ast["stms"][0]["nodeType"] == "ASTReturn"
+    #assert False, m_inner.ast
