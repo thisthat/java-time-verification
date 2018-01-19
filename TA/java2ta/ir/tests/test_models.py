@@ -500,6 +500,7 @@ def test_variable():
     assert var_ast["type"] == "int", var_ast
     assert var_ast["typePointed"] == "int", var_ast 
 
+
 def test_variable_with_anonymous_class():
  
     test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
@@ -511,7 +512,7 @@ def test_variable_with_anonymous_class():
 
     check_is_open(p)
   
-    c = Klass("HelloWord","", "HelloWorld.java",project=p)
+    c = Klass("HelloWorld","", "HelloWorld.java",project=p)
     m = Method("fie", c)
 
     # maxseq is a local variable of the method "doSwap"
@@ -526,10 +527,18 @@ def test_variable_with_anonymous_class():
     assert isinstance(var_ast["name"], dict)
     assert "value" in var_ast["name"]
     assert var_ast["name"]["value"] == "varfoo", var_ast
+    assert var_ast["name"]["nodeType"] == "ASTIdentifier", var_ast 
     assert var_ast["type"] == "Foo", var_ast
     assert var_ast["typePointed"] == "Foo", var_ast 
 
-    assert False, var_ast
+    assert var_ast["nodeType"] == "ASTVariableDeclaration"
+    assert "expr" in var_ast
+    assert var_ast["expr"]["nodeType"] == "ASTNewObject"
+    assert "hiddenClass" in var_ast["expr"]
+    assert "methods" in var_ast["expr"]["hiddenClass"]
+    assert len(var_ast["expr"]["hiddenClass"]["methods"]) == 1 # only the overridden/implemented methods are given
+    assert "accessRight" in var_ast["expr"]["hiddenClass"]
+    assert var_ast["expr"]["hiddenClass"]["accessRight"] == "HIDDEN"
 
 
 
