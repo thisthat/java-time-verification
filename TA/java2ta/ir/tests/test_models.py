@@ -500,6 +500,38 @@ def test_variable():
     assert var_ast["type"] == "int", var_ast
     assert var_ast["typePointed"] == "int", var_ast 
 
+def test_variable_with_anonymous_class():
+ 
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
+
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    c = Klass("HelloWord","", "HelloWorld.java",project=p)
+    m = Method("fie", c)
+
+    # maxseq is a local variable of the method "doSwap"
+    v = Variable("varfoo", m)
+    assert v.fqname == "%s.%s" % (m.fqname, v.name), "variable: %s, method: %s" % (v.fqname, m.fqname)
+
+    var_ast = v.get_ast()
+    assert isinstance(var_ast, dict)
+    assert "name" in var_ast, var_ast
+    assert "type" in var_ast, var_ast
+
+    assert isinstance(var_ast["name"], dict)
+    assert "value" in var_ast["name"]
+    assert var_ast["name"]["value"] == "varfoo", var_ast
+    assert var_ast["type"] == "Foo", var_ast
+    assert var_ast["typePointed"] == "Foo", var_ast 
+
+    assert False, var_ast
+
+
 
 def test_inner_method():
     assert False # TODO

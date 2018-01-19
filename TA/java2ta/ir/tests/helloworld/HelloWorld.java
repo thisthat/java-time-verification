@@ -3,12 +3,34 @@
  */
 public class HelloWorld {
 
+    public class Foo {
+        public int mymethod(int i) {
+            return i;
+        }
+        
+        public int yourmethod(int j) {
+            return j - 1;
+        } 
+    };
+
     public static void main(String[] args) {
-        System.out.println("Hello, World"  + test(2+4));
+       System.out.println("Hello, World"  + test(1,2,3,4));
         int i = 0+4 << 2;
     }
     //single line
     public static String test(int x, int y, int w, int z){
-        return "";
+
+       return "";
+    }
+
+    public void fie(int a) {
+        Foo varfoo = new HelloWorld.Foo() {
+            @Override
+            public int mymethod(int i) {
+                return i * i;
+            }
+        };
+
+ 
     }
 }
