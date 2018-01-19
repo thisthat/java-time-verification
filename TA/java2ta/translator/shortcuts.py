@@ -546,6 +546,7 @@ class SMTProb(object):
             #log.debug("Dump literal: %s" % node)
             try:
                 lit_value = literal_to_smt(node["value"])
+                log.debug("Node value: %s. SMT literal: %s" % (node["value"], lit_value))
             except IdentifierAsLiteralException as e:
                 # this is a tail of bug described in issue #57 ;
                 # leave a warning log to ease the debugging

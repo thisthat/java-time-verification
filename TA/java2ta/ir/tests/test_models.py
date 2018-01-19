@@ -1,6 +1,6 @@
 from time import sleep
 
-from java2ta.ir.models import Project, Thread, Method
+from java2ta.ir.models import Project, Thread, Klass, Method, Variable
 
 import pkg_resources
 
@@ -160,7 +160,7 @@ def check_file(file):
     assert "realPackageName" in file
     assert "path" in file
     assert "line" in file
-    assert "allMethods" in file
+    assert "methods" in file, sorted(file.keys())
     assert "name" in file
     assert "constraint" in file
     assert "packageName" in file
@@ -191,10 +191,10 @@ def test_get_files_dist():
     assert file_lock["interface"]
     assert file_lock["name"] == "Lock"
     assert file_lock["path"] ==  "Lock.java"
-    assert len(file_lock["allMethods"]) == 2
+    assert len(file_lock["methods"]) == 2 # was: allMethods
 
-    assert file_lock["allMethods"][0]["name"] in ["requestCS", "releaseCS"]
-    assert file_lock["allMethods"][1]["name"] in ["requestCS", "releaseCS"]
+    assert file_lock["methods"][0]["name"] in ["requestCS", "releaseCS"] # was: allMethods
+    assert file_lock["methods"][1]["name"] in ["requestCS", "releaseCS"] # was: allMethods
 
     assert file_lock["implmentsInterfaces"] == [ "MsgHandler" ] # TODO fix name
     assert file_lock["extendClass"] == "Object"
@@ -211,11 +211,11 @@ def test_get_files_dist():
     assert file_leader["attributes"][3]["name"] in [ "number", "leaderId", "next", "awake", ]
 
     assert file_leader["extendClass"] == "Process"
-    assert len(file_leader["allMethods"]) == 4
-    assert file_leader["allMethods"][0]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"]
-    assert file_leader["allMethods"][1]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"]
-    assert file_leader["allMethods"][2]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"]
-    assert file_leader["allMethods"][3]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"]
+    assert len(file_leader["methods"]) == 4 # was: allMethods
+    assert file_leader["methods"][0]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"] # was: allMethods
+    assert file_leader["methods"][1]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"] # was: allMethods
+    assert file_leader["methods"][2]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"] # was: allMethods
+    assert file_leader["methods"][3]["name"] in [ "startElection", "handleMsg", "getLeader", "RingLeader"] # was: allMethods
 
 
 
@@ -234,20 +234,11 @@ def test_get_files_by_type():
 
     assert len(files) == 5
     
-    expected_classes = [ "SemaphoreLock", "Dekker", "Bakery", "HWMutex", "PetersonAlgorithm" ]
+#    expected_classes = [ "SemaphoreLock", "Dekker", "Bakery", "HWMutex", "PetersonAlgorithm" ]
     expected_paths = [ "SemaphoreLock.java", "Dekker.java", "Bakery.java", "HWMutex.java", "PetersonAlgorithm.java" ]
     
-    assert files[0]["className"] in expected_classes
-    assert files[1]["className"] in expected_classes
-    assert files[2]["className"] in expected_classes
-    assert files[3]["className"] in expected_classes
-    assert files[4]["className"] in expected_classes
-
-    assert files[0]["path"] in expected_paths
-    assert files[1]["path"] in expected_paths
-    assert files[2]["path"] in expected_paths
-    assert files[3]["path"] in expected_paths
-    assert files[4]["path"] in expected_paths
+    for f in files:
+        assert f in expected_paths
 
 
 
@@ -263,6 +254,8 @@ def test_thread():
     check_is_open(p)
   
     threads = p.get_threads() 
+
+    assert len(threads) > 0
 
     for ir in threads:
 
@@ -325,7 +318,7 @@ def test_methods():
     assert while_env[1]["name"] == "lock"
     assert while_env[1]["type"] == "Lock"
     assert while_env[2]["name"] == "r"
-    assert while_env[2]["type"] == "Random"
+    assert while_env[2]["type"] == "java.util.Random", while_env
 
 
 
@@ -428,20 +421,85 @@ def test_statement_env_simple():
     for smt in c["methods"][1]["stms"]:
         assert smt["nodeType"] != "ASTRE" or "env" in smt
         if "env" in smt:
-            assert len(smt["env"]) == 1
-            assert smt["env"][0]["name"] == "temp", smt["env"]
-            assert smt["env"][0]["type"] == "int"
-
+            assert len(smt["env"]) == 2, "Expected env of size 2. Received: %s" % smt["env"]
+            for var in smt["env"]:
+                assert var["name"] in ["i","value"]
+                assert var["type"] == "int"
     
     assert c["methods"][2]["name"] == "swap"
-    assert len(c["methods"][1]["stms"]) > 0
-    for smt in c["methods"][1]["stms"]:
+    assert len(c["methods"][2]["stms"]) > 0
+    for smt in c["methods"][2]["stms"]:
         assert smt["nodeType"] != "ASTRE" or "env" in smt
         if "env" in smt:     
-            assert len(smt["env"]) == 2
-            assert smt["env"][0]["name"] == "temp", smt["env"]
-            assert smt["env"][0]["type"] == "int"
-            assert smt["env"][1]["name"] == "value"
-            assert smt["env"][1]["type"] == "int"
-    
+            assert len(smt["env"]) == 3
+            for var in smt["env"]:
+                assert var["name"] in ["temp","x","value"]
+                assert var["type"] in ["BCell","int"]
+                assert var["type"] != "BCell" or var["name"] == "x"
+                assert var["type"] != "int" or var["name"] in ["temp","value"]
 
+def test_classes():
+    
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
+
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    print "A"
+    check_is_open(p)
+  
+    classes = p.get_classes() 
+
+    print "B: %s" % list(classes)
+    assert len(list(classes)) > 0, classes
+
+    for c in classes:
+        print "C: %s" % c
+        assert "className" in c
+        assert "packageName" in c
+
+        class_path = "%s.java" % c["className"]
+        klass = Klass(c["className"], c["packageName"], "file://%s" % class_path, p)
+
+        ast = klass.get_ast()
+
+        assert isinstance(ast, dict)
+        assert "name" in ast
+        assert "packageName" in ast
+        assert ast["name"] == c["className"]
+        assert ast["packageName"] == c["packageName"]
+   
+def test_variable():
+ 
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
+
+    p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    c = Klass("Cell","", "Cell.java",project=p)
+    m = Method("doSwap", c)
+
+    # maxseq is a local variable of the method "doSwap"
+    v = Variable("temp", m)
+    assert v.fqname == "%s.%s" % (m.fqname, "temp"), "variable: %s, method: %s" % (v.fqname, m.fqname)
+
+    var_ast = v.get_ast()
+    assert isinstance(var_ast, dict)
+    assert "name" in var_ast, var_ast
+    assert "type" in var_ast, var_ast
+
+    assert isinstance(var_ast["name"], dict)
+    assert "value" in var_ast["name"]
+    assert var_ast["name"]["value"] == "temp", var_ast
+    assert var_ast["type"] == "int", var_ast
+    assert var_ast["typePointed"] == "int", var_ast 
+
+
+def test_inner_method():
+    assert False # TODO

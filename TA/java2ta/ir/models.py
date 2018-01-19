@@ -1,4 +1,5 @@
 import abc
+from collections import deque
 from contracts import contract
 from time import sleep
 
@@ -60,6 +61,8 @@ class ASTNode(object):
         AST we force also the ancestor ASTs to be loaded)
         """
         return self.ast != None
+
+new_contract_check_type("is_ast_node", ASTNode)
 
 
 class Klass(ASTNode):
@@ -193,6 +196,46 @@ class Method(ASTNode):
 
 new_contract_check_type("is_method", Method)
 
+class Variable(ASTNode):
+
+    @contract(name="string", method="is_method")
+    def __init__(self, name, method):
+        self.name = name
+        self.method = method
+
+    @property
+    def fqname(self):
+        return "%s.%s" % (self.method.fqname, self.name)
+
+    def get_ast(self):
+ 
+        # 1. get the root of the method node
+        # 2. walk through the dictionary structure looking for the first occurrence of a variable declaration with the given name (there may be more than one, this is unpleasant)
+        # 3. if a node for the variable name is found, it is the ast we were searching for, otherwise raise an exception
+        
+        method_node = self.method.get_ast()
+
+        var_ast = None
+        nodes_to_visit = deque([ method_node ])
+
+        while len(nodes_to_visit) > 0:
+            top_node = nodes_to_visit.popleft()
+#            assert "name" in top_node, "keys: %s - node: %s" % (sorted(top_node.keys()), top_node)
+            if top_node["nodeType"] == "ASTRE" and top_node["expression"]["nodeType"] == "ASTVariableDeclaration" and top_node["expression"]["name"]["nodeType"] == "ASTIdentifier" and top_node["expression"]["name"]["value"] == self.name: # the node is the declaration of the current variable
+                var_ast = top_node["expression"] # the node of the var declaration
+                break
+            else:
+                for subnode in top_node.get("stms", []): # visit only children that are in the "stms" or "expression" keys
+                    nodes_to_visit.append(subnode)
+
+        if not var_ast:
+            raise ValueError("Cannot find variable '%s' in method %s. Method AST: %s" % (self.name, self.method.name, self.method.get_ast()))
+
+        return var_ast
+            
+
+new_contract_check_type("is_ir_variable", Variable)
+
 class Project(object):
 
     DEFAULT_URL = "localhost:9000"
@@ -307,7 +350,7 @@ class Project(object):
         self.client.post("/clean", data)
         self.set_status("closed")
 
-
+    @contract(name="None|string", returns="list(dict)")
     def get_threads(self, name=None):
     
         found_threads = []
@@ -326,6 +369,7 @@ class Project(object):
         return found_threads
 
 
+    @contract(type="None|string", returns="list(string)")
     def get_files(self, type=None):
 
         files = []
@@ -335,34 +379,43 @@ class Project(object):
             url = "/getAllFiles"
 
             if type:    
+                # if type is specified, the ws returns a list of 
+                # dictionaries,  
+                # only take the path information
                 data["type"] = type
                 url = "/getFilesByType"
+                files_dict = self.client.post(url, data)
+                files = map(lambda f: f["path"], files_dict)
             else:
+                # if no type is specified, the ws returns a list of 
+                # strings
                 data["skipTest"] = 0
-                
-            files = self.client.post(url, data)
+                files = self.client.post(url, data)
 
         return files
 
+    @contract(path="string", returns="list(dict)")
     def get_file(self, path):
+        """
+        Returns a list of class definitions contained in the file.
+        TODO is it always 1 or can it be longer than 1?
+        """    
 
         file = None
 
         if not path.startswith("file://"):
             path = "file://" + path
 
-        #print "A: %s" % path
         if self.is_open():
             data = { "name": self.name, "filePath": path }
             file = self.client.post("/getFile", data)
 
-        #print "B: %s,%s" % (self.is_open(), file)
         if file is not None and isinstance(file, dict):
             file = [ file ]
 
-        #print "C: %s" % file
         return file
 
+    @contract(name="string", path="string", returns="dict")
     def get_class(self, name, path):
         files = self.get_file(path)
 
@@ -375,6 +428,29 @@ class Project(object):
 
         return found
 
+    @contract(returns="list(dict)")
+    def get_classes(self):
+        """
+        Due to memory space limitation, it is not possible to return all
+        the classes ASTs. Thus we return only a dictionary containing the
+        following keys:
+        'className', 'name', 'package'
+        With this information is possible to invoke the get_class
+        method, for the desired classes.
+        """
+        classes = []
+    
+        if self.is_open():
+            data = { "name": self.name }
+            url = "/getFilesByType"
+    
+            # all the classes extend java.lang.Object
+            data["type"] = "Object"
+            classes = self.client.post(url, data)
+    
+        return classes
+
+
     def get_mains(self):
         
         mains = []
@@ -385,9 +461,8 @@ class Project(object):
 
         return mains
 
-    @contract(class_fqn="string", class_path="string", method_name="string", returns="is_method")
-    def get_method(self, class_fqn, class_path, method_name):
-        # check this works (case 1: no dot, case 2: one or more dots)
+    @contract(class_fqn="string", class_path="string", method_fqn="string", returns="is_method")
+    def get_method(self, class_fqn, class_path, method_fqn):
         class_name = ""
         package_name = ""
     
@@ -398,10 +473,31 @@ class Project(object):
         else:
             package_name = fqn_parts[0]
             class_name = fqn_parts[1]
-    
+
+        method_fqn_parts = method_fqn.split(".")
+        outer_method_name = None
+        outer_variable_name = None
+        method_name = None
+
         klass = Klass(class_name, package_name, "file://%s" % class_path, self)
-        m = Method(method_name, klass)
+        m = None
+
+        if len(method_fqn_parts) == 1:
+            method_name = method_fqn_parts[0]
+            m = Method(method_name, klass)
+        elif len(method_fqn_parts) == 3:
+            outer_method_name = method_fqn_parts[0]
+            outer_variable_name = method_fqn_parts[1]
+            method_name = method_fqn_parts[2]
+
+            outer_m = Method(outer_method_name, klass)
+            outer_v = Variable(outer_variable_name, outer_m)
+            m = Method(method_name, outer_v)
+        else:
+            raise ValueError("Unexpected format for method_name (%s). Accepted formats: <method_name>|<outer_method_name>.<variable_name>.<method_name>")
     
+
+   
         return m
     
 
