@@ -67,4 +67,9 @@ public class ASTIdentifier extends IASTStm implements IASTRE {
 		visitor.exitASTIdentifier(this);
 		visitor.exitAll(this);
 	}
+
+	@Override
+	public int hashCode() {
+		return value != null ? value.hashCode() : 0;
+	}
 }
