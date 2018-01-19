@@ -53,6 +53,8 @@ public class getFile extends indexMW {
 		@Override
 		public void start(ASTClass c) {
 			super.start(c);
+			c.setParent(null);
+			c.removeChild();
 		}
 
 		@Override

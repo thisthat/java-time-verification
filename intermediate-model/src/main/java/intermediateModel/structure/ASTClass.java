@@ -1,7 +1,6 @@
 package intermediateModel.structure;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
@@ -366,5 +365,9 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public List<ASTClass> getChilds() {
 		return child;
+	}
+
+	public void removeChild() {
+		this.child.clear();
 	}
 }
