@@ -1,6 +1,6 @@
 from time import sleep
 
-from java2ta.ir.models import Project, Thread, Klass, Method, Variable
+from java2ta.ir.models import Project, Thread, Klass, InnerKlass, Method, Variable
 
 import pkg_resources
 
@@ -498,7 +498,7 @@ def test_variable():
     assert var_ast["typePointed"] == "Foo", var_ast 
 
 
-def test_variable_with_anonymous_class():
+def test_variable_with_inner_class():
  
     test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
 
@@ -556,7 +556,8 @@ def test_inner_method():
     # maxseq is a local variable of the method "doSwap"
     v = Variable("varfoo", m)
  
-    m_inner = Method("mymethod", v)
+    c_inner = InnerKlass(v)
+    m_inner = Method("mymethod", c_inner)
 
     assert m_inner.ast is not None
     assert m_inner.ast["nodeType"] == "ASTMethod"

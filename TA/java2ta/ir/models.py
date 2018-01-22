@@ -40,7 +40,7 @@ class ASTNode(object):
         if not self._ast:
             self._ast = self.get_ast()
 
-            assert isinstance(self._ast, dict), self._ast
+            assert isinstance(self._ast, dict), "%s - %s" % (type(self), self._ast)
 
         return self._ast
 
@@ -111,6 +111,7 @@ class Klass(ASTNode):
 
 new_contract_check_type("is_klass", Klass)
 
+
 class Thread(Klass):
     """
     This is a Klass extending the java.lang.Runnable interface 
@@ -158,25 +159,25 @@ class Thread(Klass):
 
 class Method(ASTNode):
 
-    @contract(name="string") #parent="is_klass|is_ir_varaible") # TODO we cannot specify contract is_ir_variable because there is a circular dependency b/w is_ir_variable and is_method; fix function "new_contract_check_type" to take also strings with fully qualified names of types in place of taking directly the class
-    def __init__(self, name, parent):
+    @contract(name="string", klass="is_klass") # buttare il seguito: parent="is_klass|is_ir_varaible") # TODO we cannot specify contract is_ir_variable because there is a circular dependency b/w is_ir_variable and is_method; fix function "new_contract_check_type" to take also strings with fully qualified names of types in place of taking directly the class
+    def __init__(self, name, klass):
  
         assert isinstance(name, basestring)       
 
-        klass = None
-        variable = None
+##        klass = None
+##        variable = None
+##
+##        if isinstance(parent, Klass):
+##            klass = parent
+##        elif isinstance(parent, Variable):
+##            variable = parent
+##        else:
+##            raise ValueError("The parent element can either be a Klass or a Variable")
 
-        if isinstance(parent, Klass):
-            klass = parent
-        elif isinstance(parent, Variable):
-            variable = parent
-        else:
-            raise ValueError("The parent element can either be a Klass or a Variable")
+        super(Method, self).__init__(name, klass.project, parent=klass)
 
-        super(Method, self).__init__(name, parent.project, parent=parent)
-
-        self.klass = klass
-        self.variable = variable
+##        self.klass = klass
+##        self.variable = variable
 
     @property
     @contract(returns="string")
@@ -186,20 +187,23 @@ class Method(ASTNode):
 
     @contract(returns="dict")
     def get_ast(self):
-        assert self.klass is not None or self.variable is not None
+#        assert self.klass is not None or self.variable is not None
+
+        assert isinstance(self.parent, Klass)
+#        assert self.parent is not None
 
         methods = []
 
-        if self.klass is not None:
-            methods = self.klass.ast["methods"]
-        else:
-            # thus self.variable is not None
-            var_ast = self.variable.ast
-            klass_ast = self.variable.class_ast
+#        if self.klass is not None:
+        methods = self.parent.ast["methods"]
+##        else:
+##            # thus self.variable is not None
+##            var_ast = self.variable.ast
+##            klass_ast = self.variable.class_ast
+##
+##            assert isinstance(klass_ast, dict)
 
-            assert isinstance(klass_ast, dict)
-
-            methods = klass_ast["methods"]
+##            methods = klass_ast["methods"]
 
 #        log.debug("Looking method: %s" % self.name)
         found = filter(lambda m: m["name"] == self.name, methods)
@@ -226,25 +230,16 @@ class Method(ASTNode):
 new_contract_check_type("is_method", Method)
 
 
-
 class Variable(ASTNode):
 
     @contract(name="string", method="is_method")
     def __init__(self, name, method):
         super(Variable, self).__init__(name, method.project, parent=method)
         self.method = method
-        self._class_ast = None
 
     @property
     def fqname(self):
         return "%s.%s" % (self.method.fqname, self.name)
-
-    @property
-    def class_ast(self):
-        if not self._class_ast:
-            raise ValueError("You must invoke get_ast first")
-
-        return self._class_ast
 
     def get_ast(self):
  
@@ -269,13 +264,11 @@ class Variable(ASTNode):
                 log.debug("Found variable declaration: %s" % top_node)
                 if "expr" in top_node and "hiddenClass" in top_node["expr"]:
                     var_ast = top_node #top_node["expr"] # the node of the var declaration  
-                    self._class_ast = top_node["expr"]["hiddenClass"]
                     break   
             elif top_node["nodeType"] == "ASTAssignment" and top_node["left"]["value"] == self.name: # and top_node["right"]["nodeType"] == "ASTNewObject": # the node is the varaible of the current variable with an instance of an anonymous class
                 log.debug("Found variable assignment: %s" % top_node)
                 if "hiddenClass" in top_node["right"]:
                     var_ast = top_node #top_node["right"]
-                    self._class_ast = top_node["right"]["hiddenClass"]
                     break
             else:
                 # visit all the sub-dictionaries with key nodeType
@@ -301,6 +294,37 @@ class Variable(ASTNode):
             
 
 new_contract_check_type("is_ir_variable", Variable)
+
+
+class InnerKlass(Klass):
+
+    @contract(v="is_ir_variable")
+    def __init__(self, v):
+    
+        c_outer = v.parent.parent
+        package_name = c_outer.fqname
+        project = c_outer.project
+
+        super(InnerKlass, self).__init__("",package_name,c_outer.path,v.project)
+
+        self.parent = v
+
+    def get_ast(self):
+        var_ast = self.parent.ast
+
+        class_ast = None
+        if "expr" in var_ast:
+            # case: variable declaration
+            class_ast = var_ast["expr"]["hiddenClass"]
+        elif "right" in var_ast:
+            # variable assignment
+            class_ast = var_ast["right"]["hiddenClass"]
+        else:
+            desc = "(%s,%s)" % (var_ast["nodeType"], var_ast["code"] if "code" in var_ast else "???")
+            raise ValueError("Unable to extract the hidden class AST in this case: %s" % desc)
+
+        return class_ast
+
 
 
 
