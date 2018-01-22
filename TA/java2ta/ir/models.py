@@ -84,7 +84,7 @@ class Klass(ASTNode):
         classes = self.project.get_file(self.path)
         
         if not classes:
-            raise ValueError("Unable to load class. Name '%s'. Package name '%s'. Path '%s'." % (self.name, self.package_name, self.path))
+            raise ValueError("No class found in file (%s)'" % (self.path,))
 
         found = None
 
@@ -105,7 +105,7 @@ class Klass(ASTNode):
             if self.package_name:
                 full_name = "%s.%s" % (self.package_name, full_name)
 
-            raise Exception("It was not possible to import class '%s' from file '%s'" % (full_name, self.path))
+            raise Exception("Unable to load class '%s' from file '%s'" % (full_name, self.path))
 
         return found
 
@@ -194,7 +194,12 @@ class Method(ASTNode):
             methods = self.klass.ast["methods"]
         else:
             # thus self.variable is not None
-            methods = self.variable.ast["expr"]["hiddenClass"]["methods"]
+            var_ast = self.variable.ast
+            klass_ast = self.variable.class_ast
+
+            assert isinstance(klass_ast, dict)
+
+            methods = klass_ast["methods"]
 
 #        log.debug("Looking method: %s" % self.name)
         found = filter(lambda m: m["name"] == self.name, methods)
@@ -228,15 +233,25 @@ class Variable(ASTNode):
     def __init__(self, name, method):
         super(Variable, self).__init__(name, method.project, parent=method)
         self.method = method
+        self._class_ast = None
 
     @property
     def fqname(self):
         return "%s.%s" % (self.method.fqname, self.name)
 
+    @property
+    def class_ast(self):
+        if not self._class_ast:
+            raise ValueError("You must invoke get_ast first")
+
+        return self._class_ast
+
     def get_ast(self):
  
         # 1. get the root of the method node
-        # 2. walk through the dictionary structure looking for the first occurrence of a variable declaration with the given name (there may be more than one, this is unpleasant)
+
+        # 2. walk through the dictionary structure looking for the first occurrence of a variable declaration with the given name (there may be more than one, this is unpleasant) => TODO actually we don't look for the first occurrence of variable declaration, but for the first variable declaration/assignment that has a 'hiddenClass' within the 'expr' component FIX THIS!!!
+
         # 3. if a node for the variable name is found, it is the ast we were searching for, otherwise raise an exception
         
         method_node = self.method.get_ast()
@@ -246,16 +261,41 @@ class Variable(ASTNode):
 
         while len(nodes_to_visit) > 0:
             top_node = nodes_to_visit.popleft()
+
+            assert "nodeType" in top_node
+            log.debug("Visit (%s): %s ..." % (top_node["nodeType"], top_node["code"][:50]))
 #            assert "name" in top_node, "keys: %s - node: %s" % (sorted(top_node.keys()), top_node)
-            if top_node["nodeType"] == "ASTRE" and top_node["expression"]["nodeType"] == "ASTVariableDeclaration" and top_node["expression"]["name"]["nodeType"] == "ASTIdentifier" and top_node["expression"]["name"]["value"] == self.name: # the node is the declaration of the current variable
-                var_ast = top_node["expression"] # the node of the var declaration
-                break
+            if top_node["nodeType"] == "ASTVariableDeclaration" and top_node["name"]["nodeType"] == "ASTIdentifier" and top_node["name"]["value"] == self.name: # and "hiddenClass" in top_node["expression"]: # the node is the declaration of the current variable, initialized with an instance of an anonymous class
+                log.debug("Found variable declaration: %s" % top_node)
+                if "expr" in top_node and "hiddenClass" in top_node["expr"]:
+                    var_ast = top_node #top_node["expr"] # the node of the var declaration  
+                    self._class_ast = top_node["expr"]["hiddenClass"]
+                    break   
+            elif top_node["nodeType"] == "ASTAssignment" and top_node["left"]["value"] == self.name: # and top_node["right"]["nodeType"] == "ASTNewObject": # the node is the varaible of the current variable with an instance of an anonymous class
+                log.debug("Found variable assignment: %s" % top_node)
+                if "hiddenClass" in top_node["right"]:
+                    var_ast = top_node #top_node["right"]
+                    self._class_ast = top_node["right"]["hiddenClass"]
+                    break
             else:
-                for subnode in top_node.get("stms", []): # visit only children that are in the "stms" or "expression" keys
-                    nodes_to_visit.append(subnode)
+                # visit all the sub-dictionaries with key nodeType
+                log.debug("Children: %s" % top_node.keys())
+                for key in top_node.keys():
+                    value = top_node[key]
+                    if isinstance(value, dict) and "nodeType" in value:
+                        log.debug("Bookmark child: %s" % key)
+                        nodes_to_visit.append(value)
+                    elif isinstance(value, list):
+                        node_sub_values = filter(lambda v: "nodeType" in v, value)
+                        nodes_to_visit.extend(node_sub_values)
+#                for subnode in top_node.get("stms", []): # visit only children that are in the "stms" or "expression" keys
+#                    nodes_to_visit.append(subnode)
+        
 
         if not var_ast:
             raise ValueError("Cannot find variable '%s' in method %s. Method AST: %s" % (self.name, self.method.name, self.method.get_ast()))
+
+#        assert "hiddenClass" in var_ast, var_ast
 
         return var_ast
             
@@ -434,9 +474,11 @@ class Project(object):
         if not path.startswith("file://"):
             path = "file://" + path
 
-        if self.is_open():
-            data = { "name": self.name, "filePath": path }
-            file = self.client.post("/getFile", data)
+        if not self.is_open():
+            raise ValueError("You need to open the project first")
+
+        data = { "name": self.name, "filePath": path }
+        file = self.client.post("/getFile", data)
 
         if file is not None and isinstance(file, dict):
             file = [ file ]

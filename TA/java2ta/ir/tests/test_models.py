@@ -74,7 +74,7 @@ def test_get_files():
     assert len(files) == 1, "Expected list containing one file. Got: %s" % files
 
     assert files[0] == "HelloWorld.java", files
- 
+
 
 
 def test_get_mains():
@@ -447,21 +447,19 @@ def test_classes():
     assert p.is_status("closed")
     p.open()
 
-    print "A"
+    #print "A"
     check_is_open(p)
   
     classes = p.get_classes() 
 
-    print "B: %s" % list(classes)
     assert len(list(classes)) > 0, classes
 
     for c in classes:
-        print "C: %s" % c
         assert "className" in c
         assert "packageName" in c
-
-        class_path = "%s.java" % c["className"]
-        klass = Klass(c["className"], c["packageName"], "file://%s" % class_path, p)
+        assert "path" in c
+        class_path = "file://%s" % c["path"]
+        klass = Klass(c["className"], c["packageName"], class_path, p)
 
         ast = klass.ast
 
@@ -472,22 +470,21 @@ def test_classes():
         assert ast["packageName"] == c["packageName"]
    
 def test_variable():
- 
-    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "conc-progs")
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
 
-    p = Project("conc-progs", "file://%s" % test_proj_path, "localhost:9000")
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
 
     assert p.is_status("closed")
     p.open()
 
     check_is_open(p)
   
-    c = Klass("Cell","", "Cell.java",project=p)
-    m = Method("doSwap", c)
+    c = Klass("HelloWorld","", "HelloWorld.java",project=p)
+    m = Method("fie", c)
 
     # maxseq is a local variable of the method "doSwap"
-    v = Variable("temp", m)
-    assert v.fqname == "%s.%s" % (m.fqname, "temp"), "variable: %s, method: %s" % (v.fqname, m.fqname)
+    v = Variable("varfoo", m)
+    assert v.fqname == "%s.%s" % (m.fqname, "varfoo"), "variable: %s, method: %s" % (v.fqname, m.fqname)
 
     var_ast = v.ast
     assert isinstance(var_ast, dict)
@@ -496,9 +493,9 @@ def test_variable():
 
     assert isinstance(var_ast["name"], dict)
     assert "value" in var_ast["name"]
-    assert var_ast["name"]["value"] == "temp", var_ast
-    assert var_ast["type"] == "int", var_ast
-    assert var_ast["typePointed"] == "int", var_ast 
+    assert var_ast["name"]["value"] == "varfoo", var_ast
+    assert var_ast["type"] == "Foo", var_ast
+    assert var_ast["typePointed"] == "Foo", var_ast 
 
 
 def test_variable_with_anonymous_class():
