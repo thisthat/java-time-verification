@@ -326,8 +326,6 @@ class InnerKlass(Klass):
         return class_ast
 
 
-
-
 class Project(object):
 
     DEFAULT_URL = "localhost:9000"
@@ -563,8 +561,10 @@ class Project(object):
         fqn_parts = class_fqn.rsplit(".", 1)
     
         if len(fqn_parts) == 1:
+            # the fully qualified name contains no package name
             class_name = fqn_parts[0]
         else:
+            # the package is part of the fully qualified name
             package_name = fqn_parts[0]
             class_name = fqn_parts[1]
 
@@ -586,16 +586,15 @@ class Project(object):
 
             outer_m = Method(outer_method_name, klass)
             outer_v = Variable(outer_variable_name, outer_m)
-            m = Method(method_name, outer_v)
+            inner_c = InnerKlass(outer_v)
+            m = Method(method_name, inner_c)
         else:
             raise ValueError("Unexpected format for method_name (%s). Accepted formats: <method_name>|<outer_method_name>.<variable_name>.<method_name>")
-    
-
    
         return m
-    
 
 new_contract_check_type("is_project", Project)
+
 
 class JSONFileClient(RestfulAPIClient):
 
@@ -623,6 +622,7 @@ class JSONFileClient(RestfulAPIClient):
                 data = { "status":"closed" }
 
         return data
+
 
 class DummyProject(Project):
 

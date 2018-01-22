@@ -1818,20 +1818,20 @@ def parse_location(loc):
 ##
 ##    return res
 
-
+@contract(klass="is_klass")
 def get_class_attributes(klass):
-    assert isinstance(klass, Klass)
+#    assert isinstance(klass, Klass)
     assert "attributes" in klass.ast
 
     return klass.ast["attributes"]
 
-@contract(method=Method, returns="list(string)")
+@contract(method="is_method", returns="list(string)")
 def get_method_attributes(method):
 #    assert isinstance(method, Method)
     assert "parameters" in method.ast
     assert "declaredVar" in method.ast
 
-    klass = method.parent   
+    klass = method.parent
     method_name = method.name
 
     klass_attributes = get_class_attributes(klass)
