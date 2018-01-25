@@ -3,7 +3,7 @@ import re
 import itertools
 
 from java2ta.commons.utility import partial_format, pairwise_iter
-from java2ta.abstraction.models import DataType, DataTypeUnion, Predicate, And, Between, GT, LT, Eq, NotEq, EqItself, Dummy, Integer, Real, Z3String, AbsString, Natural, Boolean, Collection, BoundedCollection, Dummy, Domain, SymbolTable
+from java2ta.abstraction.models import DataType, DataTypeUnion, Predicate, And, Between, GT, LT, Eq, NotEq, EqItself, Dummy, Integer, Object, Iterator, Real, Z3String, AbsString, Natural, Boolean, Collection, BoundedCollection, Dummy, Domain, SymbolTable
 from contracts import contract, check
 import logging
 
@@ -11,19 +11,32 @@ log = logging.getLogger("main")
 
 @contract(value="string|int", var="string|None", returns="is_predicate")
 def noteq_predicate(value, var=None):
-    kwargs = { "value": value }
-    if var:
-        kwargs["var"] = var
+    res = None
 
-    return NotEq(**kwargs)
+    if var:
+        res = NotEq(lhs=var, rhs=value)
+    else:
+        res = NotEq(rhs=Value)
+    return res
+#    kwargs = { "rhs": value }
+#    if var:
+#        kwargs["lhs"] = var
+
+#    return NotEq(**kwargs)
 
 @contract(value="string|int", var="string|None", returns="is_predicate")
 def eq_predicate(value, var=None):
-    kwargs = { "value": value }
-    if var:
-        kwargs["var"] = var
-
-    return Eq(**kwargs)
+    res = None
+    if var: 
+        res = Eq(lhs=var, rhs=value)
+    else:
+        res = Eq(rhs=value)
+    return res
+#    kwargs = { "value": value }
+#    if var:
+#        kwargs["var"] = var
+#
+#    return Eq(**kwargs)
 
 @contract(value_list="list[M](string)", returns="list[N](is_predicate),N<=M+1,N>=M")
 def split_enum(value_list, case_else=False, var=None):
@@ -64,7 +77,7 @@ def split_numeric_domain(split_values, lt_min=True, gt_max=True):
         if lt_min:
             first = split_values[0]
 #            lt_min_pred = LT({"value":first})
-            lt_min_pred = LT(value=first)
+            lt_min_pred = LT(rhs=first)
             predicates.append(lt_min_pred)
 
         for (value,succ) in pairwise_iter(split_values):
@@ -80,7 +93,7 @@ def split_numeric_domain(split_values, lt_min=True, gt_max=True):
         if gt_max:
             last = split_values[-1]
 #            gt_max = GT({"value":last})
-            gt_max = GT(value=last)
+            gt_max = GT(rhs=last)
             predicates.append(gt_max)
     
     return predicates
@@ -144,6 +157,8 @@ class DataTypeFactory(object):
     REAL_TYPES = [ "float", "double", "java.lang.BigDecimal", "java.lang.Double", "java.lang.Float", ]
     STRING_TYPES = [ "java.lang.String", ]
     BOOL_TYPES = [ "boolean", ]
+    OBJECT_TYPES = [ "java.lang.Object", ]
+    ITERATOR_TYPES = [ "java.util.Iterator", ]
 
     # this is used to store the singleton instance of this data-type factory
     _the_factory = None
@@ -179,6 +194,10 @@ class DataTypeFactory(object):
                 dt = Real()
             elif fqn in self.STRING_TYPES:
                 dt = AbsString()
+            elif fqn in self.ITERATOR_TYPES:
+                dt = Iterator()
+            elif fqn in self.OBJECT_TYPES:
+                dt = Object()
             else:
                 dt = DataType(name=fqn)
 
@@ -218,6 +237,8 @@ POS_INTEGERS = Domain(Integer(), split_numeric_domain([0,], lt_min=False), defau
 NATURALS = Domain(Natural(), split_numeric_domain([0,], lt_min=False), default=eq_predicate(0))
 BOOLEANS = Domain(Boolean(), split_enum([ "true", "false" ]), default=eq_predicate("false"))
 COLLECTIONS = Domain(Collection(), split_field_domain(split_numeric_domain([0,], lt_min=False ),var="size"))
+OBJECTS = Domain(Object(), split_field_domain(split_enum(["true","false"]), var="is_null"))
+ITERATORS = Domain(Iterator(), split_field_domain(split_numeric_domain([0,], lt_min=False ), var="n_items") + split_field_domain(split_numeric_domain([0,], lt_min=False ), var="n_visited"))
 
 # TODO not use default Z3 strings because it looks like they "slow down" the sat/unsat query enormously (check why and what's a better abstraction; perhaps leave STRINGS as it is, and introduce a MY_STRINGS domain, also useful to compare the results in the two cases)
 Z3_STRINGS = Domain(Z3String(), split_field_domain(split_numeric_domain([0,], lt_min=False),var="str.len")) 

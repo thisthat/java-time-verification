@@ -325,7 +325,7 @@ class KnowledgeBase(object):
     @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),string)")
     def add_method(class_name, method_name, knowledge):
 
-        class_name = "-" # TODO this is a hack, remove ASAP
+        class_name = "-" # TODO this is a hack, remove when the class of a callee method is recognized correctly
 
         if class_name not in KnowledgeBase.KB:
             KnowledgeBase.KB[class_name] = {}
@@ -380,6 +380,17 @@ class KnowledgeBase(object):
 ##        log.debug("Final smt declaration: %s" % smt_declarations)
 ##        log.debug("Final smt assertion: %s" % smt_assertion)
 ##        return smt_declarations, smt_assertion, dt
+
+    @staticmethod
+    @contract(returns="list(tuple(string,string))")
+    def get_methods():
+        methods = []
+        for class_name in KnowledgeBase.KB:     
+            for method_name in KnowledgeBase.KB[class_name]:
+                methods.append((class_name, method_name))
+
+        return methods
+       
 
     def set_now_method(self, class_fqn, method_name):
         """

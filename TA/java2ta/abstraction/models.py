@@ -4,6 +4,8 @@ import abc
 from contracts import contract, new_contract, check
 import logging
 
+#from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
+
 from java2ta.commons.utility import new_contract_check_type, partial_format
 
 log = logging.getLogger("main")
@@ -118,7 +120,14 @@ class Object(DataType):
         super(Object, self).__init__("Object", smt_declaration=smt_declaration)
 
 
+class Iterator(DataType):
     
+    def __init__(self):    
+        from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
+
+        smt_declaration = smt_declare_rec_datatype("Iterator", { "n_items":"Int", "n_visited":"Int",})
+
+        super(Iterator, self).__init__("Iterator", smt_declaration=smt_declaration)
 
 class Collection(DataType):
     
@@ -407,12 +416,16 @@ class BinaryPredicate(Predicate):
 
     _smt_name = "..." # the name of the predicate in SMTlib
 #    _smt_assert = "(assert ({name} {var} {value}))"
-    _smt_condition = "({name} {var} {value})"
-    _label = "{var} {name} {value}"
+    _smt_condition = "({name} {lhs} {rhs})"
+    _label = "{lhs} {name} {rhs}"
 
-    def __init__(self, **ctx):
-        assert "name" not in ctx, "A BinaryPredicate cannot specify a 'name' argument"
-        ctx["name"] = self._smt_name
+#    def __init__(self, **ctx):
+    def __init__(self, lhs=None, rhs=None):
+        ctx = { "name": self._smt_name }
+        if lhs:
+            ctx["lhs"] = lhs
+        if rhs:
+            ctx["rhs"] = rhs
         super(BinaryPredicate, self).__init__(**ctx)
     
 
@@ -438,7 +451,7 @@ class Eq(BinaryPredicate):
 
 class NotEq(BinaryPredicate):
     _smt_name = "distinct"
-    _label = "{var} != {value}"
+    _label = "{lhs} != {rhs}"
 
 class Between(Predicate):    
 #    _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
@@ -987,6 +1000,11 @@ class Integer(DataType):
 
 #class Natural(DataType):
 class Natural(Integer):
+    """
+    This tries to implement the Natural numbers as a subclass of the
+    Integer numbers, adding a constraint.
+    This has not been tested with SMT. #TODO
+    """
     def __init__(self):
 #        super(Natural, self).__init__(name="Nat", smt_declaration="(declare-datatypes () ((Nat (mk-natural (val Int)))))", smt_axioms=["(assert (forall ((x Nat)) (>= (val x) 0)))"])
 
@@ -1046,3 +1064,102 @@ class SymbolTable(object):
             raise ValueError("Literal '%s' does not exist")
 
         return SymbolTable.LITERALS[value]
+
+
+##def check_is_ast(s):
+##    """
+##    recursively check that the argument is an AST. An AST here is either
+##    a literal (e.g. foo) or a variable (e.g. {fie}) or a tuple such
+##    this: (e.g. (name ast_1 ... ast_N) )
+##    """
+##    if isinstance(s, basestring):   
+##        return True
+##    elif isinstance(s, tuple) and len(s) == 2:
+##        name, arguments = s
+##        if isinstance(arguments, list):
+##            # all arguments must be ast as well 
+##            for a in arguments:
+##                if not check_is_ast(a):
+##                    return False
+##
+##            return True
+##        else:
+##            return False
+##    else:
+##        return False
+##
+new_contract("is_ast", lambda s: True) #check_is_ast) 
+
+class PredicateParser(object):
+
+    @staticmethod
+    @contract(text="string", returns="is_predicate")
+    def parse(self, text):
+        ast, remaining = self._text_to_ast(text)
+        if len(remaining) > 0:
+            raise ValueError("Cannot parse text: %s" % remaining)    
+        pred = self._ast_to_predicate(ast)
+        return pred
+
+    @staticmethod
+    @contract(text="string", returns="tuple(is_ast, string)")
+    def _text_to_ast(text):
+        """
+        Given some text, it returns a tuple representing its abstract
+        syntax tree, and a string containing the non-parsed text. 
+        """
+
+        remaining = ""
+
+        if text[0] == "(":
+            # we are in a new nested node; the first component is the
+            # node name, which cannot contain neither spaces nor 
+            # parenthesis, nor curly braces
+            g = re.match(r"([^\s(){}]+)\s?(.*)", text[1:])
+
+            if not g:
+                raise ValueError("Cannot parse predicate: %s" % text)
+
+            name = g.groups()[0]
+            remaining = g.groups()[1]
+
+            arguments = []
+            while len(remaining) > 0 and not remaining.startswith(")"):
+                ast, remaining = PredicateParser._text_to_ast(remaining.strip())
+                arguments.append(ast)
+
+            if len(remaining) > 0:
+                # then: remaining.startswith(")")
+                remaining = remaining[1:]
+
+#            return (name,) + tuple(arguments), remaining
+            return (name, arguments), remaining
+        elif text[0] == "{":
+            # it is a variable name, enclosed in curly brackets
+            g = re.match(r"({\w+})\s?(.*)", text)
+            if not g:
+                raise ValueError("Cannot parse variable name: %s" % text)
+
+            var_name = g.groups()[0]
+            remaining = g.groups()[1]
+        
+            return ("%s" % var_name) , remaining
+        else:
+            # a name that ends at the first space (if any)  
+            g = re.match(r"(\w+)\s?(.*)", text)
+
+            if not g:
+                raise ValueError("Cannot parse text: %s" % text)
+            name = g.groups()[0]
+            remaining = g.groups()[1]
+            return name, remaining
+
+        # in case of normal exit, I should have consumed some input
+        # (otherwise it means it was not possible to parse it, thus I 
+        # should have raised an exception earlier)
+        assert len(remaining) < len(text)
+
+    @staticmethod
+    @contract(ast="tuple(string, list(string))", returns="is_predicate")
+    def _ast_to_predicate(ast): 
+        return None

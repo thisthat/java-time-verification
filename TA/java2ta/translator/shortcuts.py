@@ -1014,6 +1014,7 @@ class SMTProb(object):
             # conservative abstraction: assume that if a required 
             # variable has been abstracted, then the formula is 
             # satisfiable
+            log.debug("Unable to verify guard because of a forgotten variable: %s. Let us assume the guard is satisfied ..." % guard.code)
             smt_res = True
 
         return smt_res
@@ -1507,25 +1508,25 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
 
         # no final locations
         # (ASTBreak and ASTContinue break the compositionality approach)
-    elif instr_type == "ASTReturn":
-        # do nothing    
-        log.debug("Return: %s" % instr)
-        # begin BIG-FRAGILE-HACK
-        res = instr["expr"]["code"] 
-        (state_loc,pc_loc) = parse_location(source_loc)
-        if res == "true":
-            state_loc = tuple_replace(state_loc, 2, 0) # 2 is the position of "res", 0 encodes true
-        else:
-            state_loc = tuple_replace(state_loc, 2, 1) # 2 is the position of "res, 1 encodes false
-        # end BIG-FRAGILE-HACK
-        pc_target = pc_source + 1
-        return_loc = build_location(source, pc_target)
-        edges.append(Edge(source_loc,return_loc))
-        reachable.append(state_loc)
-#        final.append(source_loc)
-
-#        check_closure(pc_target, reachable, final, external)
-
+##    elif instr_type == "ASTReturn":
+##        # do nothing    
+##        log.debug("Return: %s" % instr)
+##        # begin BIG-FRAGILE-HACK
+##        res = instr["expr"]["code"] 
+##        (state_loc,pc_loc) = parse_location(source_loc)
+##        if res == "true":
+##            state_loc = tuple_replace(state_loc, 2, 0) # 2 is the position of "res", 0 encodes true
+##        else:
+##            state_loc = tuple_replace(state_loc, 2, 1) # 2 is the position of "res, 1 encodes false
+##        # end BIG-FRAGILE-HACK
+##        pc_target = pc_source + 1
+##        return_loc = build_location(source, pc_target)
+##        edges.append(Edge(source_loc,return_loc))
+##        reachable.append(state_loc)
+###        final.append(source_loc)
+##
+###        check_closure(pc_target, reachable, final, external)
+##
     elif instr_type == "ASTTry":
         assert "tryBranch" in instr
         assert "catchBranch" in instr
@@ -1910,7 +1911,7 @@ def literal_to_smt(lit_value):
 
     STR_MARKERS = [ '"', "'" ]
     res = lit_value
-    if lit_value in [ "True", "False" ]:
+    if lit_value in [ "true", "false" ]:
         # this match Java boolean values
         res = lit_value.lower()
     elif re.match("^[0-9]+(\.[0-9]+)?$|^\.[0-9]+$", lit_value): #lit_value.isdigit():

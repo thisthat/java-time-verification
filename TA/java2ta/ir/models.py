@@ -258,15 +258,15 @@ class Variable(ASTNode):
             top_node = nodes_to_visit.popleft()
 
             assert "nodeType" in top_node
-            log.debug("Visit (%s): %s ..." % (top_node["nodeType"], top_node["code"][:50]))
+#            log.debug("Visit (%s): %s ..." % (top_node["nodeType"], top_node["code"][:50]))
 #            assert "name" in top_node, "keys: %s - node: %s" % (sorted(top_node.keys()), top_node)
             if top_node["nodeType"] == "ASTVariableDeclaration" and top_node["name"]["nodeType"] == "ASTIdentifier" and top_node["name"]["value"] == self.name: # and "hiddenClass" in top_node["expression"]: # the node is the declaration of the current variable, initialized with an instance of an anonymous class
-                log.debug("Found variable declaration: %s" % top_node)
+#                log.debug("Found variable declaration: %s" % top_node)
                 if "expr" in top_node and "hiddenClass" in top_node["expr"]:
                     var_ast = top_node #top_node["expr"] # the node of the var declaration  
                     break   
             elif top_node["nodeType"] == "ASTAssignment" and top_node["left"]["value"] == self.name: # and top_node["right"]["nodeType"] == "ASTNewObject": # the node is the varaible of the current variable with an instance of an anonymous class
-                log.debug("Found variable assignment: %s" % top_node)
+#                log.debug("Found variable assignment: %s" % top_node)
                 if "hiddenClass" in top_node["right"]:
                     var_ast = top_node #top_node["right"]
                     break
