@@ -1853,7 +1853,7 @@ def get_method_attributes(method):
     return attributes
 
 
-@contract(method=Method, domains="list(tuple(list(string)|string,is_domain,bool))")
+@contract(method=Method, domains="list(tuple(list(string)|string, is_domain, bool))", returns="is_state_space")
 def get_state_space_from_method(method, domains):
 
     # 1. get method attributes

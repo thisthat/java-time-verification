@@ -193,6 +193,7 @@ class Predicate(object):
 
 
     def copy(self):
+        import copy
         return copy.deepcopy(self)
         
     @contract(returns="string")
@@ -240,8 +241,10 @@ class Predicate(object):
 
         return res
     
+#    def __repr__(self):
+#        return "(assert %s)" % self._smt_condition #self._smt_assert
     def __repr__(self):
-        return "(assert %s)" % self._smt_condition #self._smt_assert
+        return self._label
     
     def __str__(self):
         return self._label
@@ -324,32 +327,32 @@ def predicates_differ(left, right):
                 break
 
     return differ
-    
 
 
 class And(Predicate):
         
     @contract(predicates="tuple")
     def __init__(self, *predicates):
+
+        if len(predicates) < 2:
+            raise ValueError("The AND predicate requires at least two sub-predicates")
+
         self.predicates = predicates
 
-        exclude = []
         ctx = {}
-
-#        print "received (type:%s): %s" % (predicates, type(predicates))
 
         # the following iteration leaves in ctx only the common pairs (key,value) of the
         # respective ctx's
         for pred in predicates:
-#            assert isinstance(pred, Predicate), "type: %s + %s" % (type(pred),pred)
-            check("is_predicate", pred)
+
+            if not isinstance(pred, Predicate):
+                raise ValueError("Arguments of predicate And should be instances of Predicate. Passed: %s (%s)" % (type(pred), pred))
 
             for (key, val) in pred.ctx.iteritems():
-                if key not in exclude:
-                    if key not in ctx:
-                        ctx[key] = val
-                    elif ctx[key] != val:
-                        del ctx[key]
+                if key not in ctx:
+                    ctx[key] = val
+                elif ctx[key] != val:
+                    del ctx[key]
 
         self.ctx = ctx
 
@@ -399,7 +402,8 @@ class And(Predicate):
     @contract(var_names="None|list", suffix="None|string", returns="is_predicate")
     def primed(self, var_names=None, suffix="_1"):
         
-        check("list(is_predicate)", self.predicates)
+#        check("list(is_predicate)", self.predicates)
+        check("tuple", self.predicates)
         primed_predicates = []
 
         for pred in self.predicates:
@@ -1092,14 +1096,49 @@ new_contract("is_ast", lambda s: True) #check_is_ast)
 
 class PredicateParser(object):
 
+    RE_VAR = "{\w+}" #r"({\w+})\s?(.*)"
+    RE_NODE_NAME = "[^\s(){}]+" # r"([^\s(){}]+)\s?(.*)"
+    RE_LITERAL = "true|false|\-?[0-9]+(?:\.[0-9]+)?|\"\w+\"|'\w+'" # was: "\w+"
+    PRED_CLASS = {
+        ">"     : GT,
+        ">="    : GTE,
+        "<"     : LT,
+        "<="    : LTE,
+        "="     : Eq,
+        "!="    : NotEq,
+        "and"   : And,
+#        "or"    : Or, # to be added
+#        "not"   : Not, # to be added
+#       "->"    : Imply, # to be added
+#       "<->"   : Iff, # to be added
+    }
+
+
     @staticmethod
-    @contract(text="string", returns="is_predicate")
-    def parse(self, text):
-        ast, remaining = self._text_to_ast(text)
+    @contract(text="string", returns="is_predicate|string")
+    def parse(text):
+        ast, remaining = PredicateParser._text_to_ast(text)
         if len(remaining) > 0:
             raise ValueError("Cannot parse text: %s" % remaining)    
-        pred = self._ast_to_predicate(ast)
+
+        pred = PredicateParser._ast_to_predicate(ast)
         return pred
+
+    @staticmethod
+    @contract(token="string", text="string", returns="tuple(string,string)")
+    def _match(token, text):
+        reg_exp = r"(%s)\s?(.*)" % token
+        g = re.match(reg_exp, text)
+
+        if not g:
+            raise ValueError("Cannot parse text. Expected: %s. Passed: %s" % text)
+
+        groups = g.groups()
+
+        token, remaining = groups[0], groups[1] if len(groups) > 1 and groups[1] is not None else ""
+
+#        print "Match: %s -> token=%s, remaining=%s" % (text, token, remaining)
+        return token, remaining
 
     @staticmethod
     @contract(text="string", returns="tuple(is_ast, string)")
@@ -1115,13 +1154,14 @@ class PredicateParser(object):
             # we are in a new nested node; the first component is the
             # node name, which cannot contain neither spaces nor 
             # parenthesis, nor curly braces
-            g = re.match(r"([^\s(){}]+)\s?(.*)", text[1:])
+#            g = re.match(PredicateParser.RE_NODE_NAME, text[1:])
+#
+#            if not g:
+#                raise ValueError("Cannot parse predicate: %s" % text)
 
-            if not g:
-                raise ValueError("Cannot parse predicate: %s" % text)
-
-            name = g.groups()[0]
-            remaining = g.groups()[1]
+#            name = g.groups()[0]
+#            remaining = g.groups()[1]
+            name, remaining = PredicateParser._match(PredicateParser.RE_NODE_NAME, text[1:])
 
             arguments = []
             while len(remaining) > 0 and not remaining.startswith(")"):
@@ -1136,22 +1176,24 @@ class PredicateParser(object):
             return (name, arguments), remaining
         elif text[0] == "{":
             # it is a variable name, enclosed in curly brackets
-            g = re.match(r"({\w+})\s?(.*)", text)
-            if not g:
-                raise ValueError("Cannot parse variable name: %s" % text)
-
-            var_name = g.groups()[0]
-            remaining = g.groups()[1]
-        
+##            g = re.match(PredicateParser.RE_VAR, text)
+##            if not g:
+##                raise ValueError("Cannot parse variable name: %s" % text)
+##
+##            var_name = g.groups()[0]
+##            remaining = g.groups()[1]
+##        
+            var_name, remaining = PredicateParser._match(PredicateParser.RE_VAR, text)
             return ("%s" % var_name) , remaining
         else:
-            # a name that ends at the first space (if any)  
-            g = re.match(r"(\w+)\s?(.*)", text)
-
-            if not g:
-                raise ValueError("Cannot parse text: %s" % text)
-            name = g.groups()[0]
-            remaining = g.groups()[1]
+            # a token that ends at the first space (if any)  
+##            g = re.match(r"(%s)\s?(.*)" % ?PredicateParser.RE_LITERAL, text)
+##
+##            if not g:
+##                raise ValueError("Cannot parse text: %s" % text)
+##            name = g.groups()[0]
+##            remaining = g.groups()[1]
+            name, remaining = PredicateParser._match(PredicateParser.RE_LITERAL, text)
             return name, remaining
 
         # in case of normal exit, I should have consumed some input
@@ -1160,6 +1202,43 @@ class PredicateParser(object):
         assert len(remaining) < len(text)
 
     @staticmethod
-    @contract(ast="tuple(string, list(string))", returns="is_predicate")
+    @contract(ast="is_ast", returns="is_predicate|string")
     def _ast_to_predicate(ast): 
-        return None
+        
+        if PredicateParser._is_node(ast):
+            name = ast[0]
+
+            # get the class of predicate corresponding to the node name
+            pred_class = PredicateParser.PRED_CLASS.get(name)
+
+            # recursively obtain the predicate/var/literal of each
+            # argument ast
+            arguments = []
+            for a in ast[1]:
+                arguments.append(PredicateParser._ast_to_predicate(a))
+            # instantiate the predicate
+            p = pred_class(*arguments)
+#            print "Node2AST: ast=%s, class=%s, arguments=%s, predicate=%s" % (ast, pred_class, arguments, p)
+
+            return p
+
+        elif PredicateParser._is_var(ast):
+            return ast
+    
+        elif PredicateParser._is_literal(ast):
+            return ast
+
+        else:
+            raise ValueError("The passed ast contains an unexpected node: %s" % ast)
+
+    @staticmethod
+    def _is_node(ast):
+        return isinstance(ast, tuple) and len(ast) == 2 and isinstance(ast[1], list) and re.match(PredicateParser.RE_NODE_NAME, ast[0])
+
+    @staticmethod
+    def _is_var(ast):
+        return isinstance(ast, basestring) and re.match(PredicateParser.RE_VAR, ast)
+
+    @staticmethod
+    def _is_literal(ast):
+        return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
