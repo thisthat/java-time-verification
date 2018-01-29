@@ -1062,7 +1062,12 @@ class SymbolTable(object):
 
 
     @staticmethod
-    @contract(value="string", returns="string")
+    @contract(returns="list(string)")
+    def get_literals():
+        return SymbolTable.LITERALS.keys()
+
+    @staticmethod
+    @contract(value="string", returns="int") #returns="string")
     def get_literal(value):
         if value not in SymbolTable.LITERALS:
             raise ValueError("Literal '%s' does not exist")
@@ -1115,7 +1120,7 @@ class PredicateParser(object):
 
 
     @staticmethod
-    @contract(text="string", returns="is_predicate|string")
+    @contract(text="string", returns="is_predicate|string|int")
     def parse(text):
         ast, remaining = PredicateParser._text_to_ast(text)
         if len(remaining) > 0:
@@ -1194,6 +1199,13 @@ class PredicateParser(object):
 ##            name = g.groups()[0]
 ##            remaining = g.groups()[1]
             name, remaining = PredicateParser._match(PredicateParser.RE_LITERAL, text)
+
+            # if literal name is a string, add it to the symbol table and replace
+            # the literal with its encoded value
+            if name[0] in [ "'", '"' ] and name[-1] == name[0]:
+                lit_code = SymbolTable.add_literal(name[1:-1])               
+                name = "(init-AbsString %s %s)" % (lit_code, len(name) - 2) # TODO this work because I assume to encode literals as objects of type AbsString
+
             return name, remaining
 
         # in case of normal exit, I should have consumed some input
@@ -1202,34 +1214,66 @@ class PredicateParser(object):
         assert len(remaining) < len(text)
 
     @staticmethod
-    @contract(ast="is_ast", returns="is_predicate|string")
+    @contract(ast="is_ast", returns="is_predicate|string|int")
     def _ast_to_predicate(ast): 
         
         if PredicateParser._is_node(ast):
+            """
+            case 1: it is a predicate that we have to parse
+            case 2: it is a piece of smt code (injected by the user or to encode a literal)
+            """
             name = ast[0]
 
             # get the class of predicate corresponding to the node name
-            pred_class = PredicateParser.PRED_CLASS.get(name)
-
-            # recursively obtain the predicate/var/literal of each
-            # argument ast
-            arguments = []
-            for a in ast[1]:
-                arguments.append(PredicateParser._ast_to_predicate(a))
-            # instantiate the predicate
-            p = pred_class(*arguments)
-#            print "Node2AST: ast=%s, class=%s, arguments=%s, predicate=%s" % (ast, pred_class, arguments, p)
-
+            pred_class = PredicateParser.PRED_CLASS.get(name, None)
+            if pred_class is not None:
+                # case 1: a user predicate, continue to parse
+                # recursively obtain the predicate/var/literal of each
+                # argument ast
+                arguments = []
+                for a in ast[1]:
+                    arguments.append(PredicateParser._ast_to_predicate(a))
+                # instantiate the predicate
+                p = pred_class(*arguments)
+    #            print "Node2AST: ast=%s, class=%s, arguments=%s, predicate=%s" % (ast, pred_class, arguments, p)
+            else:
+                # case 2: a piece of SMT code, take it as text
+                p = PredicateParser._walk(ast)
+                
             return p
 
         elif PredicateParser._is_var(ast):
+            # this is a variable
             return ast
     
         elif PredicateParser._is_literal(ast):
+            # this is a literal
             return ast
 
+        elif isinstance(ast, int):
+            # this is the encoded value of a string literal
+            return ast
+    
         else:
-            raise ValueError("The passed ast contains an unexpected node: %s" % ast)
+            #raise ValueError("The passed ast contains an unexpected node: %s" % ast)
+            log.warning("Unknown predicate content. Assume it's a piece of SMT code: %s" % ast)
+            return ast
+
+    @staticmethod
+    @contract(ast="tuple(string, list)|string", returns="string")
+    def _walk(ast):
+        # walk the ast and serialize it as a string
+
+        if isinstance(ast, basestring):
+            return ast
+        elif isinstance(ast, tuple):
+            arguments = []
+            for a in ast[1]:
+                arguments.append(PredicateParser._walk(a))
+    
+            return "(%s %s)" % (ast[0], " ".join(arguments))
+        else:   
+            raise ValueError("The walk procedure does not expect this format")
 
     @staticmethod
     def _is_node(ast):

@@ -1921,7 +1921,9 @@ def literal_to_smt(lit_value):
         # this matches a null pointer or a string/char constant
         res = "%s" % SymbolTable.add_literal(lit_value)
     elif lit_value[0] in STR_MARKERS and lit_value[-1] == lit_value[0]:
-        res = "%s" % SymbolTable.add_literal(lit_value[1:-1])
+#        res = "%s" % SymbolTable.add_literal(lit_value[1:-1])  
+        lit_code = SymbolTable.add_literal(lit_value[1:-1])
+        res = "(init-AbsString %s %s)" % (lit_code, len(lit_value) - 2)
     elif re.match("^[a-zA-Z0-9_]+$", lit_value):
         # this match an identifier, not really a literal
 #        res = lit_value
