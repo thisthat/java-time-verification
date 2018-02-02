@@ -16,13 +16,8 @@ def noteq_predicate(value, var=None):
     if var:
         res = NotEq(lhs=var, rhs=value)
     else:
-        res = NotEq(rhs=Value)
+        res = NotEq(rhs=value)
     return res
-#    kwargs = { "rhs": value }
-#    if var:
-#        kwargs["lhs"] = var
-
-#    return NotEq(**kwargs)
 
 @contract(value="string|int", var="string|None", returns="is_predicate")
 def eq_predicate(value, var=None):
@@ -32,30 +27,17 @@ def eq_predicate(value, var=None):
     else:
         res = Eq(rhs=value)
     return res
-#    kwargs = { "value": value }
-#    if var:
-#        kwargs["var"] = var
-#
-#    return Eq(**kwargs)
 
-@contract(value_list="list[M](string)", returns="list[N](is_predicate),N<=M+1,N>=M")
+@contract(value_list="list[M](string|int)", returns="list[N](is_predicate),N<=M+1,N>=M")
 def split_enum(value_list, case_else=False, var=None):
 
     predicates = []
 
     for value in value_list:
-#        ctx = { "value": curr }
-#        if var:
-#            ctx["var"] = var
-#        predicates.append(Eq(**ctx))
         predicates.append(eq_predicate(value, var))
 
     if case_else:
-#        ctx = { "value": " ".join(value_list) }
-#        if var:
-#            ctx["var"] = var
-#        predicates.append(NotEq(**ctx))
-        value = " ".join(value_list)
+        value = " ".join(map(str, value_list))
         predicates.append(noteq_predicate(value, var))
 
     return predicates

@@ -322,7 +322,7 @@ class KnowledgeBase(object):
     NOW = set([])
  
     @staticmethod   
-    @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),string)")
+    @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),is_predicate)")
     def add_method(class_name, method_name, knowledge):
 
         class_name = "-" # TODO this is a hack, remove when the class of a callee method is recognized correctly
@@ -345,16 +345,18 @@ class KnowledgeBase(object):
         return res
 
     @staticmethod
-#    @contract(class_name="string", method_name="string", res_var="string", params="dict(string:string)", lhs_var="string", returns="tuple(list(string),string,is_data_type)")
-#    def get_method(class_name, method_name, res_var, params, lhs_var):
-    @contract(class_name="string", method_name="string", returns="tuple(is_data_type,list(string),list(string),string)")
+    @contract(class_name="string", method_name="string", returns="tuple(is_data_type,list(string),list(string),is_predicate)")
     def get_method(class_name, method_name): #, params, lhs_var):
+        log.debug("Knowledge base lookup class: %s vs %s" % (class_name, KnowledgeBase.KB.keys()))
 
         class_name = "-" # TODO this is a hack, remove ASAP
 
         assert KnowledgeBase.has_method(class_name, method_name), "Class %s has no method %s" % (class_name, method_name)
 
-        check("tuple(is_data_type,list(string),list(string),string)", KnowledgeBase.KB[class_name][method_name])
+        log.debug("Knowledge base lookup methods: %s vs %s" % (method_name, KnowledgeBase.KB[class_name].keys()))
+   
+
+        check("tuple(is_data_type,list(string),list(string),is_predicate)", KnowledgeBase.KB[class_name][method_name])
 
         (dt, parameters_signature, method_env, smt_interpretation) = KnowledgeBase.KB[class_name][method_name]
         log.debug("Knowledge base datatype: %s" % dt)

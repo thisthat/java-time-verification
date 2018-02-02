@@ -110,6 +110,19 @@ class AbsString(DataType):
         smt_declaration = smt_declare_rec_datatype("AbsString", {"size":"Int","value":"Int"}) 
         super(AbsString, self).__init__("AbsString", smt_declaration=smt_declaration, smt_var_axioms=["(assert (>= (size {var}) 0))"])
 
+    @contract(var="string", returns="string")
+    def smt_var_axioms(self, var):
+        assertions = super(AbsString, self).smt_var_axioms(var)
+
+        for lit_code in SymbolTable.get_literals():
+            value = SymbolTable.decode_literal(lit_code)
+            if SymbolTable.get_literal_type(value) == "String":
+                size = len(value) - 2
+                curr = "(assert (implies (= (value %(var)s) %(code)s) (= (size %(var)s) %(size)s)))" % { "var":var, "code":lit_code, "size":size }
+                assertions = "%s\n%s" % (assertions, curr)
+
+        return assertions
+
 
 class Object(DataType):
 
@@ -170,22 +183,20 @@ class Predicate(object):
 
     __metaclass__ = abc.ABCMeta
 
-    _smt_condition = ""
-    _label = ""
+    _smt_name = "..." # the name of the predicate in SMTlib
+    _smt_condition = "({name} {arguments})"
+    _label = "{name}({arguments})"
 
-    @contract(smt_condition="string|None", label="string|None")
-    def __init__(self, smt_condition=None, label=None, **ctx):
+    def __init__(self, *arguments):
+        self._arguments = arguments
+        label_arguments = ",".join(map(lambda v: v.label() if isinstance(v, Predicate) else str(v), arguments))
+        self._label = partial_format(self._label, { "name": self._smt_name, "arguments": label_arguments })
+    
+        smt_arguments = " ".join(map(lambda v: v.smt_condition() if isinstance(v, Predicate) else str(v), arguments))
+        self._smt_condition = partial_format(self._smt_condition, { "name": self._smt_name, "arguments": smt_arguments })
 
-        self.ctx = dict(**ctx)
-
-        label = label or self._label
-        self._label = partial_format(label, ctx)
-
-        smt_condition = smt_condition or self._smt_condition
-        self._smt_condition = partial_format(smt_condition, ctx)
- 
+    
     def __eq__(self, other):
-
         return not predicates_differ(self, other)
 
     def __ne__(self, other):
@@ -195,7 +206,7 @@ class Predicate(object):
     def copy(self):
         import copy
         return copy.deepcopy(self)
-        
+
     @contract(returns="string")
     def label(self, **kwargs):
         """
@@ -204,22 +215,13 @@ class Predicate(object):
 
         If some of the parameters are still missing, an exception is raised. 
         """
-        ctx = dict(**self.ctx)
-        ctx.update(kwargs)
+        ctx = dict(**kwargs)
+        return partial_format(self._label, ctx)
 
-        try:
-            res = self._label.format(**ctx)
-        except KeyError, e:
-            raise ValueError("You should pass the following parameters to the method: %s" % ",".join(e.args))
-
-        return res
-
-    
     @contract(returns="string")
     def smt_assert(self, **kwargs):
 
         res = "(assert %s)" % self.smt_condition(**kwargs)
-
         return res
 
 
@@ -231,18 +233,9 @@ class Predicate(object):
 
         If some of the parameters are still missing, an exception is raised.
         """
-        ctx = dict(**self.ctx)
-        ctx.update(**kwargs)
-
-        try:
-            res = self._smt_condition.format(**ctx) #self._smt_assert.format(**ctx)
-        except KeyError, e:
-            raise ValueError("You should pass the following parameters to the method: %s" % ",".join(e.args))
-
-        return res
+        ctx = dict(**kwargs)
+        return partial_format(self._smt_condition, ctx)
     
-#    def __repr__(self):
-#        return "(assert %s)" % self._smt_condition #self._smt_assert
     def __repr__(self):
         return self._label
     
@@ -290,7 +283,11 @@ class Predicate(object):
 
     @contract(var_names="None|list(string)", suffix="string")
     def primed(self, var_names=None, suffix="_1"):
-
+        """
+        Return a copy of itself, but with primed variables.
+        var_names = the set of variable names to be primed (if none is specified all will be primed)
+        suffix = the suffix to add to represent a primed variable
+        """
         new_label = self._label
         new_condition = self._smt_condition # self._smt_assert
 
@@ -304,9 +301,15 @@ class Predicate(object):
             new_condition = new_condition.replace("{%s}" % var, "{%s}%s" % (var, suffix))
             new_label = new_label.replace("{%s}" % var, "{%s}%s" % (var, suffix))
 
-        new = Predicate(ctx=self.ctx, smt_condition=new_condition, label=new_label)
+        new = self.copy()
+        new._smt_condition = new_condition
+        new._label = new_label
 
         return new
+
+
+
+
 
 new_contract_check_type("is_predicate", Predicate)
 
@@ -328,33 +331,30 @@ def predicates_differ(left, right):
 
     return differ
 
-
-class And(Predicate):
-        
-    @contract(predicates="tuple")
-    def __init__(self, *predicates):
-
-        if len(predicates) < 2:
-            raise ValueError("The AND predicate requires at least two sub-predicates")
-
-        self.predicates = predicates
-
-        ctx = {}
-
-        # the following iteration leaves in ctx only the common pairs (key,value) of the
-        # respective ctx's
-        for pred in predicates:
-
-            if not isinstance(pred, Predicate):
-                raise ValueError("Arguments of predicate And should be instances of Predicate. Passed: %s (%s)" % (type(pred), pred))
-
-            for (key, val) in pred.ctx.iteritems():
-                if key not in ctx:
-                    ctx[key] = val
-                elif ctx[key] != val:
-                    del ctx[key]
-
-        self.ctx = ctx
+##class And(Predicate):
+##
+##        if len(predicates) < 2:
+##            raise ValueError("The AND predicate requires at least two sub-predicates")
+##
+##        self.predicates = predicates
+##
+##        ctx = {}
+##
+##        # the following iteration leaves in ctx only the common pairs (key,value) of the
+##        # respective ctx's
+##        for pred in predicates:
+##
+##            if not isinstance(pred, Predicate):
+##                raise ValueError("Arguments of predicate And should be instances of Predicate. Passed: %s (%s)" % (type(pred), pred))
+##
+##            for (key, val) in pred.ctx.iteritems():
+##                if key not in ctx:
+##                    ctx[key] = val
+##                elif ctx[key] != val:
+##                    del ctx[key]
+##
+##        self.ctx = ctx
+##
 
     def __repr__(self):
         res = " and ".join(map(lambda p: repr(p) or "", self.predicates))
@@ -411,27 +411,47 @@ class And(Predicate):
 
         return And(*primed_predicates)
 
-        
-
 
 class BinaryPredicate(Predicate):
 
     __metaclass__ = abc.ABCMeta
 
-    _smt_name = "..." # the name of the predicate in SMTlib
+#    _smt_name = "..." # the name of the predicate in SMTlib
 #    _smt_assert = "(assert ({name} {var} {value}))"
-    _smt_condition = "({name} {lhs} {rhs})"
-    _label = "{lhs} {name} {rhs}"
+#    _smt_condition = "({name} {lhs} {rhs})"
+#    _label = "{lhs} {name} {rhs}"
 
 #    def __init__(self, **ctx):
     def __init__(self, lhs=None, rhs=None):
-        ctx = { "name": self._smt_name }
-        if lhs:
-            ctx["lhs"] = lhs
-        if rhs:
-            ctx["rhs"] = rhs
-        super(BinaryPredicate, self).__init__(**ctx)
+#        ctx = { "name": self._smt_name }   
+#        if lhs:
+#            ctx["lhs"] = lhs
+#        if rhs:
+#            ctx["rhs"] = rhs
+        lhs = lhs if lhs is not None else "{lhs}"
+        rhs = rhs if rhs is not None else "{rhs}"
+        arguments = [ lhs, rhs ]
+
+        super(BinaryPredicate, self).__init__(*arguments)
     
+
+class Or(Predicate):
+    _smt_name = "or"
+
+    def __init__(self, *arguments):
+        if len(arguments) < 2:
+            raise ValueError("The OR predicate requires at least two sub-predicates. Received: %s" % arguments)
+
+        super(Or, self).__init__(*arguments)
+
+class And(Predicate):
+    _smt_name = "and"
+
+    def __init__(self, *arguments):
+        if len(arguments) < 2:
+            raise ValueError("The AND predicate requires at least two sub-predicates. Received: %s" % arguments)
+
+        super(And, self).__init__(*arguments)
 
 class GT(BinaryPredicate):
     _smt_name = ">"
@@ -455,12 +475,23 @@ class Eq(BinaryPredicate):
 
 class NotEq(BinaryPredicate):
     _smt_name = "distinct"
-    _label = "{lhs} != {rhs}"
+    _label = "!=({arguments})"
 
-class Between(Predicate):    
+
+#class Between(Predicate):    
+class Between(And):
 #    _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
-    _smt_condition = "(and (< {min} {var}) (< {var} {max}))"
-    _label = "{min} < {var} < {max}"
+#    _smt_condition = "(and (< {min} {var}) (< {var} {max}))"
+#    _label = "in({arguments})"
+
+    def __init__(self, var=None, min=None, max=None):
+        var = var if var is not None else "{var}"
+        min = min if min is not None else "{min}"
+        max = max if max is not None else "{max}"
+#        arguments = ( var, min, max )
+        arguments = ( LT(lhs=min, rhs=var), LT(lhs=var, rhs=max) )
+#        print "arguments: %s" % (arguments,)
+        super(Between, self).__init__(*arguments)
 
 
 class EqItself(Predicate):
@@ -996,7 +1027,8 @@ class DomainProduct(CompareVariables):
             check("tuple", curr_tuple)
             predicates.append(And(*curr_tuple))
         return predicates
-    
+ 
+
 class Integer(DataType):
     def __init__(self):
         super(Integer,self).__init__(name="Int")
@@ -1045,34 +1077,94 @@ def smt_declare_scalar(name, values):
 
 class SymbolTable(object):
 
+    RE_LITERAL = "^(true|false)$|^(\-?[0-9]+)$|^(\-?[0-9]+(?:\.[0-9]+)?)$|^(\"\w+\"|'\w+')$" # was: "\w+"
+
     LITERALS = {}
+    REV_LITERALS = {}
 
     _COUNTER = 1
 
 
     @staticmethod
-    @contract(value="string", returns="int")
+    def reset():
+        SymbolTable.LITERALS = {}
+        SymbolTable.REV_LITERALS = {}
+        SymbolTable._COUNTER = 1
+
+    @staticmethod
+    @contract(value="string", returns="tuple(string,string)")
     def add_literal(value):
-        if value not in SymbolTable.LITERALS:
-            SymbolTable.LITERALS[value] = SymbolTable._COUNTER  #FreshNames.get_id()
-            SymbolTable._COUNTER = SymbolTable._COUNTER + 1
-            log.debug("Update symbol table: %s => %s" % (value, SymbolTable.LITERALS[value]))
 
-        return SymbolTable.LITERALS[value]
+        lit_type = SymbolTable.get_literal_type(value)
+    
+        if lit_type == "String":
+            # normalize the string literals to use ' as delimiter
+            value = "'%s'" % (value[1:-1],)
+            lit_code = SymbolTable.LITERALS.get(value, None)
+
+            if lit_code is None:
+                lit_code = str(SymbolTable._COUNTER)
+                SymbolTable.LITERALS[value] = lit_code 
+                SymbolTable.REV_LITERALS[lit_code] = value
+
+                SymbolTable._COUNTER = SymbolTable._COUNTER + 1
+                log.debug("Update symbol table: %s => %s" % (value, SymbolTable.LITERALS[value]))
+
+            lit_code = SymbolTable.LITERALS[value]
+        else:
+            # other literal (bool, int, float): don't add to the SymbolTable
+            lit_code = value
+
+        return (lit_code, lit_type)
 
 
+    @staticmethod
+    @contract(literal="string", returns="string")
+    def get_literal_type(literal):
+        m = re.match(SymbolTable.RE_LITERAL, literal)
+
+        if m:
+            g = m.groups()
+            if g[0] is not None:
+                return "bool"
+            elif g[1] is not None:
+                return "int"
+            elif g[2] is not None:
+                return "float"
+            elif g[3] is not None:
+                return "String"
+        
+        raise ValueError("Cannot recognize literal: %s" % literal)
+
+    
     @staticmethod
     @contract(returns="list(string)")
     def get_literals():
-        return SymbolTable.LITERALS.keys()
+        literals = SymbolTable.LITERALS.values()
+
+        return literals
+
 
     @staticmethod
-    @contract(value="string", returns="int") #returns="string")
+    @contract(value="string", returns="string")
     def get_literal(value):
-        if value not in SymbolTable.LITERALS:
+        code = SymbolTable.LITERALS.get(value, None)
+
+        if code is None:
             raise ValueError("Literal '%s' does not exist")
 
-        return SymbolTable.LITERALS[value]
+        return code
+
+    @staticmethod
+    @contract(code="string", returns="string")
+    def decode_literal(code):
+
+        lit = SymbolTable.REV_LITERALS.get(code, None)
+
+        if lit is None:
+            raise ValueError("No literal has cthe passed code: %s" % code)
+    
+        return lit
 
 
 ##def check_is_ast(s):
@@ -1112,7 +1204,7 @@ class PredicateParser(object):
         "="     : Eq,
         "!="    : NotEq,
         "and"   : And,
-#        "or"    : Or, # to be added
+        "or"    : Or, # to be added
 #        "not"   : Not, # to be added
 #       "->"    : Imply, # to be added
 #       "<->"   : Iff, # to be added
@@ -1142,7 +1234,6 @@ class PredicateParser(object):
 
         token, remaining = groups[0], groups[1] if len(groups) > 1 and groups[1] is not None else ""
 
-#        print "Match: %s -> token=%s, remaining=%s" % (text, token, remaining)
         return token, remaining
 
     @staticmethod
@@ -1202,8 +1293,8 @@ class PredicateParser(object):
 
             # if literal name is a string, add it to the symbol table and replace
             # the literal with its encoded value
-            if name[0] in [ "'", '"' ] and name[-1] == name[0]:
-                lit_code = SymbolTable.add_literal(name[1:-1])               
+            lit_code, lit_type = SymbolTable.add_literal(name)
+            if lit_type == "String":
                 name = "(init-AbsString %s %s)" % (lit_code, len(name) - 2) # TODO this work because I assume to encode literals as objects of type AbsString
 
             return name, remaining
@@ -1235,7 +1326,6 @@ class PredicateParser(object):
                     arguments.append(PredicateParser._ast_to_predicate(a))
                 # instantiate the predicate
                 p = pred_class(*arguments)
-    #            print "Node2AST: ast=%s, class=%s, arguments=%s, predicate=%s" % (ast, pred_class, arguments, p)
             else:
                 # case 2: a piece of SMT code, take it as text
                 p = PredicateParser._walk(ast)
@@ -1264,16 +1354,20 @@ class PredicateParser(object):
     def _walk(ast):
         # walk the ast and serialize it as a string
 
+        res = None
         if isinstance(ast, basestring):
-            return ast
+            res = ast
         elif isinstance(ast, tuple):
             arguments = []
             for a in ast[1]:
                 arguments.append(PredicateParser._walk(a))
     
-            return "(%s %s)" % (ast[0], " ".join(arguments))
+            res = "(%s %s)" % (ast[0], " ".join(arguments))
         else:   
             raise ValueError("The walk procedure does not expect this format")
+
+#        log.debug("Walk IN: %s OUT: %s" % (ast, res))
+        return res
 
     @staticmethod
     def _is_node(ast):
