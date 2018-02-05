@@ -1,6 +1,6 @@
-mongo --eval "db.stats()"  # do a simple harmless command of some sort
+# mongo --eval "db.stats()"  # do a simple harmless command of some sort
 
-RESULT=$?   # returns 0 if mongo eval succeeds
+# RESULT=$(mongo --eval "db.stats()")   # returns 0 if mongo eval succeeds
 
 if [ $RESULT -ne 0 ]; then
     screen -d -m bash mongod
