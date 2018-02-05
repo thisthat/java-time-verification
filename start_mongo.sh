@@ -1,8 +1,13 @@
-# mongo --eval "db.stats()"  # do a simple harmless command of some sort
+#!/bin/bash
 
-RESULT=$(mongo --eval "db.stats()")   # returns 0 if mongo eval succeeds
+# Check if gedit is running
+# -x flag only match processes whose name (or command line if -f is
+# specified) exactly match the pattern.
 
-if [ $RESULT -ne 0 ]; then
-    screen -d -m bash mongod
-    exit 1
+if pgrep -x "mongod" > /dev/null
+then
+    echo "Running"
+else
+    echo "Starting mongo"
+    screem -d -m bash mongod
 fi
