@@ -9,5 +9,5 @@ then
     echo "Running"
 else
     echo "Starting mongo"
-    screem -d -m bash mongod
+    screen -d -m bash mongod
 fi
