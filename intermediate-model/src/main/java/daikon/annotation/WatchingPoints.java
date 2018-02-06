@@ -50,9 +50,13 @@ public class WatchingPoints {
             IASTVar[] varsArray = vars.toArray(new IASTVar[0]);
             for(int i = 0; i < varsArray.length; i++){
                 IASTVar v = varsArray[i];
-                sb.append(v.getName());
-                if(i != vars.size() -1){
-                    sb.append(",");
+                if(v.getType().equals("long") || v.getType().equals("int")) {
+                    sb.append(v.getType());
+                    sb.append("-");
+                    sb.append(v.getName());
+                    if (i != vars.size() - 1) {
+                        sb.append(",");
+                    }
                 }
             }
             sb.append("]");

@@ -9,7 +9,6 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import parser.ASTSrc;
 import parser.Java2AST;
 import parser.UnparsableException;
 
