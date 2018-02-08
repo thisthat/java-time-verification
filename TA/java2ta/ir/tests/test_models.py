@@ -1,6 +1,6 @@
 from time import sleep
 
-from java2ta.ir.models import Project, Thread, Klass, InnerKlass, Method, Variable
+from java2ta.ir.models import Project, Thread, Klass, InnerKlass, Method, Variable, ASTVisitor
 
 import pkg_resources
 
@@ -447,7 +447,6 @@ def test_classes():
     assert p.is_status("closed")
     p.open()
 
-    #print "A"
     check_is_open(p)
   
     classes = p.get_classes() 
@@ -566,3 +565,105 @@ def test_inner_method():
     assert len(m_inner.ast["stms"]) == 1
     assert m_inner.ast["stms"][0]["nodeType"] == "ASTReturn"
     #assert False, m_inner.ast
+
+def test_ast_visitor_simple():
+    """
+    just test that we can iterate the AST of a class, without giving any handler
+    """
+    
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
+
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    classes = p.get_classes() 
+
+    assert len(list(classes)) > 0, classes
+
+    klass = Klass("HelloWorld", "", "file://HelloWorld.java", p)
+ 
+    visitor = ASTVisitor(klass)
+    visitor.visit()
+
+def test_ast_visitor_one_handler():
+    """
+    test we can visit a class ast specifying a single handler
+    """
+    
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
+
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    classes = p.get_classes() 
+
+    assert len(list(classes)) > 0, classes
+
+    klass = Klass("HelloWorld", "", "file://HelloWorld.java", p)
+ 
+    identifier_names = set([])
+    def collect_identifier_names(node):
+        assert "value" in node
+        identifier_names.add(node["value"])
+    
+    visitor = ASTVisitor(klass)
+    visitor.add_handler("ASTIdentifier", collect_identifier_names)
+    visitor.visit()
+
+    assert identifier_names == set([ "i", "varfoo", "System",  ]), identifier_names
+
+def test_ast_visitor_more_handlers():
+    """
+    test we can visit a class ast specifying more than one handler
+    """
+    
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
+
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    classes = p.get_classes() 
+
+    assert len(list(classes)) > 0, classes
+
+    klass = Klass("HelloWorld", "", "file://HelloWorld.java", p)
+ 
+    var_declarations = set([])
+    def collect_variable_declarations(node):    
+        assert "name" in node, node
+        assert "code" in node["name"], node["name"]
+        assert "type" in node, node
+        var_declarations.add((node["name"]["code"],node["type"]))
+    
+    var_assignments = set([])
+    def collect_variable_assignments(node):
+        assert "left" in node, node
+        assert "nodeType" in node["left"], node["left"]
+        lhs_node_type = node["left"]["nodeType"]
+
+        if lhs_node_type == "ASTIdentifier":
+            var_assignments.add((node["left"]["code"], node["line"], node["start"], node["end"]))
+    
+    visitor = ASTVisitor(klass)
+    visitor.add_handler("ASTVariableDeclaration", collect_variable_declarations)
+    visitor.add_handler("ASTAssignment", collect_variable_assignments)
+    visitor.visit()
+
+    assert len(var_declarations) == 2, var_declarations
+    assert ("varfoo", "Foo") in var_declarations, var_declarations
+    assert ("i", "int") in var_declarations, var_declarations
+    assert len(var_assignments) == 2, var_assignments
+    assert ("x", 23, 493, 502) in var_assignments
+    assert ("y", 24, 512, 521) in var_assignments

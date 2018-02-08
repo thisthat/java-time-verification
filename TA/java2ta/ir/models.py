@@ -631,3 +631,76 @@ class DummyProject(Project):
 
         self.client = JSONFileClient(self.path)
 
+class ASTVisitor(object):
+
+    @contract(node="is_ast_node|dict")
+    def __init__(self, node):
+        self.handlers = {}
+
+        if isinstance(node, ASTNode):
+            node = node.ast
+
+        self.node = node
+
+    @contract(node_type="string")
+    def add_handler(self, node_type, handler):
+        existing = self.handlers.get(node_type, [])
+        existing.append(handler)
+
+        self.handlers[node_type] = existing
+        #print "handlers: %s -> %s" % (node_type, existing)
+
+    def handle(self, node_type, node):
+        """ 
+        Invoke all the handlers of the given node_type. Each handler take the 
+        node as argument. 
+        Return True if the node has been handled by at least one handler, False 
+        otherwise.
+        """
+        node_handlers = self.handlers.get(node_type, [])
+
+#        print "check handler: %s" % node_type
+        for h in node_handlers:
+#            print "found handler: %s -> %s" % (node_type, h)
+            h(node)
+
+        return len(node_handlers) > 0
+
+    def visit(self):
+
+        to_visit = deque([ self.node ])
+
+        while len(to_visit) > 0:
+
+            # pop from the left side of the queue
+            curr_node = to_visit.popleft()
+
+            assert isinstance(curr_node, dict), "%s vs %s" % (curr_node, to_visit)
+
+            node_type = curr_node.get("nodeType", None)
+
+            if node_type is not None:
+                is_handled = self.handle(node_type, curr_node)
+    
+                if is_handled:
+                    # for this first implementation, don't go recursive after handling the node
+                    continue
+            
+            for key,value in curr_node.iteritems():
+
+                if isinstance(value, list):
+                    # extend on the rightside of the queue
+#                    print "found list child: %s" % value
+                    for curr in value:
+                        assert not isinstance(curr, list) # we don't expect nested lists
+                
+                        if isinstance(curr, dict):
+                            # the only way to encode a nested data structure is a dict within a list
+                            to_visit.extend(value)
+                elif isinstance(value, dict):
+                    # append on the right size of the queue
+#                    print "found dictionary child: %s" % value
+                    to_visit.append(value)
+                
+       
+new_contract_check_type("is_ast_visitor", ASTVisitor)

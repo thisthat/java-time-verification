@@ -414,8 +414,8 @@ class SMTProb(object):
                 var = node_exp["name"]["value"] # TODO check that the LHS is always obtained in this way
                 rhs = node_exp["expr"]
 
-                if var not in env:
-                    raise ForgottenVariableException(var)
+#                if var not in env:
+#                    raise ForgottenVariableException(var)
 
                 if rhs is not None:
                     new_frame = list(frame)
@@ -428,7 +428,13 @@ class SMTProb(object):
                     rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs, env, frame=new_frame)
                     if rhs_smt_assertion:
                         smt_declarations.extend(rhs_smt_declarations)
-                        smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
+                        if var in env:
+                            smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
+                        # NB: if var not in env, the variable declaration does not modify the abstract
+                        # environment (unless the rhs has side-effects or it raises a ForgottenVariable/
+                        # ForgottenMethod exception; the previous recursive call to node_to_smt(rhs, ...)
+                        # checks exactly that)
+
                     # force other primed vars to be equal to non-primed vars
                     for curr in self.attributes:
                         assert isinstance(curr, AbstractAttribute)
@@ -503,8 +509,12 @@ class SMTProb(object):
                     smt_assertion = node_exp["code"]
             elif node_exp_type == "ASTMethodCall":
 
-                smt_declarations, smt_assertion = self.node_to_smt(node_exp, env, frame=frame)
-                del env["__self__"]
+                mc_smt_declarations, mc_smt_assertion = self.node_to_smt(node_exp, env, frame=frame)
+                if mc_smt_declarations:
+                    smt_declarations.extend(mc_smt_declarations)
+                assert len(mc_smt_assertion) > 0
+                smt_assertion = mc_smt_assertion
+#                del env["__self__"]
             else:
                 log.warning("Interpret PL expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                 smt_assertion = node_exp["code"]
@@ -528,8 +538,10 @@ class SMTProb(object):
             log.debug("left: %s, frame: %s, left declarations: %s, left smt: %s" % (left, frame, lhs_smt_declarations, lhs_smt_assertion))
             log.debug("right: %s, frame: %s, right declarations: %s, right smt: %s" % (right, frame, rhs_smt_declarations, rhs_smt_assertion))
 
-            if lhs_smt_declarations and rhs_smt_declarations:
+            if lhs_smt_declarations: # and rhs_smt_declarations:
                 smt_declarations.extend(lhs_smt_declarations)
+
+            if rhs_smt_declarations:
                 smt_declarations.extend(rhs_smt_declarations)
                 
             smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
@@ -568,22 +580,32 @@ class SMTProb(object):
             try:
                 (smt_dt, parameters, method_env, smt_interpretation) = KnowledgeBase.get_method(class_name,method_name)
             except Exception, e:
+                log.warning("Error interpreting method: %s" % e)
                 raise ForgottenMethodException(method_name, class_name, class_path="?")
 
             if smt_interpretation:
                 log.debug("Found interpretation for method %s: %s, %s, %s, %s" % (method_name, smt_dt, parameters, method_env, smt_interpretation))
     
                 tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
-                if node["exprCallee"]["nodeType"] != "ASTIdentifier":
-                    raise ValueError("I can only handle method calls with variables as callee. Received: %s" % node["exprCallee"]["code"])
-    
-                self_var = node["exprCallee"]["code"]
-    
+                assert node is not None
+
                 interpretation_context = { 
                     "__return__": tmp_var_name,
-                    "__self__": self_var,
                 }
+
+                callee_node = node.get("exprCallee", {})
+
+                if callee_node:
+                    callee_type = callee_node.get("nodeType", None)
+                    if callee_type == "ASTIdentifier":
+                        self_var = callee_node["code"]
+                        interpretation_context["__self__"] = callee_node["code"]
+                    else:
+                        log.warning("Callee of unknown type (%s). Cannot use the __self__var in method interpretation. Callee node: %s" % (callee_type, callee_node))
     
+
+                smt_declarations = []
+
                 for par_id,par in enumerate(node["parameters"]):
     
                     par_value = None
@@ -605,11 +627,32 @@ class SMTProb(object):
                         # passing an identifier, directly as the variable name
                         par_value = par["code"]
                     else:
-                        raise ValueError("Sorry dude. At the moment we cannot handle method call parameters that are neither literals nor identifiers")
+#                        raise ValueError("Sorry dude. At the moment we cannot handle method call parameters that are neither literals nor identifiers. Passed: %s" % par)
+                        log.debug("Method parameter is an expression: %s" % par["code"])
+                        smt_declarations_arg, smt_assertion_arg = self.node_to_smt(par, env, frame)
+
+                        log.debug("SMT declarations for method parameter: %s" % smt_declarations_arg)
+                        log.debug("SMT assertion for method parameter: %s" % smt_assertion_arg)
+
+                        par_aux_var = FreshNames.get_name(prefix="par_%s_" % par_id)  
+
+                        # below there is a hack; in order to generalise this code, take advantage of
+                        # the variable "parameters" that we get earlier but we don't use
+                        smt_declarations.append("(declare-const %s Int) ; this is a hack: I assume the parameter expression computes an integer" % par_aux_var)
+
+                        if smt_assertion_arg:
+                            par_assertion = "(assert (= %s %s))" % (par_aux_var, smt_assertion_arg)
+                            smt_declarations_arg.append(par_assertion)
+    
+                        if smt_declarations_arg:
+                            smt_declarations.append("; begin encoding method call parameter")
+                            smt_declarations.extend(smt_declarations_arg)
+                            smt_declarations.append("; end encoding method call parameter")
+
+                        par_value = par_aux_var
     
                     interpretation_context["par_%s" % par_id] = par_value
     
-                smt_declarations = []
                 log.debug("Method call aux var: %s => %s" % (method_name, tmp_var_name))
                 smt_declarations.append( "(declare-const %s %s)" % (tmp_var_name, smt_dt))
                 smt_declarations.append(smt_interpretation.smt_assert(**interpretation_context))
@@ -629,6 +672,9 @@ class SMTProb(object):
                 # store the returned value for this case
 #                smt_assertion = tmp_var_name   
                 smt_assertion = tmp_var_name
+
+                log.debug("Method smt declarations: %s" % smt_declarations)
+                log.debug("Method smt assertion: %s" % smt_assertion)
             else:
                 log.debug("Cannot find interpretation for method %s: %s, %s, %s, %s" % (method_name, smt_dt, parameters, method_env, smt_interpretation))
                 smt_assertion = ""
@@ -782,8 +828,10 @@ class SMTProb(object):
                 assertions.append("; cannot compute SMT model for instruction because one method has been forgotten: (name:%s,class:%s,path:%s)" % (e.method_name, e.class_name, e.class_path))
 
 
-            if smt_instr_assertion: # is not None: # also discard the case of empty strings (should never happen, though)
+            if smt_instr_declarations:
                 assertions.extend(smt_instr_declarations)
+
+            if smt_instr_assertion: # is not None: # also discard the case of empty strings (should never happen, though)
                 instr_assert = "(assert %s)" % smt_instr_assertion
                 assertions.append(instr_assert)
 
@@ -1932,5 +1980,4 @@ def literal_to_smt(node):
         log.warning("Don't know how to handle literal '%s'" % lit_value)
 
     return res
-
 

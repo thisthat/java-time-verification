@@ -333,6 +333,7 @@ class KnowledgeBase(object):
         if method_name in KnowledgeBase.KB[class_name]:
             raise ValueError("You already provided an interpretation for method (%s,%s)" % (class_name, method_name))
 
+        log.debug("Add method %s of class %s to knowledge base" % (method_name, class_name))
         KnowledgeBase.KB[class_name][method_name] = knowledge
 
         
@@ -349,9 +350,10 @@ class KnowledgeBase(object):
     def get_method(class_name, method_name): #, params, lhs_var):
         log.debug("Knowledge base lookup class: %s vs %s" % (class_name, KnowledgeBase.KB.keys()))
 
+        orig_class_name = class_name
         class_name = "-" # TODO this is a hack, remove ASAP
 
-        assert KnowledgeBase.has_method(class_name, method_name), "Class %s has no method %s" % (class_name, method_name)
+        assert KnowledgeBase.has_method(class_name, method_name), "Class %s has no method %s" % (orig_class_name, method_name)
 
         log.debug("Knowledge base lookup methods: %s vs %s" % (method_name, KnowledgeBase.KB[class_name].keys()))
    

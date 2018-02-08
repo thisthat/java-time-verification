@@ -129,7 +129,7 @@ class Object(DataType):
     def __init__(self):
         from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
 
-        smt_declaration = smt_declare_rec_datatype("Object", {"isnull":"Bool",}) 
+        smt_declaration = "%s\n(declare-const null Object)" % smt_declare_rec_datatype("Object", {"isnull":"Bool",}) 
         super(Object, self).__init__("Object", smt_declaration=smt_declaration)
 
 
@@ -140,7 +140,10 @@ class Iterator(DataType):
 
         smt_declaration = smt_declare_rec_datatype("Iterator", { "n_items":"Int", "n_visited":"Int",})
 
-        super(Iterator, self).__init__("Iterator", smt_declaration=smt_declaration)
+        # below we add the following constraints, for any X of type Iterator:
+        # (n_items X) >= (n_visited X) >= 0
+        super(Iterator, self).__init__("Iterator", smt_declaration=smt_declaration, smt_var_axioms=["(assert (>= (n_visited {var}) 0))", "(assert (>= (n_items {var}) (n_visited {var})))", ])
+
 
 class Collection(DataType):
     
@@ -1077,7 +1080,7 @@ def smt_declare_scalar(name, values):
 
 class SymbolTable(object):
 
-    RE_LITERAL = "^(true|false)$|^(\-?[0-9]+)$|^(\-?[0-9]+(?:\.[0-9]+)?)$|^(\"\w+\"|'\w+')$" # was: "\w+"
+    RE_LITERAL = "^(null)$|^(true|false)$|^(\-?[0-9]+)$|^(\-?[0-9]+(?:\.[0-9]+)?)$|^(\"\w+\"|'\w+')$" # was: "\w+"
 
     LITERALS = {}
     REV_LITERALS = {}
@@ -1097,7 +1100,12 @@ class SymbolTable(object):
 
         lit_type = SymbolTable.get_literal_type(value)
     
-        if lit_type == "String":
+        if lit_type == "object":
+            if value == "null":
+                lit_code = value
+            else:
+                raise ValueError("For type 'object' only the 'null' literal is supported. Passed: %s" % value)
+        elif lit_type == "String":
             # normalize the string literals to use ' as delimiter
             value = "'%s'" % (value[1:-1],)
             lit_code = SymbolTable.LITERALS.get(value, None)
@@ -1126,12 +1134,14 @@ class SymbolTable(object):
         if m:
             g = m.groups()
             if g[0] is not None:
-                return "bool"
+                return "object"
             elif g[1] is not None:
-                return "int"
+                return "bool"
             elif g[2] is not None:
-                return "float"
+                return "int"
             elif g[3] is not None:
+                return "float"
+            elif g[4] is not None:
                 return "String"
         
         raise ValueError("Cannot recognize literal: %s" % literal)
@@ -1195,7 +1205,7 @@ class PredicateParser(object):
 
     RE_VAR = "{\w+}" #r"({\w+})\s?(.*)"
     RE_NODE_NAME = "[^\s(){}]+" # r"([^\s(){}]+)\s?(.*)"
-    RE_LITERAL = "true|false|\-?[0-9]+(?:\.[0-9]+)?|\"\w+\"|'\w+'" # was: "\w+"
+    RE_LITERAL = "null|true|false|\-?[0-9]+(?:\.[0-9]+)?|\"\w+\"|'\w+'" # was: "\w+"
     PRED_CLASS = {
         ">"     : GT,
         ">="    : GTE,
@@ -1228,7 +1238,7 @@ class PredicateParser(object):
         g = re.match(reg_exp, text)
 
         if not g:
-            raise ValueError("Cannot parse text. Expected: %s. Passed: %s" % text)
+            raise ValueError("Cannot parse text. Expected: %s. Passed: %s" % (reg_exp, text))
 
         groups = g.groups()
 

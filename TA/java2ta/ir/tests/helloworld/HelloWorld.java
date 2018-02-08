@@ -20,7 +20,9 @@ public class HelloWorld {
     //single line
     public static String test(int x, int y, int w, int z){
 
-       return "";
+        x = y + w;
+        y = y * 2;
+        return "";
     }
 
     public void fie(int a) {

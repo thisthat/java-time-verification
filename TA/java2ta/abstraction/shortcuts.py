@@ -120,7 +120,8 @@ class DataTypeRegistry(dict):
         
         return DataTypeRegistry._the_registry
 
- 
+
+@contract(name="string", projectors="dict(string:string)", returns="string")
 def smt_declare_rec_datatype(name, projectors):
 
     dt_projectors = []
