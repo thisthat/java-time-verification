@@ -21,6 +21,7 @@ public class InstrumentDaikon implements ClassFileTransformer  {
     private static final Logger LOGGER = LogManager.getLogger();
     private static WatchPoints watchPoints = WatchPoints.getInstance();
     private static List<String> injected = new ArrayList<>();
+    private static List<String> injectedMethod = new ArrayList<>();
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
@@ -46,9 +47,13 @@ public class InstrumentDaikon implements ClassFileTransformer  {
                 int version = 0;
                 //cc.getClassFile().write(out);
                 for(String m : getMethodDefs) {
+                    if(injectedMethod.contains(m)){
+                        continue;
+                    }
                     //LOGGER.debug("Creating the method {}", m);
                     CtMethod mNew = CtNewMethod.make(m, cc);
                     cc.addMethod(mNew);
+                    injectedMethod.add(m);
                     //LOGGER.debug("Injected method: " + m);
                 }
                 //generating the method calls

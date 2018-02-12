@@ -53,6 +53,10 @@ public class WatchPoint {
         for(Variable v : vars){
             pars += v.getType() + " " + v.getName() + ",";
         }
+        //checks
+        for(int i = 0; i < vars.size()-1; i++){
+            pars += "boolean b" + i + ",";
+        }
         if(pars.length() > 0) {
             pars = pars.substring(0, pars.length()-1);
         }
@@ -68,6 +72,13 @@ public class WatchPoint {
         }
         for(Variable v : vars){
             pars += v.getName() + ",";
+        }
+        //checks
+        Variable[] varSet = vars.toArray(new Variable[0]);
+        for(int i = 2; i <= varSet.length; i++){
+            Variable v1 = varSet[i-2];
+            Variable v2 = varSet[i-1];
+            pars += v1.getName() + "<=" + v2.getName() + ",";
         }
         if(pars.length() > 0) {
             pars = pars.substring(0, pars.length()-1);
