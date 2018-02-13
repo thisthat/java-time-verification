@@ -1,7 +1,6 @@
 package daikon.parser.structure;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MethodInvariants {
@@ -13,6 +12,9 @@ public class MethodInvariants {
     String method;
     List<String> pars;
 
+    Boolean isPure = null;
+    List<Invariant> invs = new ArrayList<>();
+
     public MethodInvariants(boolean isClass, boolean isObject, boolean isEnter, boolean isExit, int lineExit, String method, List<String> pars) {
         this.isClass = isClass;
         this.isObject = isObject;
@@ -23,17 +25,26 @@ public class MethodInvariants {
         this.pars = pars;
     }
 
-    List<Invariant> invs = new ArrayList<>();
-
-    public void add(Invariant inv){
+    void add(Invariant inv) {
         invs.add(inv);
     }
 
-    @Override
-    public String toString() {
-        return "MethodInvariants{" +
-                ", method='" + method + '\'' +
-                ", size=" + invs.size() +
-                '}';
+    public boolean isPure(List<String> vars) {
+        if (isPure == null) {
+            isPure = true;
+            for(String p : vars) {
+                boolean flag = false;
+                for (Invariant i : invs) {
+                    if (i instanceof Orig) {
+                        Orig o = (Orig) i;
+                        if(o.containsVar(p) && o.isSameVar()) {
+                            flag = true;
+                        }
+                    }
+                }
+                isPure &= flag;
+            }
+        }
+        return isPure;
     }
 }

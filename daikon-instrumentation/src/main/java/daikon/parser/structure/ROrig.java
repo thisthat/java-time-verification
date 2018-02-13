@@ -1,15 +1,10 @@
 package daikon.parser.structure;
 
-public class ROrig implements Invariant {
-
-    private String left;
-    private String orig;
-    private OP operator;
+public class ROrig extends Orig implements Invariant {
 
 
     public ROrig(String left, OP operator, String orig) {
-        this.left = left;
-        this.orig = orig;
-        this.operator = operator;
+        super(left,operator,orig);
     }
+
 }
