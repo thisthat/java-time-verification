@@ -18,9 +18,16 @@ package daikon.parser;
 
 
 //#line 15 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+
+import daikon.parser.structure.*;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-//#line 20 "Parser.java"
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.ArrayList;
+//#line 27 "Parser.java"
 
 
 
@@ -44,7 +51,7 @@ void debug(String msg)
 }
 
 //########## STATE STACK ##########
-final static int YYSTACKSIZE = 500;  //maximum stack size
+final static int YYSTACKSIZE = 1000;  //maximum stack size
 int statestk[] = new int[YYSTACKSIZE]; //state stack
 int stateptr;
 int stateptrmax;                     //highest index of stackptr
@@ -163,72 +170,83 @@ public final static short TEXT=258;
 public final static short MOD=259;
 public final static short ENTER=260;
 public final static short EXIT=261;
-public final static short SIZE=262;
-public final static short ORIG=263;
-public final static short COMMA=264;
-public final static short EQUAL=265;
-public final static short NEQUAL=266;
-public final static short L=267;
-public final static short LEQ=268;
-public final static short GEQ=269;
-public final static short G=270;
-public final static short ONEOF=271;
+public final static short CLASS=262;
+public final static short OBJECT=263;
+public final static short SIZE=264;
+public final static short ORIG=265;
+public final static short COMMA=266;
+public final static short IF=267;
+public final static short EQUAL=268;
+public final static short NEQUAL=269;
+public final static short L=270;
+public final static short LEQ=271;
+public final static short GEQ=272;
+public final static short G=273;
+public final static short ONEOF=274;
+public final static short ELEMS=275;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
-    0,    0,    2,    5,    5,    4,    4,    3,    3,    1,
-    1,    1,    1,    1,    8,    6,    6,    6,    6,    6,
-    6,    7,
+    0,    0,    6,    6,    1,    1,    1,    1,    3,    3,
+    3,    7,    7,    2,    2,    2,    2,    2,    2,    2,
+    2,    2,    2,    2,    4,    5,    5,    5,    5,    5,
+    5,
 };
 final static short yylen[] = {                            2,
-    0,    7,    5,    1,    1,    1,    3,    0,    2,    3,
-    3,    3,    6,    3,    3,    1,    1,    1,    1,    1,
-    1,    4,
+    0,    7,    5,    2,    1,    1,    1,    1,    0,    1,
+    3,    0,    2,    3,    3,    6,    6,    3,    7,    6,
+    4,    6,    4,    6,    3,    1,    1,    1,    1,    1,
+    1,
 };
 final static short yydefred[] = {                         0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,   21,   16,   17,   18,   19,    0,    0,
-    0,    9,    0,   20,    0,    0,    0,   14,    0,   12,
-   10,    0,    0,    0,   11,    7,    4,    5,    3,    0,
-    0,   22,    0,   15,    0,    2,   13,
+    0,    0,    0,    0,    5,    6,    7,    8,    0,    4,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,   31,
+   26,   27,   28,   29,    0,    0,    0,    0,    0,    0,
+   13,    0,    0,    0,   18,    0,   15,   30,    0,    0,
+   14,    0,    0,    0,    0,    0,   11,    3,    0,   23,
+   21,    0,    0,    0,    0,    0,   25,    0,    0,    0,
+    0,    0,    0,    2,   17,   22,   20,   24,   16,    0,
+   19,
 };
 final static short yydgoto[] = {                          2,
-    8,    4,    9,   12,   39,   20,   10,   30,
+   10,   15,   18,   37,   27,    4,   16,
 };
 final static short yysindex[] = {                      -237,
- -240,    0,  -11, -239, -228, -262,   -9, -239, -225, -255,
- -231,   -7, -224,    0,    0,    0,    0,    0,  -87, -242,
- -221,    0, -240,    0, -220, -228, -235,    0, -228,    0,
-    0,   -1,    2, -239,    0,    0,    0,    0,    0,  -85,
- -217,    0, -237,    0,    3,    0,    0,
+ -235,    0,  -34,  -40,    0,    0,    0,    0, -232,    0,
+ -259,  -19,  -13,  -40,  -40, -228, -205,   21, -196,    0,
+    0,    0,    0,    0,  -92, -229, -241, -194, -193,   25,
+    0, -235, -232, -226,    0, -232,    0,    0,  -92, -191,
+    0,   28,   29,   30, -198,  -40,    0,    0,  -53,    0,
+    0, -185, -222, -214,   34, -237,    0,   35,  -92, -183,
+  -92, -181,  -40,    0,    0,    0,    0,    0,    0,   37,
+    0,
 };
-final static short yyrindex[] = {                        42,
-    0,    0,    0, -212,    0,    0,    0,    1,    0,    0,
-  -41,    0, -241,    0,    0,    0,    0,    0,    0,    0,
+final static short yyrindex[] = {                        79,
+    0,    0,    0, -177,    0,    0,    0,    0,   40,    0,
+    0,    0,    0,    0,    1,    0,  -39,    0, -240,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    1,    0,    0,    0,    0,    0,    0,
-    0,    0,   42,    0,    0,    0,    0,
+    0,    0,  -38,    0,    0,  -43,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    1,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,   79,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,
 };
-final static short yygindex[] = {                         4,
-    0,   23,   -6,   -2,    0,   38,    0,    0,
+final static short yygindex[] = {                        27,
+   50,  -10,  -14,  -31,  -21,   53,   -8,
 };
 final static int YYTABLESIZE=258;
 static short yytable[];
 static { yytable();}
 static void yytable(){
-yytable = new short[]{                          6,
-    8,   22,   13,   14,   15,   16,   17,   18,   19,   24,
-   14,   15,   16,   17,   18,   31,   20,    3,    6,    1,
-   32,   20,    7,   36,   37,   38,   40,   43,    5,   11,
-   21,   23,   26,   27,   28,   29,   33,   35,   41,   44,
-   45,    1,   42,   47,    8,   34,   46,   25,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    6,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+yytable = new short[]{                         14,
+   12,   10,    9,   30,   40,    9,   31,   50,   19,   20,
+   21,   22,   23,   24,   25,   26,   41,   30,   47,    1,
+   28,   49,    3,   42,   30,   17,   29,   66,   32,   68,
+   36,   60,   62,    5,    6,    7,    8,   56,   38,   20,
+   21,   22,   23,   24,   39,   38,   20,   21,   22,   23,
+   24,   59,   70,   38,   20,   21,   22,   23,   24,   61,
+   33,   34,   35,   43,   44,   45,   51,   52,   55,   53,
+   54,   57,   58,   63,   67,   65,   69,   71,    1,   12,
+    9,    9,   64,   48,   46,   10,    9,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -241,25 +259,26 @@ yytable = new short[]{                          6,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    8,
+    0,    0,    0,    0,    0,    0,    0,   11,    0,    0,
+    0,    0,    0,   12,   13,    5,    6,    7,    8,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,   12,
 };
 }
 static short yycheck[];
 static { yycheck(); }
 static void yycheck() {
-yycheck = new short[] {                         41,
-    0,    8,  265,  266,  267,  268,  269,  270,  271,  265,
-  266,  267,  268,  269,  270,  258,  258,  258,  258,  257,
-  263,  263,  262,   26,  260,  261,   29,   34,   40,  258,
-   40,  257,  264,   41,  259,  123,  258,  258,   40,  125,
-  258,    0,   41,   41,  257,   23,   43,   10,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,  125,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+yycheck = new short[] {                         40,
+    0,   41,   41,   14,   26,   40,   15,   39,  268,  269,
+  270,  271,  272,  273,  274,  275,  258,  258,   33,  257,
+   40,   36,  258,  265,  265,  258,   40,   59,  257,   61,
+  123,   53,   54,  260,  261,  262,  263,   46,  268,  269,
+  270,  271,  272,  273,  274,  268,  269,  270,  271,  272,
+  273,  274,   63,  268,  269,  270,  271,  272,  273,  274,
+  266,   41,  259,  258,  258,   41,  258,   40,  267,   41,
+   41,  125,  258,   40,  258,   41,  258,   41,    0,  257,
+   41,  125,   56,   34,   32,  125,  125,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -271,13 +290,16 @@ yycheck = new short[] {                         41,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,  258,   -1,   -1,
+   -1,   -1,   -1,  264,  265,  260,  261,  262,  263,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,  257,
 };
 }
 final static short YYFINAL=2;
-final static short YYMAXTOKEN=271;
+final static short YYMAXTOKEN=275;
 final static String yyname[] = {
 "end-of-file",null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
@@ -295,40 +317,58 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-null,null,null,null,null,null,null,"SEP","TEXT","MOD","ENTER","EXIT","SIZE",
-"ORIG","COMMA","EQUAL","NEQUAL","L","LEQ","GEQ","G","ONEOF",
+null,null,null,null,null,null,null,"SEP","TEXT","MOD","ENTER","EXIT","CLASS",
+"OBJECT","SIZE","ORIG","COMMA","IF","EQUAL","NEQUAL","L","LEQ","GEQ","G",
+"ONEOF","ELEMS",
 };
 final static String yyrule[] = {
 "$accept : start",
 "start :",
 "start : SEP first invs SEP first invs start",
 "first : TEXT '(' pars ')' status",
+"first : TEXT status",
 "status : ENTER",
 "status : EXIT",
+"status : CLASS",
+"status : OBJECT",
+"pars :",
 "pars : TEXT",
 "pars : TEXT COMMA pars",
 "invs :",
 "invs : single invs",
 "single : TEXT op TEXT",
-"single : function op TEXT",
-"single : TEXT ONEOF array",
+"single : TEXT ONEOF arrays",
+"single : ORIG '(' TEXT ')' op TEXT",
 "single : TEXT op ORIG '(' TEXT ')'",
 "single : TEXT EQUAL MOD",
-"array : '{' pars '}'",
+"single : '(' single ')' IF '(' single ')'",
+"single : SIZE '(' TEXT ')' op TEXT",
+"single : TEXT ELEMS op TEXT",
+"single : SIZE '(' TEXT ')' ONEOF arrays",
+"single : TEXT ELEMS ONEOF arrays",
+"single : ORIG '(' TEXT ')' ONEOF arrays",
+"arrays : '{' pars '}'",
 "op : L",
 "op : LEQ",
 "op : GEQ",
 "op : G",
 "op : EQUAL",
 "op : NEQUAL",
-"function : SIZE '(' TEXT ')'",
 };
 
-//#line 84 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 146 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+
+
+  private boolean isClass = false;
+  private boolean isObj   = false;
+  private boolean isEnter = false;
+  private boolean isExit  = false;
+  private int exitLine = 0;
+  private MethodInvariants lastInv;
+
+  private List<MethodInvariants> lm = new ArrayList<>();
 
   private Yylex lexer;
-
-  private Boolean result = false;
 
   private int yylex () {
     int yyl_return = -1;
@@ -343,7 +383,9 @@ final static String yyrule[] = {
   }
 
   public void yyerror (String error) {
-    throw new RuntimeException("Error: " + error);
+    String buffer = lexer.getBuffer(5);
+    String msg = String.format("[%d] Error: %s\nBuffer:\n%s", lexer.line, error, buffer);
+    throw new RuntimeException(msg);
   }
 
 
@@ -356,13 +398,30 @@ final static String yyrule[] = {
         lexer = new Yylex(r, this);
   }
 
-  public void calculate(String input){
+  public List<MethodInvariants> calculate(String input){
     InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
     lexer = new Yylex(new InputStreamReader(stream), this);
+    lm.clear();
     this.run();
+    return lm;
   }
 
-//#line 293 "Parser.java"
+  public List<MethodInvariants> calculate(Path file) throws IOException {
+      List<String> lines = Files.readAllLines(file);
+      StringBuilder cnt = new StringBuilder();
+      for(String line : lines) {
+          if(line.contains("()") && !line.contains("():::"))
+              cnt.append("\n");
+          else if(line.contains("has only one value"))
+              cnt.append("\n");
+          else if(line.contains(":::EXIT") && line.contains(";condition="))
+              cnt.append(line.substring(0, line.indexOf(";"))).append("\n");
+          else
+              cnt.append(line).append("\n");
+      }
+      return this.calculate(cnt.toString());
+  }
+//#line 352 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -517,70 +576,167 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 48 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{this.result = false;}
-break;
-case 3:
-//#line 52 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ System.out.println("first"); }
-break;
-case 8:
-//#line 60 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ System.out.println("nothing"); }
-break;
-case 9:
-//#line 61 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ System.out.println("single"); }
-break;
-case 10:
 //#line 63 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {}
 break;
+case 3:
+//#line 67 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{
+    MethodInvariants m = new MethodInvariants(isClass, isObj, isEnter, isExit, exitLine, val_peek(4).sval, (List)val_peek(2).obj);
+    lm.add(m);
+    this.lastInv = m;
+}
+break;
+case 4:
+//#line 72 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{
+        MethodInvariants m = new MethodInvariants(isClass, isObj, isEnter, isExit, exitLine, val_peek(1).sval, new ArrayList<>());
+        lm.add(m);
+        this.lastInv = m;
+}
+break;
+case 5:
+//#line 78 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{  isClass = false;
+                  isObj   = false;
+                  isEnter = true;
+                  isExit  = false;
+                  exitLine = 0;
+               }
+break;
+case 6:
+//#line 84 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{  isClass = false;
+                  isObj   = false;
+                  isEnter = false;
+                  isExit  = true;
+                  exitLine = 0;
+                  String s = val_peek(0).sval;
+                  s = s.substring(7);
+                  if(s.length()>0)
+                    exitLine = Integer.parseInt(s);
+              }
+break;
+case 7:
+//#line 94 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{  isClass = true;
+                  isObj   = false;
+                  isEnter = false;
+                  isExit  = false;
+                  exitLine = 0;
+              }
+break;
+case 8:
+//#line 100 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{  isClass = false;
+                  isObj   = true;
+                  isEnter = false;
+                  isExit  = false;
+                  exitLine = 0;
+              }
+break;
+case 9:
+//#line 107 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new ArrayList<>(); }
+break;
+case 10:
+//#line 108 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{
+                            List<String> out = new ArrayList<>();
+                            out.add(val_peek(0).sval);
+                            yyval.obj = out;
+                        }
+break;
 case 11:
-//#line 64 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{}
+//#line 113 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{
+                            List<String> out = new ArrayList<>();
+                            out.add(val_peek(2).sval);
+                            out.addAll((List)val_peek(0).obj);
+                            yyval.obj = out;
+                        }
 break;
 case 12:
-//#line 65 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{}
+//#line 120 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{  }
 break;
 case 13:
-//#line 66 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{}
+//#line 121 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ this.lastInv.add((Invariant) val_peek(1).obj); }
 break;
 case 14:
-//#line 67 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{}
+//#line 123 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new Check(val_peek(2).sval, val_peek(0).sval, (Invariant.OP)val_peek(1).obj); }
 break;
 case 15:
-//#line 71 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{}
+//#line 124 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new OneOf(val_peek(2).sval, (List) val_peek(0).obj); }
 break;
 case 16:
-//#line 74 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ }
+//#line 125 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new LOrig(val_peek(3).sval, (Invariant.OP)val_peek(1).obj, val_peek(0).sval); }
 break;
 case 17:
-//#line 75 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ }
+//#line 126 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new ROrig(val_peek(5).sval, (Invariant.OP)val_peek(4).obj, val_peek(1).sval); }
 break;
 case 18:
-//#line 76 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ }
+//#line 127 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new Mod(val_peek(2).sval, val_peek(0).sval); }
 break;
 case 19:
-//#line 77 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ }
+//#line 128 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new Implication((Invariant)val_peek(5).obj, (Invariant)val_peek(1).obj); }
 break;
 case 20:
-//#line 78 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ }
+//#line 129 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new Size(val_peek(3).sval, val_peek(0).sval, (Invariant.OP)val_peek(1).obj); }
 break;
 case 21:
-//#line 79 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
-{ }
+//#line 130 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ /* ignore */ }
 break;
-//#line 506 "Parser.java"
+case 22:
+//#line 131 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ /* ignore */ }
+break;
+case 23:
+//#line 132 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new ArrayVals(val_peek(3).sval,(List) val_peek(0).obj); }
+break;
+case 24:
+//#line 133 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = new LOrigArrayVals(val_peek(3).sval, (List) val_peek(0).obj); }
+break;
+case 25:
+//#line 135 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = val_peek(1).obj; }
+break;
+case 26:
+//#line 137 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = Invariant.OP.L; }
+break;
+case 27:
+//#line 138 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = Invariant.OP.LE; }
+break;
+case 28:
+//#line 139 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = Invariant.OP.GE; }
+break;
+case 29:
+//#line 140 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = Invariant.OP.G; }
+break;
+case 30:
+//#line 141 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = Invariant.OP.EQ; }
+break;
+case 31:
+//#line 142 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+{ yyval.obj = Invariant.OP.NEQ; }
+break;
+//#line 662 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

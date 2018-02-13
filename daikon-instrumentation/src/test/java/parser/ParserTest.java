@@ -1,9 +1,9 @@
 package parser;
 
 import daikon.parser.Parser;
+import daikon.parser.structure.MethodInvariants;
 import org.junit.Test;
 
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -15,14 +15,8 @@ public class ParserTest {
         //Parser p = new Parser(new FileReader(file));
         //p.run();
         Parser p = new Parser();
-        List<String> lines = Files.readAllLines(Paths.get(file));
-        StringBuilder cnt = new StringBuilder();
-        for(String line : lines) {
-            if(line.contains("()"))
-                cnt.append("\n");
-            else
-                cnt.append(line).append("\n");
-        }
-        p.calculate(cnt.toString());
+        List<MethodInvariants> l = p.calculate(Paths.get(file));
+        for(MethodInvariants m : l)
+            System.out.println(m);
     }
 }
