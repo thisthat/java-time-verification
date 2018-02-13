@@ -17,6 +17,6 @@ public class ParserTest {
         Parser p = new Parser();
         List<MethodInvariants> l = p.calculate(Paths.get(file));
         for(MethodInvariants m : l)
-            System.out.println(m);
+            System.out.print('\r');
     }
 }

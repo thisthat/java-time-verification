@@ -1,5 +1,7 @@
 package daikon.parser.structure;
 
+import java.util.List;
+
 public class Implication implements Invariant {
 
     private Invariant left;
@@ -9,5 +11,16 @@ public class Implication implements Invariant {
     public Implication(Invariant left, Invariant right) {
         this.left = left;
         this.right = right;
+    }
+
+    @Override
+    public boolean talks(List<String> vars) {
+        return left.talks(vars) || right.talks(vars);
+    }
+
+    @Override
+    public void replace(List<String> vars) {
+        left.replace(vars);
+        right.replace(vars);
     }
 }
