@@ -25,8 +25,9 @@ public class MethodInvariants {
         this.pars = pars;
     }
 
-    void add(Invariant inv) {
+    public void add(Invariant inv) {
         invs.add(inv);
+        isPure = null;
     }
 
     public boolean isPure(List<String> vars) {
