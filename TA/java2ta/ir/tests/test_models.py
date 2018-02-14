@@ -1,19 +1,8 @@
-from time import sleep
 
 from java2ta.ir.models import Project, Thread, Klass, InnerKlass, Method, Variable, ASTVisitor
+from java2ta.ir.shortcuts import check_is_open
 
 import pkg_resources
-
-def check_is_open(project, max_seconds=30):
-    num_attempts = max_seconds
-
-    while num_attempts > 0 and not project.is_open():
-        assert project.status in [ "open", "opening" ], "Expected project in 'opening' status. Got: '%s'" % project.status
-        # repeat after a short time ...
-        sleep(1)
-        num_attempts = num_attempts - 1
-
-    assert project.is_open(), "Process '%s' (path='%s',status='%s') took more that %s seconds to open, something is probably wrong ..." % (project.name, project.path, project.status, max_seconds)
 
 
 def test_open_project():

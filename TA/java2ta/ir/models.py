@@ -704,3 +704,4 @@ class ASTVisitor(object):
                 
        
 new_contract_check_type("is_ast_visitor", ASTVisitor)
+
