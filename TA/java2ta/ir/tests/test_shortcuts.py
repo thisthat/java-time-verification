@@ -37,3 +37,42 @@ def test_analyze_assignment():
 
     assert var_timestamps["c"][0]["code"] == "b + a", var_timestamps["c"][0]
     assert var_timestamps["c"][0]["line"] in [ 43 ], var_timestamps["c"][0]
+
+
+def test_check_now_assignments():
+
+    test_proj_path = pkg_resources.resource_filename("java2ta.ir.tests", "helloworld")
+
+    p = Project("helloworld", "file://%s" % test_proj_path, "localhost:9000")
+
+    assert p.is_status("closed")
+    p.open()
+
+    check_is_open(p)
+  
+    t = Klass("HelloWorld","","HelloWorld.java", project=p)
+    run_method = Method("time_method", t)
+
+#    (found_identifiers, found_method_calls) = analyze_assignment(run_method.ast)
+    now_methods = set([ "java.lang.System.currentTimeMillis" ])
+    var_timestamps = get_timestamps(run_method, now_methods)
+
+    assert "b" in var_timestamps
+    assert "c" in var_timestamps
+
+    res_b = check_now_assignments(var_timestamps["b"], now_methods)
+
+    assert res_b == True
+
+    res_c = check_now_assignments(var_timestamps["c"], now_methods)
+    
+    assert res_c == False
+
+    # this is expected to return False, because the list of now_methods is empty
+    res_b_wrong = check_now_assignments(var_timestamps["b"], set([]))
+    assert res_b_wrong == False 
+
+
+    # this is expected to return False, because the list of nodes is empty
+    res_empty = check_now_assignments([], now_methods)
+    assert res_empty == False

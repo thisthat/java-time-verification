@@ -84,8 +84,8 @@ def get_timestamps(node, now_methods):
 
 #            is_timestamp = (len(found_identifiers & timestamp_variables) > 0) or \
 #                (len(found_method_calls & now_methods) > 0)
-            print "curr node: %s" % rhs_node
-            print "check is timestamp (identifiers=%s, timestamps=%s, method_calls=%s, now_methods=%s): %s" % (found_identifiers, timestamp_variables, found_method_calls, now_methods, is_timestamp)
+#            print "curr node: %s" % rhs_node
+#            print "check is timestamp (identifiers=%s, timestamps=%s, method_calls=%s, now_methods=%s): %s" % (found_identifiers, timestamp_variables, found_method_calls, now_methods, is_timestamp)
    
             if is_timestamp:
 #                timestamp_variables.add(curr_var)
@@ -163,3 +163,32 @@ def get_timestamps(node, now_methods):
         timestamp_fingerprints = []
     
     return timestamp_variables
+
+
+@contract(nodes="list(dict)", now_methods="set(string)", returns="bool")
+def check_now_assignments(nodes, now_methods):
+    """
+    Check whether the passed list of nodes are now-assignment. A now-assignment is
+    defined as the result of a method call, such that the invoked method is in the
+    list of now_methods.
+
+    In other words:
+    - if a node in the list is not a method call, the entire list does not contain only now-assignments
+    - if a node in the list is a method call to a method not in the list of now_methods, the entire list does not contain only now-assignments
+    - if the current list of assignment is empty, we don't consider it as a list of now-assignments
+    """
+    res = len(nodes) > 0
+
+    for curr in nodes:
+        if curr["nodeType"] != "ASTMethodCall":
+            res = False
+            break
+
+        called_method = "%s.%s" % (curr["classPointed"], curr["methodName"])
+        if called_method not in now_methods:
+            res = False     
+            break
+        
+    return res
+        
+        
