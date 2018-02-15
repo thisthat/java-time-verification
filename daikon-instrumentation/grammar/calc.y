@@ -66,11 +66,13 @@ start : /* nothing */ {}
 
 first: TEXT '(' pars ')' status {
     MethodInvariants m = new MethodInvariants(isClass, isObj, isEnter, isExit, exitLine, $1, (List)$3);
+    m.setFileLine(lexer.line);
     lm.add(m);
     this.lastInv = m;
 }
      | TEXT status {
         MethodInvariants m = new MethodInvariants(isClass, isObj, isEnter, isExit, exitLine, $1, new ArrayList<>());
+        m.setFileLine(lexer.line);
         lm.add(m);
         this.lastInv = m;
 }

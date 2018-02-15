@@ -17,6 +17,7 @@ public class MethodInvariants {
 
     Boolean isPure = null;
     List<Invariant> invs = new ArrayList<>();
+    private int setFileLine;
 
     public MethodInvariants(boolean isClass, boolean isObject, boolean isEnter, boolean isExit, int lineExit, String method, List<String> pars) {
         this.isClass = isClass;
@@ -36,7 +37,13 @@ public class MethodInvariants {
         }
     }
 
+    public void setFileLine(int line){
+        this.setFileLine = line;
+    }
+
     public void add(Invariant inv) {
+        if(inv == null) // we can reduce some invs that we do not care, e.g. elements of
+            return;
         //replace args with concrete name
         inv.replace(timeVars);
         invs.add(inv);
@@ -52,6 +59,26 @@ public class MethodInvariants {
             }
         }
         return out;
+    }
+
+    public boolean isMethod(String method){
+        return (this.isEnter || this.isExit) && this.method.equals(method);
+    }
+
+    public boolean isClass() {
+        return isClass;
+    }
+
+    public boolean isObject() {
+        return isObject;
+    }
+
+    public boolean isEnter() {
+        return isEnter;
+    }
+
+    public boolean isExit() {
+        return isExit;
     }
 
     public boolean isPure(List<String> vars) {

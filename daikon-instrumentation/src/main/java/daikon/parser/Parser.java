@@ -356,7 +356,7 @@ final static String yyrule[] = {
 "op : NEQUAL",
 };
 
-//#line 146 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 148 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 
 
   private boolean isClass = false;
@@ -583,20 +583,22 @@ case 3:
 //#line 67 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {
     MethodInvariants m = new MethodInvariants(isClass, isObj, isEnter, isExit, exitLine, val_peek(4).sval, (List)val_peek(2).obj);
+    m.setFileLine(lexer.line);
     lm.add(m);
     this.lastInv = m;
 }
 break;
 case 4:
-//#line 72 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 73 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {
         MethodInvariants m = new MethodInvariants(isClass, isObj, isEnter, isExit, exitLine, val_peek(1).sval, new ArrayList<>());
+        m.setFileLine(lexer.line);
         lm.add(m);
         this.lastInv = m;
 }
 break;
 case 5:
-//#line 78 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 80 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {  isClass = false;
                   isObj   = false;
                   isEnter = true;
@@ -605,7 +607,7 @@ case 5:
                }
 break;
 case 6:
-//#line 84 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 86 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {  isClass = false;
                   isObj   = false;
                   isEnter = false;
@@ -618,7 +620,7 @@ case 6:
               }
 break;
 case 7:
-//#line 94 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 96 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {  isClass = true;
                   isObj   = false;
                   isEnter = false;
@@ -627,7 +629,7 @@ case 7:
               }
 break;
 case 8:
-//#line 100 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 102 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {  isClass = false;
                   isObj   = true;
                   isEnter = false;
@@ -636,11 +638,11 @@ case 8:
               }
 break;
 case 9:
-//#line 107 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 109 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new ArrayList<>(); }
 break;
 case 10:
-//#line 108 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 110 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {
                             List<String> out = new ArrayList<>();
                             out.add(val_peek(0).sval);
@@ -648,7 +650,7 @@ case 10:
                         }
 break;
 case 11:
-//#line 113 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 115 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {
                             List<String> out = new ArrayList<>();
                             out.add(val_peek(2).sval);
@@ -657,86 +659,86 @@ case 11:
                         }
 break;
 case 12:
-//#line 120 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 122 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 {  }
 break;
 case 13:
-//#line 121 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 123 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { this.lastInv.add((Invariant) val_peek(1).obj); }
 break;
 case 14:
-//#line 123 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 125 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new Check(val_peek(2).sval, val_peek(0).sval, (Invariant.OP)val_peek(1).obj); }
 break;
 case 15:
-//#line 124 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 126 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new OneOf(val_peek(2).sval, (List) val_peek(0).obj); }
 break;
 case 16:
-//#line 125 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 127 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new LOrig(val_peek(3).sval, (Invariant.OP)val_peek(1).obj, val_peek(0).sval); }
 break;
 case 17:
-//#line 126 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 128 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new ROrig(val_peek(5).sval, (Invariant.OP)val_peek(4).obj, val_peek(1).sval); }
 break;
 case 18:
-//#line 127 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 129 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new Mod(val_peek(2).sval, val_peek(0).sval); }
 break;
 case 19:
-//#line 128 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 130 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new Implication((Invariant)val_peek(5).obj, (Invariant)val_peek(1).obj); }
 break;
 case 20:
-//#line 129 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 131 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new Size(val_peek(3).sval, val_peek(0).sval, (Invariant.OP)val_peek(1).obj); }
 break;
 case 21:
-//#line 130 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 132 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { /* ignore */ }
 break;
 case 22:
-//#line 131 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 133 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { /* ignore */ }
 break;
 case 23:
-//#line 132 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 134 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new ArrayVals(val_peek(3).sval,(List) val_peek(0).obj); }
 break;
 case 24:
-//#line 133 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 135 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = new LOrigArrayVals(val_peek(3).sval, (List) val_peek(0).obj); }
 break;
 case 25:
-//#line 135 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 137 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 26:
-//#line 137 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 139 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = Invariant.OP.L; }
 break;
 case 27:
-//#line 138 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 140 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = Invariant.OP.LE; }
 break;
 case 28:
-//#line 139 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 141 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = Invariant.OP.GE; }
 break;
 case 29:
-//#line 140 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 142 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = Invariant.OP.G; }
 break;
 case 30:
-//#line 141 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 143 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = Invariant.OP.EQ; }
 break;
 case 31:
-//#line 142 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
+//#line 144 "/Users/giovanni/repository/java-xal/daikon-instrumentation/grammar/calc.y"
 { yyval.obj = Invariant.OP.NEQ; }
 break;
-//#line 662 "Parser.java"
+//#line 664 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
