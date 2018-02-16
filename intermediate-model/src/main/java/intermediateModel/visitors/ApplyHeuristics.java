@@ -167,7 +167,7 @@ public class ApplyHeuristics extends ParseIM {
 			timeAttrs.put(c, new ArrayList<>());
 		}
 		ASTRE e = v.getExpr();
-		if(v.getExpr() == null && v.getType().equals("long")){
+		if(v.getExpr() == null && (v.getType().equals("long") || v.getType().equals("int"))){
 			if(!(v instanceof ASTAttribute)) {
 				return;
 			}

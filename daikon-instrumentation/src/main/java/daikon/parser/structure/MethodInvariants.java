@@ -84,17 +84,19 @@ public class MethodInvariants {
     public boolean isPure(List<String> vars) {
         if (isPure == null) {
             isPure = true;
-            for(String p : vars) {
-                boolean flag = false;
-                for (Invariant i : invs) {
-                    if (i instanceof Orig) {
-                        Orig o = (Orig) i;
-                        if(o.containsVar(p) && o.isSameVar()) {
-                            flag = true;
+            if(invs.size() > 0) {
+                for (String p : vars) {
+                    boolean flag = false;
+                    for (Invariant i : invs) {
+                        if (i instanceof Orig) {
+                            Orig o = (Orig) i;
+                            if (o.containsVar(p) && o.isSameVar()) {
+                                flag = true;
+                            }
                         }
                     }
+                    isPure &= flag;
                 }
-                isPure &= flag;
             }
         }
         return isPure;
