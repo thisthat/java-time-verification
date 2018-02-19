@@ -320,6 +320,7 @@ class KnowledgeBase(object):
 
     KB = {}
     NOW = set([])
+    TIMESTAMPS = {}
  
     @staticmethod   
     @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),is_predicate)")
@@ -396,15 +397,48 @@ class KnowledgeBase(object):
         return methods
        
 
-    def set_now_method(self, class_fqn, method_name):
+    @staticmethod
+    @contract(class_fqn="string", method_name="string")
+    def set_now_method(class_fqn, method_name):
         """
         A now-method must exists first in KB, and then we add it
         to the set of now-methods.
         """
-        m = self.get_method(class_fqn, method_name)
-        KnowledgeBase.NOW.add(m)
+#        m = KnowledgeBase.get_method(class_fqn, method_name)
+#        KnowledgeBase.NOW.add(m)
+        fq_method_name = "%s.%s" % (class_fqn, method_name)
+        KnowledgeBase.NOW.add(fq_method_name)
 
-    def unset_now_method(self, class_fqn, method_name):
+    @staticmethod
+    def unset_now_method(class_fqn, method_name):
     
-        m = self.get_method(class_fqn, method_name)
-        KnowledgeBase.NOW.delete(m)
+#        m = KnowledgeBase.get_method(class_fqn, method_name)
+#        KnowledgeBase.NOW.delete(m)
+        fq_method_name = "%s.%s" % (class_fqn, method_name)
+        KnowledgeBase.NOW.delete(fq_method_name)
+
+
+    @staticmethod
+    def get_now_methods():
+        return KnowledgeBase.NOW
+
+    @staticmethod
+    def add_timestamp(class_fqn, method_name, var_name):
+
+        methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
+        timestamps = methods.get(method_name, set([]))
+        timestamps.add(var_name)
+
+        methods[method_name] = timestamps
+        KnowledgeBase.TIMESTAMPS[class_fqn] = methods
+
+    @staticmethod
+    def get_timestamps(class_fqn, method_name):
+        methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
+        timestamps = methods.get(method_name, set([]))
+        return timestamps
+
+    @staticmethod
+    def is_timestamp(class_fqn, method_name, var_name):
+        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+        return var_name in timestamps

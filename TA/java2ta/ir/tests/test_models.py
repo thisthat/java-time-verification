@@ -656,3 +656,5 @@ def test_ast_visitor_more_handlers():
     assert len(var_assignments) == 2, var_assignments
     assert ("x", 23, 493, 502) in var_assignments
     assert ("y", 24, 512, 521) in var_assignments
+
+

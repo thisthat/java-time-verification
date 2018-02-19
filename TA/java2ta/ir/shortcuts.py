@@ -60,7 +60,7 @@ def get_fingerprints(timestamps):
             fingerprints.add(get_fingerprint(var, node))
     return fingerprints
 
-@contract(node="is_ast_node|dict", now_methods="set(string)")
+@contract(node="is_ast_node|dict", now_methods="set(string)", returns="dict(string:list(dict))")
 def get_timestamps(node, now_methods):
 
     timestamp_variables = {}
@@ -190,5 +190,4 @@ def check_now_assignments(nodes, now_methods):
             break
         
     return res
-        
         

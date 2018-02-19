@@ -12,6 +12,7 @@ from java2ta.translator.rules import ExtractMethodStateSpace, AddStates
 from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames
 from java2ta.ir.models import Project, Method, Klass
 from java2ta.ir.client import APIError
+from java2ta.ir.shortcuts import get_timestamps, check_now_assignments
 from java2ta.ta.models import TA, Location, Edge, ClockVariable
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable
 from java2ta.abstraction.shortcuts import DataTypeFactory
@@ -70,39 +71,40 @@ def pred_to_env(attr_predicates):
 
     return res
 
-@contract(project=Project, class_fqn="string", class_path="string", method_name="string", domains="dict", returns=TA)
-def translate_method_to_automaton(project, class_fqn, class_path, method_name, domains):
-
-    # check this works (case 1: no dot, case 2: one or more dots)
-    class_name = ""
-    package_name = ""
-
-    fqn_parts = class_fqn.rsplit(".", 1)
-
-    if len(fqn_parts) == 1:
-        class_name = fqn_parts[0]
-    else:
-        package_name = fqn_parts[0]
-        class_name = fqn_parts[1]
-
-    klass = Klass(class_name, package_name, "file://%s" % class_path, project)
-    m = Method(method_name, klass)
-
-    r1 = ExtractMethodStateSpace()
-    r2 = AddStates()
-    # TODO add rules for adding edges b/w states by static analysis (SMT based)
-
-    e = Engine()
-    e.add_rule(r1)
-    e.add_rule(r2)
-
-    ctx = Context()
-    ctx.push({})
-    ctx.update("abs_domains", domains)
-    ta = TA(method_name)
-    (ta_post, ctx_post) = e.run(m, ta, ctx)
-
-    return ta_post
+##@contract(project=Project, class_fqn="string", class_path="string", method_name="string", domains="dict", returns=TA)
+##def translate_method_to_automaton(project, class_fqn, class_path, method_name, domains):
+##
+##    # check this works (case 1: no dot, case 2: one or more dots)
+##    class_name = ""
+##    package_name = ""
+##
+##    fqn_parts = class_fqn.rsplit(".", 1)
+##
+##    if len(fqn_parts) == 1:
+##        class_name = fqn_parts[0]
+##    else:
+##        package_name = fqn_parts[0]
+##        class_name = fqn_parts[1]
+##
+##    klass = Klass(class_name, package_name, "file://%s" % class_path, project)
+##    m = Method(method_name, klass)
+##
+##    r1 = ExtractMethodStateSpace()
+##    r2 = AddStates()
+##    # TODO add rules for adding edges b/w states by static analysis (SMT based)
+##
+##    e = Engine()
+##    e.add_rule(r1)
+##    e.add_rule(r2)
+##
+##    ctx = Context()
+##    ctx.push({})
+##    ctx.update("abs_domains", domains)
+##    ta = TA(method_name)
+##    (ta_post, ctx_post) = e.run(m, ta, ctx)
+##
+##    return ta_post
+##
 
 @contract(conf="is_configuration", pc="is_pc", returns="string")
 def build_location_name(conf, pc):
@@ -211,8 +213,8 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
 
 
-@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", returns=TA)
-def transform(name, instructions, state_space, project):
+@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", timestamps="dict(string:list(dict))", only_now_assignments="dict(string:bool)", returns="is_ta")
+def transform(name, instructions, state_space, project, timestamps, only_now_assignments):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
     # this note just to keep track of this "oddity"
@@ -1922,16 +1924,23 @@ def get_state_space_from_method(method, domains):
 ##
 ##    return m
 
-@contract(method=Method, state_space="is_state_space", returns=TA)
+@contract(method="is_method", state_space="is_state_space", returns="is_ta")
 def translate_method_to_ta(method, state_space):
 
     #instructions = method.ast["stms"]
     instructions = method.instructions
 
+    # pre-analysis of variable timestamps
+    now_methods = KnowledgeBase.get_now_methods()
+    timestamps = get_timestamps(method, now_methods)    
+    only_now_assignments = {}
+    for var, nodes in timestamps.iteritems():
+        only_now_assignments[var] = check_now_assignments(nodes, now_methods)
+
     if len(instructions) == 0:
         raise ValueError("The passed method has no instructions. This is not allowed.")
 
-    ta = transform(method.name, instructions, state_space, method.project)
+    ta = transform(method.name, instructions, state_space, method.project, timestamps, only_now_assignments)
 
     return ta
 
