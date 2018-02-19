@@ -164,20 +164,8 @@ class Method(ASTNode):
  
         assert isinstance(name, basestring)       
 
-##        klass = None
-##        variable = None
-##
-##        if isinstance(parent, Klass):
-##            klass = parent
-##        elif isinstance(parent, Variable):
-##            variable = parent
-##        else:
-##            raise ValueError("The parent element can either be a Klass or a Variable")
-
         super(Method, self).__init__(name, klass.project, parent=klass)
 
-##        self.klass = klass
-##        self.variable = variable
 
     @property
     @contract(returns="string")
@@ -187,25 +175,13 @@ class Method(ASTNode):
 
     @contract(returns="dict")
     def get_ast(self):
-#        assert self.klass is not None or self.variable is not None
 
         assert isinstance(self.parent, Klass)
-#        assert self.parent is not None
 
         methods = []
 
-#        if self.klass is not None:
         methods = self.parent.ast["methods"]
-##        else:
-##            # thus self.variable is not None
-##            var_ast = self.variable.ast
-##            klass_ast = self.variable.class_ast
-##
-##            assert isinstance(klass_ast, dict)
 
-##            methods = klass_ast["methods"]
-
-#        log.debug("Looking method: %s" % self.name)
         found = filter(lambda m: m["name"] == self.name, methods)
 
         # TODO at the moment we only take the first method with the given name

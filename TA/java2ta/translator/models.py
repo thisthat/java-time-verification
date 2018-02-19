@@ -319,8 +319,9 @@ class FreshNames(object):
 class KnowledgeBase(object):
 
     KB = {}
-    NOW = set([])
+    NOW_METHODS = set([])
     TIMESTAMPS = {}
+    NOW_TIMESTAMPS = set([])
  
     @staticmethod   
     @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),is_predicate)")
@@ -368,23 +369,7 @@ class KnowledgeBase(object):
         log.debug("Knowledge base smt interpretation: %s" % smt_interpretation)
 
         return (dt, parameters_signature, method_env, smt_interpretation)
-##        ctx = dict(params)
-##        ctx["res"] = res_var
-##        ctx["lhs"] = lhs_var
-##    
-##        log.debug("Context: %s" % ctx)
-##        fun_replace = lambda x,y: x.replace("{%s}" % y, ctx[y])
-##
-##        smt_declarations = []
-##        smt_assertion = reduce(fun_replace, ctx, kb_smt_assertion) #kb_smt_assertion.replace("{res}", res_var)
-##
-##        for curr in kb_smt_declarations:
-##            curr_smt_declaration = reduce(fun_replace, ctx, curr)
-##            smt_declarations.append(curr_smt_declaration)
-##
-##        log.debug("Final smt declaration: %s" % smt_declarations)
-##        log.debug("Final smt assertion: %s" % smt_assertion)
-##        return smt_declarations, smt_assertion, dt
+
 
     @staticmethod
     @contract(returns="list(tuple(string,string))")
@@ -404,26 +389,24 @@ class KnowledgeBase(object):
         A now-method must exists first in KB, and then we add it
         to the set of now-methods.
         """
-#        m = KnowledgeBase.get_method(class_fqn, method_name)
-#        KnowledgeBase.NOW.add(m)
         fq_method_name = "%s.%s" % (class_fqn, method_name)
-        KnowledgeBase.NOW.add(fq_method_name)
+        KnowledgeBase.NOW_METHODS.add(fq_method_name)
 
     @staticmethod
     def unset_now_method(class_fqn, method_name):
     
-#        m = KnowledgeBase.get_method(class_fqn, method_name)
-#        KnowledgeBase.NOW.delete(m)
         fq_method_name = "%s.%s" % (class_fqn, method_name)
-        KnowledgeBase.NOW.delete(fq_method_name)
+        KnowledgeBase.NOW_METHODS.delete(fq_method_name)
 
 
     @staticmethod
+    @contract(returns="set(string)")
     def get_now_methods():
-        return KnowledgeBase.NOW
+        return KnowledgeBase.NOW_METHODS
 
     @staticmethod
-    def add_timestamp(class_fqn, method_name, var_name):
+    @contract(class_fqn="string", method_name="string", var_name="string", is_now="bool")
+    def add_timestamp(class_fqn, method_name, var_name, is_now=False):
 
         methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
         timestamps = methods.get(method_name, set([]))
@@ -432,13 +415,38 @@ class KnowledgeBase(object):
         methods[method_name] = timestamps
         KnowledgeBase.TIMESTAMPS[class_fqn] = methods
 
+        if is_now:
+            KnowledgeBase.NOW_TIMESTAMPS.add("%s.%s.%s" % (class_fqn, method_name, var_name))
+
     @staticmethod
+    @contract(class_fqn="string", method_name="string", returns="set(string)")
     def get_timestamps(class_fqn, method_name):
         methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
         timestamps = methods.get(method_name, set([]))
+
         return timestamps
 
     @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
     def is_timestamp(class_fqn, method_name, var_name):
         timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
         return var_name in timestamps
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string")
+    def add_now_timestamp(class_fqn, method_name, var_name):
+        KnowledgeBase.add_timestamp(class_fqn, method_name, var_name, is_now=True)
+        
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", returns="set(string)")
+    def get_now_timestamps(class_fqn, method_name):
+ 
+        res = set([])
+
+        for var_fqname in KnowledgeBase.NOW_TIMESTAMPS:
+            curr_class_fqn, curr_method_name, curr_var_name = var_fqname.rsplit(".", 2)
+            if curr_class_fqn == class_fqn and curr_method_name == method_name:
+                res.add(curr_var_name)
+
+        return res
+
