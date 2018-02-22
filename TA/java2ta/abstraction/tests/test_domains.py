@@ -1,70 +1,66 @@
-from java2ta.abstraction.domains import GT, LT, Eq, NotEq, LTE, GTE, Between, \
-                                split_numeric_domain, split_eq_value, split_enum, split_field_domain, \
-                                Integer, Real, DataTypeFactory, \
-                                smt_declare_rec_datatype, smt_declare_scalar, \
-                                Variable, INTEGERS, POS_INTEGERS, NATURALS, BOOLEANS, COLLECTIONS, \
-                                BoundedCollection
+from java2ta.abstraction.models import GT, LT, Eq, NotEq, LTE, GTE, Between, Integer, Real, smt_declare_scalar
+from java2ta.abstraction.shortcuts import split_numeric_domain, split_eq_value, split_enum, split_field_domain, smt_declare_rec_datatype, DataTypeFactory, INTEGERS, POS_INTEGERS, NATURALS, BOOLEANS, COLLECTIONS, BoundedCollection
 
 def test_pred_gt():
 
-    gt = GT({"value":0})
-    label = gt.label(var="foo")
-    assert label == "foo > 0"
+    gt = GT(rhs=0)
+    label = gt.label(lhs="foo")
+    assert label == ">(foo,0)"
         
-    smt_assert = gt.smt_assert(var="fie")
+    smt_assert = gt.smt_assert(lhs="fie")
     assert smt_assert == "(assert (> fie 0))"
  
 def test_pred_gte():
 
-    gte = GTE({"value":0})
-    label = gte.label(var="foo")
-    assert label == "foo >= 0"
+    gte = GTE(rhs=0)
+    label = gte.label(lhs="foo")
+    assert label == ">=(foo,0)"
         
-    smt_assert = gte.smt_assert(var="fie")
+    smt_assert = gte.smt_assert(lhs="fie")
     assert smt_assert == "(assert (>= fie 0))"
  
 def test_pred_lt():
 
-    lt = LT({"value":0})
-    label = lt.label(var="foo")
-    assert label == "foo < 0"
+    lt = LT(rhs=0)
+    label = lt.label(lhs="foo")
+    assert label == "<(foo,0)"
         
-    smt_assert = lt.smt_assert(var="fie")
+    smt_assert = lt.smt_assert(lhs="fie")
     assert smt_assert == "(assert (< fie 0))"
  
 def test_pred_lte():
 
-    lte = LTE({"value":0})
-    label = lte.label(var="foo")
-    assert label == "foo <= 0", label
+    lte = LTE(rhs=0)
+    label = lte.label(lhs="foo")
+    assert label == "<=(foo,0)", label
         
-    smt_assert = lte.smt_assert(var="fie")
+    smt_assert = lte.smt_assert(lhs="fie")
     assert smt_assert == "(assert (<= fie 0))", smt_assert
  
 def test_pred_eq():
 
-    eq = Eq({"value":0})
-    label = eq.label(var="foo")
-    assert label == "foo = 0", label
+    eq = Eq(rhs=0)
+    label = eq.label(lhs="foo")
+    assert label == "=(foo,0)", label
         
-    smt_assert = eq.smt_assert(var="fie")
+    smt_assert = eq.smt_assert(lhs="fie")
     assert smt_assert == "(assert (= fie 0))", smt_assert
  
 def test_pred_not_eq():
 
-    neq = NotEq({"value":0})
-    label = neq.label(var="foo")
-    assert label == "foo != 0", label
+    neq = NotEq(rhs=0)
+    label = neq.label(lhs="foo")
+    assert label == "!=(foo,0)", label
         
-    smt_assert = neq.smt_assert(var="fie")
+    smt_assert = neq.smt_assert(lhs="fie")
     assert smt_assert == "(assert (distinct fie 0))", smt_assert
  
  
 def test_pred_between():
 
-    eq = Between({"min":0, "max":100})
+    eq = Between(min=0,max=100)
     label = eq.label(var="foo")
-    assert label == "0 < foo < 100", label
+    assert label == "and(<(0,foo),<(foo,100))", label
         
     smt_assert = eq.smt_assert(var="fie")
     assert smt_assert == "(assert (and (< 0 fie) (< fie 100)))", smt_assert
@@ -84,20 +80,20 @@ def test_split_numeric_domain():
 
     assert len(pred) == 11
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(var="foo",lhs="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(var="foo",lhs="foo"), pred)
 
-    assert "foo < -5" in labels
-    assert "foo = -5" in labels
-    assert "-5 < foo < 0" in labels
-    assert "foo = 0" in labels
-    assert "0 < foo < 1" in labels
-    assert "foo = 1" in labels
-    assert "1 < foo < 2" in labels
-    assert "foo = 2" in labels
-    assert "2 < foo < 10" in labels
-    assert "foo = 10" in labels
-    assert "foo > 10" in labels
+    assert "<(foo,-5)" in labels
+    assert "=(foo,-5)" in labels
+    assert "and(<(-5,foo),<(foo,0))" in labels
+    assert "=(foo,0)" in labels
+    assert "and(<(0,foo),<(foo,1))" in labels
+    assert "=(foo,1)" in labels
+    assert "and(<(1,foo),<(foo,2))" in labels
+    assert "=(foo,2)" in labels
+    assert "and(<(2,foo),<(foo,10))" in labels
+    assert "=(foo,10)" in labels
+    assert ">(foo,10)" in labels
 
 
 def test_split_numeric_domain_duplicates():
@@ -111,20 +107,20 @@ def test_split_numeric_domain_duplicates():
 
     assert len(pred) == 11
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo",var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo",var="foo"), pred)
 
-    assert "foo < -5" in labels
-    assert "foo = -5" in labels
-    assert "-5 < foo < 0" in labels
-    assert "foo = 0" in labels
-    assert "0 < foo < 1" in labels
-    assert "foo = 1" in labels
-    assert "1 < foo < 2" in labels
-    assert "foo = 2" in labels
-    assert "2 < foo < 10" in labels
-    assert "foo = 10" in labels
-    assert "foo > 10" in labels
+    assert "<(foo,-5)" in labels
+    assert "=(foo,-5)" in labels
+    assert "and(<(-5,foo),<(foo,0))" in labels
+    assert "=(foo,0)" in labels
+    assert "and(<(0,foo),<(foo,1))" in labels
+    assert "=(foo,1)" in labels
+    assert "and(<(1,foo),<(foo,2))" in labels
+    assert "=(foo,2)" in labels
+    assert "and(<(2,foo),<(foo,10))" in labels
+    assert "=(foo,10)" in labels
+    assert ">(foo,10)" in labels
 
 
 
@@ -139,20 +135,20 @@ def test_split_numeric_domain_unsorted():
 
     assert len(pred) == 11
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo",var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo",var="foo"), pred)
 
-    assert "foo < -5" in labels
-    assert "foo = -5" in labels
-    assert "-5 < foo < 0" in labels
-    assert "foo = 0" in labels
-    assert "0 < foo < 1" in labels
-    assert "foo = 1" in labels
-    assert "1 < foo < 2" in labels
-    assert "foo = 2" in labels
-    assert "2 < foo < 10" in labels
-    assert "foo = 10" in labels
-    assert "foo > 10" in labels
+    assert "<(foo,-5)" in labels
+    assert "=(foo,-5)" in labels
+    assert "and(<(-5,foo),<(foo,0))" in labels
+    assert "=(foo,0)" in labels
+    assert "and(<(0,foo),<(foo,1))" in labels
+    assert "=(foo,1)" in labels
+    assert "and(<(1,foo),<(foo,2))" in labels
+    assert "=(foo,2)" in labels
+    assert "and(<(2,foo),<(foo,10))" in labels
+    assert "=(foo,10)" in labels
+    assert ">(foo,10)" in labels
 
 
 def test_split_numeric_domain_small():
@@ -168,12 +164,12 @@ def test_split_numeric_domain_small():
 
     assert len(pred) == 3
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo"), pred)
 
-    assert "foo < 0" in labels
-    assert "foo = 0" in labels
-    assert "foo > 0" in labels
+    assert "<(foo,0)" in labels, labels
+    assert "=(foo,0)" in labels, labels
+    assert ">(foo,0)" in labels, labels
 
 
 def test_split_numeric_domain_upper_bounded():
@@ -186,15 +182,15 @@ def test_split_numeric_domain_upper_bounded():
 
     assert len(pred) == 6
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo",var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo",var="foo"), pred)
 
-    assert "foo < -5" in labels
-    assert "foo = -5" in labels
-    assert "-5 < foo < 0" in labels
-    assert "foo = 0" in labels
-    assert "0 < foo < 10" in labels
-    assert "foo = 10" in labels
+    assert "<(foo,-5)" in labels
+    assert "=(foo,-5)" in labels
+    assert "and(<(-5,foo),<(foo,0))" in labels
+    assert "=(foo,0)" in labels
+    assert "and(<(0,foo),<(foo,10))" in labels
+    assert "=(foo,10)" in labels
 
     assert "(assert (< foo -5))" in smt_asserts
     assert "(assert (= foo -5))" in smt_asserts
@@ -214,15 +210,15 @@ def test_split_numeric_domain_lower_bounded():
 
     assert len(pred) == 6
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo", var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo",var="foo"), pred)
 
-    assert "foo = -5" in labels
-    assert "-5 < foo < 0" in labels
-    assert "foo = 0" in labels
-    assert "0 < foo < 10" in labels
-    assert "foo = 10" in labels
-    assert "foo > 10" in labels
+    assert "=(foo,-5)" in labels, labels
+    assert "and(<(-5,foo),<(foo,0))" in labels
+    assert "=(foo,0)" in labels
+    assert "and(<(0,foo),<(foo,10))" in labels
+    assert "=(foo,10)" in labels
+    assert ">(foo,10)" in labels
 
     assert "(assert (= foo -5))" in smt_asserts
     assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
@@ -232,7 +228,7 @@ def test_split_numeric_domain_lower_bounded():
     assert "(assert (> foo 10))" in smt_asserts
 
 
-def test_split_numeric_domain_lower_uppser_bounded():
+def test_split_numeric_domain_lower_upper_bounded():
     """
     In a lower-/upper- bounded numeric domain, we don't have values that are smaller
     (resp. greater) than the smallest (resp. greatest) value passed
@@ -242,17 +238,17 @@ def test_split_numeric_domain_lower_uppser_bounded():
 
     assert len(pred) == 5
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo", var="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo", var="foo"), pred)
 
-    assert "foo = -5" in labels
-    assert "-5 < foo < 0" in labels
-    assert "foo = 0" in labels
-    assert "0 < foo < 10" in labels
-    assert "foo = 10" in labels
+    assert "=(foo,-5)" in labels
+    assert "and(<(-5,foo),<(foo,0))" in labels, labels
+    assert "=(foo,0)" in labels
+    assert "and(<(0,foo),<(foo,10))" in labels, labels
+    assert "=(foo,10)" in labels, labels
 
     assert "(assert (= foo -5))" in smt_asserts
-    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts
+    assert "(assert (and (< -5 foo) (< foo 0)))" in smt_asserts, smt_asserts
     assert "(assert (= foo 0))" in smt_asserts
     assert "(assert (and (< 0 foo) (< foo 10)))" in smt_asserts
     assert "(assert (= foo 10))" in smt_asserts
@@ -264,11 +260,11 @@ def test_split_value_equality():
 
     assert len(pred) == 2
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo"), pred)
 
-    assert "foo = 10" in labels
-    assert "foo != 10" in labels
+    assert "=(foo,10)" in labels, labels
+    assert "!=(foo,10)" in labels, labels
 
     assert "(assert (= foo 10))" in smt_asserts
     assert "(assert (distinct foo 10))" in smt_asserts
@@ -280,12 +276,12 @@ def test_split_value_equality_enumeration():
 
     assert len(pred) == len(values)
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo"), pred)
 
-    assert "foo = -5" in labels
-    assert "foo = 0" in labels
-    assert "foo = 100" in labels
+    assert "=(foo,-5)" in labels, labels
+    assert "=(foo,0)" in labels
+    assert "=(foo,100)" in labels
 
     assert "(assert (= foo -5))" in smt_asserts, smt_asserts
     assert "(assert (= foo 0))" in smt_asserts, smt_asserts
@@ -299,18 +295,18 @@ def test_split_field_domain():
 
     assert len(pred) == len(values)
     
-    labels = map(lambda p: p.label(var="foo"), pred)
-    smt_asserts = map(lambda p: p.smt_assert(var="foo"), pred)
+    labels = map(lambda p: p.label(lhs="foo"), pred)
+    smt_asserts = map(lambda p: p.smt_assert(lhs="foo"), pred)
 
-    field_pred = split_field_domain("myfield", pred)
+    field_pred = split_field_domain(pred, lhs="myfield")
 
     assert len(pred) == len(field_pred)
-    field_labels = map(lambda p: p.label(var="fie"), field_pred)
-    field_smt_asserts = map(lambda p: p.smt_assert(var="fie"), field_pred)
+    field_labels = map(lambda p: p.label(lhs="fie"), field_pred)
+    field_smt_asserts = map(lambda p: p.smt_assert(lhs="fie"), field_pred)
 
-    assert "fie.myfield = -5" in field_labels, field_labels
-    assert "fie.myfield = 0" in field_labels
-    assert "fie.myfield = 100" in field_labels
+    assert "=(fie.myfield,-5)" in field_labels, field_labels
+    assert "=(fie.myfield,0)" in field_labels
+    assert "=(fie.myfield,100)" in field_labels
 
     assert "(assert (= (myfield fie) -5))" in field_smt_asserts, field_smt_asserts
     assert "(assert (= (myfield fie) 0))" in field_smt_asserts, field_smt_asserts
@@ -399,14 +395,6 @@ def test_smt_rec_datatype():
     assert mylist == "(declare-datatypes () ((List (init-List (head Int) (tail List)))))"
 
 
-def test_variables():
-
-    var1 = Variable("foo", domain=INTEGERS)
-    var2 = Variable("fie", datatype=INTEGERS.datatype, predicates=INTEGERS.predicates)
-
-    assert var1.datatype == var2.datatype, "%s vs %s" % (var1.datatype, var2.datatype)
-    assert var1.predicates == var2.predicates, "%s vS %s" % (var1.predicates, var2.predicates)
-
 
 def test_create_domain():
     """
@@ -420,5 +408,5 @@ def test_create_domain():
     dt_pointer = f.from_class("Pointer", {"ptr":"java.lang.String", "count":"int"})
 
     assert dt_pointer.name == "Pointer"
-    assert dt_pointer.smt_declaration == "(declare-datatypes () ((Pointer (init-Pointer (count Int) (ptr String)))))"
+    assert dt_pointer.smt_declaration == "(declare-datatypes () ((Pointer (init-Pointer (count Int) (ptr AbsString)))))", dt_pointer.smt_declaration
     

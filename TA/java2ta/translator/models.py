@@ -319,13 +319,15 @@ class FreshNames(object):
 class KnowledgeBase(object):
 
     KB = {}
-    NOW = set([])
+    NOW_METHODS = set([])
+    TIMESTAMPS = {}
+    NOW_TIMESTAMPS = set([])
  
     @staticmethod   
-    @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),string)")
+    @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),is_predicate)")
     def add_method(class_name, method_name, knowledge):
 
-        class_name = "-" # TODO this is a hack, remove ASAP
+        class_name = "-" # TODO this is a hack, remove when the class of a callee method is recognized correctly
 
         if class_name not in KnowledgeBase.KB:
             KnowledgeBase.KB[class_name] = {}
@@ -333,6 +335,7 @@ class KnowledgeBase(object):
         if method_name in KnowledgeBase.KB[class_name]:
             raise ValueError("You already provided an interpretation for method (%s,%s)" % (class_name, method_name))
 
+        log.debug("Add method %s of class %s to knowledge base" % (method_name, class_name))
         KnowledgeBase.KB[class_name][method_name] = knowledge
 
         
@@ -345,16 +348,19 @@ class KnowledgeBase(object):
         return res
 
     @staticmethod
-#    @contract(class_name="string", method_name="string", res_var="string", params="dict(string:string)", lhs_var="string", returns="tuple(list(string),string,is_data_type)")
-#    def get_method(class_name, method_name, res_var, params, lhs_var):
-    @contract(class_name="string", method_name="string", returns="tuple(is_data_type,list(string),list(string),string)")
+    @contract(class_name="string", method_name="string", returns="tuple(is_data_type,list(string),list(string),is_predicate)")
     def get_method(class_name, method_name): #, params, lhs_var):
+        log.debug("Knowledge base lookup class: %s vs %s" % (class_name, KnowledgeBase.KB.keys()))
 
+        orig_class_name = class_name
         class_name = "-" # TODO this is a hack, remove ASAP
 
-        assert KnowledgeBase.has_method(class_name, method_name), "Class %s has no method %s" % (class_name, method_name)
+        assert KnowledgeBase.has_method(class_name, method_name), "Class %s has no method %s" % (orig_class_name, method_name)
 
-        check("tuple(is_data_type,list(string),list(string),string)", KnowledgeBase.KB[class_name][method_name])
+        log.debug("Knowledge base lookup methods: %s vs %s" % (method_name, KnowledgeBase.KB[class_name].keys()))
+   
+
+        check("tuple(is_data_type,list(string),list(string),is_predicate)", KnowledgeBase.KB[class_name][method_name])
 
         (dt, parameters_signature, method_env, smt_interpretation) = KnowledgeBase.KB[class_name][method_name]
         log.debug("Knowledge base datatype: %s" % dt)
@@ -363,33 +369,84 @@ class KnowledgeBase(object):
         log.debug("Knowledge base smt interpretation: %s" % smt_interpretation)
 
         return (dt, parameters_signature, method_env, smt_interpretation)
-##        ctx = dict(params)
-##        ctx["res"] = res_var
-##        ctx["lhs"] = lhs_var
-##    
-##        log.debug("Context: %s" % ctx)
-##        fun_replace = lambda x,y: x.replace("{%s}" % y, ctx[y])
-##
-##        smt_declarations = []
-##        smt_assertion = reduce(fun_replace, ctx, kb_smt_assertion) #kb_smt_assertion.replace("{res}", res_var)
-##
-##        for curr in kb_smt_declarations:
-##            curr_smt_declaration = reduce(fun_replace, ctx, curr)
-##            smt_declarations.append(curr_smt_declaration)
-##
-##        log.debug("Final smt declaration: %s" % smt_declarations)
-##        log.debug("Final smt assertion: %s" % smt_assertion)
-##        return smt_declarations, smt_assertion, dt
 
-    def set_now_method(self, class_fqn, method_name):
+
+    @staticmethod
+    @contract(returns="list(tuple(string,string))")
+    def get_methods():
+        methods = []
+        for class_name in KnowledgeBase.KB:     
+            for method_name in KnowledgeBase.KB[class_name]:
+                methods.append((class_name, method_name))
+
+        return methods
+       
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string")
+    def set_now_method(class_fqn, method_name):
         """
         A now-method must exists first in KB, and then we add it
         to the set of now-methods.
         """
-        m = self.get_method(class_fqn, method_name)
-        KnowledgeBase.NOW.add(m)
+        fq_method_name = "%s.%s" % (class_fqn, method_name)
+        KnowledgeBase.NOW_METHODS.add(fq_method_name)
 
-    def unset_now_method(self, class_fqn, method_name):
+    @staticmethod
+    def unset_now_method(class_fqn, method_name):
     
-        m = self.get_method(class_fqn, method_name)
-        KnowledgeBase.NOW.delete(m)
+        fq_method_name = "%s.%s" % (class_fqn, method_name)
+        KnowledgeBase.NOW_METHODS.delete(fq_method_name)
+
+
+    @staticmethod
+    @contract(returns="set(string)")
+    def get_now_methods():
+        return KnowledgeBase.NOW_METHODS
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string", is_now="bool")
+    def add_timestamp(class_fqn, method_name, var_name, is_now=False):
+
+        methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
+        timestamps = methods.get(method_name, set([]))
+        timestamps.add(var_name)
+
+        methods[method_name] = timestamps
+        KnowledgeBase.TIMESTAMPS[class_fqn] = methods
+
+        if is_now:
+            KnowledgeBase.NOW_TIMESTAMPS.add("%s.%s.%s" % (class_fqn, method_name, var_name))
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", returns="set(string)")
+    def get_timestamps(class_fqn, method_name):
+        methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
+        timestamps = methods.get(method_name, set([]))
+
+        return timestamps
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
+    def is_timestamp(class_fqn, method_name, var_name):
+        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+        return var_name in timestamps
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string")
+    def add_now_timestamp(class_fqn, method_name, var_name):
+        KnowledgeBase.add_timestamp(class_fqn, method_name, var_name, is_now=True)
+        
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", returns="set(string)")
+    def get_now_timestamps(class_fqn, method_name):
+ 
+        res = set([])
+
+        for var_fqname in KnowledgeBase.NOW_TIMESTAMPS:
+            curr_class_fqn, curr_method_name, curr_var_name = var_fqname.rsplit(".", 2)
+            if curr_class_fqn == class_fqn and curr_method_name == method_name:
+                res.add(curr_var_name)
+
+        return res
+

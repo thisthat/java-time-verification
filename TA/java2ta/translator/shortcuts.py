@@ -12,6 +12,7 @@ from java2ta.translator.rules import ExtractMethodStateSpace, AddStates
 from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames
 from java2ta.ir.models import Project, Method, Klass
 from java2ta.ir.client import APIError
+from java2ta.ir.shortcuts import get_timestamps, check_now_assignments
 from java2ta.ta.models import TA, Location, Edge, ClockVariable
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable
 from java2ta.abstraction.shortcuts import DataTypeFactory
@@ -37,6 +38,9 @@ class ForgottenVariableException(Exception):
         self.var_name = var_name
         super(ForgottenVariableException,self).__init__(*args, **kwargs)
 
+    def __str__(self):
+        return "Variable %s has been forgotten." % self.var_name
+
 class ForgottenMethodException(Exception):
 
     def __init__(self, method_name, class_name, class_path, *args, **kwargs):
@@ -45,6 +49,8 @@ class ForgottenMethodException(Exception):
         self.class_path = class_path
         super(ForgottenMethodException,self).__init__(*args, **kwargs)
 
+    def __str__(self):
+        return "Method %s has been forgotten (class: %s, path: %s)" % (self.method_name, self.class_name, self.class_path)
 
 class UnknownSMTInterpretationException(Exception):
 
@@ -65,39 +71,40 @@ def pred_to_env(attr_predicates):
 
     return res
 
-@contract(project=Project, class_fqn="string", class_path="string", method_name="string", domains="dict", returns=TA)
-def translate_method_to_automaton(project, class_fqn, class_path, method_name, domains):
-
-    # check this works (case 1: no dot, case 2: one or more dots)
-    class_name = ""
-    package_name = ""
-
-    fqn_parts = class_fqn.rsplit(".", 1)
-
-    if len(fqn_parts) == 1:
-        class_name = fqn_parts[0]
-    else:
-        package_name = fqn_parts[0]
-        class_name = fqn_parts[1]
-
-    klass = Klass(class_name, package_name, "file://%s" % class_path, project)
-    m = Method(method_name, klass)
-
-    r1 = ExtractMethodStateSpace()
-    r2 = AddStates()
-    # TODO add rules for adding edges b/w states by static analysis (SMT based)
-
-    e = Engine()
-    e.add_rule(r1)
-    e.add_rule(r2)
-
-    ctx = Context()
-    ctx.push({})
-    ctx.update("abs_domains", domains)
-    ta = TA(method_name)
-    (ta_post, ctx_post) = e.run(m, ta, ctx)
-
-    return ta_post
+##@contract(project=Project, class_fqn="string", class_path="string", method_name="string", domains="dict", returns=TA)
+##def translate_method_to_automaton(project, class_fqn, class_path, method_name, domains):
+##
+##    # check this works (case 1: no dot, case 2: one or more dots)
+##    class_name = ""
+##    package_name = ""
+##
+##    fqn_parts = class_fqn.rsplit(".", 1)
+##
+##    if len(fqn_parts) == 1:
+##        class_name = fqn_parts[0]
+##    else:
+##        package_name = fqn_parts[0]
+##        class_name = fqn_parts[1]
+##
+##    klass = Klass(class_name, package_name, "file://%s" % class_path, project)
+##    m = Method(method_name, klass)
+##
+##    r1 = ExtractMethodStateSpace()
+##    r2 = AddStates()
+##    # TODO add rules for adding edges b/w states by static analysis (SMT based)
+##
+##    e = Engine()
+##    e.add_rule(r1)
+##    e.add_rule(r2)
+##
+##    ctx = Context()
+##    ctx.push({})
+##    ctx.update("abs_domains", domains)
+##    ta = TA(method_name)
+##    (ta_post, ctx_post) = e.run(m, ta, ctx)
+##
+##    return ta_post
+##
 
 @contract(conf="is_configuration", pc="is_pc", returns="string")
 def build_location_name(conf, pc):
@@ -105,10 +112,6 @@ def build_location_name(conf, pc):
     loc_name = "(%s)%s" % (conf_string, pc)
     return loc_name
 
-#@contract(conf="is_configuration", pc="is_pc", returns="is_location")
-#def build_location(conf, pc):
-#    return build_location(conf, pc)
-#
 @contract(conf="is_configuration", pc="is_pc", returns="is_location")
 def build_location(conf, pc):
     
@@ -121,8 +124,6 @@ def build_location(conf, pc):
     return loc
 
 
-
-#@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list[N](dict), N > 0", state_space="is_state_space", project="is_project", preconditions="list(is_precondition)|None", returns=ReachabilityResult)
 @contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space="is_state_space", project="is_project", visited_locations="set(string)", preconditions="list(is_precondition)|None", returns=ReachabilityResult)
 def compute_reachable(source_conf, pc_source, instr, state_space, project, visited_locations, preconditions=None, pc_jump_stack=None, deadlines=None):
     """
@@ -212,8 +213,8 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
 
 
-@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", returns=TA)
-def transform(name, instructions, state_space, project):
+@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", timestamps="dict(string:list(dict))", only_now_assignments="dict(string:bool)", returns="is_ta")
+def transform(name, instructions, state_space, project, timestamps, only_now_assignments):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
     # this note just to keep track of this "oddity"
@@ -415,8 +416,8 @@ class SMTProb(object):
                 var = node_exp["name"]["value"] # TODO check that the LHS is always obtained in this way
                 rhs = node_exp["expr"]
 
-                if var not in env:
-                    raise ForgottenVariableException(var)
+#                if var not in env:
+#                    raise ForgottenVariableException(var)
 
                 if rhs is not None:
                     new_frame = list(frame)
@@ -429,7 +430,13 @@ class SMTProb(object):
                     rhs_smt_declarations, rhs_smt_assertion = self.node_to_smt(rhs, env, frame=new_frame)
                     if rhs_smt_assertion:
                         smt_declarations.extend(rhs_smt_declarations)
-                        smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
+                        if var in env:
+                            smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
+                        # NB: if var not in env, the variable declaration does not modify the abstract
+                        # environment (unless the rhs has side-effects or it raises a ForgottenVariable/
+                        # ForgottenMethod exception; the previous recursive call to node_to_smt(rhs, ...)
+                        # checks exactly that)
+
                     # force other primed vars to be equal to non-primed vars
                     for curr in self.attributes:
                         assert isinstance(curr, AbstractAttribute)
@@ -503,7 +510,13 @@ class SMTProb(object):
                     log.warning("Interpret PL post-op expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                     smt_assertion = node_exp["code"]
             elif node_exp_type == "ASTMethodCall":
-                smt_declarations, smt_assertion = self.node_to_smt(node_exp, env, frame=frame)
+
+                mc_smt_declarations, mc_smt_assertion = self.node_to_smt(node_exp, env, frame=frame)
+                if mc_smt_declarations:
+                    smt_declarations.extend(mc_smt_declarations)
+                assert len(mc_smt_assertion) > 0
+                smt_assertion = mc_smt_assertion
+#                del env["__self__"]
             else:
                 log.warning("Interpret PL expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                 smt_assertion = node_exp["code"]
@@ -527,8 +540,10 @@ class SMTProb(object):
             log.debug("left: %s, frame: %s, left declarations: %s, left smt: %s" % (left, frame, lhs_smt_declarations, lhs_smt_assertion))
             log.debug("right: %s, frame: %s, right declarations: %s, right smt: %s" % (right, frame, rhs_smt_declarations, rhs_smt_assertion))
 
-            if lhs_smt_declarations and rhs_smt_declarations:
+            if lhs_smt_declarations: # and rhs_smt_declarations:
                 smt_declarations.extend(lhs_smt_declarations)
+
+            if rhs_smt_declarations:
                 smt_declarations.extend(rhs_smt_declarations)
                 
             smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
@@ -545,7 +560,8 @@ class SMTProb(object):
             assert "value" in node
             #log.debug("Dump literal: %s" % node)
             try:
-                lit_value = literal_to_smt(node["value"])
+                lit_value = literal_to_smt(node)
+                log.debug("Node value: %s. SMT literal: %s" % (node["value"], lit_value))
             except IdentifierAsLiteralException as e:
                 # this is a tail of bug described in issue #57 ;
                 # leave a warning log to ease the debugging
@@ -566,90 +582,105 @@ class SMTProb(object):
             try:
                 (smt_dt, parameters, method_env, smt_interpretation) = KnowledgeBase.get_method(class_name,method_name)
             except Exception, e:
+                log.warning("Error interpreting method: %s" % e)
                 raise ForgottenMethodException(method_name, class_name, class_path="?")
 
-            tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
-
-            smt_declarations = []
             if smt_interpretation:
-                smt_declarations.append(smt_interpretation)
+                log.debug("Found interpretation for method %s: %s, %s, %s, %s" % (method_name, smt_dt, parameters, method_env, smt_interpretation))
+    
+                tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
+                assert node is not None
 
-            # add the auxiliary declarations
-            log.debug("Method call aux var: %s => %s" % (method_name, tmp_var_name))
-            smt_declarations.append( "(declare-const %s %s)" % (tmp_var_name, smt_dt))
-            log.debug("Method call smt interpretation: %s" % smt_interpretation)
-            log.debug("Method call frame: %s" % frame)
-            new_frame = [x for x in frame if x not in method_env] 
-            # force primed vars in frame to be equal to non-primed vars
-            for curr in self.attributes:
-                assert isinstance(curr, AbstractAttribute)
+                interpretation_context = { 
+                    "__return__": tmp_var_name,
+                }
 
-                for attr_var in curr.variables:
-                    if attr_var in frame:
-                        smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition" % (attr_var, attr_var)) # TODO primed names
+                callee_node = node.get("exprCallee", {})
 
+                if callee_node:
+                    callee_type = callee_node.get("nodeType", None)
+                    if callee_type == "ASTIdentifier":
+                        self_var = callee_node["code"]
+                        interpretation_context["__self__"] = callee_node["code"]
+                    else:
+                        log.warning("Callee of unknown type (%s). Cannot use the __self__var in method interpretation. Callee node: %s" % (callee_type, callee_node))
+    
 
+                smt_declarations = []
 
-            # store the returned value for this case
-            smt_assertion = tmp_var_name
+                for par_id,par in enumerate(node["parameters"]):
+    
+                    par_value = None
+                    if par["nodeType"] == "ASTLiteral":
+                        # passing a literal (after encoding it through the SymbolTable)
+                        raw_value = par["value"]
+    
+                        par_value, par_type = SymbolTable.add_literal(raw_value)
+    
+#                        if raw_value[0] in [ '"', "'" ] and raw_value[-1] == raw_value[0]:
+#                            par_value = SymbolTable.add_string(raw_value[1:-1])
+                        if par_type == "String":
+                            # it is a string; return our custom data type for strings
+                            par_value = "(init-AbsString %s %s)" % (par_value, len(raw_value) - 2) #
+#                        else:
+#                            par_value = SymbolTable.add_literal(raw_value)
 
-##            has_direct_method = KnowledgeBase.has_method(class_name, method_name)
-##
-##            lhs_smt_assertion = ""
-##            if node["exprCallee"] is not None:
-##                # resolve lhs of method call (i.e. the callee)
-##                lhs_smt_declarations,lhs_smt_assertion = self.node_to_smt(node["exprCallee"], env, frame) #exclude_frame)
-##                smt_declarations.extend(lhs_smt_declarations)
-## 
-##            tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
-##  
-##            method_smt_declarations = []
-##
-##            if has_direct_method:
-##                (method_smt_declarations, method_smt_assertion, smt_dt) = KnowledgeBase.get_method(class_name,method_name,tmp_var_name,par_ctx,lhs_smt_assertion)
-##
-##            else:
-##                class_path = "%s.java" % class_name # TODO this in general could be different
-##                method = self._project.get_method(class_name, class_path, method_name)
-##                log.debug("Class %s, path %s, method %s => %s" % (class_name, class_path, method_name, method))
-##
-##                try:
-##                    method_ast = method.get_ast()
-##                except APIError, e:
-##                    raise ForgottenMethodException(method_name, class_name, class_path)
-##                assert "returnType" in method_ast
-##
-##                method_type = method_ast["returnType"]
-##
-##                dtfactory = DataTypeFactory.the_factory()
-##                smt_dt = dtfactory.from_fqn(method_type)
-##
-##                log.debug("Invoke method %s:%s (class name: %s, class path: %s) => SMT type: %s" % (method_name, method_type, class_name, class_path, smt_dt))
-##                log.debug(method_ast.keys())
-##
-##            # add frame condition: all variables are left untouched (NB this is true only for read-only methods; in general methods could change the status of some of the state variables)
-##
-##            check("list(is_abstract_attribute)", self.attributes)
-##    
-##            log.debug("Frame condition in ASTMethodCall: %s" % frame) #exclude_frame)
-##            for curr in self.attributes:
-##                check("is_abstract_attribute", curr)
-##                for attr_var in curr.variables:
-##                    log.debug("Check var in frame: %s vs %s" % (attr_var, frame)) #exclude_frame))
-##                    if attr_var in frame: #not in exclude_frame:
-##                        smt_declarations.append("(assert (= %s_1 %s)) ; ASTMethodCall frame condition (%s)" % (attr_var, attr_var, frame )) #exclude_frame)) # TODO primed name
-##                    else:
-##                        log.debug("Var excluded: %s" % attr_var)
-##   
-##
-##            # add the auxiliary declarations
-##            log.debug("Method call aux var: %s => %s" % (method_name, tmp_var_name))
-##            smt_declarations.append( "(declare-const %s %s)" % (tmp_var_name, smt_dt))
-##            log.debug("Method call smt declarations: %s" % method_smt_declarations)
-##            smt_declarations.extend(method_smt_declarations)
-##
-##            # store the returned value for this case
-##            smt_assertion = tmp_var_name
+                    elif par["nodeType"] == "ASTIdentifier":
+                        # passing an identifier, directly as the variable name
+                        par_value = par["code"]
+                    else:
+#                        raise ValueError("Sorry dude. At the moment we cannot handle method call parameters that are neither literals nor identifiers. Passed: %s" % par)
+                        log.debug("Method parameter is an expression: %s" % par["code"])
+                        smt_declarations_arg, smt_assertion_arg = self.node_to_smt(par, env, frame)
+
+                        log.debug("SMT declarations for method parameter: %s" % smt_declarations_arg)
+                        log.debug("SMT assertion for method parameter: %s" % smt_assertion_arg)
+
+                        par_aux_var = FreshNames.get_name(prefix="par_%s_" % par_id)  
+
+                        # below there is a hack; in order to generalise this code, take advantage of
+                        # the variable "parameters" that we get earlier but we don't use
+                        smt_declarations.append("(declare-const %s Int) ; this is a hack: I assume the parameter expression computes an integer" % par_aux_var)
+
+                        if smt_assertion_arg:
+                            par_assertion = "(assert (= %s %s))" % (par_aux_var, smt_assertion_arg)
+                            smt_declarations_arg.append(par_assertion)
+    
+                        if smt_declarations_arg:
+                            smt_declarations.append("; begin encoding method call parameter")
+                            smt_declarations.extend(smt_declarations_arg)
+                            smt_declarations.append("; end encoding method call parameter")
+
+                        par_value = par_aux_var
+    
+                    interpretation_context["par_%s" % par_id] = par_value
+    
+                log.debug("Method call aux var: %s => %s" % (method_name, tmp_var_name))
+                smt_declarations.append( "(declare-const %s %s)" % (tmp_var_name, smt_dt))
+                smt_declarations.append(smt_interpretation.smt_assert(**interpretation_context))
+    
+                log.debug("Method call smt interpretation: %s" % smt_interpretation)
+                log.debug("Method call frame: %s" % frame)
+                new_frame = [x for x in frame if x not in method_env] 
+                # force primed vars in frame to be equal to non-primed vars
+                for curr in self.attributes:
+                    assert isinstance(curr, AbstractAttribute)
+    
+                    for attr_var in curr.variables:
+                        if attr_var in frame:
+                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition" % (attr_var, attr_var)) # TODO primed names
+    
+    
+                # store the returned value for this case
+#                smt_assertion = tmp_var_name   
+                smt_assertion = tmp_var_name
+
+                log.debug("Method smt declarations: %s" % smt_declarations)
+                log.debug("Method smt assertion: %s" % smt_assertion)
+            else:
+                log.debug("Cannot find interpretation for method %s: %s, %s, %s, %s" % (method_name, smt_dt, parameters, method_env, smt_interpretation))
+                smt_assertion = ""
+
         elif node_type == "ASTNewObject":
             smt_assertion = ""
         elif node_type == "ASTCast":
@@ -799,8 +830,10 @@ class SMTProb(object):
                 assertions.append("; cannot compute SMT model for instruction because one method has been forgotten: (name:%s,class:%s,path:%s)" % (e.method_name, e.class_name, e.class_path))
 
 
-            if smt_instr_assertion: # is not None: # also discard the case of empty strings (should never happen, though)
+            if smt_instr_declarations:
                 assertions.extend(smt_instr_declarations)
+
+            if smt_instr_assertion: # is not None: # also discard the case of empty strings (should never happen, though)
                 instr_assert = "(assert %s)" % smt_instr_assertion
                 assertions.append(instr_assert)
 
@@ -1013,6 +1046,7 @@ class SMTProb(object):
             # conservative abstraction: assume that if a required 
             # variable has been abstracted, then the formula is 
             # satisfiable
+            log.debug("Unable to verify guard because of a forgotten variable or method: %s. Details: %s. Let us assume the guard is satisfied ..." % (guard.code, e))
             smt_res = True
 
         return smt_res
@@ -1506,25 +1540,25 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
 
         # no final locations
         # (ASTBreak and ASTContinue break the compositionality approach)
-    elif instr_type == "ASTReturn":
-        # do nothing    
-        log.debug("Return: %s" % instr)
-        # begin BIG-FRAGILE-HACK
-        res = instr["expr"]["code"] 
-        (state_loc,pc_loc) = parse_location(source_loc)
-        if res == "true":
-            state_loc = tuple_replace(state_loc, 2, 0) # 2 is the position of "res", 0 encodes true
-        else:
-            state_loc = tuple_replace(state_loc, 2, 1) # 2 is the position of "res, 1 encodes false
-        # end BIG-FRAGILE-HACK
-        pc_target = pc_source + 1
-        return_loc = build_location(source, pc_target)
-        edges.append(Edge(source_loc,return_loc))
-        reachable.append(state_loc)
-#        final.append(source_loc)
-
-#        check_closure(pc_target, reachable, final, external)
-
+##    elif instr_type == "ASTReturn":
+##        # do nothing    
+##        log.debug("Return: %s" % instr)
+##        # begin BIG-FRAGILE-HACK
+##        res = instr["expr"]["code"] 
+##        (state_loc,pc_loc) = parse_location(source_loc)
+##        if res == "true":
+##            state_loc = tuple_replace(state_loc, 2, 0) # 2 is the position of "res", 0 encodes true
+##        else:
+##            state_loc = tuple_replace(state_loc, 2, 1) # 2 is the position of "res, 1 encodes false
+##        # end BIG-FRAGILE-HACK
+##        pc_target = pc_source + 1
+##        return_loc = build_location(source, pc_target)
+##        edges.append(Edge(source_loc,return_loc))
+##        reachable.append(state_loc)
+###        final.append(source_loc)
+##
+###        check_closure(pc_target, reachable, final, external)
+##
     elif instr_type == "ASTTry":
         assert "tryBranch" in instr
         assert "catchBranch" in instr
@@ -1817,20 +1851,20 @@ def parse_location(loc):
 ##
 ##    return res
 
-
+@contract(klass="is_klass")
 def get_class_attributes(klass):
-    assert isinstance(klass, Klass)
+#    assert isinstance(klass, Klass)
     assert "attributes" in klass.ast
 
     return klass.ast["attributes"]
 
-@contract(method=Method, returns="list(string)")
+@contract(method="is_method", returns="list(string)")
 def get_method_attributes(method):
 #    assert isinstance(method, Method)
     assert "parameters" in method.ast
     assert "declaredVar" in method.ast
 
-    klass = method.parent   
+    klass = method.parent
     method_name = method.name
 
     klass_attributes = get_class_attributes(klass)
@@ -1851,7 +1885,7 @@ def get_method_attributes(method):
     return attributes
 
 
-@contract(method=Method, domains="list(tuple(list(string)|string,is_domain,bool))")
+@contract(method=Method, domains="list(tuple(list(string)|string, is_domain, bool))", returns="is_state_space")
 def get_state_space_from_method(method, domains):
 
     # 1. get method attributes
@@ -1890,45 +1924,69 @@ def get_state_space_from_method(method, domains):
 ##
 ##    return m
 
-@contract(method=Method, state_space="is_state_space", returns=TA)
+@contract(method="is_method", state_space="is_state_space", returns="is_ta")
 def translate_method_to_ta(method, state_space):
 
     #instructions = method.ast["stms"]
     instructions = method.instructions
 
+    # pre-analysis of variable timestamps
+    now_methods = KnowledgeBase.get_now_methods()
+    timestamps = get_timestamps(method, now_methods)    
+    only_now_assignments = {}
+    for var, nodes in timestamps.iteritems():
+        only_now_assignments[var] = check_now_assignments(nodes, now_methods)
+
     if len(instructions) == 0:
         raise ValueError("The passed method has no instructions. This is not allowed.")
 
-    ta = transform(method.name, instructions, state_space, method.project)
+    ta = transform(method.name, instructions, state_space, method.project, timestamps, only_now_assignments)
 
     return ta
 
 
-@contract(lit_value="string", returns="string")
-def literal_to_smt(lit_value):
-
+@contract(node="dict", returns="string")
+def literal_to_smt(node):
+    assert "code" in node
+    lit_value = node["code"]
+#    lit_type = node["type"]
     STR_MARKERS = [ '"', "'" ]
     res = lit_value
-    if lit_value in [ "True", "False" ]:
-        # this match Java boolean values
-        res = lit_value.lower()
-    elif re.match("^[0-9]+(\.[0-9]+)?$|^\.[0-9]+$", lit_value): #lit_value.isdigit():
-        # this matches Java integer values and float values
-        res = lit_value
-    elif lit_value == "null": 
-        # this matches a null pointer or a string/char constant
-        res = "%s" % SymbolTable.add_literal(lit_value)
-    elif lit_value[0] in STR_MARKERS and lit_value[-1] == lit_value[0]:
-        res = "%s" % SymbolTable.add_literal(lit_value[1:-1])
+##    if lit_value in [ "true", "false" ]:
+##        # this match Java boolean values
+##        res = lit_value.lower()
+##    elif re.match("^[0-9]+(\.[0-9]+)?$|^\.[0-9]+$", lit_value): #lit_value.isdigit():
+##        # this matches Java integer values and float values
+##        res = lit_value
+##    elif lit_value == "null": 
+##        # this matches a null pointer or a string/char constant
+##        res = "%s" % SymbolTable.add_literal(lit_value)
+##    elif lit_value[0] in STR_MARKERS and lit_value[-1] == lit_value[0]:
+###        res = "%s" % SymbolTable.add_literal(lit_value[1:-1])  
+##        lit_code = SymbolTable.add_literal(lit_value[1:-1])
+##        res = "(init-AbsString %s %s)" % (lit_code, len(lit_value) - 2)
+##    elif re.match("^[a-zA-Z0-9_]+$", lit_value):
+##        # this match an identifier, not really a literal
+###        res = lit_value
+###        log.warning("Passed an identifier as literal, this should not happen: %s" % lit_value)
+##        raise IdentifierAsLiteralException(lit_value)
+##    else:
+##        # don't know what literal is
+##        log.warning("Don't know how to handle literal '%s'" % lit_value)
+##
+
+    lit_code,lit_type = SymbolTable.add_literal(lit_value)
+
+    if lit_type == "String":
+        res = "(init-AbsString %s %s)" % (lit_code, len(lit_value) - 2)
+    elif lit_type in [ "bool", "int", "long", "char", ]:
+        res = lit_code
     elif re.match("^[a-zA-Z0-9_]+$", lit_value):
         # this match an identifier, not really a literal
-#        res = lit_value
-#        log.warning("Passed an identifier as literal, this should not happen: %s" % lit_value)
         raise IdentifierAsLiteralException(lit_value)
     else:
         # don't know what literal is
         log.warning("Don't know how to handle literal '%s'" % lit_value)
 
     return res
-
 

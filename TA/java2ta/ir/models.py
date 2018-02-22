@@ -1,4 +1,5 @@
 import abc
+from collections import deque
 from contracts import contract
 from time import sleep
 
@@ -39,7 +40,7 @@ class ASTNode(object):
         if not self._ast:
             self._ast = self.get_ast()
 
-            assert isinstance(self._ast, dict), self._ast
+            assert isinstance(self._ast, dict), "%s - %s" % (type(self), self._ast)
 
         return self._ast
 
@@ -61,6 +62,8 @@ class ASTNode(object):
         """
         return self.ast != None
 
+new_contract_check_type("is_ast_node", ASTNode)
+
 
 class Klass(ASTNode):
 
@@ -81,7 +84,7 @@ class Klass(ASTNode):
         classes = self.project.get_file(self.path)
         
         if not classes:
-            raise ValueError("Unable to load class. Name '%s'. Package name '%s'. Path '%s'." % (self.name, self.package_name, self.path))
+            raise ValueError("No class found in file (%s)'" % (self.path,))
 
         found = None
 
@@ -102,11 +105,12 @@ class Klass(ASTNode):
             if self.package_name:
                 full_name = "%s.%s" % (self.package_name, full_name)
 
-            raise Exception("It was not possible to import class '%s' from file '%s'" % (full_name, self.path))
+            raise Exception("Unable to load class '%s' from file '%s'" % (full_name, self.path))
 
         return found
 
 new_contract_check_type("is_klass", Klass)
+
 
 class Thread(Klass):
     """
@@ -153,25 +157,31 @@ class Thread(Klass):
 
         return found[0]
 
-
 class Method(ASTNode):
 
+    @contract(name="string", klass="is_klass") # buttare il seguito: parent="is_klass|is_ir_varaible") # TODO we cannot specify contract is_ir_variable because there is a circular dependency b/w is_ir_variable and is_method; fix function "new_contract_check_type" to take also strings with fully qualified names of types in place of taking directly the class
     def __init__(self, name, klass):
  
         assert isinstance(name, basestring)       
-        assert isinstance(klass, Klass)
 
         super(Method, self).__init__(name, klass.project, parent=klass)
-        self.klass = klass
+
 
     @property
+    @contract(returns="string")
     def fqname(self):
-        return "%s.%s" % (self.klass.fqname, self.name)
+        assert hasattr(self.parent, "fqname")
+        return "%s.%s" % (self.parent.fqname, self.name)
 
+    @contract(returns="dict")
     def get_ast(self):
-        methods = self.klass.ast["methods"]
 
-        log.debug("Looking method: %s" % self.name)
+        assert isinstance(self.parent, Klass)
+
+        methods = []
+
+        methods = self.parent.ast["methods"]
+
         found = filter(lambda m: m["name"] == self.name, methods)
 
         # TODO at the moment we only take the first method with the given name
@@ -183,15 +193,114 @@ class Method(ASTNode):
         return res
 
     @property
+    @contract(returns="list(dict)")
     def instructions(self):
         return self.ast["stms"]
 
     @property
+    @contract(returns="bool")
     def has_instructions(self):
         return len(self.instructions) > 0
     
 
 new_contract_check_type("is_method", Method)
+
+
+class Variable(ASTNode):
+
+    @contract(name="string", method="is_method")
+    def __init__(self, name, method):
+        super(Variable, self).__init__(name, method.project, parent=method)
+        self.method = method
+
+    @property
+    def fqname(self):
+        return "%s.%s" % (self.method.fqname, self.name)
+
+    def get_ast(self):
+ 
+        # 1. get the root of the method node
+
+        # 2. walk through the dictionary structure looking for the first occurrence of a variable declaration with the given name (there may be more than one, this is unpleasant) => TODO actually we don't look for the first occurrence of variable declaration, but for the first variable declaration/assignment that has a 'hiddenClass' within the 'expr' component FIX THIS!!!
+
+        # 3. if a node for the variable name is found, it is the ast we were searching for, otherwise raise an exception
+        
+        method_node = self.method.get_ast()
+
+        var_ast = None
+        nodes_to_visit = deque([ method_node ])
+
+        while len(nodes_to_visit) > 0:
+            top_node = nodes_to_visit.popleft()
+
+            assert "nodeType" in top_node
+#            log.debug("Visit (%s): %s ..." % (top_node["nodeType"], top_node["code"][:50]))
+#            assert "name" in top_node, "keys: %s - node: %s" % (sorted(top_node.keys()), top_node)
+            if top_node["nodeType"] == "ASTVariableDeclaration" and top_node["name"]["nodeType"] == "ASTIdentifier" and top_node["name"]["value"] == self.name: # and "hiddenClass" in top_node["expression"]: # the node is the declaration of the current variable, initialized with an instance of an anonymous class
+#                log.debug("Found variable declaration: %s" % top_node)
+                if "expr" in top_node and "hiddenClass" in top_node["expr"]:
+                    var_ast = top_node #top_node["expr"] # the node of the var declaration  
+                    break   
+            elif top_node["nodeType"] == "ASTAssignment" and top_node["left"]["value"] == self.name: # and top_node["right"]["nodeType"] == "ASTNewObject": # the node is the varaible of the current variable with an instance of an anonymous class
+#                log.debug("Found variable assignment: %s" % top_node)
+                if "hiddenClass" in top_node["right"]:
+                    var_ast = top_node #top_node["right"]
+                    break
+            else:
+                # visit all the sub-dictionaries with key nodeType
+                log.debug("Children: %s" % top_node.keys())
+                for key in top_node.keys():
+                    value = top_node[key]
+                    if isinstance(value, dict) and "nodeType" in value:
+                        log.debug("Bookmark child: %s" % key)
+                        nodes_to_visit.append(value)
+                    elif isinstance(value, list):
+                        node_sub_values = filter(lambda v: "nodeType" in v, value)
+                        nodes_to_visit.extend(node_sub_values)
+#                for subnode in top_node.get("stms", []): # visit only children that are in the "stms" or "expression" keys
+#                    nodes_to_visit.append(subnode)
+        
+
+        if not var_ast:
+            raise ValueError("Cannot find variable '%s' in method %s. Method AST: %s" % (self.name, self.method.name, self.method.get_ast()))
+
+#        assert "hiddenClass" in var_ast, var_ast
+
+        return var_ast
+            
+
+new_contract_check_type("is_ir_variable", Variable)
+
+
+class InnerKlass(Klass):
+
+    @contract(v="is_ir_variable")
+    def __init__(self, v):
+    
+        c_outer = v.parent.parent
+        package_name = c_outer.fqname
+        project = c_outer.project
+
+        super(InnerKlass, self).__init__("",package_name,c_outer.path,v.project)
+
+        self.parent = v
+
+    def get_ast(self):
+        var_ast = self.parent.ast
+
+        class_ast = None
+        if "expr" in var_ast:
+            # case: variable declaration
+            class_ast = var_ast["expr"]["hiddenClass"]
+        elif "right" in var_ast:
+            # variable assignment
+            class_ast = var_ast["right"]["hiddenClass"]
+        else:
+            desc = "(%s,%s)" % (var_ast["nodeType"], var_ast["code"] if "code" in var_ast else "???")
+            raise ValueError("Unable to extract the hidden class AST in this case: %s" % desc)
+
+        return class_ast
+
 
 class Project(object):
 
@@ -307,7 +416,7 @@ class Project(object):
         self.client.post("/clean", data)
         self.set_status("closed")
 
-
+    @contract(name="None|string", returns="list(dict)")
     def get_threads(self, name=None):
     
         found_threads = []
@@ -326,6 +435,7 @@ class Project(object):
         return found_threads
 
 
+    @contract(type="None|string", returns="list(string)")
     def get_files(self, type=None):
 
         files = []
@@ -335,34 +445,45 @@ class Project(object):
             url = "/getAllFiles"
 
             if type:    
+                # if type is specified, the ws returns a list of 
+                # dictionaries,  
+                # only take the path information
                 data["type"] = type
                 url = "/getFilesByType"
+                files_dict = self.client.post(url, data)
+                files = map(lambda f: f["path"], files_dict)
             else:
+                # if no type is specified, the ws returns a list of 
+                # strings
                 data["skipTest"] = 0
-                
-            files = self.client.post(url, data)
+                files = self.client.post(url, data)
 
         return files
 
+    @contract(path="string", returns="list(dict)")
     def get_file(self, path):
+        """
+        Returns a list of class definitions contained in the file.
+        TODO is it always 1 or can it be longer than 1?
+        """    
 
         file = None
 
         if not path.startswith("file://"):
             path = "file://" + path
 
-        #print "A: %s" % path
-        if self.is_open():
-            data = { "name": self.name, "filePath": path }
-            file = self.client.post("/getFile", data)
+        if not self.is_open():
+            raise ValueError("You need to open the project first")
 
-        #print "B: %s,%s" % (self.is_open(), file)
+        data = { "name": self.name, "filePath": path }
+        file = self.client.post("/getFile", data)
+
         if file is not None and isinstance(file, dict):
             file = [ file ]
 
-        #print "C: %s" % file
         return file
 
+    @contract(name="string", path="string", returns="dict")
     def get_class(self, name, path):
         files = self.get_file(path)
 
@@ -375,6 +496,29 @@ class Project(object):
 
         return found
 
+    @contract(returns="list(dict)")
+    def get_classes(self):
+        """
+        In order not to waste memory space limitation, we do not return 
+        all the classes ASTs. Instead, we return only a dictionary 
+        containing the following keys:
+        'className', 'name', 'package'
+        With this information is possible to invoke the get_class
+        method, for the desired classes.
+        """
+        classes = []
+    
+        if self.is_open():
+            data = { "name": self.name }
+            url = "/getFilesByType"
+    
+            # all the classes extend java.lang.Object
+            data["type"] = "Object"
+            classes = self.client.post(url, data)
+    
+        return classes
+
+
     def get_mains(self):
         
         mains = []
@@ -385,27 +529,48 @@ class Project(object):
 
         return mains
 
-    @contract(class_fqn="string", class_path="string", method_name="string", returns="is_method")
-    def get_method(self, class_fqn, class_path, method_name):
-        # check this works (case 1: no dot, case 2: one or more dots)
+    @contract(class_fqn="string", class_path="string", method_fqn="string", returns="is_method")
+    def get_method(self, class_fqn, class_path, method_fqn):
         class_name = ""
         package_name = ""
     
         fqn_parts = class_fqn.rsplit(".", 1)
     
         if len(fqn_parts) == 1:
+            # the fully qualified name contains no package name
             class_name = fqn_parts[0]
         else:
+            # the package is part of the fully qualified name
             package_name = fqn_parts[0]
             class_name = fqn_parts[1]
-    
+
+        method_fqn_parts = method_fqn.split(".")
+        outer_method_name = None
+        outer_variable_name = None
+        method_name = None
+
         klass = Klass(class_name, package_name, "file://%s" % class_path, self)
-        m = Method(method_name, klass)
-    
+        m = None
+
+        if len(method_fqn_parts) == 1:
+            method_name = method_fqn_parts[0]
+            m = Method(method_name, klass)
+        elif len(method_fqn_parts) == 3:
+            outer_method_name = method_fqn_parts[0]
+            outer_variable_name = method_fqn_parts[1]
+            method_name = method_fqn_parts[2]
+
+            outer_m = Method(outer_method_name, klass)
+            outer_v = Variable(outer_variable_name, outer_m)
+            inner_c = InnerKlass(outer_v)
+            m = Method(method_name, inner_c)
+        else:
+            raise ValueError("Unexpected format for method_name (%s). Accepted formats: <method_name>|<outer_method_name>.<variable_name>.<method_name>")
+   
         return m
-    
 
 new_contract_check_type("is_project", Project)
+
 
 class JSONFileClient(RestfulAPIClient):
 
@@ -434,10 +599,85 @@ class JSONFileClient(RestfulAPIClient):
 
         return data
 
+
 class DummyProject(Project):
 
     def __init__(self, *args, **kwargs):
         super(DummyProject, self).__init__(*args, **kwargs)
 
         self.client = JSONFileClient(self.path)
+
+class ASTVisitor(object):
+
+    @contract(node="is_ast_node|dict")
+    def __init__(self, node):
+        self.handlers = {}
+
+        if isinstance(node, ASTNode):
+            node = node.ast
+
+        self.node = node
+
+    @contract(node_type="string")
+    def add_handler(self, node_type, handler):
+        existing = self.handlers.get(node_type, [])
+        existing.append(handler)
+
+        self.handlers[node_type] = existing
+        #print "handlers: %s -> %s" % (node_type, existing)
+
+    def handle(self, node_type, node):
+        """ 
+        Invoke all the handlers of the given node_type. Each handler take the 
+        node as argument. 
+        Return True if the node has been handled by at least one handler, False 
+        otherwise.
+        """
+        node_handlers = self.handlers.get(node_type, [])
+
+#        print "check handler: %s" % node_type
+        for h in node_handlers:
+#            print "found handler: %s -> %s" % (node_type, h)
+            h(node)
+
+        return len(node_handlers) > 0
+
+    def visit(self):
+
+        to_visit = deque([ self.node ])
+
+        while len(to_visit) > 0:
+
+            # pop from the left side of the queue
+            curr_node = to_visit.popleft()
+
+            assert isinstance(curr_node, dict), "%s vs %s" % (curr_node, to_visit)
+
+            node_type = curr_node.get("nodeType", None)
+
+            if node_type is not None:
+                is_handled = self.handle(node_type, curr_node)
+    
+                if is_handled:
+                    # for this first implementation, don't go recursive after handling the node
+                    continue
+            
+            for key,value in curr_node.iteritems():
+
+                if isinstance(value, list):
+                    # extend on the rightside of the queue
+#                    print "found list child: %s" % value
+                    for curr in value:
+                        assert not isinstance(curr, list) # we don't expect nested lists
+                
+                        if isinstance(curr, dict):
+                            # the only way to encode a nested data structure is a dict within a list
+                            to_visit.extend(value)
+                elif isinstance(value, dict):
+                    # append on the right size of the queue
+#                    print "found dictionary child: %s" % value
+                    to_visit.append(value)
+                
+       
+new_contract_check_type("is_ast_visitor", ASTVisitor)
 

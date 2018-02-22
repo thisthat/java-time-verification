@@ -27,7 +27,6 @@ class TARenderer(object):
 
         self.legend = legend
         self.template = template or self.template
-
    
         self.ta = ta
         self.path = None
