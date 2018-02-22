@@ -120,13 +120,39 @@ class GraphViz(TARenderer):
             loc_name = re.sub(r'\@[0-9\.]+$', "", loc_name)
 
         return loc_name
-   
+    def group_locations(loc):
+     con=""
+     cont=0
+     listaii=[]
+     listai=[]
+     lista=[]
+     while len(loc)!=0:
+      for ta_location in loc:
+       if str(ta_location)=="initial":
+        loc.remove["initial"]
+        continue
+       if str(ta_location)=="ending":
+        loc.remove["ending"]
+        continue
+       if cont==0:
+        cont+=1
+        con=str(ta_location)[1]
+       if str(ta_location)[1]==con:
+        listaii.append(loc.pop(loc.index(ta_location)))
+      listaii.sort()
+      listai.append(con)
+      listai.append(listaii)
+      lista.append(listai)  
+      del listaii[:]
+      del listai[:]
+     return lista
     def render(self, *args, **kwargs):
         ta = self.ta
     
         g = Digraph(ta.name)
         g.attr(rankdir="TB")
 
+        
         for loc in ta.locations:
             node_attrs = { "shape": "rect", "style": "rounded" }
             if loc.is_initial:
