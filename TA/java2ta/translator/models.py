@@ -322,6 +322,7 @@ class KnowledgeBase(object):
     NOW_METHODS = set([])
     TIMESTAMPS = {}
     NOW_TIMESTAMPS = set([])
+    DEADLINE_EXP = {}
  
     @staticmethod   
     @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),is_predicate)")
@@ -449,4 +450,37 @@ class KnowledgeBase(object):
                 res.add(curr_var_name)
 
         return res
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
+    def is_now_timestamp(class_fqn, method_name, var_name):
+        now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
+        return var_name in now_timestamps
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string")
+    def set_deadline_exp(class_fqn, method_name, var_name, exp):
+        curr_deadline_exp  = KnowledgeBase.get_deadline_exp(class_fqn, method_name, var_name)
+
+        if curr_deadline_exp is None:
+            if class_fqn not in KnowledgeBase.DEADLINE_EXP:
+                KnowledgeBase.DEADLINE_EXP[class_fqn] = {
+                    method_name: {
+                        var_name: exp
+                    }
+                }
+            elif method_name not in KnowledgeBase.DEADLINE_EXP[class_fqn]:
+                KnowledgeBase.DEADLINE_EXP[class_fqn][method_name] = {
+                    var_name: exp
+                }
+            else:
+                KnowledgeBase.DEADLINE_EXP[class_fqn][method_name][var_name] = exp
+        elif curr_deadline_exp != exp:
+            raise ValueError("At the moment only one deadline expression for each timestamp is accepted. Deadline (%s,%s,%s) is associated to %s and %s." % (class_fqn, method_name, var_name, curr_deadline_exp, exp))
+
+    @staticmethod   
+    @contract(class_fqn="string", method_name="string", var_name="string")
+    def get_deadline_exp(class_fqn, method_name, var_name):
+        curr_deadline_exp  = KnowledgeBase.DEADLINE_EXP.get(class_fqn, {}).get(method_name, {}).get(var_name, None)
+        return curr_deadline_exp
 

@@ -145,7 +145,7 @@ class Location(object):
         return self.name
 
 new_contract_check_type("is_location", Location) 
-       
+ 
 
 class Edge(object):
 
@@ -166,10 +166,41 @@ class Edge(object):
         self.clock_variables = clock_variables or set([])
         self.variables = variables or set([])
 
+    @property
+    def formatted_label(self):
+        label_parts = []
+        if self.guard:
+            label_parts.append("[%s]" % self.guard)
+
+        if self.label:
+            label_parts.append(self.label)
+
+        label = ""
+        if label_parts:
+            label = "|".join(label_parts)
+
+        return label
+
     def __str__(self):
-        return "%s -> %s" % (self.source, self.target)
+        label = self.formatted_label
+        if label:
+            label = "[%s]" % label
+        return "%s -%s-> %s" % (self.source, label, self.target)
 
 new_contract_check_type("is_edge", Edge)
+
+class TimeEdge(Edge):
+
+    def __init__(self, source, target, label=None):
+        super(TimeEdge, source, target, label=label)
+
+    def __str__(self):
+        label = self.formatted_label
+        if label:
+            label = "[%s]" % label
+        return "%s ~%s~> %s" % (self.source, label, self.target)
+
+new_contract_check_type("is_time_edge", TimeEdge)
 
 class TA(object):
     
@@ -336,7 +367,12 @@ class TA(object):
         if var.name not in self._variables:
             self._variables[var.name] = var
 
+    @contract(var="string|is_clock_variable")
     def add_clock_variable(self, var):
+
+        if isinstance(var, basestring):
+            var = ClockVariable(var)
+
         assert isinstance(var, ClockVariable)
 
         log.debug(u"Add clock: %s" % unicode(var))

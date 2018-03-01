@@ -30,6 +30,7 @@ class ASTNode(object):
         if self.parent is not None:
             self.parent.add_child(self)
 
+
     def add_child(self, child):
         assert isinstance(child, ASTNode)
 
@@ -41,6 +42,7 @@ class ASTNode(object):
             self._ast = self.get_ast()
 
             assert isinstance(self._ast, dict), "%s - %s" % (type(self), self._ast)
+
 
         return self._ast
 
@@ -61,6 +63,7 @@ class ASTNode(object):
         AST we force also the ancestor ASTs to be loaded)
         """
         return self.ast != None
+
 
 new_contract_check_type("is_ast_node", ASTNode)
 
@@ -617,6 +620,9 @@ class ASTVisitor(object):
             node = node.ast
 
         self.node = node
+
+    def reset_handlers(self):
+        self.handlers = {}
 
     @contract(node_type="string")
     def add_handler(self, node_type, handler):

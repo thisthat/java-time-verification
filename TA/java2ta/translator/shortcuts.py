@@ -12,7 +12,7 @@ from java2ta.translator.rules import ExtractMethodStateSpace, AddStates
 from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames
 from java2ta.ir.models import Project, Method, Klass
 from java2ta.ir.client import APIError
-from java2ta.ir.shortcuts import get_timestamps, check_now_assignments
+from java2ta.ir.shortcuts import get_timestamps, check_now_assignments, get_identifiers
 from java2ta.ta.models import TA, Location, Edge, ClockVariable
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable
 from java2ta.abstraction.shortcuts import DataTypeFactory
@@ -20,6 +20,11 @@ from java2ta.abstraction.shortcuts import DataTypeFactory
 import sys
 import logging
 from contracts import contract, new_contract, check
+
+# this global variable is a dirty way to pass to all the methods in the workflow a 
+# quick reference to the method currently under analysis; the code should be refactored
+# so that the global variable is not needed any more
+THE_METHOD = None
 
 PROCESS_PRECONDITIONS = False # see the bug in processing preconditions, before re-enabling that code
 
@@ -269,6 +274,25 @@ def transform(name, instructions, state_space, project, timestamps, only_now_ass
     return ta
 
 
+def node_to_deadline_exp(node, now_timestamps):
+    """
+    This is a very naive interpretation, where expressions like:
+
+    now + timeout
+
+    is translated to
+
+    0 + timeout
+        
+    if "now" is one of the now_timestamps
+    """
+    exp = node["code"]
+    for curr in now_timestamps:
+        exp = exp.replace(curr, "0")
+ 
+    log.debug("Node: %s -> Exp: %s" % (node["code"], exp))
+    return exp
+
 
 class SMTProb(object):
 
@@ -418,8 +442,29 @@ class SMTProb(object):
 
 #                if var not in env:
 #                    raise ForgottenVariableException(var)
+                curr_method = get_current_method()
+                assert curr_method != None, "Expected a non-null current method under analysis"
+                class_fqn = curr_method.parent.fqname
+                method_name = curr_method.name
+                now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
+                is_now_timestamp = KnowledgeBase.is_now_timestamp(class_fqn, method_name, var)
+                is_timestamp = KnowledgeBase.is_timestamp(class_fqn, method_name, var)
 
-                if rhs is not None:
+#                print "check '%s.%s.%s' is now timestamp: %s" % (class_fqn, method_name, var, is_now_timestamp)
+                if is_now_timestamp or is_timestamp:
+
+                    if not is_now_timestamp:
+                        deadline_exp = node_to_deadline_exp(rhs, now_timestamps)
+                        KnowledgeBase.set_deadline_exp(class_fqn, method_name, var, deadline_exp)
+            
+                    # force the state not to change (all variables of all attributes keep their value)
+                    for curr in self.attributes:
+                        assert isinstance(curr, AbstractAttribute)
+                        for attr_var in curr.variables:
+                            assert not is_now_timestamp or attr_var != var # at the moment we don't allow now-timestamps to be in the abstract state space; other timestamp variables can
+#                            if attr_var != var and attr_var in frame:
+                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTVariableDeclaration frame condition (with now timestamp)" % (attr_var, attr_var)) # TODO primed names
+                elif rhs is not None:
                     new_frame = list(frame)
                     try:
                         # remove var if present in frame/new_frame
@@ -454,32 +499,53 @@ class SMTProb(object):
                 var = node_exp["left"]["value"]
                 rhs = node_exp["right"]
 
-                # if var not in the environment, it means we are abstracting from it completely
-                # (i.e. we are forgetting it)
-                log.debug("Check variable in env: %s vs %s" % (var, env))
-                if var not in env:
+                curr_method = get_current_method()
+                assert curr_method != None, "Expected a non-null current method under analysis"
+                class_fqn = curr_method.parent.fqname
+                method_name = curr_method.name
+                now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
+                is_now_timestamp = KnowledgeBase.is_now_timestamp(class_fqn, method_name, var)
+                is_timestamp = KnowledgeBase.is_timestamp(class_fqn, method_name, var)
+
+                if is_now_timestamp or is_timestamp:
+
+                    if not is_now_timestamp:
+                        deadline_exp = node_to_deadline_exp(rhs, now_timestamps)
+                        KnowledgeBase.set_deadline_exp(class_fqn, method_name, var, deadline_exp)
+
+                    # force the state not to change (all variables of all attributes keep their value)
+                    for curr in self.attributes:
+                        assert isinstance(curr, AbstractAttribute)
+                        for attr_var in curr.variables:
+                            assert attr_var != var
+#                            if attr_var != var and attr_var in frame:
+                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition (with now timestamp)" % (attr_var, attr_var)) # TODO primed names
+                elif var not in env:
+                    # if var not in the environment, it means we are abstracting from it completely
+                    # (i.e. we are forgetting it)
+                    log.debug("Variable %s not in env: %s" % (var, env))
                     raise ForgottenVariableException(var)
-
-                new_frame = list(frame)
-                try:
-                    # remove var if present in frame/new_frame
-                    new_frame.remove(var)
-                except ValueError:
-                    # do nothing
-                    pass
-
-                rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs, env, frame=new_frame)
-                if rhs_smt_assertion:
-                    smt_declarations.extend(rhs_smt_declarations)
-                    smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
-
-                # force other primed vars to be equal to non-primed vars
-                for curr in self.attributes:
-                    assert isinstance(curr, AbstractAttribute)
-
-                    for attr_var in curr.variables:
-                        if attr_var != var and attr_var in frame:
-                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition" % (attr_var, attr_var)) # TODO primed names
+                else:
+                    new_frame = list(frame)
+                    try:
+                        # remove var if present in frame/new_frame
+                        new_frame.remove(var)
+                    except ValueError:
+                        # do nothing
+                        pass
+    
+                    rhs_smt_declarations,rhs_smt_assertion = self.node_to_smt(rhs, env, frame=new_frame)
+                    if rhs_smt_assertion:
+                        smt_declarations.extend(rhs_smt_declarations)
+                        smt_assertion = "(= %s_1 %s)" % (var, rhs_smt_assertion) # TODO primed name
+    
+                    # force other primed vars to be equal to non-primed vars
+                    for curr in self.attributes:
+                        assert isinstance(curr, AbstractAttribute)
+    
+                        for attr_var in curr.variables:
+                            if attr_var != var and attr_var in frame:
+                                smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition" % (attr_var, attr_var)) # TODO primed names
 
             elif node_exp_type == "ASTPostOp":
                 assert "code" in node_exp
@@ -582,7 +648,7 @@ class SMTProb(object):
             try:
                 (smt_dt, parameters, method_env, smt_interpretation) = KnowledgeBase.get_method(class_name,method_name)
             except Exception, e:
-                log.warning("Error interpreting method: %s" % e)
+                log.warning("Error interpreting method: %s. Node: %s" % (e, node))
                 raise ForgottenMethodException(method_name, class_name, class_path="?")
 
             if smt_interpretation:
@@ -1134,6 +1200,47 @@ def tuple_replace(curr_tuple, pos, value):
     new_values[pos] = value
     return tuple(new_values)
 
+def set_current_method(method):
+    global THE_METHOD
+    THE_METHOD = method
+
+def get_current_method():
+    global THE_METHOD
+    return THE_METHOD
+
+@contract(node="dict", returns="tuple(set(string)|None,string|None)")
+def parse_clock_condition(node):
+    assert "expression" in node, "Expected node containing the expression of the guard"
+
+    clock_variables = set([])
+    clock_condition = ""
+
+    curr_method = get_current_method()
+    class_fqname = curr_method.parent.fqname
+    method_name = curr_method.name
+
+    identifiers = get_identifiers(node)
+
+    is_clock_condition = len(identifiers) > 0
+
+    if is_clock_condition:
+        # in our simplified setting, in order to be a clock conditon, all the identifiers in the 
+        # guard must be timestamps;
+        for curr_identifier in identifiers:
+            if not KnowledgeBase.is_timestamp(class_fqname, method_name, curr_identifier):
+                is_clock_condition = False
+                break
+
+        if is_clock_condition:
+            # this is a simplified assumption as well: I may have only timestamps among the 
+            # identifiers, but used for method calls or other fancy computations; the clock conditions
+            # should also check for "basic" arithmetic operators + comparison operators
+            clock_variables = set(identifiers)
+            clock_condition = node["code"] # TODO this is temporary, and must be processed
+
+    return clock_variables, clock_condition
+
+
 @contract(source="is_configuration", pc_source=PC, instr="dict", state_space="is_state_space", project="is_project", visited_locations="set(string)", preconditions="list(is_precondition)|None", postconditions="list(is_precondition)|None", deadlines="list(is_pc)|None", returns=ReachabilityResult)
 def check_reach(source, pc_source, instr, state_space, project, visited_locations, preconditions=None, postconditions=None, pc_jump_stack=None, deadlines=None):
     assert preconditions is None or isinstance(preconditions, list)
@@ -1232,6 +1339,7 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
 
         guard = instr["guard"]
         assert "code" in guard
+        assert "expression" in guard
         pc_source_then = PC(pc_source.pc).push(0).push(0)
         pc_source_else = PC(pc_source.pc).push(1).push(0)
 
@@ -1245,17 +1353,26 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
         final_then = final_else = []
         pc_target = pc_source + 1
 
-        with SMTProb(state_space.attributes, project) as smt_prob:
+        clock_variables, clock_condition = parse_clock_condition(guard)
+        is_clock_condition = len(clock_variables) > 0
 
-            assert "expression" in guard
+        print "check is clock condition (ASTIf): %s |-> %s" % (guard["code"], is_clock_condition)
+        # initialize those variables
+        is_then_reachable = is_else_reachable = is_clock_condition
+        
+        if not is_clock_condition:
 
-            smt_prob.push()
-            is_then_reachable = smt_prob.check_sat_guard(source_pred, guard=Precondition(guard["expression"]))
-            smt_prob.pop()
-
-            smt_prob.push()
-            is_else_reachable = smt_prob.check_sat_guard(source_pred, guard=Negate(guard["expression"])) 
-            smt_prob.pop()
+            with SMTProb(state_space.attributes, project) as smt_prob:
+    
+                assert "expression" in guard
+    
+                smt_prob.push()
+                is_then_reachable = smt_prob.check_sat_guard(source_pred, guard=Precondition(guard["expression"]))
+                smt_prob.pop()
+    
+                smt_prob.push()
+                is_else_reachable = smt_prob.check_sat_guard(source_pred, guard=Negate(guard["expression"])) 
+                smt_prob.pop()
     
         if (is_then_reachable):
             reachable_then = [ source ]
@@ -1270,7 +1387,11 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
 
             # add ed edge from source to the begin of the "then" branch
             then_loc = build_location(source, pc_source_then)
-            edge_then = Edge(source_loc, then_loc, "if (%s)" % guard["code"])
+
+            if is_clock_condition:
+                edge_then = Edge(source_loc, then_loc, guard=clock_condition, clock_variables=clock_variables)
+            else:
+                edge_then = Edge(source_loc, then_loc, "if (%s)" % guard["code"])
  
             # add an edge to the set of resulting edges       
             edges.append(edge_then) 
@@ -1295,7 +1416,10 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
     
             # add en edge from source to the begin of the "else" branch
             else_loc = build_location(source, pc_source_else)
-            edge_else = Edge(source_loc, else_loc, "else (not(%s))" % guard["code"])
+            if is_clock_condition:
+                edge_else = Edge(source_loc, else_loc, guard="not (%s)" % clock_condition, clock_variables=clock_variables)
+            else:
+                edge_else = Edge(source_loc, else_loc, "else (not(%s))" % guard["code"])
             # add an edge to the results
             edges.append(edge_else)
         elif not stms_else and is_else_reachable:
@@ -1337,6 +1461,14 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
 
         pc_source_while = PC(pc_source.pc).push(0)
 
+        clock_variables, clock_condition = parse_clock_condition(guard)
+        is_clock_condition = len(clock_variables) > 0
+
+        print "check is clock condition (ASTWhile): %s |-> %s" % (guard["code"], is_clock_condition)
+        # initialize those variables
+        is_while_reachable = is_clock_condition
+        is_not_while_reachable = is_clock_condition
+
         while len(tovisit_sources) > 0:
             curr_source_conf = tovisit_sources.pop()
             curr_source_loc = build_location(curr_source_conf, pc_source)
@@ -1347,17 +1479,20 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
             #visited_locations.add(curr_source_loc)
             curr_source_pred = state_space.value(curr_source_conf)
 
-            # determine whether the guard and/or its negation are satisfiable
-            with SMTProb(state_space.attributes, project) as smt_prob:
-    
-                smt_prob.push()
-                is_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Precondition(guard["expression"]))
-                smt_prob.pop()
+            if not is_clock_condition:
+                # determine whether the guard and/or its negation are satisfiable
+                with SMTProb(state_space.attributes, project) as smt_prob:
         
-                smt_prob.push()
-                is_not_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Negate(guard["expression"]))
-                smt_prob.pop()
+                    smt_prob.push()
+                    is_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Precondition(guard["expression"]))
+                    smt_prob.pop()
+            
+                    smt_prob.push()
+                    is_not_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Negate(guard["expression"]))
+                    smt_prob.pop()
     
+            assert not is_clock_condition or (is_while_reachable and is_not_while_reachable)
+
             # the guard is satisfiable: enter the block
             if is_while_reachable:
         
@@ -1378,7 +1513,12 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
                 # add edge from source to the begin of the while
                 # TODO at the moment we don't take advantage of the while-guard as precondition
                 while_loc = build_location(curr_source_conf, pc_source_while)
-                while_edge = Edge(curr_source_loc, while_loc, "while (%s)" % guard["code"])
+
+                if is_clock_condition:  
+                    while_edge = Edge(curr_source_loc, while_loc, guard=clock_condition, clock_variables=clock_variables)
+                else:
+                    while_edge = Edge(curr_source_loc, while_loc, "while (%s)" % guard["code"])
+                    
                 edges.append(while_edge)
  
                 # every final state is used as starting point for a new iteration of the 
@@ -1408,7 +1548,10 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
     
                 # add edge from source to the end of the while
                 curr_source_neg_loc = build_location(curr_source_conf, pc_target)
-                while_exit_edge = Edge(curr_source_loc, curr_source_neg_loc, "not (%s)" % guard["code"])
+                if is_clock_condition:  
+                    while_exit_edge = Edge(curr_source_loc, curr_source_neg_loc, guard="not (%s)" % clock_condition, clock_variables=clock_variables)
+                else:
+                    while_exit_edge = Edge(curr_source_loc, curr_source_neg_loc, "not (%s)" % guard["code"])
                 edges.append(while_exit_edge)
                 final.append(curr_source_neg_loc)
                 reachable.append(curr_source_conf)
@@ -1628,52 +1771,52 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
 
         check_closure(pc_target, reachable, final, external)
 
-    elif instr_type == "ASTDeadline":
-
-        assert "stms" in instr
-
-        # add a clock variable, its lower bound, and its upper bound 
-        cv = FreshNames.get_clock_variable(pc_source, prefix="dl")
-        (lower, upper) = FreshNames.get_clock_bounds(pc_source, prefix="dl")
-        variables = variables | set([ cv, lower, upper ])
-
-        # explore recursively the reachable states
-        stms_deadline = instr["stms"]
-        pc_source_deadline = PC(pc_source.pc).push("0")
-        deadlines.append(pc_source) 
-        rr_deadline = compute_reachable([source],pc_source_deadline, stms_deadline, state_space, project, visited_locations, preconditions, pc_jump_stack, deadlines=deadlines)
-
-        deadlines.pop()
-        variables |= rr_deadline.variables
-        edges.extend(rr_deadline.edges)
-    
-        # add edges from source to the begin of the deadline
-        deadline_loc = build_location(source, pc_source_deadline)
-        deadline_edge = Edge(source_loc, deadline_loc, "")
-        edges.append(deadline_edge)
-
-        final_deadline = rr_deadline.final_locations
-
-        pc_target = pc_source + 1
-
-        for loc in rr_deadline.final_locations:
-            (loc_conf, loc_pc) = parse_location(loc)
-            post_loc = build_location(loc_conf, pc_target)
-            e = Edge(loc, post_loc)
-            edges.append(e)
-
-        log.debug("Final deadline locations: %s" % final_deadline)
-        for loc in final_deadline:
-            log.debug("Deadline check final loc: %s" % loc)
-            assert isinstance(loc, Location)
-            (state_loc, pc_loc) = parse_location(loc)
-            end_deadline_loc = build_location(state_loc, pc_target)
-            edges.append(Edge(loc, end_deadline_loc))       
-            final.append(end_deadline_loc)
-            reachable.append(state_loc)
-
-        check_closure(pc_target, reachable, final, external)
-
+###    elif instr_type == "ASTDeadline":
+###
+###        assert "stms" in instr
+###
+###        # add a clock variable, its lower bound, and its upper bound 
+###        cv = FreshNames.get_clock_variable(pc_source, prefix="dl")
+###        (lower, upper) = FreshNames.get_clock_bounds(pc_source, prefix="dl")
+###        variables = variables | set([ cv, lower, upper ])
+###
+###        # explore recursively the reachable states
+###        stms_deadline = instr["stms"]
+###        pc_source_deadline = PC(pc_source.pc).push("0")
+###        deadlines.append(pc_source) 
+###        rr_deadline = compute_reachable([source],pc_source_deadline, stms_deadline, state_space, project, visited_locations, preconditions, pc_jump_stack, deadlines=deadlines)
+###
+###        deadlines.pop()
+###        variables |= rr_deadline.variables
+###        edges.extend(rr_deadline.edges)
+###    
+###        # add edges from source to the begin of the deadline
+###        deadline_loc = build_location(source, pc_source_deadline)
+###        deadline_edge = Edge(source_loc, deadline_loc, "")
+###        edges.append(deadline_edge)
+###
+###        final_deadline = rr_deadline.final_locations
+###
+###        pc_target = pc_source + 1
+###
+###        for loc in rr_deadline.final_locations:
+###            (loc_conf, loc_pc) = parse_location(loc)
+###            post_loc = build_location(loc_conf, pc_target)
+###            e = Edge(loc, post_loc)
+###            edges.append(e)
+###
+###        log.debug("Final deadline locations: %s" % final_deadline)
+###        for loc in final_deadline:
+###            log.debug("Deadline check final loc: %s" % loc)
+###            assert isinstance(loc, Location)
+###            (state_loc, pc_loc) = parse_location(loc)
+###            end_deadline_loc = build_location(state_loc, pc_target)
+###            edges.append(Edge(loc, end_deadline_loc))       
+###            final.append(end_deadline_loc)
+###            reachable.append(state_loc)
+###
+###        check_closure(pc_target, reachable, final, external)
+###
     elif instr_type == "ASTForEach" or instr_type == "ASTFor":
 
         assert "identifier" in instr
@@ -1927,12 +2070,16 @@ def get_state_space_from_method(method, domains):
 @contract(method="is_method", state_space="is_state_space", returns="is_ta")
 def translate_method_to_ta(method, state_space):
 
+    set_current_method(method)
+
+    assert get_current_method() != None
+
     #instructions = method.ast["stms"]
     instructions = method.instructions
 
     # pre-analysis of variable timestamps
     now_methods = KnowledgeBase.get_now_methods()
-    timestamps = get_timestamps(method, now_methods)    
+    timestamps = get_timestamps(method) #, now_methods)    
     only_now_assignments = {}
     for var, nodes in timestamps.iteritems():
         only_now_assignments[var] = check_now_assignments(nodes, now_methods)
