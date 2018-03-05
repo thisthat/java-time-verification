@@ -13,10 +13,11 @@ from java2ta.translator.models import PC, ReachabilityResult, AttributePredicate
 from java2ta.ir.models import Project, Method, Klass
 from java2ta.ir.client import APIError
 from java2ta.ir.shortcuts import get_timestamps, check_now_assignments, get_identifiers
-from java2ta.ta.models import TA, Location, Edge, ClockVariable
-from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable
-from java2ta.abstraction.shortcuts import DataTypeFactory
+from java2ta.ta.models import TA, Location, Edge, TimeEdge, ClockVariable
+from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable, CompareVariables, Integer, LT, GT, Eq
+from java2ta.abstraction.shortcuts import DataTypeFactory, INTEGERS
 
+import itertools
 import sys
 import logging
 from contracts import contract, new_contract, check
@@ -64,6 +65,24 @@ class UnknownSMTInterpretationException(Exception):
         msg = "Unknown SMT interpretation for code (%s): %s" % (node["nodeType"], node["code"], )
         super(UnknownSMTInterpretationException, self).__init__(msg, *args, **kwargs)
 
+
+class TimeTransitionException(Exception):
+
+    def __init__(self, class_fqn, method_name, var, *args, **kwargs):
+        self.class_fqn = class_fqn
+        self.method_name = method_name
+        self.var = var
+        super(TimeTransitionException, self).__init__(*args, **kwargs)
+
+
+class UpdateTimestampException(Exception):
+
+    def __init__(self, class_fqn, method_name, var, rhs_node, *args, **kwargs):
+        self.class_fqn = class_fqn
+        self.method_name = method_name
+        self.var = var
+        self.rhs_node = rhs_node
+        super(UpdateTimestampException, self).__init__(*args, **kwargs)
 
 @contract(attr_predicates="None|list(is_attribute_predicate)", returns="set(string)")
 def pred_to_env(attr_predicates):
@@ -218,8 +237,8 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
 
 
-@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", timestamps="dict(string:list(dict))", only_now_assignments="dict(string:bool)", returns="is_ta")
-def transform(name, instructions, state_space, project, timestamps, only_now_assignments):
+@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", returns="is_ta")
+def transform(name, instructions, state_space, project):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
     # this note just to keep track of this "oddity"
@@ -446,24 +465,26 @@ class SMTProb(object):
                 assert curr_method != None, "Expected a non-null current method under analysis"
                 class_fqn = curr_method.parent.fqname
                 method_name = curr_method.name
-                now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
+#                now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
                 is_now_timestamp = KnowledgeBase.is_now_timestamp(class_fqn, method_name, var)
                 is_timestamp = KnowledgeBase.is_timestamp(class_fqn, method_name, var)
 
 #                print "check '%s.%s.%s' is now timestamp: %s" % (class_fqn, method_name, var, is_now_timestamp)
-                if is_now_timestamp or is_timestamp:
-
-                    if not is_now_timestamp:
-                        deadline_exp = node_to_deadline_exp(rhs, now_timestamps)
-                        KnowledgeBase.set_deadline_exp(class_fqn, method_name, var, deadline_exp)
-            
-                    # force the state not to change (all variables of all attributes keep their value)
-                    for curr in self.attributes:
-                        assert isinstance(curr, AbstractAttribute)
-                        for attr_var in curr.variables:
-                            assert not is_now_timestamp or attr_var != var # at the moment we don't allow now-timestamps to be in the abstract state space; other timestamp variables can
-#                            if attr_var != var and attr_var in frame:
-                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTVariableDeclaration frame condition (with now timestamp)" % (attr_var, attr_var)) # TODO primed names
+                if is_now_timestamp:
+                    raise TimeTransitionException(class_fqn, method_name, var)
+                elif is_timestamp:
+                    raise UpdateTimestampException(class_fqn, method_name, var, rhs)
+##                    if not is_now_timestamp:
+##                        deadline_exp = node_to_deadline_exp(rhs, now_timestamps)
+##                        KnowledgeBase.set_deadline_exp(class_fqn, method_name, var, deadline_exp)
+## 
+##                    # force the state not to change (all variables of all attributes keep their value)
+##                    for curr in self.attributes:
+##                        assert isinstance(curr, AbstractAttribute)
+##                        for attr_var in curr.variables:
+##                            assert not is_now_timestamp or attr_var != var # at the moment we don't allow now-timestamps to be in the abstract state space; other timestamp variables can
+###                            if attr_var != var and attr_var in frame:
+##                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTVariableDeclaration frame condition (with now timestamp)" % (attr_var, attr_var)) # TODO primed names
                 elif rhs is not None:
                     new_frame = list(frame)
                     try:
@@ -503,23 +524,28 @@ class SMTProb(object):
                 assert curr_method != None, "Expected a non-null current method under analysis"
                 class_fqn = curr_method.parent.fqname
                 method_name = curr_method.name
-                now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
+#                now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
                 is_now_timestamp = KnowledgeBase.is_now_timestamp(class_fqn, method_name, var)
                 is_timestamp = KnowledgeBase.is_timestamp(class_fqn, method_name, var)
 
-                if is_now_timestamp or is_timestamp:
+                if is_now_timestamp:
+                    raise TimeTransitionException(class_fqn, method_name, var)
+                elif is_timestamp:
+                    raise UpdateTimestampException(class_fqn, method_name, var, rhs)
 
-                    if not is_now_timestamp:
-                        deadline_exp = node_to_deadline_exp(rhs, now_timestamps)
-                        KnowledgeBase.set_deadline_exp(class_fqn, method_name, var, deadline_exp)
-
-                    # force the state not to change (all variables of all attributes keep their value)
-                    for curr in self.attributes:
-                        assert isinstance(curr, AbstractAttribute)
-                        for attr_var in curr.variables:
-                            assert attr_var != var
-#                            if attr_var != var and attr_var in frame:
-                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition (with now timestamp)" % (attr_var, attr_var)) # TODO primed names
+##                if is_now_timestamp or is_timestamp:
+##
+##                    if not is_now_timestamp:
+##                        deadline_exp = node_to_deadline_exp(rhs, now_timestamps)
+##                        KnowledgeBase.set_deadline_exp(class_fqn, method_name, var, deadline_exp)
+##
+##                    # force the state not to change (all variables of all attributes keep their value)
+##                    for curr in self.attributes:
+##                        assert isinstance(curr, AbstractAttribute)
+##                        for attr_var in curr.variables:
+##                            assert attr_var != var
+###                            if attr_var != var and attr_var in frame:
+##                            smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition (with now timestamp)" % (attr_var, attr_var)) # TODO primed names
                 elif var not in env:
                     # if var not in the environment, it means we are abstracting from it completely
                     # (i.e. we are forgetting it)
@@ -666,7 +692,7 @@ class SMTProb(object):
                 if callee_node:
                     callee_type = callee_node.get("nodeType", None)
                     if callee_type == "ASTIdentifier":
-                        self_var = callee_node["code"]
+#                        self_var = callee_node["code"]
                         interpretation_context["__self__"] = callee_node["code"]
                     else:
                         log.warning("Callee of unknown type (%s). Cannot use the __self__var in method interpretation. Callee node: %s" % (callee_type, callee_node))
@@ -693,6 +719,12 @@ class SMTProb(object):
 
                     elif par["nodeType"] == "ASTIdentifier":
                         # passing an identifier, directly as the variable name
+
+                        if par["code"] not in env:
+                            # it may be that the variable passed as argument is not one of the 
+                            # variables in the abstract state space
+                            raise ForgottenVariableException(par["code"])
+
                         par_value = par["code"]
                     else:
 #                        raise ValueError("Sorry dude. At the moment we cannot handle method call parameters that are neither literals nor identifiers. Passed: %s" % par)
@@ -1310,12 +1342,26 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
             with SMTProb(state_space.attributes, project) as smt_prob:
                 cache_found = SMTProb.smt_cache_lookup(source, instr, target)
 
+                is_time_transition = False
                 is_sat = False
                 if cache_found is not None:
                     is_sat = cache_found
                 else:
                     smt_prob.push()
-                    is_sat = smt_prob.check_sat_instr(source_pred, instr, target_pred, preconditions)
+                    try:
+                        is_sat = smt_prob.check_sat_instr(source_pred, instr, target_pred, preconditions)
+                    except TimeTransitionException, e:
+                        is_sat = (source_pred == target_pred)
+                        is_time_transition = True
+                    except UpdateTimestampException, e:
+                        is_sat = (source_pred == target_pred)
+
+                        if is_sat:
+                            now_timestamps = KnowledgeBase.get_now_timestamps(e.class_fqn, e.method_name)
+                            deadline_exp = node_to_deadline_exp(e.rhs_node, now_timestamps)
+                            KnowledgeBase.set_deadline_exp(e.class_fqn, e.method_name, e.var, deadline_exp)
+
+
                     smt_prob.pop()
                     SMTProb.smt_cache_store(source, instr, target, is_sat)
         
@@ -1323,7 +1369,12 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
                 if is_sat:
                     target_loc = build_location(target, pc_target)
                     edge_label = instr["code"]
-                    edge = Edge(source_loc, target_loc, edge_label)
+
+                    if is_time_transition:
+                        edge = TimeEdge(source_loc, target_loc, edge_label)
+                        log.debug("Add time edge: %s" % edge)
+                    else:
+                        edge = Edge(source_loc, target_loc, edge_label)
      
                     reachable.append(target)
                     edges.append(edge) 
@@ -2077,17 +2128,36 @@ def translate_method_to_ta(method, state_space):
     #instructions = method.ast["stms"]
     instructions = method.instructions
 
-    # pre-analysis of variable timestamps
-    now_methods = KnowledgeBase.get_now_methods()
-    timestamps = get_timestamps(method) #, now_methods)    
-    only_now_assignments = {}
-    for var, nodes in timestamps.iteritems():
-        only_now_assignments[var] = check_now_assignments(nodes, now_methods)
-
     if len(instructions) == 0:
         raise ValueError("The passed method has no instructions. This is not allowed.")
 
-    ta = transform(method.name, instructions, state_space, method.project, timestamps, only_now_assignments)
+    # pre-analysis of variable timestamps
+#    now_methods = KnowledgeBase.get_now_methods()
+#    timestamps = get_timestamps(method) #, now_methods)    
+#    only_now_assignments = {}
+#    for var, nodes in timestamps.iteritems():
+#        is_now_variable = check_now_assignments(nodes, now_methods)
+#        only_now_assignments[var] = is_now_variable
+#
+#        # exploit the analysis of timestamps in order to add attributes to the state-space
+#        if is_now_variable:
+#            try:
+#                attr = state_space.get_attribute(var)
+#            except ValueError, e:
+#                # attribute for the now variable does not exist, add one
+#                attr = AbstractAttribute(variables=[var,],domain=INTEGERS,is_local=False)    
+#                assert attr.name == var
+#                state_space.add_attribute(attr)
+
+    class_fqn = method.parent.fqname
+    compare_absolute = itertools.combinations(KnowledgeBase.get_absolute_timestamps(class_fqn, method.name), 2)
+    compare_relative = itertools.combinations(KnowledgeBase.get_relative_timestamps(class_fqn, method.name), 2)
+
+    for left,right in list(compare_absolute) + list(compare_relative):
+        attr = AbstractAttribute(variables=[left,right], domain=CompareVariables(datatypes=[Integer(), Integer()], predicates=[LT(left,right), Eq(left,right), GT(left,right)]), is_local=False)
+        state_space.add_attribute(attr)
+
+    ta = transform(method.name, instructions, state_space, method.project)
 
     return ta
 
