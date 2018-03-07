@@ -322,6 +322,7 @@ class KnowledgeBase(object):
     NOW_METHODS = set([])
     TIMESTAMPS = {}
     NOW_TIMESTAMPS = set([])
+    DEADLINE_EXP = {}
  
     @staticmethod   
     @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),is_predicate)")
@@ -405,12 +406,16 @@ class KnowledgeBase(object):
         return KnowledgeBase.NOW_METHODS
 
     @staticmethod
-    @contract(class_fqn="string", method_name="string", var_name="string", is_now="bool")
-    def add_timestamp(class_fqn, method_name, var_name, is_now=False):
+    @contract(class_fqn="string", method_name="string", var_name="string", is_relative="bool", is_now="bool")
+    def add_timestamp(class_fqn, method_name, var_name, is_relative, is_now=False):
+
+        if is_relative and is_now:
+            raise ValueError("In order to be a now-timestamp, the timestamp must also be absolute")
 
         methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
-        timestamps = methods.get(method_name, set([]))
-        timestamps.add(var_name)
+        timestamps = methods.get(method_name, {}) #set([]))
+#        timestamps.add(var_name)
+        timestamps[var_name] = is_relative
 
         methods[method_name] = timestamps
         KnowledgeBase.TIMESTAMPS[class_fqn] = methods
@@ -419,18 +424,55 @@ class KnowledgeBase(object):
             KnowledgeBase.NOW_TIMESTAMPS.add("%s.%s.%s" % (class_fqn, method_name, var_name))
 
     @staticmethod
-    @contract(class_fqn="string", method_name="string", returns="set(string)")
+    @contract(class_fqn="string", method_name="string", returns="dict(string:bool)") #set(string)")
     def get_timestamps(class_fqn, method_name):
         methods = KnowledgeBase.TIMESTAMPS.get(class_fqn, {})
-        timestamps = methods.get(method_name, set([]))
+        timestamps = methods.get(method_name, {}) #set([]))
 
         return timestamps
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", returns="set(string)")
+    def get_absolute_timestamps(class_fqn, method_name):
+        res = set([])
+        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+        for var, is_relative in timestamps.iteritems():
+            if not is_relative:
+                res.add(var)
+
+        return res
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", returns="set(string)")
+    def get_relative_timestamps(class_fqn, method_name):
+        res = set([])
+        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+        for var, is_relative in timestamps.iteritems():
+            if is_relative:
+                res.add(var)
+
+        return res
 
     @staticmethod
     @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
     def is_timestamp(class_fqn, method_name, var_name):
         timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
         return var_name in timestamps
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
+    def is_absolute_timestamp(class_fqn, method_name, var_name):
+        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+        return var_name in timestamps and timestamps[var_name] == False
+
+ 
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
+    def is_relative_timestamp(class_fqn, method_name, var_name):
+        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+        return var_name in timestamps and timestamps[var_name] == True
+
+
 
     @staticmethod
     @contract(class_fqn="string", method_name="string", var_name="string")
@@ -440,8 +482,13 @@ class KnowledgeBase(object):
     @staticmethod
     @contract(class_fqn="string", method_name="string", returns="set(string)")
     def get_now_timestamps(class_fqn, method_name):
- 
-        res = set([])
+        """
+        We return all the timestamp variables that are used to check the current time
+        (now-timestamps). Note that they are necessarily absolute timestamps, thus we don't need to
+        return a dictionary {string:bool}, a set of strings suffices.
+        """
+        res = set([])  
+#        res = {}
 
         for var_fqname in KnowledgeBase.NOW_TIMESTAMPS:
             curr_class_fqn, curr_method_name, curr_var_name = var_fqname.rsplit(".", 2)
@@ -449,4 +496,37 @@ class KnowledgeBase(object):
                 res.add(curr_var_name)
 
         return res
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
+    def is_now_timestamp(class_fqn, method_name, var_name):
+        now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
+        return var_name in now_timestamps
+
+    @staticmethod
+    @contract(class_fqn="string", method_name="string", var_name="string")
+    def set_deadline_exp(class_fqn, method_name, var_name, exp):
+        curr_deadline_exp  = KnowledgeBase.get_deadline_exp(class_fqn, method_name, var_name)
+
+        if curr_deadline_exp is None:
+            if class_fqn not in KnowledgeBase.DEADLINE_EXP:
+                KnowledgeBase.DEADLINE_EXP[class_fqn] = {
+                    method_name: {
+                        var_name: exp
+                    }
+                }
+            elif method_name not in KnowledgeBase.DEADLINE_EXP[class_fqn]:
+                KnowledgeBase.DEADLINE_EXP[class_fqn][method_name] = {
+                    var_name: exp
+                }
+            else:
+                KnowledgeBase.DEADLINE_EXP[class_fqn][method_name][var_name] = exp
+        elif curr_deadline_exp != exp:
+            raise ValueError("At the moment only one deadline expression for each timestamp is accepted. Deadline (%s,%s,%s) is associated to %s and %s." % (class_fqn, method_name, var_name, curr_deadline_exp, exp))
+
+    @staticmethod   
+    @contract(class_fqn="string", method_name="string", var_name="string")
+    def get_deadline_exp(class_fqn, method_name, var_name):
+        curr_deadline_exp  = KnowledgeBase.DEADLINE_EXP.get(class_fqn, {}).get(method_name, {}).get(var_name, None)
+        return curr_deadline_exp
 

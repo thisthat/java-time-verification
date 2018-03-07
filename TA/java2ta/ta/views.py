@@ -78,38 +78,18 @@ class TARenderer(object):
             out_f.write(render)
 
 
-##class GraphViz(TARenderer):
-##    template = "finite_state_automaton.gv"
-##
-##    def __init__(self, *args, **kwargs):
-##
-##        self._graph = None
-##        super(GraphViz, self).__init__(*args, **kwargs)
-##
-##    def get_or_create_graph(self):
-##
-##        if not self._graph:
-##            if not self.path:
-##                raise ValueError("Cannot create graph until you render it and save it on a file")        
-##
-##            (self._graph, ) = pydot.graph_from_dot_file(self.path)
-##
-##        return self._graph
-##
-##    def write_pdf(self, path):
-##        graph = self.get_or_create_graph()
-##        graph.write_pdf(path)
-##
-##    def write_svg(self, path):
-##        graph = self.get_or_create_graph()
-##        graph.write_svg(path)
-##
-
 class GraphViz(TARenderer):
 
-    def __init__(self, ta, legend=None, show_pc=True, type="pdf"):
+    ENGINE_CHOICES = [ "dot", "neato", "spdf", "circo", ]
+
+    def __init__(self, ta, legend=None, show_pc=True, type="pdf", engine="dot"):
         self.show_pc = show_pc
         self.type = type
+
+        if engine not in GraphViz.ENGINE_CHOICES:   
+            raise ValueError("Engine '%s' is not allowed. Choose one among: %s" % (engine, GraphViz.ENGINE_CHOICES))
+
+        self.engine = engine
         super(GraphViz, self).__init__(ta, legend)
  
     @contract(loc="is_location", returns="string")
@@ -169,10 +149,9 @@ class GraphViz(TARenderer):
     def render(self, *args, **kwargs):
         ta = self.ta
     
-        g = Digraph(ta.name)
+        g = Digraph(ta.name, engine=self.engine)
         g.attr(rankdir="TB")
-        print "legend",str(self.legend)
-        
+
       #  for (pc, locations) in sorted(self.group_locations(ta.locations)):
       #     sg = g.subgraph(name=pc)
       #     sg.attr(rankdir='LR')
@@ -181,6 +160,8 @@ class GraphViz(TARenderer):
         
         
         node_attrs = { "shape": "rect", "style": "rounded" }
+        g.attr(maxiter="10")
+
         for loc in ta.locations:
                 if loc.is_initial:
                   #  print str(loc)
@@ -189,7 +170,7 @@ class GraphViz(TARenderer):
                     g.node(loc.name, label=loc_name, **node_attrs)
         node_attrs["peripheries"] = "1"                
         for cluster_id, (pc, locations) in enumerate(sorted(self.group_locations(ta.locations))):
-            print "\necco la lista restituita %s,%s" % (pc,locations)
+###            print "\necco la lista restituita %s,%s" % (pc,locations)
           #  c=Digraph(pc)       
           #  c.attr(rankdir="TB")
             
@@ -206,14 +187,14 @@ class GraphViz(TARenderer):
                 for loc in locations:
                         
                         loc_name = self.get_loc_name(loc) 
-                        print "ecco l'elemento %s e il nome %s" % (loc,loc_name)
+                     #   print "ecco l'elemento %s e il nome %s" % (loc,loc_name)
                         #sg.node(loc.name, label=loc_name, **node_attrs)        
                         c.node(loc.name, label=loc_name, **node_attrs)
               #  g.node(loc.name, label=loc_name, **node_attrs)
           #  g.subgraph(c)  
 
         for e in ta.edges:
-            g.edge(e.source.name, e.target.name, label=e.label)
+            g.edge(e.source.name, e.target.name, label=e.formatted_label)
 
         if self.legend:
             l = Digraph("legend", node_attr={"shape":"plaintext"})

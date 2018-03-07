@@ -17,8 +17,8 @@ def test_analyze_assignment():
     run_method = Method("time_method", t)
 
 #    (found_identifiers, found_method_calls) = analyze_assignment(run_method.ast)
-    now_methods = set([ "java.lang.System.currentTimeMillis" ])
-    var_timestamps = get_timestamps(run_method, now_methods)
+#    now_methods = set([ "java.lang.System.currentTimeMillis" ])
+    var_timestamps = get_timestamps(run_method) #, now_methods)
 
 #    assert isinstance(found_identifiers, set), found_identifiers
 #    assert found_identifiers == set([ "a", "b", "c", "x", "System", "Thread" ]), found_identifiers
@@ -55,7 +55,7 @@ def test_check_now_assignments():
 
 #    (found_identifiers, found_method_calls) = analyze_assignment(run_method.ast)
     now_methods = set([ "java.lang.System.currentTimeMillis" ])
-    var_timestamps = get_timestamps(run_method, now_methods)
+    var_timestamps = get_timestamps(run_method) #, now_methods)
 
     assert "b" in var_timestamps
     assert "c" in var_timestamps

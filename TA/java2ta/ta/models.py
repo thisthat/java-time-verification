@@ -21,6 +21,8 @@ class Type(object):
     def __unicode__(self):
         return unicode(self.name)
 
+new_contract_check_type("is_type", Type)
+
 class Int(Type):
 
     def __init__(self):
@@ -56,14 +58,22 @@ class ClockType(Type):
 
 class Variable(object):
 
-    @contract(name="string", type=Type)
+    @contract(name="string", type="is_type")
     def __init__(self, name, type):
 
         self.name = name
         self.type = type
 
     def __repr__(self):
-        return "%s : %s" % (self.name, self.type)
+        var_repr = None
+        try:
+            var_repr = "%s : %s" % (self.name, self.type)
+        except Exception:
+            # there could be an exception in case of broken contracts in constructor __init__:
+            # in such case no attribute name or type exists
+            var_repr = super(Variable,self).__repr__()
+
+        return var_repr
 
     def __str__(self):
         return "%s : %s" % (self.name, self.type)
@@ -102,11 +112,30 @@ class Location(object):
 
         self.name = name
         self.invariant = None
-        self.incoming = set([])
-        self.outgoing = set([])
+        self._incoming = set([])
+        self._outgoing = set([])
 
         self.is_initial = is_initial
         self.is_urgent = is_urgent
+
+    @property
+    def incoming(self):
+        return self._incoming
+
+    @property
+    def outgoing(self):
+        return self._outgoing
+
+    def add_outgoing(self, edge):
+        if not edge.source or edge.source != self:
+            raise ValueError("Error adding outgoing: expected same source state, received: %s" % edge.source)
+        
+        self._outgoing.add(edge)
+
+    def add_incoming(self, edge):
+        if not edge.target or edge.target != self:
+            raise ValueError("Error adding incoming: expected same target state, received: %s" % edge.target)
+        self._incoming.add(edge)
 
     def equals_modulo_pc(self, location):
         """
@@ -145,7 +174,7 @@ class Location(object):
         return self.name
 
 new_contract_check_type("is_location", Location) 
-       
+ 
 
 class Edge(object):
 
@@ -157,19 +186,57 @@ class Edge(object):
         self.source = source
         self.target = target
 
-        source.outgoing.add(self)
-        target.incoming.add(self)
+#        source.outgoing.add(self)
+#        target.incoming.add(self)
         self.label = label
         self.guard = guard
-        self.reset = reset
+        self.reset = reset or set([])
 
         self.clock_variables = clock_variables or set([])
         self.variables = variables or set([])
 
+    @property
+    def formatted_label(self):
+        label_parts = []
+        if self.guard:
+            label_parts.append("[%s]" % self.guard)
+
+        if self.label:
+            label_parts.append(self.label)
+
+        label = ""
+        if label_parts:
+            label = "|".join(label_parts)
+
+        return label
+
+    @contract(name="string")
+    def add_reset(self, name):
+        """
+        Since self.reset is a set, we are not afraid of duplicates
+        """
+        self.reset.add(name)
+
     def __str__(self):
-        return "%s -> %s" % (self.source, self.target)
+        label = self.formatted_label
+        if label:
+            label = "[%s]" % label
+        return "%s -%s-> %s" % (self.source, label, self.target)
 
 new_contract_check_type("is_edge", Edge)
+
+class TimeEdge(Edge):
+
+    def __init__(self, source, target, label=None, *args, **kwargs):
+        super(TimeEdge, self).__init__(source, target, label=label)
+
+    def __str__(self):
+        label = self.formatted_label
+        if label:
+            label = "[%s]" % label
+        return "%s ~%s~> %s" % (self.source, label, self.target)
+
+new_contract_check_type("is_time_edge", TimeEdge)
 
 class TA(object):
     
@@ -241,6 +308,7 @@ class TA(object):
         return found
  
    
+    @contract(edge="is_edge", returns="is_edge")
     def get_or_add_edge(self, edge):
         assert isinstance(edge, Edge)
 
@@ -259,7 +327,9 @@ class TA(object):
             found = self._edges_lookup[source_loc][target_loc]
 
         if not found:
-            found = Edge(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables)
+            # we create an instance of edge.__class__
+            # in this way, we support creating copies of the same type as the argument edge
+            found = edge.__class__(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables)
             self.add_edge(found)
 
         # in any case, update the edge label
@@ -303,7 +373,12 @@ class TA(object):
 
         if edge.source not in self.locations or edge.target not in self.locations:
             raise ValueError("Before adding an edge, you must add its source and target locations to the TA")
-    
+   
+#        edge.source.outgoing.add(edge)
+        edge.source.add_outgoing(edge)
+#        edge.target.incoming.add(edge)
+        edge.target.add_incoming(edge)
+
         self.edges.add(edge)
 
         if not edge.source in self._edges_lookup:
@@ -336,7 +411,12 @@ class TA(object):
         if var.name not in self._variables:
             self._variables[var.name] = var
 
+    @contract(var="string|is_clock_variable")
     def add_clock_variable(self, var):
+
+        if isinstance(var, basestring):
+            var = ClockVariable(var)
+
         assert isinstance(var, ClockVariable)
 
         log.debug(u"Add clock: %s" % unicode(var))
