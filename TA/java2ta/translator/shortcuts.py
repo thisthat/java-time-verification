@@ -892,7 +892,7 @@ class SMTProb(object):
         # "current" precondition; if guard is set, we are checking 
         # whether the source state satisfies it
         if guard is not None:
-            assertions.append("; begin encoding guard")
+            assertions.append("; begin encoding guard: %s" % guard.node["code"])
             try:
                 smt_declarations,smt_guard = self.precondition_to_smt(guard, env)
                 assertions.extend(smt_declarations)
