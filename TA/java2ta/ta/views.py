@@ -110,14 +110,14 @@ class GraphViz(TARenderer):
                 continue
             if con.count(ta_lo.name.split("@")[1])==0:    
                 con.append(ta_lo.name.split("@")[1])
-            print "ecco con prima %s" % (con)
+          #  print "ecco con prima %s" % (con)
      while 1:
         listaii=[]
         #con=str(cont)
         
         cona=con.pop()    
         for ta_location in loc:
-            print "ecco con dopo %s" % (con)
+         #   print "ecco con dopo %s" % (con)
            # if str(ta_location)=="initial":
        # loc.remove("initial")
               #  continue
@@ -139,7 +139,7 @@ class GraphViz(TARenderer):
         #listaii.sort()
         listai=(cona,sorted(listaii)) 
         lista.append(listai) 
-        print "ecco la lista %s" % (lista)
+      #  print "ecco la lista %s" % (lista)
         if len(con)==0:
             break  
          
