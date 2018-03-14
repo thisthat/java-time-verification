@@ -1407,7 +1407,7 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
         clock_variables, clock_condition = parse_clock_condition(guard)
         is_clock_condition = len(clock_variables) > 0
 
-        print "check is clock condition (ASTIf): %s |-> %s" % (guard["code"], is_clock_condition)
+#        print "check is clock condition (ASTIf): %s |-> %s" % (guard["code"], is_clock_condition)
         # initialize those variables
         is_then_reachable = is_else_reachable = is_clock_condition
         
@@ -1515,7 +1515,7 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
         clock_variables, clock_condition = parse_clock_condition(guard)
         is_clock_condition = len(clock_variables) > 0
 
-        print "check is clock condition (ASTWhile): %s |-> %s" % (guard["code"], is_clock_condition)
+#        print "check is clock condition (ASTWhile): %s |-> %s" % (guard["code"], is_clock_condition)
         # initialize those variables
         is_while_reachable = is_clock_condition
         is_not_while_reachable = is_clock_condition
