@@ -60,6 +60,7 @@ public class ApplyHeuristics extends ParseIM {
 	 * @param c	Class to analyze
 	 * @return	List of time constraints with the predefined set of heuristics
 	 */
+	@Deprecated
 	public static List<Constraint> getConstraint(ASTClass c){
 		//return new ArrayList<>();
 

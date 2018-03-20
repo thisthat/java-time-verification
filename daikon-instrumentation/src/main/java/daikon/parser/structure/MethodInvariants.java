@@ -64,6 +64,18 @@ public class MethodInvariants {
     public boolean isMethod(String method){
         return (this.isEnter || this.isExit) && this.method.equals(method);
     }
+    public boolean isMethod(String method, String[] pars){
+        boolean f1 = (this.isEnter || this.isExit) && this.method.equals(method);
+        boolean f2 = pars.length == this.pars.size();
+        if(!f2) return false;
+        boolean f3 = true;
+        for(int i = 0; i < pars.length; i++){
+            String p = this.pars.get(i);
+            if(!p.endsWith(pars[i]))
+                f3 = false;
+        }
+        return f1 && f3;
+    }
 
     public boolean isClass() {
         return isClass;

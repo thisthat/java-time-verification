@@ -127,6 +127,30 @@ public class WatchingPoints {
         return sb.toString();
     }
 
+    public long getClassSize(){
+        long out = 0;
+        List<String> classes = new ArrayList<>();
+        for(Point p : variables){
+            if(!classes.contains(p.className)){
+                classes.add(p.className);
+                out++;
+            }
+        }
+        return out;
+    }
+
+    public long getMethodSize(){
+        long out = 0;
+        List<String> m = new ArrayList<>();
+        for(Point p : variables){
+            if(!m.contains(p.methodName)){
+                m.add(p.methodName);
+                out++;
+            }
+        }
+        return out;
+    }
+
     public void toCSV(String filename){
         try(  BufferedWriter writer = new BufferedWriter(new FileWriter( filename))){
             writer.write("Class;Method;Line;ListVars\n");
