@@ -1,15 +1,12 @@
 package EMSE;
 
-import converter.Statistic;
 import daikon.invariant.Reader;
 import daikon.parser.structure.MethodInvariants;
-import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ExtractTimeAttribute;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.ParseCSV;
-import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -97,7 +94,7 @@ public class EvalPure {
     }
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         if(args.length != 1){
             System.err.println("Usage with the following path: [csv]");
             System.exit(0);
