@@ -7,6 +7,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ExtractTimeAttribute;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.ParseCSV;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +16,9 @@ import java.util.List;
 
 public class EvalPure {
 
-    static String pathInv = "./projects/";
-    static String pathPrj = "./invariants/";
+    static String pathInv = "/Users/giovanni/repository/computePure/daikon-instrumentation/invariants/";
+    static String pathPrj = "/Users/giovanni/repository/computePure/daikon-instrumentation/projects/";
+    static String pathTypes = "/Users/giovanni/repository/computePure/daikon-instrumentation/types/";
     static Statistics stats;
     static {
        stats = new Statistics();
@@ -41,6 +43,19 @@ public class EvalPure {
             if(nPureList.contains(ins))
                 return;
             nPureList.add(ins);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Result\n");
+            sb.append(String.format("# Pure %d\n", yPure));
+            sb.append(String.format("#!Pure %d\n", nPure));
+            sb.append("List not pure\n");
+            for(String l : nPureList){
+                sb.append("\t").append(l).append("\n");
+            }
+            return sb.toString();
         }
     }
 
@@ -100,16 +115,20 @@ public class EvalPure {
             System.exit(0);
         }
         //load types for each project
-
+        for(String s : "activemq,airavata,flume,hadoop,hbase,jetty.project,kafka,lens,sling".split(",")){
+            String typ = pathTypes + s + "_types.csv";
+            TemporalInfo.getInstance().loadUserTypes(typ);
+        }
         String file = args[0];
         ParseCSVEval p = new ParseCSVEval(file);
+        p.start();
         List<Line> lines = p.out;
         //for each line
         for(Line l : lines) {
             handle_single(l.id, l.projectName, l.className, l.methodName, l.signature, l.path);
         }
 
-
+        System.out.println(stats);
     }
 
     public static void handle_single(String id, String projectName, String className, String methodName, String signature, String path){
@@ -134,6 +153,7 @@ public class EvalPure {
             System.err.println("Cannot parse file: " + invFile);
             return;
         }
+
         List<ASTClass> classes = JDTVisitor.parse(path, prjPath);
         ASTClass targetClass = null;
         for(ASTClass c : classes){
@@ -166,6 +186,7 @@ public class EvalPure {
             stats.addYesPure(methodToCheck, signature);
         else
             stats.addNoPure(methodToCheck, signature);
+
     }
 }
 

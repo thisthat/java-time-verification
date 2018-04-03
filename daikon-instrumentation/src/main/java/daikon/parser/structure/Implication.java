@@ -20,7 +20,9 @@ public class Implication implements Invariant {
 
     @Override
     public void replace(List<String> vars) {
-        left.replace(vars);
-        right.replace(vars);
+        if(left != null)
+            left.replace(vars);
+        if(right != null)
+            right.replace(vars);
     }
 }

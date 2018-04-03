@@ -25,8 +25,6 @@ public class ComputeMethodsWithTime {
         System.out.println("Project: " + path);
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
-            if(!filename.equals("/Users/giovanni/repository/kafka-4426/kafka/clients/src/main/java/org/apache/kafka/clients/consumer/internals/ConsumerCoordinator.java"))
-                continue;
             List<ASTClass> result = JDTVisitor.parse(filename, path, false);
             for(ASTClass c : result){
                 n_class++;

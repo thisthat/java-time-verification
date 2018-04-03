@@ -1,5 +1,6 @@
 package daikon.parser;
 
+import java.nio.file.Path;
 %%
 
 %byaccj
@@ -9,6 +10,7 @@ package daikon.parser;
 
   public int line = 1;
   public boolean debug = true;
+  public Path filename;
 
   public Yylex(java.io.Reader r, Parser yyparser) {
     this(r);
@@ -34,7 +36,9 @@ package daikon.parser;
 %}
 
 NL  = \n | \r | \r\n
-TEXT = \"?[aA-zZ0-9\-][aA-zZ0-9\.\-]*\"?
+TEXT = \"?[aA-zZ0-9\-][aA-zZ0-9\.\-\$]*\"?
+STR = \"([^\"\\]|\\.)*\"
+ARR = \[([^\[]|\\.)+\]
 MOD = [0-9]+\s*\(mod\s+[0-9]+\)
 EXIT = :::EXIT([0-9]+)?
 SEP = "==========================================================================="
@@ -43,17 +47,24 @@ SEP = "=========================================================================
 
 "{" |
 "}" |
+"[" |
+"]" |
 "(" |
 ")" { return (int) yycharat(0); }
 
-","   { return Parser.COMMA; }
-"==>" { return Parser.IF; }
-"=="  { return Parser.EQUAL; }
-"!="  { return Parser.NEQUAL; }
-">"   { return Parser.G; }
-">="  { return Parser.GEQ; }
-"<="  { return Parser.LEQ; }
-"<"   { return Parser.L; }
+"-" |
+"+" |
+"%" { return (int) yycharat(0); }
+
+","    { return Parser.COMMA; }
+"<==>" { return Parser.IFF; }
+"==>"  { return Parser.IF; }
+"=="   { return Parser.EQUAL; }
+"!="   { return Parser.NEQUAL; }
+">"    { return Parser.G; }
+">="   { return Parser.GEQ; }
+"<="   { return Parser.LEQ; }
+"<"    { return Parser.L; }
 
 ":::ENTER"  {return Parser.ENTER; }
 {EXIT}      {yyparser.yylval = new ParserVal(yytext());return Parser.EXIT; }
@@ -76,6 +87,16 @@ SEP = "=========================================================================
         return Parser.TEXT;
 }
 
+{ARR}  {
+            yyparser.yylval = new ParserVal(yytext());
+            return Parser.ARRAYVAL;
+        }
+
+{STR} {
+        yyparser.yylval = new ParserVal(yytext());
+        return Parser.TEXT;
+}
+
 {MOD} {
         yyparser.yylval = new ParserVal(yytext());
         return Parser.MOD;
@@ -89,4 +110,4 @@ SEP = "=========================================================================
 [ \t]+ { }
 
 /* error fallback */
-[^]    { throw new RuntimeException("[" + line + "] Error: unexpected character '"+yytext()+"'");  }
+[^]    { throw new RuntimeException("[" + this.filename.toFile().getPath() + "]\n[" + line + "] Error: unexpected character '"+yytext()+"'");  }
