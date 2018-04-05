@@ -59,6 +59,7 @@ public class ComputeStatisticProject {
         System.out.println("#Class:       " + n_class);
         System.out.println("#Method:      " + n_method);
         System.out.println("#ClassMethod: " + n_class_method);
+        System.out.println("#T Method: " + n_class_method);
 
     }
 

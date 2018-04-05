@@ -60,6 +60,7 @@ public class ApplyHeuristics extends ParseIM {
 	 * @param c	Class to analyze
 	 * @return	List of time constraints with the predefined set of heuristics
 	 */
+	@Deprecated
 	public static List<Constraint> getConstraint(ASTClass c){
 		//return new ArrayList<>();
 
@@ -167,7 +168,7 @@ public class ApplyHeuristics extends ParseIM {
 			timeAttrs.put(c, new ArrayList<>());
 		}
 		ASTRE e = v.getExpr();
-		if(v.getExpr() == null && v.getType().equals("long")){
+		if(v.getExpr() == null && (v.getType().equals("long") || v.getType().equals("int"))){
 			if(!(v instanceof ASTAttribute)) {
 				return;
 			}

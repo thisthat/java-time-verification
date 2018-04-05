@@ -16,7 +16,7 @@
         <dependency>
             <artifactId>javassist</artifactId>
             <groupId>org.javassist</groupId>
-            <version>3.21.0-GA</version>
+            <version>3.22.0-GA</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -120,6 +120,23 @@
                 <configuration>
                     <!--<argLine>-javaagent:target/${project.build.finalName}.jar=/Users/giovanni/repository/java-xal/code-instrumentation/src/main/resources/example.conf</argLine>-->
                     <argLine>-javaagent:target/${project.build.finalName}.jar=${project.build.testOutputDirectory}/input/monitor.csv</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>./run.sh</executable>
+                    <workingDirectory>${basedir}/grammar</workingDirectory>
                 </configuration>
             </plugin>
         </plugins>

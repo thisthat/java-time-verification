@@ -9,6 +9,8 @@ public class Utility {
     }
     public static String convertPkgNametoJava(String className){
         String out = className.replace(".","/");
+        if(out.lastIndexOf("/") == -1)
+            return out;
         String lastPart = out.substring(out.lastIndexOf("/"));
         if(Character.isUpperCase(lastPart.charAt(0))){
             out = out.substring(0, out.lastIndexOf("/")) + "$" +lastPart;

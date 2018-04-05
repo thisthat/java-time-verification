@@ -6,10 +6,10 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.visitors.creation.filter.Filter;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import parser.ASTSrc;
 import parser.Java2AST;
 import parser.UnparsableException;
 
@@ -44,6 +44,22 @@ public class JDTVisitor extends ASTVisitor {
 
 	public static List<ASTClass> parse(String filename, String project_path) {
 		return parse(filename, project_path, true);
+	}
+
+	public static List<ASTClass> parse(String filename, String project_path, Filter filter) {
+		List<ASTClass> out = parse(filename, project_path, true);
+		for(ASTClass c : out) {
+			filter.filter(c);
+		}
+		return out;
+	}
+
+	public static List<ASTClass> parse(String filename, String project_path, Filter filter, boolean shouldCache) {
+		List<ASTClass> out = parse(filename, project_path, shouldCache);
+		for(ASTClass c : out) {
+			filter.filter(c);
+		}
+		return out;
 	}
 
 	public static List<ASTClass> parse(String filename, String projectPath, boolean shouldCache) {

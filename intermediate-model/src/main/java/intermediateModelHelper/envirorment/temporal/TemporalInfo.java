@@ -43,8 +43,6 @@ public class TemporalInfo {
     }
 
     public void loadUserDefined(String dir) {
-        if(!dir.endsWith("/"))
-            dir += "/";
         timeInSignature.addAll( new ParseMethods(dir + "methods.csv").getMethods());
         timeTimeout.addAll( new ParseTimeout(dir + "timeout.csv").getMethods());
         readTimeout.addAll( new ParseTimeout(dir + "readtimeout.csv").getMethods());
