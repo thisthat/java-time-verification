@@ -27,8 +27,8 @@
 
     <scm>
         <url>https://rtse-isys.aau.at/giovanni.liva/java-xal</url>
-        <connection>scm:git.git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git.git</connection>
-        <developerConnection>scm:git.git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git.git</developerConnection>
+        <connection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</connection>
+        <developerConnection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</developerConnection>
     </scm>
 
 
