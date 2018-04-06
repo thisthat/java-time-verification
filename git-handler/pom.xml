@@ -8,38 +8,19 @@
         <version>0.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.5</version>
-    <artifactId>usage</artifactId>
+
+    <artifactId>git-handler</artifactId>
+
     <dependencies>
         <dependency>
-            <groupId>java-xal</groupId>
-            <artifactId>intermediate-model</artifactId>
-            <version>0.4</version>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>4.3.1.201605051710-r</version>
         </dependency>
         <dependency>
-            <groupId>java-xal</groupId>
-            <artifactId>parallel-control-flow-graph</artifactId>
-            <version>0.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>java-xal</groupId>
-            <artifactId>correct-time-behavior</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>java-xal</groupId>
-            <artifactId>server</artifactId>
-            <version>0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.gmetrics</groupId>
-            <artifactId>GMetrics</artifactId>
-            <version>0.7</version>
-        </dependency>
-        <dependency>
-            <groupId>java-xal</groupId>
-            <artifactId>daikon-instrumentation</artifactId>
-            <version>0.1</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.25</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -47,11 +28,10 @@
             <version>42.2.1</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>1.1</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
@@ -90,13 +70,12 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>reference.conf</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>smt.evaluation.Main</mainClass>
-                                </transformer>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                         </configuration>
                     </execution>
@@ -104,4 +83,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

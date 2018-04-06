@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>java-xal</groupId>
     <artifactId>java-xal</artifactId>
-    <version>0.4</version>
+    <version>0.5-SNAPSHOT</version>
     <name>Parent</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +15,6 @@
         <module>xal</module>
         <module>intermediate-model</module>
         <module>parallel-control-flow-graph</module>
-        <module>time-annotation</module>
         <module>server</module>
         <module>uppaal-library</module>
         <module>code-instrumentation</module>
@@ -23,12 +22,13 @@
         <module>correct-time-behavior</module>
         <module>debugger</module>
         <module>daikon-instrumentation</module>
+        <module>git-handler</module>
     </modules>
 
     <scm>
         <url>https://rtse-isys.aau.at/giovanni.liva/java-xal</url>
-        <connection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</connection>
-        <developerConnection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</developerConnection>
+        <connection>scm:git.git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git.git</connection>
+        <developerConnection>scm:git.git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git.git</developerConnection>
     </scm>
 
 
