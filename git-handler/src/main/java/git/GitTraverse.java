@@ -19,16 +19,22 @@ import java.util.Date;
 
 public class Traverse {
 
-    public static void main(String[] args) throws Exception {
-        File projectFolder = new File(args[0]);
+    File projectFolder;
+    Repository repository;
+    Git git;
 
-        File gitDir = new File(projectFolder, ".git.git");
-        org.eclipse.jgit.lib.Repository repo = new FileRepository(gitDir);
-        Git git = new Git(repo);
+    public Traverse(File projectFolder) throws IOException {
+        this.projectFolder = projectFolder;
+        this.repository = new FileRepository(new File(this.projectFolder, ".git."));
+        Git git = new Git(this.repository);
+    }
 
+    public Traverse(String projectFolder) throws IOException {
+        this(new File(projectFolder));
+    }
+
+    public void storeProjectInformation() throws Exception {
         Iterable<RevCommit> logs = git.log().all().call();
-
-        //just print the list
         for (RevCommit rev : logs) {
             System.out.println(rev.getName() + "  -->  " + formatDate(rev.getCommitterIdent().getWhen()));
             RevCommit[] parents = rev.getParents();
@@ -37,9 +43,11 @@ public class Traverse {
                 System.out.println("\t" + p.getName());
             }
         }
-
     }
 
+    public static void main(String[] args) throws Exception {
+        Traverse
+    }
     private static String formatDate(Date when) {
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return df.format(when);
