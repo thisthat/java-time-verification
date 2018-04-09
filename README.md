@@ -24,7 +24,6 @@ $` variable_name = expression `$
 
 We call this form **assignment** and every Java statements that alter a variable value is mapped in this form: *e.g.* assignment and variable initialization.
 The LHS of an assignment is _**always**_ a variable name. In the RHS, we use the term **value** to refer to the value associated to every operand of the expression, 
-*i.e.* variables, method calls, and scalar.
 
 We process the `expression` (RHS) following the Java semantics of expression resolution (recursively on subexpression) and we determine its time type. 
 We then mark the `variable_name` with the time type of the expression.
@@ -41,8 +40,8 @@ They rely on Java APIs to determine timestamps.
 # Inductive Case
 
 The possible cases are (we exclude the symmetric cases):
-* $``Timestamp` \bigodot `Timestamp` \stackrel `Timestamp``$
-* $``Timestamp` \bigodot `Duration`   `Timestamp``$
+* $``Timestamp` \bigodot `Timestamp` \prec `Timestamp``$
+* $``Timestamp` \bigodot `Duration`  \prec `Timestamp``$
 
 
 # Reference
