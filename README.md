@@ -16,7 +16,36 @@ The type `Duration` is used to define that a variable holds a time value that sp
 
 # Type System
 
-$`f(x) = \int_{-\infty}^\infty
-     \hat f(\xi)\,e^{2 \pi i \xi x}
-     \,d\xi`$
+## Definitions
 
+Every Java statement that alter a value of a variable is in the form:
+
+$` variable_name = expression `$
+
+We call this form **assignment** and every Java statements that alter a variable value is mapped in this form: *e.g.* assignment and variable initialization.
+The LHS of an assignment is _**always**_ a variable name. In the RHS, we use the term **value** to refer to the value associated to every operand of the expression, 
+*i.e.* variables, method calls, and scalar.
+
+We process the `expression` (RHS) following the Java semantics of expression resolution (recursively on subexpression) and we determine its time type. 
+We then mark the `variable_name` with the time type of the expression.
+
+## Base Case
+We define how determine `Timestamp` value using the time semantics defined in [1].
+When we encounter a method call to an **RT** method, we say it is a `Timestamp` value.
+When in the analysis we encounter a scalar value, we mark it as `Duration` type.
+
+These rules are correct under the assumption that developers do not hard-encode timestamp values in source code but only duration values.
+They rely on Java APIs to determine timestamps.
+
+
+# Inductive Case
+
+The possible cases are (we exclude the symmetric cases):
+* $` `Timestamp` \bigodot `Timestamp` \gtrless `Timestamp` `$
+* $` `Timestamp` \bigodot `Duration`  \gtrless `Timestamp` `$
+
+
+
+# Reference
+[1] Giovanni Liva, Muhammad Taimoor Khan, and Martin Pinzger. 2017. Extracting timed automata from Java methods. In Proceedings of the 17th International Working Conference on Source Code Analysis and Manipulation (SCAM). IEEE, 91–100.
+[2] Liva, G., Khan, M.T., Spegni, F., Spalazzi, L., Bollin, A., Pinzger, M.: Modeling time in java programs for automatic error detection. In Proceedings of the IEEE/ACM Conference on Formal Methods in Software Engineering (FormaliSE 2018). IEEE Press (2018)
