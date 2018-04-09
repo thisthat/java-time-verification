@@ -67,9 +67,9 @@ The possible cases are (we exclude the symmetric cases):
 * $`min(D,D) \prec D`$
 
 Here the rules for instantiating the unknown.
-* $`T \bigodot U \prec T`$
-* $`T \bigodot U \prec T`$
-* $`D \bigodot U \prec D`$
+* $`T \bigodot U \rightarrow U \prec T`$
+* $`T \bigodot U \rightarrow U \prec T`$
+* $`D \bigodot U \rightarrow U \prec D`$
 * $`max(T,U) \prec T`$
 * $`max(D,U) \prec D`$
 * $`min(T,U) \prec T`$
@@ -77,7 +77,7 @@ Here the rules for instantiating the unknown.
 
 
 
-Where $`\bigodot \in \{ +, -, /, \times, \div \}`$
+Where $`\bigodot \in \{ +, -, \times, \div \}`$
 
 
 
