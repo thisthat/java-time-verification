@@ -41,8 +41,8 @@ They rely on Java APIs to determine timestamps.
 # Inductive Case
 
 The possible cases are (we exclude the symmetric cases):
-* $``Timestamp` \bigodot `Timestamp` ≺ `Timestamp``$
-* $``Timestamp` \bigodot `Duration`  ≺ `Timestamp``$
+* $``Timestamp` \bigodot `Timestamp` \stackrel `Timestamp``$
+* $``Timestamp` \bigodot `Duration`   `Timestamp``$
 
 
 # Reference
