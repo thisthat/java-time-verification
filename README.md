@@ -16,7 +16,7 @@ The type `Duration` is used to define that a variable holds a time value that sp
 
 # Type System
 
-$f(x) = \int_{-\infty}^\infty
+$`f(x) = \int_{-\infty}^\infty
      \hat f(\xi)\,e^{2 \pi i \xi x}
-     \,d\xi$
+     \,d\xi`$
 
