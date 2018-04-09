@@ -1,31 +1,22 @@
-# JAVA-XAL 
-[![build status](http://rtse-isys.aau.at/giovanni.liva/java-xal/badges/development/build.svg)](http://rtse-isys.aau.at/giovanni.liva/java-xal/commits/development)
-[![coverage report](http://rtse-isys.aau.at/giovanni.liva/java-xal/badges/development/coverage.svg)](http://rtse-isys.aau.at/giovanni.liva/java-xal/commits/development)
+# Type System
 
-# How to install
-In order to package the project call 
-```bash
-mvn clean package
-```
+Currently we defined two different types:
+* `Timestamp`
+* `Duration`
 
-If you'd like to skip the test packege it with:
-```bash
-mvn clean package -DskipTests
-```
+Based on these types, we define a set of rules to process Java-like expressions to infer those types from normal 
+integer variables.
 
-# Known Issues
+## Timestamp
+The type `Timestamp` defines that a variable hold a time value that refers to a specific point in time.
+
+## Duration
+The type `Duration` is used to define that a variable holds a time value that specifies a quantum (amount) of time.
 
 
-# Current Branch
+# Type System
 
-The following branch will use to test new features.
-When they are ready and without knowing issue, a merge request can be created.
-
-#Extract all Classes and methods form Jar
-```bash
-find . | grep ".class" | xargs javap -p > _classes.txt
-```
-
-
-
+$f(x) = \int_{-\infty}^\infty
+     \hat f(\xi)\,e^{2 \pi i \xi x}
+     \,d\xi$
 
