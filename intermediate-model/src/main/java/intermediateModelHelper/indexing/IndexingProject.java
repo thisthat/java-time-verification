@@ -216,6 +216,9 @@ public class IndexingProject {
 			String filename = i.next().getAbsolutePath();
 			if(filename.contains("/src/test/"))
 				continue;
+			if(!filename.equals("/Users/giovanni/repository/computePure/daikon-instrumentation/projects/kafka/clients/src/main/java/org/apache/kafka/common/utils/SystemTime.java")){
+				continue;
+			}
 			debug.log("processing " + filename);
 			try {
 				List<ASTClass> result = JDTVisitor.parse(filename, base_path, false);

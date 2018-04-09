@@ -13,41 +13,35 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Traverse {
+public class GitTraverse {
 
+    static String connectionQuery = "jdbc:postgresql://brock.isys.uni-klu.ac.at:5432/giovanni?user=giovanni&password=giovanni";
+    static String sqlInsert = "INSERT INTO public.\"CommitInfo\"(\"IDProject\", \"Hash\", \"Date\") VALUES ( ?, ?, ?)";
+    static String sqlProjectID = "SELECT \"ID\" FROM public.\"Projects\" WHERE \"ProjectName\" = ?";
+
+    String projectName;
+    long IDProject = 0;
     File projectFolder;
     Repository repository;
     Git git;
 
-    public Traverse(File projectFolder) throws IOException {
+    public GitTraverse(String projectName, File projectFolder) throws Exception {
+        this.projectName = projectName;
         this.projectFolder = projectFolder;
-        this.repository = new FileRepository(new File(this.projectFolder, ".git."));
-        Git git = new Git(this.repository);
+        this.repository = new FileRepository(new File(this.projectFolder, ".git"));
+        this.git = new Git(this.repository);
+        setIDProject();
     }
 
-    public Traverse(String projectFolder) throws IOException {
-        this(new File(projectFolder));
+    public GitTraverse(String projectName, String projectFolder) throws Exception {
+        this(projectName, new File(projectFolder));
     }
 
-    public void storeProjectInformation() throws Exception {
-        Iterable<RevCommit> logs = git.log().all().call();
-        for (RevCommit rev : logs) {
-            System.out.println(rev.getName() + "  -->  " + formatDate(rev.getCommitterIdent().getWhen()));
-            RevCommit[] parents = rev.getParents();
-            for(int i = 0; i < parents.length; i++){
-                RevCommit p = parents[i];
-                System.out.println("\t" + p.getName());
-            }
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
-        Traverse
-    }
     private static String formatDate(Date when) {
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return df.format(when);
@@ -81,5 +75,59 @@ public class Traverse {
             System.out.println("Could not reset the repository, leaving it untouched and proceed: " + e.getMessage());
             System.out.println("Further info: " + e.getCause().getMessage());
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        GitTraverse traverse = new GitTraverse(args[0], args[1]);
+        traverse.storeProjectInformation();
+    }
+
+    private void setIDProject() throws Exception {
+        Connection conn = DriverManager.getConnection(connectionQuery);
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlProjectID);
+            st.setString(1, this.projectName);
+            ResultSet rs = st.executeQuery();
+            int howMAny = 0;
+            while (rs.next()) {
+                howMAny++;
+                this.IDProject = rs.getLong("ID");
+                if (howMAny == 0)
+                    throw new Exception("Project does not exists!");
+                if (howMAny > 1)
+                    throw new Exception("Check your database. More than one project found!");
+            }
+        } finally {
+            conn.close();
+        }
+
+    }
+
+    public void storeProjectInformation() throws Exception {
+        // open DB connection
+        Connection conn = DriverManager.getConnection(connectionQuery);
+
+        try {
+            Iterable<RevCommit> logs = git.log().all().call();
+            for (RevCommit rev : logs) {
+                String hash = rev.getName();
+                long date = rev.getCommitterIdent().getWhen().getTime();
+
+                PreparedStatement st = conn.prepareStatement(sqlInsert);
+                st.setLong(1, this.IDProject);
+                st.setString(2, hash);
+                st.setLong(3, date);
+                st.execute();
+            }
+        } finally {
+            conn.close();
+        }
+    }
+
+    public long getIDProject() throws Exception {
+        if (this.IDProject == 0) {
+            setIDProject();
+        }
+        return this.IDProject;
     }
 }

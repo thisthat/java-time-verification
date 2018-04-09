@@ -234,7 +234,22 @@ public class JDTVisitor extends ASTVisitor {
 			c.setParent(null);
 		}
 		//c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
-
+		ITypeBinding bind = node.resolveBinding();
+		if(bind != null) {
+			ITypeBinding[] interfacesDef = bind.getInterfaces();
+			for (ITypeBinding typeBind : interfacesDef) {
+				String name = typeBind.getQualifiedName();
+				for(IMethodBinding methodInt : typeBind.getDeclaredMethods()){
+					String mName = methodInt.getName();
+					List<String> parameters = new ArrayList<>();
+					for(ITypeBinding type : methodInt.getParameterTypes()){
+						parameters.add(type.getName());
+					}
+					ASTInterfaceMethod m = new ASTInterfaceMethod(name, mName, parameters);
+					c.addInterfaceMethod(m);
+				}
+			}
+		}
 		listOfClasses.add(c);
 		stackClasses.push(c);
 		lastClass = c;

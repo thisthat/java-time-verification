@@ -32,6 +32,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	boolean isInterface = false;
 	boolean isAbstract = false;
 	List<ASTClass> child = new ArrayList<>();
+	List<ASTInterfaceMethod> interfaceMethods = new ArrayList<>();
 
 	public ASTClass(){}
 
@@ -369,5 +370,29 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public void removeChild() {
 		this.child.clear();
+	}
+
+    public void addInterfaceMethod(ASTInterfaceMethod m) {
+		this.interfaceMethods.add(m);
+    }
+
+    public boolean isInterfaceMethod(ASTMethod m){
+		boolean f = false;
+		for(ASTInterfaceMethod im : this.interfaceMethods){
+			if(im.isEqualMethod(m)){
+				f = true;
+			}
+		}
+		return f;
+	}
+
+	public List<ASTInterfaceMethod> getInterfaceMethods(ASTMethod m){
+		List<ASTInterfaceMethod> out = new ArrayList<>();
+		for(ASTInterfaceMethod im : this.interfaceMethods){
+			if(im.isEqualMethod(m)){
+				out.add(im);
+			}
+		}
+		return out;
 	}
 }

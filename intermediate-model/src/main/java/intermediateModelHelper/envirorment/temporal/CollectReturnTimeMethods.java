@@ -111,6 +111,14 @@ public class CollectReturnTimeMethods extends ParseIM {
             //there is time!
             TimeTypes t = new TimeTypes(this._class.fullName(), lastMethod.getName(), lastMethod.getSignature());
             output.add(t);
+            //check interfaces if method and not constructor
+            if(lastMethod instanceof ASTMethod) {
+                ASTMethod method = (ASTMethod) lastMethod;
+                for(ASTInterfaceMethod im : this._class.getInterfaceMethods(method)){
+                    TimeTypes tinf = new TimeTypes(im.getInterfaceName(), im.getMethodName(), im.getSignature());
+                    output.add(tinf);
+                }
+            }
         }
 
     }
