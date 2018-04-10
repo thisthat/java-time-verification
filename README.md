@@ -42,8 +42,8 @@ When in the analysis we encounter a scalar value, we mark it as `Duration` type.
 Every parameter is initially defined as `Unknown`. Analyzing the source code we can 
 instantiate to its correct type.
 
-These rules are correct under the assumption that developers do not hard-encode timestamp values in source code but only duration values.
-They rely on Java APIs to determine timestamps.
+These rules are correct under the assumption that developers do not hard-encode timestamp 
+values in source code but only duration values. They rely on Java APIs to determine timestamps.
 
 
 # Inductive Case
@@ -79,15 +79,37 @@ The possible cases are (we exclude the symmetric cases):
 * $`min(D,D) \prec D`$
 
 
-Here the rules for instantiating the unknown.
-* $`T \bigodot U \Rightarrow T \prec U`$
-* $`D \bigodot U \Rightarrow D \prec U`$
+Here the rules for instantiating the unknown. We can **NOT** assume the symmetric property:
+ 
+* $`T + U       \Rightarrow U \prec D`$
+* $`T - U       \Rightarrow U \prec D`$
+* $`T \times U  \Rightarrow U \prec W`$
+* $`T \div U    \Rightarrow U \prec W`$
+
+* $`D + U       \Rightarrow U \prec T`$
+* $`D - U       \Rightarrow U \prec D`$
+* $`D \times U  \Rightarrow U \prec D`$
+* $`D \div U    \Rightarrow U \prec D`$
+
+* $`U + T       \Rightarrow U \prec D`$
+* $`U - T       \Rightarrow U \prec T`$
+* $`U \times T  \Rightarrow U \prec W`$
+* $`U \div T    \Rightarrow U \prec W`$
+
+* $`U + D       \Rightarrow U \prec U`$
+* $`U - D       \Rightarrow U \prec T`$
+* $`U \times D  \Rightarrow U \prec D`$
+* $`U \div D    \Rightarrow U \prec D`$
+
+
 * $`max(T,U) \Rightarrow T \prec U`$
 * $`max(D,U) \Rightarrow D \prec U`$
 * $`min(T,U) \Rightarrow T \prec U`$
 * $`min(D,U) \Rightarrow D \prec U`$
 
-TODO: Fix. T-T = Duration for example
+Method Calls of **ET** methods [1], we say that the parameter type **MUST** be of type $`K`$ based on our manual analysis,
+where $`K`$ is either $`T`$ or $`D`$.
+
 
 
 
