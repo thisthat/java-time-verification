@@ -56,9 +56,21 @@ We assume that each rule is composed of expression of which we have already reso
 The proof of convergence it is a trivial proof on the size of expression.
 
 The possible cases are (we exclude the symmetric cases):
-* $`T \bigodot T \prec T`$
-* $`T \bigodot D \prec T`$
-* $`D \bigodot D \prec D`$
+* $`T + T \prec W`$
+* $`T - T \prec D`$
+* $`T \times T \prec W`$
+* $`T \div T \prec W`$
+
+* $`T + D \prec T`$
+* $`T - D \prec T`$
+* $`T \times D \prec W`$
+* $`T \div D \prec W`$
+
+* $`D + D \prec D`$
+* $`D - D \prec D`$
+* $`D \times D \prec D`$
+* $`D \div D \prec D`$
+
 * $`max(T,T) \prec T`$
 * $`max(T,D) \prec W`$
 * $`max(D,D) \prec D`$
@@ -66,17 +78,17 @@ The possible cases are (we exclude the symmetric cases):
 * $`min(T,D) \prec W`$
 * $`min(D,D) \prec D`$
 
+
 Here the rules for instantiating the unknown.
-* $`T \bigodot U \Rightarrow U \prec T`$
-* $`D \bigodot U \Rightarrow U \prec D`$
-* $`max(T,U) \Rightarrow U \prec T`$
-* $`max(D,U) \Rightarrow U \prec D`$
-* $`min(T,U) \Rightarrow U \prec T`$
-* $`min(D,U) \Rightarrow U \prec D`$
+* $`T \bigodot U \Rightarrow T \prec U`$
+* $`D \bigodot U \Rightarrow D \prec U`$
+* $`max(T,U) \Rightarrow T \prec U`$
+* $`max(D,U) \Rightarrow D \prec U`$
+* $`min(T,U) \Rightarrow T \prec U`$
+* $`min(D,U) \Rightarrow D \prec U`$
 
 TODO: Fix. T-T = Duration for example
 
-Where $`\bigodot \in \{ +, -, \times, \div \}`$
 
 
 
