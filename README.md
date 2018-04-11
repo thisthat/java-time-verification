@@ -79,7 +79,7 @@ The possible cases are (we exclude the symmetric cases):
 * $`min(D,D) \prec D`$
 
 
-Here the rules for instantiating the unknown. We can **NOT** assume the symmetric property:
+Here the rules for instantiating the unknown. We can **NOT** assume the symmetric property but we assume it is always the correct operation:
  
 * $`T + U       \Rightarrow U \prec D`$
 * $`T - U       \Rightarrow U \prec D`$
@@ -91,21 +91,21 @@ Here the rules for instantiating the unknown. We can **NOT** assume the symmetri
 * $`D \times U  \Rightarrow U \prec D`$
 * $`D \div U    \Rightarrow U \prec D`$
 
-* $`U + T       \Rightarrow U \prec D`$
+* $`U + T       \Rightarrow U \prec D`$ 
 * $`U - T       \Rightarrow U \prec T`$
 * $`U \times T  \Rightarrow U \prec W`$
 * $`U \div T    \Rightarrow U \prec W`$
 
 * $`U + D       \Rightarrow U \prec U`$
-* $`U - D       \Rightarrow U \prec T`$
+* $`U - D       \Rightarrow U \prec U`$
 * $`U \times D  \Rightarrow U \prec D`$
 * $`U \div D    \Rightarrow U \prec D`$
 
 
-* $`max(T,U) \Rightarrow T \prec U`$
-* $`max(D,U) \Rightarrow D \prec U`$
-* $`min(T,U) \Rightarrow T \prec U`$
-* $`min(D,U) \Rightarrow D \prec U`$
+* $`max(T,U) \Rightarrow U \prec T`$
+* $`max(D,U) \Rightarrow U \prec D`$
+* $`min(T,U) \Rightarrow U \prec T`$
+* $`min(D,U) \Rightarrow U \prec D`$
 
 Method Calls of **ET** methods [1], we say that the parameter type **MUST** be of type $`K`$ based on our manual analysis,
 where $`K`$ is either $`T`$ or $`D`$.
