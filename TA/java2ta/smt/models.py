@@ -103,14 +103,22 @@ class SMTSolver(object):
         commands = "\n".join(commands)
         self._cmd.stdin.write(commands + "\n")
 
-        answer = self._get_output()
+        answer = self._get_output().strip()
 
-        err_msg = self._get_error()
+        err_msg = self._get_error().strip()
         if err_msg:
             sys.stderr.write(err_msg)
 
         return answer
 
+    @contract(commands="list(string)", returns="string")
+    def check_sat(self, commands):
+        """
+        Given a list of SMT commands, append the (check-sat) command at the end, and 
+        return the tool answer.
+        """
+        commands.append("(check-sat)")
+        return self.get_tool_answer(commands)
 
     def push(self):
         cmd = "(push)\n"
