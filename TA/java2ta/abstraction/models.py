@@ -419,18 +419,7 @@ class BinaryPredicate(Predicate):
 
     __metaclass__ = abc.ABCMeta
 
-#    _smt_name = "..." # the name of the predicate in SMTlib
-#    _smt_assert = "(assert ({name} {var} {value}))"
-#    _smt_condition = "({name} {lhs} {rhs})"
-#    _label = "{lhs} {name} {rhs}"
-
-#    def __init__(self, **ctx):
     def __init__(self, lhs=None, rhs=None):
-#        ctx = { "name": self._smt_name }   
-#        if lhs:
-#            ctx["lhs"] = lhs
-#        if rhs:
-#            ctx["rhs"] = rhs
         lhs = lhs if lhs is not None else "{lhs}"
         rhs = rhs if rhs is not None else "{rhs}"
         arguments = [ lhs, rhs ]
@@ -721,8 +710,18 @@ class AbstractAttribute(object):
 
     @property
     def datatypes(self):
+        if not self.domain:
+            raise ValueError("You must set a domain first")
+
         return self.domain.datatypes
-    
+ 
+    @property
+    def predicates(self):
+        if not self.domain:
+            raise ValueError("You must set a domain first")
+
+        return self.domain.predicates
+   
     @property
     @contract(returns="list(int)")
     def encoded_values(self):
@@ -756,7 +755,7 @@ class AbstractAttribute(object):
     @contract(encoding="int",returns="is_predicate")
     def value(self, encoding):
         if encoding not in self.enc_values:
-            raise ValueError("The passed encoding ('%s') is not one of the allowed ones. Accepted encodings: %s" % (encoding, ",".join(self.encoded_values)))
+            raise ValueError("The passed encoding ('%s') is not one of the allowed ones. Accepted encodings: %s" % (encoding, ",".join(map(str,self.encoded_values))))
 
         return self.enc_values[encoding]
 

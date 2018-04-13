@@ -22,6 +22,8 @@ import sys
 import logging
 from contracts import contract, new_contract, check
 
+from java2ta.smt.models import SMTSolver
+
 # this global variable is a dirty way to pass to all the methods in the workflow a 
 # quick reference to the method currently under analysis; the code should be refactored
 # so that the global variable is not needed any more
@@ -313,7 +315,8 @@ def node_to_deadline_exp(node, now_timestamps):
     return exp
 
 
-class SMTProb(object):
+#class SMTProb(object):
+class SMTProb(SMTSolver):
 
     OP_DECODE = { "plus": "+", "minus": "-", "greater": ">", "less": "<", "mul": "*", "equality": "=", "and": "and", "or": "or", "notEqual": "distinct", "lessEqual": "<=", "greaterEqual": ">=", "mod": "mod" }
 
@@ -321,51 +324,53 @@ class SMTProb(object):
     _NODE_TO_SMT_CACHE = Cache("node2smt")
     _DISABLE_NODE_CACHE = True # now it seems that there are some bugs; add this flag to easily come back (also useful for comparing execution with and without cache)
 
-    _engine = None
-
-    @staticmethod
-    def init_engine(*args, **kwargs):
-        SMTProb._engine = SMTProb(*args, **kwargs)
-
-    @staticmethod
-    def the_engine():
-        return SMTProb._engine
-
+##    _engine = None
+##
+##    @staticmethod
+##    def init_engine(*args, **kwargs):
+##        SMTProb._engine = SMTProb(*args, **kwargs)
+##
+##    @staticmethod
+##    def the_engine():
+##        return SMTProb._engine
+##
     @contract(attributes="list", project="is_project")
     def __init__(self, attributes, project):
 
-        self._line_num = 0
+        super(SMTProb, self).__init__()
+
+#        self._line_num = 0
         self.attributes = attributes
         self._project = project
 
-        self._cmd = subprocess.Popen(["z3", "-in"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+#        self._cmd = subprocess.Popen(["z3", "-in"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
         # set stderr as non-blocking
-        flags = fcntl.fcntl(self._cmd.stderr, fcntl.F_GETFL) # get current p.stdout flags
-        fcntl.fcntl(self._cmd.stderr, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+#        flags = fcntl.fcntl(self._cmd.stderr, fcntl.F_GETFL) # get current p.stdout flags
+#        fcntl.fcntl(self._cmd.stderr, fcntl.F_SETFL, flags | os.O_NONBLOCK)
 
-    def __del__(self):
-        cmd = getattr(self, "_cmd", None)
-        if cmd:
-            cmd.terminate()
-
-
-    def __enter__(self):
-        """
-        interface for calling instance using "with", e.g.
-
-        with SMTProb(...) as prob:  
-            ... do something ...
-        """
-        return self
-
-    
-    def __exit__(self, *args, **kwargs):
-        """
-        interface for calling instance using "with" (see __enter__)
-        """
-        self._cmd.terminate()
-
+##    def __del__(self):
+##        cmd = getattr(self, "_cmd", None)
+##        if cmd:
+##            cmd.terminate()
+##
+##
+##    def __enter__(self):
+##        """
+##        interface for calling instance using "with", e.g.
+##
+##        with SMTProb(...) as prob:  
+##            ... do something ...
+##        """
+##        return self
+##
+##    
+##    def __exit__(self, *args, **kwargs):
+##        """
+##        interface for calling instance using "with" (see __enter__)
+##        """
+##        self._cmd.terminate()
+##
 
     @staticmethod
     @contract(node="dict", returns="None|*")
@@ -1053,68 +1058,68 @@ class SMTProb(object):
         return smt_code
 
     
-    def _get_error(self):
-        err_msg = ""
-
-        try:
-            err_msg = " ".join(self._cmd.stderr.readlines())
-            self._log_smt(err_msg, is_input=False)
-        except IOError:
-            # there was no error to read
-            pass
-
-        return err_msg
-
-    def _get_output(self):
-        out = self._cmd.stdout.readline()
-        self._log_smt(out, is_input=False)
-        return out
-
-    @contract(commands="list(string)|string", is_input="bool")
-    def _log_smt(self, commands, is_input=True):
-
-        line_format = "**<< {line}"
-        if is_input:
-            line_format = "{line_num}>> {line}"
-
-        if isinstance(commands, basestring):
-            commands = commands.split("\n")
-
-        for curr_command in commands:
-            if curr_command:
-                if is_input:
-                    self._line_num = self._line_num + 1
-                line = line_format.format(line=curr_command,line_num=self._line_num)
-                log_smt.debug(line)
-
-
-    def _check_error(self, line, default=None):
-        
-        if line.startswith("(error "):
-            raise ValueError(line)
-        elif default:
-            raise ValueError(default)
-    
-    @contract(commands="list(string)", returns="string")
-    def get_tool_answer(self, commands):
-        """
-        Receives a list of commands to be executed by the tool.
-        Returns the text output of the tool.
-        """ 
-
-        self._log_smt(commands)
-
-        commands = "\n".join(commands)
-        self._cmd.stdin.write(commands + "\n")
-
-        answer = self._get_output()
-
-        err_msg = self._get_error()
-        if err_msg:
-            sys.stderr.write(err_msg)
-
-        return answer
-
+##    def _get_error(self):
+##        err_msg = ""
+##
+##        try:
+##            err_msg = " ".join(self._cmd.stderr.readlines())
+##            self._log_smt(err_msg, is_input=False)
+##        except IOError:
+##            # there was no error to read
+##            pass
+##
+##        return err_msg
+##
+##    def _get_output(self):
+##        out = self._cmd.stdout.readline()
+##        self._log_smt(out, is_input=False)
+##        return out
+##
+##    @contract(commands="list(string)|string", is_input="bool")
+##    def _log_smt(self, commands, is_input=True):
+##
+##        line_format = "**<< {line}"
+##        if is_input:
+##            line_format = "{line_num}>> {line}"
+##
+##        if isinstance(commands, basestring):
+##            commands = commands.split("\n")
+##
+##        for curr_command in commands:
+##            if curr_command:
+##                if is_input:
+##                    self._line_num = self._line_num + 1
+##                line = line_format.format(line=curr_command,line_num=self._line_num)
+##                log_smt.debug(line)
+##
+##
+##    def _check_error(self, line, default=None):
+##        
+##        if line.startswith("(error "):
+##            raise ValueError(line)
+##        elif default:
+##            raise ValueError(default)
+##    
+##    @contract(commands="list(string)", returns="string")
+##    def get_tool_answer(self, commands):
+##        """
+##        Receives a list of commands to be executed by the tool.
+##        Returns the text output of the tool.
+##        """ 
+##
+##        self._log_smt(commands)
+##
+##        commands = "\n".join(commands)
+##        self._cmd.stdin.write(commands + "\n")
+##
+##        answer = self._get_output()
+##
+##        err_msg = self._get_error()
+##        if err_msg:
+##            sys.stderr.write(err_msg)
+##
+##        return answer
+##
     @contract(source_pred="tuple", guard=Precondition, preconditions="None|list(is_precondition)", returns="bool")
     def check_sat_guard(self, source_pred, guard, preconditions=None):
  
@@ -1180,26 +1185,26 @@ class SMTProb(object):
 
         return smt_res
 
-    def push(self):
-        cmd = "(push)\n"
-        self._log_smt(cmd)
-        self._cmd.stdin.write(cmd)
-
-        
-    def pop(self):
-        cmd = "(pop)\n"
-        self._log_smt(cmd)
-        self._cmd.stdin.write(cmd)
-
-
-    def get_model(self):
-        # TODO run the (get-model) command
-        pass
-
-
-    def get_unsat_core(self):
-        # TODO run the (get-unsat-core) command
-        pass
+##    def push(self):
+##        cmd = "(push)\n"
+##        self._log_smt(cmd)
+##        self._cmd.stdin.write(cmd)
+##
+##        
+##    def pop(self):
+##        cmd = "(pop)\n"
+##        self._log_smt(cmd)
+##        self._cmd.stdin.write(cmd)
+##
+##
+##    def get_model(self):
+##        # TODO run the (get-model) command
+##        pass
+##
+##
+##    def get_unsat_core(self):
+##        # TODO run the (get-unsat-core) command
+##        pass
 
 @contract(instr_type="string", pc_jump_stack="list[N](tuple(string|None,is_pc,is_pc)),N>0", target="string|None", returns="is_pc")
 def find_break_target(instr_type, pc_jump_stack, target):
