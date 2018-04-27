@@ -1,4 +1,4 @@
-package timetypes.correctsemantics;
+package types.semantics;
 
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.ASTMethodCall;
@@ -8,17 +8,12 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import org.junit.Before;
 import org.junit.Test;
-import slicing.Slice;
-import slicing.TimeElement;
-import slicing.TimeStatements;
 import slicing.heuristics.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by giovanni on 06/07/2017.
