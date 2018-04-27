@@ -14,12 +14,20 @@ import java.util.List;
  */
 public class ASTMethodCall extends IASTStm implements IASTRE {
 
+	public enum TimeType {
+		RT_T,
+		RT_D,
+		ET_T,
+		ET_D
+	}
+
 	private String methodName;
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
 	List<String> timePars = new ArrayList<>();
 	String classPointed = null;
 	boolean isTimeCall = false;
+	TimeType timeType = null;
 	boolean isMinMax = false;
 	private boolean maxMin;
 
@@ -103,6 +111,23 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 
 	public void setTimeCall(boolean timeCall) {
 		isTimeCall = timeCall;
+	}
+
+	@Override
+	public void setTimeCritical(boolean timeCritical) {
+		super.setTimeCritical(timeCritical);
+		if(super.isTimeCritical()){
+			System.err.println("NOT FINAL CODE");
+
+		}
+	}
+
+	public TimeType getTimeType() {
+		return timeType;
+	}
+
+	public void setTimeType(TimeType timeType) {
+		this.timeType = timeType;
 	}
 
 	@Override
