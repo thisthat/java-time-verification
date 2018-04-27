@@ -4,6 +4,7 @@ import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,8 +118,16 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	public void setTimeCritical(boolean timeCritical) {
 		super.setTimeCritical(timeCritical);
 		if(super.isTimeCritical()){
-			System.err.println("NOT FINAL CODE");
-
+			TemporalTypes tt = TemporalTypes.getInstance();
+			if(tt.isRT_T(this)){
+				timeType = TimeType.RT_T;
+			} else if(tt.isRT_D(this)){
+				timeType = TimeType.RT_D;
+			} else if(tt.isET_T(this)) {
+				timeType = TimeType.ET_T;
+			} else {
+				timeType = TimeType.ET_D;
+			}
 		}
 	}
 
