@@ -51,6 +51,7 @@ public class TimeSemanticTest {
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 56));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 61));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 70));
+        expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_D, 72));
     }
 
     static ApplyHeuristics ah = new ApplyHeuristics();
@@ -72,7 +73,7 @@ public class TimeSemanticTest {
         String dir = load("config/methods.csv");
         dir = dir.substring(0, dir.lastIndexOf("/"));
         TemporalInfo.getInstance().loadUserDefined(dir);
-        String f = load("kafka_bug/WorkerCoordinator_issue.java");
+        String f = load("timeTypes/TimeTypes.java");
         List<ASTClass> cs = JDTVisitor.parse(f, f.substring(0, f.lastIndexOf("/")));
         c = cs.get(0);
     }
