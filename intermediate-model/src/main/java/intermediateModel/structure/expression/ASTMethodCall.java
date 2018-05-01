@@ -112,22 +112,27 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 
 	public void setTimeCall(boolean timeCall) {
 		isTimeCall = timeCall;
+		setTimetype();
 	}
 
 	@Override
 	public void setTimeCritical(boolean timeCritical) {
 		super.setTimeCritical(timeCritical);
 		if(super.isTimeCritical()){
-			TemporalTypes tt = TemporalTypes.getInstance();
-			if(tt.isRT_T(this)){
-				timeType = TimeType.RT_T;
-			} else if(tt.isRT_D(this)){
-				timeType = TimeType.RT_D;
-			} else if(tt.isET_T(this)) {
-				timeType = TimeType.ET_T;
-			} else {
-				timeType = TimeType.ET_D;
-			}
+			setTimetype();
+		}
+	}
+
+	private void setTimetype() {
+		TemporalTypes tt = TemporalTypes.getInstance();
+		if(tt.isRT_T(this)){
+			timeType = TimeType.RT_T;
+		} else if(tt.isRT_D(this)){
+			timeType = TimeType.RT_D;
+		} else if(tt.isET_T(this)) {
+			timeType = TimeType.ET_T;
+		} else {
+			timeType = TimeType.ET_D;
 		}
 	}
 

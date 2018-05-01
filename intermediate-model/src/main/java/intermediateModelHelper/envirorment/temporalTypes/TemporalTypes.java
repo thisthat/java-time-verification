@@ -3,6 +3,7 @@ package intermediateModelHelper.envirorment.temporalTypes;
 
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeMethod;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 
 import java.util.List;
 
@@ -15,16 +16,16 @@ public class TemporalTypes {
 
     private static List<TimeMethod> rt_t;
     private static List<TimeMethod> rt_d;
-    private static List<TimeMethod> et_t;
-    private static List<TimeMethod> et_d;
+    private static List<TimeParameterMethod> et_t;
+    private static List<TimeParameterMethod> et_d;
 
     private static TemporalTypes instance = null;
 
     protected TemporalTypes() {
         rt_t   = new ParseCSVMethods(getClass().getClassLoader().getResourceAsStream("semantics/rt_t.csv")).getMethods();
         rt_d   = new ParseCSVMethods(getClass().getClassLoader().getResourceAsStream("semantics/rt_d.csv")).getMethods();
-        et_t   = new ParseCSVMethods(getClass().getClassLoader().getResourceAsStream("semantics/et_t.csv")).getMethods();
-        et_d   = new ParseCSVMethods(getClass().getClassLoader().getResourceAsStream("semantics/et_d.csv")).getMethods();
+        et_t   = new ParseCSVTimeParameterMethods(getClass().getClassLoader().getResourceAsStream("semantics/et_t.csv")).getMethods();
+        et_d   = new ParseCSVTimeParameterMethods(getClass().getClassLoader().getResourceAsStream("semantics/et_d.csv")).getMethods();
         loadUserDefined();
     }
 
@@ -39,8 +40,8 @@ public class TemporalTypes {
     public void loadUserDefined(String dir) {
         rt_t.addAll( new ParseCSVMethods(dir + "rt_t.csv").getMethods());
         rt_d.addAll( new ParseCSVMethods(dir + "rt_d.csv").getMethods());
-        et_t.addAll( new ParseCSVMethods(dir + "et_t.csv").getMethods());
-        et_d.addAll( new ParseCSVMethods(dir + "et_d.csv").getMethods());
+        et_t.addAll( new ParseCSVTimeParameterMethods(dir + "et_t.csv").getMethods());
+        et_d.addAll( new ParseCSVTimeParameterMethods(dir + "et_d.csv").getMethods());
     }
 
     public void loadUserTypes_RTT(String file){
@@ -50,14 +51,14 @@ public class TemporalTypes {
         rt_d.addAll(new ParseCSVMethods(file).getMethods());
     }
     public void loadUserTypes_ETT(String file){
-        et_t.addAll(new ParseCSVMethods(file).getMethods());
+        et_t.addAll(new ParseCSVTimeParameterMethods(file).getMethods());
     }
     public void loadUserTypes_ETD(String file){
-        et_d.addAll(new ParseCSVMethods(file).getMethods());
+        et_d.addAll(new ParseCSVTimeParameterMethods(file).getMethods());
     }
 
 
-    private boolean isTimeMethod(ASTMethodCall m, List<TimeMethod> l){
+    private boolean isTimeMethod(ASTMethodCall m, List<? extends TimeMethod> l){
         for(TimeMethod tm : l){
             if(tm.isMethodCall(m))
                 return true;
@@ -96,11 +97,11 @@ public class TemporalTypes {
         return rt_d;
     }
 
-    public static List<TimeMethod> getETT() {
+    public static List<TimeParameterMethod> getETT() {
         return et_t;
     }
 
-    public static List<TimeMethod> getETD() {
+    public static List<TimeParameterMethod> getETD() {
         return et_d;
     }
 }

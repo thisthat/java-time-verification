@@ -3,7 +3,9 @@ package types.rules;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.expression.*;
 import intermediateModelHelper.envirorment.Env;
+import types.definition.Duration;
 import types.definition.TimeType;
+import types.definition.Timestamp;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -61,6 +63,10 @@ public class TypeResolver {
     }
 
     private static TimeType call(ASTMethodCall expr, Env e) {
+        switch (expr.getTimeType()){
+            case RT_T: return new Timestamp();
+            case RT_D: return new Duration();
+        }
         return errorHandling(expr, e);
     }
 

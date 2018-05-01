@@ -55,7 +55,7 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
                 ensureCoordinatorReady();
                 now = System.currentTimeMillis();
             }
-
+            Thread.sleep(deadline);
             if (needRejoin()) {
                 ensureActiveGroup();
                 now = System.currentTimeMillis();

@@ -44,6 +44,7 @@ public class TimeSemanticTest {
     {
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 50));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 56));
+        expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.ET_D, 58));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 61));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 70));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_D, 72));
@@ -91,7 +92,7 @@ public class TimeSemanticTest {
                 }
             }
         });
-        assertEquals(count[0], expectedResults.size());
+        assertEquals(expectedResults.size(), count[0]);
     }
 
 
