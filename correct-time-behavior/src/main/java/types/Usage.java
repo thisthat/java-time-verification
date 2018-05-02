@@ -2,7 +2,6 @@ package types;
 
 import debugger.Debugger;
 import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.typedefinition.TimeType;
 import intermediateModel.visitors.interfaces.ParseIM;
