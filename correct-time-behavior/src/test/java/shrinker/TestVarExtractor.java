@@ -1,26 +1,22 @@
 package shrinker;
 
-import com.rits.cloning.Cloner;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import org.junit.Before;
 import org.junit.Test;
-import slicing.Shrinker;
 import slicing.Slice;
 import slicing.TimeElement;
 import slicing.TimeStatements;
-import slicing.model.Assignment;
-import slicing.model.If;
 import slicing.model.Method;
-import slicing.model.While;
 import smt.VariableExtractor;
 
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by giovanni on 06/07/2017.

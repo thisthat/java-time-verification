@@ -1,6 +1,8 @@
 package slicing;
 
-import slicing.model.*;
+import slicing.model.If;
+import slicing.model.Method;
+import slicing.model.While;
 import slicing.model.interfaces.Stm;
 
 import java.util.ArrayList;

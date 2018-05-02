@@ -1,7 +1,5 @@
 package com.jcg.example;
 
-import java.util.Date;
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class JavaTimerExampleTask extends TimerTask {

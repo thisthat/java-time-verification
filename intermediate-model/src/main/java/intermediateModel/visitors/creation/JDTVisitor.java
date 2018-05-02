@@ -950,7 +950,7 @@ public class JDTVisitor extends ASTVisitor {
 				try {
 					bck.addStms(re);
 				} catch (Exception e){
-					//lambda expression in a attribute definition -> skip
+					//lambda expression in a attribute typedefinition -> skip
 				}
 			}
 		}
@@ -969,7 +969,7 @@ public class JDTVisitor extends ASTVisitor {
 		try {
 			bck.addStms(re);
 		} catch (Exception e){
-			//lambda expression in a attribute definition -> skip
+			//lambda expression in a attribute typedefinition -> skip
 		}
 		lastMethod = bck;
 		return true;
@@ -1218,7 +1218,7 @@ public class JDTVisitor extends ASTVisitor {
 		String type = expr.getType().toString();
 		IASTRE ret = null;
 		if(expr.fragments().size() > 1){
-			//multiple definition
+			//multiple typedefinition
 			List<IASTRE> vars = new ArrayList<>();
 			for(Object o :expr.fragments()){
 				VariableDeclarationFragment subVar = (VariableDeclarationFragment) o;

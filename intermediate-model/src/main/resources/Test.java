@@ -20,8 +20,6 @@ import org.projectfloodlight.openflow.types.DatapathId;
 import java.io.IOException;
 import java.util.*;
 
-import static junit.framework.Assert.*;
-
 
 // AllSwitchStatisticsResource
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {

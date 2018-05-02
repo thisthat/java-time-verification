@@ -23,9 +23,9 @@ public class CheckExpression {
 	static List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getMethodsWithTimeInSignature();
 
 	/**
-	 * This method add to the definition of variable of the Env passed as parameter all the time relevant information.
+	 * This method add to the typedefinition of variable of the Env passed as parameter all the time relevant information.
 	 * @param lPars List of parameters to check
-	 * @param env {@link Env} class where to add the new definition
+	 * @param env {@link Env} class where to add the new typedefinition
 	 * @return The envirorment (maybe) enriched.
 	 */
 	public static Env checkPars(List<ASTVariable> lPars, Env env){
@@ -36,14 +36,14 @@ public class CheckExpression {
 	}
 
 	/**
-	 * This method will go through the definition of a RExpr and check for the following:
+	 * This method will go through the typedefinition of a RExpr and check for the following:
 	 * <ul>
 	 *     <li>Definition of new vars</li>
 	 *     <li>Assignment of a value to a var/li>
 	 * </ul>
 	 * If something is time related, it will be added to the Env that is returned.
 	 * @param rexp {@link ASTRE} to check
-	 * @param env {@link Env} class where to add the new definition
+	 * @param env {@link Env} class where to add the new typedefinition
 	 *
 	 */
 	public static boolean checkRE(ASTRE rexp, Env env){

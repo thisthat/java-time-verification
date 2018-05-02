@@ -1,17 +1,22 @@
 package types.rules;
 
+import debugger.Debugger;
 import intermediateModel.interfaces.IASTRE;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.expression.*;
+import intermediateModel.typedefinition.Duration;
+import intermediateModel.typedefinition.TimeType;
+import intermediateModel.typedefinition.Timestamp;
+import intermediateModel.typedefinition.Unknown;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
-import types.definition.Duration;
-import types.definition.TimeType;
-import types.definition.Timestamp;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class TypeResolver {
 
+   static Debugger log = Debugger.getInstance(false);
 
     public static TimeType resolveTimerType(IASTRE expr, Env e) {
         if(expr instanceof ASTArrayInitializer)                 { return arrayInit((ASTArrayInitializer)expr, e); }
@@ -43,7 +48,10 @@ public class TypeResolver {
     }
 
     private static TimeType var(ASTVariableDeclaration expr, Env e) {
-        return errorHandling(expr, e);
+        return assignment(new ASTAssignment(expr.getStart(), expr.getEnd(),
+                expr.getName(),
+                expr.getExpr(),
+                IASTRE.OPERATOR.equal), e);
     }
 
     private static TimeType unary(ASTUnary expr, Env e) {
@@ -71,11 +79,24 @@ public class TypeResolver {
     }
 
     private static TimeType literal(ASTLiteral expr, Env e) {
-        return errorHandling(expr, e);
+        try {
+            Integer.parseInt(expr.getValue());
+        } catch (Exception ex){
+            throw new RuntimeException("Cannot decide time types of not integers @" + expr.getLine());
+        }
+        return new Duration();
     }
 
     private static TimeType identifier(ASTIdentifier expr, Env e) {
-        return errorHandling(expr, e);
+        IASTVar v = e.getVar(expr.getValue());
+        TimeType t = v.getVarTimeType();
+        if(t == null){
+            log.log(String.format("Variable %s @%d unknown time type", v.getName(), expr.getLine()));
+            TimeType tvar = new Unknown();
+            v.setVarTimeType(tvar);
+            return tvar;
+        }
+        return t;
     }
 
     private static TimeType ternary(ASTConditional expr, Env e) {
@@ -83,11 +104,142 @@ public class TypeResolver {
     }
 
     private static TimeType binary(ASTBinary expr, Env e) {
-        return errorHandling(expr, e);
+        switch (expr.getOp()){
+            case or:
+            case and:
+            case not:
+            case notEqual:
+            case less:
+            case lessEqual:
+            case greater:
+            case greaterEqual:
+            case equality:
+                return handleBoolean(expr, e);
+            case plus:
+            case div:
+            case mod:
+            case minus:
+            case mul:
+                return handleInt(expr, e);
+            default:
+                throw new RuntimeException("Operator not covered! OP: " + expr.getOp());
+        }
+    }
+
+    private static TimeType handleInt(ASTBinary expr, Env e) {
+        TimeType left = resolveTimerType(expr.getLeft(), e);
+        TimeType right = resolveTimerType(expr.getRight(), e);
+        IASTRE.OPERATOR op = expr.getOp();
+        if(op == IASTRE.OPERATOR.minus){
+            if(left.equals(right)){ //same type ok both T or D, return D.
+                return new Duration();
+            }
+            if(left instanceof Timestamp && right instanceof Duration){
+                return new Timestamp();
+            }
+            //unknown cases
+            if(left instanceof Timestamp && right instanceof Unknown){
+                return new Unknown();
+            }
+            if(left instanceof Duration && right instanceof Unknown){
+                TimeType t = new Duration();
+                setVariableUnknown(expr.getRight(), e, t);
+                return new Duration();
+            }
+            if(left instanceof Unknown && right instanceof Timestamp){
+                TimeType t = new Timestamp();
+                setVariableUnknown(expr.getLeft(), e, t);
+                return new Duration();
+            }
+            if(left instanceof Unknown && right instanceof Duration){
+                return new Unknown();
+            }
+            //all other cases are sure to be error
+            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
+                    expr.getLine(), left, op, right));
+
+        } else if(op == IASTRE.OPERATOR.plus){
+            if(left instanceof Timestamp && right instanceof Duration){
+                return new Timestamp();
+            }
+            if(left instanceof Duration && right instanceof Duration){
+                return new Duration();
+            }
+            if(left instanceof Duration && right instanceof Timestamp){
+                return new Timestamp();
+            }
+            // Unknown cases
+            if(left instanceof Timestamp && right instanceof Unknown){
+                TimeType t = new Duration();
+                setVariableUnknown(expr.getRight(), e, t);
+                return new Timestamp();
+            }
+            if(left instanceof Duration && right instanceof Unknown){
+                return new Unknown();
+            }
+            if(left instanceof Unknown && right instanceof Timestamp){
+                TimeType t = new Duration();
+                setVariableUnknown(expr.getLeft(), e, t);
+                return new Timestamp();
+            }
+            if(left instanceof Unknown && right instanceof Duration){
+                return new Unknown();
+            }
+            //all other cases are sure to be error
+            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
+                    expr.getLine(), left, op, right));
+
+        } else if(op == IASTRE.OPERATOR.mul){
+            if(left instanceof Duration && right instanceof Duration){
+                return new Duration();
+            }
+            //all other cases are sure to be error
+            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
+                    expr.getLine(), left, op, right));
+        } else if(op == IASTRE.OPERATOR.div){
+            if(left instanceof Duration && right instanceof Duration){
+                return new Duration();
+            }
+            //all other cases are sure to be error
+            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
+                    expr.getLine(), left, op, right));
+        }
+        // we could either return an error or be conservative and say ok we don't know
+        return new Unknown();
+    }
+
+    private static void setVariableUnknown(IASTRE right, Env e, TimeType t) {
+        log.log(String.format("Resolving Unknown @%d with %s", right.getLine(), t));
+        right.visit(new DefualtASTREVisitor(){
+            @Override
+            public void enterASTLiteral(ASTLiteral elm) {
+                IASTVar v = e.getVar(elm.getValue());
+                TimeType type = v.getVarTimeType();
+                if(type == null || type instanceof Unknown)
+                    v.setVarTimeType(t);
+            }
+        });
+    }
+
+    private static TimeType handleBoolean(ASTBinary expr, Env e) {
+        TimeType left = resolveTimerType(expr.getLeft(), e);
+        TimeType right = resolveTimerType(expr.getRight(), e);
+        if(!left.equals(right))
+            throw new RuntimeException(String.format("Boolean operation @%d not compatible types. Left %s, Right %s", expr.getLine(), left, right));
+        log.log(String.format("Boolean @%d : %s", expr.getLine(), left));
+        return left;
     }
 
     private static TimeType assignment(ASTAssignment expr, Env e) {
-        return errorHandling(expr, e);
+        TimeType texpr = resolveTimerType(expr.getRight(), e);
+        IASTVar v = e.getVar(expr.getLeft().print());
+        TimeType tvar = v.getVarTimeType();
+        if(tvar != null && !texpr.equals(tvar)){
+            throw new RuntimeException(String.format("Variable %s change time type from %s to %s", v.getName(), tvar, texpr));
+        }
+        v.setVarTimeType(texpr);
+        log.log(String.format("Assignment @%d : %s", expr.getLine(), texpr));
+        return texpr;
     }
 
     private static TimeType attributeAccess(ASTAttributeAccess expr, Env e) {

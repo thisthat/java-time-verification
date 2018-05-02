@@ -104,7 +104,7 @@ public class SetTimeout extends SearchTimeConstraint {
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
-	 * It collects the {@link ASTMethodCall} in the RExp and search for the definition of the methods:
+	 * It collects the {@link ASTMethodCall} in the RExp and search for the typedefinition of the methods:
 	 * <ul>
 	 *     <li>setConnectTimeout</li>
 	 *     <li>setSoTimeout</li>

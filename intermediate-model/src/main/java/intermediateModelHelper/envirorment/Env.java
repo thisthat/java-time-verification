@@ -93,9 +93,9 @@ public class Env {
 
 
 	/**
-	 * The method will search if the closest definition of the variable is in a inherited class.
+	 * The method will search if the closest typedefinition of the variable is in a inherited class.
 	 * @param v Name of the variable to find
-	 * @return	True if the closest definition is in a inherited class.
+	 * @return	True if the closest typedefinition is in a inherited class.
 	 */
 	public boolean isInherited(String v){
 		if(!existVarName(v)) return false;
@@ -103,9 +103,9 @@ public class Env {
 	}
 
 	/**
-	 * The method will search if the closest definition of the variable is an attribute of the class.
+	 * The method will search if the closest typedefinition of the variable is an attribute of the class.
 	 * @param v Name of the variable to find
-	 * @return	True if the closest definition is an attribute of the class.
+	 * @return	True if the closest typedefinition is an attribute of the class.
 	 */
 	public boolean isClassAttribute(String v){
 		if(!existVarName(v)) return false;
@@ -113,9 +113,9 @@ public class Env {
 	}
 
 	/**
-	 * The method will search if the closest definition of the variable is an attribute of the class.
+	 * The method will search if the closest typedefinition of the variable is an attribute of the class.
 	 * @param v Name of the variable to find
-	 * @return	True if the closest definition is an attribute of the class.
+	 * @return	True if the closest typedefinition is an attribute of the class.
 	 */
 	public boolean isMethodParameter(String v){
 		if(!existVarName(v)) return false;
@@ -153,7 +153,7 @@ public class Env {
 
 
 	/**
-	 * Search for the first definition of {@link EnvBase}. It could return null
+	 * Search for the first typedefinition of {@link EnvBase}. It could return null
 	 * @return Null if it cannot found an EnvBase or the EnvBase.
 	 */
 	public EnvBase getFirstEnvBase(){

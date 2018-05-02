@@ -9,7 +9,10 @@ import org.junit.Test;
 import slicing.Slice;
 import slicing.TimeElement;
 import slicing.TimeStatements;
-import slicing.model.*;
+import slicing.model.Assignment;
+import slicing.model.DoWhile;
+import slicing.model.If;
+import slicing.model.Method;
 
 import java.util.HashMap;
 import java.util.List;

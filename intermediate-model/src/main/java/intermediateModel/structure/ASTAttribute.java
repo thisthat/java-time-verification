@@ -4,6 +4,7 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.interfaces.IASTVisitor;
+import intermediateModel.typedefinition.TimeType;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -15,7 +16,7 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 	private String name;
 	private ASTRE expr;
 	private String typePointed;
-
+	private TimeType timeType = null;
 
 	public ASTAttribute(int start, int end, Visibility accessRight, String type, String name, ASTRE expr) {
 		super(start, end);
@@ -117,5 +118,15 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 
 	public String getTypePointed() {
 		return typePointed;
+	}
+
+	@Override
+	public TimeType getVarTimeType() {
+		return timeType;
+	}
+
+	@Override
+	public void setVarTimeType(TimeType texpr) {
+		this.timeType = texpr;
 	}
 }

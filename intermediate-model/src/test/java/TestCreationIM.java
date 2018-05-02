@@ -6,13 +6,12 @@ import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
+import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

@@ -1,6 +1,7 @@
 package intermediateModel.interfaces;
 
 import intermediateModel.structure.ASTRE;
+import intermediateModel.typedefinition.TimeType;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -15,5 +16,7 @@ public interface IASTVar {
 	boolean isTimeCritical();
 	void setTimeCritical(boolean timeCritical);
 	boolean equals(Object o);
-	public String getTypePointed();
+	String getTypePointed();
+	TimeType getVarTimeType();
+	void setVarTimeType(TimeType texpr);
 }

@@ -1,7 +1,6 @@
 package intermediateModelHelper.envirorment.temporalTypes;
 
 import intermediateModelHelper.envirorment.temporal.ParseCSV;
-import intermediateModelHelper.envirorment.temporalTypes.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 
 import java.io.*;
