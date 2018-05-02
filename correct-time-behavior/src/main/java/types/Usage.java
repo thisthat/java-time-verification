@@ -20,11 +20,6 @@ public class Usage extends ParseIM  {
         }
         TimeType t =TypeResolver.resolveTimerType(r.getExpression(), env);
         Debugger.getInstance(false).log("Line " + r.getLine() + " : " + t);
-        System.out.println("_________");
-        for(IASTVar v : env.getAllVarList()){
-            System.out.println(v.getName() + " -> " + v.getVarTimeType());
-        }
-        System.out.println("_________");
     }
 
     @Override

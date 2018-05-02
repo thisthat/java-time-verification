@@ -1,6 +1,9 @@
 package intermediateModel.typedefinition;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public class Timestamp implements TimeType {
+    @JsonValue
     @Override
     public String toString() {
         return "Timestamp";

@@ -7,7 +7,7 @@ import intermediateModel.typedefinition.TimeType;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
+public class  ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
 	TimeUnit unit = TimeUnit.UNKNOWN;
