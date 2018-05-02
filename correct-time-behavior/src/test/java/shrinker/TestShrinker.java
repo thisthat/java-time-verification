@@ -11,7 +11,10 @@ import slicing.Shrinker;
 import slicing.Slice;
 import slicing.TimeElement;
 import slicing.TimeStatements;
-import slicing.model.*;
+import slicing.model.Assignment;
+import slicing.model.If;
+import slicing.model.Method;
+import slicing.model.While;
 
 import java.util.HashMap;
 import java.util.List;

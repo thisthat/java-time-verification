@@ -6,8 +6,6 @@ import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import org.junit.Test;
 import slicing.Slice;
-import slicing.TimeElement;
-import slicing.TimeStatements;
 import slicing.model.Assignment;
 import slicing.model.If;
 import slicing.model.Method;

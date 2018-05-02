@@ -76,7 +76,7 @@ public class testLambdas extends XALItem implements XALAddState {
 
 
 	/**
-	 * If the automaton is created on method definition, it will return its name
+	 * If the automaton is created on method typedefinition, it will return its name
 	 * @return the id of the automaton
 	 */
 	public String getId(){

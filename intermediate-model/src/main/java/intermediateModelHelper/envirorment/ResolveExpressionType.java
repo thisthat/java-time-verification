@@ -8,7 +8,6 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseRE;
 import intermediateModelHelper.types.ResolveTypes;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**

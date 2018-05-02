@@ -86,7 +86,7 @@ public class SetTimeoutPermissive extends SearchTimeConstraint {
 
 	/**
 	 * The search accept only {@link ASTRE}, in particular it checks only {@link ASTMethodCall}. <br>
-	 * It collects the {@link ASTMethodCall} in the RExp and search for the definition of the method <b>setSoTimeout</b>
+	 * It collects the {@link ASTMethodCall} in the RExp and search for the typedefinition of the method <b>setSoTimeout</b>
 	 * from which it extracts the time value. Then when it finds the call to <b>receive</b> or <b>getOutputStream</b>
 	 * it saves the time constraint (if the variable that calls the methods is time relevant as well).
 	 *

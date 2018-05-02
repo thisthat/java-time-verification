@@ -7,6 +7,7 @@ public class DeclaredVar {
     protected String type;
     protected String name;
     protected String id;
+    protected String timeType;
 
     public DeclaredVar() {
     }
@@ -15,6 +16,14 @@ public class DeclaredVar {
         this.type = type;
         this.name = name;
         this.id = id;
+    }
+    public DeclaredVar(String type, String name, String id, String timeType) {
+        this(type, name, id);
+        this.timeType = timeType;
+    }
+
+    public String getTimeType() {
+        return timeType;
     }
 
     public String getType() {

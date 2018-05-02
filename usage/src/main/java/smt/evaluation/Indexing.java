@@ -44,8 +44,9 @@ public class Indexing {
         //index return times
         {
             File loadFromHD = new File(inputFile);
+            debug.log("Indexing types from file: " + loadFromHD.getAbsolutePath());
+            System.out.println("Indexing types from file: " + loadFromHD.getAbsolutePath());
             if(loadFromHD.exists()){
-                debug.log("Indexing types from file: " + loadFromHD.getAbsolutePath());
                 long s = System.currentTimeMillis();
                 TemporalInfo.getInstance().loadUserTypes(loadFromHD.getAbsolutePath());
                 long e = System.currentTimeMillis();
@@ -54,7 +55,7 @@ public class Indexing {
 
             long s = System.currentTimeMillis();
             debug.log("Indexing types of the project");
-            List<TimeTypes> t = IndexingProject.getMethodReturnTime(name, root_path, false);
+            List<TimeTypes> t = IndexingProject.getMethodReturnTime(name, root_path, true);
             long e = System.currentTimeMillis();
             timeSpentInit += (e - s);
             System.out.println(String.format("Get %d methods", t.size()));

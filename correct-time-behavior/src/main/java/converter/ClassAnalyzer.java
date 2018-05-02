@@ -2,16 +2,17 @@ package converter;
 
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
+import slicing.SLOCCounter;
 import slicing.Slice;
 import slicing.model.Method;
-import slicing.SLOCCounter;
 import smt.PathGenerator;
-//import smt.TranslateReducedModel;
 import smt.exception.VariableNotCorrect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+//import smt.TranslateReducedModel;
 
 /**
  * Created by giovanni on 17/07/2017.
