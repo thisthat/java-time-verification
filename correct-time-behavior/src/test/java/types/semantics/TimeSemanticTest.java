@@ -9,7 +9,7 @@ import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import org.junit.Before;
 import org.junit.Test;
 import slicing.heuristics.*;
-import types.Usage;
+import types.TimeTypeSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +77,7 @@ public class TimeSemanticTest {
 
     @Test
     public void RunIt() throws Exception {
-        Usage u = new Usage();
+        TimeTypeSystem u = new TimeTypeSystem();
         u.start(c);
     }
 

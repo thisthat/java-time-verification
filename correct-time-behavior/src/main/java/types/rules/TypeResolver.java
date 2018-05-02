@@ -18,13 +18,13 @@ public class TypeResolver {
 
    static Debugger log = Debugger.getInstance(false);
 
-    public static TimeType resolveTimerType(IASTRE expr, Env e) {
+    public static TimeType resolveTimerType(IASTRE expr, Env e) throws TimeTypeError {
         if(!expr.isTimeCritical())
             return null;
         return resolveTimerTypeExpression(expr, e);
     }
 
-    private static TimeType resolveTimerTypeExpression(IASTRE expr, Env e) {
+    private static TimeType resolveTimerTypeExpression(IASTRE expr, Env e) throws TimeTypeError {
         if(expr instanceof ASTArrayInitializer)                 { return arrayInit((ASTArrayInitializer)expr, e); }
         else if(expr instanceof ASTAssignment)                  { return assignment((ASTAssignment)expr, e); }
         else if(expr instanceof ASTAttributeAccess)             { return attributeAccess((ASTAttributeAccess)expr, e); }
@@ -46,38 +46,38 @@ public class TypeResolver {
 
     private static TimeType errorHandling(IASTRE expr, Env e) {
         StackTraceElement[] cause = Thread.currentThread().getStackTrace();
-        String msg = "Errors @ " + expr.getLine() + "--" + Arrays.stream(cause).map(s -> s + "\n").collect(Collectors.joining());
+        String msg = "Errors @ " + expr.getLine() + " \n" + expr.print() + "\n-- \n" + Arrays.stream(cause).map(s -> s + "\n").collect(Collectors.joining());
         throw new RuntimeException(msg);
     }
 
-    private static TimeType var(ASTVariableMultipleDeclaration expr, Env e) {
+    private static TimeType var(ASTVariableMultipleDeclaration expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType var(ASTVariableDeclaration expr, Env e) {
+    private static TimeType var(ASTVariableDeclaration expr, Env e) throws TimeTypeError {
         return assignment(new ASTAssignment(expr.getStart(), expr.getEnd(),
                 expr.getName(),
                 expr.getExpr(),
                 IASTRE.OPERATOR.equal), e);
     }
 
-    private static TimeType unary(ASTUnary expr, Env e) {
+    private static TimeType unary(ASTUnary expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType pre(ASTPreOp expr, Env e) {
+    private static TimeType pre(ASTPreOp expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType post(ASTPostOp expr, Env e) {
+    private static TimeType post(ASTPostOp expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType newObject(ASTNewObject expr, Env e) {
+    private static TimeType newObject(ASTNewObject expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType call(ASTMethodCall expr, Env e) {
+    private static TimeType call(ASTMethodCall expr, Env e) throws TimeTypeError {
         if(expr.isMaxMin()){
             IASTRE first = expr.getParameters().get(0);
             IASTRE second = expr.getParameters().get(1);
@@ -108,8 +108,7 @@ public class TypeResolver {
                 return t;
             }
             //all other cases are sure to be error
-            throw new RuntimeException(String.format("Not valid type for min/max operation @%d! %s %s",
-                    expr.getLine(), left, right));
+            throw new TimeTypeError(expr.getLine(),String.format("Not valid type for min/max operation! %s %s", left, right));
         } else if(expr.getTimeType() != null) {
             switch (expr.getTimeType()) {
                 case RT_T:
@@ -121,16 +120,16 @@ public class TypeResolver {
         return errorHandling(expr, e);
     }
 
-    private static TimeType literal(ASTLiteral expr, Env e) {
+    private static TimeType literal(ASTLiteral expr, Env e) throws TimeTypeError {
         try {
             Integer.parseInt(expr.getValue());
         } catch (Exception ex){
-            throw new RuntimeException("Cannot decide time types of not integers @" + expr.getLine());
+            throw new TimeTypeError(expr.getLine(),"Cannot decide time types of non integer scalars");
         }
         return new Duration();
     }
 
-    private static TimeType identifier(ASTIdentifier expr, Env e) {
+    private static TimeType identifier(ASTIdentifier expr, Env e) throws TimeTypeError {
         IASTVar v = e.getVar(expr.getValue());
         TimeType t = v.getVarTimeType();
         if(t == null){
@@ -142,11 +141,11 @@ public class TypeResolver {
         return t;
     }
 
-    private static TimeType ternary(ASTConditional expr, Env e) {
+    private static TimeType ternary(ASTConditional expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType binary(ASTBinary expr, Env e) {
+    private static TimeType binary(ASTBinary expr, Env e) throws TimeTypeError {
         switch (expr.getOp()){
             case or:
             case and:
@@ -169,7 +168,7 @@ public class TypeResolver {
         }
     }
 
-    private static TimeType handleInt(ASTBinary expr, Env e) {
+    private static TimeType handleInt(ASTBinary expr, Env e) throws TimeTypeError {
         TimeType left = resolveTimerTypeExpression(expr.getLeft(), e);
         TimeType right = resolveTimerTypeExpression(expr.getRight(), e);
         IASTRE.OPERATOR op = expr.getOp();
@@ -198,8 +197,7 @@ public class TypeResolver {
                 return new Unknown();
             }
             //all other cases are sure to be error
-            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
-                    expr.getLine(), left, op, right));
+            throw new TimeTypeError(expr.getLine(), String.format("Not a valid operation! %s %s %s", left, op, right));
 
         } else if(op == IASTRE.OPERATOR.plus){
             if(left instanceof Timestamp && right instanceof Duration){
@@ -229,29 +227,26 @@ public class TypeResolver {
                 return new Unknown();
             }
             //all other cases are sure to be error
-            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
-                    expr.getLine(), left, op, right));
+            throw new TimeTypeError(expr.getLine(), String.format("Not valid operation! %s %s %s", left, op, right));
 
         } else if(op == IASTRE.OPERATOR.mul){
             if(left instanceof Duration && right instanceof Duration){
                 return new Duration();
             }
             //all other cases are sure to be error
-            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
-                    expr.getLine(), left, op, right));
+            throw new TimeTypeError(expr.getLine(), String.format("Not valid operation! %s %s %s", left, op, right));
         } else if(op == IASTRE.OPERATOR.div){
             if(left instanceof Duration && right instanceof Duration){
                 return new Duration();
             }
             //all other cases are sure to be error
-            throw new RuntimeException(String.format("Not valid operation @%d! %s %s %s",
-                    expr.getLine(), left, op, right));
+            throw new TimeTypeError(expr.getLine(), String.format("Not valid operation! %s %s %s", left, op, right));
         }
         // we could either return an error or be conservative and say ok we don't know
         return new Unknown();
     }
 
-    private static void setVariableUnknown(IASTRE right, Env e, TimeType t) {
+    private static void setVariableUnknown(IASTRE right, Env e, TimeType t) throws TimeTypeError {
         log.log(String.format("Resolving Unknown @%d with %s", right.getLine(), t));
         right.visit(new DefualtASTREVisitor(){
             @Override
@@ -266,36 +261,36 @@ public class TypeResolver {
         });
     }
 
-    private static TimeType handleBoolean(ASTBinary expr, Env e) {
+    private static TimeType handleBoolean(ASTBinary expr, Env e) throws TimeTypeError {
         TimeType left = resolveTimerTypeExpression(expr.getLeft(), e);
         TimeType right = resolveTimerTypeExpression(expr.getRight(), e);
         if(!left.equals(right))
-            throw new RuntimeException(String.format("Boolean operation @%d not compatible types. Left %s, Right %s", expr.getLine(), left, right));
+            throw new TimeTypeError(expr.getLine(), String.format("Boolean operation with not compatible types. Left %s, Right %s", left, right));
         log.log(String.format("Boolean @%d : %s", expr.getLine(), left));
         return left;
     }
 
-    private static TimeType assignment(ASTAssignment expr, Env e) {
+    private static TimeType assignment(ASTAssignment expr, Env e) throws TimeTypeError {
         TimeType texpr = resolveTimerTypeExpression(expr.getRight(), e);
         IASTVar v = e.getVar(expr.getLeft().print());
         TimeType tvar = v.getVarTimeType();
         if(tvar != null && !texpr.equals(tvar)){
-            throw new RuntimeException(String.format("Variable %s change time type from %s to %s", v.getName(), tvar, texpr));
+            throw new TimeTypeError(expr.getLine(), String.format("Variable %s change time type from %s to %s", v.getName(), tvar, texpr));
         }
         v.setVarTimeType(texpr);
         log.log(String.format("Assignment @%d : %s", expr.getLine(), texpr));
         return texpr;
     }
 
-    private static TimeType attributeAccess(ASTAttributeAccess expr, Env e) {
+    private static TimeType attributeAccess(ASTAttributeAccess expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType arrayInit(ASTArrayInitializer expr, Env e) {
+    private static TimeType arrayInit(ASTArrayInitializer expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 
-    private static TimeType cast(ASTCast expr, Env e) {
+    private static TimeType cast(ASTCast expr, Env e) throws TimeTypeError {
         return errorHandling(expr, e);
     }
 

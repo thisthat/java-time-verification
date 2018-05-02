@@ -13,12 +13,8 @@ import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.TimeInSignature;
-import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
-import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +24,7 @@ import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.helper.PropertiesFileReader;
-import types.Usage;
+import types.TimeTypeSystem;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -50,7 +46,7 @@ public class getFile extends indexMW {
 		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.ALL : Level.OFF);
 	}
 
-	static class AnnotateEnv extends Usage {
+	static class AnnotateEnv extends TimeTypeSystem {
 		@Override
 		public void start(ASTClass c) {
 			super.start(c);
