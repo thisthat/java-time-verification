@@ -1,5 +1,8 @@
 package types;
 
+import debugger.Debugger;
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.typedefinition.TimeType;
 import intermediateModel.visitors.interfaces.ParseIM;
@@ -16,6 +19,16 @@ public class Usage extends ParseIM  {
             return;
         }
         TimeType t =TypeResolver.resolveTimerType(r.getExpression(), env);
+        Debugger.getInstance(false).log("Line " + r.getLine() + " : " + t);
+        System.out.println("_________");
+        for(IASTVar v : env.getAllVarList()){
+            System.out.println(v.getName() + " -> " + v.getVarTimeType());
+        }
+        System.out.println("_________");
+    }
+
+    @Override
+    protected void postAnalyzeASTMethod(IASTMethod elm, Env env) {
 
     }
 }

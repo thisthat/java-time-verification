@@ -19,6 +19,12 @@ public class TypeResolver {
    static Debugger log = Debugger.getInstance(false);
 
     public static TimeType resolveTimerType(IASTRE expr, Env e) {
+        if(!expr.isTimeCritical())
+            return null;
+        return resolveTimerTypeExpression(expr, e);
+    }
+
+    private static TimeType resolveTimerTypeExpression(IASTRE expr, Env e) {
         if(expr instanceof ASTArrayInitializer)                 { return arrayInit((ASTArrayInitializer)expr, e); }
         else if(expr instanceof ASTAssignment)                  { return assignment((ASTAssignment)expr, e); }
         else if(expr instanceof ASTAttributeAccess)             { return attributeAccess((ASTAttributeAccess)expr, e); }
@@ -36,6 +42,7 @@ public class TypeResolver {
         else if(expr instanceof ASTVariableMultipleDeclaration) { return var((ASTVariableMultipleDeclaration)expr, e); }
         else { return errorHandling(expr, e); }
     }
+
 
     private static TimeType errorHandling(IASTRE expr, Env e) {
         StackTraceElement[] cause = Thread.currentThread().getStackTrace();
@@ -71,9 +78,45 @@ public class TypeResolver {
     }
 
     private static TimeType call(ASTMethodCall expr, Env e) {
-        switch (expr.getTimeType()){
-            case RT_T: return new Timestamp();
-            case RT_D: return new Duration();
+        if(expr.isMaxMin()){
+            IASTRE first = expr.getParameters().get(0);
+            IASTRE second = expr.getParameters().get(1);
+            TimeType left = resolveTimerTypeExpression(first, e);
+            TimeType right = resolveTimerTypeExpression(second, e);
+            if(left.equals(right)){
+                return left;
+            }
+            // unknown cases
+            if(left instanceof Unknown && right instanceof Duration){
+                TimeType t = new Duration();
+                setVariableUnknown(first, e, t);
+                return t;
+            }
+            if(left instanceof Unknown && right instanceof Timestamp){
+                TimeType t = new Timestamp();
+                setVariableUnknown(first, e, t);
+                return t;
+            }
+            if(left instanceof Duration && right instanceof Unknown){
+                TimeType t = new Duration();
+                setVariableUnknown(second, e, t);
+                return t;
+            }
+            if(left instanceof Timestamp && right instanceof Unknown){
+                TimeType t = new Timestamp();
+                setVariableUnknown(second, e, t);
+                return t;
+            }
+            //all other cases are sure to be error
+            throw new RuntimeException(String.format("Not valid type for min/max operation @%d! %s %s",
+                    expr.getLine(), left, right));
+        } else if(expr.getTimeType() != null) {
+            switch (expr.getTimeType()) {
+                case RT_T:
+                    return new Timestamp();
+                case RT_D:
+                    return new Duration();
+            }
         }
         return errorHandling(expr, e);
     }
@@ -127,8 +170,8 @@ public class TypeResolver {
     }
 
     private static TimeType handleInt(ASTBinary expr, Env e) {
-        TimeType left = resolveTimerType(expr.getLeft(), e);
-        TimeType right = resolveTimerType(expr.getRight(), e);
+        TimeType left = resolveTimerTypeExpression(expr.getLeft(), e);
+        TimeType right = resolveTimerTypeExpression(expr.getRight(), e);
         IASTRE.OPERATOR op = expr.getOp();
         if(op == IASTRE.OPERATOR.minus){
             if(left.equals(right)){ //same type ok both T or D, return D.
@@ -212,18 +255,20 @@ public class TypeResolver {
         log.log(String.format("Resolving Unknown @%d with %s", right.getLine(), t));
         right.visit(new DefualtASTREVisitor(){
             @Override
-            public void enterASTLiteral(ASTLiteral elm) {
+            public void enterASTIdentifier(ASTIdentifier elm) {
                 IASTVar v = e.getVar(elm.getValue());
                 TimeType type = v.getVarTimeType();
-                if(type == null || type instanceof Unknown)
+                if(type == null || type instanceof Unknown) {
                     v.setVarTimeType(t);
+                    log.log("\t" + elm.getValue() + " has type " + t);
+                }
             }
         });
     }
 
     private static TimeType handleBoolean(ASTBinary expr, Env e) {
-        TimeType left = resolveTimerType(expr.getLeft(), e);
-        TimeType right = resolveTimerType(expr.getRight(), e);
+        TimeType left = resolveTimerTypeExpression(expr.getLeft(), e);
+        TimeType right = resolveTimerTypeExpression(expr.getRight(), e);
         if(!left.equals(right))
             throw new RuntimeException(String.format("Boolean operation @%d not compatible types. Left %s, Right %s", expr.getLine(), left, right));
         log.log(String.format("Boolean @%d : %s", expr.getLine(), left));
@@ -231,7 +276,7 @@ public class TypeResolver {
     }
 
     private static TimeType assignment(ASTAssignment expr, Env e) {
-        TimeType texpr = resolveTimerType(expr.getRight(), e);
+        TimeType texpr = resolveTimerTypeExpression(expr.getRight(), e);
         IASTVar v = e.getVar(expr.getLeft().print());
         TimeType tvar = v.getVarTimeType();
         if(tvar != null && !texpr.equals(tvar)){

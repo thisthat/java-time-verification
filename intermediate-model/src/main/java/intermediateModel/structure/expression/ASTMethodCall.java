@@ -29,7 +29,6 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	String classPointed = null;
 	boolean isTimeCall = false;
 	TimeType timeType = null;
-	boolean isMinMax = false;
 	private boolean maxMin;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
