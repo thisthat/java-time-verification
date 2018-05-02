@@ -11,7 +11,7 @@
     <name>Intermediate-Model</name>
     <packaging>jar</packaging>
     <artifactId>intermediate-model</artifactId>
-    <version>0.4</version>
+    <version>0.6</version>
     <description>
         The following module encapsulate all the structure of a Java source code file in an intermediate stucture that
         allows us to keep track of the information in the file and perform evaluation over it.
@@ -54,11 +54,6 @@
             <version>1.2.1</version>
         </dependency>
         <dependency>
-            <groupId>java-xal</groupId>
-            <artifactId>time-annotation</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.9.0</version>
@@ -71,7 +66,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>debugger</artifactId>
-            <version>0.4</version>
+            <version>0.6</version>
         </dependency>
     </dependencies>
     <build>

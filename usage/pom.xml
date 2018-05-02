@@ -14,7 +14,7 @@
         <dependency>
             <groupId>java-xal</groupId>
             <artifactId>intermediate-model</artifactId>
-            <version>0.4</version>
+            <version>0.6</version>
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>
