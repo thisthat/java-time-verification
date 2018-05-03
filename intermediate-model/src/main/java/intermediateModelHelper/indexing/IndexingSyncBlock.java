@@ -205,7 +205,7 @@ public class IndexingSyncBlock extends ParseIM {
 					ASTIdentifier lit = (ASTIdentifier) e;
 					if(lit.getValue().equals(sync.getExpr())){
 						if(lit.getCode().endsWith("]")){ //does it work like that?
-							//We should think about gettin' in touch with the concrete types of the program and do not abstract from them. At least arrays...
+							//We should think about gettin' in touch with the concrete intermediateModel.types of the program and do not abstract from them. At least arrays...
 							//handle cases where we store smth inside an array
 							return false;
 						}

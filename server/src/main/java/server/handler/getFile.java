@@ -24,7 +24,7 @@ import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.helper.PropertiesFileReader;
-import types.TimeTypeSystem;
+import intermediateModel.types.TimeTypeSystem;
 
 import java.io.IOException;
 import java.io.OutputStream;

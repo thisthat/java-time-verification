@@ -4,6 +4,7 @@ import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 
 import java.util.ArrayList;
@@ -123,15 +124,34 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	}
 
 	private void setTimetype() {
+		this.isTimeCritical = true;
 		TemporalTypes tt = TemporalTypes.getInstance();
 		if(tt.isRT_T(this)){
 			timeType = TimeType.RT_T;
+			//does it still accept time?
+			int[] timePars = tt.getTimeoutParametersET_T(this);
+			for(int index : timePars){
+				this.getParameters().get(index).setTimeCritical(true);
+			}
 		} else if(tt.isRT_D(this)){
 			timeType = TimeType.RT_D;
+			//does it still accept time?
+			int[] timePars = tt.getTimeoutParametersET_D(this);
+			for(int index : timePars){
+				this.getParameters().get(index).setTimeCritical(true);
+			}
 		} else if(tt.isET_T(this)) {
 			timeType = TimeType.ET_T;
+			int[] timePars = tt.getTimeoutParametersET_T(this);
+			for(int index : timePars){
+				this.getParameters().get(index).setTimeCritical(true);
+			}
 		} else {
 			timeType = TimeType.ET_D;
+			int[] timePars = tt.getTimeoutParametersET_D(this);
+			for(int index : timePars){
+				this.getParameters().get(index).setTimeCritical(true);
+			}
 		}
 	}
 

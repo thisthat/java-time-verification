@@ -6,7 +6,7 @@ import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 public class ComputeAnnotationPerFile {
     public static void main(String[] args) {
         if(args.length != 4){
-            System.err.println("Usage with the following four paths: [file] [project] [types.csv] [csv]");
+            System.err.println("Usage with the following four paths: [file] [project] [intermediateModel.types.csv] [csv]");
             System.exit(0);
         }
         String file = args[0];

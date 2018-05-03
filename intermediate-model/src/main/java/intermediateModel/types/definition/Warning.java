@@ -1,4 +1,4 @@
-package intermediateModel.typedefinition;
+package intermediateModel.types.definition;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

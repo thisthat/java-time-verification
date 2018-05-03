@@ -18,6 +18,7 @@ public class Debugger {
     ServerDebugger server;
     String name;
     boolean network = true;
+    boolean isActive = true;
 
     private static final Logger log = LogManager.getLogger();
 
@@ -67,6 +68,11 @@ public class Debugger {
         }
     }
 
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     public String getName() {
         return name;
     }
@@ -76,6 +82,7 @@ public class Debugger {
     }
 
     public void log(String msg){
+        if(!isActive) return;
         if(network)
             OutputLogs.getInstance().add(msg);
         log.debug(msg);

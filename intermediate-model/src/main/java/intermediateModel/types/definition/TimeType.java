@@ -1,4 +1,4 @@
-package intermediateModel.typedefinition;
+package intermediateModel.types.definition;
 
 public interface TimeType {
     enum TYPES {

@@ -8,6 +8,7 @@ import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
+
 /**
  * The {@link BooleanExpression} searches for instances of time assignment
  * @author Giovanni Liva (@thisthatDC)
@@ -16,6 +17,11 @@ import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
  */
 public class BooleanExpression extends SearchTimeConstraint {
 
+	TimeStatements listTimeStms;
+
+	public BooleanExpression() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
 
 	@Override
 	public void nextMethod(ASTMethod method, Env env) {
@@ -36,7 +42,7 @@ public class BooleanExpression extends SearchTimeConstraint {
 	}
 
 	private void mark(IASTStm stm) {
-		super.addConstraint(stm.getCode(), stm, false);
+		listTimeStms.addStatements(stm, TimeElement.Type.Boolean);
 	}
 
 }

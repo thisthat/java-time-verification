@@ -144,7 +144,7 @@ public class SaveMethodsWithTime {
 
     public static void main(String[] args) throws Exception {
         if(args.length < 3) {
-            System.out.println("Usage with: project_path project_name types");
+            System.out.println("Usage with: project_path project_name intermediateModel.types");
             System.exit(1);
         }
         String path = args[0];

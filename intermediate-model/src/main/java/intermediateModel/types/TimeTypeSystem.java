@@ -1,15 +1,17 @@
-package types;
+package intermediateModel.types;
 
 import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.typedefinition.TimeType;
+import intermediateModel.types.definition.TimeType;
+import intermediateModel.types.rules.TimeException;
+import intermediateModel.types.rules.TimeTypeWarning;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
-import slicing.heuristics.*;
-import types.rules.TimeTypeError;
-import types.rules.TypeResolver;
+import intermediateModel.types.rules.TimeTypeError;
+import intermediateModel.types.rules.TypeResolver;
+import intermediateModelHelper.heuristic.v2.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,28 +31,45 @@ public class TimeTypeSystem extends ParseIM  {
     }
 
     List<TimeTypeError> errors = new ArrayList<>();
+    List<TimeTypeWarning> warnings = new ArrayList<>();
 
     public List<TimeTypeError> getErrors() {
         return errors;
     }
 
+    public List<TimeTypeWarning> getWarnings() {
+        return warnings;
+    }
+
+    public TimeTypeSystem() {
+    }
+
+    public TimeTypeSystem(ASTClass _class) {
+        super(_class);
+    }
+
     @Override
     public void start(ASTClass c){
+        errors.clear();
         errors.clear();
         super.start(c);
     }
 
     @Override
     protected void analyzeASTRE(ASTRE r, Env env) {
-        if(r.getExpression() == null){
+        if(r == null || r.getExpression() == null){
             return;
         }
         try {
             TimeType t = TypeResolver.resolveTimerType(r.getExpression(), env);
-            //Debugger.getInstance(false).log("Line " + r.getLine() + " : " + t);
+            Debugger.getInstance(false).log("Line " + r.getLine() + " : " + t);
         } catch (TimeTypeError error){
             // catch the error and enhance it. Then store.
             errors.add(new TimeTypeError(super.getLastClass(), super._class.getPath(), error));
+        } catch (TimeTypeWarning warn) {
+            warnings.add(new TimeTypeWarning(super.getLastClass(), super._class.getPath(), warn));
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 

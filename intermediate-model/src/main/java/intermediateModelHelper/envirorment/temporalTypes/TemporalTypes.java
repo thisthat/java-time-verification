@@ -37,11 +37,19 @@ public class TemporalTypes {
         loadUserDefined(dir);
     }
 
+    public void loadUserDefinedPrefix(String name) {
+        String dir = System.getProperty(user_load_dir);
+        if(!dir.endsWith("/"))
+            dir += "/";
+        dir += "config/" + name + "_";
+        loadUserDefined(dir);
+    }
+
     public void loadUserDefined(String dir) {
-        rt_t.addAll( new ParseCSVMethods(dir + "rt_t.csv").getMethods());
-        rt_d.addAll( new ParseCSVMethods(dir + "rt_d.csv").getMethods());
-        et_t.addAll( new ParseCSVTimeParameterMethods(dir + "et_t.csv").getMethods());
-        et_d.addAll( new ParseCSVTimeParameterMethods(dir + "et_d.csv").getMethods());
+        rt_t.addAll( new ParseCSVMethods(dir + "_rt_t.csv").getMethods());
+        rt_d.addAll( new ParseCSVMethods(dir + "_rt_d.csv").getMethods());
+        et_t.addAll( new ParseCSVTimeParameterMethods(dir + "_et_t.csv").getMethods());
+        et_d.addAll( new ParseCSVTimeParameterMethods(dir + "_et_d.csv").getMethods());
     }
 
     public void loadUserTypes_RTT(String file){
@@ -80,6 +88,41 @@ public class TemporalTypes {
     }
 
 
+    public int[] getTimeoutParametersET_D(ASTMethodCall m){
+        for(TimeParameterMethod tmp : et_d){
+            if(tmp.isMethodCall(m)){
+                return tmp.getTimeouts();
+            }
+        }
+        return new int[0];
+    }
+    public int[] getTimeoutParametersET_T(ASTMethodCall m){
+        TimeParameterMethod t = null;
+        for(TimeParameterMethod tmp : et_t){
+            if(tmp.isMethodCall(m)){
+                t = tmp;
+            }
+        }
+        if(t == null) return new int[0];
+        return t.getTimeouts();
+    }
+
+    public TimeParameterMethod DEBUG_ETD(ASTMethodCall m){
+        for(TimeParameterMethod tmp : et_d){
+            if(tmp.isMethodCall(m)){
+                return tmp;
+            }
+        }
+        return null;
+    }
+    public TimeParameterMethod DEBUG_ETT(ASTMethodCall m){
+        for(TimeParameterMethod tmp : et_t){
+            if(tmp.isMethodCall(m)){
+                return tmp;
+            }
+        }
+        return null;
+    }
 
 
     public static synchronized TemporalTypes getInstance(){

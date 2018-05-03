@@ -75,7 +75,7 @@ public abstract class ParseIM {
 	}
 
 	/**
-	 * For anonymous typedefinition
+	 * For anonymous definition
 	 */
 	public void start(ASTClass c){
 	    this.lastClass = c.fullName();

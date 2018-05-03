@@ -12,18 +12,18 @@ import java.util.List;
 /**
  * Created by giovanni on 17/07/2017.
  */
-public class IndexingRT {
+public class IndexingET {
 
     public static long timeSpent, timeSpentWriting, timeSpentInit, start, end;
     static Debugger debug = Debugger.getInstance();
 
     public static void main(String[] args) throws IOException {
-        if(args.length < 3){
-            System.out.println("Usage with: name root_path input_file");
+        if(args.length < 2){
+            System.out.println("Usage with: name root_path");
             System.exit(0);
         }
         try {
-            new IndexingRT().do_job(args);
+            new IndexingET().do_job(args);
         } catch (Exception e){
 
         } finally {
@@ -42,17 +42,6 @@ public class IndexingRT {
 
         TemporalTypes ti = TemporalTypes.getInstance();
 
-//        ti.loadUserDefined("config/" + name);
-//        //index return times
-//        {
-//            long s = System.currentTimeMillis();
-//            debug.log("Indexing intermediateModel.types of the project");
-//            List<TimeTypes> tret = IndexingProject.getMethodReturnTime(name, root_path, true);
-//            TemporalInfo.getInstance().addTimeTypes(tret);
-//            long e = System.currentTimeMillis();
-//            timeSpentInit += (e - s);
-//            System.out.println(String.format("Get RT %d methods", tret.size()));
-//        }
 
         ti.loadUserDefined("config/" + name);
         //index time in parameters

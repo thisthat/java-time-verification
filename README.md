@@ -1,12 +1,12 @@
 # Type System
 
-Currently we defined two different types:
+Currently we defined two different intermediateModel.types:
 * `Timestamp`
 * `Duration`
 * `Unknown`
 * `Warning` -> Only used to return error
 
-Based on these types, we define a set of rules to process Java-like expressions to infer those types from normal 
+Based on these intermediateModel.types, we define a set of rules to process Java-like expressions to infer those intermediateModel.types from normal 
 integer variables.
 
 ## Timestamp

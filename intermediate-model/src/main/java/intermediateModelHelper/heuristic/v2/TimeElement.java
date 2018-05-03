@@ -1,4 +1,4 @@
-package slicing;
+package intermediateModelHelper.heuristic.v2;
 
 import intermediateModel.interfaces.IASTStm;
 

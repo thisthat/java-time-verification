@@ -1,7 +1,7 @@
 package intermediateModel.structure;
 
 import intermediateModel.interfaces.*;
-import intermediateModel.typedefinition.TimeType;
+import intermediateModel.types.definition.TimeType;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

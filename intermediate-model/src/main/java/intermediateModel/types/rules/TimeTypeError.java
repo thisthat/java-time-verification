@@ -1,6 +1,6 @@
-package types.rules;
+package intermediateModel.types.rules;
 
-public class TimeTypeError extends Exception {
+public class TimeTypeError extends TimeException {
     private String className;
     private String filename;
     private int line;
@@ -19,8 +19,8 @@ public class TimeTypeError extends Exception {
     }
 
     public TimeTypeError(String className, String filename, TimeTypeError prev) {
-        super(prev.getCauseMsg());
-        this.cause = prev.getCauseMsg();
+        super(prev.getMessage());
+        this.cause = prev.getMessage();
         this.line = prev.getLine();
         this.className = className;
         this.filename = filename;

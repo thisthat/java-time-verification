@@ -1,4 +1,4 @@
-package types.semantics;
+package semantics;
 
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.ASTMethodCall;
@@ -6,10 +6,10 @@ import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.heuristic.v2.*;
 import org.junit.Before;
 import org.junit.Test;
-import slicing.heuristics.*;
-import types.TimeTypeSystem;
+import intermediateModel.types.TimeTypeSystem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -41,7 +41,7 @@ public class TimeParameterMethod extends TimeMethod {
         if(m.getMethodName() == null) return false;
         if(!m.getClassPointed().equals(getClassName())) return false;
         if(!m.getMethodName().equals(getMethodName())) return false;
-        //if(m.getParameters().size() != signature.size()) return false;
+        if(m.getParameters().size() != signature.size()) return false;
         return true;
     }
 }

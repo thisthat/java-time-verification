@@ -26,7 +26,7 @@ import java.util.List;
  * @version %I%, %G%
  *
  * This class is the manager that apply all the heuristics we created.
- * It goes through all {@link IASTMethod} typedefinition of a {@link ASTClass}.
+ * It goes through all {@link IASTMethod} definition of a {@link ASTClass}.
  * For each statement it extends the {@link Env} and apply all the subscribed strategies.
  */
 public class ApplyHeuristics extends ParseIM {

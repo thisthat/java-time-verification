@@ -12,6 +12,7 @@ import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
+
 import java.util.List;
 
 
@@ -26,7 +27,10 @@ public class TimeInSignature extends SearchTimeConstraint {
 
 	List<TimeMethod>  timeMethods = TemporalInfo.getInstance().getMethodsWithTimeInSignature();
 
-
+	TimeStatements listTimeStms;
+	public TimeInSignature() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
 
 
 	/**
@@ -78,7 +82,8 @@ public class TimeInSignature extends SearchTimeConstraint {
 
 
 	private void print(IASTStm stm) {
-		super.addConstraint(stm.getCode(), stm, false);
+		stm.setTimeCritical(true);
+		listTimeStms.addStatements(stm, TimeElement.Type.Usage);
 	}
 
 
