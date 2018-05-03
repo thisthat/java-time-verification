@@ -4,6 +4,7 @@ import intermediateModelHelper.indexing.IndexingFile;
 import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModelHelper.indexing.structure.IndexMethod;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.Ignore;
 import org.junit.Test;
 import parser.Java2AST;
 
@@ -15,6 +16,8 @@ import static org.junit.Assert.assertArrayEquals;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Deprecated
+@Ignore
 public class TestIndexing {
 
 
