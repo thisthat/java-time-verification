@@ -1,5 +1,7 @@
 package intermediateModel.types.rules;
 
+import java.util.Objects;
+
 public class TimeTypeError extends TimeException {
     private String className;
     private String filename;
@@ -26,6 +28,21 @@ public class TimeTypeError extends TimeException {
         this.filename = filename;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TimeTypeError)) return false;
+        TimeTypeError that = (TimeTypeError) o;
+        return getLine() == that.getLine() &&
+                Objects.equals(getClassName(), that.getClassName()) &&
+                Objects.equals(getFilename(), that.getFilename());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getClassName(), getFilename(), getLine(), getCause());
+    }
 
     public String getClassName() {
         return className;

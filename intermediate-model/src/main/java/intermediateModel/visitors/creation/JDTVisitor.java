@@ -1317,6 +1317,8 @@ public class JDTVisitor extends ASTVisitor {
 			r = handleSpecialOperator(l,r, expr.getOperator().toString(), start, stop);
 		}
 		ASTBinary bin = new ASTBinary(start,stop, l, r, op);
+		String exprType = expr.resolveTypeBinding() != null ? expr.resolveTypeBinding().getQualifiedName() : null;
+		bin.setType(exprType);
 		IASTRE prev = bin;
 		for(Object o : expr.extendedOperands()){
 			ASTNode extExpr = (ASTNode) o;
@@ -1325,6 +1327,7 @@ public class JDTVisitor extends ASTVisitor {
 			extstart = extExpr.getStartPosition();
 			extstop = extstart + extExpr.getLength();
 			ASTBinary ext = new ASTBinary(start, extstop, prev, extended, op);
+			ext.setType(exprType);
 			prev = ext;
 		}
 		return prev;

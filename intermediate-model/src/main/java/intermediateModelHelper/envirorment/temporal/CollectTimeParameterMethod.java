@@ -94,9 +94,19 @@ public class CollectTimeParameterMethod extends ParseIM {
             if(m instanceof ASTConstructor) continue;
             //String ret = m.getReturnType();
             //if(ret.equals("long") || ret.equals("int") || ret.equals("Long") || ret.equals("Integer")) {
-                Env eMethod = new Env(base);
-                eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
-                analyzeMethod(m, eMethod);
+            Env eMethod = new Env(base);
+            eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
+            analyzeMethod(m, eMethod);
+            //}
+            //analyze(m.getStms(), eMethod );
+        }
+        for(IASTMethod m : c.getMethods()){
+            //if(m instanceof ASTConstructor) continue;
+            //String ret = m.getReturnType();
+            //if(ret.equals("long") || ret.equals("int") || ret.equals("Long") || ret.equals("Integer")) {
+            Env eMethod = new Env(base);
+            eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
+            analyzeMethod(m, eMethod);
             //}
             //analyze(m.getStms(), eMethod );
         }
@@ -166,17 +176,28 @@ public class CollectTimeParameterMethod extends ParseIM {
 
     @Override
     protected void postAnalyzeASTMethod(IASTMethod elm, Env env) {
+        List<Integer> index = new ArrayList<>();
+        List<String> type = new ArrayList<>();
         for(int i = 0; i < elm.getParameters().size(); i++){
             ASTVariable v = elm.getParameters().get(i);
             if(v.isTimeCritical()){
                 TimeType tt = v.getVarTimeType();
                 if(tt != null && !(tt instanceof Unknown)){
+                    index.add(i);
+                    type.add(tt.toString());
                     TimeMethod t = new TimeMethod(_class.fullName(), lastMethod.getName(), lastMethod.getSignature(),
                             new int[] {i}, tt);
+                    TemporalTypes.getInstance().addET(t);
                     if (!output.contains(t))
                         output.add(t);
                 }
             }
+        }
+        if(index.size() > 0){
+            System.out.println("Method " + _class.getRealPackageName() + "." + _class.getName() + "." + elm.getName() + " @" + elm.getLine());
+        }
+        for(int i = 0; i < index.size(); i++){
+            System.out.println("\tIndex " + index.get(i) + " - " + type.get(0));
         }
     }
 }

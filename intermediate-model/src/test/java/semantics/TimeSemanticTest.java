@@ -2,11 +2,16 @@ package semantics;
 
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.types.rules.TimeTypeError;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 import intermediateModelHelper.heuristic.v2.*;
+import intermediateModelHelper.indexing.IndexingProject;
 import org.junit.Before;
 import org.junit.Test;
 import intermediateModel.types.TimeTypeSystem;
@@ -69,8 +74,12 @@ public class TimeSemanticTest {
     public void setUp() throws Exception {
         String dir = load("config/methods.csv");
         dir = dir.substring(0, dir.lastIndexOf("/"));
-        TemporalInfo.getInstance().loadUserDefined(dir);
         String f = load("timeTypes/TimeTypes.java");
+        List<TimeTypes> rt = IndexingProject.getMethodReturnTime("test", f.substring(0, f.lastIndexOf("/")), false);
+        List<TimeMethod> et = IndexingProject.getMethodTimeParameter("test", f.substring(0, f.lastIndexOf("/")), false);
+        TemporalInfo.getInstance().loadUserDefined(dir);
+        TemporalTypes.getInstance().addRT(rt);
+        TemporalTypes.getInstance().addET(et);
         List<ASTClass> cs = JDTVisitor.parse(f, f.substring(0, f.lastIndexOf("/")));
         c = cs.get(0);
     }
@@ -97,6 +106,17 @@ public class TimeSemanticTest {
         assertEquals(expectedResults.size(), count[0]);
     }
 
+    @Test
+    public void TestErrors() throws Exception {
+
+        TimeTypeSystem u = new TimeTypeSystem();
+        u.start(c);
+        List<TimeTypeError> errors = u.getErrors();
+        for(TimeTypeError e : errors){
+            System.out.println(e.getFullMessage());
+        }
+        assertEquals(3, errors.size());
+    }
 
 
     private String load(String s) {

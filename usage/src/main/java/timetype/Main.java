@@ -2,16 +2,21 @@ package timetype;
 
 import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.types.TimeTypeSystem;
+import intermediateModel.types.rules.TimeTypeError;
 import intermediateModel.types.rules.TimeTypeWarning;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.creation.filter.ElseIf;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 import intermediateModelHelper.indexing.IndexingProject;
-import intermediateModel.types.TimeTypeSystem;
-import intermediateModel.types.rules.TimeTypeError;
+import sql.SQLManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,8 +32,8 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
-            System.out.println("Usage with: name root_path");
+        if (args.length < 3) {
+            System.out.println("Usage with: hash name root_path");
             System.exit(0);
         }
         try {
@@ -44,47 +49,79 @@ public class Main {
     public void do_job(String[] args) throws Exception {
 
         //get root path
-        String name = args[0];
-        String root_path = args[1];
+        String hash = args[0];
+        String name = args[1];
+        String root_path = args[2];
 
-        TemporalTypes ti = TemporalTypes.getInstance();
-        ti.loadUserDefined("config/" + name);
+        TemporalTypes.getInstance().loadUserDefinedPrefix(name);
+/*
+        // Indexing RT
+        {
+            List<TimeTypes> rt = IndexingProject.getMethodReturnTime(name, root_path, true);
+            TemporalTypes.getInstance().addRT(rt);
+        }
+*/
+        // Indexing ET
+        {
+            List<TimeMethod> et = IndexingProject.getMethodTimeParameter(name, root_path, true);
+            TemporalTypes.getInstance().addET(et);
+        }
+
+
+        System.out.println("Indexing - Done");
 
         //get all files
         Iterator<File> i = IndexingProject.getJavaFiles(root_path);
-        int total = 0;
+        int error = 0;
         int warning = 0;
-        long start = System.currentTimeMillis();
+        long timeParsing = 0;
+        long timeProcess = 0;
+        List<TimeTypeError> e = new ArrayList<>();
+        List<TimeTypeWarning> w = new ArrayList<>();
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-            //if(!filename.equals("/Users/giovanni/repository/kafka/clients/src/main/java/org/apache/kafka/clients/consumer/internals/ConsumerNetworkClient.java")) continue; //skip tests
-            debugger.log("Parsing: " + filename);
+//            if(!filename.endsWith("ConsumerCoordinator.java")) continue; //skip tests
+//            debugger.log("Parsing: " + filename);
+            long sParsing = System.currentTimeMillis();
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);
+            long eParsing = System.currentTimeMillis();
+            timeParsing += (eParsing - sParsing);
+            long sProcess = System.currentTimeMillis();
             for (ASTClass c : classes) {
                 TimeTypeSystem tts = new TimeTypeSystem();
                 tts.start(c);
                 List<TimeTypeError> errors = tts.getErrors();
                 List<TimeTypeWarning> warnings = tts.getWarnings();
-                total += errors.size();
+                //e.addAll(errors);
+                for(TimeTypeError tte : errors){
+                    if(!e.contains(tte)){
+                        e.add(tte);
+                    }
+                    System.out.println(tte.getFullMessage());
+                }
+                w.addAll(warnings);
+                error += errors.size();
                 warning += warnings.size();
-                for (TimeTypeError err : errors) {
-                    System.err.print("\t");
-                    System.err.println(err.getFullMessage());
-                }
-
-                for (TimeTypeWarning warn : warnings) {
-                    System.out.print("\t");
-                    System.out.println(warn.getFullMessage());
-                }
             }
-
+            long eProcess = System.currentTimeMillis();
+            timeProcess += (eProcess - sProcess);
         }
-        long end = System.currentTimeMillis();
-        System.out.println("Total Error: " + total);
-        System.out.println("Total Warning: " + warning);
-        System.out.println("Took: " + (end-start));
-
+        List<String> err = new ArrayList<>();
+        for(TimeTypeError tte : e){
+            //System.out.println(tte.getFullMessage());
+            err.add(tte.getFullMessage());
+        }
+        List<String> arr = new ArrayList<>();
+        for(TimeTypeWarning ttw : w){
+            arr.add(ttw.getFullMessage());
+        }
+        System.out.println("Storing Results...");
+        String warnList = Arrays.toString(arr.toArray());
+        String errList = Arrays.toString(err.toArray());
+        SQLManager sql = new SQLManager();
+        sql.addCommitResult(hash, timeParsing, timeProcess, warning, error, warnList, errList, name);
+        sql.close();
     }
 
 }

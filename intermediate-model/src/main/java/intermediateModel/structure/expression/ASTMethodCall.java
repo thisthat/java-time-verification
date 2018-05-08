@@ -146,7 +146,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 			for(int index : timePars){
 				this.getParameters().get(index).setTimeCritical(true);
 			}
-		} else {
+		} else if(tt.isET_D(this)){
 			timeType = TimeType.ET_D;
 			int[] timePars = tt.getTimeoutParametersET_D(this);
 			for(int index : timePars){

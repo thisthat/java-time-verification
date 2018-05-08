@@ -74,5 +74,20 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
         }
     }
 
+    public void dummyError1(){
+        this.poll(System.currentTimeMillis());
+    }
+
+    public void dummyError2(){
+        long now = System.currentTimeMillis();
+        this.poll(now);
+    }
+
+    public void dummyCorrect(){
+        long now = System.currentTimeMillis();
+        long now_2 = System.currentTimeMillis();
+        this.poll(now_2-now);
+    }
+
 
 }

@@ -52,6 +52,7 @@ public class TimeTypeSystem extends ParseIM  {
     public void start(ASTClass c){
         errors.clear();
         errors.clear();
+        ah.analyze(c);
         super.start(c);
     }
 

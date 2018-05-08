@@ -21,14 +21,44 @@ public class TypeResolver {
 
     static Debugger log = Debugger.getInstance(false);
 
-    public static TimeType resolveTimerType(IASTRE expr, Env e) throws TimeException {
+    public static TimeType resolveTimerType(IASTRE exp, Env e) throws TimeException {
+        IASTRE expr = prepare(exp);
         log.log("Analysing line: " + expr.getLine());
         log.log("Analysing: " + expr.print());
+
         if (expr.isTimeCritical() || (expr instanceof ASTMethodCall && ((ASTMethodCall) expr).isTimeCall()) ||
                 (expr instanceof ASTUnary && ((ASTUnary) expr).getExpr().isTimeCritical())
             )
             return resolveTimerTypeExpression(expr, e);
         return null;
+    }
+
+    private static IASTRE prepare(IASTRE expr){
+        if(expr.isTimeCritical())
+            return expr;
+        if(expr instanceof ASTBinary){
+            boolean flag = false;
+            ASTBinary b = ((ASTBinary) expr);
+            switch (b.getOp()){
+                case or:
+                case and:
+                case not:
+                case notEqual:
+                case less:
+                case lessEqual:
+                case greater:
+                case greaterEqual:
+                case equality:
+                    flag = true;
+            }
+            if(flag){
+                if(b.getLeft().isTimeCritical())
+                    return b.getLeft();
+                else if(b.getRight().isTimeCritical())
+                    return b.getRight();
+            }
+        }
+        return expr;
     }
 
     private static TimeType resolveTimerTypeExpression(IASTRE expr, Env e) throws TimeException {
@@ -102,8 +132,11 @@ public class TypeResolver {
         return errorHandling(expr, e);
     }
 
-    private static TimeType newObject(ASTNewObject expr, Env e) {
-        return errorHandling(expr, e);
+    private static TimeType newObject(ASTNewObject expr, Env e) throws TimeException {
+        for (IASTRE p : expr.getParameters()) {
+            resolveTimerTypeExpression(p, e);
+        }
+        return null;
     }
 
     private static TimeType call(ASTMethodCall expr, Env e) throws TimeException {
@@ -172,27 +205,60 @@ public class TypeResolver {
                     }
                     //anyway, it returns duration
                     return new Duration();
-                case ET_T:
+                case ET_T: {
+                    int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET_T(expr);
+                    int index = 0;
                     for (IASTRE p : expr.getParameters()) {
-                        setVariableUnknown(p, e, new Timestamp());
+                        TimeType t = resolveTimerTypeExpression(p, e);
+                        if (t == null || t instanceof Unknown) {
+                            setVariableUnknown(p, e, new Timestamp());
+                        } else if (t instanceof Duration) {
+                            boolean isTimeIndexParameter = false;
+                            for (int idx : timePars) {
+                                if (idx == index)
+                                    isTimeIndexParameter = true;
+                            }
+                            if (isTimeIndexParameter)
+                                throw new TimeTypeError(expr.getLine(), String.format("Method %s expected Timestamp, called with Duration.", expr.getMethodName()));
+                        }
+                        index++;
                     }
                     return null;
-                case ET_D:
+                }
+                case ET_D: {
+                    int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET_D(expr);
+                    int index = 0;
                     for (IASTRE p : expr.getParameters()) {
-                        setVariableUnknown(p, e, new Duration());
+                        TimeType t = resolveTimerTypeExpression(p, e);
+                        if (t == null || t instanceof Unknown) {
+                            setVariableUnknown(p, e, new Duration());
+                        } else if (t instanceof Timestamp) {
+                            throw new TimeTypeError(expr.getLine(), String.format("Method %s expected Duration, called with Timestamp.", expr.getMethodName()));
+                        }
+                        index++;
                     }
                     return null;
+                }
             }
         }
         return new Unknown();
     }
 
     private static TimeType literal(ASTLiteral expr, Env e) throws TimeException {
+        String val = expr.getValue();
+        if(val.equals("null")) return new Unknown();
+        if(val.startsWith("\"")) return new Unknown();
+        if(val.matches("[0-9]+L")){
+            val = val.substring(0, val.length()-1);
+        }
         try {
-            //Integer.parseInt(expr.getValue());
-            Float.parseFloat(expr.getValue());
+            Long.parseLong(val);
         } catch (Exception ex) {
-            throw new TimeTypeError(expr.getLine(), "Cannot infer types of non integer scalars");
+            try{
+                Float.parseFloat(expr.getValue());
+            } catch (Exception exx) {
+                throw new TimeTypeError(expr.getLine(), "Cannot infer types of non integer scalars");
+            }
         }
         return new Duration();
     }
@@ -245,6 +311,9 @@ public class TypeResolver {
     }
 
     private static TimeType handleInt(ASTBinary expr, Env e) throws TimeException {
+        if(expr.isString()){
+            return null;
+        }
         TimeType left = resolveTimerTypeExpression(expr.getLeft(), e);
         TimeType right = resolveTimerTypeExpression(expr.getRight(), e);
         if(left == null){
@@ -278,6 +347,9 @@ public class TypeResolver {
             if (left instanceof Unknown && right instanceof Duration) {
                 return new Unknown();
             }
+            if(left instanceof Unknown && right instanceof Unknown){
+                throw new TimeTypeWarning(expr.getLine(), String.format("Not a valid operation! %s %s %s", left, op, right));
+            }
             //all other cases are sure to be error
             throw new TimeTypeError(expr.getLine(), String.format("Not a valid operation! %s %s %s", left, op, right));
 
@@ -307,6 +379,9 @@ public class TypeResolver {
             }
             if (left instanceof Unknown && right instanceof Duration) {
                 return new Unknown();
+            }
+            if(left instanceof Unknown && right instanceof Unknown){
+                throw new TimeTypeWarning(expr.getLine(), String.format("Not a valid operation! %s %s %s", left, op, right));
             }
             //all other cases are sure to be error
             throw new TimeTypeError(expr.getLine(), String.format("Not valid operation! %s %s %s", left, op, right));
@@ -355,6 +430,15 @@ public class TypeResolver {
     private static TimeType handleBoolean(ASTBinary expr, Env e) throws TimeException {
         TimeType left = resolveTimerTypeExpression(expr.getLeft(), e);
         TimeType right = resolveTimerTypeExpression(expr.getRight(), e);
+        if(left instanceof Unknown){
+            if(!(right instanceof Unknown)){
+                setVariableUnknown(expr.getLeft(), e, right);
+                right = left;
+            }
+        } else if(right instanceof Unknown){
+            setVariableUnknown(expr.getRight(), e, left);
+            right = left;
+        }
         if (!left.equals(right))
             throw new TimeTypeError(expr.getLine(), String.format("Boolean operation with not compatible intermediateModel.types. Left %s, Right %s", left, right));
         log.log(String.format("Boolean @%d : %s", expr.getLine(), left));
@@ -375,17 +459,27 @@ public class TypeResolver {
                 ids.add(elm.getValue());
             }
         });
-
-        for(String id : ids) {
-            IASTVar v = e.getVar(id);
-            if(v == null)
-                continue;
-            TimeType tvar = v.getVarTimeType();
-            if (tvar != null && !texpr.equals(tvar)) {
-                throw new TimeTypeError(expr.getLine(), String.format("Variable %s change time type from %s to %s", v.getName(), tvar, texpr));
+        if(!(texpr instanceof Unknown)) {
+            for (String id : ids) {
+                IASTVar v = e.getVar(id);
+                if (v == null)
+                    continue;
+                TimeType tvar = v.getVarTimeType();
+                if (tvar != null && !(tvar instanceof Unknown) && !texpr.equals(tvar)) {
+                    throw new TimeTypeError(expr.getLine(), String.format("Variable %s change time type from %s to %s", v.getName(), tvar, texpr));
+                }
+                v.setVarTimeType(texpr);
+                log.log(String.format("Assignment @%d : %s", expr.getLine(), texpr));
             }
-            v.setVarTimeType(texpr);
-            log.log(String.format("Assignment @%d : %s", expr.getLine(), texpr));
+        } else if(ids.size() == 1){
+            String id = ids.get(0);
+            IASTVar v = e.getVar(id);
+            if (v == null)
+                return texpr;
+            TimeType tvar = v.getVarTimeType();
+            if (tvar != null && !(tvar instanceof Unknown) && !texpr.equals(tvar)) {
+                setVariableUnknown(expr.getRight(), e, tvar);
+            }
         }
         return texpr;
     }

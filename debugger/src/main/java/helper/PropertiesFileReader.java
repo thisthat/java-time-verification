@@ -17,8 +17,8 @@ public class PropertiesFileReader {
         properties = new Properties();
         try {
             properties.load(inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read properties file", e);
+        } catch (Exception e) {
+            //throw new RuntimeException("Failed to read properties file", e);
         } finally {
             if (inputStream != null) {
                 try {

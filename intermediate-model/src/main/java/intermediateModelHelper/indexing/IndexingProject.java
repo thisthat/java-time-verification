@@ -221,7 +221,7 @@ public class IndexingProject {
 				continue;
 			debug.log("processing " + filename);
 			try {
-				List<ASTClass> result = JDTVisitor.parse(filename, base_path, ElseIf.filter, false);
+				List<ASTClass> result = JDTVisitor.parse(filename, base_path, ElseIf.filter, true);
 				for (ASTClass c : result) {
 					out.addAll(collectReturnTimeMethods.index(c));
 				}
@@ -250,11 +250,11 @@ public class IndexingProject {
 			String filename = i.next().getAbsolutePath();
 			if(filename.contains("/src/test/"))
 				continue;
-			//if(!filename.endsWith("KafkaOffsetBackingStore.java"))
+			if(!filename.endsWith("ConsumerNetworkClient.java")) continue;
 			//	continue;
 			debug.log("processing " + filename);
 			try {
-				List<ASTClass> result = JDTVisitor.parse(filename, base_path, ElseIf.filter,false);
+				List<ASTClass> result = JDTVisitor.parse(filename, base_path, ElseIf.filter,true);
 				for (ASTClass c : result) {
 					out.addAll(collectTimeParameterMethod.index(c));
 

@@ -52,6 +52,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 				List<IASTRE> pars = elm.getParameters();
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
+					expr.setTimeCritical(true);
 					print(stm);
 				} else {
 					boolean flag = false;
@@ -63,6 +64,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 						}
 					}
 					if(flag){
+						expr.setTimeCritical(true);
 						print(stm);
 					}
 				}

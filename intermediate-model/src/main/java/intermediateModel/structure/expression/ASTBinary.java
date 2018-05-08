@@ -14,6 +14,7 @@ public class ASTBinary extends IASTStm implements IASTRE {
 	protected IASTRE left;
 	protected IASTRE right;
 	protected OPERATOR op;
+	String type;
 
 	public ASTBinary(int start, int end, IASTRE left, IASTRE right, OPERATOR op) {
 		super(start, end);
@@ -157,4 +158,16 @@ public class ASTBinary extends IASTStm implements IASTRE {
 		}
 		return false;
     }
+
+	public void setType(String qualifiedName) {
+		this.type = qualifiedName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public boolean isString() {
+		return type != null ? type.equals("java.lang.String") : false;
+	}
 }
