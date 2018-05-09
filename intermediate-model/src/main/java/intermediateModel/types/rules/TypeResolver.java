@@ -25,7 +25,6 @@ public class TypeResolver {
         IASTRE expr = prepare(exp);
         log.log("Analysing line: " + expr.getLine());
         log.log("Analysing: " + expr.print());
-
         if (expr.isTimeCritical() || (expr instanceof ASTMethodCall && ((ASTMethodCall) expr).isTimeCall()) ||
                 (expr instanceof ASTUnary && ((ASTUnary) expr).getExpr().isTimeCritical())
             )
@@ -175,53 +174,18 @@ public class TypeResolver {
             switch (expr.getTimeType()) {
                 case RT_T: {
                         //does it still accept Timestamp time?
-                        int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET(expr);
-                        TimeType[] types = TemporalTypes.getInstance().getTypeParametersET(expr);
-                        int i = 0;
-                        for (int index : timePars) {
-                            IASTRE v = expr.getParameters().get(index);
-                            setVariableUnknown(v, e, types[i]);
-                            i++;
-                        }
-
+                        acceptTime(expr, e);
                     }
                     //anyway, it returns timestamp
                     return new Timestamp();
                 case RT_D: {
                         //does it still accept Timestamp time?
-                        int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET(expr);
-                        TimeType[] types = TemporalTypes.getInstance().getTypeParametersET(expr);
-                        int i = 0;
-                        for (int index : timePars) {
-                            IASTRE v = expr.getParameters().get(index);
-                            setVariableUnknown(v, e, types[i]);
-                            i++;
-                        }
+                        acceptTime(expr, e);
                     }
                     //anyway, it returns duration
                     return new Duration();
                 case ET: {
-                    int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET(expr);
-                    TimeType[] types = TemporalTypes.getInstance().getTypeParametersET(expr);
-                    for(int i = 0; i < timePars.length; i++){
-                        int index = timePars[i];
-                        TimeType type = types[i];
-                        IASTRE p = expr.getParameters().get(index);
-                        TimeType typePar = resolveTimerTypeExpression(p, e);
-                        if (typePar == null || typePar instanceof Unknown) {
-                            setVariableUnknown(p, e, type);
-                        } else {
-                            if(!typePar.equals(type)){
-                                StringBuilder sig = new StringBuilder();
-                                for(String s : TemporalTypes.getInstance().getSignatureET(expr)){
-                                    sig.append(s).append(",");
-                                }
-                                throw new TimeTypeError(expr.getLine(), String.format("Method %s(%s) - position %d - expected %s, called with %s.",
-                                        expr.getMethodName(), sig.substring(0, sig.length()-1),
-                                        index, type, typePar));
-                            }
-                        }
-                    }
+                    acceptTime(expr, e);
                     /*int index = 0;
                     for (IASTRE p : expr.getParameters()) {
                         TimeType t = resolveTimerTypeExpression(p, e);
@@ -243,6 +207,30 @@ public class TypeResolver {
             }
         }
         return new Unknown();
+    }
+
+    private static void acceptTime(ASTMethodCall expr, Env e) throws TimeException {
+        int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET(expr);
+        TimeType[] types = TemporalTypes.getInstance().getTypeParametersET(expr);
+        for(int i = 0; i < timePars.length; i++){
+            int index = timePars[i];
+            TimeType type = types[i];
+            IASTRE p = expr.getParameters().get(index);
+            TimeType typePar = resolveTimerTypeExpression(p, e);
+            if (typePar == null || typePar instanceof Unknown) {
+                setVariableUnknown(p, e, type);
+            } else {
+                if(!typePar.equals(type)){
+                    StringBuilder sig = new StringBuilder();
+                    for(String s : TemporalTypes.getInstance().getSignatureET(expr)){
+                        sig.append(s).append(",");
+                    }
+                    throw new TimeTypeError(expr.getLine(), String.format("Method %s(%s) - position %d - expected %s, called with %s.",
+                            expr.getMethodName(), sig.substring(0, sig.length()-1),
+                            index, type, typePar));
+                }
+            }
+        }
     }
 
     private static TimeType literal(ASTLiteral expr, Env e) throws TimeException {

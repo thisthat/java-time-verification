@@ -59,13 +59,17 @@ public class Main {
         {
             List<TimeTypes> rt = IndexingProject.getMethodReturnTime(name, root_path, true);
             TemporalTypes.getInstance().addRT(rt);
+            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
+            List<TimeTypes> rt1 = IndexingProject.getMethodReturnTime(name, root_path, true);
+            TemporalTypes.getInstance().addRT(rt1);
+            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
         }
-        // Indexing ET
+       // Indexing ET
         {
             List<TimeParameterMethod> et = IndexingProject.getMethodTimeParameter(name, root_path, true);
             TemporalTypes.getInstance().addET(et);
+            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
         }
-
 
         System.out.println("Indexing - Done");
 
@@ -80,8 +84,8 @@ public class Main {
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//            if(!filename.endsWith("ConsumerCoordinator.java")) continue; //skip tests
-//            debugger.log("Parsing: " + filename);
+//            if(!filename.endsWith("KerberosLogin.java")) continue; //skip tests
+            debugger.log("Parsing: " + filename);
             long sParsing = System.currentTimeMillis();
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);
             long eParsing = System.currentTimeMillis();
@@ -96,11 +100,10 @@ public class Main {
                 for(TimeTypeError tte : errors){
                     if(!e.contains(tte)){
                         e.add(tte);
+                        System.out.println(tte.getFullMessage());
                     }
-                    System.out.println(tte.getFullMessage());
                 }
                 w.addAll(warnings);
-                error += errors.size();
                 warning += warnings.size();
             }
             long eProcess = System.currentTimeMillis();
@@ -119,7 +122,7 @@ public class Main {
         String warnList = Arrays.toString(arr.toArray());
         String errList = Arrays.toString(err.toArray());
         SQLManager sql = new SQLManager();
-        sql.addCommitResult(hash, timeParsing, timeProcess, warning, error, warnList, errList, name);
+        sql.addCommitResult(hash, timeParsing, timeProcess, warning, err.size(), warnList, errList, name);
         sql.close();
     }
 

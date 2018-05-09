@@ -1,5 +1,4 @@
 Class;Name;Signature;Time Par
-java.util.concurrent.TimeUnit;toMillis;long;0,Timestamp
 java.net.Socket;connect;SocketAddress,int;1,Duration
 javax.net.ssl.SSLSocket;connect;SocketAddress,int;1,Duration
 java.lang.Thread;join;long;0,Duration

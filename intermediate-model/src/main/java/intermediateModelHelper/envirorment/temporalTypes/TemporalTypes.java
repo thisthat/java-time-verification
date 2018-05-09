@@ -5,6 +5,7 @@ import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.types.definition.Duration;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Timestamp;
+import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
@@ -64,15 +65,16 @@ public class TemporalTypes {
         String dir = System.getProperty(user_load_dir);
         if (!dir.endsWith("/"))
             dir += "/";
-        dir += "config/" + name;
+        dir += "config/" + name + "_";
         loadUserDefined(dir);
     }
 
     public void loadUserDefined(String dir) {
+        TemporalInfo.getInstance().loadUserDefined(dir);
         System.out.println("Loading from: " + new File(dir).getAbsolutePath());
-        rt_t.addAll(new ParseCSVMethods(dir + "_rt_t.csv").getMethods());
-        rt_d.addAll(new ParseCSVMethods(dir + "_rt_d.csv").getMethods());
-        et.addAll(new ParseCSVTimeParameterMethods(dir + "_et.csv").getMethods());
+        rt_t.addAll(new ParseCSVMethods(dir + "rt_t.csv").getMethods());
+        rt_d.addAll(new ParseCSVMethods(dir + "rt_d.csv").getMethods());
+        et.addAll(new ParseCSVTimeParameterMethods(dir + "et.csv").getMethods());
     }
 
     public void loadUserTypes_RTT(String file) {

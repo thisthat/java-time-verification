@@ -46,7 +46,7 @@ public class TemporalInfo {
         timeInSignature.addAll( new ParseMethods(dir + "methods.csv").getMethods());
         timeTimeout.addAll( new ParseTimeout(dir + "timeout.csv").getMethods());
         readTimeout.addAll( new ParseTimeout(dir + "readtimeout.csv").getMethods());
-        timeTypes.addAll(   new ParseTypes  (dir + "intermediateModel.types.csv").getMethods());
+        timeTypes.addAll(   new ParseTypes  (dir + "types.csv").getMethods());
         timeUndefinedTimeout.addAll(   new ParseUndefinedTimeout  (dir + "undefinedTimeout.csv").getMethods());
     }
 

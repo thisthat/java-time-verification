@@ -82,9 +82,9 @@ public class Debugger {
     }
 
     public void log(String msg){
-        if(!isActive) return;
         if(network)
             OutputLogs.getInstance().add(msg);
+        if(!isActive) return;
         log.debug(msg);
     }
 }

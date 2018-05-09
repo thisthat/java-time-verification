@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollectReturnTimeMethods extends ParseIM {
+    static TemporalTypes ti = TemporalTypes.getInstance();
+
     static {
         new File("config").mkdir();
     }
@@ -32,7 +34,6 @@ public class CollectReturnTimeMethods extends ParseIM {
     String storeName = "";
     List<TimeTypes> output;
     IASTMethod lastMethod = null;
-    static TemporalTypes ti = TemporalTypes.getInstance();
 
     public CollectReturnTimeMethods(ASTClass _class, boolean store, String storeName) {
         super(_class);
@@ -53,20 +54,20 @@ public class CollectReturnTimeMethods extends ParseIM {
         lastMethod = bck;
     }
 
-    public List<TimeTypes> index(ASTClass c){
+    public List<TimeTypes> index(ASTClass c) {
         output = new ArrayList<>();
         super.set_class(c);
         Env base = super.createBaseEnv(c);
         ExtractTimeAttribute timeAttribute = new ExtractTimeAttribute(c);
-        for(IASTVar p : timeAttribute.getTimeAttributes()){
-            if(base.existVarName(p.getName())){
+        for (IASTVar p : timeAttribute.getTimeAttributes()) {
+            if (base.existVarName(p.getName())) {
                 IASTVar v = base.getVar(p.getName());
                 v.setTimeCritical(true);
             }
         }
         //first constructor
-        for(IASTMethod m : c.getMethods()){
-            if(m instanceof ASTMethod) continue;
+        for (IASTMethod m : c.getMethods()) {
+            if (m instanceof ASTMethod) continue;
             Env eMethod = new Env(base);
             eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
             analyzeMethod(m, eMethod);
@@ -74,17 +75,17 @@ public class CollectReturnTimeMethods extends ParseIM {
         }
 
         //then methods
-        for(IASTMethod m : c.getMethods()){
-            if(m instanceof ASTConstructor) continue;
+        for (IASTMethod m : c.getMethods()) {
+            if (m instanceof ASTConstructor) continue;
             String ret = m.getReturnType();
-            if(ret.equals("long") || ret.equals("int") || ret.equals("Long") || ret.equals("Integer")) {
+            if (ret.equals("long") || ret.equals("int") || ret.equals("Long") || ret.equals("Integer")) {
                 Env eMethod = new Env(base);
                 eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
                 analyzeMethod(m, eMethod);
             }
             //analyze(m.getStms(), eMethod );
         }
-        if(store){
+        if (store) {
             String full = "config/" + this.storeName + "_types.csv";
             String timestamp = "config/" + this.storeName + "_rt_t.csv";
             String duration = "config/" + this.storeName + "_rt_d.csv";
@@ -96,10 +97,10 @@ public class CollectReturnTimeMethods extends ParseIM {
             }
             List<TimeTypes> outputT = new ArrayList<>();
             List<TimeTypes> outputD = new ArrayList<>();
-            for(TimeTypes t : output){
-                if(t.getTimeType() instanceof Timestamp){
+            for (TimeTypes t : output) {
+                if (t.getTimeType() instanceof Timestamp) {
                     outputT.add(t);
-                } else if(t.getTimeType() instanceof Duration){
+                } else if (t.getTimeType() instanceof Duration) {
                     outputD.add(t);
                 }
             }
@@ -121,13 +122,13 @@ public class CollectReturnTimeMethods extends ParseIM {
         return output;
     }
 
-    private void writeFile(String filename, List<TimeTypes> output) throws IOException{
+    private void writeFile(String filename, List<TimeTypes> output) throws IOException {
         File f = new File(filename);
         boolean exists = f.exists();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
-        if(!exists)
+        if (!exists)
             writer.write("Class;Name;Signature;Ret Type\n");
-        for(TimeTypes t : output){
+        for (TimeTypes t : output) {
             writer.write(t.toString());
             writer.write("\n");
             writer.flush();
@@ -137,7 +138,7 @@ public class CollectReturnTimeMethods extends ParseIM {
 
     @Override
     protected void analyzeASTRE(ASTRE r, Env env) {
-        super.analyzeASTRE(r,env);
+        super.analyzeASTRE(r, env);
         CheckExpression.checkRE(r, env);
     }
 
@@ -145,8 +146,8 @@ public class CollectReturnTimeMethods extends ParseIM {
     protected void analyzeASTReturn(ASTReturn elm, Env env) {
 
         ASTRE re = elm.getExpr();
-        if(re != null && re.getExpression() != null && //sanity checks
-                CheckExpression.checkIt(re.getExpression(), env)){
+        if (re != null && re.getExpression() != null && //sanity checks
+                CheckExpression.checkIt(re.getExpression(), env)) {
             TimeType tt = new Unknown();
             try {
                 tt = TypeResolver.resolveTimerType(re.getExpression(), env);
@@ -157,16 +158,15 @@ public class CollectReturnTimeMethods extends ParseIM {
             TimeTypes t = new TimeTypes(this._class.fullName(), lastMethod.getName(), lastMethod.getSignature(), tt);
             output.add(t);
             //check interfaces if method and not constructor
-            if(lastMethod instanceof ASTMethod) {
+            if (lastMethod instanceof ASTMethod) {
                 ASTMethod method = (ASTMethod) lastMethod;
-                for(ASTInterfaceMethod im : this._class.getInterfaceMethods(method)){
+                for (ASTInterfaceMethod im : this._class.getInterfaceMethods(method)) {
                     TimeTypes tinf = new TimeTypes(im.getInterfaceName(), im.getMethodName(), im.getSignature(), tt);
-                    if(!output.contains(tinf))
+                    if (!output.contains(tinf))
                         output.add(tinf);
                 }
             }
         }
-
     }
 
 }
