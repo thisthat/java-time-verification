@@ -4,6 +4,7 @@ import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Unknown;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,21 +13,21 @@ import java.util.List;
 public class TimeMethod extends TimeInfo {
 
     private int[] timeouts;
-    TimeType timeType;
+    TimeType[] timeType;
 
     public TimeMethod(String className, String methodName, List<String> signature, int[] timeouts) {
         super(className, methodName, signature);
         this.timeouts = timeouts;
-        timeType = new Unknown();
+        timeType = new TimeType[0];
     }
 
-    public TimeMethod(String className, String methodName, List<String> signature, int[] timeouts, TimeType timeType) {
+    public TimeMethod(String className, String methodName, List<String> signature, int[] timeouts, TimeType[] timeType) {
         super(className, methodName, signature);
         this.timeouts = timeouts;
         this.timeType = timeType;
     }
 
-    public TimeType getTimeType() {
+    public TimeType[] getTimeType() {
         return timeType;
     }
 
@@ -47,10 +48,9 @@ public class TimeMethod extends TimeInfo {
         }
         StringBuilder ti = new StringBuilder();
         for(int i = 0; i < timeouts.length; i++){
-            if(i == timeouts.length -1)
-                ti.append(timeouts[i]);
-            else
-                ti.append(timeouts[i]).append(",");
+            ti.append(timeouts[i]).append(",").append(timeType[i]);
+            if(i != timeouts.length -1)
+                ti.append(",");
         }
         return String.format("%s;%s;%s;%s", className, methodName, sign.toString(), ti.toString());
     }
@@ -60,18 +60,26 @@ public class TimeMethod extends TimeInfo {
         if(m.getMethodName() == null) return false;
         if(!m.getClassPointed().equals(className)) return false;
         if(!m.getMethodName().equals(methodName)) return false;
-        //if(m.getParameters().size() != signature.size()) return false;
+        if(m.getParameters().size() != signature.size()) return false;
         return true;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TimeTypes)) return false;
-        TimeTypes oo = (TimeTypes) o;
-        if(!className.equals(oo.className)) return false;
-        if(!methodName.equals(oo.methodName)) return false;
-        if(!signature.equals(oo.signature)) return false;
-        return timeType.equals(oo.timeType);
+        if (!(o instanceof TimeMethod)) return false;
+        TimeMethod that = (TimeMethod) o;
+        if(!that.getClassName().equals(this.getClassName())) return false;
+        if(!that.getMethodName().equals(this.getMethodName())) return false;
+        if(!that.getSignature().equals(this.getSignature())) return false;
+        return Arrays.equals(getTimeouts(), that.getTimeouts()) &&
+                Arrays.equals(getTimeType(), that.getTimeType());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(getTimeouts());
+        result = 31 * result + Arrays.hashCode(getTimeType());
+        return result;
     }
 }

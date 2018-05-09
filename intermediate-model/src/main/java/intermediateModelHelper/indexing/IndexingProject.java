@@ -9,6 +9,7 @@ import intermediateModelHelper.envirorment.temporal.CollectReturnTimeMethods;
 import intermediateModelHelper.envirorment.temporal.CollectTimeParameterMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.FileUtils;
@@ -234,7 +235,7 @@ public class IndexingProject {
 		return out;
 	}
 
-	public static List<TimeMethod> getMethodTimeParameter(String name, String base_path, boolean save){
+	public static List<TimeParameterMethod> getMethodTimeParameter(String name, String base_path, boolean save){
 		File dir = new File(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
@@ -243,14 +244,14 @@ public class IndexingProject {
 				true
 		);
 		Iterator<File> i = files.iterator();
-		List<TimeMethod> out = new ArrayList<>();
+		List<TimeParameterMethod> out = new ArrayList<>();
 		CollectTimeParameterMethod collectTimeParameterMethod = new CollectTimeParameterMethod(save, name);
 		Debugger debug = Debugger.getInstance();
 		while (i.hasNext()) {
 			String filename = i.next().getAbsolutePath();
 			if(filename.contains("/src/test/"))
 				continue;
-			if(!filename.endsWith("ConsumerNetworkClient.java")) continue;
+			//if(!filename.endsWith("TaskManager.java")) continue;
 			//	continue;
 			debug.log("processing " + filename);
 			try {

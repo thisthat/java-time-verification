@@ -3,6 +3,7 @@ package intermediateModelHelper.envirorment.temporalTypes;
 
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.types.definition.Duration;
+import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Timestamp;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeMethod;
@@ -21,16 +22,14 @@ public class TemporalTypes {
 
     private static List<TimeMethod> rt_t;
     private static List<TimeMethod> rt_d;
-    private static List<TimeParameterMethod> et_t;
-    private static List<TimeParameterMethod> et_d;
+    private static List<TimeParameterMethod> et;
 
     private static TemporalTypes instance = null;
 
     protected TemporalTypes() {
         rt_t = new ParseCSVMethods(getClass().getClassLoader().getResourceAsStream("semantics/rt_t.csv")).getMethods();
         rt_d = new ParseCSVMethods(getClass().getClassLoader().getResourceAsStream("semantics/rt_d.csv")).getMethods();
-        et_t = new ParseCSVTimeParameterMethods(getClass().getClassLoader().getResourceAsStream("semantics/et_t.csv")).getMethods();
-        et_d = new ParseCSVTimeParameterMethods(getClass().getClassLoader().getResourceAsStream("semantics/et_d.csv")).getMethods();
+        et = new ParseCSVTimeParameterMethods(getClass().getClassLoader().getResourceAsStream("semantics/et.csv")).getMethods();
         loadUserDefined();
     }
 
@@ -49,12 +48,8 @@ public class TemporalTypes {
         return rt_d;
     }
 
-    public static List<TimeParameterMethod> getETT() {
-        return et_t;
-    }
-
-    public static List<TimeParameterMethod> getETD() {
-        return et_d;
+    public static List<TimeParameterMethod> getET() {
+        return et;
     }
 
     public void loadUserDefined() {
@@ -77,8 +72,7 @@ public class TemporalTypes {
         System.out.println("Loading from: " + new File(dir).getAbsolutePath());
         rt_t.addAll(new ParseCSVMethods(dir + "_rt_t.csv").getMethods());
         rt_d.addAll(new ParseCSVMethods(dir + "_rt_d.csv").getMethods());
-        et_t.addAll(new ParseCSVTimeParameterMethods(dir + "_et_t.csv").getMethods());
-        et_d.addAll(new ParseCSVTimeParameterMethods(dir + "_et_d.csv").getMethods());
+        et.addAll(new ParseCSVTimeParameterMethods(dir + "_et.csv").getMethods());
     }
 
     public void loadUserTypes_RTT(String file) {
@@ -89,12 +83,8 @@ public class TemporalTypes {
         rt_d.addAll(new ParseCSVMethods(file).getMethods());
     }
 
-    public void loadUserTypes_ETT(String file) {
-        et_t.addAll(new ParseCSVTimeParameterMethods(file).getMethods());
-    }
-
-    public void loadUserTypes_ETD(String file) {
-        et_d.addAll(new ParseCSVTimeParameterMethods(file).getMethods());
+    public void loadUserTypes_ET(String file) {
+        et.addAll(new ParseCSVTimeParameterMethods(file).getMethods());
     }
 
     private boolean isTimeMethod(ASTMethodCall m, List<? extends TimeMethod> l) {
@@ -113,51 +103,46 @@ public class TemporalTypes {
         return isTimeMethod(m, rt_d);
     }
 
-    public boolean isET_T(ASTMethodCall m) {
-        return isTimeMethod(m, et_t);
+    public boolean isET(ASTMethodCall m) {
+        return isTimeMethod(m, et);
     }
 
-    public boolean isET_D(ASTMethodCall m) {
-        return isTimeMethod(m, et_d);
-    }
 
-    public int[] getTimeoutParametersET_D(ASTMethodCall m) {
-        for (TimeParameterMethod tmp : et_d) {
+    public int[] getTimeoutParametersET(ASTMethodCall m) {
+        for (TimeParameterMethod tmp : et) {
             if (tmp.isMethodCall(m)) {
                 return tmp.getTimeouts();
             }
         }
         return new int[0];
     }
-
-    public int[] getTimeoutParametersET_T(ASTMethodCall m) {
-        TimeParameterMethod t = null;
-        for (TimeParameterMethod tmp : et_t) {
+    public TimeType[] getTypeParametersET(ASTMethodCall m) {
+        for (TimeParameterMethod tmp : et) {
             if (tmp.isMethodCall(m)) {
-                t = tmp;
+                return tmp.getTimeType();
             }
         }
-        if (t == null) return new int[0];
-        return t.getTimeouts();
+        return new TimeType[0];
     }
-
-    public TimeParameterMethod DEBUG_ETD(ASTMethodCall m) {
-        for (TimeParameterMethod tmp : et_d) {
+    public List<String> getSignatureET(ASTMethodCall m) {
+        for (TimeParameterMethod tmp : et) {
             if (tmp.isMethodCall(m)) {
-                return tmp;
+                return tmp.getSignature();
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
-    public TimeParameterMethod DEBUG_ETT(ASTMethodCall m) {
-        for (TimeParameterMethod tmp : et_t) {
+
+    public TimeParameterMethod DEBUG_ET(ASTMethodCall m) {
+        for (TimeParameterMethod tmp : et) {
             if (tmp.isMethodCall(m)) {
                 return tmp;
             }
         }
         return null;
     }
+
 
     public void addRT_T(List<TimeMethod> rt) {
         rt_t.addAll(rt);
@@ -167,12 +152,8 @@ public class TemporalTypes {
         rt_d.addAll(rt);
     }
 
-    public void addET_T(List<TimeParameterMethod> et) {
-        et_t.addAll(et);
-    }
-
-    public void addET_D(List<TimeParameterMethod> et) {
-        et_d.addAll(et);
+    public void addET(List<TimeParameterMethod> et) {
+        this.et.addAll(et);
     }
 
     public void addRT(List<TimeTypes> rt) {
@@ -183,24 +164,5 @@ public class TemporalTypes {
                 rt_d.add(new TimeMethod(t.getClassName(), t.getMethodName(), t.getSignature()));
             }
         }
-    }
-
-    public void addET(List<intermediateModelHelper.envirorment.temporal.structure.TimeMethod> et) {
-        for (intermediateModelHelper.envirorment.temporal.structure.TimeMethod t : et) {
-            if (t.getTimeType() instanceof Timestamp) {
-                et_t.add(new TimeParameterMethod(t.getClassName(), t.getMethodName(), t.getSignature(), t.getTimeouts()));
-            } else if (t.getTimeType() instanceof Duration) {
-                et_d.add(new TimeParameterMethod(t.getClassName(), t.getMethodName(), t.getSignature(), t.getTimeouts()));
-            }
-        }
-    }
-
-    public void addET(intermediateModelHelper.envirorment.temporal.structure.TimeMethod t) {
-        if (t.getTimeType() instanceof Timestamp) {
-            et_t.add(new TimeParameterMethod(t.getClassName(), t.getMethodName(), t.getSignature(), t.getTimeouts()));
-        } else if (t.getTimeType() instanceof Duration) {
-            et_d.add(new TimeParameterMethod(t.getClassName(), t.getMethodName(), t.getSignature(), t.getTimeouts()));
-        }
-
     }
 }

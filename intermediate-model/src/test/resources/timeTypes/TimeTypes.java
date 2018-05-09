@@ -74,6 +74,35 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
         }
     }
 
+    public void poll(long timeout, long now) {
+        // poll for io until the timeout expires
+        //long now = System.currentTimeMillis();
+        long deadline = now + timeout;
+
+        while (now <= deadline) {
+            if (coordinatorUnknown()) {
+                ensureCoordinatorReady();
+                now = System.currentTimeMillis();
+            }
+            Thread.sleep(deadline);
+            if (needRejoin()) {
+                ensureActiveGroup();
+                now = System.currentTimeMillis();
+            }
+
+            pollHeartbeat(now);
+
+            // Note that because the network client is shared with the background heartbeat thread,
+            // we do not want to block in poll longer than the time to the next heartbeat.
+            long remaining = Math.max(0, deadline - now);
+            client.poll(Math.min(remaining, timeToNextHeartbeat(now)));
+            now = System.currentTimeMillis();
+            Year y = Year.of(2014);
+            System.out.println(y.length());
+
+        }
+    }
+
     public void dummyError1(){
         this.poll(System.currentTimeMillis());
     }
@@ -89,5 +118,25 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
         this.poll(now_2-now);
     }
 
+    public void dummyDoubleError1(){
+        long ts = System.currentTimeMillis();
+        long dur = ts - ts;
+        this.poll(ts, ts);
+    }
+    public void dummyDoubleError2(){
+        long ts = System.currentTimeMillis();
+        long dur = ts - ts;
+        this.poll(ts, dur);
+    }
+    public void dummyDoubleError3(){
+        long ts = System.currentTimeMillis();
+        long dur = ts - ts;
+        this.poll(dur, dur);
+    }
+    public void correctDouble(){
+        long ts = System.currentTimeMillis();
+        long dur = ts - ts;
+        this.poll(dur, ts);
+    }
 
 }

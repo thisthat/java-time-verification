@@ -7,9 +7,9 @@ import intermediateModel.types.rules.TimeTypeError;
 import intermediateModel.types.rules.TimeTypeWarning;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.creation.filter.ElseIf;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.indexing.IndexingProject;
 import sql.SQLManager;
 
@@ -54,16 +54,15 @@ public class Main {
         String root_path = args[2];
 
         TemporalTypes.getInstance().loadUserDefinedPrefix(name);
-/*
+
         // Indexing RT
         {
             List<TimeTypes> rt = IndexingProject.getMethodReturnTime(name, root_path, true);
             TemporalTypes.getInstance().addRT(rt);
         }
-*/
         // Indexing ET
         {
-            List<TimeMethod> et = IndexingProject.getMethodTimeParameter(name, root_path, true);
+            List<TimeParameterMethod> et = IndexingProject.getMethodTimeParameter(name, root_path, true);
             TemporalTypes.getInstance().addET(et);
         }
 

@@ -175,39 +175,54 @@ public class TypeResolver {
             switch (expr.getTimeType()) {
                 case RT_T: {
                         //does it still accept Timestamp time?
-                        int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET_T(expr);
+                        int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET(expr);
+                        TimeType[] types = TemporalTypes.getInstance().getTypeParametersET(expr);
+                        int i = 0;
                         for (int index : timePars) {
                             IASTRE v = expr.getParameters().get(index);
-                            setVariableUnknown(v, e, new Timestamp());
+                            setVariableUnknown(v, e, types[i]);
+                            i++;
                         }
-                        //does it still accept Duration time?
-                        timePars = TemporalTypes.getInstance().getTimeoutParametersET_D(expr);
-                        for (int index : timePars) {
-                            IASTRE v = expr.getParameters().get(index);
-                            setVariableUnknown(v, e, new Duration());
-                        }
+
                     }
                     //anyway, it returns timestamp
                     return new Timestamp();
                 case RT_D: {
                         //does it still accept Timestamp time?
-                        int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET_T(expr);
+                        int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET(expr);
+                        TimeType[] types = TemporalTypes.getInstance().getTypeParametersET(expr);
+                        int i = 0;
                         for (int index : timePars) {
                             IASTRE v = expr.getParameters().get(index);
-                            setVariableUnknown(v, e, new Timestamp());
-                        }
-                        //does it still accept Duration time?
-                        timePars = TemporalTypes.getInstance().getTimeoutParametersET_D(expr);
-                        for (int index : timePars) {
-                            IASTRE v = expr.getParameters().get(index);
-                            setVariableUnknown(v, e, new Duration());
+                            setVariableUnknown(v, e, types[i]);
+                            i++;
                         }
                     }
                     //anyway, it returns duration
                     return new Duration();
-                case ET_T: {
-                    int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET_T(expr);
-                    int index = 0;
+                case ET: {
+                    int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET(expr);
+                    TimeType[] types = TemporalTypes.getInstance().getTypeParametersET(expr);
+                    for(int i = 0; i < timePars.length; i++){
+                        int index = timePars[i];
+                        TimeType type = types[i];
+                        IASTRE p = expr.getParameters().get(index);
+                        TimeType typePar = resolveTimerTypeExpression(p, e);
+                        if (typePar == null || typePar instanceof Unknown) {
+                            setVariableUnknown(p, e, type);
+                        } else {
+                            if(!typePar.equals(type)){
+                                StringBuilder sig = new StringBuilder();
+                                for(String s : TemporalTypes.getInstance().getSignatureET(expr)){
+                                    sig.append(s).append(",");
+                                }
+                                throw new TimeTypeError(expr.getLine(), String.format("Method %s(%s) - position %d - expected %s, called with %s.",
+                                        expr.getMethodName(), sig.substring(0, sig.length()-1),
+                                        index, type, typePar));
+                            }
+                        }
+                    }
+                    /*int index = 0;
                     for (IASTRE p : expr.getParameters()) {
                         TimeType t = resolveTimerTypeExpression(p, e);
                         if (t == null || t instanceof Unknown) {
@@ -219,24 +234,10 @@ public class TypeResolver {
                                     isTimeIndexParameter = true;
                             }
                             if (isTimeIndexParameter)
-                                throw new TimeTypeError(expr.getLine(), String.format("Method %s expected Timestamp, called with Duration.", expr.getMethodName()));
+
                         }
                         index++;
-                    }
-                    return null;
-                }
-                case ET_D: {
-                    int[] timePars = TemporalTypes.getInstance().getTimeoutParametersET_D(expr);
-                    int index = 0;
-                    for (IASTRE p : expr.getParameters()) {
-                        TimeType t = resolveTimerTypeExpression(p, e);
-                        if (t == null || t instanceof Unknown) {
-                            setVariableUnknown(p, e, new Duration());
-                        } else if (t instanceof Timestamp) {
-                            throw new TimeTypeError(expr.getLine(), String.format("Method %s expected Duration, called with Timestamp.", expr.getMethodName()));
-                        }
-                        index++;
-                    }
+                    }*/
                     return null;
                 }
             }
@@ -438,6 +439,9 @@ public class TypeResolver {
         } else if(right instanceof Unknown){
             setVariableUnknown(expr.getRight(), e, left);
             right = left;
+        }
+        if(left == null){
+            return null;
         }
         if (!left.equals(right))
             throw new TimeTypeError(expr.getLine(), String.format("Boolean operation with not compatible intermediateModel.types. Left %s, Right %s", left, right));

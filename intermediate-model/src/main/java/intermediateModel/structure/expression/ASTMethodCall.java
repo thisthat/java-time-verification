@@ -19,8 +19,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	public enum TimeType {
 		RT_T,
 		RT_D,
-		ET_T,
-		ET_D
+		ET
 	}
 
 	private String methodName;
@@ -129,26 +128,20 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 		if(tt.isRT_T(this)){
 			timeType = TimeType.RT_T;
 			//does it still accept time?
-			int[] timePars = tt.getTimeoutParametersET_T(this);
+			int[] timePars = tt.getTimeoutParametersET(this);
 			for(int index : timePars){
 				this.getParameters().get(index).setTimeCritical(true);
 			}
 		} else if(tt.isRT_D(this)){
 			timeType = TimeType.RT_D;
 			//does it still accept time?
-			int[] timePars = tt.getTimeoutParametersET_D(this);
+			int[] timePars = tt.getTimeoutParametersET(this);
 			for(int index : timePars){
 				this.getParameters().get(index).setTimeCritical(true);
 			}
-		} else if(tt.isET_T(this)) {
-			timeType = TimeType.ET_T;
-			int[] timePars = tt.getTimeoutParametersET_T(this);
-			for(int index : timePars){
-				this.getParameters().get(index).setTimeCritical(true);
-			}
-		} else if(tt.isET_D(this)){
-			timeType = TimeType.ET_D;
-			int[] timePars = tt.getTimeoutParametersET_D(this);
+		} else if(tt.isET(this)) {
+			timeType = TimeType.ET;
+			int[] timePars = tt.getTimeoutParametersET(this);
 			for(int index : timePars){
 				this.getParameters().get(index).setTimeCritical(true);
 			}

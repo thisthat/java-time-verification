@@ -10,6 +10,7 @@ import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.heuristic.v2.*;
 import intermediateModelHelper.indexing.IndexingProject;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public class TimeSemanticTest {
     {
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 50));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 56));
-        expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.ET_D, 58));
+        expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.ET, 58));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 61));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 70));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_D, 72));
@@ -76,7 +77,7 @@ public class TimeSemanticTest {
         dir = dir.substring(0, dir.lastIndexOf("/"));
         String f = load("timeTypes/TimeTypes.java");
         List<TimeTypes> rt = IndexingProject.getMethodReturnTime("test", f.substring(0, f.lastIndexOf("/")), false);
-        List<TimeMethod> et = IndexingProject.getMethodTimeParameter("test", f.substring(0, f.lastIndexOf("/")), false);
+        List<TimeParameterMethod> et = IndexingProject.getMethodTimeParameter("test", f.substring(0, f.lastIndexOf("/")), false);
         TemporalInfo.getInstance().loadUserDefined(dir);
         TemporalTypes.getInstance().addRT(rt);
         TemporalTypes.getInstance().addET(et);
@@ -115,7 +116,7 @@ public class TimeSemanticTest {
         for(TimeTypeError e : errors){
             System.out.println(e.getFullMessage());
         }
-        assertEquals(3, errors.size());
+        assertEquals(7, errors.size());
     }
 
 

@@ -3,20 +3,17 @@ package intermediateModelHelper.envirorment.temporal;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
-import intermediateModel.types.definition.Duration;
 import intermediateModel.types.definition.TimeType;
-import intermediateModel.types.definition.Timestamp;
 import intermediateModel.types.definition.Unknown;
 import intermediateModel.types.rules.TimeException;
-import intermediateModel.types.rules.TimeTypeError;
 import intermediateModel.types.rules.TypeResolver;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.ExtractTimeAttribute;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.heuristic.v2.*;
 
 import java.io.BufferedWriter;
@@ -46,8 +43,9 @@ public class CollectTimeParameterMethod extends ParseIM {
 
     boolean store = false;
     String storeName = "";
-    List<TimeMethod> output;
+    List<TimeParameterMethod> output;
     IASTMethod lastMethod = null;
+    boolean canIndexNow = false;
 
     public CollectTimeParameterMethod(ASTClass _class, boolean store, String storeName) {
         super(_class);
@@ -68,7 +66,7 @@ public class CollectTimeParameterMethod extends ParseIM {
         lastMethod = bck;
     }
 
-    public List<TimeMethod> index(ASTClass c){
+    public List<TimeParameterMethod> index(ASTClass c){
         ah.analyze(c);
         output = new ArrayList<>();
         super.set_class(c);
@@ -80,6 +78,8 @@ public class CollectTimeParameterMethod extends ParseIM {
                 v.setTimeCritical(true);
             }
         }
+        // Only on second iteration we index the types
+        canIndexNow = false;
         //first constructor
         for(IASTMethod m : c.getMethods()){
             if(m instanceof ASTMethod) continue;
@@ -100,6 +100,8 @@ public class CollectTimeParameterMethod extends ParseIM {
             //}
             //analyze(m.getStms(), eMethod );
         }
+        // now it is the second time, we can save
+        canIndexNow = true;
         for(IASTMethod m : c.getMethods()){
             //if(m instanceof ASTConstructor) continue;
             //String ret = m.getReturnType();
@@ -110,7 +112,7 @@ public class CollectTimeParameterMethod extends ParseIM {
             //}
             //analyze(m.getStms(), eMethod );
         }
-        List<TimeMethod> outputT = new ArrayList<>();
+        /*List<TimeMethod> outputT = new ArrayList<>();
         List<TimeMethod> outputD = new ArrayList<>();
         for(TimeMethod t : output){
             if(t.getTimeType() instanceof Timestamp){
@@ -118,9 +120,9 @@ public class CollectTimeParameterMethod extends ParseIM {
             } else if(t.getTimeType() instanceof Duration){
                 outputD.add(t);
             }
-        }
+        }*/
         if(store){
-            String full = "config/" + this.storeName + "_methods.csv";
+            String full = "config/" + this.storeName + "_et.csv";
             String timestamp = "config/" + this.storeName + "_et_t.csv";
             String duration = "config/" + this.storeName + "_et_d.csv";
             try {
@@ -129,7 +131,7 @@ public class CollectTimeParameterMethod extends ParseIM {
                 System.err.println("Cannot write " + full + " file");
                 System.err.println(e.getMessage());
             }
-            try {
+            /*try {
                 writeFile(timestamp, outputT);
                 ti.loadUserTypes_ETT(timestamp);
             } catch (IOException e) {
@@ -142,18 +144,18 @@ public class CollectTimeParameterMethod extends ParseIM {
             } catch (IOException e) {
                 System.err.println("Cannot write " + duration + " file");
                 System.err.println(e.getMessage());
-            }
+            }*/
         }
         return output;
     }
 
-    private void writeFile(String filename, List<TimeMethod> output) throws IOException{
+    private void writeFile(String filename, List<TimeParameterMethod> output) throws IOException{
         File f = new File(filename);
         boolean exists = f.exists();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
         if(!exists)
-            writer.write("Class;Name;Signature;Ret Type\n");
-        for(TimeMethod t : output){
+            writer.write("Class;Name;Signature;TimePars\n");
+        for(TimeParameterMethod t : output){
             writer.write(t.toString());
             writer.write("\n");
             writer.flush();
@@ -170,6 +172,9 @@ public class CollectTimeParameterMethod extends ParseIM {
                 TypeResolver.resolveTimerType(r.getExpression(), env);
             } catch (TimeException timeTypeError) {
                 // no care for errors
+            } catch (Exception ex){
+                System.err.println(this._class.getPath());
+                ex.printStackTrace();
             }
         }
     }
@@ -177,27 +182,27 @@ public class CollectTimeParameterMethod extends ParseIM {
     @Override
     protected void postAnalyzeASTMethod(IASTMethod elm, Env env) {
         List<Integer> index = new ArrayList<>();
-        List<String> type = new ArrayList<>();
+        List<TimeType> type = new ArrayList<>();
         for(int i = 0; i < elm.getParameters().size(); i++){
             ASTVariable v = elm.getParameters().get(i);
             if(v.isTimeCritical()){
                 TimeType tt = v.getVarTimeType();
                 if(tt != null && !(tt instanceof Unknown)){
                     index.add(i);
-                    type.add(tt.toString());
-                    TimeMethod t = new TimeMethod(_class.fullName(), lastMethod.getName(), lastMethod.getSignature(),
+                    type.add(tt);
+                    /*TimeMethod t = new TimeMethod(_class.fullName(), lastMethod.getName(), lastMethod.getSignature(),
                             new int[] {i}, tt);
                     TemporalTypes.getInstance().addET(t);
                     if (!output.contains(t))
-                        output.add(t);
+                        output.add(t);*/
                 }
             }
         }
-        if(index.size() > 0){
-            System.out.println("Method " + _class.getRealPackageName() + "." + _class.getName() + "." + elm.getName() + " @" + elm.getLine());
-        }
-        for(int i = 0; i < index.size(); i++){
-            System.out.println("\tIndex " + index.get(i) + " - " + type.get(0));
+        if(canIndexNow && index.size() > 0){
+            TimeParameterMethod t = new TimeParameterMethod(_class.fullName(), lastMethod.getName(), lastMethod.getSignature(),
+                    index.stream().mapToInt(Integer::intValue).toArray(), type.toArray(new TimeType[0]));
+            if (!output.contains(t))
+                output.add(t);
         }
     }
 }

@@ -5,6 +5,7 @@ import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.indexing.IndexingProject;
 
 import java.io.File;
@@ -61,8 +62,8 @@ public class Indexing {
         {
             long s = System.currentTimeMillis();
             debug.log("Indexing intermediateModel.types of the project");
-            List<TimeMethod> tpar = IndexingProject.getMethodTimeParameter(name, root_path, true);
-            TemporalInfo.getInstance().addTimeInSignature(tpar);
+            List<TimeParameterMethod> tpar = IndexingProject.getMethodTimeParameter(name, root_path, true);
+            //TemporalInfo.getInstance().addTimeInSignature(tpar);
             long e = System.currentTimeMillis();
             timeSpentInit += (e - s);
             System.out.println(String.format("Get ET %d methods", tpar.size()));
