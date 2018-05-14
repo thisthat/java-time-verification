@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SQLManager {
-    static String connectionQuery = "jdbc:postgresql://127.0.0.1:5432/giovanni?user=giovanni&password=giovanni";
+    static String connectionQuery = "jdbc:postgresql://brock.isys.uni-klu.ac.at:5432/giovanni?user=giovanni&password=giovanni";
     Connection conn;
     public SQLManager() throws SQLException {
         conn = DriverManager.getConnection(connectionQuery);

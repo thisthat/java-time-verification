@@ -123,12 +123,12 @@ public class TypeResolver {
         return errorHandling(expr, e);
     }
 
-    private static TimeType pre(ASTPreOp expr, Env e) {
-        return errorHandling(expr, e);
+    private static TimeType pre(ASTPreOp expr, Env e) throws TimeException {
+        return resolveTimerTypeExpression(expr.getVar(), e);
     }
 
-    private static TimeType post(ASTPostOp expr, Env e) {
-        return errorHandling(expr, e);
+    private static TimeType post(ASTPostOp expr, Env e) throws TimeException {
+        return resolveTimerTypeExpression(expr.getVar(), e);
     }
 
     private static TimeType newObject(ASTNewObject expr, Env e) throws TimeException {
@@ -140,36 +140,39 @@ public class TypeResolver {
 
     private static TimeType call(ASTMethodCall expr, Env e) throws TimeException {
         if (expr.isMaxMin()) {
-            IASTRE first = expr.getParameters().get(0);
-            IASTRE second = expr.getParameters().get(1);
-            TimeType left = resolveTimerTypeExpression(first, e);
-            TimeType right = resolveTimerTypeExpression(second, e);
-            if (left.equals(right)) {
-                return left;
+            if(!expr.getMethodName().equals("abs")){
+                IASTRE first = expr.getParameters().get(0);
+                IASTRE second = expr.getParameters().get(1);
+                TimeType left = resolveTimerTypeExpression(first, e);
+                TimeType right = resolveTimerTypeExpression(second, e);
+                if (left.equals(right)) {
+                    return left;
+                }
+                // unknown cases
+                if (left instanceof Unknown && right instanceof Duration) {
+                    TimeType t = new Duration();
+                    setVariableUnknown(first, e, t);
+                    return t;
+                }
+                if (left instanceof Unknown && right instanceof Timestamp) {
+                    TimeType t = new Timestamp();
+                    setVariableUnknown(first, e, t);
+                    return t;
+                }
+                if (left instanceof Duration && right instanceof Unknown) {
+                    TimeType t = new Duration();
+                    setVariableUnknown(second, e, t);
+                    return t;
+                }
+                if (left instanceof Timestamp && right instanceof Unknown) {
+                    TimeType t = new Timestamp();
+                    setVariableUnknown(second, e, t);
+                    return t;
+                }
+
+                //all other cases are sure to be error
+                throw new TimeTypeError(expr.getLine(), String.format("Not valid type for min/max operation! %s %s", left, right));
             }
-            // unknown cases
-            if (left instanceof Unknown && right instanceof Duration) {
-                TimeType t = new Duration();
-                setVariableUnknown(first, e, t);
-                return t;
-            }
-            if (left instanceof Unknown && right instanceof Timestamp) {
-                TimeType t = new Timestamp();
-                setVariableUnknown(first, e, t);
-                return t;
-            }
-            if (left instanceof Duration && right instanceof Unknown) {
-                TimeType t = new Duration();
-                setVariableUnknown(second, e, t);
-                return t;
-            }
-            if (left instanceof Timestamp && right instanceof Unknown) {
-                TimeType t = new Timestamp();
-                setVariableUnknown(second, e, t);
-                return t;
-            }
-            //all other cases are sure to be error
-            throw new TimeTypeError(expr.getLine(), String.format("Not valid type for min/max operation! %s %s", left, right));
         } else if (expr.getTimeType() != null) {
             switch (expr.getTimeType()) {
                 case RT_T: {

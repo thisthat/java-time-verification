@@ -11,19 +11,19 @@ import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.indexing.IndexingProject;
+import sql.SQLManager;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by giovanni on 17/07/2017.
  */
-public class Main {
+public class MainCommit {
 
     static Debugger debugger = Debugger.getInstance();
 
@@ -32,12 +32,12 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
-            System.out.println("Usage with: name root_path");
+        if (args.length < 3) {
+            System.out.println("Usage with: hash name root_path");
             System.exit(0);
         }
         try {
-            new Main().do_job(args);
+            new MainCommit().do_job(args);
             debugger.stop();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -49,10 +49,9 @@ public class Main {
     public void do_job(String[] args) throws Exception {
 
         //get root path
-        String name = args[0];
-        String root_path = args[1];
-
-        long start = System.currentTimeMillis();
+        String hash = args[0];
+        String name = args[1];
+        String root_path = args[2];
 
         TemporalTypes.getInstance().loadUserDefinedPrefix(name);
 
@@ -76,16 +75,22 @@ public class Main {
 
         //get all files
         Iterator<File> i = IndexingProject.getJavaFiles(root_path);
-
+        int error = 0;
+        int warning = 0;
+        long timeParsing = 0;
+        long timeProcess = 0;
         List<TimeTypeError> e = new ArrayList<>();
         List<TimeTypeWarning> w = new ArrayList<>();
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//            if(!filename.endsWith("LeaseDatabaseLocker.java")) continue; //skip tests
+//            if(!filename.endsWith("KerberosLogin.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
-            //System.out.println(filename);
+            long sParsing = System.currentTimeMillis();
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);
+            long eParsing = System.currentTimeMillis();
+            timeParsing += (eParsing - sParsing);
+            long sProcess = System.currentTimeMillis();
             for (ASTClass c : classes) {
                 TimeTypeSystem tts = new TimeTypeSystem();
                 tts.start(c);
@@ -95,38 +100,30 @@ public class Main {
                 for(TimeTypeError tte : errors){
                     if(!e.contains(tte)){
                         e.add(tte);
-                        //System.out.println(tte.getFullMessage());
+                        System.out.println(tte.getFullMessage());
                     }
                 }
                 w.addAll(warnings);
+                warning += warnings.size();
             }
+            long eProcess = System.currentTimeMillis();
+            timeProcess += (eProcess - sProcess);
         }
-        long end = System.currentTimeMillis();
-        System.out.println("Total Time [ms]: " + (end - start));
-        System.out.println("Total # Errors : " + e.size());
-        System.out.println("Total # Warnings : " + w.size());
-        System.out.println("======= ERRORS =======");
-        for(TimeTypeError err : e){
-            System.out.println(err.getFullMessage());
+        List<String> err = new ArrayList<>();
+        for(TimeTypeError tte : e){
+            //System.out.println(tte.getFullMessage());
+            err.add(tte.getFullMessage());
         }
-        System.out.println("======= WARNING ======");
-        for(TimeTypeWarning warn : w){
-            System.out.println(warn.getFullMessage());
+        List<String> arr = new ArrayList<>();
+        for(TimeTypeWarning ttw : w){
+            arr.add(ttw.getFullMessage());
         }
-        BufferedWriter writerErr = new BufferedWriter(new FileWriter("errors.log", true));
-        BufferedWriter writerWarn = new BufferedWriter(new FileWriter("warnings.log", true));
-        for(TimeTypeError err : e){
-            writerErr.append(err.getFullMessage());
-            writerErr.append("\n");
-        }
-        for(TimeTypeWarning warn : w){
-            writerWarn.append(warn.getFullMessage());
-            writerErr.append("\n");
-        }
-        writerErr.flush();
-        writerErr.close();
-        writerWarn.flush();
-        writerWarn.close();
+        System.out.println("Storing Results...");
+        String warnList = Arrays.toString(arr.toArray());
+        String errList = Arrays.toString(err.toArray());
+        SQLManager sql = new SQLManager();
+        sql.addCommitResult(hash, timeParsing, timeProcess, w.size(), err.size(), warnList, errList, name);
+        sql.close();
     }
 
 }
