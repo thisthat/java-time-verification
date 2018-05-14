@@ -2,7 +2,10 @@ package smt.evaluation;
 
 import debugger.Debugger;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.indexing.IndexingProject;
 
 import java.io.File;
@@ -37,34 +40,33 @@ public class Indexing {
         //get root path
         String name = args[0];
         debug.setName(name);
+        debug.setActive(false);
         String root_path = args[1];
-        String inputFile = args[2];
 
+        TemporalTypes ti = TemporalTypes.getInstance();
 
-        //index return times
+//        ti.loadUserDefined("config/" + name);
+//        //index return times
+//        {
+//            long s = System.currentTimeMillis();
+//            debug.log("Indexing intermediateModel.types of the project");
+//            List<TimeTypes> tret = IndexingProject.getMethodReturnTime(name, root_path, true);
+//            TemporalInfo.getInstance().addTimeTypes(tret);
+//            long e = System.currentTimeMillis();
+//            timeSpentInit += (e - s);
+//            System.out.println(String.format("Get RT %d methods", tret.size()));
+//        }
+
+        ti.loadUserDefined("config/" + name);
+        //index time in parameters
         {
-            File loadFromHD = new File(inputFile);
-            debug.log("Indexing types from file: " + loadFromHD.getAbsolutePath());
-            System.out.println("Indexing types from file: " + loadFromHD.getAbsolutePath());
-            if(loadFromHD.exists()){
-                long s = System.currentTimeMillis();
-                TemporalInfo.getInstance().loadUserTypes(loadFromHD.getAbsolutePath());
-                long e = System.currentTimeMillis();
-                timeSpentInit = (e - s);
-            }
-
             long s = System.currentTimeMillis();
-            debug.log("Indexing types of the project");
-            List<TimeTypes> t = IndexingProject.getMethodReturnTime(name, root_path, true);
+            debug.log("Indexing intermediateModel.types of the project");
+            List<TimeParameterMethod> tpar = IndexingProject.getMethodTimeParameter(name, root_path, true);
+            //TemporalInfo.getInstance().addTimeInSignature(tpar);
             long e = System.currentTimeMillis();
             timeSpentInit += (e - s);
-            System.out.println(String.format("Get %d methods", t.size()));
-            System.out.println("Took: " + timeSpentInit + "ms");
-            for (TimeTypes tt : t) {
-                System.out.println(tt.toString());
-            }
-            TemporalInfo.getInstance().addTimeTypes(t);
-
+            System.out.println(String.format("Get ET %d methods", tpar.size()));
         }
 
         System.out.println("Initialization: " + timeSpentInit);

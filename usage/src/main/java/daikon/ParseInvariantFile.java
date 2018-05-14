@@ -16,7 +16,7 @@ import java.util.List;
 public class ParseInvariantFile {
     public static void main(String[] args) throws IOException {
         if(args.length != 4){
-            System.err.println("Usage with the following four paths: [file] [project] [types.csv] [invariant.txt]");
+            System.err.println("Usage with the following four paths: [file] [project] [intermediateModel.types.csv] [invariant.txt]");
             System.exit(0);
         }
         String file = args[0];

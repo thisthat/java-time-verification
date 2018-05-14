@@ -18,7 +18,7 @@ public class EvalPure {
 
     static String pathInv = "/Users/giovanni/repository/computePure/daikon-instrumentation/invariants/";
     static String pathPrj = "/Users/giovanni/repository/computePure/daikon-instrumentation/projects/";
-    static String pathTypes = "/Users/giovanni/repository/computePure/daikon-instrumentation/types/";
+    static String pathTypes = "/Users/giovanni/repository/computePure/daikon-instrumentation/intermediateModel.types/";
     static Statistics stats;
     static {
        stats = new Statistics();
@@ -114,7 +114,7 @@ public class EvalPure {
             System.err.println("Usage with the following path: [csv]");
             System.exit(0);
         }
-        //load types for each project
+        //load intermediateModel.types for each project
         for(String s : "activemq,airavata,flume,hadoop,hbase,jetty.project,kafka,lens,sling".split(",")){
             String typ = pathTypes + s + "_types.csv";
             TemporalInfo.getInstance().loadUserTypes(typ);

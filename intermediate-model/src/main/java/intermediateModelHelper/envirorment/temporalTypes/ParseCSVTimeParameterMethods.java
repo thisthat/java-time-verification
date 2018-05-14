@@ -1,5 +1,8 @@
 package intermediateModelHelper.envirorment.temporalTypes;
 
+import intermediateModel.types.definition.Duration;
+import intermediateModel.types.definition.TimeType;
+import intermediateModel.types.definition.Timestamp;
 import intermediateModelHelper.envirorment.temporal.ParseCSV;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 
@@ -46,11 +49,22 @@ public class ParseCSVTimeParameterMethods extends ParseCSV {
                 // use comma as separator
                 String[] row = line.split(super.getSeparator());
                 if(notHeader) {
-                    if(row.length == 4){
-                        int[] timeouts = Arrays.stream(row[3].split(","))
-                                .map(String::trim).mapToInt(Integer::parseInt).toArray();
-                        handleRow(row[0],row[1], row[2].split(","), timeouts);
+                    String[] index_type = row[3].split(",");
+                    List<Integer> indexs = new ArrayList<>();
+                    List<TimeType> types = new ArrayList<>();
+                    for(int i = 0; i < index_type.length; i++){
+                        if(i%2 == 0){
+                            indexs.add(Integer.parseInt(index_type[i]));
+                        } else {
+                            String t = index_type[i];
+                            if(t.equals("Duration"))
+                                types.add(new Duration());
+                            else
+                                types.add(new Timestamp());
+                        }
                     }
+                    handleRow(row[0],row[1], row[2].split(","),
+                            indexs.stream().mapToInt(Integer::intValue).toArray(), types.toArray(new TimeType[0]));
                 }
                 else {
                     notHeader = true;
@@ -69,12 +83,11 @@ public class ParseCSVTimeParameterMethods extends ParseCSV {
 
     @Override
     protected void handleRow(String className, String methodName, String[] signature) {
-        System.err.println("We should never reach this method call");
-        methods.add(new TimeParameterMethod(className, methodName, Arrays.asList(signature), new int[0]));
+        System.err.println("We will never reach this. If you read this.... the programmer should be fired!");
     }
 
-    protected void handleRow(String className, String methodName, String[] signature, int[] timeouts) {
-        methods.add(new TimeParameterMethod(className, methodName, Arrays.asList(signature), timeouts));
+    protected void handleRow(String className, String methodName, String[] signature, int[] index, TimeType[] types) {
+        methods.add(new TimeParameterMethod(className, methodName, Arrays.asList(signature), index, types));
     }
 
 }

@@ -30,7 +30,7 @@ public class ComputeAnnotationPerProject {
     private static Debugger d = Debugger.getInstance();
     public static void main(String[] args) throws IOException {
         if(args.length != 3){
-            System.err.println("Usage with the following four paths: [projectPath] [types.csv] [output]");
+            System.err.println("Usage with the following four paths: [projectPath] [intermediateModel.types.csv] [output]");
             System.exit(0);
         }
 

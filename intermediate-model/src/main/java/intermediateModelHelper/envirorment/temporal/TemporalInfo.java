@@ -86,6 +86,10 @@ public class TemporalInfo {
         TemporalInfo.timeTypes.addAll(timeTypes);
     }
 
+    public void addTimeInSignature(List<TimeMethod> timeTypes) {
+        TemporalInfo.timeInSignature.addAll(timeTypes);
+    }
+
     public List<TimeMethod> getMethodsWithTimeInSignature() {
         return timeInSignature;
     }

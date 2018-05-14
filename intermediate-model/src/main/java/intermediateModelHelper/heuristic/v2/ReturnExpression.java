@@ -7,6 +7,8 @@ import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
+
+
 /**
  * The {@link ReturnExpression} searches for instances of time assignment
  * @author Giovanni Liva (@thisthatDC)
@@ -15,6 +17,11 @@ import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
  */
 public class ReturnExpression extends SearchTimeConstraint {
 
+	TimeStatements listTimeStms;
+
+	public ReturnExpression() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
 
 	@Override
 	public void next(ASTRE stm, Env env) {
@@ -30,7 +37,7 @@ public class ReturnExpression extends SearchTimeConstraint {
 	}
 
 	private void mark(IASTStm stm) {
-		super.addConstraint(stm.getCode(), stm, false);
+		listTimeStms.addStatements(stm, TimeElement.Type.Return);
 	}
 
 }

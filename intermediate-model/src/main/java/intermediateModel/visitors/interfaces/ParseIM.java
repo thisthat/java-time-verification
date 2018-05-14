@@ -75,7 +75,7 @@ public abstract class ParseIM {
 	}
 
 	/**
-	 * For anonymous typedefinition
+	 * For anonymous definition
 	 */
 	public void start(ASTClass c){
 	    this.lastClass = c.fullName();
@@ -489,7 +489,7 @@ public abstract class ParseIM {
 			Env eMethod = new EnvParameter(new_env, m.getName());
 			//eMethod.addVar(new ASTVariable(-1,-1,"DUMMY_METHOD",m.getName()));
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
-			this.analyze(m.getStms(), eMethod);
+			this.analyzeMethod(m, eMethod);
 		}
 		analyzeEveryStm(elm, env);
 		endAnalyzeHiddenClass(elm, new_env);

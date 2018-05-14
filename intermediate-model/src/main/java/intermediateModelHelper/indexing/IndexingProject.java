@@ -4,8 +4,12 @@ import com.google.common.collect.Iterators;
 import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.visitors.creation.filter.ElseIf;
 import intermediateModelHelper.envirorment.temporal.CollectReturnTimeMethods;
+import intermediateModelHelper.envirorment.temporal.CollectTimeParameterMethod;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import org.apache.commons.io.FileUtils;
@@ -216,18 +220,49 @@ public class IndexingProject {
 			String filename = i.next().getAbsolutePath();
 			if(filename.contains("/src/test/"))
 				continue;
-			if(!filename.equals("/Users/giovanni/repository/computePure/daikon-instrumentation/projects/kafka/clients/src/main/java/org/apache/kafka/common/utils/SystemTime.java")){
-				continue;
-			}
 			debug.log("processing " + filename);
 			try {
-				List<ASTClass> result = JDTVisitor.parse(filename, base_path, false);
+				List<ASTClass> result = JDTVisitor.parse(filename, base_path, ElseIf.filter, true);
 				for (ASTClass c : result) {
 					out.addAll(collectReturnTimeMethods.index(c));
 				}
 			} catch (Exception e) {
 				System.out.println("Error with " + filename);
 				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return out;
+	}
+
+	public static List<TimeParameterMethod> getMethodTimeParameter(String name, String base_path, boolean save){
+		File dir = new File(base_path);
+		String[] filter = {"java"};
+		Collection<File> files = FileUtils.listFiles(
+				dir,
+				filter,
+				true
+		);
+		Iterator<File> i = files.iterator();
+		List<TimeParameterMethod> out = new ArrayList<>();
+		CollectTimeParameterMethod collectTimeParameterMethod = new CollectTimeParameterMethod(save, name);
+		Debugger debug = Debugger.getInstance();
+		while (i.hasNext()) {
+			String filename = i.next().getAbsolutePath();
+			if(filename.contains("/src/test/"))
+				continue;
+			//if(!filename.endsWith("TaskManager.java")) continue;
+			//	continue;
+			debug.log("processing " + filename);
+			try {
+				List<ASTClass> result = JDTVisitor.parse(filename, base_path, ElseIf.filter,true);
+				for (ASTClass c : result) {
+					out.addAll(collectTimeParameterMethod.index(c));
+
+				}
+			} catch (Exception e) {
+				System.out.println("Error with " + filename);
+				System.err.println(e.getMessage());
 				e.printStackTrace();
 			}
 		}

@@ -57,9 +57,9 @@ curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/gio
 
 # /openProject
 
-The following REST API creates a db with the types of the project. 
+The following REST API creates a db with the intermediateModel.types of the project. 
 If we do not use this call we cannot create a proper **getThreads()** and **..()** functions. 
-Functions that requires infos about types will return an error 406 instead of 400 if the project is not currently in the db. 
+Functions that requires infos about intermediateModel.types will return an error 406 instead of 400 if the project is not currently in the db. 
 Process the project could take times, therefore the function only offer an eventually consistency. 
 Users can check the ending of the indexing phases with the **isProjectOpen()** function.
 

@@ -482,7 +482,7 @@ MagnetPlugin
 				initializationComplete()
 				{
 						// make sure DDB is initialised as we need it to register its
-						// transfer types
+						// transfer intermediateModel.types
 					
 					AEThread2 t = 
 						new AEThread2( "MagnetPlugin:init", true )

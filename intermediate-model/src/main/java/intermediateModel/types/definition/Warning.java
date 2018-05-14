@@ -1,15 +1,16 @@
-package intermediateModel.typedefinition;
+package intermediateModel.types.definition;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public class Timestamp implements TimeType {
+public class Warning implements TimeType {
     @JsonValue
     @Override
     public String toString() {
-        return "Timestamp";
+        return "Warning";
     }
+
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Timestamp;
+        return obj instanceof Warning;
     }
 }

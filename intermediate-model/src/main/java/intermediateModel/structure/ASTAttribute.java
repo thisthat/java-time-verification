@@ -4,7 +4,7 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.interfaces.IASTVisitor;
-import intermediateModel.typedefinition.TimeType;
+import intermediateModel.types.definition.TimeType;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

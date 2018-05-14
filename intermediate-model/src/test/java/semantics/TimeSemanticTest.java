@@ -1,15 +1,21 @@
-package types.semantics;
+package semantics;
 
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.types.rules.TimeTypeError;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
+import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
+import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
+import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
+import intermediateModelHelper.heuristic.v2.*;
+import intermediateModelHelper.indexing.IndexingProject;
 import org.junit.Before;
 import org.junit.Test;
-import slicing.heuristics.*;
-import types.Usage;
+import intermediateModel.types.TimeTypeSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +51,7 @@ public class TimeSemanticTest {
     {
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 50));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 56));
-        expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.ET_D, 58));
+        expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.ET, 58));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 61));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_T, 70));
         expectedResults.add(new ExpectedResult(ASTMethodCall.TimeType.RT_D, 72));
@@ -69,15 +75,19 @@ public class TimeSemanticTest {
     public void setUp() throws Exception {
         String dir = load("config/methods.csv");
         dir = dir.substring(0, dir.lastIndexOf("/"));
-        TemporalInfo.getInstance().loadUserDefined(dir);
         String f = load("timeTypes/TimeTypes.java");
+        List<TimeTypes> rt = IndexingProject.getMethodReturnTime("test", f.substring(0, f.lastIndexOf("/")), false);
+        List<TimeParameterMethod> et = IndexingProject.getMethodTimeParameter("test", f.substring(0, f.lastIndexOf("/")), false);
+        TemporalInfo.getInstance().loadUserDefined(dir);
+        TemporalTypes.getInstance().addRT(rt);
+        TemporalTypes.getInstance().addET(et);
         List<ASTClass> cs = JDTVisitor.parse(f, f.substring(0, f.lastIndexOf("/")));
         c = cs.get(0);
     }
 
     @Test
     public void RunIt() throws Exception {
-        Usage u = new Usage();
+        TimeTypeSystem u = new TimeTypeSystem();
         u.start(c);
     }
 
@@ -97,6 +107,17 @@ public class TimeSemanticTest {
         assertEquals(expectedResults.size(), count[0]);
     }
 
+    @Test
+    public void TestErrors() throws Exception {
+
+        TimeTypeSystem u = new TimeTypeSystem();
+        u.start(c);
+        List<TimeTypeError> errors = u.getErrors();
+        for(TimeTypeError e : errors){
+            System.out.println(e.getFullMessage());
+        }
+        assertEquals(7, errors.size());
+    }
 
 
     private String load(String s) {

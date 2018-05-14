@@ -950,7 +950,7 @@ public class JDTVisitor extends ASTVisitor {
 				try {
 					bck.addStms(re);
 				} catch (Exception e){
-					//lambda expression in a attribute typedefinition -> skip
+					//lambda expression in a attribute definition -> skip
 				}
 			}
 		}
@@ -969,7 +969,7 @@ public class JDTVisitor extends ASTVisitor {
 		try {
 			bck.addStms(re);
 		} catch (Exception e){
-			//lambda expression in a attribute typedefinition -> skip
+			//lambda expression in a attribute definition -> skip
 		}
 		lastMethod = bck;
 		return true;
@@ -1218,7 +1218,7 @@ public class JDTVisitor extends ASTVisitor {
 		String type = expr.getType().toString();
 		IASTRE ret = null;
 		if(expr.fragments().size() > 1){
-			//multiple typedefinition
+			//multiple definition
 			List<IASTRE> vars = new ArrayList<>();
 			for(Object o :expr.fragments()){
 				VariableDeclarationFragment subVar = (VariableDeclarationFragment) o;
@@ -1317,6 +1317,8 @@ public class JDTVisitor extends ASTVisitor {
 			r = handleSpecialOperator(l,r, expr.getOperator().toString(), start, stop);
 		}
 		ASTBinary bin = new ASTBinary(start,stop, l, r, op);
+		String exprType = expr.resolveTypeBinding() != null ? expr.resolveTypeBinding().getQualifiedName() : null;
+		bin.setType(exprType);
 		IASTRE prev = bin;
 		for(Object o : expr.extendedOperands()){
 			ASTNode extExpr = (ASTNode) o;
@@ -1325,6 +1327,7 @@ public class JDTVisitor extends ASTVisitor {
 			extstart = extExpr.getStartPosition();
 			extstop = extstart + extExpr.getLength();
 			ASTBinary ext = new ASTBinary(start, extstop, prev, extended, op);
+			ext.setType(exprType);
 			prev = ext;
 		}
 		return prev;

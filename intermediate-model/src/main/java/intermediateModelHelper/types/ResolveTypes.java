@@ -100,7 +100,7 @@ public class ResolveTypes {
 	 *         <li><b>this</b>: search the method in the current class</li>
 	 *         <li><b>variable</b>: get the variable type from the {@link Env} and get the method from its class</li>
 	 *     </ul></li>
-	 *     <li><b>Method call ( methodn()._.method1().method0() )</b>: Resolve the type of the last call recursively and then search for the method typedefinition in the class of the last type</li>
+	 *     <li><b>Method call ( methodn()._.method1().method0() )</b>: Resolve the type of the last call recursively and then search for the method definition in the class of the last type</li>
 	 * </ul>
 	 * @param expr	Expression which contains the method call to resolve the type
 	 * @return		Name of the type or null if we cannot solve it
