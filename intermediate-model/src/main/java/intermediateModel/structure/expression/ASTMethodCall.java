@@ -6,6 +6,7 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,14 @@ import java.util.List;
  * @version %I%, %G%
  */
 public class ASTMethodCall extends IASTStm implements IASTRE {
+
+    public void setTypeParametersPointed(List<String> parameterTypes) {
+		this.typeParPointed = parameterTypes;
+    }
+
+	public List<String> getTypeParPointed() {
+		return typeParPointed;
+	}
 
 	public enum TimeType {
 		RT_T,
@@ -27,6 +36,7 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	List<IASTRE> parameters;
 	List<String> timePars = new ArrayList<>();
 	String classPointed = null;
+	List<String> typeParPointed = null;
 	boolean isTimeCall = false;
 	TimeType timeType = null;
 	private boolean maxMin;
@@ -123,6 +133,9 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	}
 
 	private void setTimetype() {
+		if(this.getLine() == 159){
+			System.out.println("BRK");
+		}
 		this.isTimeCritical = true;
 		TemporalTypes tt = TemporalTypes.getInstance();
 		if(tt.isRT_T(this)){

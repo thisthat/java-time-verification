@@ -51,27 +51,30 @@ public class Main {
         //get root path
         String name = args[0];
         String root_path = args[1];
+        boolean index = args.length <= 2 || args[2].equals("y");
 
         long start = System.currentTimeMillis();
 
         TemporalTypes.getInstance().loadUserDefinedPrefix(name);
 
-        // Indexing RT
-        {
-            List<TimeTypes> rt = IndexingProject.getMethodReturnTime(name, root_path, true);
-            TemporalTypes.getInstance().addRT(rt);
-            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
-            List<TimeTypes> rt1 = IndexingProject.getMethodReturnTime(name, root_path, true);
-            TemporalTypes.getInstance().addRT(rt1);
-            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
-        }
-       // Indexing ET
-        {
-            List<TimeParameterMethod> et = IndexingProject.getMethodTimeParameter(name, root_path, true);
-            TemporalTypes.getInstance().addET(et);
-            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
-        }
+        if(index) {
+            // Indexing RT
+            {
+                List<TimeTypes> rt = IndexingProject.getMethodReturnTime(name, root_path, true);
+                TemporalTypes.getInstance().addRT(rt);
+                TemporalTypes.getInstance().loadUserDefinedPrefix(name);
+                List<TimeTypes> rt1 = IndexingProject.getMethodReturnTime(name, root_path, true);
+                TemporalTypes.getInstance().addRT(rt1);
+                TemporalTypes.getInstance().loadUserDefinedPrefix(name);
+            }
+            // Indexing ET
+            {
+                List<TimeParameterMethod> et = IndexingProject.getMethodTimeParameter(name, root_path, true);
+                TemporalTypes.getInstance().addET(et);
+                TemporalTypes.getInstance().loadUserDefinedPrefix(name);
+            }
 
+        }
         System.out.println("Indexing - Done");
 
         //get all files
@@ -82,7 +85,7 @@ public class Main {
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//            if(!filename.endsWith("LeaseDatabaseLocker.java")) continue; //skip tests
+            if(!filename.endsWith("ConsumerNetworkClient.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
             //System.out.println(filename);
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);
@@ -101,6 +104,7 @@ public class Main {
                 w.addAll(warnings);
             }
         }
+        //System.exit(0);
         long end = System.currentTimeMillis();
         System.out.println("Total Time [ms]: " + (end - start));
         System.out.println("Total # Errors : " + e.size());

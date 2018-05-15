@@ -25,6 +25,9 @@ public class TypeResolver {
         IASTRE expr = prepare(exp);
         log.log("Analysing line: " + expr.getLine());
         log.log("Analysing: " + expr.print());
+        if(exp.getLine() == 159){
+            System.out.println("BRK");
+        }
         if (expr.isTimeCritical() || (expr instanceof ASTMethodCall && ((ASTMethodCall) expr).isTimeCall()) ||
                 (expr instanceof ASTUnary && ((ASTUnary) expr).getExpr().isTimeCritical())
             )
@@ -169,7 +172,14 @@ public class TypeResolver {
                     setVariableUnknown(second, e, t);
                     return t;
                 }
-
+                if(isZero(first)){
+                    //it is not an error if one member is zero
+                    return left;
+                }
+                if(isZero(second)){
+                    //it is not an error if one member is zero
+                    return right;
+                }
                 //all other cases are sure to be error
                 throw new TimeTypeError(expr.getLine(), String.format("Not valid type for min/max operation! %s %s", left, right));
             }
@@ -189,22 +199,6 @@ public class TypeResolver {
                     return new Duration();
                 case ET: {
                     acceptTime(expr, e);
-                    /*int index = 0;
-                    for (IASTRE p : expr.getParameters()) {
-                        TimeType t = resolveTimerTypeExpression(p, e);
-                        if (t == null || t instanceof Unknown) {
-                            setVariableUnknown(p, e, new Timestamp());
-                        } else if (t instanceof Duration) {
-                            boolean isTimeIndexParameter = false;
-                            for (int idx : timePars) {
-                                if (idx == index)
-                                    isTimeIndexParameter = true;
-                            }
-                            if (isTimeIndexParameter)
-
-                        }
-                        index++;
-                    }*/
                     return null;
                 }
             }
@@ -240,7 +234,7 @@ public class TypeResolver {
         String val = expr.getValue();
         if(val.equals("null")) return new Unknown();
         if(val.startsWith("\"")) return new Unknown();
-        if(val.matches("[0-9]+L")){
+        if(val.matches("[0-9]+[lL]")){
             val = val.substring(0, val.length()-1);
         }
         try {
@@ -298,7 +292,7 @@ public class TypeResolver {
             case mul:
                 return handleInt(expr, e);
             default:
-                throw new RuntimeException("Operator not covered! OP: " + expr.getOp());
+                throw new TimeTypeWarning(expr.getLine(),"Operator not covered! OP: " + expr.getOp());
         }
     }
 
@@ -434,10 +428,26 @@ public class TypeResolver {
         if(left == null){
             return null;
         }
-        if (!left.equals(right))
+        if (!left.equals(right)){
+            if(isNumber(expr.getLeft())){
+                //it is not an error if one member is zero
+                return right;
+            }
+            if(isNumber(expr.getRight())){
+                //it is not an error if one member is zero
+                return left;
+            }
             throw new TimeTypeError(expr.getLine(), String.format("Boolean operation with not compatible intermediateModel.types. Left %s, Right %s", left, right));
+        }
         log.log(String.format("Boolean @%d : %s", expr.getLine(), left));
         return left;
+    }
+
+    private static boolean isZero(IASTRE expr) {
+        return expr.print().equals("0");
+    }
+    private static boolean isNumber(IASTRE expr) {
+        return expr.print().matches("[0-9]+[lL]?");
     }
 
     private static TimeType assignment(ASTAssignment expr, Env e) throws TimeException {
@@ -461,6 +471,9 @@ public class TypeResolver {
                     continue;
                 TimeType tvar = v.getVarTimeType();
                 if (tvar != null && !(tvar instanceof Unknown) && !texpr.equals(tvar)) {
+                    //update to avoid further errors due to remember the old type
+                    v.setVarTimeType(texpr);
+                    //then lunch exception to record this behavior
                     throw new TimeTypeError(expr.getLine(), String.format("Variable %s change time type from %s to %s", v.getName(), tvar, texpr));
                 }
                 v.setVarTimeType(texpr);
