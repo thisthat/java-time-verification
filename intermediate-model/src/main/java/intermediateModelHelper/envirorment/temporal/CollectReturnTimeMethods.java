@@ -7,7 +7,7 @@ import intermediateModel.types.definition.Duration;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Timestamp;
 import intermediateModel.types.definition.Unknown;
-import intermediateModel.types.rules.TimeException;
+import intermediateModel.types.rules.exception.TimeException;
 import intermediateModel.types.rules.TypeResolver;
 import intermediateModel.visitors.ExtractTimeAttribute;
 import intermediateModel.visitors.interfaces.ParseIM;

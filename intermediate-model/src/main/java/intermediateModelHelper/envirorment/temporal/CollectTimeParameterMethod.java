@@ -5,7 +5,7 @@ import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Unknown;
-import intermediateModel.types.rules.TimeException;
+import intermediateModel.types.rules.exception.TimeException;
 import intermediateModel.types.rules.TypeResolver;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.ExtractTimeAttribute;

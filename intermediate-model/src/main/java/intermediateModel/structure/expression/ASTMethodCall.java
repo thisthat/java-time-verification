@@ -133,9 +133,6 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 	}
 
 	private void setTimetype() {
-		if(this.getLine() == 159){
-			System.out.println("BRK");
-		}
 		this.isTimeCritical = true;
 		TemporalTypes tt = TemporalTypes.getInstance();
 		if(tt.isRT_T(this)){

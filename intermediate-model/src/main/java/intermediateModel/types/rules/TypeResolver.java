@@ -8,6 +8,10 @@ import intermediateModel.types.definition.Duration;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Timestamp;
 import intermediateModel.types.definition.Unknown;
+import intermediateModel.types.rules.exception.TimeException;
+import intermediateModel.types.rules.exception.TimeTypeError;
+import intermediateModel.types.rules.exception.TimeTypeRecommendation;
+import intermediateModel.types.rules.exception.TimeTypeWarning;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
@@ -25,9 +29,6 @@ public class TypeResolver {
         IASTRE expr = prepare(exp);
         log.log("Analysing line: " + expr.getLine());
         log.log("Analysing: " + expr.print());
-        if(exp.getLine() == 159){
-            System.out.println("BRK");
-        }
         if (expr.isTimeCritical() || (expr instanceof ASTMethodCall && ((ASTMethodCall) expr).isTimeCall()) ||
                 (expr instanceof ASTUnary && ((ASTUnary) expr).getExpr().isTimeCritical())
             )
@@ -439,6 +440,9 @@ public class TypeResolver {
             }
             throw new TimeTypeError(expr.getLine(), String.format("Boolean operation with not compatible intermediateModel.types. Left %s, Right %s", left, right));
         }
+        if(left instanceof Timestamp){
+            throw new TimeTypeRecommendation(expr.getLine(), "Boolean operation with timestamp should not used");
+        }
         log.log(String.format("Boolean @%d : %s", expr.getLine(), left));
         return left;
     }
@@ -500,8 +504,11 @@ public class TypeResolver {
         return new Unknown();
     }
 
-    private static TimeType arrayInit(ASTArrayInitializer expr, Env e) {
-        return errorHandling(expr, e);
+    private static TimeType arrayInit(ASTArrayInitializer expr, Env e) throws TimeException {
+        for(IASTRE r : expr.getExprs()){
+            resolveTimerTypeExpression(r, e);
+        }
+        return null;
     }
 
     private static TimeType cast(ASTCast expr, Env e) throws TimeException {

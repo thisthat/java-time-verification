@@ -3,8 +3,9 @@ package timetype;
 import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.types.TimeTypeSystem;
-import intermediateModel.types.rules.TimeTypeError;
-import intermediateModel.types.rules.TimeTypeWarning;
+import intermediateModel.types.rules.exception.TimeTypeError;
+import intermediateModel.types.rules.exception.TimeTypeRecommendation;
+import intermediateModel.types.rules.exception.TimeTypeWarning;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.creation.filter.ElseIf;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
@@ -46,6 +47,10 @@ public class Main {
         }
     }
 
+    public Main() {
+        super();
+    }
+
     public void do_job(String[] args) throws Exception {
 
         //get root path
@@ -80,12 +85,13 @@ public class Main {
         //get all files
         Iterator<File> i = IndexingProject.getJavaFiles(root_path);
 
+        List<TimeTypeRecommendation> r = new ArrayList<>();
         List<TimeTypeError> e = new ArrayList<>();
         List<TimeTypeWarning> w = new ArrayList<>();
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-            if(!filename.endsWith("ConsumerNetworkClient.java")) continue; //skip tests
+//            if(!filename.endsWith("SystemTime.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
             //System.out.println(filename);
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);
@@ -101,6 +107,12 @@ public class Main {
                         //System.out.println(tte.getFullMessage());
                     }
                 }
+                for(TimeTypeRecommendation rec : tts.getRecommendation()){
+                    if(!r.contains(rec)){
+                        r.add(rec);
+                        //System.out.println(tte.getFullMessage());
+                    }
+                }
                 w.addAll(warnings);
             }
         }
@@ -108,6 +120,7 @@ public class Main {
         long end = System.currentTimeMillis();
         System.out.println("Total Time [ms]: " + (end - start));
         System.out.println("Total # Errors : " + e.size());
+        System.out.println("Total # Recoms : " + r.size());
         System.out.println("Total # Warnings : " + w.size());
         System.out.println("======= ERRORS =======");
         for(TimeTypeError err : e){
@@ -118,9 +131,14 @@ public class Main {
             System.out.println(warn.getFullMessage());
         }
         BufferedWriter writerErr = new BufferedWriter(new FileWriter("errors.log", true));
+        BufferedWriter writerRec = new BufferedWriter(new FileWriter("recommendation.log", true));
         BufferedWriter writerWarn = new BufferedWriter(new FileWriter("warnings.log", true));
         for(TimeTypeError err : e){
             writerErr.append(err.getFullMessage());
+            writerErr.append("\n");
+        }
+        for(TimeTypeRecommendation rec : r){
+            writerErr.append(rec.getFullMessage());
             writerErr.append("\n");
         }
         for(TimeTypeWarning warn : w){
