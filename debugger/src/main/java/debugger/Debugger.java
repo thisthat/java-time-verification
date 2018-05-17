@@ -40,6 +40,13 @@ public class Debugger {
         OutputLogs.getInstance().setName(name);
     }
 
+    public void setLastFile(String file) {
+        OutputLogs.getInstance().setLastFile(file);
+    }
+
+    public String getLastFile(){
+        return OutputLogs.getLastFile();
+    }
 
     private Debugger(boolean network) {
         this.network = network;

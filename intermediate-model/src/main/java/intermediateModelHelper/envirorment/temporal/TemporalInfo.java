@@ -1,6 +1,7 @@
 package intermediateModelHelper.envirorment.temporal;
 
 import intermediateModelHelper.envirorment.temporal.structure.*;
+import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 
 import java.util.List;
 
@@ -116,5 +117,11 @@ public class TemporalInfo {
 
     public static List<ImplicitResourceTimeout> getImplicitResourceTimeouts() {
         return implicitResourceTimeouts;
+    }
+
+    public void addTimeParameterMethodInSignature(List<TimeParameterMethod> et) {
+        for(TimeParameterMethod m : et){
+            TemporalInfo.timeInSignature.add(new TimeMethod(m.getClassName(), m.getMethodName(), m.getSignature(), m.getTimeouts()));
+        }
     }
 }

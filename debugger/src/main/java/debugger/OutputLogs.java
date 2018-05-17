@@ -15,6 +15,7 @@ public class OutputLogs implements HttpHandler {
     private static OutputLogs instance = null;
     private final static int _MAX = 50;
     private String[] logs = new String[_MAX];
+    private static String lastFile = "";
     private int position = 0;
     private static String name = "";
     private static String scripts = "<script>setTimeout(function(){\n" +
@@ -22,7 +23,7 @@ public class OutputLogs implements HttpHandler {
             "}, 5000);\n" +
             "var textarea = document.getElementById('t');\n" +
             "textarea.scrollTop = textarea.scrollHeight;\n</script>";
-    private static String header = "<html><head><title>" + name + "</title></head><body><textarea id=\"t\" style=\"width:100%;height:100%;\">";
+    private static String header = "<html><head><title>" + name + "</title></head><body><h1>" + lastFile + "</h1><textarea id=\"t\" style=\"width:100%;height:100%;\">";
 
     public static synchronized OutputLogs getInstance(){
         if(instance == null) {
@@ -68,7 +69,16 @@ public class OutputLogs implements HttpHandler {
 
     public void setName(String n) {
         name = n;
-        header = "<html><head><title>" + name + "</title></head><body><textarea id=\"t\" style=\"width:100%;height:100%;\">";
+        header = "<html><head><title>" + name + "</title></head><body><h1>" + lastFile + "</h1><textarea id=\"t\" style=\"width:100%;height:100%;\">";
+    }
+
+    public void setLastFile(String n) {
+        lastFile = n;
+        header = "<html><head><title>" + name + "</title></head><body><h1>" + lastFile + "</h1><textarea id=\"t\" style=\"width:100%;height:100%;\">";
+    }
+
+    public static String getLastFile() {
+        return lastFile;
     }
 
     public static void parseQuery(String query, Map<String,String> parameters) throws UnsupportedEncodingException {

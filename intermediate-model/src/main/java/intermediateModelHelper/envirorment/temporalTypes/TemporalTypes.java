@@ -71,10 +71,11 @@ public class TemporalTypes {
 
     public void loadUserDefined(String dir) {
         TemporalInfo.getInstance().loadUserDefined(dir);
-        System.out.println("Loading from: " + new File(dir).getAbsolutePath());
+        //System.out.println("Loading from: " + new File(dir).getAbsolutePath());
         rt_t.addAll(new ParseCSVMethods(dir + "rt_t.csv").getMethods());
         rt_d.addAll(new ParseCSVMethods(dir + "rt_d.csv").getMethods());
         et.addAll(new ParseCSVTimeParameterMethods(dir + "et.csv").getMethods());
+        TemporalInfo.getInstance().addTimeParameterMethodInSignature(et);
     }
 
     public void loadUserTypes_RTT(String file) {
@@ -117,21 +118,21 @@ public class TemporalTypes {
                 candidate.add(tmp);
             }
         }
-        if(candidate.size() == 0)
+        if (candidate.size() == 0)
             return null;
-        if(candidate.size() == 1)
+        if (candidate.size() == 1)
             return candidate.get(0);
         //multiple option, check types
-        for(TimeParameterMethod c : candidate){
+        for (TimeParameterMethod c : candidate) {
             List<String> sigCandidate = c.getSignature();
             boolean isIt = true;
-            for(int i = 0; i < mc.getTypeParPointed().size(); i++){
+            for (int i = 0; i < mc.getTypeParPointed().size(); i++) {
                 String candidateType = sigCandidate.get(i);
                 String methodType = mc.getTypeParPointed().get(i);
-                if(!candidateType.equals(methodType))
+                if (!candidateType.equals(methodType))
                     isIt = false;
             }
-            if(isIt)
+            if (isIt)
                 return c;
         }
         return null;
@@ -139,16 +140,18 @@ public class TemporalTypes {
 
     public int[] getTimeoutParametersET(ASTMethodCall m) {
         TimeParameterMethod tpm = findCorrectOne(m);
-        if(tpm == null)
+        if (tpm == null)
             return new int[0];
         return tpm.getTimeouts();
     }
+
     public TimeType[] getTypeParametersET(ASTMethodCall m) {
         TimeParameterMethod tpm = findCorrectOne(m);
-        if(tpm == null)
+        if (tpm == null)
             return new TimeType[0];
         return tpm.getTimeType();
     }
+
     public List<String> getSignatureET(ASTMethodCall m) {
         for (TimeParameterMethod tmp : et) {
             if (tmp.isMethodCall(m)) {

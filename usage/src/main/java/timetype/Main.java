@@ -16,7 +16,6 @@ import intermediateModelHelper.indexing.IndexingProject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +31,7 @@ public class Main {
         debugger.setActive(false);
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         if (args.length < 2) {
             System.out.println("Usage with: name root_path");
             System.exit(0);
@@ -43,6 +42,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+            System.out.println("@ " + debugger.getLastFile());
             debugger.stop();
         }
     }
@@ -91,8 +91,9 @@ public class Main {
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//            if(!filename.endsWith("SystemTime.java")) continue; //skip tests
+//            if(!filename.endsWith("KafkaConsumer.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
+            debugger.setLastFile(filename);
             //System.out.println(filename);
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);
             for (ASTClass c : classes) {
@@ -128,7 +129,7 @@ public class Main {
         }
         System.out.println("======= WARNING ======");
         for(TimeTypeWarning warn : w){
-            System.out.println(warn.getFullMessage());
+           // System.out.println(warn.getFullMessage());
         }
         BufferedWriter writerErr = new BufferedWriter(new FileWriter("errors.log", true));
         BufferedWriter writerRec = new BufferedWriter(new FileWriter("recommendation.log", true));
@@ -138,8 +139,8 @@ public class Main {
             writerErr.append("\n");
         }
         for(TimeTypeRecommendation rec : r){
-            writerErr.append(rec.getFullMessage());
-            writerErr.append("\n");
+            writerRec.append(rec.getFullMessage());
+            writerRec.append("\n");
         }
         for(TimeTypeWarning warn : w){
             writerWarn.append(warn.getFullMessage());
@@ -149,6 +150,8 @@ public class Main {
         writerErr.close();
         writerWarn.flush();
         writerWarn.close();
+        writerRec.flush();
+        writerRec.close();
     }
 
 }
