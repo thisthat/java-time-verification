@@ -21,7 +21,7 @@ public class TimeTypeSystem extends ParseIM  {
     static ApplyHeuristics ah = new ApplyHeuristics();
     static {
         //ah.set__DEBUG__(true);
-        ah.subscribe(MarkTime.class);
+        //ah.subscribe(MarkTime.class); it is integrated in ParseIM#checkRE
         ah.subscribe(TimeInSignature.class);
         ah.subscribe(AssignmentTimeVar.class);
         ah.subscribe(BooleanExpression.class);

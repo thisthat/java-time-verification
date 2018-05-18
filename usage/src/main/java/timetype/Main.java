@@ -13,9 +13,8 @@ import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.indexing.IndexingProject;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -91,7 +90,7 @@ public class Main {
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//            if(!filename.endsWith("KafkaConsumer.java")) continue; //skip tests
+//           if(!filename.endsWith("JobSchedulerImpl.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
             debugger.setLastFile(filename);
             //System.out.println(filename);
@@ -131,26 +130,27 @@ public class Main {
         for(TimeTypeWarning warn : w){
            // System.out.println(warn.getFullMessage());
         }
-        BufferedWriter writerErr = new BufferedWriter(new FileWriter("errors.log", true));
-        BufferedWriter writerRec = new BufferedWriter(new FileWriter("recommendation.log", true));
-        BufferedWriter writerWarn = new BufferedWriter(new FileWriter("warnings.log", true));
+        PrintWriter writerErr = new PrintWriter("errors.log", "UTF-8");
+        PrintWriter writerRec = new PrintWriter("recommendation.log", "UTF-8");
+        PrintWriter writerWarn = new PrintWriter("warnings.log", "UTF-8");
         for(TimeTypeError err : e){
             writerErr.append(err.getFullMessage());
             writerErr.append("\n");
+            writerErr.flush();
         }
         for(TimeTypeRecommendation rec : r){
             writerRec.append(rec.getFullMessage());
             writerRec.append("\n");
+            writerRec.flush();
         }
         for(TimeTypeWarning warn : w){
             writerWarn.append(warn.getFullMessage());
-            writerErr.append("\n");
+            writerWarn.append("\n");
+            writerWarn.flush();
         }
-        writerErr.flush();
+
         writerErr.close();
-        writerWarn.flush();
         writerWarn.close();
-        writerRec.flush();
         writerRec.close();
     }
 

@@ -106,14 +106,12 @@ public class CollectReturnTimeMethods extends ParseIM {
             }
             try {
                 writeFile(timestamp, outputT);
-                ti.loadUserTypes_RTT(timestamp);
             } catch (IOException e) {
                 System.err.println("Cannot write " + timestamp + " file");
                 System.err.println(e.getMessage());
             }
             try {
                 writeFile(duration, outputD);
-                ti.loadUserTypes_RTD(duration);
             } catch (IOException e) {
                 System.err.println("Cannot write " + duration + " file");
                 System.err.println(e.getMessage());
