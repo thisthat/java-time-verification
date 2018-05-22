@@ -86,7 +86,7 @@ public class MainCommit {
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//            if(!filename.endsWith("KerberosLogin.java")) continue; //skip tests
+//           if(!filename.endsWith("JobSchedulerImpl.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
             long sParsing = System.currentTimeMillis();
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);

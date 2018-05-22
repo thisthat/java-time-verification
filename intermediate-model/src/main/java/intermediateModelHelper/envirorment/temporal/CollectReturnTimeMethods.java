@@ -149,8 +149,10 @@ public class CollectReturnTimeMethods extends ParseIM {
             TimeType tt = new Unknown();
             try {
                 tt = TypeResolver.resolveTimerType(re.getExpression(), env);
-            } catch (TimeException timeTypeError) {
+            } catch (Exception ex) {
                 // ignore errors now
+                System.err.println(this._class.getPath());
+                ex.printStackTrace();
             }
             //there is time!
             TimeTypes t = new TimeTypes(this._class.fullName(), lastMethod.getName(), lastMethod.getSignature(), tt);

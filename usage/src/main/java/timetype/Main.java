@@ -90,7 +90,7 @@ public class Main {
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//           if(!filename.endsWith("JobSchedulerImpl.java")) continue; //skip tests
+            if(!filename.endsWith("BucketPath.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
             debugger.setLastFile(filename);
             //System.out.println(filename);

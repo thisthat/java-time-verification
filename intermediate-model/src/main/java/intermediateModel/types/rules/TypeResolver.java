@@ -475,12 +475,7 @@ public class TypeResolver {
                 if (v == null)
                     continue;
                 TimeType tvar = v.getVarTimeType();
-                try {
-                    boolean res = tvar != null && !(tvar instanceof Unknown) && !texpr.equals(tvar);
-                } catch (Exception ex) {
-                    System.out.println("BRK");
-                }
-                if (tvar != null && !(tvar instanceof Unknown) && !texpr.equals(tvar)) {
+                if (tvar != null && !(tvar instanceof Unknown) && !tvar.equals(texpr)) {
                     //update to avoid further errors due to remember the old type
                     v.setVarTimeType(texpr);
                     //then lunch exception to record this behavior

@@ -77,6 +77,7 @@ public class TimeTypeSystem extends ParseIM  {
             warnings.add(new TimeTypeWarning(super.getLastClass(), super._class.getPath(), warn));
         } catch (Exception e){
             System.out.println("@ File:" + this._class.getPath());
+            System.err.println("@ File:" + this._class.getPath());
             e.printStackTrace();
         }
     }

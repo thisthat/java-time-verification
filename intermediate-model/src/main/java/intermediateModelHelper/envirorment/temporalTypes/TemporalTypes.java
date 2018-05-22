@@ -126,6 +126,7 @@ public class TemporalTypes {
         for (TimeParameterMethod c : candidate) {
             List<String> sigCandidate = c.getSignature();
             boolean isIt = true;
+            if(mc.getTypeParPointed() == null) continue;
             for (int i = 0; i < mc.getTypeParPointed().size(); i++) {
                 String candidateType = sigCandidate.get(i);
                 String methodType = mc.getTypeParPointed().get(i);
