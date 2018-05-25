@@ -3,6 +3,7 @@ import copy
 import abc
 from contracts import contract, new_contract, check
 import logging
+import  itertools
 
 #from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
 
@@ -1007,29 +1008,29 @@ class StateSpace(object):
 new_contract_check_type("is_state_space", StateSpace)
 
 
-class DomainProduct(CompareVariables):
-
-    @contract(var_domains="dict(str:is_domain)")
-    def __init__(self, **var_domains):
-        all_predicates = []
-        var_datatypes = {}
-
-        for var,dom in var_domains.iteritems():
-            all_predicates.append(dom.predicates)
-            var_datatypes[var] = dom.datatype
-
-        predicates = self._get_product_predicates(all_predicates)
-        super(DomainProduct, self).__init__(predicates, *var_datatypes)
-
-    @contract(all_predicates="list(list(is_predicate))", returns="list(is_predicate)")
-    def _get_product_predicates(self, all_predicates):
-
-        predicates = []
-        for curr_tuple in itertools.product(all_predicates):
-            check("tuple", curr_tuple)
-            predicates.append(And(*curr_tuple))
-        return predicates
- 
+##class DomainProduct(CompareVariables):
+##
+##    @contract(var_domains="dict(str:is_domain)")
+##    def __init__(self, **var_domains):
+##        all_predicates = []
+##        var_datatypes = {}
+##
+##        for var,dom in var_domains.iteritems():
+##            all_predicates.append(dom.predicates)
+##            var_datatypes[var] = dom.datatype
+##
+##        predicates = self._get_product_predicates(all_predicates)
+##        super(DomainProduct, self).__init__(predicates, *var_datatypes)
+##
+##    @contract(all_predicates="list(list(is_predicate))", returns="list(is_predicate)")
+##    def _get_product_predicates(self, all_predicates):
+##
+##        predicates = []
+##        for curr_tuple in itertools.product(all_predicates):
+##            check("tuple", curr_tuple)
+##            predicates.append(And(*curr_tuple))
+##        return predicates
+## 
 
 class Integer(DataType):
     def __init__(self):
@@ -1223,7 +1224,7 @@ class PredicateParser(object):
     @staticmethod
     @contract(text="string", returns="is_predicate|string|int")
     def parse(text):
-        ast, remaining = PredicateParser._text_to_ast(text)
+        ast, remaining = PredicateParser._text_to_ast(text.strip())
         if len(remaining) > 0:
             raise ValueError("Cannot parse text: %s" % remaining)    
 

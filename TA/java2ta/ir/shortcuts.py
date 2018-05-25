@@ -301,3 +301,15 @@ def get_identifiers(node):
         return identifiers
 
 
+def get_instr_text(instr, max_len=None): 
+    rows = instr["code"].split("\n")
+    stripped_rows = map(lambda r: r.strip(), rows)
+    instr_text = " ".join(stripped_rows)
+
+    if max_len > 0:
+        len_text = len(instr_text)
+        if len_text > max_len:
+            cut_len = max_len/2
+            instr_tetx = instr_text[:cut_len].strip() + "..." + instr_text[len_text-cut_len:].strip()
+
+    return instr_text

@@ -29,6 +29,7 @@ public class HelloWorld {
         Foo varfoo = new HelloWorld.Foo() {
             @Override
             public int mymethod(int i) {
+                i = i * 2;
                 return i * i;
             }
         };
