@@ -1,6 +1,6 @@
 from nose.tools import *
 
-from java2ta.ta.models import ClockExpression, Type, Variable, ClockVariable, Location, Edge, TA, NTA
+from java2ta.ta.models import Type, Variable, ClockVariable, Location, Edge, TA, NTA
 
 def test_connected_locations():
 
@@ -12,32 +12,32 @@ def test_connected_locations():
     e2 = Edge(l2,l3)
     e3 = Edge(l3,l1)
 
-    # test 1st edge
-    assert e1 in l1.outgoing
-    assert e1 in l2.incoming
+    # test 1st edge: creating the edge does not modify the outcoing/incoming edges
+    assert e1 not in l1.outgoing
+    assert e1 not in l2.incoming
 
-    assert len(l1.outgoing) == 1
-    assert len(l2.incoming) == 1
+    assert len(l1.outgoing) == 0
+    assert len(l2.incoming) == 0
 
     assert e1.source == l1
     assert e1.target == l2
 
-    # test 2nd edge
-    assert e2 in l2.outgoing
-    assert e2 in l3.incoming
+    # test 2nd edge: same as before
+    assert e2 not in l2.outgoing
+    assert e2 not in l3.incoming
 
-    assert len(l2.outgoing) == 1
-    assert len(l3.incoming) == 1
+    assert len(l2.outgoing) == 0
+    assert len(l3.incoming) == 0
 
     assert e2.source == l2
     assert e2.target == l3
 
-    # test 3rd edge
-    assert e3 in l3.outgoing
-    assert e3 in l1.incoming
+    # test 3rd edge: ditto
+    assert e3 not in l3.outgoing
+    assert e3 not in l1.incoming
 
-    assert len(l3.outgoing) == 1
-    assert len(l1.incoming) == 1
+    assert len(l3.outgoing) == 0
+    assert len(l1.incoming) == 0
 
     assert e3.source == l3
     assert e3.target == l1
@@ -74,6 +74,14 @@ def test_simple_ta():
     # adding a duplicate edge is ignored
     ta.add_edge(e1)
     assert len(ta.edges) == 3
+
+    # adding an edge modifies the set of incoming/outgoing edges to/from locations
+    assert e1 in l1.outgoing
+    assert e1 in l2.incoming
+    assert e2 in l2.outgoing
+    assert e2 in l3.incoming
+    assert e3 in l3.outgoing
+    assert e3 in l1.incoming
 
 
 def test_ta_initial_loc():

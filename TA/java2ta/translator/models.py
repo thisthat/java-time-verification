@@ -3,7 +3,7 @@ import logging
 
 from java2ta.commons.utility import new_contract_check_type
 from java2ta.abstraction.models import AbstractAttribute, Predicate
-from java2ta.ta.models import ClockVariable, Variable, Int
+from java2ta.ta.models import ClockVariable, Variable, Int, Location
 
 log = logging.getLogger("main")
 
@@ -89,6 +89,39 @@ class PC(object):
  
 
 new_contract_check_type("is_pc", PC)  
+
+@contract(conf="is_configuration", pc="is_pc", returns="string")
+def build_location_name(conf, pc):
+    conf_string = ",".join(map(str, conf))
+    loc_name = "(%s)%s" % (conf_string, pc)
+    return loc_name
+
+@contract(conf="is_configuration", pc="is_pc", returns="is_location")
+def build_location(conf, pc):
+    
+    # convert the conf to a list of string, and join the items
+    # using ","
+    loc_name = build_location_name(conf, pc)
+#    log.debug("conf: %s, loc name: %s" % (conf_string, loc_name))
+    loc = Location(loc_name)
+
+    return loc
+
+
+
+class ReachabilityInput(object):
+
+    def __init__(self, instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
+        self.instr = instr
+        self.source = source
+        self.pc_source = pc_source
+        self.source_loc = build_location(source, pc_source)
+        self.source_pred = state_space.value(source)
+        self.visited_locations = visited_locations
+        self.pc_jump_stack = pc_jump_stack
+        self.deadlines = deadlines
+        self.state_space = state_space
+        self.project = project
 
 class ReachabilityResult(object):
 

@@ -1,15 +1,15 @@
 from java2ta.translator.models import KnowledgeBase
 
 def test_knowledge_base_is_timestamp():
-    KnowledgeBase.add_timestamp("foo.fie.ClassName", "mymethod", "var_timestamp")
+    KnowledgeBase.add_timestamp("foo.fie.ClassName", "mymethod", "var_timestamp", False)
     assert KnowledgeBase.is_timestamp("foo.fie.ClassName", "mymethod", "var_timestamp")
 
     assert not KnowledgeBase.is_timestamp("foo.fie.ClassName", "mymethod", "not_a_timestamp")
 
 
 def test_knowledge_base_get_timestamps():
-    KnowledgeBase.add_timestamp("foo.fie.ClassName", "mymethod", "var_timestamp")
-    KnowledgeBase.add_timestamp("foo.fie.SecondClassName", "anothermethod", "another_timestamp")
+    KnowledgeBase.add_timestamp("foo.fie.ClassName", "mymethod", "var_timestamp", False)
+    KnowledgeBase.add_timestamp("foo.fie.SecondClassName", "anothermethod", "another_timestamp", False)
 
     assert KnowledgeBase.is_timestamp("foo.fie.ClassName", "mymethod", "var_timestamp")
     assert KnowledgeBase.is_timestamp("foo.fie.SecondClassName", "anothermethod", "another_timestamp")

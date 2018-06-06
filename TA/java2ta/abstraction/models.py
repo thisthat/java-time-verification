@@ -3,6 +3,7 @@ import copy
 import abc
 from contracts import contract, new_contract, check
 import logging
+import  itertools
 
 #from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
 
@@ -1007,29 +1008,29 @@ class StateSpace(object):
 new_contract_check_type("is_state_space", StateSpace)
 
 
-class DomainProduct(CompareVariables):
-
-    @contract(var_domains="dict(str:is_domain)")
-    def __init__(self, **var_domains):
-        all_predicates = []
-        var_datatypes = {}
-
-        for var,dom in var_domains.iteritems():
-            all_predicates.append(dom.predicates)
-            var_datatypes[var] = dom.datatype
-
-        predicates = self._get_product_predicates(all_predicates)
-        super(DomainProduct, self).__init__(predicates, *var_datatypes)
-
-    @contract(all_predicates="list(list(is_predicate))", returns="list(is_predicate)")
-    def _get_product_predicates(self, all_predicates):
-
-        predicates = []
-        for curr_tuple in itertools.product(all_predicates):
-            check("tuple", curr_tuple)
-            predicates.append(And(*curr_tuple))
-        return predicates
- 
+##class DomainProduct(CompareVariables):
+##
+##    @contract(var_domains="dict(str:is_domain)")
+##    def __init__(self, **var_domains):
+##        all_predicates = []
+##        var_datatypes = {}
+##
+##        for var,dom in var_domains.iteritems():
+##            all_predicates.append(dom.predicates)
+##            var_datatypes[var] = dom.datatype
+##
+##        predicates = self._get_product_predicates(all_predicates)
+##        super(DomainProduct, self).__init__(predicates, *var_datatypes)
+##
+##    @contract(all_predicates="list(list(is_predicate))", returns="list(is_predicate)")
+##    def _get_product_predicates(self, all_predicates):
+##
+##        predicates = []
+##        for curr_tuple in itertools.product(all_predicates):
+##            check("tuple", curr_tuple)
+##            predicates.append(And(*curr_tuple))
+##        return predicates
+## 
 
 class Integer(DataType):
     def __init__(self):
@@ -1176,36 +1177,92 @@ class SymbolTable(object):
         return lit
 
 
-##def check_is_ast(s):
-##    """
-##    recursively check that the argument is an AST. An AST here is either
-##    a literal (e.g. foo) or a variable (e.g. {fie}) or a tuple such
-##    this: (e.g. (name ast_1 ... ast_N) )
-##    """
-##    if isinstance(s, basestring):   
-##        return True
-##    elif isinstance(s, tuple) and len(s) == 2:
-##        name, arguments = s
-##        if isinstance(arguments, list):
-##            # all arguments must be ast as well 
-##            for a in arguments:
-##                if not check_is_ast(a):
-##                    return False
-##
-##            return True
-##        else:
-##            return False
-##    else:
-##        return False
-##
-new_contract("is_ast", lambda s: True) #check_is_ast) 
+new_contract("is_ast", lambda s: True) # TODO implement this check
 
-class PredicateParser(object):
+class LeftLinearParser(object):
 
     RE_VAR = "{\w+}" #r"({\w+})\s?(.*)"
     RE_NODE_NAME = "[^\s(){}]+" # r"([^\s(){}]+)\s?(.*)"
-    RE_LITERAL = "null|true|false|\-?[0-9]+(?:\.[0-9]+)?|\"\w+\"|'\w+'" # was: "\w+"
-    PRED_CLASS = {
+    RE_LITERAL = None # to be defined in your parser
+    SYMBOL_TO_CLASS = {} # a mapping from the first matched symbol to the class to be instantiated
+
+
+    @contract(text="string", returns="is_predicate|string|int")
+    def parse(self, text):
+        ast, remaining = self._text_to_ast(text.strip())
+        if len(remaining) > 0:
+            raise ValueError("Cannot parse text: %s" % remaining)    
+
+        pred = self._ast_to_object(ast)
+        return pred
+
+    @contract(token="string", text="string", returns="tuple(string,string)")
+    def _match(self, token, text):
+        reg_exp = r"(%s)\s?(.*)" % token
+        g = re.match(reg_exp, text)
+
+        if not g:
+            raise ValueError("Cannot parse text. Expected: %s. Passed: %s" % (reg_exp, text))
+
+        groups = g.groups()
+
+        token, remaining = groups[0], groups[1] if len(groups) > 1 and groups[1] is not None else ""
+
+        return token, remaining
+
+    @contract(ast="is_ast")
+    def _ast_to_object(self, ast): 
+        raise ValueError("You must override this")
+ 
+    @contract(text="string", returns="tuple(is_ast, string)")
+    def _text_to_ast(self, text):
+        """
+        Given some text, it returns a tuple representing its abstract
+        syntax tree, and a string containing the non-parsed text. 
+        """
+        raise ValueError("You must override this")
+
+    @contract(symbol="string")
+    def _get_class(self, symbol):
+        found_class = self.SYMBOL_TO_CLASS.get(symbol, None)
+
+        if not found_class:
+            logger.warning("No class found when parsing symbol: %s" % symbol)
+
+        return found_class
+
+    @contract(ast="tuple(string, list)|string", returns="string")
+    def _walk(self, ast):
+        # walk the ast and serialize it as a string
+
+        res = None
+        if isinstance(ast, basestring):
+            res = ast
+        elif isinstance(ast, tuple):
+            arguments = []
+            for a in ast[1]:
+                arguments.append(self._walk(a))
+    
+            res = "(%s %s)" % (ast[0], " ".join(arguments))
+        else:   
+            raise ValueError("The walk procedure does not expect this format")
+
+        return res
+
+    def _is_node(self, ast):
+        return isinstance(ast, tuple) and len(ast) == 2 and isinstance(ast[1], list) and re.match(self.RE_NODE_NAME, ast[0])
+
+    def _is_var(self, ast):
+        return isinstance(ast, basestring) and re.match(self.RE_VAR, ast)
+
+    def _is_literal(self, ast):
+        return isinstance(ast, basestring) and re.match(self.RE_LITERAL, ast)
+
+
+class PredicateParser(LeftLinearParser):
+
+    RE_LITERAL = "null|true|false|\-?[0-9]+(?:\.[0-9]+)?|\"\w+\"|'\w+'"
+    SYMBOL_TO_CLASS = {
         ">"     : GT,
         ">="    : GTE,
         "<"     : LT,
@@ -1220,34 +1277,8 @@ class PredicateParser(object):
     }
 
 
-    @staticmethod
-    @contract(text="string", returns="is_predicate|string|int")
-    def parse(text):
-        ast, remaining = PredicateParser._text_to_ast(text)
-        if len(remaining) > 0:
-            raise ValueError("Cannot parse text: %s" % remaining)    
-
-        pred = PredicateParser._ast_to_predicate(ast)
-        return pred
-
-    @staticmethod
-    @contract(token="string", text="string", returns="tuple(string,string)")
-    def _match(token, text):
-        reg_exp = r"(%s)\s?(.*)" % token
-        g = re.match(reg_exp, text)
-
-        if not g:
-            raise ValueError("Cannot parse text. Expected: %s. Passed: %s" % (reg_exp, text))
-
-        groups = g.groups()
-
-        token, remaining = groups[0], groups[1] if len(groups) > 1 and groups[1] is not None else ""
-
-        return token, remaining
-
-    @staticmethod
     @contract(text="string", returns="tuple(is_ast, string)")
-    def _text_to_ast(text):
+    def _text_to_ast(self, text):
         """
         Given some text, it returns a tuple representing its abstract
         syntax tree, and a string containing the non-parsed text. 
@@ -1259,46 +1290,25 @@ class PredicateParser(object):
             # we are in a new nested node; the first component is the
             # node name, which cannot contain neither spaces nor 
             # parenthesis, nor curly braces
-#            g = re.match(PredicateParser.RE_NODE_NAME, text[1:])
-#
-#            if not g:
-#                raise ValueError("Cannot parse predicate: %s" % text)
-
-#            name = g.groups()[0]
-#            remaining = g.groups()[1]
-            name, remaining = PredicateParser._match(PredicateParser.RE_NODE_NAME, text[1:])
+            name, remaining = self._match(LeftLinearParser.RE_NODE_NAME, text[1:])
 
             arguments = []
             while len(remaining) > 0 and not remaining.startswith(")"):
-                ast, remaining = PredicateParser._text_to_ast(remaining.strip())
+                ast, remaining = self._text_to_ast(remaining.strip())
                 arguments.append(ast)
 
             if len(remaining) > 0:
                 # then: remaining.startswith(")")
                 remaining = remaining[1:]
 
-#            return (name,) + tuple(arguments), remaining
             return (name, arguments), remaining
         elif text[0] == "{":
             # it is a variable name, enclosed in curly brackets
-##            g = re.match(PredicateParser.RE_VAR, text)
-##            if not g:
-##                raise ValueError("Cannot parse variable name: %s" % text)
-##
-##            var_name = g.groups()[0]
-##            remaining = g.groups()[1]
-##        
-            var_name, remaining = PredicateParser._match(PredicateParser.RE_VAR, text)
+            var_name, remaining = self._match(self.RE_VAR, text)
             return ("%s" % var_name) , remaining
         else:
             # a token that ends at the first space (if any)  
-##            g = re.match(r"(%s)\s?(.*)" % ?PredicateParser.RE_LITERAL, text)
-##
-##            if not g:
-##                raise ValueError("Cannot parse text: %s" % text)
-##            name = g.groups()[0]
-##            remaining = g.groups()[1]
-            name, remaining = PredicateParser._match(PredicateParser.RE_LITERAL, text)
+            name, remaining = self._match(self.RE_LITERAL, text)
 
             # if literal name is a string, add it to the symbol table and replace
             # the literal with its encoded value
@@ -1313,11 +1323,12 @@ class PredicateParser(object):
         # should have raised an exception earlier)
         assert len(remaining) < len(text)
 
-    @staticmethod
+
+
     @contract(ast="is_ast", returns="is_predicate|string|int")
-    def _ast_to_predicate(ast): 
+    def _ast_to_object(self, ast): 
         
-        if PredicateParser._is_node(ast):
+        if self._is_node(ast):
             """
             case 1: it is a predicate that we have to parse
             case 2: it is a piece of smt code (injected by the user or to encode a literal)
@@ -1325,27 +1336,27 @@ class PredicateParser(object):
             name = ast[0]
 
             # get the class of predicate corresponding to the node name
-            pred_class = PredicateParser.PRED_CLASS.get(name, None)
+            pred_class = self._get_class(name) #self.SYMBOL_TO_CLASS.get(name, None)
             if pred_class is not None:
                 # case 1: a user predicate, continue to parse
                 # recursively obtain the predicate/var/literal of each
                 # argument ast
                 arguments = []
                 for a in ast[1]:
-                    arguments.append(PredicateParser._ast_to_predicate(a))
+                    arguments.append(self._ast_to_object(a))
                 # instantiate the predicate
                 p = pred_class(*arguments)
             else:
                 # case 2: a piece of SMT code, take it as text
-                p = PredicateParser._walk(ast)
+                p = self._walk(ast)
                 
             return p
 
-        elif PredicateParser._is_var(ast):
+        elif self._is_var(ast):
             # this is a variable
             return ast
     
-        elif PredicateParser._is_literal(ast):
+        elif self._is_literal(ast):
             # this is a literal
             return ast
 
@@ -1389,5 +1400,4 @@ class PredicateParser(object):
     @staticmethod
     def _is_literal(ast):
         return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
-        
 

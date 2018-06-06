@@ -82,9 +82,10 @@ class GraphViz(TARenderer):
 
     ENGINE_CHOICES = [ "dot", "neato", "spdf", "circo", ]
 
-    def __init__(self, ta, legend=None, show_pc=True, type="pdf", engine="dot"):
+    def __init__(self, ta, legend=None, show_pc=True, type="pdf", engine="dot", name=None):
         self.show_pc = show_pc
         self.type = type
+        self.name = name or ta.name
 
         if engine not in GraphViz.ENGINE_CHOICES:   
             raise ValueError("Engine '%s' is not allowed. Choose one among: %s" % (engine, GraphViz.ENGINE_CHOICES))
@@ -149,7 +150,7 @@ class GraphViz(TARenderer):
     def render(self, *args, **kwargs):
         ta = self.ta
     
-        g = Digraph(ta.name, engine=self.engine)
+        g = Digraph(self.name, engine=self.engine)
         g.attr(rankdir="TB")
 
       #  for (pc, locations) in sorted(self.group_locations(ta.locations)):

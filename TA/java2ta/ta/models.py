@@ -92,18 +92,40 @@ class ClockVariable(Variable):
 
 new_contract_check_type("is_clock_variable", ClockVariable)
 
-##class ClockExpression(object):
-##
-##    def __init__(self, exp=""):
-##    
-##        self.exp = exp
-##
-##    def __str__(self):
-##        self.exp
-##
-##    def __unicode__(self):
-##        return unicode(self.exp)
-##
+class ClockCondition(object):
+
+    OP_NEG = { 
+        "<" : ">=", 
+        "<=": ">",
+        ">" : "<=",
+        ">=": "<",
+        "==": "!=",
+        "!=": "=="
+    }    
+
+    @contract(clock_var="string", op="string", exp="string")
+    def __init__(self, clock_var, op, exp):
+
+        if op not in ClockCondition.OP_NEG:
+            raise ValueError("Operator %s is not upported for clock expressions" % op)
+
+        self.clock_var = clock_var
+        self.op = op
+        self.exp = exp
+
+    def __str__(self):
+        return "%s %s %s" % (self.clock_var, self.op, self.exp)
+
+    def __unicode__(self):
+        return u"%s %s %s" % (self.clock_var, self.op, self.exp)
+    
+    def negate(self):
+ 
+        op_neg = ClockCondition.OP_NEG[self.op]
+
+        return ClockCondition(self.clock_var, op_neg, self.exp)       
+
+new_contract_check_type("is_clock_condition", ClockCondition)
 
 class Location(object):
 
@@ -151,7 +173,7 @@ class Location(object):
     @contract(cexp="string")
     def set_invariant(self, cexp):
         
-#        assert isinstance(cexp, ClockExpression)
+#        assert isinstance(cexp, ClockCondition)
 
         self.invariant = cexp
 
