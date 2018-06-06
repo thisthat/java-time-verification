@@ -1389,3 +1389,5 @@ class PredicateParser(object):
     @staticmethod
     def _is_literal(ast):
         return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
+        
+

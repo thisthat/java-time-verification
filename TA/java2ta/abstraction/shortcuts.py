@@ -227,3 +227,39 @@ ITERATORS = Domain(Iterator(), split_field_domain(split_numeric_domain([0,], lt_
 Z3_STRINGS = Domain(Z3String(), split_field_domain(split_numeric_domain([0,], lt_min=False),var="str.len")) 
 STRINGS = Domain(AbsString(), split_field_domain(split_numeric_domain([0,],lt_min=False),var="size"))
 
+def predicate_to_existential_abstraction(ss, pred):
+   
+    solver = SMTSolver()
+
+    existential_abstraction = []
+
+    for conf in ss.enumerate:# itera tra le configurazioni di ss.enumerate per selezionare quelle che ...
+
+        conf_preds = ss.value(conf)
+    
+        curr_problem = []
+        for (curr_attr, curr_pred) in zip(ss.attributes, conf_preds):
+            # TODO this is a dirty solution; find a better way
+            datatypes = [ curr_attr.domain.datatype ]
+            if hasattr(datatypes, "datatypes"):
+                datatypes = datatypes[0].datatypes
+            # end of the dirty solution
+
+            for (var, datatype) in zip(curr_attr.variables, datatypes):
+                curr_problem.append("(declare-const %s %s)" % (var, datatype))
+
+            curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
+
+        curr_problem.append(pred.smt_assert())
+
+        # pass the problem to the smt solver; if it is satisfiable, take the conf
+        # otherwise skip it
+        solver.push()
+        res = solver.check_sat(curr_problem)
+        if res == "sat":
+            existential_abstraction.append(conf)
+        solver.pop()
+
+    return existential_abstraction
+
+
