@@ -185,6 +185,9 @@ class Method(ASTNode):
 
         methods = self.parent.ast["methods"]
 
+        log.debug("Current method: %s" % self.name)
+        log.debug("Found %s methods: %s" % (len(methods), map(lambda m: m["name"], methods)))
+
         found = filter(lambda m: m["name"] == self.name, methods)
 
         # TODO at the moment we only take the first method with the given name
@@ -556,9 +559,17 @@ class Project(object):
         m = None
 
         if len(method_fqn_parts) == 1:
+            # receive the name of the method
             method_name = method_fqn_parts[0]
             m = Method(method_name, klass)
+        elif len(method_fqn_parts) == 2:
+            # receive the name of the actual method within an anonymous class assigned to a class attribute
+            attribute_name = method_fqn_parts[0]
+            method_name = method_fqn_parts[1]
+    
+            raise ValueError("Trying to access method '%s' of anonymous class assigned to attribute '%s' of class %s not supported. Please, come back later" % (method_name, attribute_name, class_fqn))
         elif len(method_fqn_parts) == 3:
+            # receive the name of the actual method within an inner class inside another method
             outer_method_name = method_fqn_parts[0]
             outer_variable_name = method_fqn_parts[1]
             method_name = method_fqn_parts[2]
@@ -568,7 +579,7 @@ class Project(object):
             inner_c = InnerKlass(outer_v)
             m = Method(method_name, inner_c)
         else:
-            raise ValueError("Unexpected format for method_name (%s). Accepted formats: <method_name>|<outer_method_name>.<variable_name>.<method_name>")
+            raise ValueError("Unexpected format for method_name (%s). Accepted formats: <method_name>|<outer_method_name>.<variable_name>.<method_name>. Passed: %s" % (method_fqn, method_fqn_parts,))
    
         return m
 
