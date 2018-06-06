@@ -1,17 +1,38 @@
-from java2ta.abstraction.models import AbstractAttribute, StateSpace, Domain, Integer, LT, GT
+from java2ta.abstraction.models import AbstractAttribute, StateSpace, Domain, Integer, LT, GT, Eq
 from java2ta.abstraction.shortcuts import INTEGERS, split_numeric_domain
 
-def test_abstract_attribute():
+def test_non_local_abstract_attribute():
 
-    values = [ "< 0", "== 0", "> 0" ]
-    initial = "== 0"
+    predicates = [ Eq("{lhs}",0), LT("{lhs}",0), GT("{lhs}",0) ]
+    dom = Domain(Integer(), predicates)
 
-    aa = AbstractAttribute("foo", values, initial)
+    aa = AbstractAttribute("foo", dom, is_local=False)
 
-    assert len(aa.encoded_values) == len(values)
-    assert aa.values == sorted(values), "%s vs %s" % (aa.values, values)
-    assert aa.initial != initial
-    assert aa.initial in aa.encoded_values
+    assert aa.name == "foo"
+    assert aa.variables == [ "foo", ]
+    assert aa.is_local == False
+    assert aa.values == predicates
+    assert len(aa.encoded_values) == len(predicates)
+    assert len(aa.initial) == len(predicates)
+    assert aa.initial == aa.encoded_values
+
+def test_local_abstract_attribute():
+
+    predicates = [ Eq("{lhs}",0), LT("{lhs}",0), GT("{lhs}",0) ]
+    dom = Domain(Integer(), predicates) # the first predicate is the default value for the domain
+
+    aa = AbstractAttribute("foo", dom, is_local=True)
+
+    assert aa.name == "foo"
+    assert aa.variables == [ "foo", ]
+    assert aa.is_local == True
+    assert aa.values == predicates
+    assert len(aa.encoded_values) == len(predicates)
+    assert len(aa.initial) == 1
+
+    eq = predicates[0]
+    assert eq in aa.rev_domain
+    assert aa.initial == [ aa.rev_domain[eq] ]
 
 
 def test_statespace():
