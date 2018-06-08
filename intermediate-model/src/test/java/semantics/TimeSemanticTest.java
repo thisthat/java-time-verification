@@ -13,11 +13,14 @@ import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.heuristic.v2.*;
 import intermediateModelHelper.indexing.IndexingProject;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import intermediateModel.types.TimeTypeSystem;
 
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -125,9 +128,6 @@ public class TimeSemanticTest {
         TimeTypeSystem u = new TimeTypeSystem();
         u.start(c);
         List<TimeTypeRecommendation> errors = u.getRecommendation();
-        for(TimeTypeRecommendation e : errors){
-            System.out.println(e.getFullMessage());
-        }
         assertEquals(3, errors.size());
     }
 

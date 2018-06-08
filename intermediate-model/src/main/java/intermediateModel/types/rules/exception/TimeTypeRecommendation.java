@@ -1,5 +1,7 @@
 package intermediateModel.types.rules.exception;
 
+import intermediateModel.structure.expression.ASTBinary;
+
 import java.util.Objects;
 
 public class TimeTypeRecommendation extends TimeException {
@@ -7,6 +9,7 @@ public class TimeTypeRecommendation extends TimeException {
     private String filename;
     private int line;
     private String cause;
+    private ASTBinary expr;
 
     public TimeTypeRecommendation(String className, String filename, int line, String cause) {
         super(cause);
@@ -15,9 +18,11 @@ public class TimeTypeRecommendation extends TimeException {
         this.line = line;
     }
 
-    public TimeTypeRecommendation(int line, String cause) {
+
+    public TimeTypeRecommendation(ASTBinary expr, String cause) {
         super(cause);
-        this.line = line;
+        this.expr = expr;
+        this.line = expr.getLine();
     }
 
     public TimeTypeRecommendation(String className, String filename, TimeTypeRecommendation prev) {
@@ -26,6 +31,7 @@ public class TimeTypeRecommendation extends TimeException {
         this.line = prev.getLine();
         this.className = className;
         this.filename = filename;
+        this.expr = prev.expr;
     }
 
     @Override
@@ -66,5 +72,19 @@ public class TimeTypeRecommendation extends TimeException {
                 "%s - %s -- [%d] %s",
                 filename, className, line, cause
         );
+    }
+
+    public ASTBinary getExpr() {
+        return expr;
+    }
+
+    public void refactor(){
+        this.expr.refactor();
+    }
+    public int getStartProblem(){
+        return this.expr.getStart();
+    }
+    public int getEndProblem(){
+        return this.expr.getEnd();
     }
 }

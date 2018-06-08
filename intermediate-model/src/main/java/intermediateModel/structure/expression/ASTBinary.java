@@ -23,6 +23,18 @@ public class ASTBinary extends IASTStm implements IASTRE {
 		this.op = op;
 	}
 
+	public void refactor(){
+		int start = right.getStart();
+		int start_left = left.getStart();
+		int end_left = left.getEnd() + right.getLength() + 3;
+		ASTLiteral lit = new ASTLiteral( start, start + 1, "0");
+		ASTBinary newLeft = new ASTBinary(start_left, end_left, this.left, this.right, OPERATOR.minus);
+		this.left = newLeft;
+		this.right = lit;
+	}
+
+
+
 	public IASTRE getLeft() {
 		return left;
 	}
@@ -98,8 +110,8 @@ public class ASTBinary extends IASTStm implements IASTRE {
 
 	@Override
 	public String print() {
-		return (left != null ? left.print() : "")
-				+ op.print()
+		return (left != null ? left.print() + " " : "")
+				+ op.print() + " "
 				+ (right != null ? right.print() : "");
 	}
 

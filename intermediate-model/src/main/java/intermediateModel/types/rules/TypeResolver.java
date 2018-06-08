@@ -441,7 +441,7 @@ public class TypeResolver {
             throw new TimeTypeError(expr.getLine(), String.format("Boolean operation with not compatible intermediateModel.types. Left %s, Right %s", left, right));
         }
         if (left instanceof Timestamp) {
-            throw new TimeTypeRecommendation(expr.getLine(), "Boolean operation with timestamp should not used");
+            throw new TimeTypeRecommendation(expr, "Boolean operation with timestamp should not used");
         }
         log.log(String.format("Boolean @%d : %s", expr.getLine(), left));
         return left;

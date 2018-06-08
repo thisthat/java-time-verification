@@ -254,4 +254,8 @@ public abstract class IASTStm implements IASTVisitor, IASTToken {
 	public int getEnd() {
 		return end;
 	}
+
+	public int getLength(){
+		return end - start;
+	}
 }

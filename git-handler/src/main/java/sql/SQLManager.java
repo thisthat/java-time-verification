@@ -21,13 +21,12 @@ public class SQLManager {
     }
 
 
-    public void addCommitInfo(String hash, String branch, long time, String projectName) throws SQLException {
-        String sqlInsert = "INSERT INTO public.\"CommitInfo\"(\"Hash\", \"Branch\", \"Date\", \"ProjectName\") VALUES ( ?, ?, ?, ?)";
+    public void addCommitInfo(String hash, long time, long prjId) throws SQLException {
+        String sqlInsert = "INSERT INTO public.\"CommitInfo\"(\"IDProject\",\"Hash\", \"Date\") VALUES ( ?, ?, ?)";
         PreparedStatement st = conn.prepareStatement(sqlInsert);
-        st.setString(1, hash);
-        st.setString(2, branch);
+        st.setLong(1, prjId);
+        st.setString(2, hash);
         st.setLong(  3, time);
-        st.setString(4, projectName);
         st.execute();
     }
 

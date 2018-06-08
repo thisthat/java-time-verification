@@ -49,9 +49,27 @@ public class GitTag {
         ArrayList<Ref> tags = (ArrayList<Ref>) git.tagList().call();
         final RevWalk walk = new RevWalk(repository);
         for(Ref ref : tags){
+            String name = ref.getName();
+            if(filter(name)) continue;
+            //System.out.println(name);
             long time = walk.parseTag(ref.getObjectId()).getTaggerIdent().getWhen().getTime();
             System.out.println(time);
         }
+    }
+
+    private boolean filter(String name) {
+        if(name.contains("-RC")) return true;
+        if(name.contains("-M4")) return true;
+        if(name.contains("-parent")) return false;
+        //if(name.substring(name.lastIndexOf("-")+1).matches("[0-9]+.[0-9]+.[1-9]+")) return false;
+        /*if(name.contains("-beta")) return true;
+        if(name.contains("-beta")) return true;
+        if(name.contains("-cp")) return true;
+        if(name.contains("candidate-2")) return true;
+        if(name.contains("candidate-3")) return true;
+        if(name.contains("candidate-4")) return true;
+        if(name.contains("candidate-5")) return true;*/
+        return false;
     }
 
 }
