@@ -1277,6 +1277,8 @@ class PredicateParser(LeftLinearParser):
 #       "<->"   : Iff, # to be added
     }
 
+    VAR_DELIM_BEGIN = "{"
+    VAR_DELIM_END = "}"
 
     @contract(text="string", returns="tuple(is_ast, string)")
     def _text_to_ast(self, text):
@@ -1302,11 +1304,13 @@ class PredicateParser(LeftLinearParser):
                 # then: remaining.startswith(")")
                 remaining = remaining[1:]
 
-            return (name, arguments), remaining
-        elif text[0] == "{":
+#            return (name, arguments), remaining
+            result = (name, arguments)
+        elif text[0] == self.VAR_DELIM_BEGIN: #"{":
             # it is a variable name, enclosed in curly brackets
             var_name, remaining = self._match(self.RE_VAR, text)
-            return ("%s" % var_name) , remaining
+#            return ("%s" % var_name) , remaining
+            result = ("%s" % var_name)
         else:
             # a token that ends at the first space (if any)  
             name, remaining = self._match(self.RE_LITERAL, text)
@@ -1317,13 +1321,14 @@ class PredicateParser(LeftLinearParser):
             if lit_type == "String":
                 name = "(init-AbsString %s %s)" % (lit_code, len(name) - 2) # TODO this work because I assume to encode literals as objects of type AbsString
 
-            return name, remaining
+#            return name, remaining
+            result = name
 
         # in case of normal exit, I should have consumed some input
         # (otherwise it means it was not possible to parse it, thus I 
         # should have raised an exception earlier)
         assert len(remaining) < len(text)
-
+        return result, remaining
 
 
     @contract(ast="is_ast", returns="is_predicate|string|int")
@@ -1404,7 +1409,7 @@ class PredicateParser(LeftLinearParser):
  
 class FormulaParser(LeftLinearParser):
 
-    RE_LITERAL = "true|false|{[^{}]+}"
+    RE_LITERAL = "true|false|\[[^\[\]]+\]" # TODO this reg-ex should refer to PROP_DELIM_BEGIN e PROP_DELIM_END
     SYMBOL_TO_CLASS = {
         ">"     : GT,
         ">="    : GTE,
@@ -1424,6 +1429,9 @@ class FormulaParser(LeftLinearParser):
 #       "->"    : Imply, # to be added
 #       "<->"   : Iff, # to be added
     }
+
+    PROP_DELIM_BEGIN = "["
+    PROP_DELIM_END = "]"
 
     def __init__(self,ss):
         super(FormulaParser,self).__init__()
@@ -1465,17 +1473,6 @@ class FormulaParser(LeftLinearParser):
         return existential_abstraction
     
     def from_predicate(self, ss, pred): #argv):
-##        pro=""
-##        cont=1
-##        for arg in argv:
-##            
-##            pro=pro+"Proposition(%s)" % (str(arg))
-##            if cont<len(argv):
-##                pro=pro+","  
-##            cont=cont+1    
-##        g="Or(%s)" % (pro)  
-##         
-##        return eval(g).to_uppaal()
     
         # translate a predicate onto a list of configurations
         conf_list = self.predicate_to_existential_abstraction(ss, pred)
@@ -1497,6 +1494,8 @@ class FormulaParser(LeftLinearParser):
         syntax tree, and a string containing the non-parsed text. 
         """
 
+        print "parsing: %s" % text
+
         remaining = ""
 
         if text[0] == "(":
@@ -1514,82 +1513,39 @@ class FormulaParser(LeftLinearParser):
                 # then: remaining.startswith(")")
                 remaining = remaining[1:]
 
-            return (name, arguments), remaining
+            result = (name, arguments)
        
         else:
             # a token that ends at the first space (if any)  
             #name, remaining = self._match(self.RE_LITERAL, text)
             
             literal, remaining = self._match(self.RE_LITERAL, text)
-            if literal[0]=="{" and literal[-1]=="}":
+            print "literal = %s, remaining = %s" % (literal, remaining)
+            if literal[0]==self.PROP_DELIM_BEGIN and literal[-1]==self.PROP_DELIM_END:
                 predicate=literal[1:-1]
                 pp=PredicateParser()
                 pre=pp.parse(predicate)
                 assert isinstance(pre, Predicate)
                 print pre
-                formula=self.from_predicate(self.ss,pre)
-              
-                return formula
+                result=self.from_predicate(self.ss,pre)
             else:
-                raise ValueError("not handled")    
-            # if literal name is a string, add it to the symbol table and replace
-            # the literal with its encoded value
-            #lit_code, lit_type = SymbolTable.add_literal(name)
-           # if lit_type == "String":
-               # name = "(init-AbsString %s %s)" % (lit_code, len(name) - 2) # TODO this work because I assume to encode literals as objects of type AbsString
-
-           # return name, remaining
+                raise ValueError("not handled: literal = %s, remaining = %s" % (literal, remaining))    
 
         # in case of normal exit, I should have consumed some input
         # (otherwise it means it was not possible to parse it, thus I 
         # should have raised an exception earlier)
-        #assert len(remaining) < len(text)
+        assert len(remaining) < len(text)
 
-
+        return result, remaining
 
     @contract(ast="is_ast", returns="is_predicate|string|int")
     def _ast_to_object(self, ast): 
-        
-        if self._is_node(ast):
-            """
-            case 1: it is a predicate that we have to parse
-            case 2: it is a piece of smt code (injected by the user or to encode a literal)
-            """
-            name = ast[0]
-
-            # get the class of predicate corresponding to the node name
-            pred_class = self._get_class(name) #self.SYMBOL_TO_CLASS.get(name, None)
-            if pred_class is not None:
-                # case 1: a user predicate, continue to parse
-                # recursively obtain the predicate/var/literal of each
-                # argument ast
-                arguments = []
-                for a in ast[1]:
-                    arguments.append(self._ast_to_object(a))
-                # instantiate the predicate
-                p = pred_class(*arguments)
-            else:
-                # case 2: a piece of SMT code, take it as text
-                p = self._walk(ast)
-                
-            return p
-
-        elif self._is_var(ast):
-            # this is a variable
-            return ast
+        """
+        caso 1: ast e` una tupla (nome, lista) => nome determina la classe da istanziare, lista va iterata e per ogni elemento occorre invocare self._ast_to_object(...)
     
-        elif self._is_literal(ast):
-            # this is a literal
-            return ast
-
-        elif isinstance(ast, int):
-            # this is the encoded value of a string literal
-            return ast
-    
-        else:
-            #raise ValueError("The passed ast contains an unexpected node: %s" % ast)
-            log.warning("Unknown predicate content. Assume it's a piece of SMT code: %s" % ast)
-            return ast
+        caso 2: ast e` un'istanza di Or => ritornala
+        """
+        return ast
 
     @staticmethod
     @contract(ast="tuple(string, list)|string", returns="string")
