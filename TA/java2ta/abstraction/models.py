@@ -6,7 +6,8 @@ import logging
 import  itertools
 
 #from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
-
+from java2ta.abstraction import formulas
+from java2ta.smt.models import SMTSolver
 from java2ta.commons.utility import new_contract_check_type, partial_format
 
 log = logging.getLogger("main")
@@ -1226,8 +1227,8 @@ class LeftLinearParser(object):
     def _get_class(self, symbol):
         found_class = self.SYMBOL_TO_CLASS.get(symbol, None)
 
-        if not found_class:
-            logger.warning("No class found when parsing symbol: %s" % symbol)
+        #if not found_class:
+            #logger.warning("No class found when parsing symbol: %s" % symbol)
 
         return found_class
 
@@ -1400,4 +1401,226 @@ class PredicateParser(LeftLinearParser):
     @staticmethod
     def _is_literal(ast):
         return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
+ 
+class FormulaParser(LeftLinearParser):
+
+    RE_LITERAL = "true|false|{[^{}]+}"
+    SYMBOL_TO_CLASS = {
+        ">"     : GT,
+        ">="    : GTE,
+        "<"     : LT,
+        "<="    : LTE,
+        "="     : Eq,
+        "!="    : NotEq,
+        "and"   : formulas.And,
+        "or"    : formulas.Or, # to be added
+        "not"   : formulas.Not, # to be added
+        "P" : formulas.Proposition,
+        "G" : formulas.Globally,
+        "S" : formulas.SomePaths,
+        "A" : formulas.AllPaths,
+        "N" : formulas.Next,
+        "F" : formulas.Future
+#       "->"    : Imply, # to be added
+#       "<->"   : Iff, # to be added
+    }
+
+    def __init__(self,ss):
+        super(FormulaParser,self).__init__()
+        self.ss=ss
+    
+    def predicate_to_existential_abstraction(self,ss, pred):
+   
+        solver = SMTSolver()
+
+        existential_abstraction = []
+
+        for conf in ss.enumerate:# itera tra le configurazioni di ss.enumerate per selezionare quelle che ...
+
+            conf_preds = ss.value(conf)
+    
+            curr_problem = []
+            for (curr_attr, curr_pred) in zip(ss.attributes, conf_preds):
+            # TODO this is a dirty solution; find a better way
+                datatypes = [ curr_attr.domain.datatype ]
+                if hasattr(datatypes, "datatypes"):
+                    datatypes = datatypes[0].datatypes
+            # end of the dirty solution
+
+            for (var, datatype) in zip(curr_attr.variables, datatypes):
+                curr_problem.append("(declare-const %s %s)" % (var, datatype))
+
+            curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
+
+        curr_problem.append(pred.smt_assert())
+
+        # pass the problem to the smt solver; if it is satisfiable, take the conf
+        # otherwise skip it
+        solver.push()
+        res = solver.check_sat(curr_problem)
+        if res == "sat":
+            existential_abstraction.append(conf)
+        solver.pop()
+
+        return existential_abstraction
+    
+    def from_predicate(self, ss, pred): #argv):
+##        pro=""
+##        cont=1
+##        for arg in argv:
+##            
+##            pro=pro+"Proposition(%s)" % (str(arg))
+##            if cont<len(argv):
+##                pro=pro+","  
+##            cont=cont+1    
+##        g="Or(%s)" % (pro)  
+##         
+##        return eval(g).to_uppaal()
+    
+        # translate a predicate onto a list of configurations
+        conf_list = self.predicate_to_existential_abstraction(ss, pred)
+
+        # define a formula for converting a configuration onto a Proposition
+        conf_to_prop = lambda c: formulas.Proposition(c)
+
+        # translate a list of configurations onto a list of Proposition's
+        formula = map(conf_to_prop, conf_list)
+
+        # create an Or among all the Proposition's in the list
+        return formulas.Or(*formula)        
+    
+    @contract(text="string", returns="tuple(is_ast, string)")
+    
+    def _text_to_ast(self, text):
+        """
+        Given some text, it returns a tuple representing its abstract
+        syntax tree, and a string containing the non-parsed text. 
+        """
+
+        remaining = ""
+
+        if text[0] == "(":
+            # we are in a new nested node; the first component is the
+            # node name, which cannot contain neither spaces nor 
+            # parenthesis, nor curly braces
+            name, remaining = self._match(LeftLinearParser.RE_NODE_NAME, text[1:])
+
+            arguments = []
+            while len(remaining) > 0 and not remaining.startswith(")"):
+                ast, remaining = self._text_to_ast(remaining.strip())
+                arguments.append(ast)
+
+            if len(remaining) > 0:
+                # then: remaining.startswith(")")
+                remaining = remaining[1:]
+
+            return (name, arguments), remaining
+       
+        else:
+            # a token that ends at the first space (if any)  
+            #name, remaining = self._match(self.RE_LITERAL, text)
+            
+            literal, remaining = self._match(self.RE_LITERAL, text)
+            if literal[0]=="{" and literal[-1]=="}":
+                predicate=literal[1:-1]
+                pp=PredicateParser()
+                pre=pp.parse(predicate)
+                assert isinstance(pre, Predicate)
+                print pre
+                formula=self.from_predicate(self.ss,pre)
+              
+                return formula
+            else:
+                raise ValueError("not handled")    
+            # if literal name is a string, add it to the symbol table and replace
+            # the literal with its encoded value
+            #lit_code, lit_type = SymbolTable.add_literal(name)
+           # if lit_type == "String":
+               # name = "(init-AbsString %s %s)" % (lit_code, len(name) - 2) # TODO this work because I assume to encode literals as objects of type AbsString
+
+           # return name, remaining
+
+        # in case of normal exit, I should have consumed some input
+        # (otherwise it means it was not possible to parse it, thus I 
+        # should have raised an exception earlier)
+        #assert len(remaining) < len(text)
+
+
+
+    @contract(ast="is_ast", returns="is_predicate|string|int")
+    def _ast_to_object(self, ast): 
+        
+        if self._is_node(ast):
+            """
+            case 1: it is a predicate that we have to parse
+            case 2: it is a piece of smt code (injected by the user or to encode a literal)
+            """
+            name = ast[0]
+
+            # get the class of predicate corresponding to the node name
+            pred_class = self._get_class(name) #self.SYMBOL_TO_CLASS.get(name, None)
+            if pred_class is not None:
+                # case 1: a user predicate, continue to parse
+                # recursively obtain the predicate/var/literal of each
+                # argument ast
+                arguments = []
+                for a in ast[1]:
+                    arguments.append(self._ast_to_object(a))
+                # instantiate the predicate
+                p = pred_class(*arguments)
+            else:
+                # case 2: a piece of SMT code, take it as text
+                p = self._walk(ast)
+                
+            return p
+
+        elif self._is_var(ast):
+            # this is a variable
+            return ast
+    
+        elif self._is_literal(ast):
+            # this is a literal
+            return ast
+
+        elif isinstance(ast, int):
+            # this is the encoded value of a string literal
+            return ast
+    
+        else:
+            #raise ValueError("The passed ast contains an unexpected node: %s" % ast)
+            log.warning("Unknown predicate content. Assume it's a piece of SMT code: %s" % ast)
+            return ast
+
+    @staticmethod
+    @contract(ast="tuple(string, list)|string", returns="string")
+    def _walk(ast):
+        # walk the ast and serialize it as a string
+
+        res = None
+        if isinstance(ast, basestring):
+            res = ast
+        elif isinstance(ast, tuple):
+            arguments = []
+            for a in ast[1]:
+                arguments.append(PredicateParser._walk(a))
+    
+            res = "(%s %s)" % (ast[0], " ".join(arguments))
+        else:   
+            raise ValueError("The walk procedure does not expect this format")
+
+#        log.debug("Walk IN: %s OUT: %s" % (ast, res))
+        return res
+
+    @staticmethod
+    def _is_node(ast):
+        return isinstance(ast, tuple) and len(ast) == 2 and isinstance(ast[1], list) and re.match(PredicateParser.RE_NODE_NAME, ast[0])
+
+    @staticmethod
+    def _is_var(ast):
+        return isinstance(ast, basestring) and re.match(PredicateParser.RE_VAR, ast)
+
+    @staticmethod
+    def _is_literal(ast):
+        return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
+       
 
