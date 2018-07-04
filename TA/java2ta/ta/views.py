@@ -102,64 +102,55 @@ class GraphViz(TARenderer):
         return loc_name
         
     def group_locations(self,loc):
-     con=[]
-    # cont=0
-     lista=[]
-     #while len(loc)!=0:
-     for ta_lo in loc:
-            if ta_lo.is_initial:
-                continue
-            if con.count(ta_lo.name.split("@")[1])==0:    
-                con.append(ta_lo.name.split("@")[1])
-          #  print "ecco con prima %s" % (con)
-     while 1:
-        listaii=[]
-        #con=str(cont)
+        con=[]
+        lista=[]
+        for ta_lo in loc:
+               if ta_lo.is_initial:
+                   continue
+               if con.count(ta_lo.name.split("@")[1])==0:    
+                   con.append(ta_lo.name.split("@")[1])
+             #  print "ecco con prima %s" % (con)
+        while 1:
+           listaii=[]
+           #con=str(cont)
+           
+           cona=con.pop()    
+           for ta_location in loc:
+            #   print "ecco con dopo %s" % (con)
+              # if str(ta_location)=="initial":
+          # loc.remove("initial")
+                 #  continue
+              # if str(ta_location)=="ending":
+          # loc.remove("ending")
+                 #  continue
+               #if cont==0:
+                #   cont+=1
+                 #  con=str(ta_location)[1]
+               if ta_location.is_initial:
+                   continue
+               if ta_location.name.split("@")[1]==cona:
+                   
+          # listai.append(loca)
+                   listaii.append(ta_location)
+                   #loc.remove(ta_location)
+           #cont+=1
+            
+           #listaii.sort()
+           listai=(cona,sorted(listaii)) 
+           lista.append(listai) 
+         #  print "ecco la lista %s" % (lista)
+           if len(con)==0:
+               break  
+            
+           #del listaii[:]
+        return lista
         
-        cona=con.pop()    
-        for ta_location in loc:
-         #   print "ecco con dopo %s" % (con)
-           # if str(ta_location)=="initial":
-       # loc.remove("initial")
-              #  continue
-           # if str(ta_location)=="ending":
-       # loc.remove("ending")
-              #  continue
-            #if cont==0:
-             #   cont+=1
-              #  con=str(ta_location)[1]
-            if ta_location.is_initial:
-                continue
-            if ta_location.name.split("@")[1]==cona:
-                
-       # listai.append(loca)
-                listaii.append(ta_location)
-                #loc.remove(ta_location)
-        #cont+=1
-         
-        #listaii.sort()
-        listai=(cona,sorted(listaii)) 
-        lista.append(listai) 
-      #  print "ecco la lista %s" % (lista)
-        if len(con)==0:
-            break  
-         
-        #del listaii[:]
-     return lista
-     
     def render(self, *args, **kwargs):
         ta = self.ta
     
         g = Digraph(self.name, engine=self.engine)
         g.attr(rankdir="TB")
 
-      #  for (pc, locations) in sorted(self.group_locations(ta.locations)):
-      #     sg = g.subgraph(name=pc)
-      #     sg.attr(rankdir='LR')
-      #     for loc in locations:
-      #         sg.node(loc.name, label=loc_name, **node_attrs)
-        
-        
         node_attrs = { "shape": "rect", "style": "rounded" }
         g.attr(maxiter="10")
 
@@ -171,17 +162,6 @@ class GraphViz(TARenderer):
                     g.node(loc.name, label=loc_name, **node_attrs)
         node_attrs["peripheries"] = "1"                
         for cluster_id, (pc, locations) in enumerate(sorted(self.group_locations(ta.locations))):
-###            print "\necco la lista restituita %s,%s" % (pc,locations)
-          #  c=Digraph(pc)       
-          #  c.attr(rankdir="TB")
-            
-           # node_attrs = { "shape": "oval", "style": "rounded" }
-            
-           
-           # sg = g.subgraph(name=pc)
-           # sg.attr(rankdir='LR')
-            
-           # for loc in locations:
             with g.subgraph(name=str(cluster_id)) as c:
                 c.attr(rankdir="TB")
                 c.attr(style="invis")
