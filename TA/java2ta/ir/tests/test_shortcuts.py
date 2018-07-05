@@ -57,7 +57,7 @@ def test_check_now_assignments():
     now_methods = set([ "java.lang.System.currentTimeMillis" ])
     var_timestamps = get_timestamps(run_method) #, now_methods)
 
-    assert "b" in var_timestamps
+    assert "b" in var_timestamps, "Expected timestamp named 'b'. Got: %s" % (var_timestamps,)
     assert "c" in var_timestamps
 
     res_b = check_now_assignments(var_timestamps["b"], now_methods)
