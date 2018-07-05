@@ -1178,6 +1178,8 @@ def parse_clock_condition(node):
 
         now_timestamps = KnowledgeBase.get_now_timestamps(class_fqname, method_name)
 
+        log.debug("Found now timestamps for class (%s,%s): %s" % (class_fqname, method_name, now_timestamps))
+
         # in our simplified setting, in order to be a clock conditon, all the identifiers in the 
         # guard must be timestamps;
         for curr_identifier in identifiers:

@@ -207,7 +207,7 @@ class DataTypeFactory(object):
 
             attributes_dt = {}
             for (attr_name, attr_fq_type) in attributes.iteritems():
-                attributes_dt[attr_name] = self.from_fqn(attr_fq_type)
+                attributes_dt[attr_name] = str(self.from_fqn(attr_fq_type))
 
             smt_declaration = smt_declare_rec_datatype(fqn, attributes_dt)   
             dt.set_smt_declaration(smt_declaration)

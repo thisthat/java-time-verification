@@ -2,6 +2,9 @@ from time import sleep
 from contracts import contract
 from java2ta.ir.models import ASTVisitor
 
+import logging
+
+log = logging.getLogger(__name__)
 
 def check_is_open(project, max_seconds=30):
     num_attempts = max_seconds
@@ -275,16 +278,19 @@ def check_now_assignments(nodes, now_methods):
     """
     res = len(nodes) > 0
 
+    log.debug("Check now assignments : now methods = %s ..." % (now_methods, ))
     for curr in nodes:
         if curr["nodeType"] != "ASTMethodCall":
             res = False
             break
 
         called_method = "%s.%s" % (curr["classPointed"], curr["methodName"])
+        log.debug("Check now assignment: called method = %s" % called_method)
         if called_method not in now_methods:
             res = False     
             break
-        
+     
+    log.debug("Check now assignments : result = %s ..." % res)   
     return res
         
 
