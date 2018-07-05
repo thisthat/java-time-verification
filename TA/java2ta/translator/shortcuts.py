@@ -1274,6 +1274,7 @@ def check_reach_astre(ri):
                 smt_prob.push()
                 try:
                     is_sat = smt_prob.check_sat_instr(source_pred, instr, target_pred)
+                    SMTProb.smt_cache_store(source, instr, target, is_sat)
                 except TimeTransitionException, e:
                     is_sat = (source_pred == target_pred)
                     is_time_transition = True
@@ -1284,10 +1285,8 @@ def check_reach_astre(ri):
                         now_timestamps = KnowledgeBase.get_now_timestamps(e.class_fqn, e.method_name)
                         deadline_exp = node_to_deadline_exp(e.rhs_node, now_timestamps)
                         KnowledgeBase.set_deadline_exp(e.class_fqn, e.method_name, e.var, deadline_exp)
-
-
-                smt_prob.pop()
-                SMTProb.smt_cache_store(source, instr, target, is_sat)
+                finally:
+                    smt_prob.pop()
     
             log.debug("Statement SAT: %s" % is_sat)
             if is_sat:
@@ -1299,6 +1298,7 @@ def check_reach_astre(ri):
                     log.debug("Add time edge: %s" % edge)
                 else:
                     edge = Edge(source_loc, target_loc, edge_label)
+                    log.debug("Add untimed edge: %s" % edge)
  
                 reachable.append(target)
                 edges.append(edge) 
@@ -1368,12 +1368,17 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
             assert "expression" in guard
 
             smt_prob.push()
-            is_then_reachable = smt_prob.check_sat_guard(source_pred, guard=Precondition(guard["expression"]))
-            smt_prob.pop()
+            try:
+                is_then_reachable = smt_prob.check_sat_guard(source_pred, guard=Precondition(guard["expression"]))
+            finally:
+                smt_prob.pop()
 
             smt_prob.push()
-            is_else_reachable = smt_prob.check_sat_guard(source_pred, guard=Negate(guard["expression"])) 
-            smt_prob.pop()
+
+            try:
+                is_else_reachable = smt_prob.check_sat_guard(source_pred, guard=Negate(guard["expression"])) 
+            finally:
+                smt_prob.pop()
 
     if (is_then_reachable):
         reachable_then = [ source ]
@@ -1506,12 +1511,16 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
             with SMTProb(state_space.attributes, project) as smt_prob:
     
                 smt_prob.push()
-                is_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Precondition(guard["expression"]))
-                smt_prob.pop()
+                try:
+                    is_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Precondition(guard["expression"]))
+                finally:
+                    smt_prob.pop()
         
                 smt_prob.push()
-                is_not_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Negate(guard["expression"]))
-                smt_prob.pop()
+                try:
+                    is_not_while_reachable = smt_prob.check_sat_guard(curr_source_pred, guard=Negate(guard["expression"]))
+                finally:
+                    smt_prob.pop()
 
         assert not is_clock_condition or (is_while_reachable and is_not_while_reachable)
 
@@ -1645,12 +1654,16 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
     
                 guard_exp = guard["expression"]
                 smt_prob.push()
-                is_while_reachable = smt_prob.check_sat_guard(pred_final, guard=Precondition(guard_exp))
-                smt_prob.pop()
+                try:
+                    is_while_reachable = smt_prob.check_sat_guard(pred_final, guard=Precondition(guard_exp))
+                finally:
+                    smt_prob.pop()
         
                 smt_prob.push()
-                is_not_while_reachable = smt_prob.check_sat_guard(pred_final, guard=Negate(guard_exp))
-                smt_prob.pop()
+                try:
+                    is_not_while_reachable = smt_prob.check_sat_guard(pred_final, guard=Negate(guard_exp))
+                finally:
+                    smt_prob.pop()
     
             # the guard is satisfiable: jump back to the statement block
             if is_while_reachable:
