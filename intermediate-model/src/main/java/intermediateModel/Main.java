@@ -63,7 +63,6 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 
-
 		String name = args.length > 0 ? args[0] : "output";
 		name = name.replace(".", "_");
 		String base_path = args.length > 0 ? args[1] :"/Users/giovanni/repository/java-xal/project_eval/";

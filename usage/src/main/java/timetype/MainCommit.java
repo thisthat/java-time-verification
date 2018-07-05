@@ -61,9 +61,9 @@ public class MainCommit {
             List<TimeTypes> rt = IndexingProject.getMethodReturnTime(name, root_path, true);
             TemporalTypes.getInstance().addRT(rt);
             TemporalTypes.getInstance().loadUserDefinedPrefix(name);
-            List<TimeTypes> rt1 = IndexingProject.getMethodReturnTime(name, root_path, true);
-            TemporalTypes.getInstance().addRT(rt1);
-            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
+            //List<TimeTypes> rt1 = IndexingProject.getMethodReturnTime(name, root_path, true);
+            //TemporalTypes.getInstance().addRT(rt1);
+            //TemporalTypes.getInstance().loadUserDefinedPrefix(name);
         }
        // Indexing ET
         {

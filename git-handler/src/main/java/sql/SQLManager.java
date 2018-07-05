@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SQLManager {
-    static String connectionQuery = "jdbc:postgresql://brock.isys.uni-klu.ac.at:5432/giovanni?user=giovanni&password=giovanni";
+    static String connectionQuery = "jdbc:postgresql://localhost:5432/giovanni?user=giovanni&password=giovanni";
     Connection conn;
     public SQLManager() throws SQLException {
         conn = DriverManager.getConnection(connectionQuery);
@@ -39,7 +39,7 @@ public class SQLManager {
     }
 
     public void addCommitResult(String hash, long timeInit, long timeProcess, int warn, int err, int rec, String warning, String errors, String recommendation, String projectName) throws SQLException {
-        String sqlInsert = "INSERT INTO public.\"CommitResult\"(\"Hash\", \"TimeInit\", \"TimeProcess\", \"WARN\", \"ERR\", \"REC\"," +
+        String sqlInsert = "INSERT INTO public.\"CommitResultActiveMQ\"(\"Hash\", \"TimeInit\", \"TimeProcess\", \"WARN\", \"ERR\", \"REC\"," +
                 "\"Warnings\", \"Errors\", \"Recommendations\", \"ProjectName\") VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement st = conn.prepareStatement(sqlInsert);
         st.setString(1, hash);
