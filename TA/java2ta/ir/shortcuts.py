@@ -234,7 +234,7 @@ def get_timestamps(node):
     def handle_var_declaration(curr_node):
         assert "name" in curr_node, curr_node
         assert "nodeType" in curr_node["name"]
-        assert curr_node["name"]["nodeType"] == "ASTIdentifier"
+        assert curr_node["name"]["nodeType"] == "ASTIdentifier", "Expected node with ASTIdentifier. Got: %s" % (curr_node["name"], )
         assert "expr" in curr_node, curr_node
 
         curr_var = curr_node["name"]["value"]
