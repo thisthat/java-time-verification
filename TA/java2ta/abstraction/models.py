@@ -1544,14 +1544,38 @@ class FormulaParser(LeftLinearParser):
 
         return result, remaining
 
-    @contract(ast="is_ast", returns="is_predicate|string|int")
+    #@contract(ast="is_ast", returns="is_predicate|string|int")
     def _ast_to_object(self, ast): 
+        lis=[]
+        if isinstance(ast,tuple):
+            
+            #print "bene",ast
+            if isinstance(ast[0],tuple):
+                self._ast_to_object(ast[0])
+            else:    
+                nome=ast[0]
+                lista=ast[1]
+                if isinstance(lista,list):
+                   # for ele in lista:  
+                       # print "molto bene",lista[0] #ele
+                        return self._ast_to_object(lista[0])
+        
+                       
+        if isinstance(ast,formulas.Or):
+            return (ast)                    
+                    
+                #else:
+                #    formulas.nome(lista)
+      #  return ast            
+        
         """
-        caso 1: ast e` una tupla (nome, lista) => nome determina la classe da istanziare, lista va iterata e per ogni elemento occorre invocare self._ast_to_object(...)
+       caso 1: ast e` una tupla (nome, lista) => nome determina la classe da istanziare, lista va iterata e per ogni elemento occorre invocare self._ast_to_object(...)
     
-        caso 2: ast e` un'istanza di Or => ritornala
+       caso 2: ast e` un'istanza di Or => ritornala
         """
-        return ast
+         
+            
+        
 
     @staticmethod
     @contract(ast="tuple(string, list)|string", returns="string")
