@@ -5,6 +5,8 @@ import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
+import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.visitors.creation.filter.Filter;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -32,21 +34,75 @@ public class JDTVisitor extends ASTVisitor {
 	private Stack<IASTHasStms> stackSwitch = new Stack<>();
 	private Stack<ASTSwitch> casewitch = new Stack<>();
 	private String path;
+	private String lastLabel = null;
 
 	private static Map<String, List<ASTClass>> cache = new HashMap<>();
 
-	@Deprecated
 	public static List<ASTClass> parse(String filename){
-		return parse(filename, "");
+		return parse(filename, filename.substring(0, filename.lastIndexOf("/")));
 	}
 
-	public static List<ASTClass> parse(String filename, String projectPath) {
-		if(cache.containsKey(filename)){
+	public static List<ASTClass> parse(String filename, String project_path) {
+		return parse(filename, project_path, true);
+	}
+
+	public static List<ASTClass> parse(String filename, String project_path, Filter filter) {
+		List<ASTClass> out = parse(filename, project_path, true);
+		for(ASTClass c : out) {
+			filter.filter(c);
+		}
+		return out;
+	}
+
+	public static List<ASTClass> parse(String filename, String project_path, Filter filter, boolean shouldCache) {
+		List<ASTClass> out = parse(filename, project_path, shouldCache);
+		for(ASTClass c : out) {
+			filter.filter(c);
+		}
+		return out;
+	}
+
+	public static List<ASTClass> parse(String filename, String projectPath, boolean shouldCache) {
+		if(shouldCache && cache.containsKey(filename)){
 			return cache.get(filename);
 		}
 		Java2AST a = null;
 		try {
 			a = new Java2AST(filename, true, projectPath);
+		}
+		catch (IOException e) {
+			System.out.println("Fail to create the parser");
+			System.err.println(e.getMessage());
+			e.printStackTrace(System.err);
+		}
+		catch (UnparsableException e) {
+			//cannot parse the file
+			return new ArrayList<>();
+		}
+		CompilationUnit result = null;
+		try {
+			result = a.getContextJDT();
+		} catch (NullPointerException e){
+			System.out.println("Fail to create the tree");
+			System.err.println(e.getMessage());
+			e.printStackTrace(System.err);
+			return new ArrayList<>();
+		}
+		a.dispose();
+		JDTVisitor v = new JDTVisitor(result, filename);
+		result.accept(v);
+		if(shouldCache)
+			cache.put(filename, v.listOfClasses);
+		return v.listOfClasses;
+	}
+
+	public static List<ASTClass> parseSpecial(String filename, String projectPath, boolean shouldCache) {
+		if(shouldCache && cache.containsKey(filename)){
+			return cache.get(filename);
+		}
+		Java2AST a = null;
+		try {
+			a = new Java2AST(filename, true, projectPath, new ArrayList<>());
 		}
 		catch (IOException e) {}
 		catch (UnparsableException e) {
@@ -56,7 +112,8 @@ public class JDTVisitor extends ASTVisitor {
 		CompilationUnit result = a.getContextJDT();
 		JDTVisitor v = new JDTVisitor(result, filename);
 		result.accept(v);
-		cache.put(filename, v.listOfClasses);
+		if(shouldCache)
+			cache.put(filename, v.listOfClasses);
 		return v.listOfClasses;
 	}
 
@@ -167,9 +224,32 @@ public class JDTVisitor extends ASTVisitor {
 		c.setInterface(node.isInterface());
 		packageName = packageName + "." + className;
 		stackPackage.push(packageName);
-
-		c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
-
+		if(stackClasses.size() > 0){
+			ASTClass parent = stackClasses.peek();
+			c.setParent(parent);
+			for(ASTAttribute a : parent.getAttributes()){
+				c.addAttribute(a);
+			}
+		} else {
+			c.setParent(null);
+		}
+		//c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
+		ITypeBinding bind = node.resolveBinding();
+		if(bind != null) {
+			ITypeBinding[] interfacesDef = bind.getInterfaces();
+			for (ITypeBinding typeBind : interfacesDef) {
+				String name = typeBind.getQualifiedName();
+				for(IMethodBinding methodInt : typeBind.getDeclaredMethods()){
+					String mName = methodInt.getName();
+					List<String> parameters = new ArrayList<>();
+					for(ITypeBinding type : methodInt.getParameterTypes()){
+						parameters.add(type.getName());
+					}
+					ASTInterfaceMethod m = new ASTInterfaceMethod(name, mName, parameters);
+					c.addInterfaceMethod(m);
+				}
+			}
+		}
 		listOfClasses.add(c);
 		stackClasses.push(c);
 		lastClass = c;
@@ -381,6 +461,7 @@ public class JDTVisitor extends ASTVisitor {
 		boolean isSync = false;
 		boolean isAbs = false;
 		boolean isStatic = false;
+		IASTMethod.AccessModifier visibility = IASTMethod.AccessModifier.PRIVATE;
 		for(Object m : node.modifiers()){
 			if(m instanceof Modifier){
 				Modifier modifier = (Modifier)m;
@@ -393,6 +474,12 @@ public class JDTVisitor extends ASTVisitor {
 				if(modifier.isStatic()){
 					isStatic = true;
 				}
+				if(modifier.isPublic()) {
+					visibility = IASTMethod.AccessModifier.PUBLIC;
+				}
+				if(modifier.isProtected()){
+					visibility = IASTMethod.AccessModifier.PROTECTED;
+				}
 			}
 		}
 
@@ -403,6 +490,7 @@ public class JDTVisitor extends ASTVisitor {
 		} else {
 			method = new ASTMethod(start, stop, methodName, returnType, pars, throwedException, isSync, isAbs, isStatic);
 		}
+		method.setAccessModifier(visibility);
 		lastClass.addMethod(method);
 		lastMethod = method;
 		//stackMethods.push(method);
@@ -416,6 +504,12 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 		ASTFor forstm = new ASTFor(start, stop);
+
+		if(this.lastLabel != null){
+			forstm.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
+
 		lastMethod.addStms(forstm);
 		lastMethod = forstm;
 		//init expr
@@ -455,6 +549,12 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		SingleVariableDeclaration v = node.getParameter();
 		int vstart = v.getStartPosition();
 		int vstop = vstart + v.getLength();
@@ -475,6 +575,9 @@ public class JDTVisitor extends ASTVisitor {
 		ASTRE expr = getExprState(node.getExpression());
 
 		ASTForEach foreach = new ASTForEach(start,stop, var, expr);
+		if(stmLabel != null){
+			foreach.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(foreach);
 		lastMethod = foreach;
 
@@ -491,8 +594,17 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTRE guard = getExprState(node.getExpression());
 		ASTIf ifstm = new ASTIf(start, stop, guard);
+		if(stmLabel != null){
+			ifstm.setIdentifier(stmLabel);
+		}
 
 		lastMethod.addStms(ifstm);
 
@@ -526,6 +638,12 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTTry elm;
 		if(node.resources().size() > 0){
 			//try with resources
@@ -537,6 +655,9 @@ public class JDTVisitor extends ASTVisitor {
 			elm = new ASTTryResources(start, stop, resources);
 		} else {
 			elm = new ASTTry(start,stop);
+		}
+		if(stmLabel != null){
+			elm.setIdentifier(stmLabel);
 		}
 		lastMethod.addStms(elm);
 
@@ -600,13 +721,26 @@ public class JDTVisitor extends ASTVisitor {
 	}
 
 	@Override
+	public boolean visit(LabeledStatement node) {
+		this.lastLabel = node.getLabel().getIdentifier();
+		return true;
+	}
+
+	@Override
 	public boolean visit(WhileStatement node) {
 		IASTHasStms bck = lastMethod;
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
 		ASTRE expr = getExprState(node.getExpression());
 		ASTWhile whilestm = new ASTWhile(start, stop, expr);
+		if(stmLabel != null){
+			whilestm.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(whilestm);
 		lastMethod = whilestm;
 
@@ -624,9 +758,17 @@ public class JDTVisitor extends ASTVisitor {
 		IASTHasStms bck = lastMethod;
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
 
 		ASTRE expr = getExprState(node.getExpression());
 		ASTDoWhile whilestm = new ASTDoWhile(start, stop, expr);
+		if(stmLabel != null){
+			whilestm.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(whilestm);
 		lastMethod = whilestm;
 
@@ -646,8 +788,17 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTRE expr = getExprState(node.getExpression());
 		ASTSwitch switchstm = new ASTSwitch(start, stop, expr);
+		if(stmLabel != null){
+			switchstm.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(switchstm);
 		casewitch.push(switchstm);
 
@@ -686,8 +837,17 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+
 		ASTRE expr = getExprState(node.getExpression());
 		ASTSynchronized sync = new ASTSynchronized(start, stop, expr);
+		if(stmLabel != null){
+			sync.setIdentifier(stmLabel);
+		}
 		lastMethod.addStms(sync);
 		lastMethod = sync;
 		node.getBody().accept(this);
@@ -703,21 +863,52 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(BreakStatement node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		lastMethod.addStms(new ASTBreak(start,stop));
+		ASTBreak b;
+		if(node.getLabel() != null){
+			b = new ASTBreak(start,stop, node.getLabel().getIdentifier());
+		} else {
+			b = new ASTBreak(start,stop);
+		}
+
+		if(this.lastLabel != null){
+			b.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
+		lastMethod.addStms(b);
 		return true;
 	}
 	@Override
 	public boolean visit(ContinueStatement node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		lastMethod.addStms(new ASTContinue(start,stop));
+		ASTContinue c;
+		if(node.getLabel() != null){
+			c = new ASTContinue(start, stop, node.getLabel().getIdentifier());
+		} else {
+			c = new ASTContinue(start, stop);
+		}
+		if(this.lastLabel != null){
+			c.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
+
+		lastMethod.addStms(c);
 		return true;
 	}
 	@Override
 	public boolean visit(ReturnStatement node) {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
-		lastMethod.addStms(new ASTReturn(start,stop, getExprState(node.getExpression())));
+		String stmLabel = null;
+		if(this.lastLabel != null){
+			stmLabel = this.lastLabel;
+			this.lastLabel = null;
+		}
+		ASTReturn r = new ASTReturn(start,stop, getExprState(node.getExpression()));
+		if(stmLabel != null){
+			r.setIdentifier(stmLabel);
+		}
+		lastMethod.addStms(r);
 		return true;
 	}
 
@@ -751,11 +942,15 @@ public class JDTVisitor extends ASTVisitor {
 				ASTRE re = new ASTRE(start, stop,
 						newVar
 				);
+				checkType(re, v.getInitializer());
+				if(this.lastLabel != null){
+					re.setIdentifier(this.lastLabel);
+					this.lastLabel = null;
+				}
 				try {
 					bck.addStms(re);
 				} catch (Exception e){
 					//lambda expression in a attribute definition -> skip
-					//System.out.println("BRK");
 				}
 			}
 		}
@@ -767,11 +962,14 @@ public class JDTVisitor extends ASTVisitor {
 	public boolean visit(ExpressionStatement node) {
 		IASTHasStms bck = lastMethod;
 		ASTRE re = getExprState(node);
+		if(this.lastLabel != null){
+			re.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
 		try {
 			bck.addStms(re);
 		} catch (Exception e){
 			//lambda expression in a attribute definition -> skip
-			//System.out.println("BRK");
 		}
 		lastMethod = bck;
 		return true;
@@ -783,6 +981,10 @@ public class JDTVisitor extends ASTVisitor {
 		int start = node.getStartPosition();
 		int stop = start + node.getLength();
 		ASTThrow _throw = new ASTThrow(start, stop, getExprState(node.getExpression()) );
+		if(this.lastLabel != null){
+			_throw.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
 		lastMethod.addStms(_throw);
 		return true;
 	}
@@ -793,7 +995,28 @@ public class JDTVisitor extends ASTVisitor {
 		int start = ctx.getStartPosition();
 		int stop = start + ctx.getLength();
 		ASTRE expr =  new ASTRE(start, stop, getExpr(ctx));
+		checkType(expr, ctx);
+		if(this.lastLabel != null){
+			expr.setIdentifier(this.lastLabel);
+			this.lastLabel = null;
+		}
 		return expr;
+	}
+
+	private void checkType(ASTRE expr, ASTNode ctx) {
+		//check return type
+		Expression e = null;
+		if(ctx instanceof ExpressionStatement){
+			e = ((ExpressionStatement) ctx).getExpression();
+		} else if (ctx instanceof Expression){
+			e = (Expression) ctx;
+		}
+		if(e != null) {
+			ITypeBinding type = e.resolveTypeBinding();
+			if (type != null) {
+				expr.setType(type.getName());
+			}
+		}
 	}
 
 	//Helper to nullify objects
@@ -893,7 +1116,7 @@ public class JDTVisitor extends ASTVisitor {
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		String name = expr.getName().getFullyQualifiedName();
-		IASTRE exprCallee = new ASTLiteral(start, start+5, "super");
+		IASTRE exprCallee = new ASTIdentifier(start, start+5, "super");
 		List<IASTRE> pars = new ArrayList<>();
 		for(Object p : expr.arguments()){
 			pars.add(
@@ -913,6 +1136,26 @@ public class JDTVisitor extends ASTVisitor {
 			}
 			mc.setClassPointed(classPointed);
 			//System.out.println(node.toString() + " points to " + classPointed);
+		} else {
+			ITypeBinding objType = expr.resolveTypeBinding();
+			if(objType != null){
+				IMethodBinding[] methods = objType.getDeclaredMethods();
+				for(IMethodBinding m : methods){
+					if(m.getName().equals(expr.getName().getFullyQualifiedName()) && m.getParameterTypes().length == pars.size()) {
+						ITypeBinding theClass = m.getDeclaringClass();
+						pkg = theClass.getPackage().getName();
+						nmm = theClass.getName();
+						if(nmm.contains("<")){
+							nmm = nmm.substring(0, nmm.indexOf("<"));
+						}
+						String classPointed = pkg + "." + nmm;
+						if(classPointed.startsWith(".")){
+							classPointed = classPointed.substring(1);
+						}
+						mc.setClassPointed(classPointed);
+					}
+				}
+			}
 		}
 		return mc;
 	}
@@ -1057,18 +1300,25 @@ public class JDTVisitor extends ASTVisitor {
 		IASTRE.OPERATOR op = IASTRE.OPERATOR.instanceOf;
 		IASTRE l = getExpr(expr.getLeftOperand());
 		Type t = expr.getRightOperand();
-		IASTRE r = new ASTLiteral(t.getStartPosition(), t.getStartPosition()+t.getLength(), t.toString());
+		IASTRE r = new ASTIdentifier(t.getStartPosition(), t.getStartPosition()+t.getLength(), t.toString());
 		return new ASTBinary(start,stop, l, r, op);
 	}
 
 	private IASTRE mathExpression(InfixExpression expr) {
+
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
 		IASTRE.OPERATOR op = getOperator(expr.getOperator().toString());
 		IASTRE l = getExpr(expr.getLeftOperand());
 		IASTRE r = getExpr(expr.getRightOperand());
+		if(op == IASTRE.OPERATOR.sprecial){
+			op = IASTRE.OPERATOR.equal;
+			r = handleSpecialOperator(l,r, expr.getOperator().toString(), start, stop);
+		}
 		ASTBinary bin = new ASTBinary(start,stop, l, r, op);
+		String exprType = expr.resolveTypeBinding() != null ? expr.resolveTypeBinding().getQualifiedName() : null;
+		bin.setType(exprType);
 		IASTRE prev = bin;
 		for(Object o : expr.extendedOperands()){
 			ASTNode extExpr = (ASTNode) o;
@@ -1076,11 +1326,14 @@ public class JDTVisitor extends ASTVisitor {
 			int extstart, extstop;
 			extstart = extExpr.getStartPosition();
 			extstop = extstart + extExpr.getLength();
-			ASTBinary ext = new ASTBinary(extstart, extstop, prev, extended, op);
+			ASTBinary ext = new ASTBinary(start, extstop, prev, extended, op);
+			ext.setType(exprType);
 			prev = ext;
 		}
 		return prev;
 	}
+
+
 
 	private IASTRE newObject(ClassInstanceCreation expr) {
 		int start, stop;
@@ -1100,6 +1353,10 @@ public class JDTVisitor extends ASTVisitor {
 			st = hc.getStartPosition();
 			sp = st + hc.getLength();
 			ASTHiddenClass c = new ASTHiddenClass(st, sp);
+			if(lastClass != null) {
+				c.setParent(lastClass);
+				c.setPath(lastClass.getPath());
+			}
 			obj.setHiddenClass(c);
 			//attributes of the hidden class + methods
 			for(Object node : hc.bodyDeclarations()){
@@ -1115,7 +1372,6 @@ public class JDTVisitor extends ASTVisitor {
 							Modifier m = (Modifier) f.modifiers().get(i);
 							vis = Getter.visibility(m.toString());
 						} catch (Exception e){
-							System.out.println("BRK");
 						}
 					}*/
 					String typeF = f.getType().toString();
@@ -1147,7 +1403,9 @@ public class JDTVisitor extends ASTVisitor {
 				if(node instanceof MethodDeclaration){
 					ASTClass bck = lastClass;
 					lastClass = c;
+					IASTHasStms bckm = lastMethod;
 					((MethodDeclaration) node).accept(this);
+					lastMethod = bckm;
 					lastClass = bck;
 				}
 			}
@@ -1175,14 +1433,14 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.getArray().toString());
+		return new ASTIdentifier(start, stop, expr.getArray().toString());
 	}
 
 	private IASTRE literal(TypeLiteral expr) {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(BooleanLiteral expr) {
@@ -1203,7 +1461,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.toString());
+		return new ASTIdentifier(start, stop, expr.toString());
 	}
 
 	private IASTRE literal(StringLiteral expr) {
@@ -1220,6 +1478,10 @@ public class JDTVisitor extends ASTVisitor {
 		IASTRE.OPERATOR op = getOperator(expr.getOperator().toString());
 		IASTRE l = getExpr(expr.getLeftHandSide());
 		IASTRE r = getExpr(expr.getRightHandSide());
+		if(op == IASTRE.OPERATOR.sprecial){
+			op = IASTRE.OPERATOR.equal;
+			r = handleSpecialOperator(l,r, expr.getOperator().toString(), start, stop);
+		}
 		return new ASTAssignment(start, stop, l, r, op );
 	}
 
@@ -1259,7 +1521,7 @@ public class JDTVisitor extends ASTVisitor {
 		int start, stop;
 		start = expr.getStartPosition();
 		stop = start + expr.getLength();
-		return new ASTLiteral(start, stop, expr.getIdentifier());
+		return new ASTIdentifier(start, stop, expr.getIdentifier());
 	}
 
 	private IASTRE methodInvocation(MethodInvocation node) {
@@ -1275,8 +1537,8 @@ public class JDTVisitor extends ASTVisitor {
 			);
 		}
 
-		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
 
+		ASTMethodCall mc =  new ASTMethodCall(start,stop, name, exprCallee, pars );
 		IMethodBinding method = node.resolveMethodBinding();
 		String pkg, nmm;
 		if(method != null){
@@ -1289,6 +1551,31 @@ public class JDTVisitor extends ASTVisitor {
 			}
 			mc.setClassPointed(classPointed);
 			//System.out.println(node.toString() + " points to " + classPointed);
+		} else {
+			Expression e = node.getExpression();
+			if(e != null){
+				ITypeBinding objType = e.resolveTypeBinding();
+				if(objType != null){
+					IMethodBinding[] methods = objType.getDeclaredMethods();
+					for(IMethodBinding m : methods){
+						if(m.getName().equals(node.getName().getFullyQualifiedName()) && m.getParameterTypes().length == pars.size()) {
+							ITypeBinding theClass = m.getDeclaringClass();
+							pkg = theClass.getPackage().getName();
+							nmm = theClass.getName();
+							if(nmm.contains("<")){
+								nmm = nmm.substring(0, nmm.indexOf("<"));
+							}
+							String classPointed = pkg + "." + nmm;
+							if(classPointed.startsWith(".")){
+								classPointed = classPointed.substring(1);
+							}
+							mc.setClassPointed(classPointed);
+						}
+					}
+				}
+			}
+
+
 		}
 		return mc;
 	}
@@ -1309,8 +1596,36 @@ public class JDTVisitor extends ASTVisitor {
 			case "||": return IASTRE.OPERATOR.or;
 			case "&&": return IASTRE.OPERATOR.and;
 			case "%": return IASTRE.OPERATOR.mod;
+			case "^": return IASTRE.OPERATOR.xor;
+			case "<<": return IASTRE.OPERATOR.shiftLeft;
+			case ">>": return IASTRE.OPERATOR.shiftRight;
+			case ">>>": return IASTRE.OPERATOR.shiftRight;
+			case "<<<": return IASTRE.OPERATOR.shiftLeft;
 		}
-		return IASTRE.OPERATOR.equal;
+		return IASTRE.OPERATOR.sprecial;
+	}
+
+	private IASTRE handleSpecialOperator(IASTRE l, IASTRE r, String op, int s, int e) {
+		if(op.length() < 2)
+			return r;
+		final String[] var = {""};
+		l.visit(new DefualtASTREVisitor(){
+			@Override
+			public void enterASTLiteral(ASTLiteral elm) {
+				var[0] = elm.getValue();
+			}
+		});
+		String varName = var[0];
+		if(varName.trim().equals("")){
+			return r;
+		}
+		String opBase = op.substring(0, op.length()-1);
+		IASTRE.OPERATOR newOp = getOperator(opBase);
+		return new ASTBinary(s,e,
+				new ASTLiteral(r.getStart(), r.getStart()+varName.length(), varName),
+				r,
+				newOp
+		);
 	}
 
 }

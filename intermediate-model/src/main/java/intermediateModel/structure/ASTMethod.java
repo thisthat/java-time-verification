@@ -1,10 +1,9 @@
 package intermediateModel.structure;
 
+import intermediateModel.interfaces.*;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.types.DataTreeType;
-import intermediateModel.interfaces.*;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -20,13 +19,18 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
     public static String lambda = "λ";
     String name;
 	String returnType;
+	TimeUnit returnTypeUnit = TimeUnit.UNKNOWN;
 	List<ASTVariable> parameters;
 	List<String> exceptionsThrowed;
 	List<IASTStm> stms = new ArrayList<>();
 	boolean isSynchronized = false;
 	boolean isAbstract = false;
 	boolean isStatic = false;
+
 	List<DeclaredVar> declaredVar = new ArrayList<>();
+	List<String> timeVars = new ArrayList<>();
+	boolean hasTimeCnst;
+	AccessModifier visibility = AccessModifier.PRIVATE;
 
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
@@ -74,6 +78,23 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 
 	public String getReturnType() {
 		return returnType;
+	}
+
+	public TimeUnit getReturnTypeUnit() {
+		return returnTypeUnit;
+	}
+
+	public void setReturnTypeUnit(TimeUnit returnTypeUnit) {
+		this.returnTypeUnit = returnTypeUnit;
+	}
+
+	@Override
+	public AccessModifier getAccessModifier() {
+		return visibility;
+	}
+
+	public void setAccessModifier(AccessModifier v) {
+		this.visibility = v;
 	}
 
 	public List<ASTVariable> getParameters() {
@@ -204,5 +225,25 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 				}
 			});
 		}
+	}
+
+	@Override
+	public void setTimeVars(List<String> vars) {
+		this.timeVars = vars;
+	}
+
+	@Override
+	public void setTimeCnst(boolean f) {
+		hasTimeCnst = f;
+	}
+
+	@Override
+	public boolean hasTimeCnst() {
+		return hasTimeCnst;
+	}
+
+	@Override
+	public List<String> getTimeVars() {
+		return timeVars;
 	}
 }

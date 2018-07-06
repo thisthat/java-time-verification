@@ -38,6 +38,14 @@ public class ASTUnary extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		if(op == OPERATOR.not) {
+			return expr.negate();
+		}
+		return this;
+	}
+
+	@Override
 	public String print() {
 		return op.print() + expr.print();
 	}
@@ -49,5 +57,23 @@ public class ASTUnary extends IASTStm implements IASTRE {
 		expr.visit(visitor);
 		visitor.exitASTUnary(this);
 		visitor.exitAll(this);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTUnary astUnary = (ASTUnary) o;
+
+		if (op != astUnary.op) return false;
+		return expr != null ? expr.equals(astUnary.expr) : astUnary.expr == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = op != null ? op.hashCode() : 0;
+		result = 31 * result + (expr != null ? expr.hashCode() : 0);
+		return result;
 	}
 }

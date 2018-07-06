@@ -45,4 +45,17 @@ public class Store {
         return new ArrayList<>();
     }
 
+    public int size() {
+        return data.size();
+    }
+
+    public int totalSize() {
+        int out = 0;
+        for(String k : data.keySet()){
+            out += data.get(k).size();
+        }
+        return out;
+    }
+
+
 }

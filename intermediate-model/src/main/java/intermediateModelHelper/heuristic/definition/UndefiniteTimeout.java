@@ -2,14 +2,11 @@ package intermediateModelHelper.heuristic.definition;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTConstructor;
-import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
 
 import java.util.List;
@@ -30,7 +27,7 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 
 	@Override
 	public void setup(ASTClass c) {
-
+		super.setup(c);
 	}
 
 	/**
@@ -48,6 +45,7 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 		if(expr == null){
 			return;
 		}
+
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTMethodCall(ASTMethodCall elm) {
@@ -57,20 +55,10 @@ public class UndefiniteTimeout extends SearchTimeConstraint {
 				int size = pars.size();
 				if(pointer != null && containTimeOut(pointer, name, size)) {
 					String timeout = "";
-					UndefiniteTimeout.super.addConstraint(timeout, elm);
+					UndefiniteTimeout.super.addConstraint(timeout, elm, true);
 				}
 			}
 		});
-	}
-
-	@Override
-	public void nextMethod(ASTMethod method, Env env) {
-
-	}
-
-	@Override
-	public void nextConstructor(ASTConstructor method, Env env) {
-
 	}
 
 	private boolean containTimeOut(String pointer, String name, int nPars){

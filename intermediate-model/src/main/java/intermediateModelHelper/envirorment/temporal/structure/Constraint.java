@@ -1,7 +1,16 @@
 package intermediateModelHelper.envirorment.temporal.structure;
 
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.expression.ASTIdentifier;
+import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by giovanni on 22/03/2017.
@@ -11,7 +20,7 @@ public class Constraint {
     String category;
     String value;
     int line;
-    Constraint edgeVersion;
+    List<RuntimeConstraint> runtimeConstraints = new ArrayList<>();
 
     public Constraint(IASTStm elm, String category, String value, int line) {
         this.elm = elm;
@@ -20,8 +29,44 @@ public class Constraint {
         this.line = line;
     }
 
-    public Constraint(IASTStm elm, Class category, String value, int line) {
+    public Constraint(IASTStm elm, Class category, String value, int line, ASTClass c, String methodName){
+        this(elm,category,value,line,c,methodName,true);
+    }
+    public Constraint(IASTStm elm, Class category, String value, int line, ASTClass c, String methodName, boolean calculateRuntime) {
         this(elm, category.getCanonicalName(), value, line);
+        String className = c.getPackageName() + "." + c.getName();
+        if(calculateRuntime) {
+            elm.visit(new DefaultASTVisitor() {
+                List<ASTIdentifier> visited = new ArrayList<>();
+
+                @Override
+                public void enterASTMethodCall(ASTMethodCall elm) {
+                    if (!elm.isTimeCall())
+                        return;
+                    RuntimeConstraint rntCnst = new RuntimeConstraint(className, methodName, line, elm.printMethodCall());
+                    runtimeConstraints.add(rntCnst);
+                    elm.visit(new DefualtASTREVisitor() {
+                        @Override
+                        public void enterASTIdentifier(ASTIdentifier elm) {
+                            visited.add(elm);
+                        }
+                    });
+                }
+
+                @Override
+                public void enterASTIdentifier(ASTIdentifier elm) {
+                    if (visited.contains(elm))
+                        return;
+                    //we should skip strings and integers
+                    String val = elm.getValue();
+                    if (val.startsWith("\"") || ( val.length() > 1 && val.substring(0, 1).matches("[0-9]")) ) {
+                        return;
+                    }
+                    RuntimeConstraint rntCnst = new RuntimeConstraint(className, methodName, line, val);
+                    runtimeConstraints.add(rntCnst);
+                }
+            });
+        }
     }
 
     public String getCategory() {
@@ -48,8 +93,15 @@ public class Constraint {
         return elm;
     }
 
-    public void setEdgeVersion(Constraint edgeVersion) {
-        this.edgeVersion = edgeVersion;
+    public List<RuntimeConstraint> getRuntimeConstraints() {
+        return runtimeConstraints;
+    }
+
+    public void setRuntimeConstraints(List<RuntimeConstraint> runtimeConstraints) {
+        this.runtimeConstraints = runtimeConstraints;
+    }
+    public void addRuntimeConstraints(RuntimeConstraint runtimeConstraints) {
+        this.runtimeConstraints.add(runtimeConstraints);
     }
 
     @Override
@@ -61,7 +113,7 @@ public class Constraint {
 
         if (line != that.line) return false;
         if (elm != null ? !elm.equals(that.elm) : that.elm != null) return false;
-        if (category != null ? !category.equals(that.category) : that.category != null) return false;
+        //if (category != null ? !category.equals(that.category) : that.category != null) return false;
         return value != null ? value.equals(that.value) : that.value == null;
     }
 
@@ -82,6 +134,14 @@ public class Constraint {
         return this.category.equals(_class.getCanonicalName());
     }
 
+    public boolean isCategory(Class<? extends SearchTimeConstraint>[] _class){
+        boolean f = false;
+        for(Class c : _class){
+            f = f || this.category.equals(c.getCanonicalName());
+        }
+        return f;
+    }
+
     public Constraint negate() {
         String neg_value = this.value;
         if(neg_value.contains("<="))
@@ -96,14 +156,30 @@ public class Constraint {
             neg_value = neg_value.replace("<", ">=");
         else if(neg_value.contains(">"))
             neg_value = neg_value.replace(">", "<=");
-        return new Constraint(this.elm, this.category, neg_value, this.line);
+        Constraint c = new Constraint(this.elm, this.category, neg_value, this.line);
+        c.setRuntimeConstraints(this.runtimeConstraints);
+        return c;
     }
 
-    public Constraint getEdgeVersion(){
-        return edgeVersion;
+    public String runtimeConstraintList(){
+        return runtimeConstraintList(false);
+    }
+
+    public String runtimeConstraintList(boolean header){
+        runtimeConstraints.sort(Comparator.comparing(RuntimeConstraint::getClassName).thenComparing(RuntimeConstraint::getLine));
+        StringBuilder out = new StringBuilder();
+        if(header)
+            out.append("class;method;line;var\n");
+        for(RuntimeConstraint r : runtimeConstraints){
+            out.append(r.toString());
+            out.append("\n");
+        }
+        return out.toString();
     }
 
     public void removeElm() {
         this.elm = null;
     }
+
 }
+

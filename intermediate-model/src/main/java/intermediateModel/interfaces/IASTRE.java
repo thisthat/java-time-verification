@@ -1,12 +1,10 @@
 package intermediateModel.interfaces;
 
-import intermediateModel.visitors.DefualtASTREVisitor;
-
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public interface IASTRE extends IASTVisitor {
+public interface IASTRE extends IASTVisitor, IASTToken {
 	enum OPERATOR {
 		less,			// <
 		lessEqual,		// <=
@@ -25,11 +23,13 @@ public interface IASTRE extends IASTVisitor {
 		mod,			// %
 		and,			// &&
 		or,				// ||
-		instanceOf		// instanceOf
-		;
+		xor,			// ^
+		instanceOf,		// instanceOf
+		sprecial, 		// +=, -=, *=, ....
+		empty;
 
 
-		public String print(){
+        public String print(){
 			switch (this){
 				case less: return "<";
 				case lessEqual: return "<=";
@@ -76,8 +76,14 @@ public interface IASTRE extends IASTVisitor {
 
 	void visit(ASTREVisitor visitor);
 	String getCode();
+	int getStart();
+	int getEnd();
 	int getLine();
-
+	int getLineEnd();
+	boolean isTimeCritical();
+	void setTimeCritical(boolean timeCritical);
+	IASTRE negate();
 
 	String print();
+	boolean equals(Object o);
 }

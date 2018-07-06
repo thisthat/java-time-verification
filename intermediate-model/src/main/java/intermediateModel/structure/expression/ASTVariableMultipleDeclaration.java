@@ -52,6 +52,11 @@ public class ASTVariableMultipleDeclaration extends IASTStm implements IASTRE {
 	}
 
 	@Override
+	public IASTRE negate() {
+		return this;
+	}
+
+	@Override
 	public String print() {
 		StringBuffer bf = new StringBuffer();
 		bf.append(bf + " ");
@@ -68,4 +73,21 @@ public class ASTVariableMultipleDeclaration extends IASTStm implements IASTRE {
 		visit((ASTREVisitor) visitor);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTVariableMultipleDeclaration that = (ASTVariableMultipleDeclaration) o;
+
+		if (type != null ? !type.equals(that.type) : that.type != null) return false;
+		return vars != null ? vars.equals(that.vars) : that.vars == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = type != null ? type.hashCode() : 0;
+		result = 31 * result + (vars != null ? vars.hashCode() : 0);
+		return result;
+	}
 }

@@ -4,15 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
 import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.ASTRE;
+import intermediateModel.structure.expression.ASTAssignment;
+import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.ApplyHeuristics;
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
-import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +23,8 @@ import org.apache.logging.log4j.core.config.Configurator;
 import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
+import server.helper.PropertiesFileReader;
+import intermediateModel.types.TimeTypeSystem;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,10 +46,12 @@ public class getFile extends indexMW {
 		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.ALL : Level.OFF);
 	}
 
-	class AnnotateEnv extends ParseIM {
+	static class AnnotateEnv extends TimeTypeSystem {
 		@Override
 		public void start(ASTClass c) {
 			super.start(c);
+			c.setParent(null);
+			c.removeChild();
 		}
 
 		@Override
@@ -53,6 +59,32 @@ public class getFile extends indexMW {
 			super.analyzeASTRE(r, env);
 			r.setEnv(env);
 		}
+	}
+
+	static class RemoveCnt extends DefaultASTVisitor {
+		public RemoveCnt() {
+			super.setExcludeHiddenClass(false);
+		}
+
+		@Override
+			public void enterSTM(IASTStm s) {
+				s.removeCnstr();
+			}
+
+			@Override
+			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
+				elm.removeCnstr();
+			}
+
+			@Override
+			public void enterASTAssignment(ASTAssignment elm) {
+				elm.removeCnstr();
+			}
+
+			@Override
+			public void enterASTHiddenClass(ASTHiddenClass astHiddenClass) {
+				astHiddenClass.setParent(null);
+			}
 	}
 
 	@Override
@@ -64,7 +96,7 @@ public class getFile extends indexMW {
 			flag = false;
 		}
 		if(!flag){
-			ParsePars.printErrorMessagePars(he);
+			ParsePars.printErrorMessagePars(he, "Expected `" + par1 + "`");
 			return;
 		}
 		String file_path = parameters.get(par1);
@@ -86,13 +118,13 @@ public class getFile extends indexMW {
 		List<ASTClass> classes;
 		//Compute response
 		try {
-			classes = JDTVisitor.parse(file, base_path);
+			classes = JDTVisitor.parse(file, base_path, true);
 		} catch (Exception e){
 			LOGGER.debug(e);
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
+			os.write(response.getBytes());
 			os.close();
 			return;
 		}
@@ -101,17 +133,25 @@ public class getFile extends indexMW {
 			AnnotateEnv a = new AnnotateEnv();
 			a.start(c);
 			ApplyHeuristics ah = new ApplyHeuristics();
-			ah.subscribe(AnnotatedTypes.class);
-			ah.subscribe(TimeoutResources.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.MarkTime.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.TimeInSignature.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.AssignmentTimeVar.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.BooleanExpression.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.MinMaxSearch.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.ReturnExpression.class);
+			ah.subscribe(intermediateModelHelper.heuristic.v2.AddTimeVarToTimeExpression.class);
+
 			ah.analyze(c);
 			//annotate each method
 			for(IASTMethod m : c.getMethods()){
 				m.setDeclaredVars();
+				m.visit(new RemoveCnt());
 			}
 			for(Constraint cnst : ah.getTimeConstraint()){
 				cnst.removeElm();
 			}
 			c.setPath(file_path);
+			c.setVersion(PropertiesFileReader.getGitSha1());
 		}
 		//annotate with Time
 
@@ -125,6 +165,7 @@ public class getFile extends indexMW {
 			response = json.writeValueAsString(classes);
 		} catch (Exception e){
 			LOGGER.catching(e);
+			System.err.println(e.getMessage());
 		}
 		//LOGGER.debug(response);
 		he.getResponseHeaders().add("Content-Type","application/json");

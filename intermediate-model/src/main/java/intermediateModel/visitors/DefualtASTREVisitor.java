@@ -10,6 +10,36 @@ import intermediateModel.structure.expression.*;
  */
 public class DefualtASTREVisitor implements ASTREVisitor {
 
+	boolean excludePars = false;
+	boolean excludeHiddenClass = false;
+
+	public void setExcludePars(boolean excludePars) {
+		this.excludePars = excludePars;
+	}
+
+	public void setExcludeHiddenClass(boolean excludeHiddenClass) {
+		this.excludeHiddenClass = excludeHiddenClass;
+	}
+
+	public DefualtASTREVisitor setExcludeHiddenClassContinuos(boolean excludeHiddenClass) {
+		this.excludeHiddenClass = excludeHiddenClass;
+		return this;
+	}
+
+	public DefualtASTREVisitor setExcludeParsContinuos(boolean excludePars) {
+		this.excludePars = excludePars;
+		return this;
+	}
+
+	public boolean isExcludePars() {
+		return excludePars;
+	}
+
+	@Override
+	public boolean isExcludeHiddenClasses() {
+		return excludeHiddenClass;
+	}
+
 	@Override
 	public void enterASTArrayInitializer(ASTArrayInitializer elm) {
 
@@ -37,6 +67,11 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 
 	@Override
 	public void enterASTConditional(ASTConditional elm) {
+
+	}
+
+	@Override
+	public void enterASTIdentifier(ASTIdentifier elm) {
 
 	}
 
@@ -117,6 +152,11 @@ public class DefualtASTREVisitor implements ASTREVisitor {
 
 	@Override
 	public void exitASTConditional(ASTConditional elm) {
+
+	}
+
+	@Override
+	public void exitASTIdentifier(ASTIdentifier elm) {
 
 	}
 

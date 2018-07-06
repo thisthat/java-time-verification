@@ -80,6 +80,8 @@ public class ASTSwitch extends IASTStm {
 
 		@Override
 		public void visit(ASTVisitor visitor) {
+			visitor.enterSTM(this);
+			visitor.exitSTM(this);
 			for(IASTStm s : stms){
 				s.visit(visitor);
 			}
@@ -139,6 +141,8 @@ public class ASTSwitch extends IASTStm {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTSwitch(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		expr.visit(visitor);
 		for(ASTCase c : cases){
 			c.visit(visitor);

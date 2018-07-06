@@ -1,5 +1,3 @@
-import intermediateModel.interfaces.IASTMethod;
-
 class Thread_3 extends Thread {
 
 	Object minPrime;

@@ -1,21 +1,24 @@
+import intermediateModel.structure.ASTClass;
+import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexSyncBlock;
-import intermediateModel.structure.ASTClass;
-import intermediateModel.visitors.creation.JDTVisitor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Deprecated
+@Ignore
 public class TestSyncBlocks {
 
 	String file = TestSyncBlocks.class.getClassLoader().getResource("exprTypesSync/Thread_1.java").getPath();

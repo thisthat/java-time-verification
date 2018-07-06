@@ -1,13 +1,6 @@
 package uppaal;
 
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -16,6 +9,14 @@ import org.jdom.input.JDOMParseException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class NTA extends UppaalElement{
@@ -351,7 +352,13 @@ public class NTA extends UppaalElement{
 //		updateLabelPositions();
 		writeDocument(generateXMLDocument(), printStream);
 	}
-	
+
+	public void writeXMLWithPrettyLayout(String fileName) throws Exception {
+		try(PrintStream writer = new PrintStream(new File(fileName))) {
+			this.writeXMLWithPrettyLayout(writer);
+		}
+
+	}
 	public void writeXMLWithPrettyLayout(PrintStream printStream) {
 		try {
 			Document uDoc = UPPAALPrettyfy.getPrettyLayoutXml(generateXMLDocument());

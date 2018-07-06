@@ -58,19 +58,14 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 
 
 	public String getNameString() {
-		if(name instanceof ASTLiteral)
-			return ((ASTLiteral) name).getValue();
+		if(name instanceof ASTIdentifier)
+			return ((ASTIdentifier) name).getValue();
 		return "--not yet define--";
 	}
 
 	@Override
-	public void visit(ASTREVisitor visitor) {
-		visitor.enterAll(this);
-		visitor.enterASTVariableDeclaration(this);
-		if(expr != null)
-			expr.visit(visitor);
-		visitor.exitASTVariableDeclaration(this);
-		visitor.exitAll(this);
+	public void visit(ASTVisitor visitor) {
+		visit((ASTREVisitor)visitor);
 	}
 
 	@Override
@@ -84,13 +79,20 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 	}
 
 	@Override
-	public void visit(ASTVisitor visitor) {
+	public void visit(ASTREVisitor visitor) {
 		visitor.enterAll(this);
 		visitor.enterASTVariableDeclaration(this);
+		if(name != null)
+			name.visit(visitor);
 		if(expr != null)
 			expr.visit(visitor);
 		visitor.exitASTVariableDeclaration(this);
 		visitor.exitAll(this);
+	}
+
+	@Override
+	public IASTRE negate() {
+		return this;
 	}
 
 	public void setTypePointed(String typePointed) {
@@ -99,5 +101,27 @@ public class ASTVariableDeclaration extends IASTStm implements IASTRE {
 
 	public String getTypePointed() {
 		return typePointed;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ASTVariableDeclaration that = (ASTVariableDeclaration) o;
+
+		if (type != null ? !type.equals(that.type) : that.type != null) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		if (expr != null ? !expr.equals(that.expr) : that.expr != null) return false;
+		return typePointed != null ? typePointed.equals(that.typePointed) : that.typePointed == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = type != null ? type.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (expr != null ? expr.hashCode() : 0);
+		result = 31 * result + (typePointed != null ? typePointed.hashCode() : 0);
+		return result;
 	}
 }

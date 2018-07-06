@@ -1,5 +1,12 @@
 package intermediateModelHelper.indexing;
 
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTRE;
+import intermediateModel.structure.*;
+import intermediateModel.structure.expression.*;
+import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.EnvBase;
@@ -8,13 +15,6 @@ import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.*;
 import intermediateModelHelper.types.ResolveTypes;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTRE;
-import intermediateModel.structure.*;
-import intermediateModel.structure.expression.*;
-import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.DefualtASTREVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class IndexingSyncBlock extends ParseIM {
 	}
 
 	/**
-	 * It connects to the mongodb and prepare the data in order to resolve the from which
+	 * It connects to the mongodb and prepare the preprocess in order to resolve the from which
 	 * objects the method calls are coming from.
 	 */
 	private void processImports(ASTClass c) {
@@ -201,11 +201,11 @@ public class IndexingSyncBlock extends ParseIM {
 				return sync.getExpr().equals(v.getName()) && sync.getExprType().equals(v.getType());
 			}
 			private boolean checkIASTRE(IASTRE e, Env env){
-				if(e instanceof ASTLiteral){
-					ASTLiteral lit = (ASTLiteral) e;
+				if(e instanceof ASTIdentifier){
+					ASTIdentifier lit = (ASTIdentifier) e;
 					if(lit.getValue().equals(sync.getExpr())){
 						if(lit.getCode().endsWith("]")){ //does it work like that?
-							//We should think about gettin' in touch with the concrete types of the program and do not abstract from them. At least arrays...
+							//We should think about gettin' in touch with the concrete intermediateModel.types of the program and do not abstract from them. At least arrays...
 							//handle cases where we store smth inside an array
 							return false;
 						}

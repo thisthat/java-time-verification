@@ -1,8 +1,8 @@
 package intermediateModel.visitors.interfaces;
 
-import intermediateModelHelper.envirorment.Env;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.expression.*;
+import intermediateModelHelper.envirorment.Env;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -27,8 +27,8 @@ public abstract class ParseRE {
 			return analyze((ASTCast) r);
 		} else if(r instanceof ASTConditional){
 			return analyze((ASTConditional) r);
-		} else if(r instanceof ASTLiteral){
-			return analyze((ASTLiteral) r);
+		} else if(r instanceof ASTIdentifier){
+			return analyze((ASTIdentifier) r);
 		} else if(r instanceof ASTMethodCall){
 			return analyze((ASTMethodCall) r);
 		} else if(r instanceof ASTNewObject) {
@@ -54,7 +54,7 @@ public abstract class ParseRE {
 	protected Object analyze(ASTBinary r){ return null; }
 	protected Object analyze(ASTCast r){ return null; }
 	protected Object analyze(ASTConditional r){ return null; }
-	protected Object analyze(ASTLiteral r){ return null; }
+	protected Object analyze(ASTIdentifier r){ return null; }
 	protected Object analyze(ASTMethodCall r){ return null; }
 	protected Object analyze(ASTNewObject r){ return null; }
 	protected Object analyze(ASTPostOp r){ return null; }

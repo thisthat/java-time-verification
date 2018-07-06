@@ -7,17 +7,9 @@ import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTAttribute;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTMethod;
-import intermediateModelHelper.envirorment.temporal.ParseMethods;
-import intermediateModelHelper.envirorment.temporal.ParseTimeout;
-import intermediateModelHelper.envirorment.temporal.ParseTypes;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,7 +105,7 @@ public class BuildEnvironment {
 	/**
 	 * Checks if the variable has a time related type.
 	 * @param v	Variable to check
-	 * @return	True if is in the list of those types that are time related.
+	 * @return	True if is in the list of those intermediateModel.types that are time related.
 	 */
 	public boolean hasVarTypeTimeRelated(IASTVar v){
 		if(v.getTypePointed() != null && !v.getTypePointed().equals("")) {
@@ -126,7 +118,7 @@ public class BuildEnvironment {
 	/**
 	 * Checks if the type is a time related type.
 	 * @param t	Type to check
-	 * @return	True if is in the list of those types that are time related.
+	 * @return	True if is in the list of those intermediateModel.types that are time related.
 	 */
 	public boolean isTypeTimeRelated(String t){
 		return false;//typeTimeRelevant.stream().anyMatch(type -> (type.equals(t)));

@@ -63,6 +63,6 @@ public class StoreItem {
 
     @Override
     public String toString() {
-        return String.format("%s.%s %s:%d",  className, methodName, varName, line);
+        return String.format("%s.%s %s@%d",  className, methodName, varName, line);
     }
 }

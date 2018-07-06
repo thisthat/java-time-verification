@@ -1,37 +1,19 @@
 
 package org.apache.activemq.transport.failover;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.command.Command;
 
+import javax.jms.ExceptionListener;
+import javax.jms.JMSException;
 import java.net.Socket;
-import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.jms.Connection;
-import javax.jms.ExceptionListener;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
-import org.apache.activemq.ActiveMQConnection;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.command.Command;
-import org.apache.activemq.command.LocalTransactionId;
-import org.apache.activemq.command.MessageAck;
-import org.apache.activemq.command.TransactionInfo;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertTrue;
 
 public class FailoverTimeoutTest {
 	public void doTestInterleaveAndException(final ActiveMQConnection connection, final Command command) throws Exception {

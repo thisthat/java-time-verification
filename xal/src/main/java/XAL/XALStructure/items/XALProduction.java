@@ -21,7 +21,7 @@ public abstract class XALProduction extends XALItem {
     }
 
     /**
-     * This subclass of {@link XALProduction} is used to store the data for the System tag of a metric or action.
+     * This subclass of {@link XALProduction} is used to store the preprocess for the System tag of a metric or action.
      * The value of className can be empty only if the metric/action has type Object.
      * This constrain is checked inside the classes {@link XALMetric} and {@link XALAction}
      * @author Giovanni Liva (@thisthatDC)

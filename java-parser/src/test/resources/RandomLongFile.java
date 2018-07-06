@@ -186,7 +186,7 @@ public class RandomLongFile{
     }
 
     //Generate the topology async each SleepTimeout [ms]
-    //In a thread it fulfill the data structures
+    //In a thread it fulfill the preprocess structures
     public class GenerateTopologyAsync implements Runnable {
 
         private PredictionModule _class;
@@ -221,7 +221,7 @@ public class RandomLongFile{
         }
     }
 
-    //Build the data structure that take care of the topology
+    //Build the preprocess structure that take care of the topology
     public void createTopology(){
         Map<Link, LinkInfo> links;
         links = topology.getLinks();
@@ -541,7 +541,7 @@ public class RandomLongFile{
     }
 
     //Generate the topology async each SleepTimeout [ms]
-    //In a thread it fulfill the data structures
+    //In a thread it fulfill the preprocess structures
     public class GenerateTopologyAsync implements Runnable {
 
         private PredictionModule _class;
@@ -576,7 +576,7 @@ public class RandomLongFile{
         }
     }
 
-    //Build the data structure that take care of the topology
+    //Build the preprocess structure that take care of the topology
     public void createTopology(){
         Map<Link, LinkInfo> links;
         links = topology.getLinks();
@@ -895,7 +895,7 @@ public class RandomLongFile{
     }
 
     //Generate the topology async each SleepTimeout [ms]
-    //In a thread it fulfill the data structures
+    //In a thread it fulfill the preprocess structures
     public class GenerateTopologyAsync implements Runnable {
 
         private PredictionModule _class;
@@ -930,7 +930,7 @@ public class RandomLongFile{
         }
     }
 
-    //Build the data structure that take care of the topology
+    //Build the preprocess structure that take care of the topology
     public void createTopology(){
         Map<Link, LinkInfo> links;
         links = topology.getLinks();

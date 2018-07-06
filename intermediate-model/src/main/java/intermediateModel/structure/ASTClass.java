@@ -1,9 +1,11 @@
 package intermediateModel.structure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
+import intermediateModel.visitors.DefaultASTVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +27,14 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 	List<ASTImport> imports = new ArrayList<>();
 	List<ASTAttribute> attributes = new ArrayList<>();
 	String path;
+	String version;
 	ASTClass parent = null;
 	boolean isInterface = false;
 	boolean isAbstract = false;
+	List<ASTClass> child = new ArrayList<>();
+	List<ASTInterfaceMethod> interfaceMethods = new ArrayList<>();
+
+	public ASTClass(){}
 
 	public ASTClass(int start, int end, String packageName, String name, Visibility accessRight, String extendClass, List<String> implmentsInterfaces){
 		super(start,end);
@@ -54,10 +61,20 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public void setParent(ASTClass c){
 		this.parent = c;
+		if(c != null)
+			c.registerChild(this);
 	}
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	public List<ASTImport> getImports() {
@@ -68,6 +85,7 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		this.imports = imports;
 	}
 
+	@JsonIgnore
 	public List<IASTMethod> getAllMethods() {
 		List<IASTMethod> out = new ArrayList<>(methods);
 		if(this.parent != null){
@@ -167,6 +185,19 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		//for(IASTMethod m : methods){
 		//	out += m.toString();
 		//}
+		return out;
+	}
+
+	public String fullName(){
+		String out;
+		if(this.parent != null) {
+			out = packageName + "$" + name;
+		} else {
+			out = packageName + "." + name;
+		}
+		if(out.startsWith(".") || out.startsWith("$")){
+			out = out.substring(1);
+		}
 		return out;
 	}
 
@@ -304,4 +335,64 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		}
 		return false;
     }
+
+    public int getCountMethod() {
+		class counter extends DefaultASTVisitor {
+			int c = 0;
+
+			@Override
+			public void enterASTMethod(ASTMethod elm) {
+				c++;
+			}
+
+			@Override
+			public void enterASTConstructor(ASTConstructor elm) {
+				c++;
+			}
+
+			public int count(ASTClass z) {
+				c = 0;
+				z.visit(this);
+				return c;
+			}
+		}
+		return new counter().count(this);
+	}
+
+	public void registerChild(ASTClass c){
+		if(!child.contains(c))
+			this.child.add(c);
+	}
+
+	public List<ASTClass> getChilds() {
+		return child;
+	}
+
+	public void removeChild() {
+		this.child.clear();
+	}
+
+    public void addInterfaceMethod(ASTInterfaceMethod m) {
+		this.interfaceMethods.add(m);
+    }
+
+    public boolean isInterfaceMethod(ASTMethod m){
+		boolean f = false;
+		for(ASTInterfaceMethod im : this.interfaceMethods){
+			if(im.isEqualMethod(m)){
+				f = true;
+			}
+		}
+		return f;
+	}
+
+	public List<ASTInterfaceMethod> getInterfaceMethods(ASTMethod m){
+		List<ASTInterfaceMethod> out = new ArrayList<>();
+		for(ASTInterfaceMethod im : this.interfaceMethods){
+			if(im.isEqualMethod(m)){
+				out.add(im);
+			}
+		}
+		return out;
+	}
 }

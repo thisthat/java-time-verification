@@ -79,7 +79,7 @@ public class openProject extends indexMW {
 				flag = false;
 			}
 			if(!flag){
-				ParsePars.printErrorMessagePars(he);
+				ParsePars.printErrorMessagePars(he, "Expected the parameter `path`");
 				return;
 			}
 			base_path = parameters.get(par1);

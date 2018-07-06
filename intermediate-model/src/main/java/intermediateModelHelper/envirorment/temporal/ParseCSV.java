@@ -10,6 +10,7 @@ public abstract class ParseCSV {
     File file;
     String separator = ";";
     InputStream stream;
+    boolean splitSignature = false;
 
     boolean isStream = false;
 
@@ -26,6 +27,14 @@ public abstract class ParseCSV {
         this.stream = stream;
     }
 
+    public boolean isSplitSignature() {
+        return splitSignature;
+    }
+
+    public void setSplitSignature(boolean splitSignature) {
+        this.splitSignature = splitSignature;
+    }
+
     public String getSeparator() {
         return separator;
     }
@@ -34,7 +43,7 @@ public abstract class ParseCSV {
         this.separator = separator;
     }
 
-    protected void start(){
+    public void start(){
         try {
             if (isStream) {
                 start(new InputStreamReader(stream));
@@ -54,12 +63,7 @@ public abstract class ParseCSV {
                 // use comma as separator
                 String[] row = line.split(separator);
                 if(notHeader) {
-                    if(row.length == 3){
-                        handleRow(row[0],row[1], row[2].split(","));
-                    } else {
-                        handleRow(row[0],row[1], new String[0]);
-                    }
-
+                    parseRow(row);
                 }
                 else {
                     notHeader = true;
@@ -68,6 +72,21 @@ public abstract class ParseCSV {
             }
         } catch (IOException e) {
            // e.printStackTrace();
+        }
+    }
+
+    protected void parseRow(String[] row){
+        if(row.length == 3 || splitSignature){
+            String[] signature = row[2].split(",");
+            if(signature.length == 1 && signature[0].equals("")){
+                signature = new String[0];
+            }
+            handleRow(row[0],row[1], signature);
+        } else {
+            if(splitSignature)
+                handleRow(row[0],row[1], new String[0]);
+            else
+                handleRow(row[0],row[1], new String[]{ row[2] }  );
         }
     }
 

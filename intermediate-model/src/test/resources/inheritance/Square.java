@@ -1,5 +1,3 @@
-import Rectangle;
-
 public class Square extends Rectangle {
 
 	// initialize this Square's length, width to the constructor's argument

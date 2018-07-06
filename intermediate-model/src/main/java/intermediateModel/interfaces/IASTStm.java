@@ -2,7 +2,6 @@ package intermediateModel.interfaces;
 
 
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import org.javatuples.Triplet;
 import parser.ASTSrc;
 
 import java.util.Arrays;
@@ -20,9 +19,11 @@ import java.util.Arrays;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public abstract class IASTStm implements IASTVisitor{
+public abstract class IASTStm implements IASTVisitor, IASTToken {
 
-	/**
+
+
+    /**
 	 * Enum about the different visibility access level that Java offers
 	 */
 	public enum Visibility {
@@ -41,9 +42,11 @@ public abstract class IASTStm implements IASTVisitor{
 	protected String code = "";
 	protected int line;
 	protected int lineEnd;
+	protected String identifier = null;
+
 	protected Constraint constraint = null;
 	//@Beta protected List<Annotation> annotations = new ArrayList<>();
-	private boolean isTimeCritical = false;
+	protected boolean isTimeCritical = false;
 	/**
 	 * Retrive the time constraint of the current Node
 	 * @return the information of the time constraint with &lt;line, message, class that detected the constraint&gt;
@@ -61,6 +64,10 @@ public abstract class IASTStm implements IASTVisitor{
 	public void addConstraint(Constraint c){
 		isTimeCritical = true;
 		constraint = c;
+	}
+
+	public void removeCnstr() {
+		constraint = null;
 	}
 
 	public String getNodeType() {
@@ -97,7 +104,7 @@ public abstract class IASTStm implements IASTVisitor{
 
 	/**
 	 * Calculate the source code of the node.
-	 * It tries to use the ANTLRv4 Token data structure to retrieve the source code.
+	 * It tries to use the ANTLRv4 Token preprocess structure to retrieve the source code.
 	 * If they are not available it uses the {@link ASTSrc} class.
 	 */
 	protected void calculateSourceCode(){
@@ -222,6 +229,14 @@ public abstract class IASTStm implements IASTVisitor{
 
 	protected IASTStm(){
 
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 	/**

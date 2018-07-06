@@ -34,7 +34,7 @@ public class Location extends PositionedUppaalElement{
 	}
 
 	/**
-	 * The different types of locations
+	 * The different intermediateModel.types of locations
 	 */
 	public enum LocationType { COMMITTED, NORMAL, URGENT }
 	

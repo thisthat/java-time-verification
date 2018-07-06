@@ -19,25 +19,15 @@
 
 package com.aelitis.net.udp.mc.impl;
 
-import java.net.*;
-import java.util.*;
+                                                                                                                import com.aelitis.azureus.core.util.NetUtils;
+                                                                                                                import com.aelitis.net.udp.mc.MCGroup;
+                                                                                                                import com.aelitis.net.udp.mc.MCGroupAdapter;
+                                                                                                                import com.aelitis.net.udp.mc.MCGroupException;
+                                                                                                                import org.gudy.azureus2.core3.config.COConfigurationManager;
+                                                                                                                import org.gudy.azureus2.core3.util.*;
 
-import org.gudy.azureus2.core3.config.COConfigurationManager;
-import org.gudy.azureus2.core3.util.AEMonitor;
-import org.gudy.azureus2.core3.util.AERunnable;
-import org.gudy.azureus2.core3.util.AEThread;
-import org.gudy.azureus2.core3.util.AEThread2;
-import org.gudy.azureus2.core3.util.AsyncDispatcher;
-import org.gudy.azureus2.core3.util.Debug;
-import org.gudy.azureus2.core3.util.HostNameToIPResolver;
-import org.gudy.azureus2.core3.util.SimpleTimer;
-import org.gudy.azureus2.core3.util.TimerEvent;
-import org.gudy.azureus2.core3.util.TimerEventPerformer;
-
-import com.aelitis.azureus.core.util.NetUtils;
-import com.aelitis.net.udp.mc.MCGroup;
-import com.aelitis.net.udp.mc.MCGroupAdapter;
-import com.aelitis.net.udp.mc.MCGroupException;
+                                                                                                                import java.net.*;
+                                                                                                                import java.util.*;
 
 
 /**
@@ -630,7 +620,7 @@ MCGroupImpl
 	
 					mc_sock.setNetworkInterface( network_interface );
 					
-					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", data = " + new String(data));
+					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", preprocess = " + new String(preprocess));
 					
 					DatagramPacket packet = new DatagramPacket(data, data.length, group_address.getAddress(), group_port );
 					
@@ -734,7 +724,7 @@ MCGroupImpl
 					
 					byte[]	data = param_data.replaceAll("%AZINTERFACE%", an_address.getHostAddress()).getBytes();
 					
-					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", data = " + new String(data));
+					// System.out.println( "sendToGroup: ni = " + network_interface.getName() + ", preprocess = " + new String(preprocess));
 					
 					DatagramPacket packet = new DatagramPacket(data, data.length, group_address.getAddress(), group_port );
 					
@@ -854,7 +844,7 @@ MCGroupImpl
 		byte[]	data 	= packet.getData();
 		int		len		= packet.getLength();
 		
-		// System.out.println( "receive: add = " + local_address + ", data = " + new String( data, 0, len ));
+		// System.out.println( "receive: add = " + local_address + ", preprocess = " + new String( preprocess, 0, len ));
 
 		adapter.received( 
 				network_interface, 
@@ -878,7 +868,7 @@ MCGroupImpl
 		
 		DatagramSocket	reply_socket	= null;
 			
-		// System.out.println( "sendToMember: add = " + address + ", data = " +new String( data ));
+		// System.out.println( "sendToMember: add = " + address + ", preprocess = " +new String( preprocess ));
 
 		try{
 			reply_socket = new DatagramSocket( null );

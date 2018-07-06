@@ -3,7 +3,6 @@ package intermediateModelHelper.heuristic.beta;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
-import intermediateModel.structure.expression.ASTLiteral;
 import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
@@ -22,14 +21,43 @@ public class Translation {
         expr.visit(new DefualtASTREVisitor(){
             @Override
             public void enterASTbinary(ASTBinary elm) {
-                if(elm.getOp() == IASTRE.OPERATOR.minus){
-                    IASTRE l = elm.getLeft();
-                    IASTRE r = elm.getRight();
-                    elm.setLeft(r);
-                    elm.setRight(l);
+                if(elm.isTimeCritical()){
+                    propagate(elm);
+                    return;
+                }
+                if(!hasTimeCritical(elm.getLeft())){
+                    elm.setLeft(null);
+                    elm.setOp(IASTRE.OPERATOR.empty);
+                }
+                if(!hasTimeCritical(elm.getRight())){
+                    elm.setRight(null);
+                    elm.setOp(IASTRE.OPERATOR.empty);
+                }
+            }
+
+            private void propagate(ASTBinary elm) {
+                elm.visit(new DefualtASTREVisitor(){
+                    @Override
+                    public void enterAll(IASTRE elm) {
+                        elm.setTimeCritical(true);
+                    }
+                });
+            }
+        });
+    }
+
+    private static boolean hasTimeCritical(IASTRE left) {
+        if(left.isTimeCritical()) return true;
+        boolean[] flag = {false};
+        left.visit(new DefualtASTREVisitor(){
+            @Override
+            public void enterASTbinary(ASTBinary elm) {
+                if(elm.isTimeCritical()){
+                    flag[0] = true;
                 }
             }
         });
+        return flag[0];
     }
 
     public static void Translate(ASTRE re, Env e){
@@ -41,13 +69,15 @@ public class Translation {
             public void enterASTMethodCall(ASTMethodCall elm) {
                 if(elm.getClassPointed() != null && !elm.getClassPointed().equals("")){
                     if(e.existMethodTimeRelevant(elm.getClassPointed(), elm.getMethodName(), getSignature(elm.getParameters(), e))){
-                        elm.setMethodName("t");
-                        elm.setExprCallee(new ASTLiteral(0,0,""));
+                        //elm.setMethodName("t");
+                        //elm.setExprCallee(new ASTLiteral(0,0,""));
+                        elm.setTimeCall(true);
                     }
                 }
                 else if(e.existMethodTimeRelevant(elm.getMethodName(), getSignature(elm.getParameters(), e))){
-                    elm.setMethodName("t");
-                    elm.setExprCallee(new ASTLiteral(0,0,""));
+                    //elm.setMethodName("t");
+                    //elm.setExprCallee(new ASTLiteral(0,0,""));
+                    elm.setTimeCall(true);
                 }
             }
         });

@@ -1,9 +1,9 @@
 package intermediateModelHelper.types;
 
+import intermediateModel.structure.ASTClass;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexData;
-import intermediateModel.structure.ASTClass;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
@@ -63,7 +63,7 @@ public class DataTreeType {
 		for(String i : current.getImports()){
 			List<IndexData> imports = db.getFromImport(i);
 			for(IndexData index : imports){
-				//Check on types to resolve the extends
+				//Check on intermediateModel.types to resolve the extends
 				if(index.getClassName().equals(extType)){
 					try {
 						extended = new DataTreeType(index.getName(), index.getClassPackage());
@@ -85,7 +85,7 @@ public class DataTreeType {
 		}
 		List<IndexData> imports = db.getFromImport(current.getClassPackage() + ".*");
 		for(IndexData index : imports){
-			//Check on types to resolve the extends
+			//Check on intermediateModel.types to resolve the extends
 			if(index.getClassName().equals(extType)){
 				try {
 					extended = new DataTreeType(index.getName(), index.getClassPackage());
@@ -189,7 +189,7 @@ public class DataTreeType {
 	}
 
 	private static boolean checkEqualsTypes(String type1, String type2) {
-		//search for basic types
+		//search for basic intermediateModel.types
 		List<String> basic_int = new ArrayList<>(Arrays.asList(new String[]{"short", "int", "long", "float", "double", "Short", "Integer", "Long", "Float", "Double"}));
 		List<String> basic_bool = new ArrayList<>(Arrays.asList(new String[]{"boolean","Boolean"}));
 		if(basic_int.contains(type1) && basic_int.contains(type2)) return true;

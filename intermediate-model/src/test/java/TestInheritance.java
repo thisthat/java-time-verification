@@ -1,7 +1,7 @@
-import intermediateModelHelper.types.DataTreeType;
 import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
+import intermediateModelHelper.types.DataTreeType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

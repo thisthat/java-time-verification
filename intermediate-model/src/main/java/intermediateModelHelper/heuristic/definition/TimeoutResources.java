@@ -2,10 +2,7 @@ package intermediateModelHelper.heuristic.definition;
 
 import com.rits.cloning.Cloner;
 import intermediateModel.interfaces.IASTRE;
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTConstructor;
-import intermediateModel.structure.ASTMethod;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.visitors.DefualtASTREVisitor;
@@ -31,7 +28,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 
 	@Override
 	public void setup(ASTClass c) {
-
+		super.setup(c);
 	}
 
 	@Override
@@ -46,6 +43,7 @@ public class TimeoutResources extends SearchTimeConstraint {
 			stm.markResetTime();
 		}
 
+		boolean[] find = {false};
 		//search for A {<,<=,>,>=} C
 		expr.visit(new DefualtASTREVisitor(){
 			@Override
@@ -59,31 +57,24 @@ public class TimeoutResources extends SearchTimeConstraint {
 					case notEqual:
 						if(CheckExpression.checkIt(elm, env)){
 							stm.setTimeCritical(true);
-							addConstraint(stm, env);
+							elm.setTimeCritical(true);
+							find[0] = true;
 						}
 				}
 			}
 		});
-
+		if(find[0]){
+			addConstraint(stm, env);
+		}
 	}
 
 	protected void addConstraint(ASTRE stm, Env e) {
 		Cloner cloner = new Cloner();
 		ASTRE expr = cloner.deepClone(stm);
 		Translation.Translate(expr,e);
-		Constraint c = super.addConstraint(expr.print(), stm);
+		Constraint c = super.addConstraint(expr.print(), expr,true);
 		//Constraint edgeVersion = cloner.deepClone(c);
 		//c.setEdgeVersion(edgeVersion);
-	}
-
-	@Override
-	public void nextMethod(ASTMethod method, Env env) {
-
-	}
-
-	@Override
-	public void nextConstructor(ASTConstructor method, Env env) {
-
 	}
 
 	/*

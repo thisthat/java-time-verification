@@ -1,11 +1,11 @@
 package intermediateModelHelper.indexing.mongoConnector;
 
-import com.mongodb.client.MongoCursor;
-import intermediateModel.structure.ASTClass;
-import intermediateModelHelper.indexing.structure.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import intermediateModel.structure.ASTClass;
+import intermediateModelHelper.indexing.structure.*;
 import org.bson.BsonSerializationException;
 import org.bson.Document;
 import org.javatuples.Pair;

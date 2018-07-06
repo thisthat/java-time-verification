@@ -1,21 +1,17 @@
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.ASTClass;
-import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.NotYetImplemented;
+import intermediateModel.structure.ASTWhile;
+import intermediateModel.structure.expression.ASTBinary;
+import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.visitors.DefaultASTVisitor;
-import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
-import org.apache.commons.io.FileUtils;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.javatuples.Pair;
 import org.junit.Test;
-import parser.Java2AST;
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
@@ -40,4 +36,64 @@ public class TestCreationIM {
 		assertEquals(2, c.getAttributes().size());
 	}
 
+	@Test
+	public void TestASTLabel() throws Exception {
+		ClassLoader classLoader = TestCreationIM.class.getClassLoader();
+		String file = classLoader.getResource("annotations/Label.java").getFile();
+		List<ASTClass> cs = JDTVisitor.parse(file, file.substring(0, file.lastIndexOf("/")));
+		assertEquals(1, cs.size());
+		ASTClass c = cs.get(0);
+		final int[] nLabel = {0};
+		assertEquals(2, c.getMethods().size());
+		c.getMethods().get(0).visit(new DefaultASTVisitor() {
+			@Override
+			public void enterASTWhile(ASTWhile elm) {
+				if(elm.getIdentifier() != null){
+					nLabel[0]++;
+					assertEquals("mywhile", elm.getIdentifier());
+				}
+			}
+		});
+		assertEquals(1, nLabel[0]);
+	}
+	@Test
+	public void TestASTLabel_singleChild() throws Exception {
+		ClassLoader classLoader = TestCreationIM.class.getClassLoader();
+		String file = classLoader.getResource("annotations/Label.java").getFile();
+		List<ASTClass> cs = JDTVisitor.parse(file, file.substring(0, file.lastIndexOf("/")));
+		assertEquals(1, cs.size());
+		ASTClass c = cs.get(0);
+		IASTMethod m = c.getFirstMethodByName("issueReopen");
+		assertEquals(1, m.getStms().size());
+		final int[] nLabel = {0};
+		m.visit(new DefaultASTVisitor() {
+			@Override
+			public void enterASTWhile(ASTWhile elm) {
+				if(elm.getIdentifier() != null){
+					nLabel[0]++;
+					assertEquals("outer", elm.getIdentifier());
+				}
+			}
+		});
+		assertEquals(1, nLabel[0]);
+
+	}
+
+	@Test
+	public void TestLiteralInExpr() throws Exception {
+		ClassLoader classLoader = TestCreationIM.class.getClassLoader();
+		String file = classLoader.getResource("examples/SmallTest.java").getFile();
+		List<ASTClass> cs = JDTVisitor.parse(file, file.substring(0, file.lastIndexOf("/")));
+		assertEquals(1, cs.size());
+		ASTClass c = cs.get(0);
+		IASTMethod m = c.getFirstMethodByName("testWhileVar");
+		assertEquals(2, m.getStms().size());
+		assertEquals(ASTWhile.class, m.getStms().get(1).getClass());
+		ASTWhile w = (ASTWhile) m.getStms().get(1);
+		assertNotNull(w.getExpr());
+		IASTRE exp = w.getExpr().getExpression();
+		assertEquals(ASTBinary.class, exp.getClass());
+		ASTBinary b = (ASTBinary) exp;
+		assertEquals(ASTIdentifier.class, b.getLeft().getClass());
+	}
 }

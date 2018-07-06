@@ -10,12 +10,24 @@ import intermediateModel.interfaces.IASTVisitor;
  */
 public class ASTContinue extends IASTStm implements IASTVisitor {
 
+	private String target = "";
+
 	public ASTContinue(int start, int end) {
 		super(start, end);
 	}
+	public ASTContinue(int start, int end, String target) {
+		super(start, end);
+		this.target = target;
+	}
+
 	@Override
 	public String toString() {
 		return "";
+	}
+
+
+	public String getTarget() {
+		return target;
 	}
 
 	@Override
@@ -26,6 +38,8 @@ public class ASTContinue extends IASTStm implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTContinue(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		visitor.exitASTContinue(this);
 	}
 }

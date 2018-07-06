@@ -1,19 +1,14 @@
 package intermediateModel;
 
-import intermediateModel.interfaces.IASTStm;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.converter.GenerateJSON;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.AnnotatedTypes;
 import intermediateModelHelper.heuristic.definition.SetTimeout;
+import intermediateModelHelper.heuristic.definition.TimeInSignature;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.IndexingProject;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import org.javatuples.Triplet;
-import parser.UnparsableException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -108,7 +103,7 @@ public class Main {
 				if(cnst.size() > 0){
 					for(Constraint t : cnst){
 						String type = t.getCategory();
-						if(type.equals(AnnotatedTypes.class.getCanonicalName())){
+						if(type.equals(TimeInSignature.class.getCanonicalName())){
 							implicit_timeout++;
 						}
 						if(type.equals(SetTimeout.class.getCanonicalName())){

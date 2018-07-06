@@ -1,18 +1,18 @@
 package intermediateModel.structure;
 
-import intermediateModel.interfaces.ASTVisitor;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.interfaces.IASTVisitor;
+import intermediateModel.interfaces.*;
+import intermediateModel.types.definition.TimeType;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
+public class  ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
+	TimeUnit unit = TimeUnit.UNKNOWN;
 	private String typePointed;
+	private TimeType timeType;
 
 
 	public ASTVariable(int start, int end, String name, String type) {
@@ -23,6 +23,11 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public ASTRE getExpr() {
+		return null;
 	}
 
 	public String getType() {
@@ -66,6 +71,14 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 		return typePointed;
 	}
 
+	public TimeUnit getUnit() {
+		return unit;
+	}
+
+	public void setUnit(TimeUnit unit) {
+		this.unit = unit;
+	}
+
 	public boolean equals(ASTAttribute o){
 		return this.getName() == o.getName() && this.getType() == o.getType();
 	}
@@ -73,6 +86,18 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTVariable(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		visitor.exitASTVariable(this);
+	}
+
+	@Override
+	public TimeType getVarTimeType() {
+		return timeType;
+	}
+
+	@Override
+	public void setVarTimeType(TimeType texpr) {
+		this.timeType = texpr;
 	}
 }

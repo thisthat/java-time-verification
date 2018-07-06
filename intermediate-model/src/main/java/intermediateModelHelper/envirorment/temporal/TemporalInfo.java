@@ -1,9 +1,6 @@
 package intermediateModelHelper.envirorment.temporal;
 
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTimeout;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
-import intermediateModelHelper.envirorment.temporal.structure.TimeUndefinedTimeout;
+import intermediateModelHelper.envirorment.temporal.structure.*;
 
 import java.util.List;
 
@@ -12,34 +9,49 @@ import java.util.List;
  */
 public class TemporalInfo {
 
-    private static List<TimeMethod>  timeMethods;
+    public static String user_load_dir = "user.dir";
+
+    private static List<TimeMethod> timeInSignature;
     private static List<TimeTimeout> timeTimeout;
     private static List<TimeTimeout> timeSoTimeout;
     private static List<TimeTimeout> readTimeout;
     private static List<TimeTypes>   timeTypes;
     private static List<TimeUndefinedTimeout>  timeUndefinedTimeout;
 
+    private static List<ImplicitResourceTimeout> implicitResourceTimeouts;
+
     private static TemporalInfo instance = null;
 
     protected TemporalInfo() {
-        timeMethods = new ParseMethods( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/methods.csv")).getMethods();
+        timeInSignature = new ParseMethods( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/methods.csv")).getMethods();
         timeTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/timeout.csv")).getMethods();
         readTimeout = new ParseTimeout( getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/readtimeout.csv")).getMethods();
         timeTypes   = new ParseTypes(   getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/types.csv")).getMethods();
         timeUndefinedTimeout   = new ParseUndefinedTimeout(   getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/undefinedTimeout.csv")).getMethods();
+        implicitResourceTimeouts = new ParseImplicitResourceTimeout(
+                getClass().getClassLoader().getResourceAsStream("descriptorTimeRelevant/implicitTimeoutResource.csv")
+        ).getMethods();
         loadUserDefined();
     }
 
-    private void loadUserDefined() {
-        String dir = System.getProperty("user.dir");
+    public void loadUserDefined() {
+        String dir = System.getProperty(user_load_dir);
         if(!dir.endsWith("/"))
             dir += "/";
         dir += "config/";
-        timeMethods.addAll( new ParseMethods(dir + "methods.csv").getMethods());
+        loadUserDefined(dir);
+    }
+
+    public void loadUserDefined(String dir) {
+        timeInSignature.addAll( new ParseMethods(dir + "methods.csv").getMethods());
         timeTimeout.addAll( new ParseTimeout(dir + "timeout.csv").getMethods());
         readTimeout.addAll( new ParseTimeout(dir + "readtimeout.csv").getMethods());
         timeTypes.addAll(   new ParseTypes  (dir + "types.csv").getMethods());
         timeUndefinedTimeout.addAll(   new ParseUndefinedTimeout  (dir + "undefinedTimeout.csv").getMethods());
+    }
+
+    public void loadUserTypes(String file){
+        timeTypes.addAll(new ParseTypes(file).getMethods());
     }
 
 
@@ -51,7 +63,7 @@ public class TemporalInfo {
     }
 
     public void addTimeMethods(List<TimeMethod> timeMethods) {
-        TemporalInfo.timeMethods.addAll(timeMethods);
+        TemporalInfo.timeInSignature.addAll(timeMethods);
     }
 
     public void addTimeTimeout(List<TimeTimeout> timeTimeout) {
@@ -74,8 +86,12 @@ public class TemporalInfo {
         TemporalInfo.timeTypes.addAll(timeTypes);
     }
 
-    public List<TimeMethod> getTimeMethods() {
-        return timeMethods;
+    public void addTimeInSignature(List<TimeMethod> timeTypes) {
+        TemporalInfo.timeInSignature.addAll(timeTypes);
+    }
+
+    public List<TimeMethod> getMethodsWithTimeInSignature() {
+        return timeInSignature;
     }
 
     public List<TimeTimeout> getTimeTimeout() {
@@ -96,5 +112,9 @@ public class TemporalInfo {
 
     public List<TimeUndefinedTimeout> getTimeUndefinedTimeout() {
         return timeUndefinedTimeout;
+    }
+
+    public static List<ImplicitResourceTimeout> getImplicitResourceTimeouts() {
+        return implicitResourceTimeouts;
     }
 }

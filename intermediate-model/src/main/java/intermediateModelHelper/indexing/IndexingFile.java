@@ -1,5 +1,10 @@
 package intermediateModelHelper.indexing;
 
+import intermediateModel.interfaces.IASTMethod;
+import intermediateModel.interfaces.IASTStm;
+import intermediateModel.interfaces.IASTVar;
+import intermediateModel.structure.*;
+import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.EnvBase;
@@ -8,11 +13,6 @@ import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexData;
 import intermediateModelHelper.indexing.structure.IndexMethod;
 import intermediateModelHelper.indexing.structure.IndexParameter;
-import intermediateModel.interfaces.IASTMethod;
-import intermediateModel.interfaces.IASTStm;
-import intermediateModel.interfaces.IASTVar;
-import intermediateModel.structure.*;
-import intermediateModel.visitors.interfaces.ParseIM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class IndexingFile extends ParseIM {
 	 * It force to delete the index structure from the DB and recreate it.
 	 *
 	 * @param c	Class to analyse.
-	 * @return	The index data structure of the class.
+	 * @return	The index preprocess structure of the class.
 	 */
 	public IndexData index(ASTClass c){
 		return index(c, false);
@@ -59,7 +59,7 @@ public class IndexingFile extends ParseIM {
 	 * It goes through the methods of it and then through their statements.
 	 * @param c	Class to analyze
      * @param forceReindex flag to force the recreation of the index
-	 * @return	The index data structure of the class.
+	 * @return	The index preprocess structure of the class.
 	 */
 	public IndexData index(ASTClass c, boolean forceReindex) {
 		this._c = c;
@@ -152,8 +152,8 @@ public class IndexingFile extends ParseIM {
 	 *
 	private IndexSyncBlock prepareOutput(ASTSynchronized m, Env e) {
 		IndexSyncBlock is = new IndexSyncBlock();
-		is.setPackageName(data.getClassPackage());
-		is.setName(data.getClassName() + anonymousClass);
+		is.setPackageName(preprocess.getClassPackage());
+		is.setName(preprocess.getClassName() + anonymousClass);
 		is.setMethodName(lastMethodName);
 		is.setExpr(m.getExpr().getCode());
 		is.setStart(m.getStart());
@@ -162,7 +162,7 @@ public class IndexingFile extends ParseIM {
 		IndexEnv e_index = new IndexEnv(e);
 		is.setSyncVar( e_index.getVar(is.getExpr()) );
 		is.setSignature(signatureLastMethodName);
-		is.setPath(data.getPath());
+		is.setPath(preprocess.getPath());
 		return is;
 	}
 	*/
@@ -213,7 +213,7 @@ public class IndexingFile extends ParseIM {
 
 	/*@Override
 	protected void analyzeASTSynchronized(ASTSynchronized elm, Env env) {
-		data.addSyncBlock(prepareOutput(elm, env));
+		preprocess.addSyncBlock(prepareOutput(elm, env));
 	}*/
 
 	@Override

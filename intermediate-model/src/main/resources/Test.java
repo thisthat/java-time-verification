@@ -20,8 +20,6 @@ import org.projectfloodlight.openflow.types.DatapathId;
 import java.io.IOException;
 import java.util.*;
 
-import static junit.framework.Assert.*;
-
 
 // AllSwitchStatisticsResource
 public class Test extends Object implements IFloodlightModule, INetTopologyService, IOFMessageListener {
@@ -276,7 +274,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 	}
 	
 	//Generate the topology async each SleepTimeout [ms]
-	//In a thread it fulfill the data structures
+	//In a thread it fulfill the preprocess structures
 	private class GenerateTopologyAsync implements Runnable {
 
 	    private PredictionModule _class;
@@ -314,7 +312,7 @@ public class Test extends Object implements IFloodlightModule, INetTopologyServi
 		}
 	}
 	
-	//Build the data structure that take care of the topology
+	//Build the preprocess structure that take care of the topology
 	public void createTopology(){
 		Map<Link, LinkInfo> links;
 		links = topology.getLinks();

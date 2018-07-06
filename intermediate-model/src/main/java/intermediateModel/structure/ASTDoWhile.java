@@ -17,6 +17,9 @@ public class ASTDoWhile extends ASTWhile implements IASTVisitor {
 
 	public ASTDoWhile(int start, int end, ASTRE expr) {
 		super(start, end, expr);
+		int tmp = this.getLine();
+		this.line = this.lineEnd;
+		this.lineEnd = tmp;
 	}
 
 	@Override
@@ -35,6 +38,8 @@ public class ASTDoWhile extends ASTWhile implements IASTVisitor {
 	@Override
 	public void visit(ASTVisitor visitor) {
 		visitor.enterASTDoWhile(this);
+		visitor.enterSTM(this);
+		visitor.exitSTM(this);
 		expr.visit(visitor);
 		for(IASTStm s : stms){
 			s.visit(visitor);
