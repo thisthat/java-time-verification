@@ -6,7 +6,7 @@ TOKEN=7YZxXyYBKvz55x1yreQ2
 MVN=`which mvn`
 
 MVN_FLAGS=-DskipTests=True
-ARTIFACT_URL=https://rtse-isys.aau.at/giovanni.liva/java-xal/builds/artifacts/development/download?job=release
+ARTIFACT_URL=https://git-isys.aau.at/giliva/java-time-verification/-/jobs/artifacts/development/download?job=release
 ARTIFACT_NAME=server.zip
 
 # check for new version
