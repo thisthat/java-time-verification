@@ -21,7 +21,7 @@ if [ "${LOCAL_HEAD_DEV}" != "${REMOTE_HEAD_DEV}" ]; then
     # Update reference in file
     echo ${REMOTE_HEAD_DEV} > .head_development
     wget --header="PRIVATE-TOKEN: ${TOKEN}" ${ARTIFACT_URL} --output-document=${ARTIFACT_NAME}
-    unzip ${ARTIFACT_NAME}
+    unzip -o ${ARTIFACT_NAME}
     rm -fR target
     mkdir target
     cp server/target/server-*.jar target/

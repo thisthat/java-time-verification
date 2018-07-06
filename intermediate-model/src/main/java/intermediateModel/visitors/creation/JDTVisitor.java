@@ -6,10 +6,10 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.structure.*;
 import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefualtASTREVisitor;
+import intermediateModel.visitors.creation.filter.Filter;
 import intermediateModel.visitors.creation.utility.Getter;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import parser.ASTSrc;
 import parser.Java2AST;
 import parser.UnparsableException;
 
@@ -44,6 +44,22 @@ public class JDTVisitor extends ASTVisitor {
 
 	public static List<ASTClass> parse(String filename, String project_path) {
 		return parse(filename, project_path, true);
+	}
+
+	public static List<ASTClass> parse(String filename, String project_path, Filter filter) {
+		List<ASTClass> out = parse(filename, project_path, true);
+		for(ASTClass c : out) {
+			filter.filter(c);
+		}
+		return out;
+	}
+
+	public static List<ASTClass> parse(String filename, String project_path, Filter filter, boolean shouldCache) {
+		List<ASTClass> out = parse(filename, project_path, shouldCache);
+		for(ASTClass c : out) {
+			filter.filter(c);
+		}
+		return out;
 	}
 
 	public static List<ASTClass> parse(String filename, String projectPath, boolean shouldCache) {
@@ -218,7 +234,22 @@ public class JDTVisitor extends ASTVisitor {
 			c.setParent(null);
 		}
 		//c.setParent(stackClasses.size() > 0 ? stackClasses.peek() : null);
-
+		ITypeBinding bind = node.resolveBinding();
+		if(bind != null) {
+			ITypeBinding[] interfacesDef = bind.getInterfaces();
+			for (ITypeBinding typeBind : interfacesDef) {
+				String name = typeBind.getQualifiedName();
+				for(IMethodBinding methodInt : typeBind.getDeclaredMethods()){
+					String mName = methodInt.getName();
+					List<String> parameters = new ArrayList<>();
+					for(ITypeBinding type : methodInt.getParameterTypes()){
+						parameters.add(type.getName());
+					}
+					ASTInterfaceMethod m = new ASTInterfaceMethod(name, mName, parameters);
+					c.addInterfaceMethod(m);
+				}
+			}
+		}
 		listOfClasses.add(c);
 		stackClasses.push(c);
 		lastClass = c;
@@ -1286,6 +1317,8 @@ public class JDTVisitor extends ASTVisitor {
 			r = handleSpecialOperator(l,r, expr.getOperator().toString(), start, stop);
 		}
 		ASTBinary bin = new ASTBinary(start,stop, l, r, op);
+		String exprType = expr.resolveTypeBinding() != null ? expr.resolveTypeBinding().getQualifiedName() : null;
+		bin.setType(exprType);
 		IASTRE prev = bin;
 		for(Object o : expr.extendedOperands()){
 			ASTNode extExpr = (ASTNode) o;
@@ -1294,6 +1327,7 @@ public class JDTVisitor extends ASTVisitor {
 			extstart = extExpr.getStartPosition();
 			extstop = extstart + extExpr.getLength();
 			ASTBinary ext = new ASTBinary(start, extstop, prev, extended, op);
+			ext.setType(exprType);
 			prev = ext;
 		}
 		return prev;

@@ -1,6 +1,8 @@
 package intermediateModelHelper.envirorment.temporal.structure;
 
 import intermediateModel.structure.expression.ASTMethodCall;
+import intermediateModel.types.definition.TimeType;
+import intermediateModel.types.definition.Unknown;
 
 import java.util.List;
 
@@ -9,8 +11,20 @@ import java.util.List;
  */
 public class TimeTypes extends TimeInfo {
 
+    TimeType timeType;
+
     public TimeTypes(String className, String methodName, List<String> signature) {
         super(className, methodName, signature);
+        timeType = new Unknown();
+    }
+
+    public TimeTypes(String className, String methodName, List<String> signature, TimeType tt) {
+        super(className, methodName, signature);
+        timeType = tt;
+    }
+
+    public TimeType getTimeType() {
+        return timeType;
     }
 
     @Override
@@ -25,6 +39,17 @@ public class TimeTypes extends TimeInfo {
             }
         }
         return String.format("%s;%s;%s;long", className, methodName, sign.toString());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TimeTypes)) return false;
+        TimeTypes oo = (TimeTypes) o;
+        if(!className.equals(oo.className)) return false;
+        if(!methodName.equals(oo.methodName)) return false;
+        if(!signature.equals(oo.signature)) return false;
+        return timeType.equals(oo.timeType);
     }
 
     public boolean isMethodCall(ASTMethodCall m) {

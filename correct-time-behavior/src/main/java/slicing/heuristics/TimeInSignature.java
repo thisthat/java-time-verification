@@ -83,6 +83,7 @@ public class TimeInSignature extends SearchTimeConstraint {
 
 
 	private void print(IASTStm stm) {
+		stm.setTimeCritical(true);
 		listTimeStms.addStatements(stm, TimeElement.Type.Usage);
 	}
 

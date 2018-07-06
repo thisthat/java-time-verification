@@ -8,6 +8,8 @@ import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModel.visitors.interfaces.ParseRE;
 import intermediateModelHelper.types.ResolveTypes;
 
+import java.util.regex.Pattern;
+
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
@@ -18,6 +20,8 @@ class ResolveExpressionType extends ParseRE {
 	final String _int = "int";
 	final String _string = "String";
 	private ASTClass _c;
+
+	final static Pattern p = Pattern.compile("[0-9]+(L?)");
 
 	protected ResolveExpressionType(Env e) {
 		super(e);
@@ -161,13 +165,8 @@ class ResolveExpressionType extends ParseRE {
 
 	@Override
 	protected Object analyze(ASTIdentifier r) {
-		String expr = ((ASTIdentifier) r).getValue();
-		try{
-			Integer.parseInt(expr);
-			return "int";
-		} catch (Exception e){
-
-		}
+		String expr = r.getValue();
+		if(p.matcher(expr).matches()) return "int";
 		if(expr.equals("true") || expr.equals("false")) return "boolean";
 		if(expr.startsWith("\"") && expr.endsWith("\"")) {
 			return "String";

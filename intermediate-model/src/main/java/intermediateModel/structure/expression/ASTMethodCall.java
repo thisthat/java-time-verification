@@ -4,6 +4,8 @@ import intermediateModel.interfaces.ASTREVisitor;
 import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
+import intermediateModel.visitors.interfaces.ParseIM;
+import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +16,19 @@ import java.util.List;
  */
 public class ASTMethodCall extends IASTStm implements IASTRE {
 
+	public enum TimeType {
+		RT_T,
+		RT_D,
+		ET
+	}
+
 	private String methodName;
 	private IASTRE exprCallee;
 	List<IASTRE> parameters;
 	List<String> timePars = new ArrayList<>();
 	String classPointed = null;
 	boolean isTimeCall = false;
-	boolean isMinMax = false;
+	TimeType timeType = null;
 	private boolean maxMin;
 
 	public ASTMethodCall(int start, int end, String methodName, IASTRE exprCallee) {
@@ -103,6 +111,49 @@ public class ASTMethodCall extends IASTStm implements IASTRE {
 
 	public void setTimeCall(boolean timeCall) {
 		isTimeCall = timeCall;
+		setTimetype();
+	}
+
+	@Override
+	public void setTimeCritical(boolean timeCritical) {
+		super.setTimeCritical(timeCritical);
+		if(super.isTimeCritical()){
+			setTimetype();
+		}
+	}
+
+	private void setTimetype() {
+		this.isTimeCritical = true;
+		TemporalTypes tt = TemporalTypes.getInstance();
+		if(tt.isRT_T(this)){
+			timeType = TimeType.RT_T;
+			//does it still accept time?
+			int[] timePars = tt.getTimeoutParametersET(this);
+			for(int index : timePars){
+				this.getParameters().get(index).setTimeCritical(true);
+			}
+		} else if(tt.isRT_D(this)){
+			timeType = TimeType.RT_D;
+			//does it still accept time?
+			int[] timePars = tt.getTimeoutParametersET(this);
+			for(int index : timePars){
+				this.getParameters().get(index).setTimeCritical(true);
+			}
+		} else if(tt.isET(this)) {
+			timeType = TimeType.ET;
+			int[] timePars = tt.getTimeoutParametersET(this);
+			for(int index : timePars){
+				this.getParameters().get(index).setTimeCritical(true);
+			}
+		}
+	}
+
+	public TimeType getTimeType() {
+		return timeType;
+	}
+
+	public void setTimeType(TimeType timeType) {
+		this.timeType = timeType;
 	}
 
 	@Override

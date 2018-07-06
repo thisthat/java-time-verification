@@ -203,6 +203,21 @@ public class CheckExpression {
 				flag[0] = true;//the assigned var is time relevant
 				setExprVarsTimeRelated(v.getRight(), where);
 			}
+		} else if(left instanceof ASTAttributeAccess){
+			String name = ((ASTAttributeAccess) left).getAttributeName();
+			IASTVar var = where.getVar(name);
+			if(var != null && var.isTimeCritical() && v.getRight() instanceof ASTIdentifier){
+				IASTVar vright = where.getVar(((ASTIdentifier) v.getRight()).getValue());
+				if(vright != null)
+					vright.setTimeCritical(true);
+			}
+			if(var != null //should be never the case if code compiles
+					&& checkRightHandAssignment(state, v.getRight(), where)){ //if exists something time related
+				var.setTimeCritical(true);
+				v.getRight().setTimeCritical(true);
+				flag[0] = true;//the assigned var is time relevant
+				setExprVarsTimeRelated(v.getRight(), where);
+			}
 		}
 		return flag[0];
 	}

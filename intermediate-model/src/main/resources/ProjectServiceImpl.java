@@ -73,7 +73,7 @@ public class ProjectServiceImpl implements ProjectService{
 	public void generateChanges(Long projectId, File repoFolder) throws Exception {
 		File tempDir = new File("poms/tmp");
 		
-		File gitDir = new File(repoFolder,".git");
+		File gitDir = new File(repoFolder,".git.git");
 		org.eclipse.jgit.lib.Repository repo = new FileRepository(gitDir);
 		Git git = new Git(repo);
 		
@@ -85,7 +85,7 @@ public class ProjectServiceImpl implements ProjectService{
 		
 		List<Commit> commits=commitDao.findByProjectId(projectId);
 		for (Commit commit : commits) {
-			//find parent in the git by using the repoFolder and extract the changes
+			//find parent in the git.git by using the repoFolder and extract the changes
 			System.out.println(commit);
 			Commit freshCommit=commitDao.findOne(commit.getId());
 			

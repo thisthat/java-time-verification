@@ -42,7 +42,7 @@ public class LibraryCheck {
         //index return times
         {
             long s = System.currentTimeMillis();
-            debug.log("Indexing types of the project " + name);
+            debug.log("Indexing intermediateModel.types of the project " + name);
             List<TimeTypes> tt = IndexingProject.getMethodReturnTime(name + "_libraries", root_path, true);
             long e = System.currentTimeMillis();
             timeSpentInit += (e - s);

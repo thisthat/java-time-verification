@@ -60,7 +60,7 @@ public class IM2CFG {
 	 */
 	public void addClass(ASTClass c, IASTMethod method){
 
-		List<Constraint> currentClassConstraint = ApplyHeuristics.getConstraint(c);
+		List<Constraint> currentClassConstraint = ApplyHeuristics.getConstraintV2(c);
 		IASTMethod met = null;
 		for(IASTMethod m : c.getMethods()){
 			if(m.equals(method)){

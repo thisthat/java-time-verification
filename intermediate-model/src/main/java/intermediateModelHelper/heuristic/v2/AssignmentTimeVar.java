@@ -4,13 +4,12 @@ import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
-import intermediateModel.structure.expression.ASTAssignment;
-import intermediateModel.structure.expression.ASTIdentifier;
-import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.structure.expression.*;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.DefualtASTREVisitor;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
+
 
 /**
  * The {@link AssignmentTimeVar} searches for instances of time assignment
@@ -20,6 +19,11 @@ import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
  */
 public class AssignmentTimeVar extends SearchTimeConstraint {
 
+	TimeStatements listTimeStms;
+
+	public AssignmentTimeVar() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
 
 	@Override
 	public void next(ASTRE stm, Env env) {
@@ -28,7 +32,6 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 		if(expr == null){
 			return;
 		}
-
 
 		//we assume that the variable assigned is already in the environment
 		//this is assured by the class that trigger this method
@@ -40,6 +43,7 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 				if(var != null && elm.getExpr() != null && elm.getExpr().isTimeCritical()){
 					var.setTimeCritical(true);
 					mark(stm);
+					elm.setTimeCritical(true);
 				}
 			}
 
@@ -49,11 +53,31 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 					IASTRE lexpr = elm.getLeft();
 					DefualtASTREVisitor v = new DefualtASTREVisitor(){
 						@Override
-						public void enterASTIdentifier(ASTIdentifier elm) {
-							IASTVar var = env.getVar(elm.getValue());
+						public void enterASTLiteral(ASTLiteral literal) {
+							IASTVar var = env.getVar(literal.getValue());
 							if(var != null){
 								var.setTimeCritical(true);
 								mark(stm);
+								elm.setTimeCritical(true);
+							}
+						}
+						@Override
+						public void enterASTIdentifier(ASTIdentifier identifier) {
+							IASTVar var = env.getVar(identifier.getValue());
+							if(var != null){
+								var.setTimeCritical(true);
+								mark(stm);
+								elm.setTimeCritical(true);
+							}
+						}
+
+						@Override
+						public void enterASTAttributeAccess(ASTAttributeAccess attAccess) {
+							IASTVar var = env.getVar(attAccess.getAttributeName());
+							if(var != null){
+								var.setTimeCritical(true);
+								mark(stm);
+								elm.setTimeCritical(true);
 							}
 						}
 					};
@@ -63,12 +87,13 @@ public class AssignmentTimeVar extends SearchTimeConstraint {
 			}
 		};
 		v.setExcludeHiddenClass(true);
-		stm.visit(v);
+		expr.visit(v);
 
 	}
 
 	private void mark(IASTStm stm) {
-		super.addConstraint(stm.getCode(), stm, false);
+		listTimeStms.addStatements(stm, TimeElement.Type.Assignment);
+		stm.setTimeCritical(true);
 	}
 
 }

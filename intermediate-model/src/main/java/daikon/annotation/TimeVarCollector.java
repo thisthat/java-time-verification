@@ -6,10 +6,10 @@ import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.*;
 import intermediateModel.visitors.ApplyHeuristics;
-import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TimeVarCollector extends ApplyHeuristics {
 

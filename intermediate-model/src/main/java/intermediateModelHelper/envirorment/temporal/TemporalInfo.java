@@ -43,8 +43,6 @@ public class TemporalInfo {
     }
 
     public void loadUserDefined(String dir) {
-        if(!dir.endsWith("/"))
-            dir += "/";
         timeInSignature.addAll( new ParseMethods(dir + "methods.csv").getMethods());
         timeTimeout.addAll( new ParseTimeout(dir + "timeout.csv").getMethods());
         readTimeout.addAll( new ParseTimeout(dir + "readtimeout.csv").getMethods());
@@ -86,6 +84,10 @@ public class TemporalInfo {
 
     public void addTimeTypes(List<TimeTypes> timeTypes) {
         TemporalInfo.timeTypes.addAll(timeTypes);
+    }
+
+    public void addTimeInSignature(List<TimeMethod> timeTypes) {
+        TemporalInfo.timeInSignature.addAll(timeTypes);
     }
 
     public List<TimeMethod> getMethodsWithTimeInSignature() {

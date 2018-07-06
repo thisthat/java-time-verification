@@ -1,6 +1,7 @@
 before_script:
   - mvn -v
   - java -version
+  - ./start_mongo.sh
 
 stages:
   - compile
