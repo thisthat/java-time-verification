@@ -208,8 +208,6 @@ class Edge(object):
         self.source = source
         self.target = target
 
-#        source.outgoing.add(self)
-#        target.incoming.add(self)
         self.label = label
         self.guard = guard
         self.reset = reset or set([])
