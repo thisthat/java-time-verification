@@ -1,6 +1,5 @@
 package intermediateModelHelper.heuristic.definition;
 
-
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;

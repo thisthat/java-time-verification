@@ -1,7 +1,7 @@
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
-    from distutils.core import setup
+    raise ImportError("Install setup tools")
 
 config = {
     'description': 'Java 2 TA',
@@ -10,11 +10,20 @@ config = {
     'download_url': 'TODO',
     'author_email': 'f.spegni@univpm.it',
     'version': '0.1',
-    'install_requires': ['nose'],
-    'packages': ['java2ta'],
+    'install_requires': [   
+        'nose', 
+        'Jinja2>=2.9.6',
+        'prompt-toolkit>=1.0.15',
+        'requests>=2.13.0',
+        'PyContracts>=1.7.15',
+        'graphviz>=0.8',
+    ],
+    'packages': find_packages(), 
     'scripts': [],
-    'name': 'projectname'
+    'name': 'java2ta',
+    'license': 'MIT',
 }
 
 setup(**config)
+
 

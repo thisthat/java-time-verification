@@ -1,0 +1,24 @@
+digraph finite_state_machine {
+    rankdir=LR;
+    {% if ta.initial_loc %}
+    node [shape = doublecircle] "{{ ta.initial_loc.name }}";
+    {% endif %}
+    node [shape = circle];
+
+    {% for edge in ta.edges %}
+    "{{ edge.source.name }}" -> "{{ edge.target.name }}" {% if edge.label %}[label="{{ edge.label|replace('"','\'') }}"]{% endif %};
+    {% endfor %}
+
+{% if legend %}
+  node[shape=plaintext]
+  subgraph cluster_01 { 
+    label = "Legend of abstract states predicates";
+    key [label=<<table border="1px" cellpadding="2" cellspacing="0" cellborder="0">
+    <tr><td align="center">position</td><td>val_1 : pred_1 ... val_N : pred_N</td></tr>
+{% for label,desc in legend %}
+    <tr><td align="center">{{ label|e }}:</td><td align="left">{{ desc|e }}</td></tr>
+{% endfor %}
+      </table>>]
+  }
+{% endif %}
+}

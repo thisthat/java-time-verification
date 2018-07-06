@@ -1,19 +1,37 @@
+import re
+from contracts import contract, new_contract
+
+from java2ta.commons.utility import new_contract_check_type
+
+import logging
+
+log = logging.getLogger("main")
+
 class Type(object):
 
     def __init__(self, name):
         self.name = name
 
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return unicode(self.name)
+
 class Int(Type):
 
     def __init__(self):
 
-        super(Type, self).__init__("int")
+        super(Int, self).__init__("int")
 
 class Bool(Type):
 
     def __init__(self):
 
-        super(Type, self).__init__("bool")
+        super(Bool, self).__init__("bool")
 
 class BoundedInt(Type):
 
@@ -24,7 +42,7 @@ class BoundedInt(Type):
 
         self.min_val = min_val
         self.max_val = max_val
-        super(Type, self).__init__("int[%s,%s]" % (min_val,max_val))
+        super(BoundedInt, self).__init__("int[%s,%s]" % (min_val,max_val))
 
     def values(self):
         return xrange(self.min_val, self.max_val+1)
@@ -33,39 +51,54 @@ class BoundedInt(Type):
 class ClockType(Type):
     
     def __init__(self):
-        super(Type, self).__init__("clock")
+        super(ClockType, self).__init__("clock")
 
 
 class Variable(object):
 
+    @contract(name="string", type=Type)
     def __init__(self, name, type):
-
-        assert isinstance(name, basestring)
-        assert isinstance(type, Type)
 
         self.name = name
         self.type = type
 
+    def __repr__(self):
+        return "%s : %s" % (self.name, self.type)
+
+    def __str__(self):
+        return "%s : %s" % (self.name, self.type)
+
+    def __unicode__(self):
+        return u"%s : %s" % (self.name, self.type)
+
+new_contract_check_type("is_variable", Variable)
 
 class ClockVariable(Variable):
 
+    @contract(name="string")
     def __init__(self, name):
     
-        super(Variable, self).__init__(name, Clock)
+        super(ClockVariable, self).__init__(name, ClockType())
 
+new_contract_check_type("is_clock_variable", ClockVariable)
 
-class ClockExpression(object):
-
-    def __init__(self, exp=""):
-    
-        self.exp = exp
-
+##class ClockExpression(object):
+##
+##    def __init__(self, exp=""):
+##    
+##        self.exp = exp
+##
+##    def __str__(self):
+##        self.exp
+##
+##    def __unicode__(self):
+##        return unicode(self.exp)
+##
 
 class Location(object):
 
+    @contract(name="string", is_initial="bool", is_urgent="bool")
     def __init__(self, name, is_initial=False, is_urgent=False):
-
-        assert isinstance(name, basestring)
 
         self.name = name
         self.invariant = None
@@ -75,10 +108,21 @@ class Location(object):
         self.is_initial = is_initial
         self.is_urgent = is_urgent
 
+    def equals_modulo_pc(self, location):
+        """
+        TODO not sure this is the right place for this
+        check; after all, a TA knows nothing of PC's.
+        Perhaps we should move the entire minimization step
+        before creating the TA
+        """
+        curr_name = re.sub(r"\@[0-9\.]+$", "", self.name)
+        loc_name = re.sub(r"\@[0-9\.]+$", "", location.name)
+        return curr_name == loc_name
 
+    @contract(cexp="string")
     def set_invariant(self, cexp):
         
-        assert isinstance(cexp, ClockExpression)
+#        assert isinstance(cexp, ClockExpression)
 
         self.invariant = cexp
 
@@ -93,9 +137,19 @@ class Location(object):
         self.is_urgent = True
 
 
+    def __str__(self):
+        return self.name
+
+
+    def __repr__(self):
+        return self.name
+
+new_contract_check_type("is_location", Location) 
+       
+
 class Edge(object):
 
-    def __init__(self, source, target, ):
+    def __init__(self, source, target, label=None, guard=None, reset=None, clock_variables=None, variables=None):
 
         assert isinstance(source, Location)
         assert isinstance(target, Location)
@@ -105,37 +159,117 @@ class Edge(object):
 
         source.outgoing.add(self)
         target.incoming.add(self)
+        self.label = label
+        self.guard = guard
+        self.reset = reset
 
+        self.clock_variables = clock_variables or set([])
+        self.variables = variables or set([])
+
+    def __str__(self):
+        return "%s -> %s" % (self.source, self.target)
+
+new_contract_check_type("is_edge", Edge)
 
 class TA(object):
     
+    @contract(name="string", locations="set(is_location)|list(is_location)", edges="set(is_edge)|list(is_edge)")
     def __init__(self, name, locations=[], edges=[]):
-
-        assert isinstance(name, basestring)
-        assert isinstance(locations, set) or isinstance(locations, list)
-        assert isinstance(edges, set) or isinstance(edges, list)
 
         self.name = name
         self.locations = set([])
-
+        self._location_names = dict()
+    
         for loc in locations:
             self.add_location(loc)
 
         self.edges = set([])
- 
+        self._edges_lookup = {} 
+
         for curr_edge in edges:
             self.add_edge(curr_edge)
 
         self.initial_loc = None
-        self.variables = set([])
+        self._variables = dict()
+        self._clock_variables = dict() 
+    
+    @property
+    def variables(self):
+        return self._variables.values()
+
+    def has_variable(self, name):
+        return name in self._variables
+
+    @property
+    def clock_variables(self):
+        return self._clock_variables.values()
+
+    def has_clock_variable(self, name):
+        return name in self._clock_variables
 
     def has_location(self, name):
+        assert isinstance(name, basestring)
+        return name in self._location_names
 
-        found = filter(lambda l: l.name == name, self.locations)
+    def get_location(self, name):
+        assert isinstance(name, basestring)
 
-        return len(found) > 0
+        found = self._location_names.get(name, None)
+        assert isinstance(found, Location) or found == None
+
+        return found
 
 
+    def get_or_add_location(self, loc):
+        assert isinstance(loc, basestring) or isinstance(loc, Location)
+
+        name = loc
+        if isinstance(loc, Location):
+            name = loc.name
+
+        found = self.get_location(name)
+
+        if not found:
+            new_loc = loc# Location(name)
+            if isinstance(loc, basestring):
+                new_loc = Location(name)
+
+            self.add_location(new_loc)
+            found = new_loc
+
+        assert isinstance(found, Location)
+        return found
+ 
+   
+    def get_or_add_edge(self, edge):
+        assert isinstance(edge, Edge)
+
+        for cv in edge.clock_variables:
+            self.add_clock_variable(cv)
+
+        for v in edge.variables:
+            self.add_variable(v)
+
+        source_loc = self.get_or_add_location(edge.source)
+        target_loc = self.get_or_add_location(edge.target)
+
+        found = None
+
+        if source_loc in self._edges_lookup and target_loc in self._edges_lookup[source_loc]:
+            found = self._edges_lookup[source_loc][target_loc]
+
+        if not found:
+            found = Edge(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables)
+            self.add_edge(found)
+
+        # in any case, update the edge label
+        found.label = edge.label
+
+        return found
+ 
+        
+          
+    @contract(loc="is_location")
     def add_location(self, loc):
 
         assert isinstance(loc, Location)
@@ -146,9 +280,22 @@ class TA(object):
                 raise ValueError("You are adding a location tagged as initial to a TA that already contains one initial location")
             self.initial_loc = loc
 
-        self.locations.add(loc)
-        
+        if loc.name not in self._location_names:
+            self.locations.add(loc)
+            self._location_names[loc.name] = loc
+     
+    @contract(loc="is_location")
+    def del_location(self, loc):
+        if loc.is_initial:
+            if self.initial_loc == loc:
+                self.initial_loc = None
+            else:
+                raise ValueError("Location is initial, but is not the TA initial location")
 
+        self.locations.discard(loc)
+        self._location_names.pop(loc.name, None)
+   
+    @contract(edge="is_edge")
     def add_edge(self, edge):
 
         assert isinstance(edge, Edge)
@@ -159,11 +306,97 @@ class TA(object):
     
         self.edges.add(edge)
 
-    def add_variable(self, var):
+        if not edge.source in self._edges_lookup:
+            self._edges_lookup[edge.source] = {}
+        self._edges_lookup[edge.source][edge.target] = edge
 
+        
+
+    @contract(edge="is_edge")
+    def del_edge(self, edge):
+        
+        if edge.source in self._edges_lookup:
+            if edge.target in self._edges_lookup[edge.source]:
+                self._edges_lookup[edge.source].pop(edge.target)
+            if len(self._edges_lookup[edge.source]) == 0:
+                self._edges_lookup.pop(edge.source)
+
+        log.debug("Edge source outgoing: %s" % edge.source.outgoing)
+        log.debug("Edge target incoming: %s" % edge.target.incoming)
+        edge.source.outgoing.discard(edge)
+        edge.target.incoming.discard(edge)
+
+        self.edges.discard(edge)
+
+    def add_variable(self, var):
         assert isinstance(var, Variable)
-    
-        self.variables.add(var)
+
+        log.debug(u"Add variable: %s" % unicode(var))
+
+        if var.name not in self._variables:
+            self._variables[var.name] = var
+
+    def add_clock_variable(self, var):
+        assert isinstance(var, ClockVariable)
+
+        log.debug(u"Add clock: %s" % unicode(var))
+
+        # do not insert duplicate clock variables
+        if var.name not in self._clock_variables:
+            self._clock_variables[var.name] = var
+
+
+    def close(self):
+        """
+        The operation of closing a TA does the following:
+        1. call pseudo-initial a location that has no entering transition
+        2. if a single pseudo-initial location exists, makes it initial
+        3. if multiple pseudo-initial locations exist, create an initial
+            location and add a non-deterministic edge towards each of
+            the pseudo-initial locations
+        """
+
+        if self.initial_loc != None:
+            return    
+
+        pseudo_initial = filter(lambda loc: len(loc.incoming) == 0, self.locations)
+
+        initial = None
+
+        if len(pseudo_initial) == 1:
+            initial = pseudo_initial[0]
+            initial.set_initial()
+        elif len(pseudo_initial) == 0:
+#           TODO what to do in this case?
+            log.warning("The timed automaton has no pseudo-initial location. Not sure what to do ...")
+#            raise ValueError("Cannot handle automaton with circular states")
+        else:
+            # len(pseudo_initial) > 0
+            initial = Location("initial", is_initial=True)
+            self.add_location(initial)
+            
+            for loc in pseudo_initial:
+                e = Edge(initial, loc)
+                self.add_edge(e)
+
+        if initial:
+            self.initial_loc = initial
+
+    def sanity_check(self):
+        for loc in self.locations:
+            for e in loc.outgoing:
+                if e.source != loc: 
+                    raise ValueError("Location %s has outgoing edge with different source location" % (loc, e))
+
+            for e in loc.incoming:  
+                if e.target != loc:
+                    raise ValueError("Location %s has incoming edge with different target location" % (loc, e))
+
+    def minimize(self):
+        # TODO
+        pass       
+
+new_contract_check_type("is_ta", TA)
 
 
 class NTA(object):
@@ -173,19 +406,18 @@ class NTA(object):
         self.tas = set([])
         self.variables = set([])
 
+    @contract(ta="is_ta")
     def add_ta(self, ta):
-    
-        assert isinstance(ta, TA)
 
         if not ta.initial_loc:
             raise ValueError("All the TAs must have an initial location")
 
         self.tas.add(ta)
 
+    @contract(var="is_variable")
     def add_variable(self, var):
-
-        assert isinstance(var, Variable)
     
         self.variables.add(var)
 
 
+new_contract_check_type("is_nta", NTA)

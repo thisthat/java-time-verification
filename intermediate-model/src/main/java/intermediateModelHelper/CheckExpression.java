@@ -1,6 +1,5 @@
 package intermediateModelHelper;
 
-
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTRE;
