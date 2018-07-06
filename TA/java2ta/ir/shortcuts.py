@@ -222,7 +222,10 @@ def get_timestamps(node):
         if curr_fingerprint not in timestamp_fingerprints:
             is_timestamp = rhs_node.get("timeCritical", False)
 
+            print "check var %s is timestamp: %s" % (curr_var, is_timestamp)
+    
             if is_timestamp:
+                print "var %s is timestamp" % curr_var
                 existing = timestamp_variables.get(curr_var, None)
                 if existing is None:
                     existing = []
@@ -257,6 +260,7 @@ def get_timestamps(node):
             #print "lhs is variable: %s" % curr_var
             check_var_is_timestamp(curr_var, rhs_node) #curr_node)
     
+    print "method node: %s" % node.ast
     visitor = ASTVisitor(node)
     visitor.add_handler("ASTAssignment", handle_var_assignment)
     visitor.add_handler("ASTVariableDeclaration", handle_var_declaration)

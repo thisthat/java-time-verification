@@ -657,8 +657,10 @@ def test_ast_visitor_more_handlers():
     assert ("b", "int") in var_declarations
     assert ("c", "int") in var_declarations
 
-    assert len(var_assignments) == 3, var_assignments
+    assert len(var_assignments) == 4, var_assignments
     assert ("x", 23, 493, 502) in var_assignments
     assert ("y", 24, 512, 521) in var_assignments
     assert ("b", 48, 975, 1005) in var_assignments
+    assert ("i", 32, 701, 710) in var_assignments
+
 
