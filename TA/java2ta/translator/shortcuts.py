@@ -2164,46 +2164,6 @@ def get_method_attributes(method):
     
     return attributes
 
-
-@contract(method=Method, domains="list(tuple(list(string)|string, is_domain, bool))", returns="is_state_space")
-def get_state_space_from_method(method, domains):
-
-    # 1. get method attributes
-    attributes = get_method_attributes(method)
-
-    # 2. initialize empty state-space
-    ss = StateSpace()
-
-    for (var_names, domain, is_local) in domains:
-        check('list(string)|string', var_names)
-        check('is_domain', domain)
-        check('bool', is_local)
-        
-        abs_att = AbstractAttribute(var_names, domain, is_local)
-        ss.add_attribute(abs_att)
-
-    return ss
-
-
-##@contract(class_fqn="string", class_path="string", method_name="string", project=Project, returns=Method)
-##def get_method(project, class_fqn, class_path, method_name):
-##    # check this works (case 1: no dot, case 2: one or more dots)
-##    class_name = ""
-##    package_name = ""
-##
-##    fqn_parts = class_fqn.rsplit(".", 1)
-##
-##    if len(fqn_parts) == 1:
-##        class_name = fqn_parts[0]
-##    else:
-##        package_name = fqn_parts[0]
-##        class_name = fqn_parts[1]
-##
-##    klass = Klass(class_name, package_name, "file://%s" % class_path, project)
-##    m = Method(method_name, klass)
-##
-##    return m
-
 @contract(method="is_method", state_space="is_state_space", returns="is_ta")
 def translate_method_to_ta(method, state_space):
 
