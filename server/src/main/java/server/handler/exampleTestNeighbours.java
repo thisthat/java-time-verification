@@ -69,9 +69,9 @@ public class exampleTestNeighbours implements HttpHandler {
 
             ah.analyze(c);
             //annotate each method
-            for(IASTMethod m : c.getMethods()){
-                m.setDeclaredVars();
-            }
+            //for(IASTMethod m : c.getMethods()){
+            //    m.setDeclaredVars();
+            //}
             for(Constraint cnst : ah.getTimeConstraint()){
                 cnst.removeElm();
             }

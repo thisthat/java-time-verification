@@ -3,6 +3,7 @@ package intermediateModel.structure;
 import intermediateModel.interfaces.*;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.types.DataTreeType;
 import org.javatuples.Pair;
 
@@ -167,7 +168,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		return declaredVar;
 	}
 
-	public void setDeclaredVars() {
+	public void setDeclaredVars(Env e) {
 		declaredVar.clear();
 		HashMap<String,Integer> ids = new HashMap<>();
 		for(IASTStm stm : stms) {
@@ -182,7 +183,13 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 					}
 					ids.put(name,c);
 					String id = name + "_" + c;
-					DeclaredVar d = new DeclaredVar(elm.getType(), name, id);
+					IASTVar v = e.getVar(name);
+					DeclaredVar d;
+					if (v != null && v.getVarTimeType() != null) {
+						d = new DeclaredVar(elm.getType(), name, id, v.getVarTimeType().toString());
+					} else {
+						d = new DeclaredVar(elm.getType(), name, id);
+					}
 					declaredVar.add(d);
 				}
 			});

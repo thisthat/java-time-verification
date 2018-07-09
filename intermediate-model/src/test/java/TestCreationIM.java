@@ -6,6 +6,7 @@ import intermediateModel.structure.expression.ASTBinary;
 import intermediateModel.structure.expression.ASTIdentifier;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModelHelper.envirorment.Env;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class TestCreationIM {
 		String f = TestCreationIM.class.getClassLoader().getResource("env/CreateListDeclaredVar.java").getFile();
 		ASTClass c = JDTVisitor.parse(f, f.substring(0, f.lastIndexOf("/"))).get(0);
 		IASTMethod m = c.getAllMethods().get(0);
-		m.setDeclaredVars();
+		m.setDeclaredVars(new Env());
 		assertEquals("Dequeue", m.getName());
 		assertEquals(4, m.getDeclaredVar().size());
 		//System.out.println(Arrays.toString(m.getDeclaredVar().toArray()));
