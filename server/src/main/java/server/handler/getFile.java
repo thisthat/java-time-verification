@@ -141,7 +141,7 @@ public class getFile extends indexMW {
 			ah.analyze(c);
 			//annotate each method
 			for(IASTMethod m : c.getMethods()){
-				m.setDeclaredVars();
+				//m.setDeclaredVars();
 				m.visit(new RemoveCnt());
 			}
 			for(Constraint cnst : ah.getTimeConstraint()){

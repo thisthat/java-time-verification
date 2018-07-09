@@ -2,6 +2,7 @@ package intermediateModel.interfaces;
 
 
 import intermediateModel.structure.ASTVariable;
+import intermediateModelHelper.envirorment.Env;
 import org.javatuples.Pair;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public interface IASTMethod extends IASTHasStms, IASTVisitor {
 	boolean equalsBySignature(String pkg, String name, List<Pair<String,String>> signature);
 	boolean isStatic();
 	List<DeclaredVar> getDeclaredVar();
-	void setDeclaredVars();
+	void setDeclaredVars(Env e);
 	List<String> getTimeVars();
 	void setTimeVars(List<String> vars);
 	void setTimeCnst(boolean f);

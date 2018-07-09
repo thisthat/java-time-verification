@@ -67,9 +67,9 @@ public class exampleDeadline implements HttpHandler {
 
             ah.analyze(c);
             //annotate each method
-            for(IASTMethod m : c.getMethods()){
-                m.setDeclaredVars();
-            }
+            //for(IASTMethod m : c.getMethods()){
+            //    m.setDeclaredVars(new Env());
+            //}
             for(Constraint cnst : ah.getTimeConstraint()){
                 cnst.removeElm();
             }
