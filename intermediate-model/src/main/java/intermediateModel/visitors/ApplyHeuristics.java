@@ -152,6 +152,7 @@ public class ApplyHeuristics extends ParseIM {
 			Env eMethod = new Env(base);
 			eMethod = CheckExpression.checkPars(m.getParameters(), eMethod);
 			analyzeMethod(m, eMethod);
+			m.setDeclaredVars(eMethod);
 			//analyze(m.getStms(), eMethod );
 			//analyze(m.getStms(), eMethod );
 		}
