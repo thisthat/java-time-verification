@@ -41,4 +41,17 @@ public class PropertiesFileReader {
         String v = properties.getProperty("git-sha-1");
         return ( (v != null && !v.equals("")) ? v : "developer-release");
     }
+
+    /**
+     * Gets the Git Branch Name.
+     * @return A {@code String} with the Git Branch Name.
+     */
+    public static String getBranch() {
+        String v = properties.getProperty("branch");
+        return ( (v != null && !v.equals("")) ? v : "developer-release");
+    }
+
+    public static String getInfo(){
+        return getBranch() + " -- " + getGitSha1();
+    }
 }
