@@ -26,9 +26,9 @@
     </modules>
 
     <scm>
-        <url>https://rtse-isys.aau.at/giovanni.liva/java-xal</url>
-        <connection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</connection>
-        <developerConnection>scm:git:http://rtse-isys.aau.at/giovanni.liva/java-xal.git</developerConnection>
+        <url>https://git-isys.aau.at/giliva/java-time-verification</url>
+        <connection>scm:git:https://git-isys.aau.at/giliva/java-time-verification.git</connection>
+        <developerConnection>scm:git:https://git-isys.aau.at/giliva/java-time-verification.git</developerConnection>
     </scm>
 
 
