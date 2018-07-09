@@ -44,7 +44,7 @@ if [ -z "${SERVER_JAR}" ]; then
     CURR_PWD=`pwd`
     cd ..
     echo "Compile current version with maven"
-    $MVN package $MVN_FLAGS > /dev/null
+    $MVN clean package $MVN_FLAGS > /dev/null
     cd $CURR_PWD
     SERVER_JAR=`ls target/server-*.jar 2> /dev/null | sort -r | head -1`
 fi
