@@ -13,18 +13,25 @@ ARTIFACT_NAME=server.zip
 touch .head_development
 rm -fR server
 LOCAL_HEAD_DEV=`cat .head_development`
-REMOTE_HEAD_DEV=`git fetch; git log upstream/development | head -1 | cut -d ' ' -f 2`
+REMOTE_HEAD_DEV=`git fetch; git log origin/development | head -1 | cut -d ' ' -f 2`
 if [ "${LOCAL_HEAD_DEV}" != "${REMOTE_HEAD_DEV}" ]; then
     printf "Server is not update. "
     printf "Updating to "
     echo ${REMOTE_HEAD_DEV}
     # Update reference in file
+    git merge development
     echo ${REMOTE_HEAD_DEV} > .head_development
-    wget --header="PRIVATE-TOKEN: ${TOKEN}" ${ARTIFACT_URL} --output-document=${ARTIFACT_NAME}
-    unzip -o ${ARTIFACT_NAME}
-    rm -fR target
-    mkdir target
-    cp server/target/server-*.jar target/
+
+
+
+    ##########
+    # Download last build. Deprecated
+    ##########
+    #wget --header="PRIVATE-TOKEN: ${TOKEN}" ${ARTIFACT_URL} --output-document=${ARTIFACT_NAME}
+    #unzip -o ${ARTIFACT_NAME}
+    #rm -fR target
+    #mkdir target
+    #cp server/target/server-*.jar target/
 fi
 
 SERVER_JAR=`ls target/server-*.jar 2> /dev/null | sort -r | head -1`
@@ -37,7 +44,7 @@ if [ -z "${SERVER_JAR}" ]; then
     CURR_PWD=`pwd`
     cd ..
     echo "Compile current version with maven"
-    $MVN package $MVN_FLAGS > /dev/null
+    $MVN clean package $MVN_FLAGS > /dev/null
     cd $CURR_PWD
     SERVER_JAR=`ls target/server-*.jar 2> /dev/null | sort -r | head -1`
 fi
