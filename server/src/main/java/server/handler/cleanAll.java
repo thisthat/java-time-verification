@@ -9,6 +9,7 @@ import server.handler.middleware.BaseRoute;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.Status;
+import server.helper.Answer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,10 +51,6 @@ public class cleanAll extends BaseRoute {
         ObjectMapper json = ParsePars.getOutputFormat(parameters);
         json.enable(SerializationFeature.INDENT_OUTPUT);
         String response = json.writeValueAsString(ok);
-        he.getResponseHeaders().add("Content-Type","application/json");
-        he.sendResponseHeaders(200, response.length());
-        OutputStream os = he.getResponseBody();
-        os.write(response.toString().getBytes());
-        os.close();
+        Answer.SendMessage(response, he);
     }
 }

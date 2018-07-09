@@ -31,6 +31,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<String> timeVars = new ArrayList<>();
 	boolean hasTimeCnst;
 	AccessModifier visibility = AccessModifier.PRIVATE;
+	private String version;
 
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
@@ -243,7 +244,14 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	}
 
 	@Override
+	public void setVersion(String v) {
+		this.version = v;
+	}
+
+	@Override
 	public List<String> getTimeVars() {
 		return timeVars;
 	}
+	
+	
 }

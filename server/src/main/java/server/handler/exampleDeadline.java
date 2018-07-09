@@ -15,6 +15,7 @@ import intermediateModelHelper.envirorment.temporal.structure.Constraint;
 import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import server.handler.middleware.ParsePars;
+import server.helper.Answer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -88,10 +89,6 @@ public class exampleDeadline implements HttpHandler {
             //LOGGER.catching(e);
         }
         //LOGGER.debug(response);
-        he.getResponseHeaders().add("Content-Type","application/json");
-        he.sendResponseHeaders(200, response.length());
-        OutputStream os = he.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        Answer.SendMessage(response, he);
     }
 }

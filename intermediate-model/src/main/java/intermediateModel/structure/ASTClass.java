@@ -75,6 +75,9 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 
 	public void setVersion(String version) {
 		this.version = version;
+		for(IASTMethod m : this.methods){
+			m.setVersion(version);
+		}
 	}
 
 	public List<ASTImport> getImports() {

@@ -25,6 +25,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	private List<String> timeVars = new ArrayList<>();
 	boolean hasTimeCnst;
 	private AccessModifier visibility;
+	private String version;
 
 	public ASTConstructor(int start, int end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
@@ -201,6 +202,11 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	@Override
 	public boolean hasTimeCnst() {
 		return hasTimeCnst;
+	}
+
+	@Override
+	public void setVersion(String v) {
+		this.version = v;
 	}
 
 	@Override
