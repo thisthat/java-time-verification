@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.Status;
+import server.helper.Answer;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,10 +119,7 @@ public class openProject extends indexMW {
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
 		String response = json.writeValueAsString(msg);
-		he.sendResponseHeaders(200, response.length());
-		OutputStream os = he.getResponseBody();
-		os.write(response.toString().getBytes());
-		os.close();
+		Answer.SendMessage(response, he);
 	}
 
 	public boolean doesItExists(String name){

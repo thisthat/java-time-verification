@@ -3,6 +3,7 @@ package server.handler;
 import com.sun.net.httpserver.HttpExchange;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import server.handler.middleware.indexMW;
+import server.helper.Answer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,10 +21,7 @@ public class isProjectOpen extends indexMW {
 		MongoConnector connector = MongoConnector.getInstance(name);
 		int retVal = connector.getIndexStatus() ? 1 : 0;
 		String response = "{\n\t\"status\": \"" + retVal + "\"\n}\n";
-		he.sendResponseHeaders(200, response.length());
-		OutputStream os = he.getResponseBody();
-		os.write(response.toString().getBytes());
-		os.close();
+		Answer.SendMessage(response, he);
 	}
 
 }

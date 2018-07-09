@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.OutputData;
+import server.helper.Answer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,11 +43,7 @@ public class getThreads extends indexMW {
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		json.enable(SerializationFeature.INDENT_OUTPUT);
 		String response = json.writeValueAsString(files);
-		he.getResponseHeaders().add("Content-Type","application/json");
-		he.sendResponseHeaders(200, response.length());
-		OutputStream os = he.getResponseBody();
-		os.write(response.toString().getBytes());
-		os.close();
+		Answer.SendMessage(response, he);
 
 	}
 

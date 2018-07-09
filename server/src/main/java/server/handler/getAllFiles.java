@@ -9,6 +9,7 @@ import server.HttpServerConverter;
 import server.handler.middleware.BaseRoute;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
+import server.helper.Answer;
 
 import java.io.*;
 import java.util.*;
@@ -73,11 +74,7 @@ public class getAllFiles extends indexMW {
 		// send response
 		ObjectMapper json = ParsePars.getOutputFormat(parameters);
 		String response = json.writeValueAsString(outputFiles);
-		he.getResponseHeaders().add("Content-Type","application/json");
-		he.sendResponseHeaders(200, response.length());
-		OutputStream os = he.getResponseBody();
-		os.write(response.toString().getBytes());
-		os.close();
+		Answer.SendMessage(response, he);
 	}
 
 }
