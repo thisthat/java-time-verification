@@ -1503,7 +1503,6 @@ class FormulaParser(LeftLinearParser):
     
         # translate a predicate onto a list of configurations
         conf_list = self.predicate_to_existential_abstraction(ss, pred)
-        print "conf list: %s" % conf_list
     
         # define a formula for converting a configuration onto a Proposition
         conf_to_prop = lambda c: formulas.Proposition(c)
@@ -1511,7 +1510,6 @@ class FormulaParser(LeftLinearParser):
         # translate a list of configurations onto a list of Proposition's
         prop_list = map(conf_to_prop, conf_list)
 
-        print "prop list: %s" % prop_list
         # create an Or among all the Proposition's in the list
         return formulas.Or(*prop_list)        
     
