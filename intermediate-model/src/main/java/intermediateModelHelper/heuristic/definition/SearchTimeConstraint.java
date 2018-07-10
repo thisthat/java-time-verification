@@ -96,6 +96,7 @@ public abstract class SearchTimeConstraint {
 		return elm;
 	}
 
+	@Deprecated
 	protected void addTimeVar(IASTMethod method, String name){
 		if(timeVars.containsKey(method)){
 			List<String> l = timeVars.get(method);
@@ -116,6 +117,7 @@ public abstract class SearchTimeConstraint {
 		return timeConstraint;
 	}
 
+	@Deprecated
 	public HashMap<IASTMethod, List<String>> getTimeVars() {
 		return timeVars;
 	}

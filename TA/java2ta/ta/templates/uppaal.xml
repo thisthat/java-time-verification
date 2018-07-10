@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+{# NB the filter |e is for escaping purposes and is default in Jinja2; consider using automatic escaping #}
+<nta>
+	<declaration>{% if legend %}
+{% for label,desc in legend %}// {{ label|e }}: {{ desc|e }}
+{% endfor %}
+{% endif %}</declaration>
+	<template>
+		<name>{{ ta.name }}</name>
+		<declaration>
+        {% for curr_var in ta.variables %}
+        {{ curr_var.type.name }} {{ curr_var.name|var_name }};
+        {% endfor %}    
+        {% for curr_clock in ta.clock_variables %}
+        clock {{ curr_clock.name|var_name }};
+        {% endfor %}
+        </declaration>
+        {% for curr_loc in ta.locations %}
+		<location id="{{ curr_loc.name|loc_name }}" x="{{ curr_loc|loc_x }}" y="{{ curr_loc|loc_y }}">
+			<name>{{ curr_loc.name|loc_name }}</name>
+            {% if curr_loc.invariant %}
+            <label kind="invariant">{{ curr_loc.invariant|var_name|e }}</label>
+            {% endif %}
+            {% if curr_loc.is_urgent %}
+            <urgent />
+            {% endif %}
+		</location>
+        {% endfor %}
+        {% if ta.initial_loc %}
+		<init ref="{{ ta.initial_loc.name|loc_name }}"/>
+        {% endif %}
+        {% for curr_edge in ta.edges %}
+		<transition>
+			<source ref="{{ curr_edge.source.name|loc_name }}"/>
+			<target ref="{{ curr_edge.target.name|loc_name }}"/>
+            {% if curr_edge.guard %}
+			<label kind="guard">{{ curr_edge.guard|var_name|e }}</label>
+            {% endif %}
+            {% if curr_edge.reset %}
+			<label kind="assignment">{% for r in curr_edge.reset %}{{ r|var_name|e }} := 0{% if not loop.last %},{% endif %}{% endfor %}</label>
+            {% endif %}
+		</transition>
+        {% endfor %}
+	</template>
+	<system>
+Process = {{ ta.name }}();
+system Process;
+    </system>
+	<queries>
+	</queries>
+</nta>

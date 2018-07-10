@@ -59,14 +59,14 @@ public class SLOCSlice {
         {
             File loadFromHD = new File("config/" + name + "_types.csv");
             if(loadFromHD.exists()){
-                debug.log("Indexing types from file: " + loadFromHD.getAbsolutePath());
+                debug.log("Indexing intermediateModel.types from file: " + loadFromHD.getAbsolutePath());
                 long s = System.currentTimeMillis();
                 TemporalInfo.getInstance().loadUserTypes(loadFromHD.getAbsolutePath());
                 long e = System.currentTimeMillis();
                 timeSpentInit = (e - s);
             } else {
                 long s = System.currentTimeMillis();
-                debug.log("Indexing types of the project");
+                debug.log("Indexing intermediateModel.types of the project");
                 List<TimeTypes> t = IndexingProject.getMethodReturnTime(name, root_path, true);
                 long e = System.currentTimeMillis();
                 timeSpentInit = (e - s);

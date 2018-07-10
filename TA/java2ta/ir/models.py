@@ -233,39 +233,68 @@ class Variable(ASTNode):
         
         method_node = self.method.get_ast()
 
-        var_ast = None
-        nodes_to_visit = deque([ method_node ])
+        var_declarations = []
 
-        while len(nodes_to_visit) > 0:
-            top_node = nodes_to_visit.popleft()
+        # use the visitor pattern
+        def check_var_declaration(node):
+            """
+            Handler for ASTVariableDeclaration
+            """
+            assert node["nodeType"] == "ASTVariableDeclaration"
 
-            assert "nodeType" in top_node
-#            log.debug("Visit (%s): %s ..." % (top_node["nodeType"], top_node["code"][:50]))
-#            assert "name" in top_node, "keys: %s - node: %s" % (sorted(top_node.keys()), top_node)
-            if top_node["nodeType"] == "ASTVariableDeclaration" and top_node["name"]["nodeType"] == "ASTIdentifier" and top_node["name"]["value"] == self.name: # and "hiddenClass" in top_node["expression"]: # the node is the declaration of the current variable, initialized with an instance of an anonymous class
-#                log.debug("Found variable declaration: %s" % top_node)
-                if "expr" in top_node and "hiddenClass" in top_node["expr"]:
-                    var_ast = top_node #top_node["expr"] # the node of the var declaration  
-                    break   
-            elif top_node["nodeType"] == "ASTAssignment" and top_node["left"]["value"] == self.name: # and top_node["right"]["nodeType"] == "ASTNewObject": # the node is the varaible of the current variable with an instance of an anonymous class
-#                log.debug("Found variable assignment: %s" % top_node)
-                if "hiddenClass" in top_node["right"]:
-                    var_ast = top_node #top_node["right"]
-                    break
-            else:
-                # visit all the sub-dictionaries with key nodeType
-                log.debug("Children: %s" % top_node.keys())
-                for key in top_node.keys():
-                    value = top_node[key]
-                    if isinstance(value, dict) and "nodeType" in value:
-                        log.debug("Bookmark child: %s" % key)
-                        nodes_to_visit.append(value)
-                    elif isinstance(value, list):
-                        node_sub_values = filter(lambda v: "nodeType" in v, value)
-                        nodes_to_visit.extend(node_sub_values)
-#                for subnode in top_node.get("stms", []): # visit only children that are in the "stms" or "expression" keys
-#                    nodes_to_visit.append(subnode)
+            if node["name"]["nodeType"] == "ASTIdentifier" and node["name"]["value"] == self.name and \
+                    "expr" in node and "hiddenClass" in node["expr"]:
+                return node
         
+            return None
+
+        def check_var_assignment(node):
+            """
+            Handler for ASTAssignment
+            """
+            assert node["nodeType"] == "ASTAssignment"
+            assert "left" in node
+
+            if node["left"]["value"] == self.name and "hiddenClass" in node["right"]:
+                return node
+
+            return None
+ 
+        visitor = ASTVisitor(method_node)
+        visitor.add_handler("ASTVariableDeclaration", check_var_declaration)
+        visitor.add_handler("ASTAssignment", check_var_assignment)
+        var_ast = visitor.search()
+           
+##        while len(nodes_to_visit) > 0:
+##            top_node = nodes_to_visit.popleft()
+##
+##            assert "nodeType" in top_node
+###            log.debug("Visit (%s): %s ..." % (top_node["nodeType"], top_node["code"][:50]))
+###            assert "name" in top_node, "keys: %s - node: %s" % (sorted(top_node.keys()), top_node)
+##            if top_node["nodeType"] == "ASTVariableDeclaration" and top_node["name"]["nodeType"] == "ASTIdentifier" and top_node["name"]["value"] == self.name: # and "hiddenClass" in top_node["expression"]: # the node is the declaration of the current variable, initialized with an instance of an anonymous class
+###                log.debug("Found variable declaration: %s" % top_node)
+##                if "expr" in top_node and "hiddenClass" in top_node["expr"]:
+##                    var_ast = top_node #top_node["expr"] # the node of the var declaration  
+##                    break   
+##            elif top_node["nodeType"] == "ASTAssignment" and top_node["left"]["value"] == self.name: # and top_node["right"]["nodeType"] == "ASTNewObject": # the node is the varaible of the current variable with an instance of an anonymous class
+###                log.debug("Found variable assignment: %s" % top_node)
+##                if "hiddenClass" in top_node["right"]:
+##                    var_ast = top_node #top_node["right"]
+##                    break
+##            else:
+##                # visit all the sub-dictionaries with key nodeType
+##                log.debug("Children: %s" % top_node.keys())
+##                for key in top_node.keys():
+##                    value = top_node[key]
+##                    if isinstance(value, dict) and "nodeType" in value:
+##                        log.debug("Bookmark child: %s" % key)
+##                        nodes_to_visit.append(value)
+##                    elif isinstance(value, list):
+##                        node_sub_values = filter(lambda v: "nodeType" in v, value)
+##                        nodes_to_visit.extend(node_sub_values)
+###                for subnode in top_node.get("stms", []): # visit only children that are in the "stms" or "expression" keys
+###                    nodes_to_visit.append(subnode)
+##        
 
         if not var_ast:
             raise ValueError("Cannot find variable '%s' in method %s. Method AST: %s" % (self.name, self.method.name, self.method.get_ast()))
@@ -643,7 +672,8 @@ class ASTVisitor(object):
         self.handlers[node_type] = existing
         #print "handlers: %s -> %s" % (node_type, existing)
 
-    def handle(self, node_type, node):
+    @contract(node_type="string", node="dict", return_first="bool", accumulate="bool", returns="list")
+    def _handle(self, node_type, node, return_first, accumulate):
         """ 
         Invoke all the handlers of the given node_type. Each handler take the 
         node as argument. 
@@ -651,17 +681,52 @@ class ASTVisitor(object):
         otherwise.
         """
         node_handlers = self.handlers.get(node_type, [])
+        node_results = []
+        
+#        print "node handlers (%s): %s" % (node_type, node_handlers)
 
 #        print "check handler: %s" % node_type
         for h in node_handlers:
 #            print "found handler: %s -> %s" % (node_type, h)
-            h(node)
+            curr_res = h(node)
+#            print "curr handler result: %s" % curr_res
+            if curr_res is not None and (accumulate or return_first):
+                node_results.append(curr_res)
+                if return_first:
+                    break
 
-        return len(node_handlers) > 0
+#        return len(node_handlers) > 0
+
+        # if "return_first" is set, the returned list of results is at most 1 long
+        assert return_first == False or len(node_results) <= 1
+        return node_results
 
     def visit(self):
+        self._visit_recursively(return_first=False, accumulate=False)
+
+    
+    def search(self):
+        return self._visit_recursively(return_first=True, accumulate=False)
+
+    @contract(returns="list")
+    def filter(self):
+        return self._visit_recursively(return_first=False, accumulate=True)
+
+    @contract(return_first="bool", accumulate="bool")
+    def _visit_recursively(self, return_first, accumulate):
+        """
+        This internal method implements the skeleton of a recursive visit. The visit can be used
+        for several purposes, e.g.:
+        - search : pass return_first=True; it returns the first result returned by a handler that is not None
+        - filter : pass accumulate=True; it returns all the results (!= None) of the handlers
+        - visit : pass return_first=False, accumulate=False; the handler can set their global variables and do computation with side-effects
+        """
+        if return_first and accumulate:
+            raise ValueError("You cannot set both 'return_first' and 'accumulate'")
 
         to_visit = deque([ self.node ])
+
+        results = []
 
         while len(to_visit) > 0:
 
@@ -673,12 +738,19 @@ class ASTVisitor(object):
             node_type = curr_node.get("nodeType", None)
 
             if node_type is not None:
-                is_handled = self.handle(node_type, curr_node)
-    
-                if is_handled:
+#                is_handled = self.handle(node_type, curr_node)
+                handler_res = self._handle(node_type, curr_node, return_first, accumulate)
+
+#                print "handler result: %s" % handler_res
+                if len(handler_res) > 0:
                     # for this first implementation, don't go recursive after handling the node
-                    continue
+                    results.extend(handler_res)
+
+                    if return_first:
+                        # only the first result is important, stop recursion
+                        break
             
+            # otherwise, visit sub-nodes recursively
             for key,value in curr_node.iteritems():
 
                 if isinstance(value, list):
@@ -694,6 +766,13 @@ class ASTVisitor(object):
                     # append on the right size of the queue
 #                    print "found dictionary child: %s" % value
                     to_visit.append(value)
+
+        if return_first and len(results) > 0:
+            return results[0]
+        elif accumulate:
+            return results
+        else:
+            return None
                 
        
 new_contract_check_type("is_ast_visitor", ASTVisitor)

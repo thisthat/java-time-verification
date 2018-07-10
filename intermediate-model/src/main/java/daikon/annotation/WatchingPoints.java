@@ -50,9 +50,13 @@ public class WatchingPoints {
             IASTVar[] varsArray = vars.toArray(new IASTVar[0]);
             for(int i = 0; i < varsArray.length; i++){
                 IASTVar v = varsArray[i];
-                sb.append(v.getName());
-                if(i != vars.size() -1){
-                    sb.append(",");
+                if(v.getType().equals("long") || v.getType().equals("int")) {
+                    sb.append(v.getType());
+                    sb.append("-");
+                    sb.append(v.getName());
+                    if (i != vars.size() - 1) {
+                        sb.append(",");
+                    }
                 }
             }
             sb.append("]");
@@ -121,6 +125,30 @@ public class WatchingPoints {
             sb.append(p.toString());
         }
         return sb.toString();
+    }
+
+    public long getClassSize(){
+        long out = 0;
+        List<String> classes = new ArrayList<>();
+        for(Point p : variables){
+            if(!classes.contains(p.className)){
+                classes.add(p.className);
+                out++;
+            }
+        }
+        return out;
+    }
+
+    public long getMethodSize(){
+        long out = 0;
+        List<String> m = new ArrayList<>();
+        for(Point p : variables){
+            if(!m.contains(p.methodName)){
+                m.add(p.methodName);
+                out++;
+            }
+        }
+        return out;
     }
 
     public void toCSV(String filename){

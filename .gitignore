@@ -2,6 +2,7 @@ target
 /*.xal
 *.class
 /*.csv
+/config/*csv
 /*.json
 /*.log
 .idea
@@ -12,15 +13,15 @@ target
 *.png
 *.zip
 *.pdf
-*.xml
-**/logs
-*.txt
-!pom.xml
-!log4j2.xml
-*.jar
-=======
-User.java
 
+**/.head_development
+
+[^(pom|log4j)]*.xml
+
+logs
+usage
+daikon-instrumentation
+code-instrumentation/traces*
 
 #[^log4j2]*.xml
 

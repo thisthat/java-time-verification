@@ -2,19 +2,15 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.TimeInSignature;
 import intermediateModelHelper.heuristic.definition.SetTimeout;
+import intermediateModelHelper.heuristic.definition.TimeInSignature;
 import intermediateModelHelper.heuristic.definition.TimeoutResources;
-import intermediateModelHelper.indexing.IndexingFile;
-import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
-import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
-import intermediateModelHelper.indexing.structure.IndexData;
+import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
 /**
  * @author Giovanni Liva (@thisthatDC)

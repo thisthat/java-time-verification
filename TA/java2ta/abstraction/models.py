@@ -200,13 +200,15 @@ class Predicate(object):
         smt_arguments = " ".join(map(lambda v: v.smt_condition() if isinstance(v, Predicate) else str(v), arguments))
         self._smt_condition = partial_format(self._smt_condition, { "name": self._smt_name, "arguments": smt_arguments })
 
-    
     def __eq__(self, other):
         return not predicates_differ(self, other)
 
     def __ne__(self, other):
         return predicates_differ(self, other)
 
+
+    def __hash__(self):
+        return hash(str(self))
 
     def copy(self):
         import copy
@@ -318,14 +320,18 @@ class Predicate(object):
 
 new_contract_check_type("is_predicate", Predicate)
 
-@contract(left="is_predicate|None", right="is_predicate|None", returns="bool")
+@contract(returns="bool")
 def predicates_differ(left, right):
+    """
+    Return True iff the left and right predicates differ. Note that we should not assume that left or
+    right are Predicate's. If they are not instances of Predicate, then they differ.
+    """
 
     differ = False
 
     if (left is None and right is not None) or (left is not None and right is None):
         differ = True
-    elif left.__class__ != right.__class__:
+    elif not isinstance(right, Predicate) or not isinstance(left, Predicate) or left.__class__ != right.__class__:
         differ = True
     else:
         for key,value_left in left.__dict__.iteritems():
@@ -986,10 +992,10 @@ class StateSpace(object):
 
         return decoded
 
-    @contract(values="tuple", returns="is_configuration")
+    @contract(values="tuple|list", returns="is_configuration")
     def configuration(self, values):
         """
-        Given a tuple of values (the i-th item is interpreted as the value of the i-th attribute),
+        Given a tuple (or list) of values (the i-th item is interpreted as the value of the i-th attribute),
         produce a configuration, i.e. a tuple of encoded values.
 
         Use this method to **encode** the attribute values into a configuration

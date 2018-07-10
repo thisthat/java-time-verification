@@ -3,6 +3,7 @@ package intermediateModel.structure;
 import intermediateModel.interfaces.*;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.types.DataTreeType;
 import org.javatuples.Pair;
 
@@ -31,6 +32,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	List<String> timeVars = new ArrayList<>();
 	boolean hasTimeCnst;
 	AccessModifier visibility = AccessModifier.PRIVATE;
+	private String version;
 
 
 	public ASTMethod(int start, int end, String name, String returnType, List<ASTVariable> parameters, List<String> exceptionsThrowed, boolean isSynchronized, boolean isAbstract, boolean isStatic) {
@@ -205,7 +207,7 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 		return declaredVar;
 	}
 
-	public void setDeclaredVars() {
+	public void setDeclaredVars(Env e) {
 		declaredVar.clear();
 		HashMap<String,Integer> ids = new HashMap<>();
 		for(IASTStm stm : stms) {
@@ -214,13 +216,19 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 				public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 					String name = elm.getName().getCode();
 					int c = 0;
-					if(ids.containsKey(name)){
+					if (ids.containsKey(name)) {
 						c = ids.get(name);
 						c++;
 					}
-					ids.put(name,c);
+					ids.put(name, c);
 					String id = name + "_" + c;
-					DeclaredVar d = new DeclaredVar(elm.getType(), name, id);
+					IASTVar v = e.getVar(name);
+					DeclaredVar d;
+					if (v != null && v.getVarTimeType() != null) {
+						d = new DeclaredVar(elm.getType(), name, id, v.getVarTimeType().toString());
+					} else {
+						d = new DeclaredVar(elm.getType(), name, id);
+					}
 					declaredVar.add(d);
 				}
 			});
@@ -243,7 +251,14 @@ public class ASTMethod extends IASTStm implements IASTMethod, IASTHasStms, IASTV
 	}
 
 	@Override
+	public void setVersion(String v) {
+		this.version = v;
+	}
+
+	@Override
 	public List<String> getTimeVars() {
 		return timeVars;
 	}
+	
+	
 }

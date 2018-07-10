@@ -1,7 +1,6 @@
 package test;
 
 import intermediateModel.interfaces.IASTMethod;
-import test.Thread_2;
 
 class Thread_1 extends Thread {
 

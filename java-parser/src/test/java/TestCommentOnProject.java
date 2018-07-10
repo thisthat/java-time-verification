@@ -21,7 +21,7 @@ public class TestCommentOnProject {
     //@Test
     public void testAll() throws Exception {
 
-        String lastOne = "/Users/giovanni/repository/java-parser/testProject/spark-1.6.1/unsafe/src/testenvirorments.test_antrl/java/org/apache/spark/unsafe/types/UTF8StringSuite.java";
+        String lastOne = "/Users/giovanni/repository/java-parser/testProject/spark-1.6.1/unsafe/src/testenvirorments.test_antrl/java/org/apache/spark/unsafe/intermediateModel.types/UTF8StringSuite.java";
         //Log to file
         Date date = new Date() ;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;

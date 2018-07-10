@@ -63,19 +63,7 @@ public abstract class ParseCSV {
                 // use comma as separator
                 String[] row = line.split(separator);
                 if(notHeader) {
-                    if(row.length == 3 || splitSignature){
-                        String[] signature = row[2].split(",");
-                        if(signature.length == 1 && signature[0].equals("")){
-                            signature = new String[0];
-                        }
-                        handleRow(row[0],row[1], signature);
-                    } else {
-                        if(splitSignature)
-                            handleRow(row[0],row[1], new String[0]);
-                        else
-                            handleRow(row[0],row[1], new String[]{ row[2] }  );
-                    }
-
+                    parseRow(row);
                 }
                 else {
                     notHeader = true;
@@ -84,6 +72,21 @@ public abstract class ParseCSV {
             }
         } catch (IOException e) {
            // e.printStackTrace();
+        }
+    }
+
+    protected void parseRow(String[] row){
+        if(row.length == 3 || splitSignature){
+            String[] signature = row[2].split(",");
+            if(signature.length == 1 && signature[0].equals("")){
+                signature = new String[0];
+            }
+            handleRow(row[0],row[1], signature);
+        } else {
+            if(splitSignature)
+                handleRow(row[0],row[1], new String[0]);
+            else
+                handleRow(row[0],row[1], new String[]{ row[2] }  );
         }
     }
 

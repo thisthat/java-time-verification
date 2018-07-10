@@ -6,16 +6,19 @@ import intermediateModelHelper.indexing.mongoConnector.MongoOptions;
 import intermediateModelHelper.indexing.structure.IndexSyncBlock;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Deprecated
+@Ignore
 public class TestSyncBlocks {
 
 	String file = TestSyncBlocks.class.getClassLoader().getResource("exprTypesSync/Thread_1.java").getPath();

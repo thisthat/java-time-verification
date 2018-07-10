@@ -1,19 +1,23 @@
 package daikon.instrumentation.preprocess;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class WatchPoint {
     String className;
     String methodName;
     int line;
-    Set<String> vars;
+    Set<Variable> vars;
 
     public WatchPoint(String className, String methodName, int line, Set<String> vars)  {
         this.className = className;
         this.methodName = methodName;
         this.line = line;
-        this.vars = vars;
+        this.vars = new LinkedHashSet<>();
+        for(String s : vars){
+            this.vars.add(new Variable(s));
+        }
     }
 
     public String getClassName() {
@@ -26,10 +30,6 @@ public class WatchPoint {
 
     public int getLine() {
         return line;
-    }
-
-    public Set<String> getVars() {
-        return vars;
     }
 
     public boolean isTheOne(String className){
@@ -47,11 +47,15 @@ public class WatchPoint {
         StringBuilder name;
         String pars = "";
         name = new StringBuilder("invariant_" + this.line);
-        for(String v : vars){
-            name.append("_").append(v);
+        for(Variable v : vars){
+            name.append("_").append(v.getName());
         }
-        for(String v : vars){
-            pars += "long " + v + ",";
+        for(Variable v : vars){
+            pars += v.getType() + " " + v.getName() + ",";
+        }
+        //checks
+        for(int i = 0; i < vars.size()-1; i++){
+            pars += "boolean b" + i + ",";
         }
         if(pars.length() > 0) {
             pars = pars.substring(0, pars.length()-1);
@@ -63,11 +67,18 @@ public class WatchPoint {
         StringBuilder name;
         String pars = "";
         name = new StringBuilder("invariant_" + this.line);
-        for(String v : vars){
-            name.append("_").append(v);
+        for(Variable v : vars){
+            name.append("_").append(v.name);
         }
-        for(String v : vars){
-            pars += v + ",";
+        for(Variable v : vars){
+            pars += v.getName() + ",";
+        }
+        //checks
+        Variable[] varSet = vars.toArray(new Variable[0]);
+        for(int i = 2; i <= varSet.length; i++){
+            Variable v1 = varSet[i-2];
+            Variable v2 = varSet[i-1];
+            pars += v1.getName() + "<=" + v2.getName() + ",";
         }
         if(pars.length() > 0) {
             pars = pars.substring(0, pars.length()-1);

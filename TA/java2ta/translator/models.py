@@ -442,6 +442,8 @@ class KnowledgeBase(object):
     @contract(class_fqn="string", method_name="string", var_name="string", is_relative="bool", is_now="bool")
     def add_timestamp(class_fqn, method_name, var_name, is_relative, is_now=False):
 
+        log.debug("Add timestamp: method=(%s,%s), var_name=%s, is_relative=%s, is_now=%s" % (class_fqn, method_name, var_name, is_relative, is_now))
+
         if is_relative and is_now:
             raise ValueError("In order to be a now-timestamp, the timestamp must also be absolute")
 
@@ -510,7 +512,7 @@ class KnowledgeBase(object):
     @staticmethod
     @contract(class_fqn="string", method_name="string", var_name="string")
     def add_now_timestamp(class_fqn, method_name, var_name):
-        KnowledgeBase.add_timestamp(class_fqn, method_name, var_name, is_now=True)
+        KnowledgeBase.add_timestamp(class_fqn, method_name, var_name, is_relative=False, is_now=True)
         
     @staticmethod
     @contract(class_fqn="string", method_name="string", returns="set(string)")

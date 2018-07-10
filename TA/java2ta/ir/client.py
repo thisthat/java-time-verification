@@ -65,8 +65,8 @@ class RestfulAPIClient(object):
         resp = requests.post(full_url, data)
 
         debug_text = resp.text
-        if len(debug_text) > 100:
-            debug_text = debug_text[:100] + "..."
+#        if len(debug_text) > 100:
+#            debug_text = debug_text[:100] + "..."
         log.debug("Response: (%s) %s" % (resp.status_code, debug_text))
 
         if resp.status_code != 200:

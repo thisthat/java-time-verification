@@ -8,6 +8,7 @@ import intermediateModelHelper.CheckExpression;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
 
+
 /**
  * The {@link MinMaxSearch} searches for instances of time assignment
  * @author Giovanni Liva (@thisthatDC)
@@ -16,6 +17,11 @@ import intermediateModelHelper.heuristic.definition.SearchTimeConstraint;
  */
 public class MinMaxSearch extends SearchTimeConstraint {
 
+	TimeStatements listTimeStms;
+
+	public MinMaxSearch() {
+		this.listTimeStms = TimeStatements.getInstance();
+	}
 
 	@Override
 	public void next(ASTRE stm, Env env) {
@@ -41,7 +47,7 @@ public class MinMaxSearch extends SearchTimeConstraint {
 		for(IASTRE exp : elm.getParameters()){
 			if(CheckExpression.checkRightHandAssignment(stm, exp, env)){
 				elm.setMaxMin(true);
-				super.addConstraint(stm.getCode(), stm, false);
+				listTimeStms.addStatements(stm, TimeElement.Type.MinMax);
 			}
 		}
 	}

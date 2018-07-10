@@ -40,8 +40,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class manages the coordination process with the Kafka group coordinator on the broker
- * for managing assignments to workers.
+ * This class manages the coordination process with the Kafka group coordinator on the broker for managing assignments
+ * to workers.
  */
 public final class WorkerCoordinator extends AbstractCoordinator implements Closeable {
 

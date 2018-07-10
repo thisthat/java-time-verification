@@ -30,13 +30,13 @@ def test_analyze_assignment():
     assert len(var_timestamps["c"]) == 1, var_timestamps["c"] # c is a timestamp appearing in one assignment
 
     assert var_timestamps["b"][0]["code"] == "System.currentTimeMillis()", var_timestamps["b"][0]
-    assert var_timestamps["b"][0]["line"] in [ 42, 47 ], var_timestamps["b"][0]
+    assert var_timestamps["b"][0]["line"] in [ 43, 48 ], var_timestamps["b"][0]
     assert var_timestamps["b"][1]["code"] == "System.currentTimeMillis()", var_timestamps["b"][1]
-    assert var_timestamps["b"][1]["line"] in [ 42, 47 ], var_timestamps["b"][1]
+    assert var_timestamps["b"][1]["line"] in [ 43, 48 ], var_timestamps["b"][1]
     assert var_timestamps["b"][0]["line"] != var_timestamps["b"][1]["line"], var_timestamps["b"]
 
     assert var_timestamps["c"][0]["code"] == "b + a", var_timestamps["c"][0]
-    assert var_timestamps["c"][0]["line"] in [ 43 ], var_timestamps["c"][0]
+    assert var_timestamps["c"][0]["line"] in [ 44 ], var_timestamps["c"][0]
 
 
 def test_check_now_assignments():
@@ -57,7 +57,7 @@ def test_check_now_assignments():
     now_methods = set([ "java.lang.System.currentTimeMillis" ])
     var_timestamps = get_timestamps(run_method) #, now_methods)
 
-    assert "b" in var_timestamps
+    assert "b" in var_timestamps, "Expected timestamp named 'b'. Got: %s" % (var_timestamps,)
     assert "c" in var_timestamps
 
     res_b = check_now_assignments(var_timestamps["b"], now_methods)

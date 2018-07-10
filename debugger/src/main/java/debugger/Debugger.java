@@ -1,6 +1,8 @@
 package debugger;
 
 import helper.PropertiesFileReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -8,16 +10,28 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+
 public class Debugger {
     private static Debugger instance = null;
     private int port = 0;
     private List<String> ip = new ArrayList<>();
     ServerDebugger server;
     String name;
+    boolean network = true;
+    boolean isActive = true;
+
+    private static final Logger log = LogManager.getLogger();
 
     public static synchronized Debugger getInstance(){
         if(instance == null) {
-            instance = new Debugger();
+            instance = new Debugger(true);
+        }
+        return instance;
+    }
+
+    public static synchronized Debugger getInstance(boolean network){
+        if(instance == null) {
+            instance = new Debugger(network);
         }
         return instance;
     }
@@ -26,7 +40,10 @@ public class Debugger {
         OutputLogs.getInstance().setName(name);
     }
 
-    private Debugger() {
+
+    private Debugger(boolean network) {
+        this.network = network;
+        if(!network) return;
         try {
             //Start the server
             server = new ServerDebugger();
@@ -51,6 +68,11 @@ public class Debugger {
         }
     }
 
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     public String getName() {
         return name;
     }
@@ -60,6 +82,9 @@ public class Debugger {
     }
 
     public void log(String msg){
-        OutputLogs.getInstance().add(msg);
+        if(network)
+            OutputLogs.getInstance().add(msg);
+        if(!isActive) return;
+        log.debug(msg);
     }
 }

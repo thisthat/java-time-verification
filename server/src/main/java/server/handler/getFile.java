@@ -10,15 +10,12 @@ import intermediateModel.structure.ASTHiddenClass;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.structure.expression.ASTAssignment;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
+import intermediateModel.types.TimeTypeSystem;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.envirorment.temporal.structure.Constraint;
-import intermediateModelHelper.heuristic.definition.TimeInSignature;
-import intermediateModelHelper.heuristic.definition.AssignmentTimeVar;
-import intermediateModelHelper.heuristic.definition.TimeoutResources;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +24,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import server.HttpServerConverter;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
+import server.helper.Answer;
 import server.helper.PropertiesFileReader;
 
 import java.io.IOException;
@@ -49,7 +47,7 @@ public class getFile extends indexMW {
 		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.ALL : Level.OFF);
 	}
 
-	static class AnnotateEnv extends ParseIM {
+	static class AnnotateEnv extends TimeTypeSystem {
 		@Override
 		public void start(ASTClass c) {
 			super.start(c);
@@ -118,12 +116,8 @@ public class getFile extends indexMW {
 		lastFileServed = file;
 
 
-		List<ASTClass> classes;
-		//Compute response
-		try {
-			classes = JDTVisitor.parse(file, base_path, true);
-		} catch (Exception e){
-			LOGGER.debug(e);
+		List<ASTClass> classes = JDTVisitor.parse(file, base_path, true);
+		if(classes.size() == 0){
 			String response = "File not found!";
 			he.sendResponseHeaders(400, response.length());
 			OutputStream os = he.getResponseBody();
@@ -147,14 +141,14 @@ public class getFile extends indexMW {
 			ah.analyze(c);
 			//annotate each method
 			for(IASTMethod m : c.getMethods()){
-				m.setDeclaredVars();
+				//m.setDeclaredVars();
 				m.visit(new RemoveCnt());
 			}
 			for(Constraint cnst : ah.getTimeConstraint()){
 				cnst.removeElm();
 			}
 			c.setPath(file_path);
-			c.setVersion(PropertiesFileReader.getGitSha1());
+			c.setVersion(PropertiesFileReader.getInfo());
 		}
 		//annotate with Time
 
@@ -170,12 +164,7 @@ public class getFile extends indexMW {
 			LOGGER.catching(e);
 			System.err.println(e.getMessage());
 		}
-		//LOGGER.debug(response);
-		he.getResponseHeaders().add("Content-Type","application/json");
-		he.sendResponseHeaders(200, response.length());
-		OutputStream os = he.getResponseBody();
-		os.write(response.getBytes());
-		os.close();
+		Answer.SendMessage(response, he);
 	}
 
 	@Override

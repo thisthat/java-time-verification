@@ -3,6 +3,7 @@ package intermediateModel.structure;
 import intermediateModel.interfaces.*;
 import intermediateModel.structure.expression.ASTVariableDeclaration;
 import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModelHelper.envirorment.Env;
 import intermediateModelHelper.types.DataTreeType;
 import org.javatuples.Pair;
 
@@ -25,6 +26,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	private List<String> timeVars = new ArrayList<>();
 	boolean hasTimeCnst;
 	private AccessModifier visibility;
+	private String version;
 
 	public ASTConstructor(int start, int end, String name, List<ASTVariable> parameters, List<String> exceptionsThrowed) {
 		super(start,end);
@@ -166,7 +168,7 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 		return declaredVar;
 	}
 
-	public void setDeclaredVars() {
+	public void setDeclaredVars(Env e) {
 		declaredVar.clear();
 		HashMap<String,Integer> ids = new HashMap<>();
 		for(IASTStm stm : stms) {
@@ -181,7 +183,13 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 					}
 					ids.put(name,c);
 					String id = name + "_" + c;
-					DeclaredVar d = new DeclaredVar(elm.getType(), name, id);
+					IASTVar v = e.getVar(name);
+					DeclaredVar d;
+					if (v != null && v.getVarTimeType() != null) {
+						d = new DeclaredVar(elm.getType(), name, id, v.getVarTimeType().toString());
+					} else {
+						d = new DeclaredVar(elm.getType(), name, id);
+					}
 					declaredVar.add(d);
 				}
 			});
@@ -201,6 +209,11 @@ public class ASTConstructor extends IASTStm implements IASTMethod, IASTHasStms, 
 	@Override
 	public boolean hasTimeCnst() {
 		return hasTimeCnst;
+	}
+
+	@Override
+	public void setVersion(String v) {
+		this.version = v;
 	}
 
 	@Override

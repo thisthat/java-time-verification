@@ -63,7 +63,7 @@ class JavaExample
         Symbol[] names = new Symbol[sz];
         Sort[] types = new Sort[sz];
 
-        /* fill types, names and xs */
+        /* fill intermediateModel.types, names and xs */
 
         for (int j = 0; j < sz; j++)
         {
@@ -86,7 +86,7 @@ class JavaExample
         Pattern p = ctx.mkPattern(fxs);
 
         /* create & assert quantifier */
-        BoolExpr q = ctx.mkForall(types, /* types of quantified variables */
+        BoolExpr q = ctx.mkForall(types, /* intermediateModel.types of quantified variables */
                 names, /* names of quantified variables */
                 eq, 1, new Pattern[] { p } /* patterns */, null, null, null);
 
@@ -121,7 +121,7 @@ class JavaExample
         /* allocate temporary arrays */
         Expr[] xs = new Expr[sz];
 
-        /* fill types, names and xs */
+        /* fill intermediateModel.types, names and xs */
         for (int j = 0; j < sz; j++)
         {
             xs[j] = ctx.mkConst("x_" + Integer.toString(j), domain[j]);
@@ -141,7 +141,7 @@ class JavaExample
         Pattern p = ctx.mkPattern(fxs);
 
         /* create & assert quantifier */
-        BoolExpr q = ctx.mkForall(xs, /* types of quantified variables */
+        BoolExpr q = ctx.mkForall(xs, /* intermediateModel.types of quantified variables */
                 eq, /* names of quantified variables */
                 1, new Pattern[] { p } /* patterns */, null, null, null);
 
@@ -165,7 +165,7 @@ class JavaExample
                     + dom[0].toString() + " " + dom[1].toString() + " "
                     + t.toString());
             throw new Exception(
-                    "function must be binary, and argument types must be equal to return type");
+                    "function must be binary, and argument intermediateModel.types must be equal to return type");
         }
 
         String bench = "(benchmark comm :formula (forall (x " + t.getName()
@@ -1207,7 +1207,7 @@ class JavaExample
     // / disprove <tt>x = y implies g(g(x)) = g(y)</tt>.
 
     // / <remarks>This function demonstrates how to create uninterpreted
-    // / types and functions.</remarks>
+    // / intermediateModel.types and functions.</remarks>
     public void proveExample1(Context ctx) throws TestFailedException
     {
         System.out.println("ProveExample1");
@@ -1387,7 +1387,7 @@ class JavaExample
                 // of
                 // projection
                 // operators
-                new Sort[] { int_type, int_type } // types of projection
+                new Sort[] { int_type, int_type } // intermediateModel.types of projection
                 // operators
         );
         FuncDecl first = tuple.getFieldDecls()[0]; // declarations are for
@@ -1775,7 +1775,7 @@ class JavaExample
         //
         // Declare the names of the accessors for cons.
         // Then declare the sorts of the accessors.
-        // For this example, all sorts refer to the new types 'forest' and
+        // For this example, all sorts refer to the new intermediateModel.types 'forest' and
         // 'tree'
         // being declared, so we pass in null for both sorts1 and sorts2.
         // On the other hand, the sort_refs arrays contain the indices of the
@@ -1931,7 +1931,7 @@ class JavaExample
                 // of
                 // projection
                 // operators
-                new Sort[] { int_type, int_type } // types of projection
+                new Sort[] { int_type, int_type } // intermediateModel.types of projection
                 // operators
         );
         FuncDecl first = tuple.getFieldDecls()[0]; // declarations are for

@@ -2,7 +2,6 @@ package slicing.model;
 
 import intermediateModel.interfaces.IASTRE;
 import intermediateModel.interfaces.IASTStm;
-import intermediateModel.structure.expression.ASTMethodCall;
 import slicing.model.interfaces.Stm;
 import slicing.model.visitor.ReducedVisitor;
 

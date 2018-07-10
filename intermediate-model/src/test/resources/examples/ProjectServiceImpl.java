@@ -1,25 +1,15 @@
 package at.aau.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import at.aau.dao.*;
+import at.aau.diff.common.Differ;
+import at.aau.diff.maven.MavenBuildChange;
+import at.aau.diff.maven.MavenBuildFileDiffer;
+import at.aau.entity.*;
+import at.aau.service.dto.CommitPair;
+import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
+import ch.uzh.ifi.seal.changedistiller.ChangeDistiller.Language;
+import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
+import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -42,26 +32,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.aau.dao.BuildDao;
-import at.aau.dao.ChangeDao;
-import at.aau.dao.CommitDao;
-import at.aau.dao.ProjectDao;
-import at.aau.dao.WorkItemDao;
-import at.aau.diff.common.Differ;
-import at.aau.diff.maven.MavenBuildChange;
-import at.aau.diff.maven.MavenBuildFileDiffer;
-import at.aau.entity.Build;
-import at.aau.entity.BuildResult;
-import at.aau.entity.Change;
-import at.aau.entity.ChangeType;
-import at.aau.entity.Commit;
-import at.aau.entity.Project;
-import at.aau.entity.WorkItem;
-import at.aau.service.dto.CommitPair;
-import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
-import ch.uzh.ifi.seal.changedistiller.ChangeDistiller.Language;
-import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
-import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ProjectServiceImpl implements ProjectService{
@@ -97,7 +97,7 @@ public class ProjectServiceImpl implements ProjectService{
 	public void generateChanges(Long projectId, File repoFolder) throws Exception {
 		File tempDir = new File("poms/tmp");
 		
-		File gitDir = new File(repoFolder,".git");
+		File gitDir = new File(repoFolder,".git.git");
 		org.eclipse.jgit.lib.Repository repo = new FileRepository(gitDir);
 		Git git = new Git(repo);
 		
@@ -109,7 +109,7 @@ public class ProjectServiceImpl implements ProjectService{
 		
 		List<Commit> commits=commitDao.findByProjectId(projectId);
 		for (Commit commit : commits) {
-			//find parent in the git by using the repoFolder and extract the changes
+			//find parent in the git.git by using the repoFolder and extract the changes
 			System.out.println(commit);
 			Commit freshCommit=commitDao.findOne(commit.getId());
 			

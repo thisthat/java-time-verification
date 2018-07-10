@@ -1,16 +1,18 @@
 package intermediateModel.structure;
 
 import intermediateModel.interfaces.*;
+import intermediateModel.types.definition.TimeType;
 
 /**
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
-public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
+public class  ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 	String name;
 	String type;
 	TimeUnit unit = TimeUnit.UNKNOWN;
 	private String typePointed;
+	private TimeType timeType;
 
 
 	public ASTVariable(int start, int end, String name, String type) {
@@ -89,4 +91,13 @@ public class ASTVariable extends IASTStm implements IASTVar, IASTVisitor {
 		visitor.exitASTVariable(this);
 	}
 
+	@Override
+	public TimeType getVarTimeType() {
+		return timeType;
+	}
+
+	@Override
+	public void setVarTimeType(TimeType texpr) {
+		this.timeType = texpr;
+	}
 }

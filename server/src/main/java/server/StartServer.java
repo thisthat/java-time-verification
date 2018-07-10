@@ -34,7 +34,7 @@ public class StartServer {
 			}
 		}
 
-		System.out.println("Version : " + PropertiesFileReader.getGitSha1());
+		System.out.println("Version : " + PropertiesFileReader.getInfo());
 
 		Callable<Boolean> task = () -> {
 			try {

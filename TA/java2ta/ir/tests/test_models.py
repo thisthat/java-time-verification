@@ -307,7 +307,7 @@ def test_methods():
     assert while_env[1]["name"] == "lock"
     assert while_env[1]["type"] == "Lock"
     assert while_env[2]["name"] == "r"
-    assert while_env[2]["type"] == "java.util.Random", while_env
+    assert while_env[2]["type"] == "java.util.Random", while_env 
 
 
 
@@ -551,9 +551,9 @@ def test_inner_method():
     assert m_inner.ast["nodeType"] == "ASTMethod"
     assert "stms" in m_inner.ast
     assert m_inner.ast["name"] == "mymethod"
-    assert len(m_inner.ast["stms"]) == 1
-    assert m_inner.ast["stms"][0]["nodeType"] == "ASTReturn"
-    #assert False, m_inner.ast
+    assert len(m_inner.ast["stms"]) == 2, "Expected 2 statements. Got: %s - %s" % (len(m_inner.ast["stms"]),)
+    assert m_inner.ast["stms"][0]["nodeType"] == "ASTRE", m_inner.ast["stms"][0]["nodeType"]
+    assert m_inner.ast["stms"][1]["nodeType"] == "ASTReturn"
 
 def test_ast_visitor_simple():
     """
@@ -607,7 +607,7 @@ def test_ast_visitor_one_handler():
     visitor.add_handler("ASTIdentifier", collect_identifier_names)
     visitor.visit()
 
-    assert identifier_names == set([ "i", "varfoo", "System",  ]), identifier_names
+    assert identifier_names == set([ "i", "varfoo", "System", "a", "b", "c", "Thread", "w", "x", "y", ]), identifier_names
 
 def test_ast_visitor_more_handlers():
     """
@@ -650,11 +650,17 @@ def test_ast_visitor_more_handlers():
     visitor.add_handler("ASTAssignment", collect_variable_assignments)
     visitor.visit()
 
-    assert len(var_declarations) == 2, var_declarations
+    assert len(var_declarations) == 5, var_declarations
     assert ("varfoo", "Foo") in var_declarations, var_declarations
     assert ("i", "int") in var_declarations, var_declarations
-    assert len(var_assignments) == 2, var_assignments
+    assert ("a", "int") in var_declarations
+    assert ("b", "int") in var_declarations
+    assert ("c", "int") in var_declarations
+
+    assert len(var_assignments) == 4, var_assignments
     assert ("x", 23, 493, 502) in var_assignments
     assert ("y", 24, 512, 521) in var_assignments
+    assert ("b", 48, 975, 1005) in var_assignments
+    assert ("i", 32, 701, 710) in var_assignments
 
 
