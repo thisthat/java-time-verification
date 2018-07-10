@@ -1450,6 +1450,7 @@ class FormulaParser(LeftLinearParser):
     PROP_DELIM_BEGIN = "["
     PROP_DELIM_END = "]"
 
+    @contract(ss="is_state_space")
     def __init__(self,ss):
         super(FormulaParser,self).__init__()
         self.ss=ss
