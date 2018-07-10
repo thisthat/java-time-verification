@@ -892,6 +892,18 @@ class StateSpace(object):
 #        return sorted(self._attributes.values(), key=sort_by_name) 
         return self.get_attributes()
 
+    @property
+    @contract(returns="set(string)")
+    def variables(self):
+        assert isinstance(self._attributes, dict)
+
+        res = set([])
+        for attr in self._attributes.values():
+            res = res | set(attr.variables)
+
+        return res
+     
+       
     @property   
     @contract(returns="list(is_configuration)")
     def enumerate(self):
@@ -947,6 +959,7 @@ class StateSpace(object):
         """
         return len(self.enumerate)
 
+
     @contract(configurations="list(is_configuration)", attribute="is_abstract_attribute", returns="list(is_configuration)")
     def _do_multiply(self, configurations, attribute):
         """     
@@ -970,6 +983,7 @@ class StateSpace(object):
                 new_configurations.append(new_tuple)
 
         return new_configurations
+
 
     @contract(configuration="is_configuration", returns="tuple")
     def value(self, configuration):
@@ -1310,12 +1324,10 @@ class PredicateParser(LeftLinearParser):
                 # then: remaining.startswith(")")
                 remaining = remaining[1:]
 
-#            return (name, arguments), remaining
             result = (name, arguments)
         elif text[0] == self.VAR_DELIM_BEGIN: #"{":
             # it is a variable name, enclosed in curly brackets
             var_name, remaining = self._match(self.RE_VAR, text)
-#            return ("%s" % var_name) , remaining
             result = ("%s" % var_name)
         else:
             # a token that ends at the first space (if any)  
@@ -1327,7 +1339,6 @@ class PredicateParser(LeftLinearParser):
             if lit_type == "String":
                 name = "(init-AbsString %s %s)" % (lit_code, len(name) - 2) # TODO this work because I assume to encode literals as objects of type AbsString
 
-#            return name, remaining
             result = name
 
         # in case of normal exit, I should have consumed some input
@@ -1424,9 +1435,9 @@ class FormulaParser(LeftLinearParser):
         "="     : Eq,
         "!="    : NotEq,
         "and"   : formulas.And,
-        "or"    : formulas.Or, # to be added
-        "not"   : formulas.Not, # to be added
-        "P" : formulas.Proposition,
+        "or"    : formulas.Or,
+        "not"   : formulas.Not,
+#        "P" : formulas.Proposition,
         "G" : formulas.Globally,
         "S" : formulas.SomePaths,
         "A" : formulas.AllPaths,
@@ -1449,29 +1460,38 @@ class FormulaParser(LeftLinearParser):
 
         existential_abstraction = []
 
-        for conf in ss.enumerate:# itera tra le configurazioni di ss.enumerate per selezionare quelle che ...
+        for conf in ss.enumerate: # filter the configurations that are compatible with pred
 
             conf_preds = ss.value(conf)
     
             curr_problem = []
             for (curr_attr, curr_pred) in zip(ss.attributes, conf_preds):
-            # TODO this is a dirty solution; find a better way
+                # TODO this is a dirty solution; find a better way
                 datatypes = [ curr_attr.domain.datatype ]
                 if hasattr(datatypes, "datatypes"):
                     datatypes = datatypes[0].datatypes
-            # end of the dirty solution
+                # end of the dirty solution
 
-            for (var, datatype) in zip(curr_attr.variables, datatypes):
-                curr_problem.append("(declare-const %s %s)" % (var, datatype))
+                for (var, datatype) in zip(curr_attr.variables, datatypes):
+                    curr_problem.append("(declare-const %s %s)" % (var, datatype))
 
-            curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
+                curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
 
-        curr_problem.append(pred.smt_assert())
+        ctx = {}
+        for var in ss.variables:
+            ctx[var] = var
+
+        curr_problem.append(pred.smt_assert(**ctx))
+
+        print "curr problem: %s" % curr_problem
 
         # pass the problem to the smt solver; if it is satisfiable, take the conf
         # otherwise skip it
         solver.push()
         res = solver.check_sat(curr_problem)
+        if res not in ["sat", "unsat"]:
+            raise ValueError("Error computing the existential abstraction of the formula: %s" % res)
+
         if res == "sat":
             existential_abstraction.append(conf)
         solver.pop()
@@ -1482,15 +1502,17 @@ class FormulaParser(LeftLinearParser):
     
         # translate a predicate onto a list of configurations
         conf_list = self.predicate_to_existential_abstraction(ss, pred)
-
+        print "conf list: %s" % conf_list
+    
         # define a formula for converting a configuration onto a Proposition
         conf_to_prop = lambda c: formulas.Proposition(c)
 
         # translate a list of configurations onto a list of Proposition's
-        formula = map(conf_to_prop, conf_list)
+        prop_list = map(conf_to_prop, conf_list)
 
+        print "prop list: %s" % prop_list
         # create an Or among all the Proposition's in the list
-        return formulas.Or(*formula)        
+        return formulas.Or(*prop_list)        
     
     @contract(text="string", returns="tuple(is_ast, string)")
     
@@ -1499,8 +1521,6 @@ class FormulaParser(LeftLinearParser):
         Given some text, it returns a tuple representing its abstract
         syntax tree, and a string containing the non-parsed text. 
         """
-
-        print "parsing: %s" % text
 
         remaining = ""
 
@@ -1526,13 +1546,12 @@ class FormulaParser(LeftLinearParser):
             #name, remaining = self._match(self.RE_LITERAL, text)
             
             literal, remaining = self._match(self.RE_LITERAL, text)
-            print "literal = %s, remaining = %s" % (literal, remaining)
             if literal[0]==self.PROP_DELIM_BEGIN and literal[-1]==self.PROP_DELIM_END:
                 predicate=literal[1:-1]
                 pp=PredicateParser()
                 pre=pp.parse(predicate)
                 assert isinstance(pre, Predicate)
-                print pre
+                #print pre
                 result=self.from_predicate(self.ss,pre)
             else:
                 raise ValueError("not handled: literal = %s, remaining = %s" % (literal, remaining))    
@@ -1546,36 +1565,27 @@ class FormulaParser(LeftLinearParser):
 
     #@contract(ast="is_ast", returns="is_predicate|string|int")
     def _ast_to_object(self, ast): 
-        lis=[]
-        if isinstance(ast,tuple):
+
+        if isinstance(ast, tuple):
             
-            #print "bene",ast
-            if isinstance(ast[0],tuple):
-                self._ast_to_object(ast[0])
-            else:    
-                nome=ast[0]
-                lista=ast[1]
-                if isinstance(lista,list):
-                   # for ele in lista:  
-                       # print "molto bene",lista[0] #ele
-                        return self._ast_to_object(lista[0])
-        
-                       
-        if isinstance(ast,formulas.Or):
+            assert isinstance(ast[0], basestring), ast
+            assert isinstance(ast[1], list)
+
+            arguments = []
+            name = ast[0]
+            klass = self.SYMBOL_TO_CLASS[name]
+
+            arguments = []
+            for item in ast[1]:
+                arguments.append(self._ast_to_object(item))
+
+            return klass(*arguments)
+
+        elif isinstance(ast,formulas.Or):
             return (ast)                    
+        else:
+            raise ValueError("Value not expected")
                     
-                #else:
-                #    formulas.nome(lista)
-      #  return ast            
-        
-        """
-       caso 1: ast e` una tupla (nome, lista) => nome determina la classe da istanziare, lista va iterata e per ogni elemento occorre invocare self._ast_to_object(...)
-    
-       caso 2: ast e` un'istanza di Or => ritornala
-        """
-         
-            
-        
 
     @staticmethod
     @contract(ast="tuple(string, list)|string", returns="string")

@@ -31,20 +31,12 @@ class PathFormula(object):
 class And(PathFormula):
 
     def __init__(self, *argv):
-        super(AndFoo, self).__init__()
-    
+        super(And, self).__init__()
     
         for arg in argv:
             self.args.append(arg)
-       # self.args.append(arg1)
-       # self.args.append(arg2)
 
     def to_uppaal(self):
-##        res="(1=1)"   
-##        for arg in self.args:
-##            res="(%s) and (%s)" % (res,arg.to_uppaal())
-##        return res
-##       # return "(%s) and (%s)" % (self.args[0].to_uppaal(), self.args[1].to_uppaal())
 
         form_to_upp = lambda f: "(%s)" % f.to_uppaal()
 
@@ -145,5 +137,6 @@ class Proposition(StateFormula):
         self.args.append(arg)
 
     def to_uppaal(self):
+        assert len(self.args) == 1, "Expected exactly 1 argument. Got: %s" % self.args
         return u"%s" % (self.args[0],)
         
