@@ -3,7 +3,7 @@ from java2ta.abstraction.shortcuts import INTEGERS, split_numeric_domain
 
 def test_non_local_abstract_attribute():
 
-    predicates = [ Eq("{lhs}",0), LT("{lhs}",0), GT("{lhs}",0) ]
+    predicates = [ Eq("{foo}",0), LT("{foo}",0), GT("{foo}",0) ]
     dom = Domain(Integer(), predicates)
 
     aa = AbstractAttribute("foo", dom, is_local=False)
@@ -18,7 +18,7 @@ def test_non_local_abstract_attribute():
 
 def test_local_abstract_attribute():
 
-    predicates = [ Eq("{lhs}",0), LT("{lhs}",0), GT("{lhs}",0) ]
+    predicates = [ Eq("{foo}",0), LT("{foo}",0), GT("{foo}",0) ]
     dom = Domain(Integer(), predicates) # the first predicate is the default value for the domain
 
     aa = AbstractAttribute("foo", dom, is_local=True)
@@ -37,8 +37,13 @@ def test_local_abstract_attribute():
 
 def test_statespace():
 
-    foo = AbstractAttribute("foo", INTEGERS, is_local=True) #values_foo, initial_foo)
-    fie = AbstractAttribute("fie", INTEGERS, is_local=True) #values_fie, initial_fie)
+    predicates_foo = [ Eq("{foo}",0), LT("{foo}",0), GT("{foo}",0) ]
+    dom_foo = Domain(Integer(), predicates_foo) # the first predicate is the default value for the domain
+    foo = AbstractAttribute("foo", dom_foo, is_local=True) #values_foo, initial_foo)
+
+    predicates_fie = [ Eq("{fie}",0), LT("{fie}",0), GT("{fie}",0) ]
+    dom_fie = Domain(Integer(), predicates_fie) # the first predicate is the default value for the domain
+    fie = AbstractAttribute("fie", dom_fie, is_local=True) #values_fie, initial_fie)
 
     ss = StateSpace()
     ss.add_attribute(foo)
@@ -52,23 +57,23 @@ def test_statespace():
 
     assert isinstance(ss.enumerate, list), "Expected list. Got: %s" % ss.enumerate
 
-    assert len(ss.enumerate) == len(INTEGERS.values) * len(INTEGERS.values) #len(values_foo) * len(values_fie)
-#    assert (fie.encoded_value("A"), foo.encoded_value("> 0")) in ss.enumerate, ss.enumerate
-    assert (fie.encoded_value(LT(rhs=0)), foo.encoded_value(GT(rhs=0))) in ss.enumerate, ss.enumerate
-    assert (fie.encoded_value(Eq(rhs=0)), foo.encoded_value(Eq(rhs=0))) in ss.enumerate
-    assert (LT(rhs=0), GT(rhs=0)) not in ss.enumerate
-    assert (Eq(rhs=0), Eq(rhs=0)) not in ss.enumerate
+    assert len(ss.enumerate) == 3 * 3 # 3 predicates for foo, 3 predicates for fie; 
 
-    assert ss.value((0,0)) == (LT(rhs=0), LT(rhs=0)), ss.value((0,0))
-    assert ss.value((0,1)) == (LT(rhs=0), Eq(rhs=0))
-    assert ss.value((1,2)) == (Eq(rhs=0), GT(rhs=0))
+    assert (foo.encoded_value(LT("{foo}", 0)), fie.encoded_value(GT("{fie}", 0))) in ss.enumerate, ss.enumerate
+    assert (foo.encoded_value(Eq("{foo}", 0)), fie.encoded_value(Eq("{fie}", 0))) in ss.enumerate
+    assert (LT("{fie}", 0), GT("{fie}", 0)) not in ss.enumerate
+    assert (Eq("{foo}", 0), Eq("{foo}", 0)) not in ss.enumerate
 
-    assert ss.configuration([LT(rhs=0), LT(rhs=0)]) == (0,0)
-    assert ss.configuration([LT(rhs=0), Eq(rhs=0)]) == (0,1)
-    assert ss.configuration([LT(rhs=0), GT(rhs=0)]) == (0,2)
+    assert ss.value((0,0)) == (Eq("{fie}", 0), Eq("{foo}", 0)), ss.value((0,0))
+    assert ss.value((0,1)) == (Eq("{fie}", 0), LT("{foo}", 0))
+    assert ss.value((1,2)) == (LT("{fie}", 0), GT("{foo}", 0))
 
-    assert ss.configuration([GT(rhs=0), LT(rhs=0)]) == (2,0)
-    assert ss.configuration([GT(rhs=0), Eq(rhs=0)]) == (2,1)
-    assert ss.configuration([GT(rhs=0), GT(rhs=0)]) == (2,2)
+    assert ss.configuration([Eq("{fie}",0), Eq("{foo}",0)]) == (0,0)
+    assert ss.configuration([Eq("{fie}",0), LT("{foo}",0)]) == (0,1)
+    assert ss.configuration([Eq("{fie}",0), GT("{foo}",0)]) == (0,2)
+
+    assert ss.configuration([GT("{fie}",0), Eq("{foo}",0)]) == (2,0)
+    assert ss.configuration([GT("{fie}",0), LT("{foo}",0)]) == (2,1)
+    assert ss.configuration([GT("{fie}",0), GT("{foo}",0)]) == (2,2)
 
 

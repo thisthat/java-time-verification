@@ -267,7 +267,9 @@ class Predicate(object):
     @contract(returns="set(string)")
     def var_names(self):
         var_names = re.findall("\{[a-zA-Z\_0-9]+\}", self._smt_condition) # TODO this is a bit hack-ish, find a better way to handle it
-        return set(var_names)
+
+        var_names_stripped = map(lambda v: v.strip("{}"), var_names)
+        return set(var_names_stripped)
 
     @contract(rename="dict(string:string)")
     def rename(self, **rename): #var_old, var_new):
@@ -275,8 +277,8 @@ class Predicate(object):
         old_vars = self.var_names
 
         for var_old, var_new in rename.iteritems():
-            var_old = "{%s}" % var_old.strip("{}")            
-            var_new = "{%s}" % var_new.strip("{}")
+#            var_old = "{%s}" % var_old.strip("{}")            
+#            var_new = "{%s}" % var_new.strip("{}")
 
             if var_old not in old_vars:
                 raise ValueError("Variable to be renamed (%s) not present in variables (%s)" % (var_old, old_vars))
@@ -366,62 +368,62 @@ def predicates_differ(left, right):
 ##
 ##        self.ctx = ctx
 ##
-
-    def __repr__(self):
-        res = " and ".join(map(lambda p: repr(p) or "", self.predicates))
-        return res
-
-
-    def __str__(self):
-        res = " and ".join(map(lambda p: str(p), self.predicates))
-        return res
-
-
-    @contract(kwargs="dict(string:string)", returns="string")
-    def label(self, **kwargs):
-
-        label = ") and (".join(map(lambda p: p.label(**kwargs), self.predicates))
-
-        return "(%s)" % label
-
-    @contract(kwargs="dict(string:string)", returns="string")
-    def smt_condition(self, **kwargs):
-
-        smt_condition = ""
-
-        for pred in self.predicates:
-            if len(smt_condition) == 0:
-                smt_condition = pred.smt_condition(**kwargs)
-            else:
-                smt_condition = "(and %s %s)" % (pred.smt_condition(**kwargs), smt_condition)
-
-        return smt_condition
-
-
-    @property
-    @contract(returns="set(string)")
-    def var_names(self):
-
-        var_names = set([])
-
-        for pred in self.predicates:
-            var_names = var_names | pred.var_names
-
-        return var_names
- 
-
-    @contract(var_names="None|list", suffix="None|string", returns="is_predicate")
-    def primed(self, var_names=None, suffix="_1"):
-        
-#        check("list(is_predicate)", self.predicates)
-        check("tuple", self.predicates)
-        primed_predicates = []
-
-        for pred in self.predicates:
-            primed_predicates.append(pred.primed(var_names=var_names, suffix=suffix))
-
-        return And(*primed_predicates)
-
+##
+##    def __repr__(self):
+##        res = " and ".join(map(lambda p: repr(p) or "", self.predicates))
+##        return res
+##
+##
+##    def __str__(self):
+##        res = " and ".join(map(lambda p: str(p), self.predicates))
+##        return res
+##
+##
+##    @contract(kwargs="dict(string:string)", returns="string")
+##    def label(self, **kwargs):
+##
+##        label = ") and (".join(map(lambda p: p.label(**kwargs), self.predicates))
+##
+##        return "(%s)" % label
+##
+##    @contract(kwargs="dict(string:string)", returns="string")
+##    def smt_condition(self, **kwargs):
+##
+##        smt_condition = ""
+##
+##        for pred in self.predicates:
+##            if len(smt_condition) == 0:
+##                smt_condition = pred.smt_condition(**kwargs)
+##            else:
+##                smt_condition = "(and %s %s)" % (pred.smt_condition(**kwargs), smt_condition)
+##
+##        return smt_condition
+##
+##
+##    @property
+##    @contract(returns="set(string)")
+##    def var_names(self):
+##
+##        var_names = set([])
+##
+##        for pred in self.predicates:
+##            var_names = var_names | pred.var_names
+##
+##        return var_names
+## 
+##
+##    @contract(var_names="None|list", suffix="None|string", returns="is_predicate")
+##    def primed(self, var_names=None, suffix="_1"):
+##        
+###        check("list(is_predicate)", self.predicates)
+##        check("tuple", self.predicates)
+##        primed_predicates = []
+##
+##        for pred in self.predicates:
+##            primed_predicates.append(pred.primed(var_names=var_names, suffix=suffix))
+##
+##        return And(*primed_predicates)
+##
 
 class BinaryPredicate(Predicate):
 
@@ -546,6 +548,26 @@ class Domain(object):
         self._default = default
         self.predicates = predicates #list(set(predicates))
 
+    def primed(self):
+        res = copy.deepcopy(self)
+
+        ctx_rename = {}
+        for v in self.variables:
+            ctx_rename[v] = "%s_1" % v
+    
+        for p in res.predicates:
+            p.rename(**ctx_rename)           
+
+        return res
+
+
+    @property
+    @contract(returns="set(string)")
+    def variables(self):
+        res = set([])
+        for p in self.predicates:
+            res = res | p.var_names
+        return res
 
     @property
     @contract(returns="list(is_data_type)")
@@ -600,8 +622,6 @@ class Domain(object):
             name = self.datatype.name
 
         return name
-
-
 
     @property
     def values(self):
@@ -679,6 +699,9 @@ class AbstractAttribute(object):
         if isinstance(variables, basestring):
             variables = [ variables ]
 
+        if set(variables) != domain.variables:
+            raise ValueError("The variables of the AbstractAttribute should match those of the domain predicates. Passed variables: %s. Domain predicate variables: %s" % (variables, domain.variables))
+
         self.variables = variables
         self.name = "__".join(self.variables)
 
@@ -746,7 +769,9 @@ class AbstractAttribute(object):
     def primed(self):       
 #        primed_name = "%s_1" % self.name
         primed_variables = map(lambda v: "%s_1" % v, self.variables)
-        new_attr = AbstractAttribute(primed_variables, self.domain, self.is_local)
+        primed_domain = self.domain.primed()
+        log.debug("Domain: %s => primed domain: %s" % (self.domain, primed_domain))
+        new_attr = AbstractAttribute(primed_variables, primed_domain, self.is_local)
 
         log.debug("(%s)' => %s" % (self, new_attr))
         return new_attr
@@ -1464,27 +1489,41 @@ class FormulaParser(LeftLinearParser):
         for conf in ss.enumerate: # filter the configurations that are compatible with pred
 
             conf_preds = ss.value(conf)
-    
+ 
+            ctx = {}
+            for var in ss.variables:
+                ctx[var] = var
+
+  
             curr_problem = []
             for (curr_attr, curr_pred) in zip(ss.attributes, conf_preds):
                 # TODO this is a dirty solution; find a better way
                 datatypes = [ curr_attr.domain.datatype ]
-                if hasattr(datatypes, "datatypes"):
+                if hasattr(datatypes[0], "datatypes"):
                     datatypes = datatypes[0].datatypes
                 # end of the dirty solution
 
+                assert len(curr_attr.variables) == len(datatypes), "Expected one datatype per variable. Got %s variables vs %s datatypes" % (len(curr_attr.variables), len(datatypes))
+
                 for (var, datatype) in zip(curr_attr.variables, datatypes):
+                    assert isinstance(datatype, DataType)
+                    dt_declaration = datatype.smt_declaration
+                    log.debug("Datatype: %s -> Declaration: %s" % (datatype, dt_declaration))
+                    dt_var_axioms = datatype.smt_var_axioms(var)
+                    log.debug("Var: %s:%s -> Axioms: %s" % (var, datatype, dt_var_axioms))
+
+                    if len(dt_declaration) > 0:
+                        curr_problem.append(dt_declaration)
+                    if len(dt_var_axioms) > 0:
+                        curr_problem.append(dt_var_axioms)
                     curr_problem.append("(declare-const %s %s)" % (var, datatype))
 
-                curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
+#                curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
+                curr_problem.append(curr_pred.smt_assert(**ctx))
 
-        ctx = {}
-        for var in ss.variables:
-            ctx[var] = var
 
         curr_problem.append(pred.smt_assert(**ctx))
-
-        print "curr problem: %s" % curr_problem
+        log.debug("Existential abstraction SMT problem: %s. Context: %s" % (curr_problem, ctx))
 
         # pass the problem to the smt solver; if it is satisfiable, take the conf
         # otherwise skip it
