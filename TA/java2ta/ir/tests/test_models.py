@@ -307,7 +307,7 @@ def test_methods():
     assert while_env[1]["name"] == "lock"
     assert while_env[1]["type"] == "Lock"
     assert while_env[2]["name"] == "r"
-    assert while_env[2]["type"] == "Random", while_env #"java.util.Random", while_env
+    assert while_env[2]["type"] == "java.util.Random", while_env 
 
 
 
