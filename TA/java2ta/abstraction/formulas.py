@@ -31,7 +31,7 @@ class PathFormula(object):
 class And(PathFormula):
 
     def __init__(self, *argv):
-        super(AndFoo, self).__init__()
+        super(And, self).__init__()
     
     
         for arg in argv:

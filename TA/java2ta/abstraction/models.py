@@ -1188,7 +1188,7 @@ class LeftLinearParser(object):
     SYMBOL_TO_CLASS = {} # a mapping from the first matched symbol to the class to be instantiated
 
 
-    @contract(text="string", returns="is_predicate|string|int")
+    @contract(text="string")
     def parse(self, text):
         ast, remaining = self._text_to_ast(text.strip())
         if len(remaining) > 0:
@@ -1433,6 +1433,7 @@ class FormulaParser(LeftLinearParser):
     PROP_DELIM_BEGIN = "["
     PROP_DELIM_END = "]"
 
+    @contract(ss="is_state_space")
     def __init__(self,ss):
         super(FormulaParser,self).__init__()
         self.ss=ss
@@ -1540,27 +1541,27 @@ class FormulaParser(LeftLinearParser):
 
     #@contract(ast="is_ast", returns="is_predicate|string|int")
     def _ast_to_object(self, ast): 
-        lis=[]
-        if isinstance(ast,tuple):
-            
-            #print "bene",ast
-            if isinstance(ast[0],tuple):
-                self._ast_to_object(ast[0])
-            else:    
-                nome=ast[0]
-                lista=ast[1]
-                if isinstance(lista,list):
-                   # for ele in lista:  
-                       # print "molto bene",lista[0] #ele
-                        return self._ast_to_object(lista[0])
         
-                       
-        if isinstance(ast,formulas.Or):
-            return (ast)                    
+        if isinstance(ast,tuple):
+        
+           # if isinstance(ast[0],string):
+            
+                lista_obj=[]
+                nome=ast[0]
+                cla=self.SYMBOL_TO_CLASS[nome]
+                lista=ast[1]
+                
+                assert isinstance(lista,list)
+                
+                for ele in lista:  
+                    lista_obj.append(self._ast_to_object(ele))
+                    #print lista_obj[]
                     
-                #else:
-                #    formulas.nome(lista)
-      #  return ast            
+                return cla(*lista_obj)
+                       
+        elif isinstance(ast,formulas.Or):
+            return (ast)                    
+                       
         
         """
        caso 1: ast e` una tupla (nome, lista) => nome determina la classe da istanziare, lista va iterata e per ogni elemento occorre invocare self._ast_to_object(...)
