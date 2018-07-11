@@ -23,7 +23,7 @@ import java.util.Map;
 public class getMains extends indexMW {
 
 	@Override
-	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		if(!ParsePars.ParseIndexStatus(name,he)){
 			return;
 		}

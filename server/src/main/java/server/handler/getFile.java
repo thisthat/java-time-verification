@@ -89,7 +89,7 @@ public class getFile extends indexMW {
 	}
 
 	@Override
-	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		LOGGER.debug("Request getFile on {} parameters: [{}]", name, parameters);
 		//validate input
 		boolean flag = true;
