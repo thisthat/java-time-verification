@@ -130,7 +130,7 @@ public class openProject extends indexMW {
 		return doesItExistsAlready;
 	}
 
-	protected void delete(String name){
+	public void delete(String name){
 		synchronized (lock){
 			if(indexProcess.containsKey(name)) {
 				indexProcess.remove(name);

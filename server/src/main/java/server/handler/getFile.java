@@ -37,7 +37,7 @@ import java.util.Map;
  * @version %I%, %G%
  */
 public class getFile extends indexMW {
-	String par1 = "filePath";
+	String par1 = "path";
 
 	String lastFileServed = "";
 

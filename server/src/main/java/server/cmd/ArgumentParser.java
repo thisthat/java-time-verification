@@ -96,7 +96,7 @@ public class ArgumentParser {
         System.out.println(String.format("\t%s clean a project", clean));
         System.out.println(String.format("\t%s clean everything", cleanAll));
         System.out.println("------------------");
-        System.out.println("Extra parameters to make [name] works correctly");
+        System.out.println("Extra parameters to make -cmd [name] works correctly");
         System.out.println("\t-name [name] set the project name. Mandatory for:");
         System.out.println("\t\t" + openProject);
         System.out.println("\t\t" + isPrjOpen);
@@ -111,14 +111,18 @@ public class ArgumentParser {
     }
 
     public void call() throws IOException {
-        HttpExchange he = new MockHTTPEntry(this).getMock();
-        server.handler.openProject op = new server.handler.openProject();
+        MockHTTPEntry m = new MockHTTPEntry(this);
+
+        HttpExchange he = m.getMock();
+        server.handler.openProject op = m.getOPMock();
+
         if(cmd.equals(getFile)){
             server.handler.getFile gf = new server.handler.getFile();
             gf.handle(he);
         }
         if(cmd.equals(openProject)){
-            op.handle(he);
+            server.handler.openProjectCMD gf = new server.handler.openProjectCMD();
+            gf.handle(he);
         }
         if(cmd.equals(isPrjOpen)){
             server.handler.isProjectOpen gf = new server.handler.isProjectOpen();
