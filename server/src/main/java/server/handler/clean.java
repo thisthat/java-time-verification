@@ -25,7 +25,7 @@ public class clean extends indexMW {
     }
 
     @Override
-    protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+    public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
         MongoConnector mongo = MongoConnector.getInstance(name);
         mongo.drop();
 

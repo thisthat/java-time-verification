@@ -41,5 +41,5 @@ public abstract class indexMW extends BaseRoute {
 
 
 
-	protected abstract void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException;
+	public abstract void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException;
 }

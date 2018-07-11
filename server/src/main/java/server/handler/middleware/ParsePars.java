@@ -38,7 +38,7 @@ public class ParsePars {
         printErrorMessagePars(he, "");
     }
     public static void printErrorMessagePars(HttpExchange he, String response) throws IOException {
-        response = "Incorrect format for the parameters." + response;
+        response = "Incorrect format for the parameters. " + response + "\n";
         he.sendResponseHeaders(400, response.length());
         OutputStream os = he.getResponseBody();
         os.write(response.toString().getBytes());

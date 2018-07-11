@@ -1,5 +1,12 @@
 package server.cmd;
 
+import com.sun.net.httpserver.HttpExchange;
+import server.Config;
+import server.helper.MockHTTPEntry;
+import server.helper.PropertiesFileReader;
+
+import java.io.IOException;
+
 public class ArgumentParser {
     private ArgumentParser(){}
 
@@ -18,6 +25,10 @@ public class ArgumentParser {
     private String cmd = "";
     private boolean debug = false;
 
+    static {
+        intermediateModelHelper.Config.setDebug(false);
+    }
+
     public static ArgumentParser parse(String[] args){
         if(args.length == 0){
             printHelp();
@@ -33,7 +44,7 @@ public class ArgumentParser {
                     ret.cmd = args[i];
                 } break;
                 case "-debug": {
-                    ret.debug = true;
+                    ret.setDebug(true);
                 } break;
                 case "-name": {
                     i++;
@@ -55,6 +66,11 @@ public class ArgumentParser {
         return ret;
     }
 
+    private void setDebug(boolean b) {
+        this.debug = b;
+        Config.setDebug(b);
+    }
+
     private void checks() {
        if(cmd.equals(openProject)){
            //do checks
@@ -64,6 +80,7 @@ public class ArgumentParser {
     }
 
     private static void printHelp(){
+        System.out.println("Version : " + PropertiesFileReader.getInfo());
         System.out.println("The following commands are supported");
         System.out.println("-debug\tPrint debug info");
         System.out.println("-h\tPrint this message and exit");
@@ -93,7 +110,49 @@ public class ArgumentParser {
         System.exit(0);
     }
 
-    public void call(){
+    public void call() throws IOException {
+        HttpExchange he = new MockHTTPEntry(this).getMock();
+        server.handler.openProject op = new server.handler.openProject();
+        if(cmd.equals(getFile)){
+            server.handler.getFile gf = new server.handler.getFile();
+            gf.handle(he);
+        }
+        if(cmd.equals(openProject)){
+            op.handle(he);
+        }
+        if(cmd.equals(isPrjOpen)){
+            server.handler.isProjectOpen gf = new server.handler.isProjectOpen();
+            gf.handle(he);
+        }
+        if(cmd.equals(getAllFiles)){
+            server.handler.getAllFiles gf = new server.handler.getAllFiles();
+            gf.handle(he);
+        }
+        if(cmd.equals(getStatus)){
+            server.handler.getStatus gf = new server.handler.getStatus(op);
+            gf.handle(he);
+        }
+        if(cmd.equals(clean)){
+            server.handler.clean gf = new server.handler.clean(op);
+            gf.handle(he);
+        }
+        if(cmd.equals(cleanAll)){
+            server.handler.cleanAll gf = new server.handler.cleanAll(op);
+            gf.handle(he);
+        }
 
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getFormat() {
+        return format;
     }
 }

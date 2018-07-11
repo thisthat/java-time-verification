@@ -2,6 +2,7 @@ package server.handler.middleware;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import server.Config;
 import server.HttpServerConverter;
 
 import java.io.BufferedReader;
@@ -21,7 +22,7 @@ public abstract class BaseRoute implements HttpHandler {
 
     public void handle(HttpExchange he) throws IOException {
         handleConnection(he);
-        if(HttpServerConverter.isDebugActive()){
+        if(Config.isDebug()){
             printLog();
         }
     }

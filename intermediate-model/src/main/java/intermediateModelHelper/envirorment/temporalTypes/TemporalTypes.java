@@ -5,6 +5,7 @@ import intermediateModel.structure.expression.ASTMethodCall;
 import intermediateModel.types.definition.Duration;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Timestamp;
+import intermediateModelHelper.Config;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeMethod;
@@ -71,7 +72,8 @@ public class TemporalTypes {
 
     public void loadUserDefined(String dir) {
         TemporalInfo.getInstance().loadUserDefined(dir);
-        System.out.println("Loading from: " + new File(dir).getAbsolutePath());
+        if(Config.isDebug())
+            System.out.println("Loading from: " + new File(dir).getAbsolutePath());
         rt_t.addAll(new ParseCSVMethods(dir + "rt_t.csv").getMethods());
         rt_d.addAll(new ParseCSVMethods(dir + "rt_d.csv").getMethods());
         et.addAll(new ParseCSVTimeParameterMethods(dir + "et.csv").getMethods());
