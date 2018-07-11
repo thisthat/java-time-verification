@@ -25,6 +25,7 @@ release:
   artifacts:
     paths:
     - server/target/server*.jar
+    - usage/target/usage*.jar
 
 pages:
   stage: deploy
