@@ -30,7 +30,7 @@ public class cleanAll extends BaseRoute {
     }
 
     @Override
-    protected void handleConnection(HttpExchange he) throws IOException {
+    public void handleConnection(HttpExchange he) throws IOException {
 
         Map<String, String> parameters = new HashMap<>();
         InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");

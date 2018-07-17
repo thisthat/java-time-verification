@@ -59,7 +59,7 @@ public class openProject extends indexMW {
 	}
 
 
-	String par1 = "path";
+	String par1 = "filePath";
 	String par2 = "invalidCache";
 
 	HashMap<String, Pair<Boolean,String>> indexProcess = new HashMap<>();
@@ -130,7 +130,7 @@ public class openProject extends indexMW {
 		return doesItExistsAlready;
 	}
 
-	protected void delete(String name){
+	public void delete(String name){
 		synchronized (lock){
 			if(indexProcess.containsKey(name)) {
 				indexProcess.remove(name);

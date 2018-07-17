@@ -30,7 +30,7 @@ public class getStatus extends indexMW {
     }
 
     @Override
-    protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+    public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
         //is project open?
         MongoConnector connector = MongoConnector.getInstance(name);
         Status status;

@@ -27,7 +27,7 @@ public class getThreads extends indexMW {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	@Override
-	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		LOGGER.debug("Request getThread on {} parameters: [{}]", name, parameters);
 		if(!ParsePars.ParseIndexStatus(name,he)){
 			return;

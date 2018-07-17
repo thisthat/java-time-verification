@@ -27,7 +27,7 @@ public class getFilesByType extends indexMW {
 
 
 	@Override
-	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		if(!parameters.containsKey(par)){
 			ParsePars.printErrorMessagePars(he);
 			return;
