@@ -49,6 +49,11 @@ public class openProjectCMD extends indexMW {
 		boolean delete = parameters.containsKey(par2) && parameters.get(par2).equals("1");
 		base_path = base_path.replace("file://","");
 
+
+		IndexingProject index = new IndexingProject(name);
+		index.setSkipTest(false);
+		index.indexProject(base_path, delete);
+
 		Status msg;
 		//does the path exists?
 		if (new File(base_path).exists()) {
