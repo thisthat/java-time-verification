@@ -12,11 +12,14 @@ public class Answer {
         version = String.format("{ \"v\": \"%s\", \"b\": \"%s\"},", PropertiesFileReader.getGitSha1(), PropertiesFileReader.getBranch());
     }
 
-    public static void SendMessage(String response, HttpExchange he) throws IOException {
+    public static void SendMessage(String response, HttpExchange he, int code) throws IOException {
         he.getResponseHeaders().add("Content-Type","application/json");
-        he.sendResponseHeaders(200, response.length());
+        he.sendResponseHeaders(code, response.length());
         OutputStream os = he.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+    public static void SendMessage(String response, HttpExchange he) throws IOException {
+        SendMessage(response, he, 200);
     }
 }
