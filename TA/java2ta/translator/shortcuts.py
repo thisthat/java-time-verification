@@ -2199,9 +2199,27 @@ def translate_method_to_ta(method, state_space):
     compare_absolute = itertools.combinations(KnowledgeBase.get_absolute_timestamps(class_fqn, method.name), 2)
     compare_relative = itertools.combinations(KnowledgeBase.get_relative_timestamps(class_fqn, method.name), 2)
 
-    for left,right in list(compare_absolute) + list(compare_relative):
+#    for left,right in list(compare_absolute) + list(compare_relative):
+    for left, right in zip(compare_absolute, compare_absolute):
+        if left == right:
+            # compare only distinct variables among themselves
+            continue
+
         attr = AbstractAttribute(variables=[left,right], domain=CompareVariables(datatypes=[Integer(), Integer()], predicates=[LT(left,right), Eq(left,right), GT(left,right)]), is_local=False)
+        log.debug("Add time-derived attribute: %s" % attr)
         state_space.add_attribute(attr)
+
+    for left, right in zip(compare_relative, compare_relative):
+        if left == right:
+            # compare only distinct variables among themselves
+            continue
+
+        attr = AbstractAttribute(variables=[left,right], domain=CompareVariables(datatypes=[Integer(), Integer()], predicates=[LT(left,right), Eq(left,right), GT(left,right)]), is_local=False)
+        log.debug("Add time-derived attribute: %s" % attr)
+
+        state_space.add_attribute(attr)
+
+
 
     ta = transform(method.name, instructions, state_space, method.project)
 
