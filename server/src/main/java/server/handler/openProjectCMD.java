@@ -3,13 +3,13 @@ package server.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.net.httpserver.HttpExchange;
-import intermediateModelHelper.indexing.IndexingProject;
 import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import org.javatuples.Pair;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.Status;
 import server.helper.Answer;
+import server.indexing.IndexProjectJson;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +48,10 @@ public class openProjectCMD extends indexMW {
 		}
 		boolean delete = parameters.containsKey(par2) && parameters.get(par2).equals("1");
 		base_path = base_path.replace("file://","");
+
+
+		IndexProjectJson index = new IndexProjectJson(name);
+		index.indexProject(base_path, delete);
 
 		Status msg;
 		//does the path exists?

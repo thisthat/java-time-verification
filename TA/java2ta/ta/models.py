@@ -492,9 +492,6 @@ class TA(object):
                 if e.target != loc:
                     raise ValueError("Location %s has incoming edge with different target location" % (loc, e))
 
-    def minimize(self):
-        # TODO
-        pass       
 
 new_contract_check_type("is_ta", TA)
 

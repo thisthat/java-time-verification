@@ -78,6 +78,7 @@ public class IndexData {
 	String extendedType = "";
 	String fullName = "";
 	String path = "";
+	String sha1 = "";
 	List<String> interfacesImplemented = new ArrayList<>();
 	boolean isInterface;
 	boolean isAbstract;
@@ -85,7 +86,7 @@ public class IndexData {
 	public IndexData() {
 	}
 
-	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<IndexTimeMethod> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String fullclassPackage, String name, String extendedType, String fullName, String path, List<String> interfacesImplemented, boolean isInterface, boolean isAbstract) {
+	public IndexData(ObjectId id, List<IndexMethod> listOfMethods, List<IndexTimeMethod> listOfTimedMethods, List<IndexMethod> listOfSyncMethods, List<IndexParameter> timeAttribute, List<String> imports, String classPackage, String fullclassPackage, String name, String extendedType, String fullName, String path, String sha1, List<String> interfacesImplemented, boolean isInterface, boolean isAbstract) {
 		this.id = id;
 		this.listOfMethods = listOfMethods;
 		this.listOfTimedMethods = listOfTimedMethods;
@@ -98,9 +99,18 @@ public class IndexData {
 		this.extendedType = extendedType;
 		this.fullName = fullName;
 		this.path = path;
+		this.sha1 = sha1;
 		this.interfacesImplemented = interfacesImplemented;
 		this.isInterface = isInterface;
 		this.isAbstract = isAbstract;
+	}
+
+	public String getSha1() {
+		return sha1;
+	}
+
+	public void setSha1(String sha1) {
+		this.sha1 = sha1;
 	}
 
 	public String getName() {

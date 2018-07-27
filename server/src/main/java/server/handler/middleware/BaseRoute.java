@@ -21,10 +21,23 @@ public abstract class BaseRoute implements HttpHandler {
     }
 
     public void handle(HttpExchange he) throws IOException {
+        if(Config.isDebug())
+            this.printBaseLog(he);
         handleConnection(he);
         if(Config.isDebug()){
             printLog();
+            System.out.println("======= " + Config.getRandomFace() + " ========");
         }
+    }
+
+    private void printBaseLog(HttpExchange he) {
+        String route =  getClass().getCanonicalName();
+        System.out.println(
+            String.format("Requested: %s\nServed by: %s",
+                    he.getHttpContext().getPath(),
+                    route
+            ));
+        //System.out.println(HttpServerConverter.getLastParameters().toString());
     }
 
     protected abstract void handleConnection(HttpExchange he) throws IOException;
@@ -32,7 +45,6 @@ public abstract class BaseRoute implements HttpHandler {
     protected void printLog() {
         String route =  getClass().getSimpleName();
         System.out.print("Serving " + route + " :: ");
-
         System.out.println(HttpServerConverter.getLastParameters().toString());
 
     }

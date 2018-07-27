@@ -10,6 +10,7 @@ import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.Status;
 import server.helper.Answer;
+import server.indexing.IndexProjectJson;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,8 +49,7 @@ public class openProject extends indexMW {
 				indexProcess.put(name, new Pair<>(true, base_path));
 			}
 			if(flag) {
-				IndexingProject index = new IndexingProject(name);
-				index.setSkipTest(false);
+				IndexProjectJson index = new IndexProjectJson(name);
 				index.indexProject(base_path, delete);
 			}
 			synchronized (lock){
@@ -59,7 +59,7 @@ public class openProject extends indexMW {
 	}
 
 
-	String par1 = "filePath";
+	String par1 = "path";
 	String par2 = "invalidCache";
 
 	HashMap<String, Pair<Boolean,String>> indexProcess = new HashMap<>();
