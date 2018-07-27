@@ -23,7 +23,7 @@ public class getAllFiles extends indexMW {
 	String par1 = "skipTest";
 
 	@Override
-	protected void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
+	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		//validate input: expect 2 pars projectPath&skipTest
 		boolean flag = true;
 		if(!parameters.containsKey(par1)){

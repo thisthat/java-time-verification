@@ -30,6 +30,7 @@ It expects two parameters:
 * `name` : project name
 * `skipTest` : if equals **1** it skips test files
 
+
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
 The output is a relative path with regarding of the project path.
 
@@ -41,11 +42,10 @@ curl -s http://localhost:9000/getAllFiles -d 'format=yaml&name=projectFoo&skipTe
 # /getFile 
 It returns the intermediate model in json format of the given file.
 
-It expects two parameters:
-* `name`: The project name
-* `filePath`: Relative path (of the project path) of the java file
+It expects one parameter: 
+* `path`: Relative path (of the project path) of the java file
  
-`filePath` supports only *file://* as URI protocol atm.
+`path` supports only *file://* as URI protocol atm.
 
 The output is ... TODO
 
@@ -53,7 +53,7 @@ The standard output is in `JSON`, to change to `YAML` set the parameter `format`
 
 e.g. 
 ```bash
-curl -s http://localhost:9000/getFile -d 'format=yaml&name=projectFoo&filePath=file://Attempt1.java'
+curl -s http://localhost:9000/getFile -d 'name=f&path=file://src/test/resources/progs/Attempt1.java'
 ```
 
 # /openProject
@@ -98,10 +98,6 @@ A file can contains multiple classes. Therefore, to find the correct class users
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`.
 
-e.g. 
-```bash
-curl -s http://localhost:9000/getFilesByType -d 'format=yaml&name=projectFoo&type=...  TODO
-```
 # /getThreads
 
 Return the list of files in which each contains a class that defines a Thread.
@@ -132,10 +128,6 @@ A file can contains multiple classes. Therefore, to find the correct class users
 
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`
 
-e.g. 
-```bash
-curl -s http://localhost:9000/getFile -d 'format=yaml&filePath=file:///Users/giovanni/repository/java-xal/server/src/test/resources/progs/Attempt1.java'
-```
 
 # /getStatus
 

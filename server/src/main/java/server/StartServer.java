@@ -30,6 +30,7 @@ public class StartServer {
 					break;
 				case "-debug":
 					debug = true;
+					Config.setDebug(true);
 					break;
 			}
 		}
