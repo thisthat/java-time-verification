@@ -1194,7 +1194,7 @@ class LeftLinearParser(object):
     SYMBOL_TO_CLASS = {} # a mapping from the first matched symbol to the class to be instantiated
 
 
-    @contract(text="string", returns="is_predicate|string|int")
+    @contract(text="string")
     def parse(self, text):
         ast, remaining = self._text_to_ast(text.strip())
         if len(remaining) > 0:
