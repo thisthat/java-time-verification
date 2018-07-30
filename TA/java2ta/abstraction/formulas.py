@@ -44,7 +44,38 @@ class And(PathFormula):
 
         return u" and ".join(map(form_to_upp, self.args))
  
+class Imply(PathFormula):
 
+    def __init__(self, *argv):
+        super(Imply, self).__init__()
+    
+        for arg in argv:
+            self.args.append(arg)
+
+    def to_uppaal(self):
+
+        form_to_upp = lambda f: "(%s)" % f.to_uppaal()
+
+        pre = map(form_to_upp, self.args)
+
+        return u" -> ".join(map(form_to_upp, self.args))
+        
+class Iff(PathFormula):
+
+    def __init__(self, *argv):
+        super(Iff, self).__init__()
+    
+        for arg in argv:
+            self.args.append(arg)
+
+    def to_uppaal(self):
+
+        form_to_upp = lambda f: "(%s)" % f.to_uppaal()
+
+        pre = map(form_to_upp, self.args)
+
+        return u" <-> ".join(map(form_to_upp, self.args))
+         
 class Or(PathFormula):
 
     def __init__(self, *argv):

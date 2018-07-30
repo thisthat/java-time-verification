@@ -1467,9 +1467,9 @@ class FormulaParser(LeftLinearParser):
         "S" : formulas.SomePaths,
         "A" : formulas.AllPaths,
         "N" : formulas.Next,
-        "F" : formulas.Future
-#       "->"    : Imply, # to be added
-#       "<->"   : Iff, # to be added
+        "F" : formulas.Future,
+        "->"    : formulas.Imply, # to be added
+        "<->"   : formulas.Iff # to be added
     }
 
     PROP_DELIM_BEGIN = "["
