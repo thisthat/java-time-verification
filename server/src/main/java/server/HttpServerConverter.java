@@ -66,7 +66,7 @@ public class HttpServerConverter {
 		//Start project index
 		server.createContext(Routes.OPEN_PROJECT, 		op);
 		server.createContext(Routes.IS_PROJECT_OPEN, 	new isProjectOpen());
-		server.createContext(Routes.GET_FILE_BY_TYPE, 	new getFilesByType());
+		//server.createContext(Routes.GET_FILE_BY_TYPE, 	new getFilesByType());
 		server.createContext(Routes.GET_THREADS, 		new getThreads());
 		server.createContext(Routes.GET_STATUS, 		new getStatus(op));
 		server.createContext(Routes.GET_MAINS, 			new getMains());

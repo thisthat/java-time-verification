@@ -48,4 +48,19 @@ public class MongoConnectorServer extends MongoConnector {
         return out;
     }
 
+
+    public List<DBDataJSON> getClassesWithMain() {
+        List<DBDataJSON> out =  datastore.createQuery(DBDataJSON.class)
+                .field("hasMain").equal("true")
+                .asList();
+        return out;
+    }
+
+    public List<DBDataJSON> getClassesWithThread() {
+        List<DBDataJSON> out =  datastore.createQuery(DBDataJSON.class)
+                .field("hasThread").equal("true")
+                .asList();
+        return out;
+    }
+
 }
