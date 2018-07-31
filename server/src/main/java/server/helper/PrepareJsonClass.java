@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PrepareJsonClass {
-    public static String json(List<ASTClass> classes, Map<String, String> parameters, String file_path) {
+    public static String json(List<ASTClass> classes, Map<String, String> parameters, String file_path, String basepath) {
         //annotate with env and time
         for(ASTClass c : classes){
             AnnotateEnv a = new AnnotateEnv();
@@ -45,7 +45,10 @@ public class PrepareJsonClass {
             for(Constraint cnst : ah.getTimeConstraint()){
                 cnst.removeElm();
             }
-            c.setPath(file_path);
+            if(!basepath.endsWith("/")){
+                basepath = basepath + "/";
+            }
+            c.setPath(file_path.replace(basepath,""));
             c.setVersion(PropertiesFileReader.getInfo());
         }
         //annotate with Time
