@@ -30,7 +30,7 @@ public class IndexProjectJson {
         while (i.hasNext()) {
             String filename = ((File)i.next()).getAbsolutePath();
             List<ASTClass> result = JDTVisitor.parse(filename, base_path);
-            index(result, filename);
+            index(result, filename, base_path);
         }
         //ensure indexes
         db.ensureIndexes();
@@ -38,10 +38,10 @@ public class IndexProjectJson {
         db.setBasePath(base_path);
     }
 
-    private void index(List<ASTClass> result, String path) {
+    private void index(List<ASTClass> result, String path, String base_path) {
         DBDataJSON j = new DBDataJSON();
         j.setPath(path);
-        j.setJson(PrepareJsonClass.json(result, new HashMap<>(), path));
+        j.setJson(PrepareJsonClass.json(result, new HashMap<>(), path, base_path));
         j.setSha1(SHA1.calcate(path));
         db.add(j);
     }
