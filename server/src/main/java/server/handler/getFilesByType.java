@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class getFilesByType extends indexMW {
 
-	String par = "type";
+	String par = "className";
 
 	@Override
 	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
