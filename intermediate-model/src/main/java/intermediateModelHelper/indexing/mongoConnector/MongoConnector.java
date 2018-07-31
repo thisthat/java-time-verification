@@ -31,6 +31,7 @@ import java.util.logging.Logger;
  * @author Giovanni Liva (@thisthatDC)
  * @version %I%, %G%
  */
+@Deprecated
 public class MongoConnector {
 
 	private static HashMap<String,MongoConnector> instances = new HashMap<String, MongoConnector>();

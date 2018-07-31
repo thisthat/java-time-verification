@@ -1,6 +1,9 @@
 package server.indexing;
 
+import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
+import intermediateModel.structure.ASTMethod;
+import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import server.helper.PrepareJsonClass;
 import server.helper.SHA1;
@@ -39,8 +42,35 @@ public class IndexProjectJson {
     }
 
     private void index(List<ASTClass> result, String path, String base_path) {
+        final boolean[] hasMain = {false};
+        final boolean[] hasThread = {false};
+        final String[] klass = { result.size() > 0 ? result.get(0).getName() : "" };
+        final String[] pkg = { result.size() > 0 ? result.get(0).getPackageName() : "" };
+        for(ASTClass c : result){
+            c.visit(new DefaultASTVisitor(){
+                @Override
+                public void enterASTMethod(ASTMethod elm) {
+                    if(
+                            elm.isStatic() &&
+                            elm.getAccessModifier() == IASTMethod.AccessModifier.PUBLIC &&
+                            elm.getName().equals("main")
+                            ) {
+                        hasMain[0] = true;
+                        klass[0] = c.getName();
+                        pkg[0] = c.getPackageName();
+                    }
+                }
+            });
+            if(c.getExtendClass().equals("Thread") || c.getImplmentsInterfaces().contains("Runnable")){
+                hasThread[0] = true;
+            }
+        }
         DBDataJSON j = new DBDataJSON();
         j.setPath(path);
+        j.setKlassName(klass[0]);
+        j.setPackageName(pkg[0]);
+        j.setHasMain(hasMain[0] ? "true" : "false");
+        j.setHasThread(hasThread[0] ? "true" : "false");
         j.setJson(PrepareJsonClass.json(result, new HashMap<>(), path, base_path));
         j.setSha1(SHA1.calcate(path));
         db.add(j);

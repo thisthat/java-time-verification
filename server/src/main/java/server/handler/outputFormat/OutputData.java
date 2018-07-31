@@ -23,6 +23,9 @@ public class OutputData {
 		this.packageName = d.getFullclassPackage();
 	}
 
+
+
+
 	public String getPath() {
 		return path;
 	}
