@@ -510,7 +510,8 @@ class Project(object):
         if not self.is_open():
             raise ValueError("You need to open the project first")
 
-        data = { "name": self.name, "filePath": path }
+        #data = { "name": self.name, "filePath": path }
+        data = { "name": self.name, "path": path }
         file = self.client.post("/getFile", data)
 
         if file is not None and isinstance(file, dict):

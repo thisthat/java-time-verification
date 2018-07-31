@@ -179,7 +179,7 @@ def test_get_files_dist():
     assert not file_lock["abstract"] 
     assert file_lock["interface"]
     assert file_lock["name"] == "Lock"
-    assert file_lock["path"] ==  "Lock.java"
+    assert file_lock["path"] ==  "Lock.java", file_lock
     assert len(file_lock["methods"]) == 2 # was: allMethods
 
     assert file_lock["methods"][0]["name"] in ["requestCS", "releaseCS"] # was: allMethods
@@ -221,7 +221,7 @@ def test_get_files_by_type():
   
     files = p.get_files(type="Lock")
 
-    assert len(files) == 5
+    assert len(files) == 5, len(files)
     
 #    expected_classes = [ "SemaphoreLock", "Dekker", "Bakery", "HWMutex", "PetersonAlgorithm" ]
     expected_paths = [ "SemaphoreLock.java", "Dekker.java", "Bakery.java", "HWMutex.java", "PetersonAlgorithm.java" ]
@@ -244,7 +244,7 @@ def test_thread():
   
     threads = p.get_threads() 
 
-    assert len(threads) > 0
+    assert len(threads) > 0, len(threads)
 
     for ir in threads:
 
