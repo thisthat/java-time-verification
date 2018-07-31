@@ -63,4 +63,11 @@ public class MongoConnectorServer extends MongoConnector {
         return out;
     }
 
+    public List<DBDataJSON> getClassesExtend(String extended) {
+        List<DBDataJSON> out =  datastore.createQuery(DBDataJSON.class)
+                .field("extend").contains(extended)
+                .asList();
+        return out;
+    }
+
 }
