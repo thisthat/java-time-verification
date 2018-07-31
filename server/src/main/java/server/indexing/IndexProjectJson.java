@@ -67,6 +67,7 @@ public class IndexProjectJson {
                 hasThread[0] = true;
             }
             extended.add(c.getExtendClass());
+            extended.addAll(c.getImplmentsInterfaces());
         }
         DBDataJSON j = new DBDataJSON();
         j.setPath(path);
