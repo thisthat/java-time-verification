@@ -4,6 +4,8 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
 import org.mongodb.morphia.utils.IndexType;
 
+import java.util.List;
+
 @Entity("DBDataJSON")
 @Indexes(
         @Index(fields = @Field(value = "$**", type = IndexType.TEXT))
@@ -18,12 +20,21 @@ public class DBDataJSON {
     String hasThread;
     String klassName;
     String packageName;
+    List<String> extend;
 
 
     public DBDataJSON() {
     }
 
-    public DBDataJSON(ObjectId id, String path, String json, String sha1, String hasMain, String hasThread, String klassName, String packageName) {
+    public List<String> getExtend() {
+        return extend;
+    }
+
+    public void setExtend(List<String> extend) {
+        this.extend = extend;
+    }
+
+    public DBDataJSON(ObjectId id, String path, String json, String sha1, String hasMain, String hasThread, String klassName, String packageName, List<String> extend) {
         this.id = id;
         this.path = path;
         this.json = json;
@@ -32,6 +43,7 @@ public class DBDataJSON {
         this.hasThread = hasThread;
         this.klassName = klassName;
         this.packageName = packageName;
+        this.extend = extend;
     }
 
     public ObjectId getId() {

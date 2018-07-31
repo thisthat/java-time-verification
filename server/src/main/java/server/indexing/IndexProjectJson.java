@@ -9,6 +9,7 @@ import server.helper.PrepareJsonClass;
 import server.helper.SHA1;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +47,7 @@ public class IndexProjectJson {
         final boolean[] hasThread = {false};
         final String[] klass = { result.size() > 0 ? result.get(0).getName() : "" };
         final String[] pkg = { result.size() > 0 ? result.get(0).getPackageName() : "" };
+        List<String> extended = new ArrayList<>();
         for(ASTClass c : result){
             c.visit(new DefaultASTVisitor(){
                 @Override
@@ -64,11 +66,13 @@ public class IndexProjectJson {
             if(c.getExtendClass().equals("Thread") || c.getImplmentsInterfaces().contains("Runnable")){
                 hasThread[0] = true;
             }
+            extended.add(c.getExtendClass());
         }
         DBDataJSON j = new DBDataJSON();
         j.setPath(path);
         j.setKlassName(klass[0]);
         j.setPackageName(pkg[0]);
+        j.setExtend(extended);
         j.setHasMain(hasMain[0] ? "true" : "false");
         j.setHasThread(hasThread[0] ? "true" : "false");
         j.setJson(PrepareJsonClass.json(result, new HashMap<>(), path, base_path));
