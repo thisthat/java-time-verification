@@ -20,7 +20,6 @@ import server.indexing.DBDataJSON;
 import server.indexing.MongoConnectorServer;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +91,7 @@ public class getFile extends indexMW {
 
 		String response = "";
 		try {
-			response = PrepareJsonClass.json(classes, parameters, file_path);
+			response = PrepareJsonClass.json(classes, parameters, file_path, base_path);
 		} catch (Exception e){
 			LOGGER.catching(e);
 			System.err.println(e.getMessage());
