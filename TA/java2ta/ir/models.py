@@ -265,36 +265,6 @@ class Variable(ASTNode):
         visitor.add_handler("ASTAssignment", check_var_assignment)
         var_ast = visitor.search()
            
-##        while len(nodes_to_visit) > 0:
-##            top_node = nodes_to_visit.popleft()
-##
-##            assert "nodeType" in top_node
-###            log.debug("Visit (%s): %s ..." % (top_node["nodeType"], top_node["code"][:50]))
-###            assert "name" in top_node, "keys: %s - node: %s" % (sorted(top_node.keys()), top_node)
-##            if top_node["nodeType"] == "ASTVariableDeclaration" and top_node["name"]["nodeType"] == "ASTIdentifier" and top_node["name"]["value"] == self.name: # and "hiddenClass" in top_node["expression"]: # the node is the declaration of the current variable, initialized with an instance of an anonymous class
-###                log.debug("Found variable declaration: %s" % top_node)
-##                if "expr" in top_node and "hiddenClass" in top_node["expr"]:
-##                    var_ast = top_node #top_node["expr"] # the node of the var declaration  
-##                    break   
-##            elif top_node["nodeType"] == "ASTAssignment" and top_node["left"]["value"] == self.name: # and top_node["right"]["nodeType"] == "ASTNewObject": # the node is the varaible of the current variable with an instance of an anonymous class
-###                log.debug("Found variable assignment: %s" % top_node)
-##                if "hiddenClass" in top_node["right"]:
-##                    var_ast = top_node #top_node["right"]
-##                    break
-##            else:
-##                # visit all the sub-dictionaries with key nodeType
-##                log.debug("Children: %s" % top_node.keys())
-##                for key in top_node.keys():
-##                    value = top_node[key]
-##                    if isinstance(value, dict) and "nodeType" in value:
-##                        log.debug("Bookmark child: %s" % key)
-##                        nodes_to_visit.append(value)
-##                    elif isinstance(value, list):
-##                        node_sub_values = filter(lambda v: "nodeType" in v, value)
-##                        nodes_to_visit.extend(node_sub_values)
-###                for subnode in top_node.get("stms", []): # visit only children that are in the "stms" or "expression" keys
-###                    nodes_to_visit.append(subnode)
-##        
 
         if not var_ast:
             raise ValueError("Cannot find variable '%s' in method %s. Method AST: %s" % (self.name, self.method.name, self.method.get_ast()))
@@ -476,7 +446,7 @@ class Project(object):
         files = []
 
         if self.is_open():
-            data = { "name": self.name }
+            data = { "name": self.name, }
             url = "/getAllFiles"
 
             if type:    
@@ -491,6 +461,7 @@ class Project(object):
                 # if no type is specified, the ws returns a list of 
                 # strings
                 data["skipTest"] = 0
+
                 files = self.client.post(url, data)
 
         return files
