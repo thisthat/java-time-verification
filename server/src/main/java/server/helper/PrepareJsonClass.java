@@ -45,6 +45,9 @@ public class PrepareJsonClass {
             for(Constraint cnst : ah.getTimeConstraint()){
                 cnst.removeElm();
             }
+            if(!basepath.endsWith("/")){
+                basepath = basepath + "/";
+            }
             c.setPath(file_path.replace(basepath,""));
             c.setVersion(PropertiesFileReader.getInfo());
         }
