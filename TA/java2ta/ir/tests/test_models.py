@@ -219,7 +219,13 @@ def test_get_files_by_type():
 
     check_is_open(p)
   
-    files = p.get_files(type="Lock")
+    all_files = p.get_files()
+    assert len(all_files) >= 5, all_files
+
+    all_classes = p.get_classes()
+    assert len(all_classes) >= 5, all_classes
+
+    files = p.get_files(type_fqn="Lock")
 
     assert len(files) == 5, len(files)
     

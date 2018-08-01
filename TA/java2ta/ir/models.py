@@ -434,14 +434,15 @@ class Project(object):
             if name is not None:
                 found_threads = filter(lambda t: t["className"] == name, 
                                         all_threads)
+
             else:
                 found_threads = all_threads
 
         return found_threads
 
 
-    @contract(type="None|string", returns="list(string)")
-    def get_files(self, type=None):
+    @contract(type_fqn="None|string", returns="list(string)")
+    def get_files(self, type_fqn=None):
 
         files = []
 
@@ -449,11 +450,21 @@ class Project(object):
             data = { "name": self.name, }
             url = "/getAllFiles"
 
-            if type:    
+            if type_fqn:    
                 # if type is specified, the ws returns a list of 
                 # dictionaries,  
                 # only take the path information
-                data["type"] = type
+                type_parts = type_fqn.rsplit(".", 1)
+                package = ""
+                class_name = ""
+                if len(type_parts) == 1:
+                    class_name = type_parts[0]
+                else:
+                    package = type_parts[0]
+                    class_name = type_parts[1]
+
+                data["className"] = class_name #type
+                data["package"] = package
                 url = "/getFilesByType"
                 files_dict = self.client.post(url, data)
                 files = map(lambda f: f["path"], files_dict)
