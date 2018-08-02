@@ -454,17 +454,18 @@ class Project(object):
                 # if type is specified, the ws returns a list of 
                 # dictionaries,  
                 # only take the path information
-                type_parts = type_fqn.rsplit(".", 1)
-                package = ""
-                class_name = ""
-                if len(type_parts) == 1:
-                    class_name = type_parts[0]
-                else:
-                    package = type_parts[0]
-                    class_name = type_parts[1]
+#                type_parts = type_fqn.rsplit(".", 1)
+#                package = ""
+#                class_name = ""
+#                if len(type_parts) == 1:
+#                    class_name = type_parts[0]
+#                else:
+#                    package = type_parts[0]
+#                    class_name = type_parts[1]
 
-                data["className"] = class_name #type
-                data["package"] = package
+#                data["className"] = class_name #type
+#                data["package"] = package
+                data["type"] = type_fqn
                 url = "/getFilesByType"
                 files_dict = self.client.post(url, data)
                 files = map(lambda f: f["path"], files_dict)
