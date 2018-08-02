@@ -17,6 +17,7 @@ config = {
         'requests>=2.13.0',
         'PyContracts>=1.7.15',
         'graphviz>=0.8',
+        'pydot>=1.2.4',
     ],
     'packages': find_packages(), 
     'scripts': [],

@@ -36,7 +36,7 @@ The output is a relative path with regarding of the project path.
 
 e.g. 
 ```bash
-curl -s http://localhost:9000/getAllFiles -d 'name=f&skipTest=1'
+curl -s http://localhost:9000/getAllFiles -d 'format=yaml&name=projectFoo&skipTest=0'
 ```
 
 # /getFile 
