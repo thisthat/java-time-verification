@@ -51,20 +51,16 @@ public class CheckExpression {
 		if(rexp == null){
 			return false;
 		}
-
 		final boolean[] flag = {false};
 		rexp.getExpression().visit(new DefualtASTREVisitor(){
 			@Override
 			public void enterASTVariableDeclaration(ASTVariableDeclaration elm) {
 				flag[0] = flag[0] || setVariableInEnv(rexp, elm, env);
 			}
-
 			@Override
 			public void enterASTAssignment(ASTAssignment elm) {
 				flag[0] = flag[0] || setVariableInEnv(rexp, elm, env);
 			}
-
-
 		});
 
 		return flag[0];
@@ -325,6 +321,19 @@ public class CheckExpression {
 			@Override
 			public void enterASTAttributeAccess(ASTAttributeAccess elm) {
 				varToSkip.add(elm.getVariableName().getCode());
+			}
+
+			@Override
+			public void enterASTMethodCall(ASTMethodCall elm) {
+				final String[] caleeVar = {""};
+				elm.visit(new DefualtASTREVisitor(){
+					@Override
+					public void enterASTIdentifier(ASTIdentifier elm) {
+						caleeVar[0] = elm.getValue();
+					}
+				});
+				if(!caleeVar[0].equals(""))
+					varToSkip.add(caleeVar[0]);
 			}
 
 			@Override

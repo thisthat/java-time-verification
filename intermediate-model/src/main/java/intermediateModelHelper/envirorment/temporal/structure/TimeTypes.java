@@ -49,6 +49,7 @@ public class TimeTypes extends TimeInfo {
         if(!className.equals(oo.className)) return false;
         if(!methodName.equals(oo.methodName)) return false;
         if(!signature.equals(oo.signature)) return false;
+        if(timeType == null) return oo.timeType==null;
         return timeType.equals(oo.timeType);
     }
 

@@ -1,22 +1,11 @@
 package smt.evaluation;
 
-import converter.ClassAnalyzer;
-import converter.Statistic;
-import debugger.Debugger;
-import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
-import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.indexing.IndexingProject;
-import smt.exception.VariableNotCorrect;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 

@@ -50,7 +50,7 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
         long now = System.currentTimeMillis();
         long deadline = now + timeout;
 
-        while (now <= deadline) {
+        while (now - deadline <= 0) {
             if (coordinatorUnknown()) {
                 ensureCoordinatorReady();
                 now = System.currentTimeMillis();
@@ -79,7 +79,7 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
         //long now = System.currentTimeMillis();
         long deadline = now + timeout;
 
-        while (now <= deadline) {
+        while (now - deadline <= 0) {
             if (coordinatorUnknown()) {
                 ensureCoordinatorReady();
                 now = System.currentTimeMillis();
@@ -149,7 +149,7 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
     public void compareTimestampWrongly(){
         long now = System.currentTimeMillis();
         long later = System.currentTimeMillis();
-        if(now > later){
+        if(now - later > 0){
             System.out.println("This is not an error");
         }
     }

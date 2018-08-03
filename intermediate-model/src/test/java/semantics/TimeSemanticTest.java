@@ -2,22 +2,25 @@ package semantics;
 
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.expression.ASTMethodCall;
-import intermediateModel.types.rules.TimeTypeError;
+import intermediateModel.types.rules.exception.TimeTypeError;
+import intermediateModel.types.rules.exception.TimeTypeRecommendation;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
-import intermediateModelHelper.envirorment.temporal.structure.TimeMethod;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.envirorment.temporalTypes.TemporalTypes;
 import intermediateModelHelper.envirorment.temporalTypes.structure.TimeParameterMethod;
 import intermediateModelHelper.heuristic.v2.*;
 import intermediateModelHelper.indexing.IndexingProject;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import intermediateModel.types.TimeTypeSystem;
 
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -117,6 +120,15 @@ public class TimeSemanticTest {
             System.out.println(e.getFullMessage());
         }
         assertEquals(7, errors.size());
+    }
+
+    @Test
+    public void TestRecommendation() throws Exception {
+
+        TimeTypeSystem u = new TimeTypeSystem();
+        u.start(c);
+        List<TimeTypeRecommendation> errors = u.getRecommendation();
+        assertEquals(3, errors.size());
     }
 
 

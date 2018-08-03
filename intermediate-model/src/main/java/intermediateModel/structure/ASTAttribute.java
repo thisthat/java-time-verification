@@ -111,8 +111,7 @@ public class ASTAttribute extends IASTStm implements IASTVar, IASTVisitor {
 		return this.getName() == o.getName() && this.getType() == o.getType();
 	}
 
-
-    public void setTypePointed(String typePointed) {
+	public void setTypePointed(String typePointed) {
         this.typePointed = typePointed;
     }
 

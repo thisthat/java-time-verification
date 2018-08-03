@@ -1,22 +1,24 @@
 package intermediateModel.types;
 
 import debugger.Debugger;
+import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTRE;
 import intermediateModel.types.definition.TimeType;
+import intermediateModel.types.definition.Unknown;
+import intermediateModel.types.rules.TypeResolver;
+import intermediateModel.types.rules.exception.TimeTypeError;
 import intermediateModel.types.rules.exception.TimeTypeRecommendation;
 import intermediateModel.types.rules.exception.TimeTypeWarning;
 import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.interfaces.ParseIM;
 import intermediateModelHelper.envirorment.Env;
-import intermediateModel.types.rules.exception.TimeTypeError;
-import intermediateModel.types.rules.TypeResolver;
 import intermediateModelHelper.heuristic.v2.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimeTypeSystem extends ParseIM  {
+public class CountUnknown extends ParseIM  {
 
     static ApplyHeuristics ah = new ApplyHeuristics();
     static {
@@ -44,10 +46,14 @@ public class TimeTypeSystem extends ParseIM  {
         return warnings;
     }
 
-    public TimeTypeSystem() {
+    List<String> typed = new ArrayList<>();
+    List<String> untyped = new ArrayList<>();
+
+    public CountUnknown() {
+        Debugger.isActive = false;
     }
 
-    public TimeTypeSystem(ASTClass _class) {
+    public CountUnknown(ASTClass _class) {
         super(_class);
     }
 
@@ -66,21 +72,30 @@ public class TimeTypeSystem extends ParseIM  {
         }
         try {
             TimeType t = TypeResolver.resolveTimerType(r.getExpression(), env);
-            Debugger.getInstance(false).log("Line " + r.getLine() + " : " + t);
-        } catch (TimeTypeRecommendation error){
-            // catch the error and enhance it. Then store.
-            recommendation.add(new TimeTypeRecommendation(super.getLastClass(), super._class.getPath(), error));
-        } catch (TimeTypeError error){
-            // catch the error and enhance it. Then store.
-            errors.add(new TimeTypeError(super.getLastClass(), super._class.getPath(), error));
-        } catch (TimeTypeWarning warn) {
-            warnings.add(new TimeTypeWarning(super.getLastClass(), super._class.getPath(), warn));
-        } catch (Exception e){
-            System.out.println("@ File:" + this._class.getPath());
-            System.err.println("@ File:" + this._class.getPath());
-            e.printStackTrace();
+        } catch (Exception error){
+            // don't care
+        } finally {
+            for(IASTVar v : env.getAllVarList()){
+                String name = v.getName();
+                if(v.getVarTimeType() instanceof Unknown){
+                    if(typed.contains(name)) continue;
+                    if(!untyped.contains(name))
+                        untyped.add(name);
+                } else {
+                    untyped.remove(name);
+                    if(!typed.contains(name)){
+                        typed.add(name);
+                    }
+                }
+            }
         }
     }
 
+    public List<String> getTyped() {
+        return typed;
+    }
 
+    public List<String> getUntyped() {
+        return untyped;
+    }
 }

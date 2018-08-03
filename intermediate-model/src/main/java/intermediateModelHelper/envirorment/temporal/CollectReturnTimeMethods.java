@@ -7,7 +7,7 @@ import intermediateModel.types.definition.Duration;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Timestamp;
 import intermediateModel.types.definition.Unknown;
-import intermediateModel.types.rules.TimeException;
+import intermediateModel.types.rules.exception.TimeException;
 import intermediateModel.types.rules.TypeResolver;
 import intermediateModel.visitors.ExtractTimeAttribute;
 import intermediateModel.visitors.interfaces.ParseIM;
@@ -106,14 +106,12 @@ public class CollectReturnTimeMethods extends ParseIM {
             }
             try {
                 writeFile(timestamp, outputT);
-                ti.loadUserTypes_RTT(timestamp);
             } catch (IOException e) {
                 System.err.println("Cannot write " + timestamp + " file");
                 System.err.println(e.getMessage());
             }
             try {
                 writeFile(duration, outputD);
-                ti.loadUserTypes_RTD(duration);
             } catch (IOException e) {
                 System.err.println("Cannot write " + duration + " file");
                 System.err.println(e.getMessage());
@@ -151,8 +149,10 @@ public class CollectReturnTimeMethods extends ParseIM {
             TimeType tt = new Unknown();
             try {
                 tt = TypeResolver.resolveTimerType(re.getExpression(), env);
-            } catch (TimeException timeTypeError) {
+            } catch (Exception ex) {
                 // ignore errors now
+                System.err.println(this._class.getPath());
+                ex.printStackTrace();
             }
             //there is time!
             TimeTypes t = new TimeTypes(this._class.fullName(), lastMethod.getName(), lastMethod.getSignature(), tt);

@@ -1,28 +1,24 @@
-package intermediateModel.types.rules;
+package intermediateModel.types.rules.exception;
 
-public class TimeException extends Exception {
+public class TimeTypeWarning extends TimeException {
     private String className;
     private String filename;
     private int line;
     private String cause;
 
-    public TimeException(String message) {
-        super(message);
-    }
-
-    public TimeException(String className, String filename, int line, String cause) {
+    public TimeTypeWarning(String className, String filename, int line, String cause) {
         super(cause);
         this.className = className;
         this.filename = filename;
         this.line = line;
     }
 
-    public TimeException(int line, String cause) {
+    public TimeTypeWarning(int line, String cause) {
         super(cause);
         this.line = line;
     }
 
-    public TimeException(String className, String filename, TimeException prev) {
+    public TimeTypeWarning(String className, String filename, TimeTypeWarning prev) {
         super(prev.getMessage());
         this.cause = prev.getMessage();
         this.line = prev.getLine();

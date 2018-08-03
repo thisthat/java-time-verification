@@ -1,15 +1,12 @@
 package sql;
 
-
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SQLManager {
-    static String connectionQuery = "jdbc:postgresql://brock.isys.uni-klu.ac.at:5432/giovanni?user=giovanni&password=giovanni";
+    static String connectionQuery = "jdbc:postgresql://localhost:5432/giovanni?user=giovanni&password=giovanni";
     Connection conn;
     public SQLManager() throws SQLException {
         conn = DriverManager.getConnection(connectionQuery);
@@ -24,13 +21,12 @@ public class SQLManager {
     }
 
 
-    public void addCommitInfo(String hash, String branch, long time, String projectName) throws SQLException {
-        String sqlInsert = "INSERT INTO public.\"CommitInfo\"(\"Hash\", \"Branch\", \"Date\", \"ProjectName\") VALUES ( ?, ?, ?, ?)";
+    public void addCommitInfo(String hash, long time, long prjId) throws SQLException {
+        String sqlInsert = "INSERT INTO public.\"CommitInfo\"(\"IDProject\",\"Hash\", \"Date\") VALUES ( ?, ?, ?)";
         PreparedStatement st = conn.prepareStatement(sqlInsert);
-        st.setString(1, hash);
-        st.setString(2, branch);
+        st.setLong(1, prjId);
+        st.setString(2, hash);
         st.setLong(  3, time);
-        st.setString(4, projectName);
         st.execute();
     }
 
@@ -42,18 +38,20 @@ public class SQLManager {
         st.execute();
     }
 
-    public void addCommitResult(String hash, long timeInit, long timeProcess, int warn, int err, String warning, String errors, String projectName) throws SQLException {
-        String sqlInsert = "INSERT INTO public.\"CommitResult\"(\"Hash\", \"TimeInit\", \"TimeProcess\", \"WARN\", \"ERR\"," +
-                "\"Warnings\", \"Errors\", \"ProjectName\") VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
+    public void addCommitResult(String hash, long timeInit, long timeProcess, int warn, int err, int rec, String warning, String errors, String recommendation, String projectName) throws SQLException {
+        String sqlInsert = "INSERT INTO public.\"CommitResultActiveMQ\"(\"Hash\", \"TimeInit\", \"TimeProcess\", \"WARN\", \"ERR\", \"REC\"," +
+                "\"Warnings\", \"Errors\", \"Recommendations\", \"ProjectName\") VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement st = conn.prepareStatement(sqlInsert);
         st.setString(1, hash);
         st.setLong(2, timeInit);
         st.setLong(3, timeProcess);
         st.setLong(4, warn);
         st.setLong(5, err);
-        st.setString(6, warning);
-        st.setString(7, errors);
-        st.setString(8, projectName);
+        st.setLong(6, rec);
+        st.setString(7, warning);
+        st.setString(8, errors);
+        st.setString(9, recommendation);
+        st.setString(10, projectName);
         st.execute();
     }
 }

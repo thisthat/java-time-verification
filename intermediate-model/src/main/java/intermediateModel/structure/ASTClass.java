@@ -5,8 +5,13 @@ import intermediateModel.interfaces.ASTVisitor;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.interfaces.IASTStm;
 import intermediateModel.interfaces.IASTVisitor;
+import intermediateModel.types.Refactor;
+import intermediateModel.types.rules.exception.TimeTypeRecommendation;
 import intermediateModel.visitors.DefaultASTVisitor;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -398,4 +403,8 @@ public class ASTClass extends IASTStm implements IASTVisitor {
 		}
 		return out;
 	}
+
+    public String refactor(List<TimeTypeRecommendation> errors) throws IOException {
+		return Refactor.refactorFile(Files.readAllBytes(Paths.get(this.path)), errors);
+    }
 }
