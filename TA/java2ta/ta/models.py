@@ -203,6 +203,11 @@ class Location(object):
     def __repr__(self):
         return self.name
 
+    @property
+    def neighbors(self):
+        neighbors_list = map(lambda e: e.target, self.outgoing)
+        return set(neighbors_list)
+    
 new_contract_check_type("is_location", Location) 
  
 
@@ -250,6 +255,14 @@ class Edge(object):
         if label:
             label = "[%s]" % label
         return "%s -%s-> %s" % (self.source, label, self.target)
+
+    def __unicode__(self):
+        label = self.formatted_label
+        if label:
+            label = "[%s]" % label
+        return "%s -%s-> %s" % (self.source, label, self.target)
+
+
 
 new_contract_check_type("is_edge", Edge)
 

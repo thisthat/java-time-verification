@@ -96,11 +96,11 @@ def build_location_name(conf, pc):
     loc_name = "(%s)%s" % (conf_string, pc)
     return loc_name
 
-@contract(conf="is_configuration", pc="is_pc", loc_pred="is_predicate", returns="is_location")
+@contract(conf="is_configuration", pc="is_pc", loc_pred="tuple", returns="is_location")
 def build_location(conf, pc, loc_pred):
     """
     Create a Location starting from a configuration (conf) and a position in the code (pc). Attach
-    to the location the passed extra data (loc_pred is a predicate over the program variables)
+    to the location the passed extra data (loc_pred is a tuple of predicates over the program variables)
     """
 
     # convert the conf to a list of string, and join the items
@@ -119,7 +119,8 @@ class ReachabilityInput(object):
         self.instr = instr
         self.source = source
         self.pc_source = pc_source
-        self.source_loc = build_location(source, pc_source)
+        source_pred = state_space.value(source)
+        self.source_loc = build_location(source, pc_source, source_pred)
         self.source_pred = state_space.value(source)
         self.visited_locations = visited_locations
         self.pc_jump_stack = pc_jump_stack
