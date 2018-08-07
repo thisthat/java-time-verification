@@ -126,7 +126,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     if len(instr) == 0:
         # empty block case
         reachable = set(source_conf)
-        final = map(lambda c: build_location(c, pc_source), source_conf) # create a location for each configuration
+        final = map(lambda c: build_location(c, pc_source, state_space.value(c)), source_conf) # create a location for each configuration
 
     curr_pc = PC(pc_source.pc)
     for curr_instr in instr:
@@ -1281,7 +1281,7 @@ def check_reach_astre(ri):
     
             log.debug("Statement SAT: %s" % is_sat)
             if is_sat:
-                target_loc = build_location(target, pc_target)
+                target_loc = build_location(target, pc_target, target_pred)
                 edge_label = instr["code"]
 
                 if is_time_transition:
@@ -1381,7 +1381,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
         edges.extend(rr_then.edges) #edges_then)
 
         # add ed edge from source to the begin of the "then" branch
-        then_loc = build_location(source, pc_source_then)
+        then_loc = build_location(source, pc_source_then, source_pred)
 
         if is_clock_condition:
             log.debug("Found clock condition (%s): %s" % (type(clock_condition), clock_condition))
@@ -1410,7 +1410,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
         external.extend(rr_else.external_locations)
 
         # add en edge from source to the begin of the "else" branch
-        else_loc = build_location(source, pc_source_else)
+        else_loc = build_location(source, pc_source_else, source_pred)
         if is_clock_condition:
             neg_clock_condition = clock_condition.negate()
             log.debug("Found negated clock condition: %s" % neg_clock_condition)
@@ -1431,7 +1431,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
         (state_final_conf, pc_final) = parse_location(loc)
 
         # the end-if location has the same predicate of the reached final state, but the pc of the line after the if-statement
-        end_if_loc = build_location(state_final_conf, pc_target)            
+        end_if_loc = build_location(state_final_conf, pc_target, loc.data)
 
         # add edges and final locations to the results
         edges.append(Edge(loc, end_if_loc, "endif"))
@@ -1466,7 +1466,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
     external = []
     variables = set([])
 
-    source_loc = build_location(source, pc_source)
+    source_loc = build_location(source, pc_source, source_pred)
 
     while_identifier = instr["identifier"]
     stms_while = instr["stms"]
@@ -1492,7 +1492,8 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
 
     while len(tovisit_sources) > 0:
         curr_source_conf = tovisit_sources.pop()
-        curr_source_loc = build_location(curr_source_conf, pc_source)
+        curr_source_pred = state_space.value(curr_source_conf)
+        curr_source_loc = build_location(curr_source_conf, pc_source, curr_source_pred)
 
         assert curr_source_loc not in visited_locations, "Location in ASTWhile already visited: %s" % curr_source_loc.name
 
@@ -1535,7 +1536,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
     
             # add edge from source to the begin of the while
             # TODO at the moment we don't take advantage of the while-guard as precondition
-            while_loc = build_location(curr_source_conf, pc_source_while)
+            while_loc = build_location(curr_source_conf, pc_source_while, curr_source_pred)
 
             if is_clock_condition:  
                 while_edge = Edge(curr_source_loc, while_loc, guard=clock_condition, clock_variables=clock_variables)
@@ -1552,7 +1553,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
                 (state_final_conf, pc_final) = parse_location(loc)
 
                 # go back to a new evaluation of the while condition (with the current configuration)
-                loc_back = build_location(state_final_conf, pc_source)
+                loc_back = build_location(state_final_conf, pc_source, loc.data)
                 edge_back = Edge(loc, loc_back, "end while")
                 edges.append(edge_back)
 
@@ -1570,7 +1571,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
         if is_not_while_reachable:
 
             # add edge from source to the end of the while
-            curr_source_neg_loc = build_location(curr_source_conf, pc_target)
+            curr_source_neg_loc = build_location(curr_source_conf, pc_target, curr_source_pred)
             if is_clock_condition:  
                 neg_clock_condition = clock_condition.negate()
                 while_exit_edge = Edge(curr_source_loc, curr_source_neg_loc, guard=neg_clock_condition, clock_variables=clock_variables)
@@ -1608,7 +1609,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
     external = []
     variables = set([])
 
-    source_loc = build_location(source, pc_source)
+    source_loc = build_location(source, pc_source, source_pred)
 
     while_identifier = instr["identifier"]
     stms_while = instr["stms"]
@@ -1629,7 +1630,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
     external.extend(rr_while.external_locations)
 
     # add an edge that "falls" inside the while block, from outside
-    do_loc = build_location(source, pc_source_while)
+    do_loc = build_location(source, pc_source_while, source_pred)
     do_edge = Edge(source_loc, do_loc, "do")
     edges.append(do_edge)
 
@@ -1673,7 +1674,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
         
                 # add edge from current location to the begin of the while
                 # TODO at the moment we don't take advantage of the while-guard as precondition
-                while_loc = build_location(conf_final, pc_source_while)
+                while_loc = build_location(conf_final, pc_source_while, pred_final)
                 while_edge = Edge(loc_final, while_loc, "while (%s)" % guard["code"])
                 edges.append(while_edge)
     
@@ -1682,14 +1683,14 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
                 for loc in rr_while_back.final_locations:
                     assert isinstance(loc, Location)
                     (state_final_conf, pc_final) = parse_location(loc)
-    
-                    loc_out = build_location(state_final_conf, pc_target)
+                    
+                    loc_out = build_location(state_final_conf, pc_target, loc.data)
                     edge_out = Edge(loc, loc_out, "end while")
                     edges.append(edge_out)
                     final.append(loc_out)
                     reachable.append(state_final_conf)
         
-                    loc_restart = build_location(state_final_conf, pc_source)
+                    loc_restart = build_location(state_final_conf, pc_source, loc.data)
                     edge_restart = Edge(loc, loc_restart)
                     edges.append(edge_restart)
         
@@ -1697,7 +1698,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
         if is_not_while_reachable:
 
             # add edge from current location to the end of the while
-            while_neg_loc = build_location(conf_final, pc_target)
+            while_neg_loc = build_location(conf_final, pc_target, pred_final)
             while_neg_edge = Edge(loc_final, while_neg_loc, "not (%s)" % guard["code"])
             edges.append(while_neg_edge)
             final.append(while_neg_loc)
@@ -1734,7 +1735,7 @@ def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_loc
     variables = set([])
 
 
-    source_loc = build_location(source, pc_source)
+    source_loc = build_location(source, pc_source, source_pred)
 
     target_identifier = instr["target"]
     pc_target = find_break_target(instr_type, pc_jump_stack, target_identifier)
@@ -1748,7 +1749,7 @@ def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_loc
 
     log.debug("Found pc target (%s): %s. PC break stack: %s" % (target_identifier, pc_target, pc_jump_stack))
 
-    loc_out = build_location(source, pc_target)
+    loc_out = build_location(source, pc_target, source_pred)
     # new edge: from source location to final location
     edge_break = Edge(source_loc, loc_out, edge_label)
     edges.append(edge_break)  
@@ -1783,7 +1784,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     external = []
     variables = set([])
 
-    source_loc = build_location(source, pc_source)
+    source_loc = build_location(source, pc_source, source_pred)
 
     pc_target = pc_source + 1
 
@@ -1797,7 +1798,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     external.extend(rr_try.external_locations)
 
     # add edge from source to the begin of the try
-    try_loc = build_location(source, pc_source_try)
+    try_loc = build_location(source, pc_source_try, source_pred)
     try_edge = Edge(source_loc, try_loc, "")
     edges.append(try_edge)
 
@@ -1831,7 +1832,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     # add edge from exception states in the try block, to the begin of the catch block
     for excp_loc in found_exception_locs:   
         (excp_conf, excp_pc) = parse_location(excp_loc)
-        catch_excp_loc = build_location(excp_conf, pc_source_catch)
+        catch_excp_loc = build_location(excp_conf, pc_source_catch, excp_loc.data)
         edges.append(Edge(excp_loc, catch_excp_loc, "catch"))
 
     final_catch = rr_catch.final_locations
@@ -1842,7 +1843,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
 
         assert isinstance(loc, Location)
         (state_loc, pc_loc) = parse_location(loc)
-        end_try_loc = build_location(state_loc, pc_target)
+        end_try_loc = build_location(state_loc, pc_target, loc.data)
         edges.append(Edge(loc, end_try_loc))       
         final.append(end_try_loc)
         reachable.append(state_loc)
@@ -1874,7 +1875,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
     external = []
     variables = set([])
 
-    source_loc = build_location(source, pc_source)
+    source_loc = build_location(source, pc_source, source_pred)
 
     foreach_identifier = instr["identifier"]
     stms_foreach = instr["stms"]
@@ -1888,7 +1889,8 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
     while len(tovisit_sources) > 0:
 
         curr_source_conf = tovisit_sources.pop()
-        curr_source_loc = build_location(curr_source_conf, pc_source)
+        curr_source_pred = state_space.value(curr_source_conf)
+        curr_source_loc = build_location(curr_source_conf, pc_source, curr_source_pred)
 
         assert curr_source_loc not in visited_locations, "Location in ASTFor/ASTForEach already visited: %s" % curr_source_loc.name
 
@@ -1904,7 +1906,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
         variables |= rr_foreach.variables
         pc_jump_stack.pop()
 
-        begin_foreach_loc = build_location(source, pc_source_foreach)
+        begin_foreach_loc = build_location(source, pc_source_foreach, source_pred)
 
         edges.extend(rr_foreach.edges)
         edges.append(Edge(source_loc, begin_foreach_loc, "for each"))
@@ -1914,7 +1916,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
             assert isinstance(loc, Location)
             (state_final_conf, pc_final) = parse_location(loc)
 
-            loc_out = build_location(state_final_conf, pc_target)
+            loc_out = build_location(state_final_conf, pc_target, loc.data)
             edge_out = Edge(loc, loc_out, "end foreach")
             edges.append(edge_out)
             final.append(loc_out)
@@ -1923,7 +1925,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
 #                log.debug("Curr foreach final: %s vs %s" % (state_final_conf, visited_sources))
 
             # add an edge restarting the foreach loop
-            loc_restart = build_location(state_final_conf, pc_source_foreach)
+            loc_restart = build_location(state_final_conf, pc_source_foreach, loc.data)
             edge_restart = Edge(loc, loc_restart, "for each")
             edges.append(edge_restart)
 
@@ -1978,9 +1980,12 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
 ##    if len_label > 50:
 ##        instr_label = instr_label[:15].strip() + "..." + instr_label[len_label-15:].strip()
 ##
+
+    source_pred = state_space.value(source)
+
     instr_type = instr["nodeType"]
 #    source_pred = state_space.value(source)
-    source_loc = build_location(source, pc_source)
+    source_loc = build_location(source, pc_source, source_pred)
 
     log.debug("Add source to visited locations: %s. Previous visited locations: %s. Num visited locations: %s." % (source_loc, visited_locations, len(visited_locations)))
     assert source_loc.name not in visited_locations, "Location %s already visited" % source_loc.name
@@ -2042,7 +2047,7 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
             # add exception location and edge to it
             (loc_conf, loc_pc) = parse_location(loc)
             exc_conf = tuple_replace(loc_conf, 1, 1)
-            exc_loc = build_location(exc_conf, loc_pc)
+            exc_loc = build_location(exc_conf, loc_pc, loc.data)
             
             guard = "%s >= %s" % (cv.name, upper.name)
             e = Edge(loc, exc_loc, guard=guard, label=guard)

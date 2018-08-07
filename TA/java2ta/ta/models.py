@@ -130,15 +130,20 @@ new_contract_check_type("is_clock_condition", ClockCondition)
 class Location(object):
 
     @contract(name="string", is_initial="bool", is_urgent="bool")
-    def __init__(self, name, is_initial=False, is_urgent=False):
+    def __init__(self, name, is_initial=False, is_urgent=False, data=None):
 
         self.name = name
         self.invariant = None
         self._incoming = set([])
         self._outgoing = set([])
+        self._data = data
 
         self.is_initial = is_initial
         self.is_urgent = is_urgent
+
+    @property
+    def data(self):
+        return self._data
 
     @property
     def incoming(self):
@@ -147,6 +152,9 @@ class Location(object):
     @property
     def outgoing(self):
         return self._outgoing
+
+    def set_data(self, data):
+        self._data = data
 
     def add_outgoing(self, edge):
         if not edge.source or edge.source != self:

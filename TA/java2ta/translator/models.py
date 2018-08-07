@@ -96,14 +96,18 @@ def build_location_name(conf, pc):
     loc_name = "(%s)%s" % (conf_string, pc)
     return loc_name
 
-@contract(conf="is_configuration", pc="is_pc", returns="is_location")
-def build_location(conf, pc):
-    
+@contract(conf="is_configuration", pc="is_pc", loc_pred="is_predicate", returns="is_location")
+def build_location(conf, pc, loc_pred):
+    """
+    Create a Location starting from a configuration (conf) and a position in the code (pc). Attach
+    to the location the passed extra data (loc_pred is a predicate over the program variables)
+    """
+
     # convert the conf to a list of string, and join the items
     # using ","
     loc_name = build_location_name(conf, pc)
 #    log.debug("conf: %s, loc name: %s" % (conf_string, loc_name))
-    loc = Location(loc_name)
+    loc = Location(loc_name, data=loc_pred)
 
     return loc
 
