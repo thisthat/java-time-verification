@@ -176,6 +176,11 @@ class Method(ASTNode):
         assert hasattr(self.parent, "fqname")
         return "%s.%s" % (self.parent.fqname, self.name)
 
+    @property
+    @contract(returns="string")
+    def class_name(self):
+        return self.parent.fqname
+
     @contract(returns="dict")
     def get_ast(self):
 

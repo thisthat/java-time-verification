@@ -302,6 +302,12 @@ class TA(object):
         self._clock_variables = dict() 
     
     @property
+    def final_locations(self):
+        for loc in self.locations:
+            if len(loc.outgoing) == 0:
+                yield loc
+
+    @property
     def variables(self):
         return self._variables.values()
 
@@ -394,7 +400,8 @@ class TA(object):
         if loc.name not in self._location_names:
             self.locations.add(loc)
             self._location_names[loc.name] = loc
-     
+ 
+    
     @contract(loc="is_location")
     def del_location(self, loc):
         if loc.is_initial:
@@ -405,7 +412,8 @@ class TA(object):
 
         self.locations.discard(loc)
         self._location_names.pop(loc.name, None)
-   
+ 
+  
     @contract(edge="is_edge")
     def add_edge(self, edge):
 
@@ -452,6 +460,7 @@ class TA(object):
         if var.name not in self._variables:
             self._variables[var.name] = var
 
+ 
     @contract(var="string|is_clock_variable")
     def add_clock_variable(self, var):
 

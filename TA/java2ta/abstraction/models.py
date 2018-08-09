@@ -446,6 +446,7 @@ class Or(Predicate):
 
         super(Or, self).__init__(*arguments)
 
+
 class And(Predicate):
     _smt_name = "and"
 
@@ -454,6 +455,18 @@ class And(Predicate):
             raise ValueError("The AND predicate requires at least two sub-predicates. Received: %s" % arguments)
 
         super(And, self).__init__(*arguments)
+
+
+class Imply(Predicate):
+    _smt_name = "imply"
+
+    def __init__(self, *arguments):
+        if len(arguments) != 2:
+            raise ValueError("The IMPLY predicate requires exactly two sub-predicates. Received: %s" % arguments)
+
+        super(Imply, self).__init__(*arguments)
+
+
 
 class GT(BinaryPredicate):
     _smt_name = ">"
@@ -506,6 +519,11 @@ class EqItself(Predicate):
 
 
 #UNKNOWN = Eq(var="1", value="1")
+
+class Tautology(EqItself):
+
+    def __init__(self):
+        super.__init__(var="1")
 
 
 class Domain(object):
@@ -1318,7 +1336,7 @@ class PredicateParser(LeftLinearParser):
         "and"   : And,
         "or"    : Or, # to be added
 #        "not"   : Not, # to be added
-#       "->"    : Imply, # to be added
+       "imply"    : Imply, # to be added
 #       "<->"   : Iff, # to be added
     }
 
