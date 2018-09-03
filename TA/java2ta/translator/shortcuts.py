@@ -454,10 +454,16 @@ class SMTProb(SMTSolver):
                 assert "right" in node_exp
                 assert "left" in node_exp
                 assert "nodeType" in node_exp["left"]
-#                assert node_exp["left"]["nodeType"] == "ASTLiteral", "Expected ASTLiteral, found: %s" % node_exp["left"]["nodeType"]
-                assert node_exp["left"]["nodeType"] == "ASTIdentifier"
+                #assert node_exp["left"]["nodeType"] == "ASTIdentifier", "Node: %s. Env: %s" % (node_exp["left"], env)
 
-                var = node_exp["left"]["value"]
+                var = None
+                if node_exp["left"]["nodeType"] == "ASTIdentifier":
+                    var = node_exp["left"]["value"]
+                elif node_exp["left"]["nodeType"] == "ASTAttributeAccess" and node_exp["left"]["variableName"]["value"] == "this":
+                    var = node_exp["left"]["attributeName"]
+                else:
+                    raise ValueError("At the moment we only support assignments to local variables or 'this' attributes. Passed: %s" % node_exp["left"])
+
                 rhs = node_exp["right"]
 
                 curr_method = get_current_method()

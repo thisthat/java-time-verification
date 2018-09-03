@@ -442,7 +442,7 @@ class Or(Predicate):
 
     def __init__(self, *arguments):
         if len(arguments) < 2:
-            raise ValueError("The OR predicate requires at least two sub-predicates. Received: %s" % arguments)
+            raise ValueError("The OR predicate requires at least two sub-predicates. Received: %s" % (arguments,))
 
         super(Or, self).__init__(*arguments)
 
@@ -509,21 +509,18 @@ class Between(And):
         super(Between, self).__init__(*arguments)
 
 
-class EqItself(Predicate):
-#    _smt_assert = "(assert (= {var} {var}))"
-    _smt_condition = "(= {var} {var})"
-    _label = "{var} = {var}"
+class EqItself(Eq):
 
-#    def __init__(self, **ctx):
-#        super(EqItself,self).__init__(**ctx)
-
+    def __init__(self, var):
+        arguments = [var, var]
+        super(EqItself, self).__init__(*arguments)
 
 #UNKNOWN = Eq(var="1", value="1")
 
 class Tautology(EqItself):
 
     def __init__(self):
-        super.__init__(var="1")
+        super(Tautology, self).__init__(var="1")
 
 
 class Domain(object):
