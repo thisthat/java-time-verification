@@ -139,7 +139,8 @@ class DataTypeFactory(object):
     INTEGER_TYPES = [ "byte", "short", "int", "long", "java.lang.AtomicInteger", "java.lang.AtomicLong", "java.lang.BigInteger", "java.lang.Byte", "java.lang.Integer", "java.lang.Long", "java.lang.Short" ]
     REAL_TYPES = [ "float", "double", "java.lang.BigDecimal", "java.lang.Double", "java.lang.Float", ]
     STRING_TYPES = [ "java.lang.String", ]
-    BOOL_TYPES = [ "boolean", ]
+    BOOL_TYPES = [ "boolean", "java.lang.Boolean" ]
+    VOID_TYPES = [ "void", ]
     OBJECT_TYPES = [ "java.lang.Object", ]
     ITERATOR_TYPES = [ "java.util.Iterator", ]
 
@@ -169,7 +170,9 @@ class DataTypeFactory(object):
         if fqn in self.registry:
             dt = self.registry[fqn]
         else:
-            if fqn in self.INTEGER_TYPES:
+            if fqn in self.VOID_TYPES:  
+                dt = Boolean() # at the moment we map void to booleans
+            elif fqn in self.INTEGER_TYPES:
                 dt = Integer()
             elif fqn in self.BOOL_TYPES:
                 dt = Boolean()

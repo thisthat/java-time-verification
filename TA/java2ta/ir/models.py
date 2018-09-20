@@ -212,7 +212,11 @@ class Method(ASTNode):
     @contract(returns="bool")
     def has_instructions(self):
         return len(self.instructions) > 0
-    
+ 
+    @property
+    @contract(returns="string")
+    def type(self):
+        return self.ast["returnType"]
 
 new_contract_check_type("is_method", Method)
 

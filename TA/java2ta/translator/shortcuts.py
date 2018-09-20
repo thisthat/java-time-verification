@@ -607,13 +607,13 @@ class SMTProb(SMTSolver):
             log.debug("Check knowledge base: (%s,%s)" % (class_name, method_name))
 
             try:
-                (smt_dt, parameters, method_env, smt_interpretation) = KnowledgeBase.get_method(class_name,method_name)
+                (smt_dt, formal_parameters, method_env, smt_interpretation) = KnowledgeBase.get_method(class_name,method_name)
             except Exception, e:
                 log.warning("Error interpreting method: %s. Node: %s" % (e, node))
                 raise ForgottenMethodException(method_name, class_name, class_path="?")
 
             if smt_interpretation:
-                log.debug("Found interpretation for method %s: %s, %s, %s, %s" % (method_name, smt_dt, parameters, method_env, smt_interpretation))
+                log.debug("Found interpretation for method %s: %s, %s, %s, %s" % (method_name, smt_dt, formal_parameters, method_env, smt_interpretation))
     
                 tmp_var_name = FreshNames.get_name(prefix=("%s_" % method_name))
                 assert node is not None
@@ -635,7 +635,8 @@ class SMTProb(SMTSolver):
 
                 smt_declarations = []
 
-                for par_id,par in enumerate(node["parameters"]):
+#                for par_id,par in enumerate(node["parameters"]):
+                for par_id,par in zip(formal_parameters, node["parameters"]):
     
                     par_value = None
                     if par["nodeType"] == "ASTLiteral":
@@ -669,7 +670,7 @@ class SMTProb(SMTSolver):
                         log.debug("SMT declarations for method parameter: %s" % smt_declarations_arg)
                         log.debug("SMT assertion for method parameter: %s" % smt_assertion_arg)
 
-                        par_aux_var = FreshNames.get_name(prefix="par_%s_" % par_id)  
+                        par_aux_var = FreshNames.get_name(prefix="%s_" % par_id) #it was: (prefix="par_%s_" % par_id)  
 
                         # below there is a hack; in order to generalise this code, take advantage of
                         # the variable "parameters" that we get earlier but we don't use
@@ -686,21 +687,26 @@ class SMTProb(SMTSolver):
 
                         par_value = par_aux_var
     
-                    interpretation_context["par_%s" % par_id] = par_value
+                    interpretation_context[par_id] = par_value # it was: interpretation_context["par_%s" % par_id] = par_value
     
+                # replace {x} with x in the interpretation, for every x in method_env
+                # (i.e. pass the global variables to the interpretation ...)
+                for var in method_env:
+                    interpretation_context[var] = var
+
                 log.debug("Method call aux var: %s => %s" % (method_name, tmp_var_name))
                 smt_declarations.append( "(declare-const %s %s)" % (tmp_var_name, smt_dt))
                 smt_declarations.append(smt_interpretation.smt_assert(**interpretation_context))
     
                 log.debug("Method call smt interpretation: %s" % smt_interpretation)
-                log.debug("Method call frame: %s" % frame)
                 new_frame = [x for x in frame if x not in method_env] 
+                log.debug("Method call frame: %s" % new_frame)
                 # force primed vars in frame to be equal to non-primed vars
                 for curr in self.attributes:
                     assert isinstance(curr, AbstractAttribute)
     
                     for attr_var in curr.variables:
-                        if attr_var in frame:
+                        if attr_var in new_frame: # it was: in frame:
                             smt_declarations.append("(assert (= %s_1 %s)) ; ASTAssignment frame condition" % (attr_var, attr_var)) # TODO primed names
     
     

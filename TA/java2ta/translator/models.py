@@ -363,7 +363,7 @@ class KnowledgeBase(object):
     DEADLINE_EXP = {}
  
     @staticmethod   
-    @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type|None,list(string),list(string),is_predicate)")
+    @contract(class_name="string", method_name="string", knowledge="tuple(is_data_type,list(string),list(string),is_predicate)")
     def add_method(class_name, method_name, knowledge):
 
         class_name = "-" # TODO this is a hack, remove when the class of a callee method is recognized correctly

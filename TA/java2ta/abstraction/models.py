@@ -5,7 +5,6 @@ from contracts import contract, new_contract, check
 import logging
 import  itertools
 
-#from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
 from java2ta.abstraction import formulas
 from java2ta.smt.models import SMTSolver
 from java2ta.commons.utility import new_contract_check_type, partial_format
@@ -458,7 +457,7 @@ class And(Predicate):
 
 
 class Imply(Predicate):
-    _smt_name = "imply"
+    _smt_name = "implies"
 
     def __init__(self, *arguments):
         if len(arguments) != 2:
