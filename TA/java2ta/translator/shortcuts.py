@@ -689,10 +689,13 @@ class SMTProb(SMTSolver):
     
                     interpretation_context[par_id] = par_value # it was: interpretation_context["par_%s" % par_id] = par_value
     
-                # replace {x} with x in the interpretation, for every x in method_env
-                # (i.e. pass the global variables to the interpretation ...)
+                # replace {x} with x and {x_1} with x_1 in the interpretation, 
+                # for every x and x_1 in method_env
+                # (i.e. connect the interpretation with the pre/post copies of the global variables)
                 for var in method_env:
+                    post_var = "%s_1" % var
                     interpretation_context[var] = var
+                    interpretation_context[post_var] = post_var
 
                 log.debug("Method call aux var: %s => %s" % (method_name, tmp_var_name))
                 smt_declarations.append( "(declare-const %s %s)" % (tmp_var_name, smt_dt))
