@@ -44,8 +44,8 @@
         {% endfor %}
 	</template>
 	<system>
-Process = {{ ta.name }}();
-system Process;
+{{ ta.process_name }} = {{ ta.name }}();
+system {{ ta.process_name }};
     </system>
 	<queries>
 	</queries>

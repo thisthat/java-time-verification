@@ -188,7 +188,8 @@ def transform(name, instructions, state_space, project):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
     # this note just to keep track of this "oddity"
-    ta = TA(name)
+    ta_process_name = FreshNames.get_name(prefix=("%s_" % name))
+    ta = TA(name, ta_process_name)
 
     log.info("State space attributes:")
     for attr in state_space.attributes:
@@ -1446,7 +1447,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
         (state_final_conf, pc_final) = parse_location(loc)
 
         # the end-if location has the same predicate of the reached final state, but the pc of the line after the if-statement
-        end_if_loc = build_location(state_final_conf, pc_target, loc.data)
+        end_if_loc = build_location(state_final_conf, pc_target, loc.predicate)
 
         # add edges and final locations to the results
         edges.append(Edge(loc, end_if_loc, "endif"))
@@ -1568,7 +1569,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
                 (state_final_conf, pc_final) = parse_location(loc)
 
                 # go back to a new evaluation of the while condition (with the current configuration)
-                loc_back = build_location(state_final_conf, pc_source, loc.data)
+                loc_back = build_location(state_final_conf, pc_source, loc.predicate)
                 edge_back = Edge(loc, loc_back, "end while")
                 edges.append(edge_back)
 
@@ -1699,13 +1700,13 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
                     assert isinstance(loc, Location)
                     (state_final_conf, pc_final) = parse_location(loc)
                     
-                    loc_out = build_location(state_final_conf, pc_target, loc.data)
+                    loc_out = build_location(state_final_conf, pc_target, loc.predicate)
                     edge_out = Edge(loc, loc_out, "end while")
                     edges.append(edge_out)
                     final.append(loc_out)
                     reachable.append(state_final_conf)
         
-                    loc_restart = build_location(state_final_conf, pc_source, loc.data)
+                    loc_restart = build_location(state_final_conf, pc_source, loc.predicate)
                     edge_restart = Edge(loc, loc_restart)
                     edges.append(edge_restart)
         
@@ -1847,7 +1848,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     # add edge from exception states in the try block, to the begin of the catch block
     for excp_loc in found_exception_locs:   
         (excp_conf, excp_pc) = parse_location(excp_loc)
-        catch_excp_loc = build_location(excp_conf, pc_source_catch, excp_loc.data)
+        catch_excp_loc = build_location(excp_conf, pc_source_catch, excp_loc.predicate)
         edges.append(Edge(excp_loc, catch_excp_loc, "catch"))
 
     final_catch = rr_catch.final_locations
@@ -1858,7 +1859,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
 
         assert isinstance(loc, Location)
         (state_loc, pc_loc) = parse_location(loc)
-        end_try_loc = build_location(state_loc, pc_target, loc.data)
+        end_try_loc = build_location(state_loc, pc_target, loc.predicate)
         edges.append(Edge(loc, end_try_loc))       
         final.append(end_try_loc)
         reachable.append(state_loc)
@@ -1931,7 +1932,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
             assert isinstance(loc, Location)
             (state_final_conf, pc_final) = parse_location(loc)
 
-            loc_out = build_location(state_final_conf, pc_target, loc.data)
+            loc_out = build_location(state_final_conf, pc_target, loc.predicate)
             edge_out = Edge(loc, loc_out, "end foreach")
             edges.append(edge_out)
             final.append(loc_out)
@@ -1940,7 +1941,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
 #                log.debug("Curr foreach final: %s vs %s" % (state_final_conf, visited_sources))
 
             # add an edge restarting the foreach loop
-            loc_restart = build_location(state_final_conf, pc_source_foreach, loc.data)
+            loc_restart = build_location(state_final_conf, pc_source_foreach, loc.predicate)
             edge_restart = Edge(loc, loc_restart, "for each")
             edges.append(edge_restart)
 
@@ -2062,7 +2063,7 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
             # add exception location and edge to it
             (loc_conf, loc_pc) = parse_location(loc)
             exc_conf = tuple_replace(loc_conf, 1, 1)
-            exc_loc = build_location(exc_conf, loc_pc, loc.data)
+            exc_loc = build_location(exc_conf, loc_pc, loc.predicate)
             
             guard = "%s >= %s" % (cv.name, upper.name)
             e = Edge(loc, exc_loc, guard=guard, label=guard)

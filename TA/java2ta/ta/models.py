@@ -130,20 +130,31 @@ new_contract_check_type("is_clock_condition", ClockCondition)
 class Location(object):
 
     @contract(name="string", is_initial="bool", is_urgent="bool")
-    def __init__(self, name, is_initial=False, is_urgent=False, data=None):
+    def __init__(self, name, is_initial=False, is_urgent=False, configuration=None, predicate=None, pc=None):
 
         self.name = name
         self.invariant = None
         self._incoming = set([])
         self._outgoing = set([])
-        self._data = data
+        self._configuration = configuration
+        self._predicate = predicate
+        self._pc = pc
 
         self.is_initial = is_initial
         self.is_urgent = is_urgent
 
+
     @property
-    def data(self):
-        return self._data
+    def configuration(self):
+        return self._configuration
+
+    @property
+    def predicate(self):
+        return self._predicate
+    
+    @property
+    def pc(self):
+        return self._pc
 
     @property
     def incoming(self):
@@ -153,8 +164,14 @@ class Location(object):
     def outgoing(self):
         return self._outgoing
 
-    def set_data(self, data):
-        self._data = data
+    def set_configuration(self, configuration):
+        self._configuration = configuration
+
+    def set_predicate(self, predicate):
+        self._predicate = predicate
+
+    def set_pc(self, pc):           
+        self._pc = pc
 
     def add_outgoing(self, edge):
         if not edge.source or edge.source != self:
@@ -202,6 +219,13 @@ class Location(object):
 
     def __repr__(self):
         return self.name
+
+
+    @contract(returns="string")
+    def uppaal_name(self, ta):
+        from java2ta.ta.views import uppaal_loc_name
+
+        return "%s.%s" % (ta.process_name, uppaal_loc_name(self.name))
 
     @property
     def neighbors(self):
@@ -280,11 +304,12 @@ class TimeEdge(Edge):
 new_contract_check_type("is_time_edge", TimeEdge)
 
 class TA(object):
-    
-    @contract(name="string", locations="set(is_location)|list(is_location)", edges="set(is_edge)|list(is_edge)")
-    def __init__(self, name, locations=[], edges=[]):
+ 
+    @contract(name="string", process_name="string", locations="set(is_location)|list(is_location)", edges="set(is_edge)|list(is_edge)")
+    def __init__(self, name, process_name, locations=[], edges=[]):
 
         self.name = name
+        self.process_name = process_name
         self.locations = set([])
         self._location_names = dict()
     
@@ -318,6 +343,11 @@ class TA(object):
     def clock_variables(self):
         return self._clock_variables.values()
 
+    @contract(returns="list(is_location)")
+    def conf_to_locations(self, conf):
+        match_conf = lambda loc: loc.configuration == conf
+        return filter(match_conf, self.locations)
+
     def has_clock_variable(self, name):
         return name in self._clock_variables
 
@@ -335,21 +365,25 @@ class TA(object):
 
 
     def get_or_add_location(self, loc):
-        assert isinstance(loc, basestring) or isinstance(loc, Location)
+#        assert isinstance(loc, basestring) or isinstance(loc, Location)
+        assert isinstance(loc, Location)
 
-        name = loc
-        if isinstance(loc, Location):
-            name = loc.name
+#        name = loc
+#        if isinstance(loc, Location):
+#            name = loc.name
+        name = loc.name
 
         found = self.get_location(name)
 
         if not found:
-            new_loc = loc# Location(name)
-            if isinstance(loc, basestring):
-                new_loc = Location(name)
-
-            self.add_location(new_loc)
-            found = new_loc
+#            new_loc = loc# Location(name)
+#            if isinstance(loc, basestring):
+#                new_loc = Location(name)
+#
+#            self.add_location(new_loc)
+#            found = new_loc
+            self.add_location(loc)
+            found = loc
 
         assert isinstance(found, Location)
         return found

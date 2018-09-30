@@ -240,6 +240,7 @@ class Predicate(object):
         If some of the parameters are still missing, an exception is raised.
         """
         ctx = dict(**kwargs)
+        log.debug("Partial formatting: %s <-> %s" % (self._smt_condition, ctx))
         return partial_format(self._smt_condition, ctx)
     
     def __repr__(self):
@@ -1536,20 +1537,20 @@ class FormulaParser(LeftLinearParser):
                 curr_problem.append(curr_pred.smt_assert(**ctx))
 
 
-        curr_problem.append(pred.smt_assert(**ctx))
-        log.debug("Existential abstraction SMT problem: %s. Context: %s" % (curr_problem, ctx))
-
-        # pass the problem to the smt solver; if it is satisfiable, take the conf
-        # otherwise skip it
-        solver.push()
-        res = solver.check_sat(curr_problem)
-        if res not in ["sat", "unsat"]:
-            raise ValueError("Error computing the existential abstraction of the formula: %s" % res)
-
-        if res == "sat":
-            existential_abstraction.append(conf)
-        solver.pop()
-
+            curr_problem.append(pred.smt_assert(**ctx))
+            log.debug("Existential abstraction SMT problem: %s. Context: %s" % (curr_problem, ctx))
+    
+            # pass the problem to the smt solver; if it is satisfiable, take the conf
+            # otherwise skip it
+            solver.push()
+            res = solver.check_sat(curr_problem)
+            if res not in ["sat", "unsat"]:
+                raise ValueError("Error computing the existential abstraction of the formula: %s" % res)
+    
+            if res == "sat":
+                existential_abstraction.append(conf)
+            solver.pop()
+    
         return existential_abstraction
     
     def from_predicate(self, ss, pred): #argv):
@@ -1557,14 +1558,21 @@ class FormulaParser(LeftLinearParser):
         # translate a predicate onto a list of configurations
         conf_list = self.predicate_to_existential_abstraction(ss, pred)
     
+        if len(conf_list) == 0:
+            raise ValueError("Could not find program configurations that correspond to predicate: %s" % pred)
+
         # define a formula for converting a configuration onto a Proposition
         conf_to_prop = lambda c: formulas.Proposition(c)
 
         # translate a list of configurations onto a list of Proposition's
         prop_list = map(conf_to_prop, conf_list)
+        assert len(prop_list) > 0
 
-        # create an Or among all the Proposition's in the list
-        return formulas.Or(*prop_list)        
+        if len(prop_list) == 1:
+            return prop_list[0]
+        else:
+            # create an Or among all the Proposition's in the list
+            return formulas.Or(*prop_list)        
     
     @contract(text="string", returns="tuple(is_ast, string)")
     
@@ -1604,6 +1612,7 @@ class FormulaParser(LeftLinearParser):
                 pre=pp.parse(predicate)
                 assert isinstance(pre, Predicate)
                 #print pre
+                log.debug("Parse AST from predicate: %s" % pre)
                 result=self.from_predicate(self.ss,pre)
             else:
                 raise ValueError("not handled: literal = %s, remaining = %s" % (literal, remaining))    

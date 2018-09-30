@@ -1,20 +1,13 @@
+import logging
+
+log = logging.getLogger()
+
 class PathFormula(object):
 
     def __init__(self):
         self.args = []
         
     def from_predicate(self, ss, pred): #argv):
-##        pro=""
-##        cont=1
-##        for arg in argv:
-##            
-##            pro=pro+"Proposition(%s)" % (str(arg))
-##            if cont<len(argv):
-##                pro=pro+","  
-##            cont=cont+1    
-##        g="Or(%s)" % (pro)  
-##         
-##        return eval(g).to_uppaal()
     
         # translate a predicate onto a list of configurations
         conf_list = predicate_to_existential_abstraction(ss, pred)
@@ -32,17 +25,24 @@ class And(PathFormula):
 
     def __init__(self, *argv):
         super(And, self).__init__()
-    
+ 
+        if len(argv) < 2:
+            raise ValueError("An And formula should receive at least two arguments. Received: %s" % len(argv))
+      
+        for arg in argv:
+            self.args.append(arg)
+   
         for arg in argv:
             self.args.append(arg)
 
-    def to_uppaal(self):
+    def to_uppaal(self, ta):
 
-        form_to_upp = lambda f: "(%s)" % f.to_uppaal()
+        form_to_upp = lambda f: "(%s)" % f.to_uppaal(ta)
 
         pre = map(form_to_upp, self.args)
 
         return u" and ".join(map(form_to_upp, self.args))
+
  
 class Imply(PathFormula):
 
@@ -52,9 +52,11 @@ class Imply(PathFormula):
         for arg in argv:
             self.args.append(arg)
 
-    def to_uppaal(self):
-
-        form_to_upp = lambda f: "(%s)" % f.to_uppaal()
+    def to_uppaal(self, ta):
+        """
+        TODO fix this
+        """
+        form_to_upp = lambda f: "(%s)" % f.to_uppaal(ta)
 
         pre = map(form_to_upp, self.args)
 
@@ -68,9 +70,11 @@ class Iff(PathFormula):
         for arg in argv:
             self.args.append(arg)
 
-    def to_uppaal(self):
-
-        form_to_upp = lambda f: "(%s)" % f.to_uppaal()
+    def to_uppaal(self, ta):
+        """
+        TODO fix this
+        """
+        form_to_upp = lambda f: "(%s)" % f.to_uppaal(ta)
 
         pre = map(form_to_upp, self.args)
 
@@ -80,31 +84,49 @@ class Or(PathFormula):
 
     def __init__(self, *argv):
         super(Or, self).__init__()
-       
+ 
+        if len(argv) < 2:
+            raise ValueError("An Or formula should receive at least two arguments. Received: %s" % len(argv))
+      
         for arg in argv:
             self.args.append(arg)
     
-    def to_uppaal(self):
-##        res="(1!=1)"   
-##        for arg in self.args:
-##            res="(%s) or (%s)" % (res,arg.to_uppaal())
-##        return res
+    def to_uppaal(self, ta):
 
-        form_to_upp = lambda f: "(%s)" % f.to_uppaal()
+        form_to_upp = lambda f: "(%s)" % f.to_uppaal(ta)
 
+        log.debug("Or arguments: %s" % self.args)
         pre = map(form_to_upp, self.args)
+        log.debug("Or arguments formatted: %s" % pre)
 
-        return u" or ".join(map(form_to_upp, self.args))
+        # TODO here we should refer (and print) the name of the locations *encoding* the propositions
+        #...
+
+        return u" or ".join(pre)
        
 class Not(PathFormula):
 
     def __init__(self, arg):
         super(Not, self).__init__()
 
+        if not argv:
+            raise ValueError("A Not formula should receive a non-null argument.")
+
         self.args.append(arg)
 
-    def to_uppaal(self):
-        return u"not (%s)" % (self.args[0].to_uppaal(),)
+    def to_uppaal(self, ta):
+        num_subformulas = len(self.args)
+        if num_subformulas != 1:
+            raise ValueError("Expected exactly one sub-formula. Got %s sub-formulas" % num_subformulas)
+
+        subformula = self.args[0]
+        # TODO generalize this check, perhaps using a common ancestor type for the accepted state formulas
+        if not isinstance(subformula, And) and not isinstance(subformula, Or) and not isinstance(subformula, Proposition) and not isinstance(subformula, Not):
+            raise ValueError("The AllPaths formula accepts only And/Or/Not/Proposition subformula. Got: %s" % (type(subformula)))
+        return u"not %s" % (subformula.to_uppaal(ta),)
+
+
+
         
 class Future(PathFormula):
 
@@ -113,8 +135,18 @@ class Future(PathFormula):
 
         self.args.append(arg)
 
-    def to_uppaal(self):
-        return u"Future (%s)" % (self.args[0].to_uppaal(),)
+    def to_uppaal(self, ta):
+        num_subformulas = len(self.args)
+        if num_subformulas != 1:
+            raise ValueError("Expected exactly one sub-formula. Got %s sub-formulas" % num_subformulas)
+
+        subformula = self.args[0]
+        # TODO generalize this check, perhaps using a common ancestor type for the accepted state formulas
+        if not isinstance(subformula, And) and not isinstance(subformula, Or) and not isinstance(subformula, Proposition) and not isinstance(subformula, Not):
+            raise ValueError("The AllPaths formula accepts only And/Or/Not/Proposition subformula. Got: %s" % (type(subformula)))
+        return u"<> %s" % (subformula.to_uppaal(ta),)
+
+
         
 class Next(PathFormula):
 
@@ -123,8 +155,8 @@ class Next(PathFormula):
 
         self.args.append(arg)
 
-    def to_uppaal(self):
-        return u"Next (%s)" % (self.args[0].to_uppaal(),)
+    def to_uppaal(self, ta):
+        raise ValueError("The Next formula is not supported in Uppaal")
 
 class Globally(PathFormula):
 
@@ -133,8 +165,20 @@ class Globally(PathFormula):
 
         self.args.append(arg)
 
-    def to_uppaal(self):
-        return u"Globally (%s)" % (self.args[0].to_uppaal(),)
+    def to_uppaal(self, ta):
+
+        num_subformulas = len(self.args)
+        if num_subformulas != 1:
+            raise ValueError("Expected exactly one sub-formula. Got %s sub-formulas" % num_subformulas)
+
+        subformula = self.args[0]
+        # TODO generalize this check, perhaps using a common ancestor type for the accepted state formulas
+        if not isinstance(subformula, And) and not isinstance(subformula, Or) and not isinstance(subformula, Proposition) and not isinstance(subformula, Not):
+            raise ValueError("The AllPaths formula accepts only And/Or/Not/Proposition subformula. Got: %s" % (type(subformula)))
+        return u"[] %s" % (subformula.to_uppaal(ta),)
+
+
+
         
 class StateFormula(PathFormula):
 
@@ -148,8 +192,18 @@ class AllPaths(StateFormula):
 
         self.args.append(arg)
 
-    def to_uppaal(self):
-        return u"All Paths (%s)" % (self.args[0].to_uppaal(),)
+    def to_uppaal(self, ta):
+    
+        num_subformulas = len(self.args)
+        if num_subformulas != 1:
+            raise ValueError("Expected exactly one sub-formula. Got %s sub-formulas" % num_subformulas)
+
+        subformula = self.args[0]
+        if not isinstance(subformula, Globally) and not isinstance(subformula, Future):
+            raise ValueError("The AllPaths formula accepts only Globally or Future as subformula. Got: %s" % (type(subformula)))
+        return u"A%s" % (subformula.to_uppaal(ta),)
+
+
 
 class SomePaths(StateFormula):
 
@@ -158,16 +212,42 @@ class SomePaths(StateFormula):
 
         self.args.append(arg)
 
-    def to_uppaal(self):
-        return u"Some Paths (%s)" % (self.args[0].to_uppaal(),)
+    def to_uppaal(self, ta):
+        num_subformulas = len(self.args)
+        if num_subformulas != 1:
+            raise ValueError("Expected exactly one sub-formula. Got %s sub-formulas" % num_subformulas)
+
+        subformula = self.args[0]
+        if not isinstance(subformula, Globall) and not isinstance(subformula, Future):
+            raise ValueError("The SomePaths formula accepts only Globally or Future as subformula. Got: %s" % (type(subformula)))
+        return u"E%s" % (subformula.to_uppaal(ta),)
+
+
             
 class Proposition(StateFormula):
     
     def __init__(self, arg):
         super(Proposition, self).__init__()
-        self.args.append(arg)
+        self.args.append(arg) # arg is a configuration
 
-    def to_uppaal(self):
+    def to_uppaal(self, ta):
+        """
+        The Uppaal interpretation of a single proposition is an or-formula conjuncting all the 
+        locations that match the passed configuration (i.e. one for each reachable PC with the passed
+        configuration)
+        """
+        from java2ta.translator.models import build_location_name, PC
+        from java2ta.ta.views import uppaal_loc_name
+
         assert len(self.args) == 1, "Expected exactly 1 argument. Got: %s" % self.args
-        return u"%s" % (self.args[0],)
+        conf = self.args[0]
+
+        locations = ta.conf_to_locations(conf)
+
+        # extract the uppaal name of locations that match the passed configuration, and create an
+        # or-formula in the uppaal specification language
+        uppaal_locations = map(lambda loc: loc.uppaal_name(ta), ta.conf_to_locations(conf))
+    
+        uppaal_formula = "(%s)" % (" or ".join(uppaal_locations), )
+        return uppaal_formula
         

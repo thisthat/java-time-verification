@@ -107,7 +107,7 @@ def build_location(conf, pc, loc_pred):
     # using ","
     loc_name = build_location_name(conf, pc)
 #    log.debug("conf: %s, loc name: %s" % (conf_string, loc_name))
-    loc = Location(loc_name, data=loc_pred)
+    loc = Location(loc_name, configuration=conf, predicate=loc_pred, pc=pc)
 
     return loc
 
