@@ -1,7 +1,9 @@
 package server.helper;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,12 +16,6 @@ public class SHA1 {
      * @param file
      *            the file to read
      * @return the hex representation of the SHA-1 using uppercase chars
-     * @throws FileNotFoundException
-     *             if the file does not exist, is a directory rather than a
-     *             regular file, or for some other reason cannot be opened for
-     *             reading
-     * @throws IOException
-     *             if an I/O error occurs
      * @throws NoSuchAlgorithmException
      *             should never happen
      *
@@ -41,11 +37,20 @@ public class SHA1 {
                 sha1.update(buffer, 0, len);
                 len = input.read(buffer);
             }
-
-            return new HexBinaryAdapter().marshal(sha1.digest());
+            byte[] digest = sha1.digest();
+            String s = byteArrayToHexString(digest).toUpperCase();
+            return s;
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static String byteArrayToHexString(byte[] b) {
+        StringBuilder result = new StringBuilder();
+        for (int i=0; i < b.length; i++) {
+            result.append(Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return result.toString();
     }
 
     /**
@@ -53,8 +58,6 @@ public class SHA1 {
      * @param file
      *              path of the file
      * @return @see SHA1#calcate(File)
-     * @throws FileNotFoundException
-     * @throws IOException
      * @throws NoSuchAlgorithmException
      */
     public static String calcate(String file) {
