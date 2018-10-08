@@ -26,7 +26,7 @@ public class TestMetrics {
 		ASTClass c = cs.get(0);
 		IASTMethod m = c.getFirstMethodByName("Test");
 		assertNotNull(m);
-		assertEquals(54, NumberOfStatements.get(m));
+		assertEquals(55, NumberOfStatements.get(m));
 	}
 
     @Test
