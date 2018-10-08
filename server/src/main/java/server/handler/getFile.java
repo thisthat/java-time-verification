@@ -30,6 +30,7 @@ import java.util.Map;
  */
 public class getFile extends indexMW {
 	String par1 = "path";
+	String ignore_cache = "ignore-cache";
 
 	String lastFileServed = "";
 
@@ -38,7 +39,6 @@ public class getFile extends indexMW {
 	{
 		Configurator.setRootLevel( HttpServerConverter.isDebugActive() ? Level.ALL : Level.OFF);
 	}
-
 
 
 	@Override
@@ -68,6 +68,20 @@ public class getFile extends indexMW {
 		file = file.replace("//","/");
 		lastFileServed = file;
 
+		if(!parameters.containsKey(ignore_cache)) {
+			// avoid computing again
+			DBDataJSON search = new DBDataJSON();
+			search.setSha1(SHA1.calcate(file));
+			search.setPath(file);
+			List<DBDataJSON> r = mongo.getIndex(search);
+			if (r.size() > 0) {
+				Answer.SendMessage(r.get(0).getJson(), he);
+				return;
+			}
+		} else {
+			LOGGER.log(Level.DEBUG, "--Ignoring Cache--");
+			System.out.println("--Ignoring Cache--");
+		}
 
 		List<ASTClass> classes = JDTVisitor.parse(file, base_path, true);
 		if(classes.size() == 0){
@@ -77,15 +91,6 @@ public class getFile extends indexMW {
 			json.enable(SerializationFeature.INDENT_OUTPUT);
 			response = json.writeValueAsString(s);
 			Answer.SendMessage(response, he, 400);
-			return;
-		}
-
-		DBDataJSON search = new DBDataJSON();
-		search.setSha1(SHA1.calcate(file));
-		search.setPath(file);
-		List<DBDataJSON> r = mongo.getIndex(search);
-		if(r.size() > 0){
-			Answer.SendMessage(r.get(0).getJson(), he);
 			return;
 		}
 
