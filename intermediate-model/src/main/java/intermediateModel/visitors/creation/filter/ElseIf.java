@@ -6,6 +6,7 @@ import intermediateModel.structure.ASTConstructor;
 import intermediateModel.structure.ASTIf;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.visitors.DefaultASTVisitor;
+import intermediateModelHelper.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,10 @@ public class ElseIf implements Filter {
                 methods.add(m);
         }
         for(ASTMethod m : methods){
-            System.out.print("REMOVED: ");
-            System.out.println(m.getName());
+            if(Config.isDebug()) {
+                System.out.print("REMOVED: ");
+                System.out.println(m.getName());
+            }
             c.getMethods().remove(m);
         }
     }

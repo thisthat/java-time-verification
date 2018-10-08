@@ -1,9 +1,11 @@
 package intermediateModel.types;
 
+import daikon.annotation.WatchingPoints;
 import debugger.Debugger;
 import intermediateModel.interfaces.IASTVar;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTRE;
+import intermediateModel.types.definition.Duration;
 import intermediateModel.types.definition.TimeType;
 import intermediateModel.types.definition.Unknown;
 import intermediateModel.types.rules.TypeResolver;
@@ -47,6 +49,8 @@ public class CountUnknown extends ParseIM  {
     }
 
     List<String> typed = new ArrayList<>();
+    List<String> typedDuration = new ArrayList<>();
+    List<String> typedTimestamp = new ArrayList<>();
     List<String> untyped = new ArrayList<>();
 
     public CountUnknown() {
@@ -86,6 +90,17 @@ public class CountUnknown extends ParseIM  {
                     if(!typed.contains(name)){
                         typed.add(name);
                     }
+                    if(v.getVarTimeType() instanceof Duration){
+                        typedTimestamp.remove(name);
+                        if(!typedDuration.contains(name)){
+                            typedDuration.add(name);
+                        }
+                    } else {
+                        typedDuration.remove(name);
+                        if(!typedTimestamp.contains(name)){
+                            typedTimestamp.add(name);
+                        }
+                    }
                 }
             }
         }
@@ -97,5 +112,12 @@ public class CountUnknown extends ParseIM  {
 
     public List<String> getUntyped() {
         return untyped;
+    }
+
+    public List<String> getTypedDuration() {
+        return typedDuration;
+    }
+    public List<String> getTypedTimestamp() {
+        return typedTimestamp;
     }
 }

@@ -75,6 +75,8 @@ public class CountUnknown {
         //get all files
         Iterator<File> i = IndexingProject.getJavaFiles(root_path);
         long typed = 0;
+        long typedDuration = 0;
+        long typedTimestamp = 0;
         long untyped = 0;
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
@@ -84,6 +86,8 @@ public class CountUnknown {
                 intermediateModel.types.CountUnknown tts = new intermediateModel.types.CountUnknown();
                 tts.start(c);
                 typed += tts.getTyped().size();
+                typedDuration += tts.getTypedDuration().size();
+                typedTimestamp += tts.getTypedTimestamp().size();
                 untyped += tts.getUntyped().size();
             }
         }
@@ -91,6 +95,8 @@ public class CountUnknown {
         long end = System.currentTimeMillis();
         System.out.println("Total Time [ms]: " + (end - start));
         System.out.println("Total # Typed : " + typed);
+        System.out.println("\t\t-D: " + typedDuration);
+        System.out.println("\t\t-T: " + typedTimestamp);
         System.out.println("Total # Untyped : " + untyped);
 
     }

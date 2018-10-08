@@ -194,6 +194,7 @@ public class IndexingProject {
 
 	public static Iterator<File> getJavaFiles(String base_path){
 		File dir = new File(base_path);
+		System.out.println(base_path);
 		String[] filter = {"java"};
 		Collection<File> files = FileUtils.listFiles(
 				dir,
