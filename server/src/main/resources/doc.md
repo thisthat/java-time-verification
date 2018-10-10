@@ -51,6 +51,8 @@ The output is ... TODO
 
 It has an optional parameter `ignore-cache` to force the reading from the disk.
 
+It has an optional parameter `ignore-cache` to force the reading from the disk.
+
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
 
 e.g. 
