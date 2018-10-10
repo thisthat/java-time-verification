@@ -1,6 +1,6 @@
 from nose.tools import *
 
-from java2ta.ta.models import Type, Variable, ClockVariable, Location, Edge, TA, NTA
+from java2ta.ta.models import Type, Variable, ClockVariable, Location, Edge, TA, TATemplate, NTA
 
 def test_connected_locations():
 
@@ -53,7 +53,7 @@ def test_simple_ta():
     e2 = Edge(l2,l3)
     e3 = Edge(l3,l1)
 
-    ta = TA("foo")
+    ta = TATemplate("foo")
     ta.add_location(l1)
     ta.add_location(l2)
     ta.add_location(l3)
@@ -96,7 +96,7 @@ def test_ta_initial_loc():
     
     e1 = Edge(l1,l2)
 
-    ta = TA("foo")
+    ta = TATemplate("foo")
     ta.add_location(l1)
     ta.add_location(l2)
     
@@ -122,7 +122,7 @@ def test_dangling_edges():
     e2 = Edge(l2,l3)
     e3 = Edge(l3,l1)
 
-    ta = TA("foo")
+    ta = TATemplate("foo")
     ta.add_location(l1)
     ta.add_location(l2)
 
@@ -130,14 +130,14 @@ def test_dangling_edges():
 
     try:
         ta.add_edge(e2)
-        assert False, "Expected exception because e2 target state is not in TA"
+        assert False, "Expected exception because e2 target state is not in TATemplate"
     except ValueError:
         # this was expected, because e2 target state is not in ta
         pass
 
     try:
         ta.add_edge(e3)
-        assert False, "Expected exception because e3 source state is not in TA"
+        assert False, "Expected exception because e3 source state is not in TATemplate"
     except ValueError:
         # this was expected, because e3 source state is not in ta
         pass
@@ -153,7 +153,7 @@ def test_simple_nta():
     e2 = Edge(l2,l3)
     e3 = Edge(l3,l1)
 
-    ta = TA("foo")
+    ta = TATemplate("foo")
     ta.add_location(l1)
     ta.add_location(l2)
     ta.add_location(l3)
@@ -162,14 +162,16 @@ def test_simple_nta():
     ta.add_edge(e2)
     ta.add_edge(e3)
 
+    proc = TA("foo", ta)
+
     nta = NTA()
 
-    nta.add_ta(ta)
+    nta.add_ta(proc)
 
     assert len(nta.tas) == 1
 
     # adding twice the same TA is ignored
-    nta.add_ta(ta)
+    nta.add_ta(proc)
     assert len(nta.tas) == 1
  
 
@@ -186,7 +188,7 @@ def test_nta_missing_initial():
     e2 = Edge(l2,l3)
     e3 = Edge(l3,l1)
 
-    ta = TA("foo")
+    ta = TATemplate("foo")
     ta.add_location(l1)
     ta.add_location(l2)
     ta.add_location(l3)
@@ -206,7 +208,7 @@ def test_nta_missing_initial():
     e22 = Edge(l22,l32)
     e32 = Edge(l32,l12)
 
-    ta2 = TA("foo 2")
+    ta2 = TATemplate("foo 2")
     ta2.add_location(l12)
     ta2.add_location(l22)
     ta2.add_location(l32)
@@ -218,11 +220,14 @@ def test_nta_missing_initial():
     # the network of TAs
     nta = NTA()
 
-    nta.add_ta(ta)
+    proc = TA("foo", ta)
+    proc2 = TA("fie", ta2)
+
+    nta.add_ta(proc)
 
     try:
-        nta.add_ta(ta2)
-        assert False, "An exception was expected because the added TA does not have an initial location"
+        nta.add_ta(proc2)
+        assert False, "An exception was expected because the added TATemplate does not have an initial location: %s" % proc2.template.initial_loc
     except ValueError:
         # this was excpected, because ta2 does not have an initia location
         pass

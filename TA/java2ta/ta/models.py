@@ -335,7 +335,7 @@ class TATemplate(object):
         self.broadcast_channels = []
     
         for loc in locations:
-            self.add_location(loc, self)
+            self.add_location(loc)
 
         self.edges = set([])
         self._edges_lookup = {} 
@@ -403,7 +403,7 @@ class TATemplate(object):
 #
 #            self.add_location(new_loc)
 #            found = new_loc
-            self.add_location(loc, self)
+            self.add_location(loc)
             found = loc
 
         assert isinstance(found, Location)
@@ -440,7 +440,7 @@ class TATemplate(object):
         return found
  
         
-    def add_location(self, loc, ta_template):
+    def add_location(self, loc):
 
         assert isinstance(loc, Location)
         assert isinstance(self.locations, set)
@@ -454,7 +454,7 @@ class TATemplate(object):
             self.locations.add(loc)
             self._location_names[loc.name] = loc
  
-        loc.set_ta_template(ta_template)
+        loc.set_ta_template(self) #ta_template)
 
     
     @contract(loc="is_location")
@@ -558,7 +558,7 @@ class TATemplate(object):
 #            log.warning("The timed automaton has no pseudo-initial location. Not sure what to do ...")
 #            raise ValueError("Cannot handle automaton with circular states")
             initial = Location("initial", is_initial=True, is_committed=True)
-            self.add_location(initial, self)
+            self.add_location(initial)
 
             # add an edge to all the locations with PC = @0
             for loc in  filter(lambda l: l.pc == PC(0), self.locations):
@@ -567,7 +567,7 @@ class TATemplate(object):
         else:
             # len(pseudo_initial) > 0
             initial = Location("initial", is_initial=True, is_committed=True)
-            self.add_location(initial, self)
+            self.add_location(initial)
             
             for loc in pseudo_initial:
                 e = Edge(initial, loc)
