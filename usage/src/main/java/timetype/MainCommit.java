@@ -3,8 +3,9 @@ package timetype;
 import debugger.Debugger;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.types.TimeTypeSystem;
-import intermediateModel.types.rules.TimeTypeError;
-import intermediateModel.types.rules.TimeTypeWarning;
+import intermediateModel.types.rules.exception.TimeTypeError;
+import intermediateModel.types.rules.exception.TimeTypeRecommendation;
+import intermediateModel.types.rules.exception.TimeTypeWarning;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.creation.filter.ElseIf;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
@@ -60,9 +61,9 @@ public class MainCommit {
             List<TimeTypes> rt = IndexingProject.getMethodReturnTime(name, root_path, true);
             TemporalTypes.getInstance().addRT(rt);
             TemporalTypes.getInstance().loadUserDefinedPrefix(name);
-            List<TimeTypes> rt1 = IndexingProject.getMethodReturnTime(name, root_path, true);
-            TemporalTypes.getInstance().addRT(rt1);
-            TemporalTypes.getInstance().loadUserDefinedPrefix(name);
+            //List<TimeTypes> rt1 = IndexingProject.getMethodReturnTime(name, root_path, true);
+            //TemporalTypes.getInstance().addRT(rt1);
+            //TemporalTypes.getInstance().loadUserDefinedPrefix(name);
         }
        // Indexing ET
         {
@@ -80,11 +81,12 @@ public class MainCommit {
         long timeParsing = 0;
         long timeProcess = 0;
         List<TimeTypeError> e = new ArrayList<>();
+        List<TimeTypeRecommendation> r = new ArrayList<>();
         List<TimeTypeWarning> w = new ArrayList<>();
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
             if(filename.contains("/src/test/")) continue; //skip tests
-//            if(!filename.endsWith("KerberosLogin.java")) continue; //skip tests
+//           if(!filename.endsWith("JobSchedulerImpl.java")) continue; //skip tests
             debugger.log("Parsing: " + filename);
             long sParsing = System.currentTimeMillis();
             List<ASTClass> classes = JDTVisitor.parse(filename, root_path, ElseIf.filter);
@@ -100,7 +102,11 @@ public class MainCommit {
                 for(TimeTypeError tte : errors){
                     if(!e.contains(tte)){
                         e.add(tte);
-                        System.out.println(tte.getFullMessage());
+                    }
+                }
+                for(TimeTypeRecommendation rec : tts.getRecommendation()){
+                    if(!r.contains(rec)){
+                        r.add(rec);
                     }
                 }
                 w.addAll(warnings);
@@ -118,11 +124,16 @@ public class MainCommit {
         for(TimeTypeWarning ttw : w){
             arr.add(ttw.getFullMessage());
         }
+        List<String> rec = new ArrayList<>();
+        for(TimeTypeRecommendation rr : r){
+            rec.add(rr.getFullMessage());
+        }
         System.out.println("Storing Results...");
         String warnList = Arrays.toString(arr.toArray());
         String errList = Arrays.toString(err.toArray());
+        String recList = Arrays.toString(rec.toArray());
         SQLManager sql = new SQLManager();
-        sql.addCommitResult(hash, timeParsing, timeProcess, w.size(), err.size(), warnList, errList, name);
+        sql.addCommitResult(hash, timeParsing, timeProcess, w.size(), err.size(), r.size(), warnList, errList, recList, name);
         sql.close();
     }
 

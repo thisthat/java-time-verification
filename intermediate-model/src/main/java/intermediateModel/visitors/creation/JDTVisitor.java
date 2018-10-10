@@ -1550,6 +1550,11 @@ public class JDTVisitor extends ASTVisitor {
 				classPointed = classPointed.substring(1);
 			}
 			mc.setClassPointed(classPointed);
+			List<String> typePar = new ArrayList<>();
+			for(ITypeBinding t : method.getParameterTypes()){
+				typePar.add(t.getName());
+			}
+			mc.setTypeParametersPointed(typePar);
 			//System.out.println(node.toString() + " points to " + classPointed);
 		} else {
 			Expression e = node.getExpression();
@@ -1611,7 +1616,7 @@ public class JDTVisitor extends ASTVisitor {
 		final String[] var = {""};
 		l.visit(new DefualtASTREVisitor(){
 			@Override
-			public void enterASTLiteral(ASTLiteral elm) {
+			public void enterASTIdentifier(ASTIdentifier elm) {
 				var[0] = elm.getValue();
 			}
 		});
@@ -1622,7 +1627,7 @@ public class JDTVisitor extends ASTVisitor {
 		String opBase = op.substring(0, op.length()-1);
 		IASTRE.OPERATOR newOp = getOperator(opBase);
 		return new ASTBinary(s,e,
-				new ASTLiteral(r.getStart(), r.getStart()+varName.length(), varName),
+				new ASTIdentifier(r.getStart(), r.getStart()+varName.length(), varName),
 				r,
 				newOp
 		);

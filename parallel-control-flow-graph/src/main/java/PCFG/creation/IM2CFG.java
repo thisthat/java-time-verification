@@ -83,6 +83,38 @@ public class IM2CFG {
 		//indexFile.index(c, reindex);
 	}
 
+	/**
+	 * Insert a class in the list of classes to process for creating the PCFG.
+	 * Moreover, the method will index the class and extract the time constraint in it.
+	 * @param c				Class to analyze
+	 * @param method		Method of the class to analyze
+	 */
+	public long addClassAndGetSize(ASTClass c, IASTMethod method){
+
+		List<Constraint> currentClassConstraint = ApplyHeuristics.getConstraint(c);
+		IASTMethod met = null;
+		for(IASTMethod m : c.getMethods()){
+			if(m.equals(method)){
+				met = m;
+			}
+		}
+		if(met != null){
+			int startLine =  ((IASTStm) met).getLine();
+			int endLine   =  ((IASTStm) met).getLineEnd();
+			for(Constraint time : currentClassConstraint){
+				int line = time.getLine();
+				if(startLine <= line && line <= endLine){
+					constraints.add(time);
+				}
+			}
+		}
+		KeyValue<IASTMethod, ASTClass> k = new KeyValue<>(method, c);
+		pcfgBuilder.addMethod(k);
+		return currentClassConstraint.size();
+		//IndexingFile indexFile = new IndexingFile();
+		//indexFile.index(c, reindex);
+	}
+
 	public PCFG buildPCFG(){
 
 		PCFG pcfg = pcfgBuilder.convert();

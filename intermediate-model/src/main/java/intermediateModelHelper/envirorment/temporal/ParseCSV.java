@@ -20,6 +20,7 @@ public abstract class ParseCSV {
 
     public ParseCSV(File file) {
         this.file = file;
+        System.out.println("Loading from: " + file.getAbsolutePath());
     }
 
     public ParseCSV(InputStream stream){

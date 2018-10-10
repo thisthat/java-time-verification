@@ -77,7 +77,11 @@ public class IndexProjectJson {
         j.setHasMain(hasMain[0] ? "true" : "false");
         j.setHasThread(hasThread[0] ? "true" : "false");
         j.setJson(PrepareJsonClass.json(result, new HashMap<>(), path, base_path));
-        j.setSha1(SHA1.calcate(path));
+        try {
+            j.setSha1(SHA1.calcate(path));
+        } catch (Exception e){
+            j.setSha1("");
+        }
         db.add(j);
     }
 

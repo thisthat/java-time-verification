@@ -18,7 +18,7 @@ public class Debugger {
     ServerDebugger server;
     String name;
     boolean network = true;
-    boolean isActive = true;
+    public static boolean isActive = true;
 
     private static final Logger log = LogManager.getLogger();
 
@@ -40,6 +40,13 @@ public class Debugger {
         OutputLogs.getInstance().setName(name);
     }
 
+    public void setLastFile(String file) {
+        OutputLogs.getInstance().setLastFile(file);
+    }
+
+    public String getLastFile(){
+        return OutputLogs.getLastFile();
+    }
 
     private Debugger(boolean network) {
         this.network = network;
@@ -82,9 +89,9 @@ public class Debugger {
     }
 
     public void log(String msg){
+        if(!isActive) return;
         if(network)
             OutputLogs.getInstance().add(msg);
-        if(!isActive) return;
         log.debug(msg);
     }
 }

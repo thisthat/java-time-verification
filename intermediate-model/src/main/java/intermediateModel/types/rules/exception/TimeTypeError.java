@@ -1,4 +1,4 @@
-package intermediateModel.types.rules;
+package intermediateModel.types.rules.exception;
 
 import java.util.Objects;
 

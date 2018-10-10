@@ -139,4 +139,27 @@ public final class WorkerCoordinator extends AbstractCoordinator implements Clos
         this.poll(dur, ts);
     }
 
+    public void compareWithZero(){
+        long now = System.currentTimeMillis();
+        if(now > 0){
+            System.out.println("This is not an error");
+        }
+    }
+
+    public void compareTimestampWrongly(){
+        long now = System.currentTimeMillis();
+        long later = System.currentTimeMillis();
+        if(now > later){
+            System.out.println("This is not an error");
+        }
+    }
+
+    public void compareTimestampCorrectly(){
+        long now = System.currentTimeMillis();
+        long later = System.currentTimeMillis();
+        if(now - later > 0){
+            System.out.println("This is not an error");
+        }
+    }
+
 }

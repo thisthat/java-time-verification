@@ -78,6 +78,7 @@ public interface IASTRE extends IASTVisitor, IASTToken {
 	String getCode();
 	int getStart();
 	int getEnd();
+	int getLength();
 	int getLine();
 	int getLineEnd();
 	boolean isTimeCritical();

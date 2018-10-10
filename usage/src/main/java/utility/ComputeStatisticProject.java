@@ -59,17 +59,19 @@ public class ComputeStatisticProject {
         System.out.println("#Class:       " + n_class);
         System.out.println("#Method:      " + n_method);
         System.out.println("#ClassMethod: " + n_class_method);
-        System.out.println("#T Method: " + n_class_method);
+        //System.out.println("#T Method: " + n_class_method);
+        System.out.flush();
+        System.err.println("Use https://github.com/AlDanial/cloc for better file and SLOC");
 
     }
 
     public static void main(String[] args) throws IOException {
-        if(args.length < 2) {
+        if(args.length < 1) {
             System.out.println("Usage with: project_path project_name");
             System.exit(1);
         }
         String path = args[0];
-        String name = args[1];
+        String name = path.substring(path.lastIndexOf("/"));
         new ComputeStatisticProject(path, name);
     }
 }

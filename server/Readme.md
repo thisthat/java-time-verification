@@ -49,11 +49,14 @@ It expects one parameter:
 
 The output is ... TODO
 
+It has an optional parameter `ignore-cache` to force the reading from the disk.
+
 The standard output is in `JSON`, to change to `YAML` set the parameter `format` to `yaml`: 
 
 e.g. 
 ```bash
 curl -s http://localhost:9000/getFile -d 'name=f&path=file://src/test/resources/progs/Attempt1.java'
+
 ```
 
 # /openProject

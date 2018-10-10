@@ -7,11 +7,11 @@ import intermediateModel.visitors.ApplyHeuristics;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
 import intermediateModel.visitors.creation.filter.ElseIf;
+import intermediateModelHelper.Config;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.indexing.IndexingProject;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -72,7 +72,7 @@ public class SaveMethodsWithTime {
     }
 
     static String connectionQuery = "jdbc:postgresql://brock.isys.uni-klu.ac.at:5432/giovanni?user=giovanni&password=giovanni";
-    static String sqlInsert = "INSERT INTO PUBLIC.\"TimeMethods\"(\"ProjectName\", \"ClassName\", \"MethodName\", \"Signature\", \"filepath\") VALUES (?, ?, ?, ?, ?);";
+    static String sqlInsert = "INSERT INTO PUBLIC.\"MethodWithTime\"(\"ProjectName\", \"ClassName\", \"MethodName\", \"Signature\", \"Filepath\") VALUES (?, ?, ?, ?, ?);";
     Connection conn;
 
 
@@ -88,8 +88,8 @@ public class SaveMethodsWithTime {
         System.out.println("Project: " + path);
         while (i.hasNext()) {
             String filename = i.next().getAbsolutePath();
-            if(!filename.contains("/src/main/java"))
-                continue;
+            //if(!filename.contains("/src/main/java"))
+            //    continue;
             List<ASTClass> result = JDTVisitor.parse(filename, path, ElseIf.filter, false);
             for(ASTClass c : result){
                 n_class++;
@@ -131,6 +131,7 @@ public class SaveMethodsWithTime {
     }
 
     private void save(List<Output> l, String name) throws SQLException {
+        //System.out.println("SAVING");
         for(Output o : l) {
             PreparedStatement st = conn.prepareStatement(sqlInsert);
             st.setString(1, name);
@@ -139,18 +140,23 @@ public class SaveMethodsWithTime {
             st.setString(4, o.getMethodSignature());
             st.setString(5, o.getFilepath());
             st.execute();
+            //System.out.println(st.toString());
         }
     }
 
     public static void main(String[] args) throws Exception {
         if(args.length < 3) {
-            System.out.println("Usage with: project_path project_name intermediateModel.types");
+            System.out.println("Usage with: project_path project_name types");
             System.exit(1);
         }
+        Config.setDebug(true);
         String path = args[0];
         String name = args[1];
         String typ  = args[2];
-        TemporalInfo.getInstance().loadUserTypes(typ);
+        if(!typ.endsWith("_")){
+            typ = typ + "_";
+        }
+        TemporalInfo.getInstance().loadUserDefined(typ);
         new SaveMethodsWithTime(path, name);
     }
 }
