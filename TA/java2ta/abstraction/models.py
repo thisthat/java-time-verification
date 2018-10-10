@@ -240,7 +240,7 @@ class Predicate(object):
         If some of the parameters are still missing, an exception is raised.
         """
         ctx = dict(**kwargs)
-        log.debug("Partial formatting: %s <-> %s" % (self._smt_condition, ctx))
+        #log.debug("Partial formatting: %s <-> %s" % (self._smt_condition, ctx))
         return partial_format(self._smt_condition, ctx)
     
     def __repr__(self):
@@ -701,7 +701,6 @@ class Dummy(Domain):
         super(Dummy,self).__init__(datatype=datatype, predicates=[EqItself()]) #{})])
 
 
-
 class AbstractAttribute(object):
 
     @contract(variables="list(string)|string", domain="is_domain", is_local="list(bool)|bool")
@@ -724,10 +723,14 @@ class AbstractAttribute(object):
         values = domain.values
         initial = []
 
-        if is_local:
-            initial = [ domain.default ]
-        else:
-            initial = domain.values
+##        if is_local:
+##            # attributes with only local variables have a single initial value
+##            initial = [ domain.default ]
+##        else:
+##            # any value of an attribute with global variables can the initial value
+##            initial = values
+
+        initial = [ domain.default ] # TODO we forced all attributes to be initialized at their default value; check this is correct
 
         self.is_local = is_local
 
@@ -835,7 +838,8 @@ class AbstractAttribute(object):
         return res
 
     def __str__(self):
-        return "%s : %s" % (self.name, self.domain)
+        visibility = "local" if self.is_local else "global"
+        return "%s %s : %s" % (visibility, self.name, self.domain)
 
     def __repr__(self):
         return str(self)
@@ -920,6 +924,23 @@ class StateSpace(object):
         sort_by_name = lambda att: att.name
         return sorted(res, key=sort_by_name) 
  
+    @property
+    @contract(returns="list(is_abstract_attribute)")
+    def local_attributes(self):
+        """
+        An attribute is local if it is induced by predicates on local variables only
+        """
+
+        return filter(lambda attr: attr.is_local, self.attributes)
+
+    @property
+    @contract(returns="list(is_abstract_attribute)")
+    def global_attributes(self):
+        """
+        An attribute is global if it is induced by predicates on some global variables
+        """
+
+        return filter(lambda attr: not attr.is_local, self.attributes)
 
     @property
     @contract(returns="list(is_abstract_attribute)")
@@ -927,10 +948,20 @@ class StateSpace(object):
         """
         Return the attributes that make the state space, in alphabetical order.
         """
-#        sort_by_name = lambda att: att.name
-
-#        return sorted(self._attributes.values(), key=sort_by_name) 
         return self.get_attributes()
+
+    @contract(source_conf="tuple", target_conf="tuple")
+    def updated_global_attributes(self, source_conf, target_conf):
+        """
+        Return true if source_conf and target_conf differ by at least one non-local attribute, and
+        false otherwise.
+        """
+        res = []
+        for (attr, source_val, target_val) in zip(self.attributes, source_conf, target_conf):
+            if not attr.is_local and (source_val != target_val):
+                res.append((attr.name, target_val))
+
+        return res
 
     @property
     @contract(returns="set(string)")
@@ -1066,32 +1097,20 @@ class StateSpace(object):
 
         return conf
 
+    @contract(abs_value="tuple", attr="is_abstract_attribute", value="is_predicate", returns="tuple")
+    def update_abstract_value(self, abs_value, attr, value):
+
+        new_values = []
+        for (item, a) in zip(abs_value, self.attributes):
+            if a.name != attr.name:
+                new_values.append(item)
+            else:
+                new_values.append(value)
+
+        return tuple(new_values)
+
 new_contract_check_type("is_state_space", StateSpace)
 
-
-##class DomainProduct(CompareVariables):
-##
-##    @contract(var_domains="dict(str:is_domain)")
-##    def __init__(self, **var_domains):
-##        all_predicates = []
-##        var_datatypes = {}
-##
-##        for var,dom in var_domains.iteritems():
-##            all_predicates.append(dom.predicates)
-##            var_datatypes[var] = dom.datatype
-##
-##        predicates = self._get_product_predicates(all_predicates)
-##        super(DomainProduct, self).__init__(predicates, *var_datatypes)
-##
-##    @contract(all_predicates="list(list(is_predicate))", returns="list(is_predicate)")
-##    def _get_product_predicates(self, all_predicates):
-##
-##        predicates = []
-##        for curr_tuple in itertools.product(all_predicates):
-##            check("tuple", curr_tuple)
-##            predicates.append(And(*curr_tuple))
-##        return predicates
-## 
 
 class Integer(DataType):
     def __init__(self):
@@ -1106,8 +1125,6 @@ class Natural(Integer):
     This has not been tested with SMT. #TODO
     """
     def __init__(self):
-#        super(Natural, self).__init__(name="Nat", smt_declaration="(declare-datatypes () ((Nat (mk-natural (val Int)))))", smt_axioms=["(assert (forall ((x Nat)) (>= (val x) 0)))"])
-
         super(Natural, self).__init__()
 
         self.add_smt_var_axiom("(assert (>= {var} 0))")
@@ -1141,7 +1158,7 @@ def smt_declare_scalar(name, values):
 
 class SymbolTable(object):
 
-    RE_LITERAL = "^(null)$|^(true|false)$|^(\-?[0-9]+)$|^(\-?[0-9]+(?:\.[0-9]+)?)$|^(\"\w+\"|'\w+')$" # was: "\w+"
+    RE_LITERAL = "^(null)$|^(true|false)$|^(\-?[0-9]+)$|^(\-?[0-9]+(?:\.[0-9]+)?)$|^(\"[\w| |\-|\.|\']+\")|^('[\w| |\-|\.|\"]+')$" # was: "\w+"
 
     LITERALS = {}
     REV_LITERALS = {}
@@ -1479,8 +1496,8 @@ class FormulaParser(LeftLinearParser):
         "not"   : formulas.Not,
 #        "P" : formulas.Proposition,
         "G" : formulas.Globally,
-        "S" : formulas.SomePaths,
         "A" : formulas.AllPaths,
+        "E" : formulas.SomePaths,
         "N" : formulas.Next,
         "F" : formulas.Future,
         "->"    : formulas.Imply, # to be added
@@ -1642,10 +1659,10 @@ class FormulaParser(LeftLinearParser):
 
             return klass(*arguments)
 
-        elif isinstance(ast,formulas.Or):
+        elif isinstance(ast,formulas.Or) or isinstance(ast, formulas.Proposition): # TODO just added the "or isinstance(ast, formulas.Proposition)" case. Test it
             return (ast)                    
         else:
-            raise ValueError("Value not expected")
+            raise ValueError("Value not expected: %s (%s)" % (ast, type(ast)))
                     
 
     @staticmethod

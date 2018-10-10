@@ -130,7 +130,7 @@ new_contract_check_type("is_clock_condition", ClockCondition)
 class Location(object):
 
     @contract(name="string", is_initial="bool", is_urgent="bool")
-    def __init__(self, name, is_initial=False, is_urgent=False, configuration=None, predicate=None, pc=None):
+    def __init__(self, name, is_initial=False, is_urgent=False, is_committed=False, configuration=None, predicate=None, pc=None):
 
         self.name = name
         self.invariant = None
@@ -139,10 +139,18 @@ class Location(object):
         self._configuration = configuration
         self._predicate = predicate
         self._pc = pc
+        self._ta_template = None
 
         self.is_initial = is_initial
         self.is_urgent = is_urgent
+        self.is_committed = is_committed
 
+    @property
+    def ta_template(self):
+        return self._ta_template
+
+    def set_ta_template(self, ta_template):
+        self._ta_template = ta_template
 
     @property
     def configuration(self):
@@ -237,7 +245,7 @@ new_contract_check_type("is_location", Location)
 
 class Edge(object):
 
-    def __init__(self, source, target, label=None, guard=None, reset=None, clock_variables=None, variables=None):
+    def __init__(self, source, target, label=None, guard=None, reset=None, clock_variables=None, variables=None, synchronization=None):
 
         assert isinstance(source, Location)
         assert isinstance(target, Location)
@@ -251,6 +259,9 @@ class Edge(object):
 
         self.clock_variables = clock_variables or set([])
         self.variables = variables or set([])
+
+        self.synchronization = synchronization
+
 
     @property
     def formatted_label(self):
@@ -287,7 +298,6 @@ class Edge(object):
         return "%s -%s-> %s" % (self.source, label, self.target)
 
 
-
 new_contract_check_type("is_edge", Edge)
 
 class TimeEdge(Edge):
@@ -303,18 +313,27 @@ class TimeEdge(Edge):
 
 new_contract_check_type("is_time_edge", TimeEdge)
 
-class TA(object):
+
+class NotifyUpdateEdge(Edge):
+
+    pass
+
+class ReactUpdateEdge(Edge):
+
+    pass
+
+class TATemplate(object):
  
-    @contract(name="string", process_name="string", locations="set(is_location)|list(is_location)", edges="set(is_edge)|list(is_edge)")
-    def __init__(self, name, process_name, locations=[], edges=[]):
+    @contract(name="string", locations="set(is_location)|list(is_location)", edges="set(is_edge)|list(is_edge)", broadcast_channels="list(string)")
+    def __init__(self, name, locations=[], edges=[], broadcast_channels=[]):
 
         self.name = name
-        self.process_name = process_name
         self.locations = set([])
         self._location_names = dict()
+        self.broadcast_channels = []
     
         for loc in locations:
-            self.add_location(loc)
+            self.add_location(loc, self)
 
         self.edges = set([])
         self._edges_lookup = {} 
@@ -382,7 +401,7 @@ class TA(object):
 #
 #            self.add_location(new_loc)
 #            found = new_loc
-            self.add_location(loc)
+            self.add_location(loc, self)
             found = loc
 
         assert isinstance(found, Location)
@@ -410,7 +429,7 @@ class TA(object):
         if not found:
             # we create an instance of edge.__class__
             # in this way, we support creating copies of the same type as the argument edge
-            found = edge.__class__(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables)
+            found = edge.__class__(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables, synchronization=edge.synchronization)
             self.add_edge(found)
 
         # in any case, update the edge label
@@ -419,22 +438,22 @@ class TA(object):
         return found
  
         
-          
-    @contract(loc="is_location")
-    def add_location(self, loc):
+    def add_location(self, loc, ta_template):
 
         assert isinstance(loc, Location)
         assert isinstance(self.locations, set)
 
         if loc.is_initial:
             if self.initial_loc:
-                raise ValueError("You are adding a location tagged as initial to a TA that already contains one initial location")
+                raise ValueError("You are adding a location tagged as initial to a TATemplate that already contains one initial location")
             self.initial_loc = loc
 
         if loc.name not in self._location_names:
             self.locations.add(loc)
             self._location_names[loc.name] = loc
  
+        loc.set_ta_template(ta_template)
+
     
     @contract(loc="is_location")
     def del_location(self, loc):
@@ -442,7 +461,7 @@ class TA(object):
             if self.initial_loc == loc:
                 self.initial_loc = None
             else:
-                raise ValueError("Location is initial, but is not the TA initial location")
+                raise ValueError("Location is initial, but is not the TATemplate initial location")
 
         self.locations.discard(loc)
         self._location_names.pop(loc.name, None)
@@ -455,7 +474,7 @@ class TA(object):
         assert isinstance(self.edges, set)
 
         if edge.source not in self.locations or edge.target not in self.locations:
-            raise ValueError("Before adding an edge, you must add its source and target locations to the TA")
+            raise ValueError("Before adding an edge, you must add its source and target locations to the TATemplate")
    
 #        edge.source.outgoing.add(edge)
         edge.source.add_outgoing(edge)
@@ -512,13 +531,15 @@ class TA(object):
 
     def close(self):
         """
-        The operation of closing a TA does the following:
+        The operation of closing a TATemplate does the following:
         1. call pseudo-initial a location that has no entering transition
         2. if a single pseudo-initial location exists, makes it initial
         3. if multiple pseudo-initial locations exist, create an initial
             location and add a non-deterministic edge towards each of
             the pseudo-initial locations
         """
+
+        from java2ta.translator.models import PC
 
         if self.initial_loc != None:
             return    
@@ -532,12 +553,19 @@ class TA(object):
             initial.set_initial()
         elif len(pseudo_initial) == 0:
 #           TODO what to do in this case?
-            log.warning("The timed automaton has no pseudo-initial location. Not sure what to do ...")
+#            log.warning("The timed automaton has no pseudo-initial location. Not sure what to do ...")
 #            raise ValueError("Cannot handle automaton with circular states")
+            initial = Location("initial", is_initial=True, is_committed=True)
+            self.add_location(initial, self)
+
+            # add an edge to all the locations with PC = @0
+            for loc in  filter(lambda l: l.pc == PC(0), self.locations):
+                e = Edge(initial, loc)
+                self.add_edge(e)
         else:
             # len(pseudo_initial) > 0
-            initial = Location("initial", is_initial=True)
-            self.add_location(initial)
+            initial = Location("initial", is_initial=True, is_committed=True)
+            self.add_location(initial, self)
             
             for loc in pseudo_initial:
                 e = Edge(initial, loc)
@@ -557,8 +585,16 @@ class TA(object):
                     raise ValueError("Location %s has incoming edge with different target location" % (loc, e))
 
 
-new_contract_check_type("is_ta", TA)
+new_contract_check_type("is_ta_template", TATemplate)
 
+class TA(object):
+    
+    @contract(template="is_ta_template", name="string")
+    def __init__(self, name, template):
+        self.name = name
+        self.template = template
+
+new_contract_check_type("is_ta", TA)
 
 class NTA(object):
 
@@ -566,14 +602,17 @@ class NTA(object):
 
         self.tas = set([])
         self.variables = set([])
+        self.broadcast_channels = set([])
 
     @contract(ta="is_ta")
     def add_ta(self, ta):
 
-        if not ta.initial_loc:
+        if not ta.template.initial_loc:
             raise ValueError("All the TAs must have an initial location")
 
         self.tas.add(ta)
+
+        self.broadcast_channels.update(ta.template.broadcast_channels)
 
     @contract(var="is_variable")
     def add_variable(self, var):

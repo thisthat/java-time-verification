@@ -218,7 +218,7 @@ class SomePaths(StateFormula):
             raise ValueError("Expected exactly one sub-formula. Got %s sub-formulas" % num_subformulas)
 
         subformula = self.args[0]
-        if not isinstance(subformula, Globall) and not isinstance(subformula, Future):
+        if not isinstance(subformula, Globally) and not isinstance(subformula, Future):
             raise ValueError("The SomePaths formula accepts only Globally or Future as subformula. Got: %s" % (type(subformula)))
         return u"E%s" % (subformula.to_uppaal(ta),)
 

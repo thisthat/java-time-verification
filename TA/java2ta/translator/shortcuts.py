@@ -12,7 +12,7 @@ from java2ta.translator.models import PC, ReachabilityInput, ReachabilityResult,
 from java2ta.ir.models import Project, Method, Klass
 from java2ta.ir.client import APIError
 from java2ta.ir.shortcuts import get_timestamps, check_now_assignments, get_identifiers, get_instr_text
-from java2ta.ta.models import TA, Location, Edge, TimeEdge, ClockVariable, ClockCondition
+from java2ta.ta.models import TATemplate, TA, Location, Edge, TimeEdge, NotifyUpdateEdge, ReactUpdateEdge, ClockVariable, ClockCondition
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable, CompareVariables, Integer, LT, GT, Eq
 from java2ta.abstraction.shortcuts import DataTypeFactory, INTEGERS
 
@@ -117,6 +117,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     external = []
     edges = []
     variables = set([])
+    broadcast_channels = set([])
 
     if deadlines is None:
         deadlines = []
@@ -131,8 +132,6 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     curr_pc = PC(pc_source.pc)
     for curr_instr in instr:
 
-#        log.debug("Check instruction: %s" % curr_instr)
-
         # reachable and final must contain only information that are reached by
         # the last instruction (NB on the contrary, edges contain all the edges 
         # added by all the instructions)
@@ -146,6 +145,49 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
         if not source_conf:
             log.debug("Exit for non reachable states at PC: %s" % curr_pc)
             break
+
+
+        if curr_pc != PC(0):
+            broadcast_channels = set([])
+    
+            log.debug("Curr PC (%s) != @0" % curr_pc)
+            # consider the possibility of another thread changing the global environment
+        
+            log.debug("State space global attributes: %s" % state_space.global_attributes)
+            for g_attr in state_space.global_attributes: 
+        
+                # g_attr is an AbstractAttribute involving some global variable
+                assert isinstance(g_attr, AbstractAttribute)
+        
+                log.debug("Global attribute: %s" % g_attr)
+        
+                for curr_conf in source_conf:
+        
+                    curr_pred = state_space.value(curr_conf)
+                    curr_loc = build_location(curr_conf, curr_pc, curr_pred)
+                    log.debug("Check modification from (%s,%s)" % (curr_pred, curr_pc))
+        
+                    for val in g_attr.values:
+                        target_pred = state_space.update_abstract_value(curr_pred, g_attr, val) 
+                        target_conf = state_space.configuration(target_pred)
+                        target_loc = build_location(target_conf, curr_pc, target_pred)
+                
+                        log.debug("New candidate target loc: %s" % target_loc)
+        
+                        updated_global_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
+    
+                        if updated_global_attributes:
+                            if target_conf not in source_conf:
+                                source_conf.append(target_conf)
+    
+                            chan_name = "__".join(map(lambda attr_val: "%s_%s" % (attr_val[0], attr_val[1]) , updated_global_attributes))
+                            log.debug("Updated predicates: %s. Channel name: %s" % (updated_global_attributes, chan_name))
+                            broadcast_channels.add(chan_name)
+                            synchronization = "%s ?" % chan_name
+            
+                            gv_edge = ReactUpdateEdge(curr_loc, target_loc, synchronization=synchronization)
+                            edges.append(gv_edge)
+            
 
         for source in source_conf:
 
@@ -165,6 +207,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
             final.extend(rr.final_locations) 
             external.extend(rr.external_locations)
             variables = variables | rr.variables
+            broadcast_channels = broadcast_channels | rr.broadcast_channels
         
 #        log.debug("Check reachable at %s: %s from %s" % (curr_pc, reachable, source_conf))
         if len(reachable) == 0:
@@ -180,18 +223,17 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
 
 #    assert (len(reachable) >= 0 and len(edges) >= 0 and len(final) == 0) or (len(reachable) > 0 and len(edges) > 0 and len(final) > 0)
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
-@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", returns="is_ta")
+@contract(name="string", instructions="list[N](dict),N>0", state_space="is_state_space", project="is_project", returns="is_ta_template")
 def transform(name, instructions, state_space, project):
 
     # TODO at the moment we call TA the class for the FSA ... this is not a big issue, but I leave
     # this note just to keep track of this "oddity"
-    ta_process_name = FreshNames.get_name(prefix=("%s_" % name))
-    ta = TA(name, ta_process_name)
+    ta = TATemplate(name) 
 
-    log.info("State space attributes:")
+    log.info("State space attributes: %s" % state_space.attributes)
     for attr in state_space.attributes:
         log.info("%s -> %s" % (attr.name, attr.domain))
 
@@ -206,6 +248,9 @@ def transform(name, instructions, state_space, project):
 
     log.info("reachable: %s, final: %s, external: %s" % (rr.configurations, rr.final_locations, rr.external_locations))
     log.info("visited locations: %s" % visited_locations)
+
+    log.debug("all broadcast channels added to automaton ...")
+    ta.broadcast_channels.extend(rr.broadcast_channels)
 
     # add variables and clock variables to the automaton
     for var in rr.variables:
@@ -460,10 +505,15 @@ class SMTProb(SMTSolver):
                 var = None
                 if node_exp["left"]["nodeType"] == "ASTIdentifier":
                     var = node_exp["left"]["value"]
-                elif node_exp["left"]["nodeType"] == "ASTAttributeAccess" and node_exp["left"]["variableName"]["value"] == "this":
-                    var = node_exp["left"]["attributeName"]
+                elif node_exp["left"]["nodeType"] == "ASTAttributeAccess":
+                    var_name = node_exp["left"]["variableName"]["value"]
+                    curr_class = get_current_class()
+                    if var_name == "this" or var_name == curr_class.name or var_name == curr_class.fqname:
+                        var = node_exp["left"]["attributeName"]
+                    else:   
+                        raise ValueError("Assignment to instance attribute or to class attribute but not in the current class")
                 else:
-                    raise ValueError("At the moment we only support assignments to local variables or 'this' attributes. Passed: %s" % node_exp["left"])
+                    raise ValueError("At the moment we only support assignments to local variables, 'this' attributes or static attributes of the current class. Passed: %s" % node_exp)
 
                 rhs = node_exp["right"]
 
@@ -581,6 +631,21 @@ class SMTProb(SMTSolver):
             var = node["value"]
     
             if var not in env:
+                raise ForgottenVariableException(var)
+
+            smt_assertion = var
+        elif node_type == "ASTAttributeAccess":
+            assert "variableName" in node
+            assert "value" in node["variableName"]
+
+            attr_var = node["variableName"]["value"]
+            curr_class = get_current_class()
+            if attr_var == "this" or attr_var == curr_class.name or attr_var == curr_class.fqname:
+                var = node["attributeName"]
+            else:   
+                raise ValueError("Assignment to instance attribute or to class attribute but not in the current class")
+
+            if var not in env:  
                 raise ForgottenVariableException(var)
 
             smt_assertion = var
@@ -1152,6 +1217,10 @@ def get_current_method():
     global THE_METHOD
     return THE_METHOD
 
+def get_current_class():
+    global THE_METHOD
+    return THE_METHOD.parent
+
 #@contract(node="dict", returns="tuple(set(string)|None,string|None)")
 @contract(node="dict", returns="tuple(set(string)|None,is_clock_condition|None)")
 def parse_clock_condition(node):
@@ -1239,6 +1308,7 @@ def check_reach_astre(ri):
     final = []
     external = []
     variables = set([])
+    broadcast_channels = set([]) # rendezvous channels
 
     instr = ri.instr
     source = ri.source
@@ -1304,14 +1374,24 @@ def check_reach_astre(ri):
                     edge = TimeEdge(source_loc, target_loc, edge_label)
                     log.debug("Add timed edge: %s" % edge)
                 else:
-                    edge = Edge(source_loc, target_loc, edge_label)
-                    log.debug("Add untimed edge: %s" % edge)
+                    updated_global_attributes = state_space.updated_global_attributes(source, target)
+
+                    if updated_global_attributes:
+                        chan_name = "__".join(map(lambda attr_val: "%s_%s" % (attr_val[0], attr_val[1]) , updated_global_attributes))
+                        log.debug("Updated predicates: %s. Channel name: %s" % (updated_global_attributes, chan_name))
+                        broadcast_channels.add(chan_name)
+                        synchronization = "%s !" % chan_name
+                        edge = NotifyUpdateEdge(source_loc, target_loc, edge_label, synchronization=synchronization)
+                        log.debug("Add notify update edge: %s" % edge)
+                    else:
+                        edge = Edge(source_loc, target_loc, edge_label)
+                        log.debug("Add untimed edge: %s" % edge)
  
                 reachable.append(target)
                 edges.append(edge) 
                 final.append(target_loc)
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 
@@ -1337,6 +1417,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
     final = []
     external = []
     variables = set([])
+    broadcast_channels = set([])
 
 #    source_loc = build_location(source, pc_source)
  
@@ -1395,6 +1476,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
         variables |= rr_then.variables
         final_then = rr_then.final_locations
         edges.extend(rr_then.edges) #edges_then)
+        broadcast_channels |= rr_then.broadcast_channels
 
         # add ed edge from source to the begin of the "then" branch
         then_loc = build_location(source, pc_source_then, source_pred)
@@ -1421,6 +1503,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
 
         variables |= rr_else.variables
         final_else = rr_else.final_locations
+        broadcast_channels |= rr_else.broadcast_channels
    
         edges.extend(rr_else.edges) #edges_else)
         external.extend(rr_else.external_locations)
@@ -1456,7 +1539,7 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
 
     check_closure(pc_target, reachable, final, external)
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
 def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
@@ -1481,6 +1564,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
     final = []
     external = []
     variables = set([])
+    broadcast_channels = set([])
 
     source_loc = build_location(source, pc_source, source_pred)
 
@@ -1543,6 +1627,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
             rr_while = compute_reachable([ curr_source_conf, ], pc_source_while, stms_while, state_space, project, visited_locations, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
             
             variables |= rr_while.variables
+            broadcast_channels |= rr_while.broadcast_channels
             pc_jump_stack.pop()
 
 #            log.debug("While reachable result: %s" % rr_while)
@@ -1599,7 +1684,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
 
     check_closure(pc_target, reachable, final, external)
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
 def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
@@ -1624,6 +1709,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
     final = []
     external = []
     variables = set([])
+    broadcast_channels = set([])
 
     source_loc = build_location(source, pc_source, source_pred)
 
@@ -1642,6 +1728,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
     pc_jump_stack.pop()
 
     variables |= rr_while.variables
+    broadcast_channels |= rr_while.broadcast_channels
     edges.extend(rr_while.edges)
     external.extend(rr_while.external_locations)
 
@@ -1650,7 +1737,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
     do_edge = Edge(source_loc, do_loc, "do")
     edges.append(do_edge)
 
-    
+    log.debug("Do-while final locations: %s" % rr_while.final_locations)
     if len(rr_while.final_locations) == 0:
         reachable = [ ] #source ]
         final = [ ] #source_loc ]
@@ -1677,6 +1764,11 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
                 finally:
                     smt_prob.pop()
     
+            log.debug("Is while reachable (%s) from (%s = %s)? %s" % (guard_exp["code"], conf_final, pred_final, is_while_reachable))
+            log.debug("Is not while reachable (! %s) from (%s = %s)? %s" % (guard_exp["code"], conf_final, pred_final, is_not_while_reachable))
+
+            assert is_while_reachable or is_not_while_reachable
+
             # the guard is satisfiable: jump back to the statement block
             if is_while_reachable:
                 
@@ -1685,6 +1777,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
                 pc_jump_stack.pop()
     
                 variables |= rr_while_back.variables
+                broadcast_channels |= rr_while_back.broadcast_channels
                 edges.extend(rr_while_back.edges)
                 external.extend(rr_while_back.external_locations)
         
@@ -1710,19 +1803,22 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
                     edge_restart = Edge(loc, loc_restart)
                     edges.append(edge_restart)
         
-        # the negation of the guard is satisfiable: jump over the while
-        if is_not_while_reachable:
+            # the negation of the guard is satisfiable: jump over the while
+            if is_not_while_reachable:
 
-            # add edge from current location to the end of the while
-            while_neg_loc = build_location(conf_final, pc_target, pred_final)
-            while_neg_edge = Edge(loc_final, while_neg_loc, "not (%s)" % guard["code"])
-            edges.append(while_neg_edge)
-            final.append(while_neg_loc)
-            reachable.append(conf_final)
+                # add edge from current location to the end of the while
+                while_neg_loc = build_location(conf_final, pc_target, pred_final)
+                while_neg_edge = Edge(loc_final, while_neg_loc, "not (%s)" % guard["code"])
+                edges.append(while_neg_edge)
+                final.append(while_neg_loc)
+                reachable.append(conf_final)
 
     check_closure(pc_target, reachable, final, external)
+    log.debug("Return from do-while: source_loc (%s), configurations (%s), final locations (%s)..." % (source_loc, reachable, final))
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    #assert len(reachable) > 0
+
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
 def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
@@ -1749,6 +1845,7 @@ def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_loc
     final = []
     external = []
     variables = set([])
+    broadcast_channels = set([])
 
 
     source_loc = build_location(source, pc_source, source_pred)
@@ -1774,7 +1871,7 @@ def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_loc
     # no final locations
     # (ASTBreak and ASTContinue break the compositionality approach)
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
 def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
@@ -1799,6 +1896,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     final = []
     external = []
     variables = set([])
+    broadcast_channels = set([])
 
     source_loc = build_location(source, pc_source, source_pred)
 
@@ -1810,6 +1908,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     rr_try = compute_reachable([source], pc_source_try, stms_try, state_space, project, visited_locations, pc_jump_stack, deadlines=deadlines)
 
     variables |= rr_try.variables
+    broadcast_channels |= rr_try.broadcast_channels
     edges.extend(rr_try.edges)
     external.extend(rr_try.external_locations)
 
@@ -1843,6 +1942,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     rr_catch = compute_reachable(found_exception_confs, pc_source_catch, stms_catch, state_space, project, visited_locations, pc_jump_stack, deadlines=deadlines)
 
     variables |= rr_catch.variables
+    broadcast_channels |= rr_catch.broadcast_channels
     edges.extend(rr_catch.edges) # TODO check this
 
     # add edge from exception states in the try block, to the begin of the catch block
@@ -1866,7 +1966,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
 
     check_closure(pc_target, reachable, final, external)
 
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
 def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
@@ -1890,6 +1990,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
     final = []
     external = []
     variables = set([])
+    broadcast_channels = set([])
 
     source_loc = build_location(source, pc_source, source_pred)
 
@@ -1920,6 +2021,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
         rr_foreach = compute_reachable(reachable_foreach, pc_source_foreach, stms_foreach, state_space, project, visited_locations, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
         
         variables |= rr_foreach.variables
+        broadcast_channels |= rr_foreach.broadcast_channels
         pc_jump_stack.pop()
 
         begin_foreach_loc = build_location(source, pc_source_foreach, source_pred)
@@ -1952,12 +2054,12 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
                 tovisit_sources.append(state_final_conf)
 
     check_closure(pc_target, reachable, final, external)
-    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
+    return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
 def check_reach_astreturn(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 
-    return ReachabilityResult(configurations=[], final_locations=[], external_locations=[], edges=[], variables=set([]))
+    return ReachabilityResult(configurations=[], final_locations=[], external_locations=[], edges=[], variables=set([]), broadcast_channels=set([]))
 
 
 
@@ -1985,22 +2087,9 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
     if deadlines is None:
         deadlines = []
 
-##    # produce a label out of a code block
-##    rows = instr["code"].split("\n")
-##    stripped_rows = map(lambda r: r.strip(), rows)
-##    instr_text = " ".join(stripped_rows)
-##
-###    print "domains: %s" % domains
-##    instr_label = instr_text
-##    len_label = len(instr_label)
-##    if len_label > 50:
-##        instr_label = instr_label[:15].strip() + "..." + instr_label[len_label-15:].strip()
-##
-
     source_pred = state_space.value(source)
 
     instr_type = instr["nodeType"]
-#    source_pred = state_space.value(source)
     source_loc = build_location(source, pc_source, source_pred)
 
     log.debug("Add source to visited locations: %s. Previous visited locations: %s. Num visited locations: %s." % (source_loc, visited_locations, len(visited_locations)))
@@ -2014,36 +2103,12 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
     if handler:
         ri = ReachabilityInput(instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project)
         rr = handler(ri)
+        assert isinstance(rr, ReachabilityResult)
     else:
         log.warning("Instruction ignored (%s): %s" % (instr_type, instr))
         raise ValueError("Instruction ignored (%s): %s" % (instr_type, instr))
 
-
-##    return rr
-    
-  
-##    if instr_type == "ASTRE":
-##       
-##    elif instr_type == "ASTIf":
-## 
-##    elif instr_type == "ASTWhile":
-##
-##    elif instr_type == "ASTDoWhile":
-##
-##    elif instr_type in [ "ASTBreak", "ASTContinue" ]:
-##
-##    elif instr_type == "ASTTry":
-##
-##    elif instr_type == "ASTForEach" or instr_type == "ASTFor":
-##
-##    else:
-##        #raise ValueError("Instruction type not covered: %s" % instr)
-##        log.warning("Instruction ignored (%s): %s" % (instr_type, instr))
-##
    
-##    assert (len(reachable) >= 0 and len(edges) >= 0 and len(final) == 0) or (len(reachable) > 0 and len(edges) > 0 and len(final) > 0), "# reachable: %s, # edges: %s, # final: %s. Instruction: %s" % (len(reachable), len(edges), len(final), instr)
-##    rr = ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables)
-
     # handle stack of deadlines
     log.debug("Curr deadlines: %s" % deadlines)
 
@@ -2071,7 +2136,7 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
             rr.edges.append(e)
 
         for e in curr_edges: #rr.edges:
-            # add temporal guards in edge
+            # add temporal guards to edges 
             guard = "(%s >= %s) and (%s <= %s)" % (cv.name, lower.name, cv.name, upper.name)
             label = guard
             if e.guard:
@@ -2185,8 +2250,8 @@ def get_method_attributes(method):
     
     return attributes
 
-@contract(method="is_method", state_space="is_state_space", returns="is_ta")
-def translate_method_to_ta(method, state_space):
+@contract(method="is_method", state_space="is_state_space", returns="is_ta_template")
+def method_to_ta_template(method, state_space):
 
     set_current_method(method)
 
@@ -2239,8 +2304,6 @@ def translate_method_to_ta(method, state_space):
         log.debug("Add time-derived attribute: %s" % attr)
 
         state_space.add_attribute(attr)
-
-
 
     ta = transform(method.name, instructions, state_space, method.project)
 

@@ -43,6 +43,9 @@ class PC(object):
     def __eq__(self, other):
         return other and self.__pc == other.pc
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __hash__(self):
         return hash(self.__pc)
 
@@ -130,13 +133,14 @@ class ReachabilityInput(object):
 
 class ReachabilityResult(object):
 
-    @contract(configurations="set(is_configuration)|list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)", variables="set(is_variable)")
-    def __init__(self, configurations, final_locations, external_locations, edges, variables):
+    @contract(configurations="set(is_configuration)|list(is_configuration)", final_locations="list(is_location)", external_locations="list(is_location)", edges="list(is_edge)", variables="set(is_variable)", broadcast_channels="set(string)")
+    def __init__(self, configurations, final_locations, external_locations, edges, variables, broadcast_channels):
         self._configurations = set(configurations)
         self.final_locations = final_locations
         self.external_locations = external_locations
         self.edges = edges 
         self.variables = variables
+        self.broadcast_channels = broadcast_channels or set([])
 
         self.locations = set([])
         for e in edges:

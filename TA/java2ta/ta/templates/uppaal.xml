@@ -5,32 +5,39 @@
 	<declaration>{% if legend %}
 {% for label,desc in legend %}// {{ label|e }}: {{ desc|e }}
 {% endfor %}
-{% endif %}</declaration>
+{% endif %}
+{% for chan in nta.broadcast_channels %}
+    broadcast chan {{ chan }};
+{% endfor %}
+</declaration>
+    {% for ta in nta.tas %}
 	<template>
-		<name>{{ ta.name }}</name>
+		<name>{{ ta.template.name }}</name>
 		<declaration>
-        {% for curr_var in ta.variables %}
+        {% for curr_var in ta.template.variables %}
         {{ curr_var.type.name }} {{ curr_var.name|var_name }};
         {% endfor %}    
-        {% for curr_clock in ta.clock_variables %}
+        {% for curr_clock in ta.template.clock_variables %}
         clock {{ curr_clock.name|var_name }};
         {% endfor %}
         </declaration>
-        {% for curr_loc in ta.locations %}
+        {% for curr_loc in ta.template.locations %}
 		<location id="{{ curr_loc.name|loc_name }}" x="{{ curr_loc|loc_x }}" y="{{ curr_loc|loc_y }}">
 			<name>{{ curr_loc.name|loc_name }}</name>
             {% if curr_loc.invariant %}
             <label kind="invariant">{{ curr_loc.invariant|var_name|e }}</label>
             {% endif %}
-            {% if curr_loc.is_urgent %}
+            {% if curr_loc.is_committed %}
+            <committed />
+            {% elif curr_loc.is_urgent %}
             <urgent />
             {% endif %}
 		</location>
         {% endfor %}
-        {% if ta.initial_loc %}
-		<init ref="{{ ta.initial_loc.name|loc_name }}"/>
+        {% if ta.template.initial_loc %}
+		<init ref="{{ ta.template.initial_loc.name|loc_name }}"/>
         {% endif %}
-        {% for curr_edge in ta.edges %}
+        {% for curr_edge in ta.template.edges %}
 		<transition>
 			<source ref="{{ curr_edge.source.name|loc_name }}"/>
 			<target ref="{{ curr_edge.target.name|loc_name }}"/>
@@ -40,12 +47,19 @@
             {% if curr_edge.reset %}
 			<label kind="assignment">{% for r in curr_edge.reset %}{{ r|var_name|e }} := 0{% if not loop.last %},{% endif %}{% endfor %}</label>
             {% endif %}
+            {% if curr_edge.synchronization %}
+            <label kind="synchronisation">{{ curr_edge.synchronization|channel_name|e }}</label>
+    
+            {% endif %}
 		</transition>
         {% endfor %}
 	</template>
+    {% endfor %}
 	<system>
-{{ ta.process_name }} = {{ ta.name }}();
-system {{ ta.process_name }};
+{% for ta in nta.tas %}
+{{ ta.name }} = {{ ta.template.name }}();
+{% endfor %}
+system {% for ta in nta.tas %}{{ ta.name }}{% if not loop.last %},{% endif %}{% endfor %};
     </system>
 	<queries>
 	</queries>
