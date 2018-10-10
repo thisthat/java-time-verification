@@ -233,7 +233,9 @@ class Location(object):
     def uppaal_name(self, ta):
         from java2ta.ta.views import uppaal_loc_name
 
-        return "%s.%s" % (ta.process_name, uppaal_loc_name(self.name))
+        assert isinstance(ta, TA)
+
+        return "%s.%s" % (ta.name, uppaal_loc_name(self.name))
 
     @property
     def neighbors(self):

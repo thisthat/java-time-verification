@@ -1,3 +1,4 @@
+from contracts import contract
 import logging
 
 log = logging.getLogger()
@@ -237,16 +238,22 @@ class Proposition(StateFormula):
         configuration)
         """
         from java2ta.translator.models import build_location_name, PC
+        from java2ta.ta.models import TA
         from java2ta.ta.views import uppaal_loc_name
 
+        if not isinstance(ta, TA):
+            raise ValueError("Expected argument of type TA. Passed: %s" % type(ta))
+
+        assert ta.template != None
+    
         assert len(self.args) == 1, "Expected exactly 1 argument. Got: %s" % self.args
         conf = self.args[0]
 
-        locations = ta.conf_to_locations(conf)
+        locations = ta.template.conf_to_locations(conf)
 
         # extract the uppaal name of locations that match the passed configuration, and create an
         # or-formula in the uppaal specification language
-        uppaal_locations = map(lambda loc: loc.uppaal_name(ta), ta.conf_to_locations(conf))
+        uppaal_locations = map(lambda loc: loc.uppaal_name(ta), ta.template.conf_to_locations(conf))
     
         uppaal_formula = "(%s)" % (" or ".join(uppaal_locations), )
         return uppaal_formula

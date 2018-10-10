@@ -337,8 +337,8 @@ class Uppaal(object):
 
         # next we create two functions that, from the TA template name and the
         # location name, can determine the location coordinates
-        uppaal_loc_x = lambda loc: 100 * ta_template_displays[loc.ta_template.name].get_location_x(loc) 
-        uppaal_loc_y = lambda loc: -100 * ta_template_displays[loc.ta_template.name].get_location_y(loc) 
+        uppaal_loc_x = lambda loc: int(100 * ta_template_displays[loc.ta_template.name].get_location_x(loc)) 
+        uppaal_loc_y = lambda loc: int(-100 * ta_template_displays[loc.ta_template.name].get_location_y(loc) )
     
         return {
             "loc_name": uppaal_loc_name,
