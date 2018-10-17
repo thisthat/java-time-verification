@@ -247,6 +247,7 @@ new_contract_check_type("is_location", Location)
 
 class Edge(object):
 
+    @contract(source="is_location", target="is_location", label="None|string", guard="None|string")
     def __init__(self, source, target, label=None, guard=None, reset=None, clock_variables=None, variables=None, synchronization=None):
 
         assert isinstance(source, Location)

@@ -214,7 +214,10 @@ class TADisplay(object):
         with open(coordinates_path, "r") as coordinates_file:
             for line in coordinates_file:
                 # shlex split by spaces, if not appearing in quotes
-                parts = shlex.split(line)
+                try:
+                    parts = shlex.split(line)
+                except Exception, e:
+                    raise ValueError("Error loading position. Cannot parse text: '%s'. Details: %s" % (line, e))
             
                 if parts[0] == "node":
                     positions_map[parts[1]] = (parts[2], parts[3])

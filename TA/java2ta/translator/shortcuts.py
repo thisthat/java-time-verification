@@ -598,6 +598,8 @@ class SMTProb(SMTSolver):
             else:
                 log.warning("Interpret PL expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                 smt_assertion = node_exp["code"]
+        elif node_type == "ASTAssignment":
+            raise ValueError("ASTAssignment not handled. At the moment we only handle ASTAssignment within ASTRE. TODO")
         elif node_type == "ASTBinary":
 
             assert "op" in node

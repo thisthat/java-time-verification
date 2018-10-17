@@ -1158,7 +1158,7 @@ def smt_declare_scalar(name, values):
 
 class SymbolTable(object):
 
-    RE_LITERAL = "^(null)$|^(true|false)$|^(\-?[0-9]+)$|^(\-?[0-9]+(?:\.[0-9]+)?)$|^(\"[\w| |\-|\.|\']+\")|^('[\w| |\-|\.|\"]+')$" # was: "\w+"
+    RE_LITERAL = "^(null)$|^(true|false)$|^(\-?[0-9]+)$|^(\-?[0-9]+(?:\.[0-9]+)?)$|^((?:\"[\w| |\-|\.|\']+\")|(?:'[\w| |\-|\.|\"]+'))$" # was: "\w+"
 
     LITERALS = {}
     REV_LITERALS = {}
@@ -1259,7 +1259,7 @@ new_contract("is_ast", lambda s: True) # TODO implement this check
 
 class LeftLinearParser(object):
 
-    RE_VAR = "{\w+}" #r"({\w+})\s?(.*)"
+    RE_VAR = "{(?:\w+\.)?\w+}" # was: "{\w+}"
     RE_NODE_NAME = "[^\s(){}]+" # r"([^\s(){}]+)\s?(.*)"
     RE_LITERAL = None # to be defined in your parser
     SYMBOL_TO_CLASS = {} # a mapping from the first matched symbol to the class to be instantiated
@@ -1424,6 +1424,7 @@ class PredicateParser(LeftLinearParser):
                 arguments = []
                 for a in ast[1]:
                     arguments.append(self._ast_to_object(a))
+
                 # instantiate the predicate
                 p = pred_class(*arguments)
             else:
@@ -1473,14 +1474,14 @@ class PredicateParser(LeftLinearParser):
     def _is_node(ast):
         return isinstance(ast, tuple) and len(ast) == 2 and isinstance(ast[1], list) and re.match(PredicateParser.RE_NODE_NAME, ast[0])
 
-    @staticmethod
-    def _is_var(ast):
-        return isinstance(ast, basestring) and re.match(PredicateParser.RE_VAR, ast)
-
-    @staticmethod
-    def _is_literal(ast):
-        return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
- 
+##    @staticmethod
+##    def _is_var(ast):
+##        return isinstance(ast, basestring) and re.match(PredicateParser.RE_VAR, ast)
+##
+##    @staticmethod
+##    def _is_literal(ast):
+##        return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
+## 
 class FormulaParser(LeftLinearParser):
 
     RE_LITERAL = "true|false|\[[^\[\]]+\]" # TODO this reg-ex should refer to PROP_DELIM_BEGIN e PROP_DELIM_END
@@ -1628,6 +1629,7 @@ class FormulaParser(LeftLinearParser):
                 pp=PredicateParser()
                 pre=pp.parse(predicate)
                 assert isinstance(pre, Predicate)
+                log.debug("Parsed predicate in formula: %s" % pre)
                 #print pre
                 log.debug("Parse AST from predicate: %s" % pre)
                 result=self.from_predicate(self.ss,pre)
@@ -1685,16 +1687,16 @@ class FormulaParser(LeftLinearParser):
 #        log.debug("Walk IN: %s OUT: %s" % (ast, res))
         return res
 
-    @staticmethod
-    def _is_node(ast):
-        return isinstance(ast, tuple) and len(ast) == 2 and isinstance(ast[1], list) and re.match(PredicateParser.RE_NODE_NAME, ast[0])
-
-    @staticmethod
-    def _is_var(ast):
-        return isinstance(ast, basestring) and re.match(PredicateParser.RE_VAR, ast)
-
-    @staticmethod
-    def _is_literal(ast):
-        return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
-       
-
+##    @staticmethod
+##    def _is_node(ast):
+##        return isinstance(ast, tuple) and len(ast) == 2 and isinstance(ast[1], list) and re.match(PredicateParser.RE_NODE_NAME, ast[0])
+##
+##    @staticmethod
+##    def _is_var(ast):
+##        return isinstance(ast, basestring) and re.match(PredicateParser.RE_VAR, ast)
+##
+##    @staticmethod
+##    def _is_literal(ast):
+##        return isinstance(ast, basestring) and re.match(PredicateParser.RE_LITERAL, ast)
+##       
+##
