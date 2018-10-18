@@ -7,7 +7,7 @@ import  itertools
 
 from java2ta.abstraction import formulas
 from java2ta.smt.models import SMTSolver
-from java2ta.commons.utility import new_contract_check_type, partial_format
+from java2ta.commons.utility import new_contract_check_type, partial_format, TotalDict
 
 log = logging.getLogger("main")
 
@@ -199,6 +199,7 @@ class Predicate(object):
         smt_arguments = " ".join(map(lambda v: v.smt_condition() if isinstance(v, Predicate) else str(v), arguments))
         self._smt_condition = partial_format(self._smt_condition, { "name": self._smt_name, "arguments": smt_arguments })
 
+
     def __eq__(self, other):
         return not predicates_differ(self, other)
 
@@ -221,7 +222,8 @@ class Predicate(object):
 
         If some of the parameters are still missing, an exception is raised. 
         """
-        ctx = dict(**kwargs)
+        #ctx = dict(**kwargs)
+        ctx = TotalDict(**kwargs)
         return partial_format(self._label, ctx)
 
     @contract(returns="string")
@@ -240,7 +242,7 @@ class Predicate(object):
         If some of the parameters are still missing, an exception is raised.
         """
         ctx = dict(**kwargs)
-        #log.debug("Partial formatting: %s <-> %s" % (self._smt_condition, ctx))
+        log.debug("Partial formatting: %s <-> %s" % (self._smt_condition, ctx))
         return partial_format(self._smt_condition, ctx)
     
     def __repr__(self):
@@ -266,7 +268,7 @@ class Predicate(object):
     @property
     @contract(returns="set(string)")
     def var_names(self):
-        var_names = re.findall("\{[a-zA-Z\_0-9]+\}", self._smt_condition) # TODO this is a bit hack-ish, find a better way to handle it
+        var_names = re.findall("\{[a-zA-Z\_0-9\.]+\}", self._smt_condition) # TODO this is a bit hack-ish, find a better way to handle it
 
         var_names_stripped = map(lambda v: v.strip("{}"), var_names)
         return set(var_names_stripped)
@@ -1331,7 +1333,9 @@ class LeftLinearParser(object):
         return isinstance(ast, tuple) and len(ast) == 2 and isinstance(ast[1], list) and re.match(self.RE_NODE_NAME, ast[0])
 
     def _is_var(self, ast):
-        return isinstance(ast, basestring) and re.match(self.RE_VAR, ast)
+#        log.debug("Check is var: %s (RE_VAR=%s)" % (ast, self.RE_VAR))
+        return (isinstance(ast, basestring) and re.match(self.RE_VAR, ast)) #or \
+#                (isinstance(ast, tuple) and len(ast) == 2 and re.match(self.RE_VAR, "%s.%s" % (ast[0], ast[1])))
 
     def _is_literal(self, ast):
         return isinstance(ast, basestring) and re.match(self.RE_LITERAL, ast)
@@ -1356,6 +1360,10 @@ class PredicateParser(LeftLinearParser):
 
     VAR_DELIM_BEGIN = "{"
     VAR_DELIM_END = "}"
+
+    def __init__(self, ss_env=None, *args, **kwargs):
+        super(PredicateParser, self).__init__(*args, **kwargs)
+        self._ss_env = ss_env
 
     @contract(text="string", returns="tuple(is_ast, string)")
     def _text_to_ast(self, text):
@@ -1385,7 +1393,14 @@ class PredicateParser(LeftLinearParser):
         elif text[0] == self.VAR_DELIM_BEGIN: #"{":
             # it is a variable name, enclosed in curly brackets
             var_name, remaining = self._match(self.RE_VAR, text)
-            result = ("%s" % var_name)
+            #var_name_parts = var_name.strip("%s%s" % (self.VAR_DELIM_BEGIN, self.VAR_DELIM_END)).split(".")
+            #if len(var_name_parts) == 1:
+            #    result = ("%s" % var_name)  
+            #elif len(var_name_parts) == 2:
+            #    result = (var_name_parts[0], var_name_parts[1])
+            #else:
+            #    raise ValueError("Unexpected variable name '%s'. Expected at most one dot." % var_name)
+            result = "%s" % var_name
         else:
             # a token that ends at the first space (if any)  
             name, remaining = self._match(self.RE_LITERAL, text)
@@ -1447,7 +1462,7 @@ class PredicateParser(LeftLinearParser):
     
         else:
             #raise ValueError("The passed ast contains an unexpected node: %s" % ast)
-            log.warning("Unknown predicate content. Assume it's a piece of SMT code: %s" % ast)
+            log.warning("Unknown predicate content. Assume it's a piece of SMT code: %s" % (ast,))
             return ast
 
     @staticmethod
@@ -1495,7 +1510,6 @@ class FormulaParser(LeftLinearParser):
         "and"   : formulas.And,
         "or"    : formulas.Or,
         "not"   : formulas.Not,
-#        "P" : formulas.Proposition,
         "G" : formulas.Globally,
         "A" : formulas.AllPaths,
         "E" : formulas.SomePaths,
@@ -1508,23 +1522,38 @@ class FormulaParser(LeftLinearParser):
     PROP_DELIM_BEGIN = "["
     PROP_DELIM_END = "]"
 
-    @contract(ss="is_state_space")
-    def __init__(self,ss):
+    @contract(ss_env="dict(string:is_state_space)")
+    def __init__(self,ss_env):
         super(FormulaParser,self).__init__()
-        self.ss=ss
+        #self.ss=ss
+        self._ss_env = ss_env
+
+
+    def parse(self, *args, **kwargs):
+        formula = super(FormulaParser, self).parse(*args, **kwargs)
+        formula.set_ss_env(self._ss_env)
+        return formula
+
+
     
-    def predicate_to_existential_abstraction(self,ss, pred):
+    def predicate_to_existential_abstraction(self, pred):
    
         solver = SMTSolver()
 
+        log.debug("Received predicate: %s. SS env: %s. Predicate var names: %s" % (pred, self._ss_env, pred.var_names))
         existential_abstraction = []
+
+        assert len(self._ss_env) == 1, "Predicates on multiple state-spaces not supported, yet"
+        proc_name, ss = self._ss_env.items()[0]
 
         for conf in ss.enumerate: # filter the configurations that are compatible with pred
 
             conf_preds = ss.value(conf)
  
-            ctx = {}
+            ctx = TotalDict() #{ proc_name: {} }
+            ctx[proc_name] = TotalDict()
             for var in ss.variables:
+                ctx[proc_name][var] = var
                 ctx[var] = var
 
   
@@ -1571,10 +1600,11 @@ class FormulaParser(LeftLinearParser):
     
         return existential_abstraction
     
-    def from_predicate(self, ss, pred): #argv):
+    def from_predicate(self, pred): #argv):
     
         # translate a predicate onto a list of configurations
-        conf_list = self.predicate_to_existential_abstraction(ss, pred)
+        log.debug("From predicate: %s" % pred)
+        conf_list = self.predicate_to_existential_abstraction(pred)
     
         if len(conf_list) == 0:
             raise ValueError("Could not find program configurations that correspond to predicate: %s" % pred)
@@ -1593,7 +1623,6 @@ class FormulaParser(LeftLinearParser):
             return formulas.Or(*prop_list)        
     
     @contract(text="string", returns="tuple(is_ast, string)")
-    
     def _text_to_ast(self, text):
         """
         Given some text, it returns a tuple representing its abstract
@@ -1626,13 +1655,13 @@ class FormulaParser(LeftLinearParser):
             literal, remaining = self._match(self.RE_LITERAL, text)
             if literal[0]==self.PROP_DELIM_BEGIN and literal[-1]==self.PROP_DELIM_END:
                 predicate=literal[1:-1]
-                pp=PredicateParser()
+                pp=PredicateParser(self._ss_env)
                 pre=pp.parse(predicate)
                 assert isinstance(pre, Predicate)
                 log.debug("Parsed predicate in formula: %s" % pre)
                 #print pre
                 log.debug("Parse AST from predicate: %s" % pre)
-                result=self.from_predicate(self.ss,pre)
+                result=self.from_predicate(pre)
             else:
                 raise ValueError("not handled: literal = %s, remaining = %s" % (literal, remaining))    
 

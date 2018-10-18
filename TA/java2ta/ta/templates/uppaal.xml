@@ -10,18 +10,18 @@
     broadcast chan {{ chan }};
 {% endfor %}
 </declaration>
-    {% for ta in nta.tas %}
+    {% for tat in nta.ta_templates %}
 	<template>
-		<name>{{ ta.template.name }}</name>
+		<name>{{ tat.name }}</name>
 		<declaration>
-        {% for curr_var in ta.template.variables %}
+        {% for curr_var in tat.variables %}
         {{ curr_var.type.name }} {{ curr_var.name|var_name }};
         {% endfor %}    
-        {% for curr_clock in ta.template.clock_variables %}
+        {% for curr_clock in tat.clock_variables %}
         clock {{ curr_clock.name|var_name }};
         {% endfor %}
         </declaration>
-        {% for curr_loc in ta.template.locations %}
+        {% for curr_loc in tat.locations %}
 		<location id="{{ curr_loc.name|loc_name }}" x="{{ curr_loc|loc_x }}" y="{{ curr_loc|loc_y }}">
 			<name>{{ curr_loc.name|loc_name }}</name>
             {% if curr_loc.invariant %}
@@ -34,10 +34,10 @@
             {% endif %}
 		</location>
         {% endfor %}
-        {% if ta.template.initial_loc %}
-		<init ref="{{ ta.template.initial_loc.name|loc_name }}"/>
+        {% if tat.initial_loc %}
+		<init ref="{{ tat.initial_loc.name|loc_name }}"/>
         {% endif %}
-        {% for curr_edge in ta.template.edges %}
+        {% for curr_edge in tat.edges %}
 		<transition>
 			<source ref="{{ curr_edge.source.name|loc_name }}"/>
 			<target ref="{{ curr_edge.target.name|loc_name }}"/>

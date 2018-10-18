@@ -603,9 +603,20 @@ class NTA(object):
 
     def __init__(self):
 
-        self.tas = set([])
+        self._ta_templates = {}
+        self._tas = {} #set([])
         self.variables = set([])
         self.broadcast_channels = set([])
+
+    @property
+    @contract(returns="list(is_ta)")
+    def tas(self):
+        return self._tas.values()
+
+    @property
+    @contract(returns="list(is_ta_template)")
+    def ta_templates(self):
+        return self._ta_templates.values()
 
     @contract(ta="is_ta")
     def add_ta(self, ta):
@@ -613,9 +624,16 @@ class NTA(object):
         if not ta.template.initial_loc:
             raise ValueError("All the TAs must have an initial location")
 
-        self.tas.add(ta)
+#        self.tas.add(ta)
+        self._tas[ta.name] = ta
+        self._ta_templates[ta.template.name] = ta.template
 
         self.broadcast_channels.update(ta.template.broadcast_channels)
+
+    @contract(ta_name="string", returns="is_ta")
+    def get_ta(self, ta_name):
+        ta = self._tas[ta_name]
+        return ta
 
     @contract(var="is_variable")
     def add_variable(self, var):
