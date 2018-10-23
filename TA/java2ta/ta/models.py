@@ -172,6 +172,15 @@ class Location(object):
     def outgoing(self):
         return self._outgoing
 
+    @contract(returns="list")
+    def select_outgoing(self, target):
+        res = []
+        for edge in self._outgoing:
+            if edge.target.name == target.name:
+                res.append(edge)
+
+        return res
+
     def set_configuration(self, configuration):
         self._configuration = configuration
 
@@ -230,12 +239,19 @@ class Location(object):
 
 
     @contract(returns="string")
-    def uppaal_name(self, ta):
+    def uppaal_name(self, ta=None):
         from java2ta.ta.views import uppaal_loc_name
 
-        assert isinstance(ta, TA)
+        assert ta is None or isinstance(ta, TA)
 
-        return "%s.%s" % (ta.name, uppaal_loc_name(self.name))
+        uppaal_name = None
+
+        if ta is None:
+            uppaal_name = uppaal_loc_name(self.name)
+        else:
+            uppaal_name = "%s.%s" % (ta.name, uppaal_loc_name(self.name))
+
+        return uppaal_name
 
     @property
     def neighbors(self):
@@ -264,7 +280,6 @@ class Edge(object):
         self.variables = variables or set([])
 
         self.synchronization = synchronization
-
 
     @property
     def formatted_label(self):
@@ -347,7 +362,13 @@ class TATemplate(object):
         self.initial_loc = None
         self._variables = dict()
         self._clock_variables = dict() 
-    
+ 
+    def __str__(self):
+
+        return "%s (%s states, %s transitions)" % (self.name, len(self.locations), len(self.edges))
+
+    __repr__ = __str__
+   
     @property
     def final_locations(self):
         for loc in self.locations:
@@ -597,6 +618,11 @@ class TA(object):
         self.name = name
         self.template = template
 
+    def __str__(self):
+        return "%s : { %s }" % (self.name, self.template)
+
+    __repr__ = __str__
+
 new_contract_check_type("is_ta", TA)
 
 class NTA(object):
@@ -642,3 +668,27 @@ class NTA(object):
 
 
 new_contract_check_type("is_nta", NTA)
+
+class Trace(object):
+
+    def __init__(self):
+        self.steps = []
+
+    def add_step(self, state):
+        self.steps.append(state)
+
+
+new_contract_check_type("is_trace", Trace)
+
+class TraceState(object):
+
+    @contract(id="string", proc_locations="dict(string:*)")
+    def __init__(self, id, proc_locations):
+        self.id = id
+        self.proc_locations = dict(**proc_locations)
+
+    def __str__(self):
+        proc_locations = ["%s : %s" % (p,loc) for p,loc in self.proc_locations.iteritems() ]
+        return "%s : { %s }" % (self.id, ", ".join(proc_locations))
+        
+    

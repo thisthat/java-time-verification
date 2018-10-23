@@ -1,4 +1,5 @@
 from java2ta.commons.utility import new_contract_check_type
+from java2ta.ta.models import TA # allow to import contract "is_ta"
 
 from contracts import contract
 import logging
@@ -22,6 +23,10 @@ class PathFormula(object):
     @property
     def ss_env(self):
         return self._ss_env
+
+    @property
+    def process_names(self):
+        return self._ss_env.keys()
 
     @staticmethod
     def formula_to_uppaal(*args, **ctx):
@@ -49,8 +54,6 @@ class And(PathFormula):
         for arg in argv:
             self.args.append(arg)
    
-        for arg in argv:
-            self.args.append(arg)
 
     def to_uppaal(self, *args, **ctx):
 
@@ -237,12 +240,20 @@ class SomePaths(StateFormula):
             
 class Proposition(StateFormula):
     
-    def __init__(self, arg):
+    @contract(proc_name="string")
+    def __init__(self, proc_name, arg):
         super(Proposition, self).__init__()
+        self.proc_name = proc_name
         self.args.append(arg) # arg is a configuration
 
 
-    def to_uppaal(self, *processes, **ctx):
+    def __str__(self):
+        return "%s : %s" % (self.proc_name, self.args[0])
+
+    __repr__ = __str__
+
+    @contract(formula_env="dict(string:is_ta)")
+    def to_uppaal(self, formula_env, **ctx):
         """
         The Uppaal interpretation of a single proposition is an or-formula conjuncting all the 
         locations that match the passed configuration (i.e. one for each reachable PC with the passed
@@ -252,9 +263,15 @@ class Proposition(StateFormula):
         from java2ta.ta.models import TA, TATemplate
         from java2ta.ta.views import uppaal_loc_name
 
-        assert len(processes) == 1, "At the moment we only handle the case of one process. Passed: %s, %s" % (processes,ctx)
-        ta = processes[0]
-        
+        log.debug("Formula env: %s. Process name: %s" % (formula_env, self.proc_name))
+        ta = formula_env.get(self.proc_name, None)
+
+        if not ta:
+            raise ValueError("Cannot find TA for process with name '%s' in the proposition" % self.proc_name)
+
+#        assert len(processes) == 1, "At the moment we only handle the case of one process. Proposition: %s. Processes: %s, %s" % (self, processes,ctx)
+#        ta = processes[0]
+
         if not isinstance(ta, TA):
             raise ValueError("Expected argument of type TATemplate. Passed: %s" % type(ta))
 

@@ -14,96 +14,12 @@ from contracts import contract
 from java2ta.ta.models import Location, ReactUpdateEdge, NotifyUpdateEdge
 import subprocess
 
+import xml.etree.ElementTree as ET
+
+
 import logging
 
 log = logging.getLogger("main")
-
-##class TADisplay(object):
-##
-##    @contract(ta_template="is_ta_template")
-##    def __init__(self, ta_template):
-##        self.ta_template = ta_template
-##
-##    @contract(returns="dict(string:*)")
-##    def get_filters(self):
-##        # override to return view-specific filters; return a dictionary
-##        # name |-> callable
-##        return {}
-##
-##    @contract(ta_template="is_ta_template")
-##    def get_context(self):
-##        ctx = {
-##            "ta_template": self.ta_template, 
-##        }
-##
-##        return ctx
-##       
-##
-##    @contract(ta="is_ta_template")
-##    def render(self, ta_template):
-##
-##        if not self.rendering_template:
-##            raise ValueError("You must specify a rendering template to use in order to render the timed automaton")
-## 
-##        env = Environment(
-##            loader=PackageLoader("java2ta.ta", "templates"),
-##        )
-##
-##        custom_filters = self.get_filters(ta_template)
-##    
-##        if not isinstance(custom_filters, dict):
-##            raise ValueError("The returned custom filters are not a dict")
-##
-##        for name,filter_def in custom_filters.iteritems():
-##            env.filters[name] = filter_def
-##        
-##        rendering_template = env.get_template(self.rendering_template)
-##
-##        ctx = self.get_context(ta_template)
-##
-##        return rendering_template.render(**ctx)
-##
-##
-##    def save(self, path):
-##        self.path = path
-##        render = self.render()
-##        # save the graph text on file
-##        with open(path, "w+") as out_f:
-##            out_f.write(render)
-##
-##new_contract_check_type("is_ta_display", TADisplay)
-##
-
-##class NTARenderer(object):
-##
-##    @contract(nta="is_nta", ta_display="is_ta_display")
-##    def __init__(self, nta, ta_display):
-##        self.nta = nta
-##        self.ta_display = ta_display
-##
-##    @contract(ta_template="is_ta_template")
-##    def get_context(self):
-##        ctx = {
-##            "nta": self.nta, 
-##        }
-##
-##        return ctx
-## 
-##    @contract(returns="dict(string:object)")
-##    def render(self):
-##        res = {}
-##
-##        rendered_templates = {}
-##
-##        for ta in self.nta.tas:
-##            if ta.template.name not in rendered_templates:
-##                renderer = TARenderer(ta.template)
-##                rendered_templates[ta.template.name] = renderer.render()
-##
-##            res[ta.name] = rendered_templates[ta.template.name]
-##
-##        return res
-##
 
 class TADisplay(object):
 
@@ -234,7 +150,7 @@ class TADisplay(object):
         if location.name not in self._positions.keys():
             raise ValueError("Locations not loaded. Invoke the display method before loading location coordinates")
      
-        log.debug("Positions: %s" % (self._positions,))
+        #log.debug("Positions: %s" % (self._positions,))
        
         x_text, y_text = self._positions[location.name]
         return (float(x_text), float(y_text))
@@ -285,29 +201,6 @@ def uppaal_var_name(name):
 def uppaal_channel_name(name):
     return re.sub("(|)","", re.sub("@|,|\.","_", unicode(name)))
    
-
-##def uppaal_get_loc_position(position_map):
-##
-##    # take the maximum value of y
-##    y_values = map(lambda pos: float(pos[1]), position_map.values())
-##    y_max = int(max(y_values) * 100)
-##    y_min = int(min(y_values) * 100)
-##    
-##    def get_x(loc):
-##        loc_name = loc
-##        if isinstance(loc, Location):
-##            loc_name = loc.name
-##        return int(float(position_map[loc_name][0]) * 100)
-##
-##    def get_y(loc):
-##        loc_name = loc
-##        if isinstance(loc, Location):
-##            loc_name = loc.name
-##        y_curr = int(float(position_map[loc_name][1]) * 100)
-##
-##        return y_max - y_curr
-##
-##    return (get_x, get_y)
 
 class Uppaal(object):
     rendering_template = "uppaal.xml"
@@ -388,3 +281,72 @@ class Uppaal(object):
 
         return rendering_template.render(**ctx)
 
+class UppaalTraceParser(object):
+
+    def __init__(self, nta, path):
+        self.nta = nta
+        tree = ET.parse(path)
+        self.root = tree.getroot()
+        self._locations = {}
+        self._nodes = {}
+
+        # create a mapping from the uppaal name of a location to the location itself;
+        # also create a mapping from TA name to TATemplate name
+        self._uppaal_location_names = {}
+        self._ta_to_template = {}
+
+        for ta in self.nta.tas:
+            self._ta_to_template[ta.name] = ta.template.name
+
+            if ta.template.name in self._uppaal_location_names:
+                continue
+
+            self._uppaal_location_names[ta.template.name] = {}
+
+            for loc in ta.template.locations:
+                uppaal_loc_name = loc.uppaal_name()
+                self._uppaal_location_names[ta.template.name][uppaal_loc_name] = loc
+
+
+    def parse(self):
+
+        # load location vector
+        for lv in self.root.findall('location_vector'):
+            self._locations[lv.attrib["id"]] = {}
+            for proc_conf in lv.attrib["locations"].strip().split(" "):
+                proc_name, proc_location = proc_conf.split(".")
+    
+                # lookup location with given name 
+                assert proc_name in self._ta_to_template
+                template_name = self._ta_to_template[proc_name]
+
+                assert template_name in self._uppaal_location_names, "Expected '%s' in %s" % (template_name, self._uppaal_location_names)
+                assert proc_location in self._uppaal_location_names[template_name]
+                curr_loc = self._uppaal_location_names[template_name][proc_location]
+                self._locations[lv.attrib["id"]][proc_name] = curr_loc
+
+        # load states
+        for n in self.root.findall('node'):
+            self._nodes[n.attrib["id"]] = n.attrib["location_vector"]
+
+        # build sequence of states
+        transitions = []
+
+        # get initial node
+        curr_node_name = self.root.attrib["initial_node"]
+        curr_node = self._locations[self._nodes[curr_node_name]]
+        assert isinstance(curr_node, dict)
+
+        _visited_nodes = set([curr_node_name])
+
+        transitions.append(curr_node)
+
+        for tr in self.root.findall('transition'):
+            assert tr.attrib["from"] == curr_node_name
+
+            curr_node_name = tr.attrib["to"]
+            transitions.append(self._locations[self._nodes[curr_node_name]])
+            is_looping = (curr_node_name in _visited_nodes)
+            _visited_nodes.add(curr_node_name)
+
+        return (transitions, is_looping)

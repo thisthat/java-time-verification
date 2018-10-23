@@ -12,7 +12,8 @@ def new_contract_check_type(contract_name, my_type):
 class TotalDict(dict):
     """
     A usual python dictionary is like a "partial" function, returning a value only for 
-    the defined keys. This is a total extension of a usual dictionary, returning:
+    the defined keys. This is a different object that behaves like a total dictionary, i.e. it 
+    returns a value for every key that it is asked. The returned value is:
     - the value, if the key is defined
     - the key, otherwise
 
@@ -23,14 +24,19 @@ class TotalDict(dict):
     http://stackoverflow.com/a/11284026/374430
     """
 
-    def __missing__(self, key):
-        return "{" + key + "}"
+    def __init__(self, *args, **kwargs):
+        self.__prefix__ = kwargs.pop("__prefix__","")
+        super(TotalDict, self).__init__(*args, **kwargs)
 
-    # the following, allow to access a key either as foo.key or as foo["key"]
-    # this is useful for the dotted notation used in abstraction predicates
-    __getattr__= dict.__getitem__
-    __setattr__= dict.__setitem__
-    __delattr__= dict.__delitem__
+    def __missing__(self, key):
+        res = "{%s}" % key
+        if self.__prefix__:
+            res = "{%s.%s}" % (self.__prefix__, key)
+
+        return res
+
+    def __getattr__(self, key, *args, **kwargs):
+        return self.get(key, self.__missing__(key))
 
 
 
@@ -38,7 +44,12 @@ def partial_format(toformat, ctx):
     pctx = TotalDict(**ctx)
     formatter = string.Formatter()
 
-    return formatter.vformat(toformat, (), pctx)
+    try:
+        res = formatter.vformat(toformat, (), pctx) 
+        return res
+    except AttributeError, e:
+        raise ValueError("The string to format ('%s') probably contains a reference to a namespace not present in the context (%s)" % (toformat, ctx))
+
 
 def pairwise_iter(iterable):
     """

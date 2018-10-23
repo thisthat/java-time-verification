@@ -192,6 +192,7 @@ class Predicate(object):
     _label = "{name}({arguments})"
 
     def __init__(self, *arguments):
+        log.debug("Predicate(%s) arguments: %s" % (self.__class__.__name__, arguments))
         self._arguments = arguments
         label_arguments = ",".join(map(lambda v: v.label() if isinstance(v, Predicate) else str(v), arguments))
         self._label = partial_format(self._label, { "name": self._smt_name, "arguments": label_arguments })
@@ -222,9 +223,11 @@ class Predicate(object):
 
         If some of the parameters are still missing, an exception is raised. 
         """
-        #ctx = dict(**kwargs)
-        ctx = TotalDict(**kwargs)
-        return partial_format(self._label, ctx)
+        if kwargs:
+            res = partial_format(self._label, kwargs)
+        else:
+            res = self._label
+        return res
 
     @contract(returns="string")
     def smt_assert(self, **kwargs):
@@ -241,9 +244,12 @@ class Predicate(object):
 
         If some of the parameters are still missing, an exception is raised.
         """
-        ctx = dict(**kwargs)
-        log.debug("Partial formatting: %s <-> %s" % (self._smt_condition, ctx))
-        return partial_format(self._smt_condition, ctx)
+        if kwargs:
+            res = partial_format(self._smt_condition, kwargs)
+        else:
+            res = self._smt_condition
+    
+        return res
     
     def __repr__(self):
         return self._label
@@ -291,6 +297,30 @@ class Predicate(object):
             assert var_old not in self.var_names, "%s vs %s" % (var_old, self.var_names)
 
         return self
+
+    @property
+    def proc_names(self):
+        res = set([])
+
+        for v in self.var_names:
+            parts = v.split(".")
+            if len(parts) == 2:
+                res.add(parts[0])
+            elif len(parts) != 1:
+                raise ValueError("Variable name not recognized in predicate: %s" % v)
+
+        return res
+
+    def instantiate(self, proc_name):
+
+        ctx = {}
+        for v in self.var_names:
+            if "." in v:
+                raise ValueError("This operation is possible only if the predicate variables does not refer to any process, already")
+            ctx[v] = "%s.%s" % (proc_name, v)
+
+        new = self.copy()
+        return new.rename(**ctx)
 
     @contract(var_names="None|list(string)", suffix="string")
     def primed(self, var_names=None, suffix="_1"):
@@ -1534,93 +1564,197 @@ class FormulaParser(LeftLinearParser):
         formula.set_ss_env(self._ss_env)
         return formula
 
+    def predicate_weakening(self, pred):
+        """
+        This procedure takes a predicate as it is in the User's mind, and builds a formula that 
+        is a weakening (a generalization) of the input. Thus, it will follows that always the input
+        implies the resulting formula, but not the other way around.
+        """
 
-    
-    def predicate_to_existential_abstraction(self, pred):
-   
         solver = SMTSolver()
 
         log.debug("Received predicate: %s. SS env: %s. Predicate var names: %s" % (pred, self._ss_env, pred.var_names))
         existential_abstraction = []
 
-        assert len(self._ss_env) == 1, "Predicates on multiple state-spaces not supported, yet"
-        proc_name, ss = self._ss_env.items()[0]
+        # prepare context
 
-        for conf in ss.enumerate: # filter the configurations that are compatible with pred
+        ctx = TotalDict() #{ proc_name: {} }
+        for (curr_proc, curr_ss) in self._ss_env.iteritems():
+            # TODO fix this
+            ctx[curr_proc] = TotalDict(__prefix__=curr_proc) #TotalDict(prefix=curr_proc)
+            for var in curr_ss.variables:
+                ctx[curr_proc][var] = "%s_%s" % (curr_proc, var)
+                #ctx[var] = var 
 
-            conf_preds = ss.value(conf)
- 
-            ctx = TotalDict() #{ proc_name: {} }
-            ctx[proc_name] = TotalDict()
-            for var in ss.variables:
-                ctx[proc_name][var] = var
-                ctx[var] = var
+        log.debug("Context for existential abstraction: %s" % (ctx,))
 
-  
+        # build the list of problems and select those that are satisfiable to be the existential abstraction
+        ss_configurations = map(lambda ss: ss.enumerate, self._ss_env.values()) # TODO here we should force an ordering 
+        conf_combinations = itertools.product(*ss_configurations) # return tuples (a,b,...,z) where each is a configuration taken from a different statespace
+
+
+        for conf_multi_ss in conf_combinations:
+
             curr_problem = []
-            for (curr_attr, curr_pred) in zip(ss.attributes, conf_preds):
-                # TODO this is a dirty solution; find a better way
-                datatypes = [ curr_attr.domain.datatype ]
-                if hasattr(datatypes[0], "datatypes"):
-                    datatypes = datatypes[0].datatypes
-                # end of the dirty solution
 
-                assert len(curr_attr.variables) == len(datatypes), "Expected one datatype per variable. Got %s variables vs %s datatypes" % (len(curr_attr.variables), len(datatypes))
+            for ((curr_proc, curr_ss), ss_conf) in zip(self._ss_env.iteritems(), conf_multi_ss):
+                isinstance(curr_proc, basestring)
+                # curr_proc is the name of a process, used in the formula
+                isinstance(curr_ss, StateSpace)
+                #  ss_conf is a configuration in statespace curr_ss
 
-                for (var, datatype) in zip(curr_attr.variables, datatypes):
-                    assert isinstance(datatype, DataType)
-                    dt_declaration = datatype.smt_declaration
-                    log.debug("Datatype: %s -> Declaration: %s" % (datatype, dt_declaration))
-                    dt_var_axioms = datatype.smt_var_axioms(var)
-                    log.debug("Var: %s:%s -> Axioms: %s" % (var, datatype, dt_var_axioms))
+                log.debug("Process: %s, State-space: %s, Configuration: %s" % (curr_proc, curr_ss, ss_conf))
 
-                    if len(dt_declaration) > 0:
-                        curr_problem.append(dt_declaration)
-                    if len(dt_var_axioms) > 0:
-                        curr_problem.append(dt_var_axioms)
-                    curr_problem.append("(declare-const %s %s)" % (var, datatype))
+                conf_preds = curr_ss.value(ss_conf)
+                for (curr_attr, curr_pred) in zip(curr_ss.attributes, conf_preds):
+                    curr_pred = curr_pred.instantiate(curr_proc) # rename variable x to p.x where p is the current process
 
-#                curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
-                curr_problem.append(curr_pred.smt_assert(**ctx))
+                    log.debug("Attribute: %s. Predicate: %s" % (curr_attr, curr_pred))
 
-
-            curr_problem.append(pred.smt_assert(**ctx))
-            log.debug("Existential abstraction SMT problem: %s. Context: %s" % (curr_problem, ctx))
+                    # TODO this is a dirty solution; find a better way
+                    datatypes = [ curr_attr.domain.datatype ]
+                    if hasattr(datatypes[0], "datatypes"):
+                        datatypes = datatypes[0].datatypes
+                    # end of the dirty solution
+ 
+                    assert len(curr_attr.variables) == len(datatypes), "Expected one datatype per variable. Got %s variables vs %s datatypes" % (len(curr_attr.variables), len(datatypes))
     
+                    for (var, datatype) in zip(curr_attr.variables, datatypes):
+                        assert isinstance(datatype, DataType)
+                        proc_var = "%s_%s" % (curr_proc, var)
+    
+                        dt_declaration = datatype.smt_declaration
+                        log.debug("Datatype: %s -> Declaration: %s" % (datatype, dt_declaration))
+                        dt_var_axioms = datatype.smt_var_axioms(proc_var) #var)
+                        log.debug("Var: %s:%s -> Axioms: %s" % (proc_var, datatype, dt_var_axioms)) # was: var
+    
+                        if len(dt_declaration) > 0:
+                            curr_problem.append(dt_declaration)
+                        if len(dt_var_axioms) > 0:
+                            curr_problem.append(dt_var_axioms)
+                        curr_problem.append("(declare-const %s %s)" % (proc_var, datatype)) # was: var
+    
+                    curr_smt_assert = curr_pred.smt_assert(**ctx)
+                    log.debug("Instantiated predicate: %s. SMT assertion: %s" % (curr_pred, curr_smt_assert))
+                    curr_problem.append(curr_smt_assert)
+    
+    
+            curr_problem.append(pred.smt_assert(**ctx))
+            log.debug("Weakening problem. Predicate: %s. SMT problem: %s. Context: %s" % (pred, curr_problem, ctx))
+ 
             # pass the problem to the smt solver; if it is satisfiable, take the conf
             # otherwise skip it
             solver.push()
             res = solver.check_sat(curr_problem)
+            solver.pop()
+
             if res not in ["sat", "unsat"]:
                 raise ValueError("Error computing the existential abstraction of the formula: %s" % res)
-    
+        
             if res == "sat":
-                existential_abstraction.append(conf)
-            solver.pop()
-    
-        return existential_abstraction
-    
-    def from_predicate(self, pred): #argv):
-    
-        # translate a predicate onto a list of configurations
-        log.debug("From predicate: %s" % pred)
-        conf_list = self.predicate_to_existential_abstraction(pred)
-    
-        if len(conf_list) == 0:
-            raise ValueError("Could not find program configurations that correspond to predicate: %s" % pred)
+#                conf_to_prop = lambda c: formulas.Proposition(c)
 
-        # define a formula for converting a configuration onto a Proposition
-        conf_to_prop = lambda c: formulas.Proposition(c)
+                prop_list = []
+                for ((curr_proc, curr_ss), ss_conf) in zip(self._ss_env.iteritems(), conf_multi_ss):
+                    p = formulas.Proposition(curr_proc, ss_conf)
+                    prop_list.append(p)
 
-        # translate a list of configurations onto a list of Proposition's
-        prop_list = map(conf_to_prop, conf_list)
-        assert len(prop_list) > 0
+                assert len(prop_list) > 0
 
-        if len(prop_list) == 1:
-            return prop_list[0]
+                log.debug("Proposition list for sub-formula: %s" % prop_list)
+                if len(prop_list) == 1:
+                    subformula = prop_list[0]
+                else:
+                    subformula = formulas.And(*prop_list)
+
+                log.debug("Proposition matching the original predicate (%s): %s" % (pred, subformula))
+                #existential_abstraction.append(conf_multi_ss)
+                existential_abstraction.append(subformula)
+
+        weak_pred = None
+        if len(existential_abstraction) == 0:    
+            raise ValueError("No configuration of processes match the predicate. Case not covered.")
+        elif len(existential_abstraction) == 1:
+            weak_pred = existential_abstraction[0]
         else:
-            # create an Or among all the Proposition's in the list
-            return formulas.Or(*prop_list)        
+            weak_pred = formulas.Or(*existential_abstraction)
+        
+
+        for name, ss in self._ss_env.iteritems():
+            log.debug("Statespace: %s -> %s" % (name, ss.attributes))
+
+        log.debug("Weakened predicate: %s. Original predicate: %s." % (weak_pred, pred))
+        return weak_pred
+
+            
+
+## TODO this version of the code works but only with predicates about a single process   
+##    def predicate_to_existential_abstraction(self, pred):
+##   
+##        solver = SMTSolver()
+##
+##        log.debug("Received predicate: %s. SS env: %s. Predicate var names: %s" % (pred, self._ss_env, pred.var_names))
+##        existential_abstraction = []
+##
+##        assert len(self._ss_env) == 1, "Predicates on multiple state-spaces not supported, yet"
+##        proc_name, ss = self._ss_env.items()[0]
+##
+##        for conf in ss.enumerate: # filter the configurations that are compatible with pred
+##
+##            conf_preds = ss.value(conf)
+## 
+##            # TODO fix this
+##            ctx = TotalDict() #{ proc_name: {} }
+##            ctx[proc_name] = TotalDict()
+##            for var in ss.variables:
+##                ctx[proc_name][var] = var
+##                #ctx[var] = var 
+##
+##  
+##            curr_problem = []
+##            for (curr_attr, curr_pred) in zip(ss.attributes, conf_preds):
+##                # TODO this is a dirty solution; find a better way
+##                datatypes = [ curr_attr.domain.datatype ]
+##                if hasattr(datatypes[0], "datatypes"):
+##                    datatypes = datatypes[0].datatypes
+##                # end of the dirty solution
+##
+##                assert len(curr_attr.variables) == len(datatypes), "Expected one datatype per variable. Got %s variables vs %s datatypes" % (len(curr_attr.variables), len(datatypes))
+##
+##                for (var, datatype) in zip(curr_attr.variables, datatypes):
+##                    assert isinstance(datatype, DataType)
+##                    dt_declaration = datatype.smt_declaration
+##                    log.debug("Datatype: %s -> Declaration: %s" % (datatype, dt_declaration))
+##                    dt_var_axioms = datatype.smt_var_axioms(var)
+##                    log.debug("Var: %s:%s -> Axioms: %s" % (var, datatype, dt_var_axioms))
+##
+##                    if len(dt_declaration) > 0:
+##                        curr_problem.append(dt_declaration)
+##                    if len(dt_var_axioms) > 0:
+##                        curr_problem.append(dt_var_axioms)
+##                    curr_problem.append("(declare-const %s %s)" % (var, datatype))
+##
+###                curr_problem.append(curr_pred.smt_assert(lhs=curr_attr.variables[0]))
+##                curr_problem.append(curr_pred.smt_assert(**ctx))
+##
+##
+##            curr_problem.append(pred.smt_assert(**ctx))
+##            log.debug("Existential abstraction SMT problem: %s. Context: %s" % (curr_problem, ctx))
+##    
+##            # pass the problem to the smt solver; if it is satisfiable, take the conf
+##            # otherwise skip it
+##            solver.push()
+##            res = solver.check_sat(curr_problem)
+##            if res not in ["sat", "unsat"]:
+##                raise ValueError("Error computing the existential abstraction of the formula: %s" % res)
+##    
+##            if res == "sat":
+##                existential_abstraction.append(conf)
+##            solver.pop()
+##    
+##        return existential_abstraction
+##
+    
     
     @contract(text="string", returns="tuple(is_ast, string)")
     def _text_to_ast(self, text):
@@ -1661,7 +1795,7 @@ class FormulaParser(LeftLinearParser):
                 log.debug("Parsed predicate in formula: %s" % pre)
                 #print pre
                 log.debug("Parse AST from predicate: %s" % pre)
-                result=self.from_predicate(pre)
+                result=self.predicate_weakening(pre)
             else:
                 raise ValueError("not handled: literal = %s, remaining = %s" % (literal, remaining))    
 
