@@ -9,6 +9,26 @@ def new_contract_check_type(contract_name, my_type):
 
     return new_contract(contract_name, contract_check_type)
 
+def unique(collection):
+    """
+    Return a collection containing all distinct elements, i.e. it removes duplicates from the
+    collection. Note that it also preserves the ordering of elements.
+    """
+    seen = set([])
+    res = []
+    
+    for item in collection:
+        if item not in seen:
+            res.append(item)
+            seen.add(item)
+
+    # len(collection) == 0 if-and-only-if len(res) == 0
+    assert len(collection) == 0 or len(res) > 0
+    assert len(res) == 0 or len(collection) > 0
+    assert len(res) == len(set(res))
+
+    return res
+
 class TotalDict(dict):
     """
     A usual python dictionary is like a "partial" function, returning a value only for 

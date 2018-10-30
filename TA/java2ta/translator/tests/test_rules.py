@@ -1,7 +1,7 @@
 from java2ta.engine.context import Context
-from java2ta.ta.models import TA
+from java2ta.ta.models import TA, TATemplate
 
-from java2ta.translator.shortcuts import translate_method_to_ta
+from java2ta.translator.shortcuts import method_to_ta_template
 
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, LT, Eq, GT, Domain, CompareVariables, Integer
 #from java2ta.abstraction.shortcuts import INTEGERS
@@ -32,14 +32,14 @@ def test_translate_statements():
     ss.add_attribute(AbstractAttribute(["y"], domain=Domain(datatype=Integer(), predicates=[LT("{y}", 0), Eq("{y}", 0), GT("{y}", 0)]), is_local=False))
 
 
-    ta = translate_method_to_ta(m, ss)
+    tat = method_to_ta_template(m, ss)
 
-    assert isinstance(ta, TA)
+    assert isinstance(tat, TATemplate)
 
-    assert 28 == len(ta.locations), len(ta.locations)
-    assert 99 == len(ta.edges), len(ta.edges)
-    assert 0 == len(ta.variables), len(ta.variables)
-    assert 0 == len(ta.clock_variables), len(ta.clock_variables)
+    assert 19 == len(tat.locations), len(tat.locations)
+    assert 90 == len(tat.edges), len(tat.edges)
+    assert 0 == len(tat.variables), len(tat.variables)
+    assert 0 == len(tat.clock_variables), len(tat.clock_variables)
     
 
 def test_translate_while():
@@ -62,9 +62,9 @@ def test_translate_while():
     ss.add_attribute(AbstractAttribute(["a"], domain=Domain(datatype=Integer(), predicates=[LT("{a}", 0), Eq("{a}", 0), GT("{a}", 0)]), is_local=False))
     ss.add_attribute(AbstractAttribute(["b","c"], domain=CompareVariables(datatypes=[Integer(),Integer()], predicates=[LT("{b}","{c}"),Eq("{b}","{c}"), GT("{b}","{c}")]), is_local=False))
 
-    ta = translate_method_to_ta(m, ss)
+    ta = method_to_ta_template(m, ss)
 
-    assert isinstance(ta, TA)
+    assert isinstance(ta, TATemplate)
 
     assert 178 == len(ta.locations), len(ta.locations)
     assert 1530 == len(ta.edges), len(ta.edges)
@@ -96,12 +96,12 @@ def test_inner_method_with_statements():
     ss = StateSpace()
     ss.add_attribute(AbstractAttribute(["i"], domain=Domain(Integer(), predicates=[LT("{i}", 0), Eq("{i}", 0), GT("{i}", 0)]), is_local=False))
 
-    ta = translate_method_to_ta(m_inner, ss)
+    ta = method_to_ta_template(m_inner, ss)
 
-    assert isinstance(ta, TA)
+    assert isinstance(ta, TATemplate)
 
-    assert 7 == len(ta.locations), len(ta.locations)
-    assert 6 == len(ta.edges), len(ta.edges)
+    assert 4 == len(ta.locations), len(ta.locations)
+    assert 7 == len(ta.edges), len(ta.edges)
     assert 0 == len(ta.variables), len(ta.variables)
     assert 0 == len(ta.clock_variables), len(ta.clock_variables)
     

@@ -12,7 +12,10 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from graphviz import Digraph, Graph
 from contracts import contract
 from java2ta.ta.models import Location, ReactUpdateEdge, NotifyUpdateEdge
+from java2ta.commons.utility import new_contract_check_type
 import subprocess
+import os
+import random
 
 import xml.etree.ElementTree as ET
 
@@ -205,10 +208,11 @@ def uppaal_channel_name(name):
 class Uppaal(object):
     rendering_template = "uppaal.xml"
 
-    @contract(nta="is_nta")
-    def __init__(self, nta):
+    @contract(nta="is_nta", ignore_positions="bool")
+    def __init__(self, nta, ignore_positions=False):
         self.nta = nta
         self.path = None
+        self.ignore_positions = ignore_positions
 
 
     def save(self, path):
@@ -225,17 +229,22 @@ class Uppaal(object):
         # to each display (one for each TA template)
         ta_template_displays = {}
 
-        for ta in self.nta.tas:
-            if ta.template.name not in ta_template_displays:
-                d = TADisplay(ta.template)
-                ta_template_displays[ta.template.name] = d
-                d.display()
+        if self.ignore_positions:
+            uppaal_loc_x = lambda loc: 100 * random.randint(1, 100)
+            uppaal_loc_y = lambda loc: 100 * random.randint(1, 100)
+        else:
 
-        # next we create two functions that, from the TA template name and the
-        # location name, can determine the location coordinates
-        uppaal_loc_x = lambda loc: int(100 * ta_template_displays[loc.ta_template.name].get_location_x(loc)) 
-        uppaal_loc_y = lambda loc: int(-100 * ta_template_displays[loc.ta_template.name].get_location_y(loc) )
+            for ta in self.nta.tas:
+                if ta.template.name not in ta_template_displays:
+                    d = TADisplay(ta.template)
+                    ta_template_displays[ta.template.name] = d
+                    d.display()
     
+            # next we create two functions that, from the TA template name and the
+            # location name, can determine the location coordinates
+            uppaal_loc_x = lambda loc: int(100 * ta_template_displays[loc.ta_template.name].get_location_x(loc)) 
+            uppaal_loc_y = lambda loc: int(-100 * ta_template_displays[loc.ta_template.name].get_location_y(loc) )
+        
         return {
             "loc_name": uppaal_loc_name,
             "var_name": uppaal_var_name,
@@ -280,6 +289,8 @@ class Uppaal(object):
         ctx = self.get_context()
 
         return rendering_template.render(**ctx)
+
+new_contract_check_type("is_uppaal", Uppaal)
 
 class UppaalTraceParser(object):
 

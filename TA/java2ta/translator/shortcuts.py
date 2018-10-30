@@ -153,29 +153,33 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
             log.debug("Curr PC (%s) != @0" % curr_pc)
             # consider the possibility of another thread changing the global environment
         
-            log.debug("State space global attributes: %s" % state_space.global_attributes)
+            log.debug("State space global attributes: %s. Instruction: %s ..." % (state_space.global_attributes, curr_instr["code"][:20]))
             for g_attr in state_space.global_attributes: 
         
                 # g_attr is an AbstractAttribute involving some global variable
                 assert isinstance(g_attr, AbstractAttribute)
+
+                if len(g_attr.values) <= 1:
+                    log.debug("Ignore attribute with only one value, since it cannot change. %s" % g_attr)
+                    continue
         
                 log.debug("Global attribute: %s" % g_attr)
         
                 for curr_conf in source_conf:
         
                     curr_pred = state_space.value(curr_conf)
-                    curr_loc = build_location(curr_conf, curr_pc, curr_pred)
                     log.debug("Check modification from (%s,%s)" % (curr_pred, curr_pc))
         
                     for val in g_attr.values:
                         target_pred = state_space.update_abstract_value(curr_pred, g_attr, val) 
+
+                        log.debug("Update abstract value: %s -[%s := %s]-> %s" % (curr_pred, g_attr, val, target_pred))
                         target_conf = state_space.configuration(target_pred)
-                        target_loc = build_location(target_conf, curr_pc, target_pred)
                 
-                        log.debug("New candidate target loc: %s" % target_loc)
+                        log.debug("New candidate target predicate: %s" % (target_pred,))
         
                         updated_global_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
-    
+                        log.debug("Updated global attributes: %s" % updated_global_attributes)
                         if updated_global_attributes:
                             if target_conf not in source_conf:
                                 source_conf.append(target_conf)
@@ -185,6 +189,9 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
                             broadcast_channels.add(chan_name)
                             synchronization = "%s ?" % chan_name
             
+                            curr_loc = build_location(curr_conf, curr_pc, curr_pred)
+                            target_loc = build_location(target_conf, curr_pc, target_pred)
+
                             gv_edge = ReactUpdateEdge(curr_loc, target_loc, synchronization=synchronization)
                             edges.append(gv_edge)
             

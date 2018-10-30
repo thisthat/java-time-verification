@@ -376,86 +376,6 @@ def predicates_differ(left, right):
 
     return differ
 
-##class And(Predicate):
-##
-##        if len(predicates) < 2:
-##            raise ValueError("The AND predicate requires at least two sub-predicates")
-##
-##        self.predicates = predicates
-##
-##        ctx = {}
-##
-##        # the following iteration leaves in ctx only the common pairs (key,value) of the
-##        # respective ctx's
-##        for pred in predicates:
-##
-##            if not isinstance(pred, Predicate):
-##                raise ValueError("Arguments of predicate And should be instances of Predicate. Passed: %s (%s)" % (type(pred), pred))
-##
-##            for (key, val) in pred.ctx.iteritems():
-##                if key not in ctx:
-##                    ctx[key] = val
-##                elif ctx[key] != val:
-##                    del ctx[key]
-##
-##        self.ctx = ctx
-##
-##
-##    def __repr__(self):
-##        res = " and ".join(map(lambda p: repr(p) or "", self.predicates))
-##        return res
-##
-##
-##    def __str__(self):
-##        res = " and ".join(map(lambda p: str(p), self.predicates))
-##        return res
-##
-##
-##    @contract(kwargs="dict(string:string)", returns="string")
-##    def label(self, **kwargs):
-##
-##        label = ") and (".join(map(lambda p: p.label(**kwargs), self.predicates))
-##
-##        return "(%s)" % label
-##
-##    @contract(kwargs="dict(string:string)", returns="string")
-##    def smt_condition(self, **kwargs):
-##
-##        smt_condition = ""
-##
-##        for pred in self.predicates:
-##            if len(smt_condition) == 0:
-##                smt_condition = pred.smt_condition(**kwargs)
-##            else:
-##                smt_condition = "(and %s %s)" % (pred.smt_condition(**kwargs), smt_condition)
-##
-##        return smt_condition
-##
-##
-##    @property
-##    @contract(returns="set(string)")
-##    def var_names(self):
-##
-##        var_names = set([])
-##
-##        for pred in self.predicates:
-##            var_names = var_names | pred.var_names
-##
-##        return var_names
-## 
-##
-##    @contract(var_names="None|list", suffix="None|string", returns="is_predicate")
-##    def primed(self, var_names=None, suffix="_1"):
-##        
-###        check("list(is_predicate)", self.predicates)
-##        check("tuple", self.predicates)
-##        primed_predicates = []
-##
-##        for pred in self.predicates:
-##            primed_predicates.append(pred.primed(var_names=var_names, suffix=suffix))
-##
-##        return And(*primed_predicates)
-##
 
 class BinaryPredicate(Predicate):
 
@@ -525,19 +445,13 @@ class NotEq(BinaryPredicate):
     _label = "!=({arguments})"
 
 
-#class Between(Predicate):    
 class Between(And):
-#    _smt_assert = "(assert (and (< {min} {var}) (< {var} {max})))"
-#    _smt_condition = "(and (< {min} {var}) (< {var} {max}))"
-#    _label = "in({arguments})"
 
     def __init__(self, var=None, min=None, max=None):
         var = var if var is not None else "{var}"
         min = min if min is not None else "{min}"
         max = max if max is not None else "{max}"
-#        arguments = ( var, min, max )
         arguments = ( LT(lhs=min, rhs=var), LT(lhs=var, rhs=max) )
-#        print "arguments: %s" % (arguments,)
         super(Between, self).__init__(*arguments)
 
 

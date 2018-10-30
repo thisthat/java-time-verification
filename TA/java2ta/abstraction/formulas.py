@@ -1,4 +1,4 @@
-from java2ta.commons.utility import new_contract_check_type
+from java2ta.commons.utility import new_contract_check_type, unique
 from java2ta.ta.models import TA # allow to import contract "is_ta"
 
 from contracts import contract
@@ -34,7 +34,7 @@ class PathFormula(object):
         @contract(formula="is_path_formula")
         def aux(formula):
             uppaal_repr = formula.to_uppaal(*args, **ctx)
-            if len(uppaal_repr) > 0:
+            if len(uppaal_repr) > 0 and uppaal_repr not in ["true", "false"]:
                 uppaal_repr = "(%s)" % uppaal_repr
             return uppaal_repr
 
@@ -59,7 +59,23 @@ class And(PathFormula):
 
         aux = PathFormula.formula_to_uppaal(*args, **ctx)
         pre = map(aux, self.args)
-        return u" and ".join(map(aux, self.args))
+        sub_formulas = map(aux, self.args)
+
+        # we can simply ignore the 'true' sub-formulas, since they do not contribute 
+        sub_formulas = filter(lambda f: f != "true", sub_formulas)
+
+        sub_formulas = unique(sub_formulas)
+
+        if len(sub_formulas) == 0:
+            # all sub-formulas were true, thus And(true, ..., true) = true
+            res = "true"
+        elif "false" in sub_formulas:
+            # one 'false' sub-formula is enough to falsify the entire And
+            res = "false" 
+        else:
+            res =  u" and ".join(sub_formulas)
+
+        return res
 
 
  
@@ -106,16 +122,25 @@ class Or(PathFormula):
             self.args.append(arg)
     
     def to_uppaal(self, *args, **ctx):
-        log.debug("Or.to_uppaal: %s, %s" % (args, ctx))
-
-        log.debug("Or arguments: %s" % self.args)
         aux = PathFormula.formula_to_uppaal(*args, **ctx)
 
-        pre = map(aux, self.args)
-        log.debug("Or arguments formatted: %s" % pre)
+        sub_formulas = map(aux, self.args)
 
-        return u" or ".join(pre)
-       
+        sub_formulas = filter(lambda f: f != "false", sub_formulas)
+
+        sub_formulas = unique(sub_formulas)
+
+        if len(sub_formulas) == 0:
+            # all sub-formula were false, thus the Or(false,..., false) = false
+            res = "false"
+        elif "true" in sub_formulas:
+            # one 'true' sub-formula is enough to satisfy the entire Or
+            res = "true" 
+        else:
+            res = u" or ".join(sub_formulas)
+
+        return res
+
 class Not(PathFormula):
 
     def __init__(self, arg):
