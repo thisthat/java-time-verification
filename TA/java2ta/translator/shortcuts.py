@@ -95,6 +95,70 @@ def pred_to_env(attr_predicates):
     return res
 
 
+def detect_update_global_env(curr_pc, state_space, source_conf):
+    """
+    TODO consider refactoring and simplifying this code
+    """
+    edges = []
+    broadcast_channels = set([])
+    new_conf = []
+
+    all_conf = set(source_conf)
+
+#    if curr_pc != PC(0):
+
+    log.debug("Curr PC (%s) != @0" % curr_pc)
+    # consider the possibility of another thread changing the global environment
+
+    log.debug("State space global attributes: %s." % (state_space.global_attributes, ))
+    for g_attr in state_space.global_attributes: 
+
+        # g_attr is an AbstractAttribute involving some global variable
+        assert isinstance(g_attr, AbstractAttribute)
+
+        if len(g_attr.values) <= 1:
+            log.debug("Ignore attribute with only one value, since it cannot change. %s" % g_attr)
+            continue
+
+        log.debug("Global attribute: %s" % g_attr)
+
+        for curr_conf in all_conf: 
+
+            curr_pred = state_space.value(curr_conf)
+            log.debug("Check modification from (%s,%s)" % (curr_pred, curr_pc))
+
+            for val in g_attr.values:
+                target_pred = state_space.update_abstract_value(curr_pred, g_attr, val) 
+
+                log.debug("Update abstract value: %s -[%s := %s]-> %s" % (curr_pred, g_attr, val, target_pred))
+                target_conf = state_space.configuration(target_pred)
+        
+                log.debug("New candidate target predicate: %s" % (target_pred,))
+
+                updated_global_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
+                log.debug("Updated global attributes: %s" % updated_global_attributes)
+                if updated_global_attributes:
+                    if target_conf not in new_conf: #source_conf:
+#                        source_conf.append(target_conf)
+                        new_conf.append(target_conf)
+
+                    chan_name = "__".join(map(lambda attr_val: "%s_%s" % (attr_val[0], attr_val[1]) , updated_global_attributes))
+                    log.debug("Updated predicates: %s. Channel name: %s" % (updated_global_attributes, chan_name))
+                    broadcast_channels.add(chan_name)
+                    synchronization = "%s ?" % chan_name
+    
+                    curr_loc = build_location(curr_conf, curr_pc, curr_pred)
+                    target_loc = build_location(target_conf, curr_pc, target_pred)
+
+                    gv_edge = ReactUpdateEdge(curr_loc, target_loc, synchronization=synchronization)
+                    log.debug("Add react edge: %s" % gv_edge)
+                    edges.append(gv_edge)
+
+            all_conf = all_conf | set(new_conf)
+ 
+    return (edges, broadcast_channels, new_conf)
+
+
 @contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space="is_state_space", project="is_project", visited_locations="set(string)", returns=ReachabilityResult)
 def compute_reachable(source_conf, pc_source, instr, state_space, project, visited_locations, pc_jump_stack=None, deadlines=None):
     """
@@ -146,55 +210,9 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
             log.debug("Exit for non reachable states at PC: %s" % curr_pc)
             break
 
-
-        if curr_pc != PC(0):
-            broadcast_channels = set([])
-    
-            log.debug("Curr PC (%s) != @0" % curr_pc)
-            # consider the possibility of another thread changing the global environment
-        
-            log.debug("State space global attributes: %s. Instruction: %s ..." % (state_space.global_attributes, curr_instr["code"][:20]))
-            for g_attr in state_space.global_attributes: 
-        
-                # g_attr is an AbstractAttribute involving some global variable
-                assert isinstance(g_attr, AbstractAttribute)
-
-                if len(g_attr.values) <= 1:
-                    log.debug("Ignore attribute with only one value, since it cannot change. %s" % g_attr)
-                    continue
-        
-                log.debug("Global attribute: %s" % g_attr)
-        
-                for curr_conf in source_conf:
-        
-                    curr_pred = state_space.value(curr_conf)
-                    log.debug("Check modification from (%s,%s)" % (curr_pred, curr_pc))
-        
-                    for val in g_attr.values:
-                        target_pred = state_space.update_abstract_value(curr_pred, g_attr, val) 
-
-                        log.debug("Update abstract value: %s -[%s := %s]-> %s" % (curr_pred, g_attr, val, target_pred))
-                        target_conf = state_space.configuration(target_pred)
-                
-                        log.debug("New candidate target predicate: %s" % (target_pred,))
-        
-                        updated_global_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
-                        log.debug("Updated global attributes: %s" % updated_global_attributes)
-                        if updated_global_attributes:
-                            if target_conf not in source_conf:
-                                source_conf.append(target_conf)
-    
-                            chan_name = "__".join(map(lambda attr_val: "%s_%s" % (attr_val[0], attr_val[1]) , updated_global_attributes))
-                            log.debug("Updated predicates: %s. Channel name: %s" % (updated_global_attributes, chan_name))
-                            broadcast_channels.add(chan_name)
-                            synchronization = "%s ?" % chan_name
-            
-                            curr_loc = build_location(curr_conf, curr_pc, curr_pred)
-                            target_loc = build_location(target_conf, curr_pc, target_pred)
-
-                            gv_edge = ReactUpdateEdge(curr_loc, target_loc, synchronization=synchronization)
-                            edges.append(gv_edge)
-            
+        (update_edges, broadcast_channels, new_conf) = detect_update_global_env(curr_pc, state_space, source_conf)
+        edges.extend(update_edges)
+        source_conf.extend(new_conf)
 
         for source in source_conf:
 
@@ -229,6 +247,18 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
         curr_pc = curr_pc + 1
 
 #    assert (len(reachable) >= 0 and len(edges) >= 0 and len(final) == 0) or (len(reachable) > 0 and len(edges) > 0 and len(final) > 0)
+
+    # at this point, the final locations could correspond to configurations that have not ReactUpdate edges
+    final_conf = map(lambda l: l.configuration, final)
+
+    (update_edges, final_broadcast_channels, new_conf) = detect_update_global_env(curr_pc, state_space, final_conf)
+    edges.extend(update_edges)
+    reachable.update(new_conf)
+    broadcast_channels.update(final_broadcast_channels)
+
+    # new_conf contains a list of configurations reached by reacting at changes of the external environment; build a list of configurations and add it to the list of final configurations
+    final_react_loc = map(lambda c: build_location(c, curr_pc, state_space.value(c)), new_conf)
+    final.extend(final_react_loc)
 
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
@@ -286,6 +316,20 @@ def transform(name, instructions, state_space, project):
 
     # determine whether there exists an initial location, or create one
     ta.close()
+
+    # sanity check
+    no_react_update_locations = []
+    for l in ta.locations:
+        one_react_edge = False
+        for e in l.outgoing:
+            if isinstance(e, ReactUpdateEdge):
+                one_react_edge = True
+                break
+        if not one_react_edge:
+            no_react_update_locations.append(l)
+
+    log.warning("Checkout these locations without react update edges: %s" % no_react_update_locations)
+        
 
     log.debug("automaton closed")
 
@@ -705,7 +749,7 @@ class SMTProb(SMTSolver):
 #                        self_var = callee_node["code"]
                         interpretation_context["__self__"] = callee_node["code"]
                     else:
-                        log.warning("Callee of unknown type (%s). Cannot use the __self__var in method interpretation. Callee node: %s" % (callee_type, callee_node))
+                        log.info("Callee of unknown type (%s). Cannot use the __self__var in method interpretation. Callee node: %s" % (callee_type, callee_node))
     
 
                 smt_declarations = []
@@ -1039,72 +1083,9 @@ class SMTProb(SMTSolver):
 
         smt_code.append("(check-sat)")
 
-#        return "\n".join(smt_code)
         return smt_code
 
     
-##    def _get_error(self):
-##        err_msg = ""
-##
-##        try:
-##            err_msg = " ".join(self._cmd.stderr.readlines())
-##            self._log_smt(err_msg, is_input=False)
-##        except IOError:
-##            # there was no error to read
-##            pass
-##
-##        return err_msg
-##
-##    def _get_output(self):
-##        out = self._cmd.stdout.readline()
-##        self._log_smt(out, is_input=False)
-##        return out
-##
-##    @contract(commands="list(string)|string", is_input="bool")
-##    def _log_smt(self, commands, is_input=True):
-##
-##        line_format = "**<< {line}"
-##        if is_input:
-##            line_format = "{line_num}>> {line}"
-##
-##        if isinstance(commands, basestring):
-##            commands = commands.split("\n")
-##
-##        for curr_command in commands:
-##            if curr_command:
-##                if is_input:
-##                    self._line_num = self._line_num + 1
-##                line = line_format.format(line=curr_command,line_num=self._line_num)
-##                log_smt.debug(line)
-##
-##
-##    def _check_error(self, line, default=None):
-##        
-##        if line.startswith("(error "):
-##            raise ValueError(line)
-##        elif default:
-##            raise ValueError(default)
-##    
-##    @contract(commands="list(string)", returns="string")
-##    def get_tool_answer(self, commands):
-##        """
-##        Receives a list of commands to be executed by the tool.
-##        Returns the text output of the tool.
-##        """ 
-##
-##        self._log_smt(commands)
-##
-##        commands = "\n".join(commands)
-##        self._cmd.stdin.write(commands + "\n")
-##
-##        answer = self._get_output()
-##
-##        err_msg = self._get_error()
-##        if err_msg:
-##            sys.stderr.write(err_msg)
-##
-##        return answer
-##
     @contract(source_pred="tuple", guard="is_precondition", returns="bool")
     def check_sat_guard(self, source_pred, guard):
  
@@ -1629,6 +1610,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
         assert not is_clock_condition or (is_while_reachable and is_not_while_reachable)
 
         # the guard is satisfiable: enter the block
+        log.debug("Is while reachable (pc=%s): %s" % (pc_source_while, is_while_reachable))
         if is_while_reachable:
     
             pc_jump_stack.append((while_identifier, pc_source_while, pc_target))
@@ -1678,6 +1660,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
                    
 
         # the negation of the guard is satisfiable: jump over the block
+        log.debug("Is not while reachable (pc=%s): %s" % (pc_source_while, is_not_while_reachable))
         if is_not_while_reachable:
 
             # add edge from source to the end of the while

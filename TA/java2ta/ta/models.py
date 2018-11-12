@@ -334,11 +334,33 @@ new_contract_check_type("is_time_edge", TimeEdge)
 
 class NotifyUpdateEdge(Edge):
 
-    pass
+    def __str__(self):
+        label = self.formatted_label
+        if label:
+            label = "[%s]" % label
+
+        label = "%s{%s}" % (label, self.synchronization)
+        return "%s -%s-> %s" % (self.source, label, self.target)
+
+    def __unicode__(self):
+        label = self.formatted_label
+        if label:
+            label = u"[%s]" % label
+
+        label = u"%s{%s}" % (label, self.synchronization)
+        return u"%s -%s-> %s" % (self.source, label, self.target)
 
 class ReactUpdateEdge(Edge):
 
-    pass
+    def __str__(self):
+        label = "{%s}" % self.synchronization
+        return "%s -%s-> %s" % (self.source, label, self.target)
+
+    def __unicode__(self):
+        label = u"{%s}" % self.synchronization
+        return u"%s -%s-> %s" % (self.source, label, self.target)
+
+
 
 class TATemplate(object):
  
