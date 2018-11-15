@@ -213,9 +213,29 @@ class Globally(PathFormula):
         # TODO generalize this check, perhaps using a common ancestor type for the accepted state formulas
         if not isinstance(subformula, And) and not isinstance(subformula, Or) and not isinstance(subformula, Proposition) and not isinstance(subformula, Not):
             raise ValueError("The AllPaths formula accepts only And/Or/Not/Proposition subformula. Got: %s" % (type(subformula)))
-        return u"[] %s" % (subformula.to_uppaal(*args, **ctx),)
 
+        # this is a hack (because the "initial" location is auxiliary, and we assume it should not 
+        # falsify a Globally formula)
+        initial_locations = []
+        for curr_arg in args:
+            if isinstance(curr_arg, dict):
+                # assume it's a dict of processes
+                for name, proc in iter(curr_arg.items()):
+                    assert isinstance(proc, TA)
+                    if not proc.template.initial_loc:
+                        raise ValueError("Cannot accept in the context processes that do not have an initial location set") 
+                    if proc.template.initial_loc.name == "initial":
+                        initial_locations.append("%s.initial" % (proc.name,))
 
+        log.debug("Hack G formula: initial locations = %s" % (initial_locations))
+
+        if len(initial_locations) > 0:
+            initial_locations = ") or (".join(initial_locations)
+            initial_locations = "(%s) or " % initial_locations
+        else:
+            initial_locations = ""
+
+        return u"[] %s%s" % (initial_locations, subformula.to_uppaal(*args, **ctx),)
 
         
 class StateFormula(PathFormula):
@@ -288,7 +308,7 @@ class Proposition(StateFormula):
         from java2ta.ta.models import TA, TATemplate
         from java2ta.ta.views import uppaal_loc_name
 
-        log.debug("Formula env: %s. Process name: %s" % (formula_env, self.proc_name))
+        #log.debug("Formula env: %s. Process name: %s" % (formula_env, self.proc_name))
         ta = formula_env.get(self.proc_name, None)
 
         if not ta:

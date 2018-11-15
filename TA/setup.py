@@ -18,6 +18,8 @@ config = {
         'PyContracts>=1.7.15',
         'graphviz>=0.8',
         'pydot>=1.2.4',
+        'enum34>=1.1.6',
+        'deprecation>=2.0.6',
     ],
     'packages': find_packages(), 
     'scripts': [],

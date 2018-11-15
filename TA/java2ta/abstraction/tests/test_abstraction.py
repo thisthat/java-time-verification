@@ -1,4 +1,4 @@
-from java2ta.abstraction.models import AbstractAttribute, StateSpace, Domain, Integer, LT, GT, Eq
+from java2ta.abstraction.models import AbstractAttribute, StateSpace, Domain, Integer, LT, GT, Eq, AttributeStatus
 from java2ta.abstraction.shortcuts import INTEGERS, split_numeric_domain
 
 def test_non_local_abstract_attribute():
@@ -6,7 +6,7 @@ def test_non_local_abstract_attribute():
     predicates = [ Eq("{foo}",0), LT("{foo}",0), GT("{foo}",0) ]
     dom = Domain(Integer(), predicates)
 
-    aa = AbstractAttribute("foo", dom, is_local=False)
+    aa = AbstractAttribute("foo", dom, status=AttributeStatus.GLOBAL)
 
     assert aa.name == "foo"
     assert aa.variables == [ "foo", ]
@@ -21,7 +21,7 @@ def test_local_abstract_attribute():
     predicates = [ Eq("{foo}",0), LT("{foo}",0), GT("{foo}",0) ]
     dom = Domain(Integer(), predicates) # the first predicate is the default value for the domain
 
-    aa = AbstractAttribute("foo", dom, is_local=True)
+    aa = AbstractAttribute("foo", dom, status=AttributeStatus.LOCAL)
 
     assert aa.name == "foo"
     assert aa.variables == [ "foo", ]
@@ -39,11 +39,11 @@ def test_statespace():
 
     predicates_foo = [ Eq("{foo}",0), LT("{foo}",0), GT("{foo}",0) ]
     dom_foo = Domain(Integer(), predicates_foo) # the first predicate is the default value for the domain
-    foo = AbstractAttribute("foo", dom_foo, is_local=True) #values_foo, initial_foo)
+    foo = AbstractAttribute("foo", dom_foo, status=AttributeStatus.LOCAL) #values_foo, initial_foo)
 
     predicates_fie = [ Eq("{fie}",0), LT("{fie}",0), GT("{fie}",0) ]
     dom_fie = Domain(Integer(), predicates_fie) # the first predicate is the default value for the domain
-    fie = AbstractAttribute("fie", dom_fie, is_local=True) #values_fie, initial_fie)
+    fie = AbstractAttribute("fie", dom_fie, status=AttributeStatus.LOCAL) #values_fie, initial_fie)
 
     ss = StateSpace()
     ss.add_attribute(foo)

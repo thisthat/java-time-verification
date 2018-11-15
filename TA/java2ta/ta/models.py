@@ -579,10 +579,8 @@ class TATemplate(object):
         """
         The operation of closing a TATemplate does the following:
         1. call pseudo-initial a location that has no entering transition
-        2. if a single pseudo-initial location exists, makes it initial
-        3. if multiple pseudo-initial locations exist, create an initial
-            location and add a non-deterministic edge towards each of
-            the pseudo-initial locations
+        2. add a location named "initial" and make it the initial location
+        3. create an edge from the initial location and every pseudo-initial location
         """
 
         from java2ta.translator.models import PC
@@ -592,33 +590,22 @@ class TATemplate(object):
 
         pseudo_initial = filter(lambda loc: len(loc.incoming) == 0, self.locations)
 
-        initial = None
+        if len(pseudo_initial) == 0:
+            pseudo_initial =  filter(lambda l: l.pc == PC(0), self.locations)
 
-        if len(pseudo_initial) == 1:
-            initial = pseudo_initial[0]
-            initial.set_initial()
-        elif len(pseudo_initial) == 0:
-#           TODO what to do in this case?
-#            log.warning("The timed automaton has no pseudo-initial location. Not sure what to do ...")
-#            raise ValueError("Cannot handle automaton with circular states")
-            initial = Location("initial", is_initial=True, is_committed=True)
-            self.add_location(initial)
+        if len(pseudo_initial) == 0:
+            raise ValueError("Cannot detect pseudo-initial locations")
 
-            # add an edge to all the locations with PC = @0
-            for loc in  filter(lambda l: l.pc == PC(0), self.locations):
-                e = Edge(initial, loc)
-                self.add_edge(e)
-        else:
-            # len(pseudo_initial) > 0
-            initial = Location("initial", is_initial=True, is_committed=True)
-            self.add_location(initial)
-            
-            for loc in pseudo_initial:
-                e = Edge(initial, loc)
-                self.add_edge(e)
+        initial = Location("initial", is_initial=True, is_committed=True)
+        self.add_location(initial)
 
-        if initial:
-            self.initial_loc = initial
+        for loc in pseudo_initial:
+            e = Edge(initial, loc)
+            self.add_edge(e)
+
+        self.initial_loc = initial
+
+
 
     def sanity_check(self):
         for loc in self.locations:

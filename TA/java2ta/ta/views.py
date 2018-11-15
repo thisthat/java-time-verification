@@ -321,6 +321,9 @@ class UppaalTraceParser(object):
 
     def parse(self):
 
+        if "initial_node" not in self.root.attrib:
+            raise ValueError("No initial node found in the trace. This is weird...")
+
         # load location vector
         for lv in self.root.findall('location_vector'):
             self._locations[lv.attrib["id"]] = {}
@@ -344,6 +347,7 @@ class UppaalTraceParser(object):
         transitions = []
 
         # get initial node
+
         curr_node_name = self.root.attrib["initial_node"]
         curr_node = self._locations[self._nodes[curr_node_name]]
         assert isinstance(curr_node, dict)

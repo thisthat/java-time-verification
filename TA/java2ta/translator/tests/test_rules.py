@@ -3,7 +3,7 @@ from java2ta.ta.models import TA, TATemplate
 
 from java2ta.translator.shortcuts import method_to_ta_template
 
-from java2ta.abstraction.models import StateSpace, AbstractAttribute, LT, Eq, GT, Domain, CompareVariables, Integer
+from java2ta.abstraction.models import StateSpace, AbstractAttribute, AttributeStatus, LT, Eq, GT, Domain, CompareVariables, Integer
 #from java2ta.abstraction.shortcuts import INTEGERS
 from java2ta.ir.models import Project, Thread, Klass, Method, Variable, InnerKlass
 from java2ta.ir.tests.test_models import check_is_open
@@ -26,10 +26,8 @@ def test_translate_statements():
     m = Method("test", klass)
 
     ss = StateSpace()
-#    ss.add_attribute(AbstractAttribute(["x"], INTEGERS, False))
-#    ss.add_attribute(AbstractAttribute(["y"], INTEGERS, False))
-    ss.add_attribute(AbstractAttribute(["x"], domain=Domain(datatype=Integer(), predicates=[LT("{x}", 0), Eq("{x}", 0), GT("{x}",0)]), is_local=False))
-    ss.add_attribute(AbstractAttribute(["y"], domain=Domain(datatype=Integer(), predicates=[LT("{y}", 0), Eq("{y}", 0), GT("{y}", 0)]), is_local=False))
+    ss.add_attribute(AbstractAttribute(["x"], domain=Domain(datatype=Integer(), predicates=[LT("{x}", 0), Eq("{x}", 0), GT("{x}",0)]), status=AttributeStatus.GLOBAL))
+    ss.add_attribute(AbstractAttribute(["y"], domain=Domain(datatype=Integer(), predicates=[LT("{y}", 0), Eq("{y}", 0), GT("{y}", 0)]), status=AttributeStatus.GLOBAL))
 
 
     tat = method_to_ta_template(m, ss)
@@ -58,9 +56,9 @@ def test_translate_while():
     m = Method("time_method", klass)
 
     ss = StateSpace()
-    ss.add_attribute(AbstractAttribute(["x"], domain=Domain(datatype=Integer(), predicates=[LT("{x}", 0), Eq("{x}", 0), GT("{x}", 0)]), is_local=False))
-    ss.add_attribute(AbstractAttribute(["a"], domain=Domain(datatype=Integer(), predicates=[LT("{a}", 0), Eq("{a}", 0), GT("{a}", 0)]), is_local=False))
-    ss.add_attribute(AbstractAttribute(["b","c"], domain=CompareVariables(datatypes=[Integer(),Integer()], predicates=[LT("{b}","{c}"),Eq("{b}","{c}"), GT("{b}","{c}")]), is_local=False))
+    ss.add_attribute(AbstractAttribute(["x"], domain=Domain(datatype=Integer(), predicates=[LT("{x}", 0), Eq("{x}", 0), GT("{x}", 0)]), status=AttributeStatus.GLOBAL))
+    ss.add_attribute(AbstractAttribute(["a"], domain=Domain(datatype=Integer(), predicates=[LT("{a}", 0), Eq("{a}", 0), GT("{a}", 0)]), status=AttributeStatus.GLOBAL))
+    ss.add_attribute(AbstractAttribute(["b","c"], domain=CompareVariables(datatypes=[Integer(),Integer()], predicates=[LT("{b}","{c}"),Eq("{b}","{c}"), GT("{b}","{c}")]), status=AttributeStatus.GLOBAL))
 
     ta = method_to_ta_template(m, ss)
 
@@ -94,7 +92,7 @@ def test_inner_method_with_statements():
     m_inner = Method("mymethod", c_inner)
 
     ss = StateSpace()
-    ss.add_attribute(AbstractAttribute(["i"], domain=Domain(Integer(), predicates=[LT("{i}", 0), Eq("{i}", 0), GT("{i}", 0)]), is_local=False))
+    ss.add_attribute(AbstractAttribute(["i"], domain=Domain(Integer(), predicates=[LT("{i}", 0), Eq("{i}", 0), GT("{i}", 0)]), status=AttributeStatus.GLOBAL))
 
     ta = method_to_ta_template(m_inner, ss)
 

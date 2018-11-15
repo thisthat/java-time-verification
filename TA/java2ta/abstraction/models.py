@@ -4,6 +4,8 @@ import abc
 from contracts import contract, new_contract, check
 import logging
 import  itertools
+from enum import Enum
+from deprecation import deprecated
 
 from java2ta.abstraction import formulas
 from java2ta.smt.models import SMTSolver
@@ -647,13 +649,21 @@ class Dummy(Domain):
         super(Dummy,self).__init__(datatype=datatype, predicates=[EqItself()]) #{})])
 
 
+class AttributeStatus(Enum):
+    LOCAL = 1
+    GLOBAL = 2
+    PARAMETER = 3
+
+new_contract_check_type("is_attribute_status", AttributeStatus)
+
 class AbstractAttribute(object):
 
-    @contract(variables="list(string)|string", domain="is_domain", is_local="list(bool)|bool")
-    def __init__(self, variables, domain, is_local): #, is_local):
+    @contract(variables="list(string)|string", domain="is_domain", status="is_attribute_status") #is_local="list(bool)|bool")
+    def __init__(self, variables, domain, status): #is_local):
         """
-        An AbstractAttribute has a name, a domain and is either a local attribute (i.e. declared within the
-        analysed code) or is global (i.e. from another component or the environment)
+        An AbstractAttribute has a name, a domain and is either a local attribute (i.e. declared 
+        within the analysed code) or is global (i.e. from another component or the environment) or
+        a parameter (i.e. it is passed to the analyzed method/thread)
         """
 
         if isinstance(variables, basestring):
@@ -669,19 +679,19 @@ class AbstractAttribute(object):
         values = domain.values
         initial = []
 
-##        if is_local:
-##            # attributes with only local variables have a single initial value
-##            initial = [ domain.default ]
-##        else:
-##            # any value of an attribute with global variables can the initial value
-##            initial = values
+#        if is_local:
+        if status != AttributeStatus.PARAMETER:
+            # attributes with local and global variables have a single initial value
+            initial = [ domain.default ]
+        else:
+            # any value of an attribute with parameter variables can the initial value
+            initial = values
 
-        initial = [ domain.default ] # TODO we forced all attributes to be initialized at their default value; check this is correct
+#        initial = [ domain.default ] # TODO we forced all attributes to be initialized at their default value; check this is correct
 
-        self.is_local = is_local
+        #self.is_local = is_local
+        self.status = status
 
-#        self.initial = self.get_initial(is_local)
-    
         assert hasattr(values, "__iter__"), "Expected iterable. Passed '%s'" % values
 
         self.enc_values = {}
@@ -735,7 +745,7 @@ class AbstractAttribute(object):
         primed_variables = map(lambda v: "%s_1" % v, self.variables)
         primed_domain = self.domain.primed()
         log.debug("Domain: %s => primed domain: %s" % (self.domain, primed_domain))
-        new_attr = AbstractAttribute(primed_variables, primed_domain, self.is_local)
+        new_attr = AbstractAttribute(primed_variables, primed_domain, self.status) #self.is_local)
 
         log.debug("(%s)' => %s" % (self, new_attr))
         return new_attr
@@ -784,11 +794,17 @@ class AbstractAttribute(object):
         return res
 
     def __str__(self):
-        visibility = "local" if self.is_local else "global"
+        visibility = self.status.name #"local" if self.is_local else "global"
         return "%s %s : %s" % (visibility, self.name, self.domain)
 
     def __repr__(self):
         return str(self)
+
+    @property
+    @deprecated
+    def is_local(self):
+        return self.status == AttributeStatus.LOCAL
+
 
 new_contract_check_type("is_abstract_attribute", AbstractAttribute)
 
@@ -877,7 +893,9 @@ class StateSpace(object):
         An attribute is local if it is induced by predicates on local variables only
         """
 
-        return filter(lambda attr: attr.is_local, self.attributes)
+        #return filter(lambda attr: attr.is_local, self.attributes) 
+        # NB an AttributeStatus.PARAMETER is considered local as well
+        return filter(lambda attr: attr.status != AttributeStatus.GLOBAL, self.attributes)
 
     @property
     @contract(returns="list(is_abstract_attribute)")
@@ -886,7 +904,8 @@ class StateSpace(object):
         An attribute is global if it is induced by predicates on some global variables
         """
 
-        return filter(lambda attr: not attr.is_local, self.attributes)
+#        return filter(lambda attr: not attr.is_local, self.attributes)
+        return filter(lambda attr: attr.status == AttributeStatus.GLOBAL, self.attributes)
 
     @property
     @contract(returns="list(is_abstract_attribute)")
@@ -904,7 +923,9 @@ class StateSpace(object):
         """
         res = []
         for (attr, source_val, target_val) in zip(self.attributes, source_conf, target_conf):
-            if not attr.is_local and (source_val != target_val):
+            #if not attr.is_local and (source_val != target_val):
+            # NB an AttributeStatus.PARAMETER is considered local
+            if attr.status == AttributeStatus.GLOBAL and (source_val != target_val):
                 res.append((attr.name, target_val))
 
         return res
@@ -1445,12 +1466,12 @@ class FormulaParser(LeftLinearParser):
 
     RE_LITERAL = "true|false|\[[^\[\]]+\]" # TODO this reg-ex should refer to PROP_DELIM_BEGIN e PROP_DELIM_END
     SYMBOL_TO_CLASS = {
-        ">"     : GT,
-        ">="    : GTE,
-        "<"     : LT,
-        "<="    : LTE,
-        "="     : Eq,
-        "!="    : NotEq,
+##        ">"     : GT,
+##        ">="    : GTE,
+##        "<"     : LT,
+##        "<="    : LTE,
+##        "="     : Eq,
+##        "!="    : NotEq,
         "and"   : formulas.And,
         "or"    : formulas.Or,
         "not"   : formulas.Not,
@@ -1500,12 +1521,11 @@ class FormulaParser(LeftLinearParser):
                 ctx[curr_proc][var] = "%s_%s" % (curr_proc, var)
                 #ctx[var] = var 
 
-        log.debug("Context for existential abstraction: %s" % (ctx,))
+        log.debug("Context for predicate weakening: %s" % (ctx,))
 
         # build the list of problems and select those that are satisfiable to be the existential abstraction
         ss_configurations = map(lambda ss: ss.enumerate, self._ss_env.values()) # TODO here we should force an ordering 
         conf_combinations = itertools.product(*ss_configurations) # return tuples (a,b,...,z) where each is a configuration taken from a different statespace
-
 
         for conf_multi_ss in conf_combinations:
 

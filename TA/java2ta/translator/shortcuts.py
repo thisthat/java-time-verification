@@ -272,7 +272,7 @@ def transform(name, instructions, state_space, project):
 
     log.info("State space attributes: %s" % state_space.attributes)
     for attr in state_space.attributes:
-        log.info("%s -> %s" % (attr.name, attr.domain))
+        log.info("Name: %s -> Domain: %s -> Initial: %s" % (attr.name, attr.domain, attr.initial))
 
     reach = dict()
     pc_source = PC(initial="0")
@@ -511,7 +511,6 @@ class SMTProb(SMTSolver):
                 assert curr_method != None, "Expected a non-null current method under analysis"
                 class_fqn = curr_method.parent.fqname
                 method_name = curr_method.name
-#                now_timestamps = KnowledgeBase.get_now_timestamps(class_fqn, method_name)
                 is_now_timestamp = KnowledgeBase.is_now_timestamp(class_fqn, method_name, var)
                 is_timestamp = KnowledgeBase.is_timestamp(class_fqn, method_name, var)
 
@@ -2218,7 +2217,6 @@ def get_class_attributes(klass):
 
 @contract(method="is_method", returns="list(string)")
 def get_method_attributes(method):
-#    assert isinstance(method, Method)
     assert "parameters" in method.ast
     assert "declaredVar" in method.ast
 
@@ -2229,15 +2227,12 @@ def get_method_attributes(method):
     method_parameters = method.ast["parameters"]
     method_vars = method.ast["declaredVar"]
 
-#    return klass_attributes + method_parameters + method_vars
     attributes = []
 
     for curr in klass_attributes + method_parameters:
-#        attributes.append((curr["name"], False))
         attributes.append(curr["name"])
     
     for curr in method_vars:
-#        attributes.append((curr["name"], True))
         attributes.append(curr["name"])
     
     return attributes
@@ -2249,53 +2244,28 @@ def method_to_ta_template(method, state_space):
 
     assert get_current_method() != None
 
-    #instructions = method.ast["stms"]
     instructions = method.instructions
 
     if len(instructions) == 0:
         raise ValueError("The passed method has no instructions. This is not allowed.")
 
     # pre-analysis of variable timestamps
-#    now_methods = KnowledgeBase.get_now_methods()
-#    timestamps = get_timestamps(method) #, now_methods)    
-#    only_now_assignments = {}
-#    for var, nodes in timestamps.iteritems():
-#        is_now_variable = check_now_assignments(nodes, now_methods)
-#        only_now_assignments[var] = is_now_variable
-#
-#        # exploit the analysis of timestamps in order to add attributes to the state-space
-#        if is_now_variable:
-#            try:
-#                attr = state_space.get_attribute(var)
-#            except ValueError, e:
-#                # attribute for the now variable does not exist, add one
-#                attr = AbstractAttribute(variables=[var,],domain=INTEGERS,is_local=False)    
-#                assert attr.name == var
-#                state_space.add_attribute(attr)
-
     class_fqn = method.parent.fqname
     compare_absolute = itertools.combinations(KnowledgeBase.get_absolute_timestamps(class_fqn, method.name), 2)
     compare_relative = itertools.combinations(KnowledgeBase.get_relative_timestamps(class_fqn, method.name), 2)
 
-#    for left,right in list(compare_absolute) + list(compare_relative):
     for left, right in zip(compare_absolute, compare_absolute):
-        if left == right:
-            # compare only distinct variables among themselves
-            continue
-
-        attr = AbstractAttribute(variables=[left,right], domain=CompareVariables(datatypes=[Integer(), Integer()], predicates=[LT(left,right), Eq(left,right), GT(left,right)]), is_local=False)
-        log.debug("Add time-derived attribute: %s" % attr)
-        state_space.add_attribute(attr)
+        if left != right:
+            attr = AbstractAttribute(variables=[left,right], domain=CompareVariables(datatypes=[Integer(), Integer()], predicates=[LT(left,right), Eq(left,right), GT(left,right)]), status=AttributeStatus.GLOBAL)
+            log.debug("Add time-derived attribute: %s" % attr)
+            state_space.add_attribute(attr)
 
     for left, right in zip(compare_relative, compare_relative):
-        if left == right:
-            # compare only distinct variables among themselves
-            continue
+        if left != right:
+            attr = AbstractAttribute(variables=[left,right], domain=CompareVariables(datatypes=[Integer(), Integer()], predicates=[LT(left,right), Eq(left,right), GT(left,right)]), status=AttributeStatus.GLOBAL)
+            log.debug("Add time-derived attribute: %s" % attr)
 
-        attr = AbstractAttribute(variables=[left,right], domain=CompareVariables(datatypes=[Integer(), Integer()], predicates=[LT(left,right), Eq(left,right), GT(left,right)]), is_local=False)
-        log.debug("Add time-derived attribute: %s" % attr)
-
-        state_space.add_attribute(attr)
+            state_space.add_attribute(attr)
 
     ta = transform(method.name, instructions, state_space, method.project)
 
@@ -2306,31 +2276,8 @@ def method_to_ta_template(method, state_space):
 def literal_to_smt(node):
     assert "code" in node
     lit_value = node["code"]
-#    lit_type = node["type"]
     STR_MARKERS = [ '"', "'" ]
     res = lit_value
-##    if lit_value in [ "true", "false" ]:
-##        # this match Java boolean values
-##        res = lit_value.lower()
-##    elif re.match("^[0-9]+(\.[0-9]+)?$|^\.[0-9]+$", lit_value): #lit_value.isdigit():
-##        # this matches Java integer values and float values
-##        res = lit_value
-##    elif lit_value == "null": 
-##        # this matches a null pointer or a string/char constant
-##        res = "%s" % SymbolTable.add_literal(lit_value)
-##    elif lit_value[0] in STR_MARKERS and lit_value[-1] == lit_value[0]:
-###        res = "%s" % SymbolTable.add_literal(lit_value[1:-1])  
-##        lit_code = SymbolTable.add_literal(lit_value[1:-1])
-##        res = "(init-AbsString %s %s)" % (lit_code, len(lit_value) - 2)
-##    elif re.match("^[a-zA-Z0-9_]+$", lit_value):
-##        # this match an identifier, not really a literal
-###        res = lit_value
-###        log.warning("Passed an identifier as literal, this should not happen: %s" % lit_value)
-##        raise IdentifierAsLiteralException(lit_value)
-##    else:
-##        # don't know what literal is
-##        log.warning("Don't know how to handle literal '%s'" % lit_value)
-##
 
     lit_code,lit_type = SymbolTable.add_literal(lit_value)
 
