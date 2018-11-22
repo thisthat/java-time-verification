@@ -8,11 +8,11 @@ import fcntl
 
 from java2ta.engine.rules import Engine
 from java2ta.engine.context import Context
-from java2ta.translator.models import PC, ReachabilityInput, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames, build_location, build_location_name
+from java2ta.translator.models import PC, ReachabilityInput, ReachabilityResult, AttributePredicate, Cache, Precondition, Negate, KnowledgeBase, FreshNames, build_location, build_location_name, TimeType
 from java2ta.ir.models import Project, Method, Klass
 from java2ta.ir.client import APIError
-from java2ta.ir.shortcuts import get_timestamps, check_now_assignments, get_identifiers, get_instr_text
-from java2ta.ta.models import TATemplate, TA, Location, Edge, TimeEdge, NotifyUpdateEdge, ReactUpdateEdge, ClockVariable, ClockCondition
+from java2ta.ir.shortcuts import check_now_assignments, check_sleep_invocation, get_identifiers, get_instr_text
+from java2ta.ta.models import TATemplate, TA, Location, Edge, TimeEdge, SleepEdge, NotifyUpdateEdge, ReactUpdateEdge, ClockVariable, ClockCondition
 from java2ta.abstraction.models import StateSpace, AbstractAttribute, Domain, Predicate, SymbolTable, CompareVariables, Integer, LT, GT, Eq
 from java2ta.abstraction.shortcuts import DataTypeFactory, INTEGERS
 
@@ -30,6 +30,14 @@ THE_METHOD = None
 
 log = logging.getLogger(__name__)
 log_smt = logging.getLogger("smt")
+
+class SleepInvocationException(Exception):
+
+    @contract(timestamp="string", time_type="is_time_type")
+    def __init__(self, timestamp, time_type):
+        self.timestamp = timestamp
+        self.time_type = time_type
+
 
 class IdentifierAsLiteralException(Exception):
     
@@ -83,6 +91,14 @@ class UpdateTimestampException(Exception):
         self.rhs_node = rhs_node
         super(UpdateTimestampException, self).__init__(*args, **kwargs)
 
+def is_var_forgotten(var_name, env):
+    curr_method = get_current_method()
+    assert curr_method != None, "Expected a non-null current method under analysis"
+    class_fqn = curr_method.parent.fqname
+    method_name = curr_method.name
+
+    return var_name not in env and not KnowledgeBase.is_timestamp(class_fqn, method_name, var_name)
+
 @contract(attr_predicates="None|list(is_attribute_predicate)", returns="set(string)")
 def pred_to_env(attr_predicates):
 
@@ -95,72 +111,150 @@ def pred_to_env(attr_predicates):
     return res
 
 
+
 def detect_update_global_env(curr_pc, state_space, source_conf):
-    """
-    TODO consider refactoring and simplifying this code
-    """
     edges = []
     broadcast_channels = set([])
-    new_conf = []
+    new_conf = set([])
+    all_sources = set(source_conf)
+    visited_sources = set([])
 
-    all_conf = set(source_conf)
+    while len(all_sources) > 0:
+        curr_conf = all_sources.pop()
+        visited_sources.add(curr_conf)
 
-#    if curr_pc != PC(0):
+        curr_pred = state_space.value(curr_conf)
+        log.debug("Check modification from (%s,%s)" % (curr_pred, curr_pc))
 
-    log.debug("Curr PC (%s) != @0" % curr_pc)
-    # consider the possibility of another thread changing the global environment
-
-    log.debug("State space global attributes: %s." % (state_space.global_attributes, ))
-    for g_attr in state_space.global_attributes: 
-
-        # g_attr is an AbstractAttribute involving some global variable
-        assert isinstance(g_attr, AbstractAttribute)
-
-        if len(g_attr.values) <= 1:
-            log.debug("Ignore attribute with only one value, since it cannot change. %s" % g_attr)
-            continue
-
-        log.debug("Global attribute: %s" % g_attr)
-
-        for curr_conf in all_conf: 
-
-            curr_pred = state_space.value(curr_conf)
-            log.debug("Check modification from (%s,%s)" % (curr_pred, curr_pc))
-
+        for g_attr in state_space.global_attributes: 
+    
+            # g_attr is an AbstractAttribute involving some global variable
+            assert isinstance(g_attr, AbstractAttribute)
+    
+            if len(g_attr.values) <= 1:
+                log.debug("Ignore attribute with only one value, since it cannot change. %s" % g_attr)
+                continue
+    
+            log.debug("Global attribute: %s" % g_attr)
+ 
+            # TODO the code below allows only to react to modifications to an attribute at the time; 
+            # in general we should give the possibility to react to simultaneous modifications of two
+            # or more attributes synchronously (e.g. two attributes may refer to the same variable)
             for val in g_attr.values:
                 target_pred = state_space.update_abstract_value(curr_pred, g_attr, val) 
 
                 log.debug("Update abstract value: %s -[%s := %s]-> %s" % (curr_pred, g_attr, val, target_pred))
                 target_conf = state_space.configuration(target_pred)
         
-                log.debug("New candidate target predicate: %s" % (target_pred,))
+                if target_conf not in (visited_sources | all_sources):
+                    all_sources.add(target_conf)
 
-                updated_global_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
-                log.debug("Updated global attributes: %s" % updated_global_attributes)
-                if updated_global_attributes:
-                    if target_conf not in new_conf: #source_conf:
-#                        source_conf.append(target_conf)
-                        new_conf.append(target_conf)
+#                log.debug("New candidate target predicate: %s" % (target_pred,))
+#                updated_global_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
+       
+                updated_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
 
-                    chan_name = "__".join(map(lambda attr_val: "%s_%s" % (attr_val[0], attr_val[1]) , updated_global_attributes))
-                    log.debug("Updated predicates: %s. Channel name: %s" % (updated_global_attributes, chan_name))
+                if len(updated_attributes) > 0:
+                    assert len(updated_attributes) == 1, updated_attributes
+    
+                    chan_name = "%s_%s" % (updated_attributes[0][0], updated_attributes[0][1])
+                    log.debug("Updated predicates: %s. Channel name: %s" % (val, chan_name))
                     broadcast_channels.add(chan_name)
                     synchronization = "%s ?" % chan_name
     
                     curr_loc = build_location(curr_conf, curr_pc, curr_pred)
                     target_loc = build_location(target_conf, curr_pc, target_pred)
-
                     gv_edge = ReactUpdateEdge(curr_loc, target_loc, synchronization=synchronization)
                     log.debug("Add react edge: %s" % gv_edge)
                     edges.append(gv_edge)
+    
+    new_conf = visited_sources - set(source_conf)
 
-            all_conf = all_conf | set(new_conf)
- 
     return (edges, broadcast_channels, new_conf)
 
 
-@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space="is_state_space", project="is_project", visited_locations="set(string)", returns=ReachabilityResult)
-def compute_reachable(source_conf, pc_source, instr, state_space, project, visited_locations, pc_jump_stack=None, deadlines=None):
+
+##
+##def detect_update_global_env(curr_pc, state_space, source_conf):
+##    """
+##    TODO consider refactoring and simplifying this code
+##    """
+##    edges = []
+##    broadcast_channels = set([])
+##    new_conf = set([])
+##
+##    all_conf = set(source_conf)
+##
+###    if curr_pc != PC(0):
+##
+##    log.debug("Curr PC (%s) != @0" % curr_pc)
+##    # consider the possibility of another thread changing the global environment
+##
+##    log.debug("State space global attributes: %s." % (state_space.global_attributes, ))
+##    for g_attr in state_space.global_attributes: 
+##
+##        # g_attr is an AbstractAttribute involving some global variable
+##        assert isinstance(g_attr, AbstractAttribute)
+##
+##        if len(g_attr.values) <= 1:
+##            log.debug("Ignore attribute with only one value, since it cannot change. %s" % g_attr)
+##            continue
+##
+##        log.debug("Global attribute: %s" % g_attr)
+##
+##        visited_conf = set([])
+##
+##        ... this algorithm seems buggy: some states do not react to updates to global env
+##
+##        for curr_conf in all_conf: 
+###        while len(all_conf) > 0:
+###            curr_conf = all_conf.pop()
+##
+##            curr_pred = state_space.value(curr_conf)
+##            log.debug("Check modification from (%s,%s)" % (curr_pred, curr_pc))
+##
+##            for val in g_attr.values:
+##                target_pred = state_space.update_abstract_value(curr_pred, g_attr, val) 
+##
+##                log.debug("Update abstract value: %s -[%s := %s]-> %s" % (curr_pred, g_attr, val, target_pred))
+##                target_conf = state_space.configuration(target_pred)
+##        
+##                log.debug("New candidate target predicate: %s" % (target_pred,))
+##
+##                updated_global_attributes = state_space.updated_global_attributes(curr_conf, target_conf)
+##                log.debug("Updated global attributes: %s" % updated_global_attributes)
+##                if updated_global_attributes:
+###                    if target_conf not in (all_conf | visited_conf): #new_conf: #source_conf:
+###                        source_conf.append(target_conf)
+###                        new_conf.add(target_conf)
+##                    if target_conf not in new_conf:
+##                        new_conf.add(target_conf)
+###                    if target_conf not in visited_conf:
+###                        all_conf.add(target_conf)
+##
+##                    chan_name = "__".join(map(lambda attr_val: "%s_%s" % (attr_val[0], attr_val[1]) , updated_global_attributes))
+##                    log.debug("Updated predicates: %s. Channel name: %s" % (updated_global_attributes, chan_name))
+##                    broadcast_channels.add(chan_name)
+##                    synchronization = "%s ?" % chan_name
+##    
+##                    curr_loc = build_location(curr_conf, curr_pc, curr_pred)
+##                    target_loc = build_location(target_conf, curr_pc, target_pred)
+##
+##                    gv_edge = ReactUpdateEdge(curr_loc, target_loc, synchronization=synchronization)
+##                    log.debug("Add react edge: %s" % gv_edge)
+##                    edges.append(gv_edge)
+##
+##            all_conf = all_conf | set(new_conf)
+###            visited_conf.add(curr_conf)
+##
+##    # check that new configurations are disjoint from the initial source configurations
+###    assert len(set(source_conf) & new_conf) == 0
+##
+##    return (edges, broadcast_channels, new_conf)
+
+
+@contract(source_conf="list(is_configuration)", pc_source=PC, instr="list(dict)", state_space="is_state_space", project="is_project", visited_locations="set(string)", initial_source_conf="bool", returns=ReachabilityResult)
+def compute_reachable(source_conf, pc_source, instr, state_space, project, visited_locations, pc_jump_stack=None, deadlines=None, initial_source_conf=False):
     """
     INPUT:
     - source_conf : list of abstract configuration
@@ -182,6 +276,9 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     edges = []
     variables = set([])
     broadcast_channels = set([])
+    initial_conf = set(source_conf) if initial_source_conf else set([])
+
+    log.debug("Initial configurations: %s" % initial_conf)
 
     if deadlines is None:
         deadlines = []
@@ -193,8 +290,9 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
         reachable = set(source_conf)
         final = map(lambda c: build_location(c, pc_source, state_space.value(c)), source_conf) # create a location for each configuration
 
+
     curr_pc = PC(pc_source.pc)
-    for curr_instr in instr:
+    for num_instr,curr_instr in enumerate(instr):
 
         # reachable and final must contain only information that are reached by
         # the last instruction (NB on the contrary, edges contain all the edges 
@@ -210,9 +308,11 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
             log.debug("Exit for non reachable states at PC: %s" % curr_pc)
             break
 
-        (update_edges, broadcast_channels, new_conf) = detect_update_global_env(curr_pc, state_space, source_conf)
+        (update_edges, new_broadcast_channels, new_conf) = detect_update_global_env(curr_pc, state_space, source_conf)
+        log.debug("Detect update global env: source_conf = %s, curr_pc = %s, new_conf = %s" % (source_conf, curr_pc, new_conf))
         edges.extend(update_edges)
         source_conf.extend(new_conf)
+        broadcast_channels |= new_broadcast_channels
 
         for source in source_conf:
 
@@ -223,8 +323,8 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
                 continue
 
             log.debug("Check reach problem: source=%s%s, instr=%s, visited locations: %s" % (source, curr_pc, curr_instr["code"], visited_locations))
-            # TODO in principle each invocation of check_reach(...) is independent from the others
-            rr = check_reach(source, curr_pc, curr_instr, state_space, project, visited_locations, pc_jump_stack=pc_jump_stack, deadlines=deadlines)
+            is_initial_source = (num_instr == 0 and source in initial_conf)
+            rr = check_reach(source, curr_pc, curr_instr, state_space, project, visited_locations, pc_jump_stack=pc_jump_stack, deadlines=deadlines, is_initial_source=is_initial_source)
             log.debug("Check reach: source=%s, result=%s" % (source, rr))    
 
             edges.extend(rr.edges)
@@ -232,7 +332,7 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
             final.extend(rr.final_locations) 
             external.extend(rr.external_locations)
             variables = variables | rr.variables
-            broadcast_channels = broadcast_channels | rr.broadcast_channels
+            broadcast_channels |= rr.broadcast_channels
         
 #        log.debug("Check reachable at %s: %s from %s" % (curr_pc, reachable, source_conf))
         if len(reachable) == 0:
@@ -254,11 +354,13 @@ def compute_reachable(source_conf, pc_source, instr, state_space, project, visit
     (update_edges, final_broadcast_channels, new_conf) = detect_update_global_env(curr_pc, state_space, final_conf)
     edges.extend(update_edges)
     reachable.update(new_conf)
-    broadcast_channels.update(final_broadcast_channels)
+    broadcast_channels |= final_broadcast_channels
 
     # new_conf contains a list of configurations reached by reacting at changes of the external environment; build a list of configurations and add it to the list of final configurations
     final_react_loc = map(lambda c: build_location(c, curr_pc, state_space.value(c)), new_conf)
     final.extend(final_react_loc)
+
+    log.debug("Check reach broadcast channels: %s" % broadcast_channels)
 
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
@@ -281,7 +383,9 @@ def transform(name, instructions, state_space, project):
 
     log.debug("Initial configurations: %s" % sorted(set(source_conf)))
 
-    rr = compute_reachable(source_conf, pc_source, instructions, state_space, project, visited_locations)
+    # start building the automaton on-the-fly, marking the first set of source configurations as the
+    # initial ones
+    rr = compute_reachable(source_conf, pc_source, instructions, state_space, project, visited_locations, initial_source_conf=True)
 
     log.info("reachable: %s, final: %s, external: %s" % (rr.configurations, rr.final_locations, rr.external_locations))
     log.info("visited locations: %s" % visited_locations)
@@ -481,6 +585,12 @@ class SMTProb(SMTSolver):
         if cache_found:
             return cache_found
 
+
+        curr_method = get_current_method()
+        assert curr_method != None, "Expected a non-null current method under analysis"
+        class_fqn = curr_method.parent.fqname
+        method_name = curr_method.name
+
         node_type = node["nodeType"]
 
         smt_declarations = [] #""
@@ -505,12 +615,6 @@ class SMTProb(SMTSolver):
                 var = node_exp["name"]["value"] # TODO check that the LHS is always obtained in this way
                 rhs = node_exp["expr"]
 
-#                if var not in env:
-#                    raise ForgottenVariableException(var)
-                curr_method = get_current_method()
-                assert curr_method != None, "Expected a non-null current method under analysis"
-                class_fqn = curr_method.parent.fqname
-                method_name = curr_method.name
                 is_now_timestamp = KnowledgeBase.is_now_timestamp(class_fqn, method_name, var)
                 is_timestamp = KnowledgeBase.is_timestamp(class_fqn, method_name, var)
 
@@ -582,7 +686,7 @@ class SMTProb(SMTSolver):
                     # update a timestamp that is not a now-timestamp: transform this in a deadline
                     raise UpdateTimestampException(class_fqn, method_name, var, rhs)
 
-                elif var not in env:
+                elif is_var_forgotten(var, env): #var not in env:
                     # if var not in the environment, it means we are abstracting from it completely
                     # (i.e. we are forgetting it)
                     log.debug("Variable %s not in env: %s" % (var, env))
@@ -617,7 +721,7 @@ class SMTProb(SMTSolver):
                 # op is given by the last 2 chars
                 op = node_exp["code"][-2:]
 
-                if var not in env:
+                if is_var_forgotten(var, env): #var not in env:
                     raise ForgottenVariableException(var)
     
                 if op in [ "++", "--" ]:
@@ -638,7 +742,34 @@ class SMTProb(SMTSolver):
                     log.warning("Interpret PL post-op expression (%s) as SMT code: %s ..." % (node_exp["code"], node_exp))
                     smt_assertion = node_exp["code"]
             elif node_exp_type == "ASTMethodCall":
+                assert "methodName" in node_exp
 
+                called_method_name = node_exp["methodName"] 
+                called_class_fqn = node_exp["classPointed"] or "-"
+
+                # detect invokaction of special (time-related) methods, and handle them
+                if check_sleep_invocation(node):
+
+                    log.debug("Found invocation of sleep method: (%s,%s)" % (called_class_fqn, called_method_name))             
+                    timestamp = node_exp["parameters"][0]["code"]
+                    time_type = TimeType.Unknown
+                    if KnowledgeBase.is_absolute_timestamp(class_fqn, method_name, timestamp):
+                        time_type = TimeType.Absolute
+                    elif KnowledgeBase.is_relative_timestmap(class_fqn, method_name, timestamp):
+                        time_type = TimeType.Relative
+
+                    if time_type != TimeType.Unknown:
+                        # if we can determine a time_type for the actual parameter,
+                        # raise an exception for special handling of time function; otherwise
+                        # continue with the code, and handle it as a non-timed function
+                        raise SleepInvocationException(timestamp, time_type)
+                    else:
+                        log.warning("Cannot determine type of sleep function. Continue treating it as an untimed function...")
+                else:
+                    log.debug("Found invocation of non-sleep method: (%s,%s)" % (called_class_fqn, called_method_name))             
+
+                        
+                # otherwise handle "normal" method invokation
                 mc_smt_declarations, mc_smt_assertion = self.node_to_smt(node_exp, env, frame=frame)
                 if mc_smt_declarations:
                     smt_declarations.extend(mc_smt_declarations)
@@ -682,7 +813,7 @@ class SMTProb(SMTSolver):
 
             var = node["value"]
     
-            if var not in env:
+            if is_var_forgotten(var, env): #var not in env:
                 raise ForgottenVariableException(var)
 
             smt_assertion = var
@@ -697,7 +828,7 @@ class SMTProb(SMTSolver):
             else:   
                 raise ValueError("Assignment to instance attribute or to class attribute but not in the current class")
 
-            if var not in env:  
+            if is_var_forgotten(var, env): #var not in env:  
                 raise ForgottenVariableException(var)
 
             smt_assertion = var
@@ -712,7 +843,7 @@ class SMTProb(SMTSolver):
                 # leave a warning log to ease the debugging
                 lit_value = e.identifier
                 log.warning("Passed identifier as literal. This should not happen: %s. Line: %s. Start: %s. End: %s" % (lit_value, node["line"], node["start"], node["end"]))                
-                if lit_value not in env:
+                if is_var_forgotten(lit_value, env): #lit_value not in env:
                     raise ForgottenVariableException(lit_value)
 
 
@@ -726,7 +857,7 @@ class SMTProb(SMTSolver):
 
             try:
                 (smt_dt, formal_parameters, method_env, smt_interpretation) = KnowledgeBase.get_method(class_name,method_name)
-            except Exception, e:
+            except Exception as e:
                 log.warning("Error interpreting method: %s. Node: %s" % (e, node))
                 raise ForgottenMethodException(method_name, class_name, class_path="?")
 
@@ -774,7 +905,7 @@ class SMTProb(SMTSolver):
                     elif par["nodeType"] == "ASTIdentifier":
                         # passing an identifier, directly as the variable name
 
-                        if par["code"] not in env:
+                        if is_var_forgotten(par["code"], env): #par["code"] not in env:
                             # it may be that the variable passed as argument is not one of the 
                             # variables in the abstract state space
                             raise ForgottenVariableException(par["code"])
@@ -893,15 +1024,9 @@ class SMTProb(SMTSolver):
             if isinstance(guard, Negate):
                 guard_smt_assertion = "(not %s)" % guard_smt_assertion
 
-#        assert(len(smt_assertion)>0)
             smt_assertion = "(assert %s)" % guard_smt_assertion
             smt_declarations.extend(guard_smt_declarations)
-##        except ForgottenVariableException, e:
-##            log.warning("Skip precondition because of forgotten variable: %s" % e.var_name)
-##            smt_assertion = ""
-##            smt_declarations = []
-##
-##        log.debug("Pre: %s => (%s,%s)" % (pre, smt_declarations, smt_assertion))
+
         return smt_declarations, smt_assertion
  
 
@@ -931,7 +1056,7 @@ class SMTProb(SMTSolver):
                 assertions.extend(smt_declarations)
                 assertions.append(smt_guard)
                 log.debug("guard: %s, assertions: %s, smt: %s" % (guard, smt_declarations, smt_guard))
-            except ForgottenVariableException, e:
+            except ForgottenVariableException as e:
                 assertions.append("; skip guard because of forgotten variable (%s)" % guard.node["code"])
             assertions.append("; end encoding guard")
        
@@ -955,9 +1080,9 @@ class SMTProb(SMTSolver):
             smt_instr_assertion = None
             try:
                 smt_instr_declarations, smt_instr_assertion = self.node_to_smt(instr, env, frame=frame_variables)
-            except ForgottenVariableException, e:
+            except ForgottenVariableException as e:
                 assertions.append("; cannot compute SMT model for instruction because one variable has been forgotten: %s" % e.var_name)
-            except ForgottenMethodException, e:
+            except ForgottenMethodException as e:
                 assertions.append("; cannot compute SMT model for instruction because one method has been forgotten: (name:%s,class:%s,path:%s)" % (e.method_name, e.class_name, e.class_path))
 
 
@@ -1286,7 +1411,6 @@ def parse_clock_condition(node):
     return clock_variables, clock_condition
 
 
-#def check_reach_astre(instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 def check_reach_astre(ri):
     """
     This is the case of "simple" statements
@@ -1300,13 +1424,11 @@ def check_reach_astre(ri):
     broadcast_channels = set([]) # rendezvous channels
 
     instr = ri.instr
-    source = ri.source
+    source = ri.source_conf
     pc_source = ri.pc_source
     state_space = ri.state_space
     project = ri.project
-#    source_pred = state_space.value(source)
     source_pred = ri.source_pred
-#    source_loc = build_location(source, pc_source)
     source_loc = ri.source_loc
 
     node_exp_type = instr["expression"]["nodeType"]
@@ -1326,6 +1448,8 @@ def check_reach_astre(ri):
             cache_found = SMTProb.smt_cache_lookup(source, instr, target)
 
             is_time_transition = False
+            is_sleep_invocation = False
+            sleep_time = None
             is_sat = False
             if cache_found is not None:
                 is_sat = cache_found
@@ -1334,11 +1458,11 @@ def check_reach_astre(ri):
                 try:
                     is_sat = smt_prob.check_sat_instr(source_pred, instr, target_pred)
                     SMTProb.smt_cache_store(source, instr, target, is_sat)
-                except TimeTransitionException, e:
+                except TimeTransitionException as e:
                     # handle this case by creating a delay transition
                     is_sat = (source_pred == target_pred)
                     is_time_transition = True
-                except UpdateTimestampException, e:
+                except UpdateTimestampException as e:
                     # handle this case by creating a deadline; we associate a deadline to 
                     # variable e.var; this deadline is recovered when an expression
                     # (now ~ var) appears in a branching (if,while,for,...) 
@@ -1351,6 +1475,12 @@ def check_reach_astre(ri):
                         deadline_exp = node_to_deadline_exp(e.rhs_node, now_timestamps)
                         log.debug("Node to deadline expression: %s -> %s" % (e.rhs_node["code"], deadline_exp))
                         KnowledgeBase.set_deadline_exp(e.class_fqn, e.method_name, e.var, deadline_exp)
+                except SleepInvocationException as e:
+                    is_sat = (source_pred == target_pred)
+
+                    if is_sat:
+                        is_sleep_invocation = True
+                        sleep_time = e.timestamp
                 finally:
                     smt_prob.pop()
     
@@ -1361,7 +1491,11 @@ def check_reach_astre(ri):
 
                 if is_time_transition:
                     edge = TimeEdge(source_loc, target_loc, edge_label)
-                    log.debug("Add timed edge: %s" % edge)
+                    log.debug("Add time edge: %s" % edge)
+                elif is_sleep_invocation:
+                    assert sleep_time is not None
+                    edge = SleepEdge(source_loc, target_loc, sleep_time, edge_label)
+                    log.debug("Add sleep edge: %s" % edge)
                 else:
                     updated_global_attributes = state_space.updated_global_attributes(source, target)
 
@@ -1380,12 +1514,14 @@ def check_reach_astre(ri):
                 edges.append(edge) 
                 final.append(target_loc)
 
+    log.debug("ASTRE broadcast channels: %s" % broadcast_channels)
+
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 
     instr = ri.instr
-    source = ri.source
+    source = ri.source_conf
     pc_source = ri.pc_source
     source_loc = ri.source_loc
     source_pred = ri.source_pred
@@ -1528,13 +1664,15 @@ def check_reach_astif(ri): #instr, source, pc_source, visited_locations, pc_jump
 
     check_closure(pc_target, reachable, final, external)
 
+    log.debug("ASTIF broadcast channels: %s" % broadcast_channels)
+
     return ReachabilityResult(configurations=reachable, final_locations=final, external_locations=external, edges=edges, variables=variables, broadcast_channels=broadcast_channels)
 
 
 def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 
     instr = ri.instr
-    source = ri.source
+    source = ri.source_conf
     pc_source = ri.pc_source
     source_loc = ri.source_loc
     source_pred = ri.source_pred
@@ -1555,7 +1693,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
     variables = set([])
     broadcast_channels = set([])
 
-    source_loc = build_location(source, pc_source, source_pred)
+#    source_loc = build_location(source, pc_source, source_pred) # TODO should use ri.source_loc instead
 
     while_identifier = instr["identifier"]
     stms_while = instr["stms"]
@@ -1681,7 +1819,7 @@ def check_reach_astwhile(ri): #instr, source, pc_source, visited_locations, pc_j
 def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 
     instr = ri.instr
-    source = ri.source
+    source = ri.source_conf
     pc_source = ri.pc_source
     source_loc = ri.source_loc
     source_pred = ri.source_pred
@@ -1702,7 +1840,7 @@ def check_reach_astdowhile(ri): #instr, source, pc_source, visited_locations, pc
     variables = set([])
     broadcast_channels = set([])
 
-    source_loc = build_location(source, pc_source, source_pred)
+#    source_loc = build_location(source, pc_source, source_pred) # TODO should use ri.source_loc instead
 
     while_identifier = instr["identifier"]
     stms_while = instr["stms"]
@@ -1819,7 +1957,7 @@ def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_loc
     # latter goes *past* the pc of the referred statement 
 
     instr = ri.instr
-    source = ri.source
+    source = ri.source_conf
     pc_source = ri.pc_source
     source_loc = ri.source_loc
     source_pred = ri.source_pred
@@ -1839,7 +1977,7 @@ def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_loc
     broadcast_channels = set([])
 
 
-    source_loc = build_location(source, pc_source, source_pred)
+#    source_loc = build_location(source, pc_source, source_pred) # TODO should use ri.source_loc instead
 
     target_identifier = instr["target"]
     pc_target = find_break_target(instr_type, pc_jump_stack, target_identifier)
@@ -1868,7 +2006,7 @@ def check_reach_astbreak_astcontinue(ri): #instr, source, pc_source, visited_loc
 def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 
     instr = ri.instr
-    source = ri.source
+    source = ri.source_conf
     pc_source = ri.pc_source
     source_loc = ri.source_loc
     source_pred = ri.source_pred
@@ -1889,7 +2027,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
     variables = set([])
     broadcast_channels = set([])
 
-    source_loc = build_location(source, pc_source, source_pred)
+#    source_loc = build_location(source, pc_source, source_pred) # TODO should use ri.source_loc instead
 
     pc_target = pc_source + 1
 
@@ -1963,7 +2101,7 @@ def check_reach_asttry(ri): #instr, source, pc_source, visited_locations, pc_jum
 def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
 
     instr = ri.instr
-    source = ri.source
+    source = ri.source_conf
     pc_source = ri.pc_source
     source_loc = ri.source_loc
     source_pred = ri.source_pred
@@ -1983,7 +2121,7 @@ def check_reach_astfor_astforeach(ri): #instr, source, pc_source, visited_locati
     variables = set([])
     broadcast_channels = set([])
 
-    source_loc = build_location(source, pc_source, source_pred)
+#    source_loc = build_location(source, pc_source, source_pred) # TODO should use ri.source_loc instead
 
     foreach_identifier = instr["identifier"]
     stms_foreach = instr["stms"]
@@ -2068,7 +2206,7 @@ CHECK_REACH_HANDLERS = {
 }
 
 @contract(source="is_configuration", pc_source=PC, instr="dict", state_space="is_state_space", project="is_project", visited_locations="set(string)", deadlines="list(is_pc)|None", returns=ReachabilityResult)
-def check_reach(source, pc_source, instr, state_space, project, visited_locations, pc_jump_stack=None, deadlines=None):
+def check_reach(source, pc_source, instr, state_space, project, visited_locations, pc_jump_stack=None, deadlines=None, is_initial_source=False):
     assert pc_jump_stack is None or isinstance(pc_jump_stack, list)
     assert deadlines is None or isinstance(deadlines, list)
 
@@ -2081,9 +2219,11 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
     source_pred = state_space.value(source)
 
     instr_type = instr["nodeType"]
-    source_loc = build_location(source, pc_source, source_pred)
+    source_loc = build_location(source, pc_source, source_pred, is_initial_source)
 
-    log.debug("Add source to visited locations: %s. Previous visited locations: %s. Num visited locations: %s." % (source_loc, visited_locations, len(visited_locations)))
+#    log.debug("Source loc: %s. Is initial? %s" % (source_loc, source_loc.is_initial))
+
+#    log.debug("Add source to visited locations: %s. Previous visited locations: %s. Num visited locations: %s." % (source_loc, visited_locations, len(visited_locations)))
     assert source_loc.name not in visited_locations, "Location %s already visited" % source_loc.name
     visited_locations.add(source_loc.name)
 
@@ -2092,7 +2232,9 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
     rr = None
 
     if handler:
-        ri = ReachabilityInput(instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project)
+#        ri = ReachabilityInput(instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project)
+        ri = ReachabilityInput(instr, source_loc, visited_locations, pc_jump_stack, deadlines, state_space, project)
+
         rr = handler(ri)
         assert isinstance(rr, ReachabilityResult)
     else:
@@ -2112,9 +2254,7 @@ def check_reach(source, pc_source, instr, state_space, project, visited_location
         for loc in rr.locations:
             # add invariant for states 
             inv = "%s <= %s" % (cv.name, upper.name)
-            if loc.invariant:
-                inv = "(%s) and (%s)" % (loc.invariant, inv)
-            loc.set_invariant(inv)
+            loc.add_invariant(inv)
 
             # add exception location and edge to it
             (loc_conf, loc_pc) = parse_location(loc)

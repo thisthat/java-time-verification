@@ -63,68 +63,127 @@ def get_fingerprints(timestamps):
             fingerprints.add(get_fingerprint(var, node))
     return fingerprints
 
+@contract(node="is_ast_node|dict", returns="dict(string:string)")
+def get_time_variables(node):
 
-@contract(node="is_ast_node|dict", returns="dict(string:list(dict))")
-def get_timestamps(node):
+    time_variables = {}
 
-    timestamp_variables = {}
-    timestamp_fingerprints = []
-
-    @contract(curr_var="string")
-    def check_var_is_timestamp(curr_var, rhs_node):
-        """
-        This function is a common task in the analysis of variable declarations and assignments.
-        """
-        curr_fingerprint = get_fingerprint(curr_var, rhs_node)
-
-        if curr_fingerprint not in timestamp_fingerprints:
-            is_timestamp = rhs_node.get("timeCritical", False)
-
-            print "check var %s is timestamp: %s" % (curr_var, is_timestamp)
-    
-            if is_timestamp:
-                print "var %s is timestamp" % curr_var
-                existing = timestamp_variables.get(curr_var, None)
-                if existing is None:
-                    existing = []
-                existing.append(rhs_node)
-                timestamp_variables[curr_var] = existing
-                timestamp_fingerprints.append(curr_fingerprint)
-
-    
-    def handle_var_declaration(curr_node):
-        assert "name" in curr_node, curr_node
-        assert "nodeType" in curr_node["name"]
-        assert curr_node["name"]["nodeType"] == "ASTIdentifier", "Expected node with ASTIdentifier. Got: %s" % (curr_node["name"], )
-        assert "expr" in curr_node, curr_node
-
-        curr_var = curr_node["name"]["value"]
-        #print "declare variable: %s" % curr_var
-        rhs_node = curr_node["expr"]
-
-        check_var_is_timestamp(curr_var, rhs_node) #curr_node)
-
-    def handle_var_assignment(curr_node):
+    def handle_expression(curr_node):
         assert "nodeType" in curr_node
-        assert curr_node["nodeType"] == "ASTAssignment"
-        assert "left" in curr_node, curr_node
-        assert "right" in curr_node, curr_node
-        curr_var = None
-
-        if curr_node["left"]["nodeType"] == "ASTIdentifier":
-            curr_var = curr_node["left"]["value"]
-            rhs_node = curr_node["right"]
-
-            #print "lhs is variable: %s" % curr_var
-            check_var_is_timestamp(curr_var, rhs_node) #curr_node)
+        assert curr_node["nodeType"] == "ASTRE"
+        assert "expression" in curr_node
+        assert "expressionName" in curr_node            
+        assert "env" in curr_node
     
-    print "method node: %s" % node.ast
+        for var in curr_node["env"]:
+            assert "timeType" in var
+            var_name = var["name"]
+            if var["timeType"] != "null":
+                curr_type = time_variables.get(var_name, None)
+
+                if curr_type is not None and curr_type != var["timeType"]:
+                    raise ValueError("Unexpected error: variable '%s' already present with different time type ('%s' and '%s')" % (var_name, var["timeType"], curr_type))
+                else:
+                    time_variables[var_name] = var["timeType"]
+
+        
     visitor = ASTVisitor(node)
-    visitor.add_handler("ASTAssignment", handle_var_assignment)
-    visitor.add_handler("ASTVariableDeclaration", handle_var_declaration)
+    visitor.add_handler("ASTRE", handle_expression)
+
     visitor.visit()
 
-    return timestamp_variables
+    log.debug("Time variables: %s" % time_variables)
+
+    return time_variables
+
+
+
+##@contract(node="is_ast_node|dict", returns="set(string)") #returns="dict(string:list(dict))")
+##def get_time_variables(node):
+##
+##    time_variables = set([])
+####    timestamp_fingerprints = []
+####
+####    @contract(curr_var="string")
+####    def check_var_is_timestamp(curr_var, rhs_node):
+####        """
+####        This function is a common task in the analysis of variable declarations and assignments.
+####        """
+####        curr_fingerprint = get_fingerprint(curr_var, rhs_node)
+####
+####        if curr_fingerprint not in timestamp_fingerprints:
+####            is_timestamp = rhs_node.get("timeCritical", False)
+####
+####            print "check var %s is timestamp: %s" % (curr_var, is_timestamp)
+####    
+####            if is_timestamp:
+####                print "var %s is timestamp" % curr_var
+####                existing = time_variables.get(curr_var, None)
+####                if existing is None:
+####                    existing = []
+####                existing.append(rhs_node)
+####                time_variables[curr_var] = existing
+####                timestamp_fingerprints.append(curr_fingerprint)
+####
+####    
+####    def handle_var_declaration(curr_node):
+####        assert "name" in curr_node, curr_node
+####        assert "nodeType" in curr_node["name"]
+####        assert curr_node["name"]["nodeType"] == "ASTIdentifier", "Expected node with ASTIdentifier. Got: %s" % (curr_node["name"], )
+####        assert "expr" in curr_node, curr_node
+####
+####        curr_var = curr_node["name"]["value"]
+####        log.debug("Check var declaration: %s" % curr_var)
+####        rhs_node = curr_node["expr"]
+####
+####        log.debug("Check curr var %s is timestamp ..." % curr_var)
+####        check_var_is_timestamp(curr_var, rhs_node) #curr_node)
+####
+####    def handle_var_assignment(curr_node):
+####        assert "nodeType" in curr_node
+####        assert curr_node["nodeType"] == "ASTAssignment"
+####        assert "left" in curr_node, curr_node
+####        assert "right" in curr_node, curr_node
+####        curr_var = None
+####
+####        log.debug("Check var assignment: %s" % curr_node["left"])
+####
+####        if curr_node["left"]["nodeType"] == "ASTIdentifier":
+####            curr_var = curr_node["left"]["value"]
+####            rhs_node = curr_node["right"]
+####
+####            #print "lhs is variable: %s" % curr_var
+####            log.debug("Check curr var %s is timestamp ..." % curr_var)
+####            check_var_is_timestamp(curr_var, rhs_node) #curr_node)
+#### 
+##       
+####    def handle_identifier(curr_node):
+####        assert "nodeType" in curr_node
+####        assert curr_node["nodeType"] == "ASTIdentifier"
+####        assert "timeCritical" in curr_node
+####        assert "code" in curr_node
+####
+####        if curr_node["timeCritical"]:
+####            time_variables.add(curr_node["code"])
+##
+##    visitor = ASTVisitor(node)
+###    visitor.add_handler("ASTAssignment", handle_var_assignment)
+###    visitor.add_handler("ASTVariableDeclaration", handle_var_declaration)
+###    visitor.add_handler("ASTRE", handle_astre)
+##    visitor.add_handler("ASTIdentifier", handle_identifier)
+##    
+##    visitor.visit()
+##
+##    log.debug("Time variables: %s" % time_variables)
+##
+##    return time_variables
+##
+
+@contract(node="dict", returns="bool")
+def check_sleep_invocation(node):
+    log.debug("Check sleep invocation from node: %s" % node)
+    return "nodeType" in node and node["nodeType"] == "ASTRE" and\
+            "expressionName" in node and node["expressionName"] == "call_to_sleep"
 
 @contract(nodes="list(dict)", now_methods="set(string)", returns="bool")
 def check_now_assignments(nodes, now_methods):

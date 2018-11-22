@@ -5,7 +5,16 @@ from java2ta.commons.utility import new_contract_check_type
 from java2ta.abstraction.models import AbstractAttribute, Predicate
 from java2ta.ta.models import ClockVariable, Variable, Int, Location
 
+from enum import Enum
+
 log = logging.getLogger("main")
+
+class TimeType(Enum):
+    Unknown = 0
+    Relative = 1
+    Absolute = 2
+
+new_contract_check_type("is_time_type", TimeType)
 
 class PC(object):
     """
@@ -13,22 +22,35 @@ class PC(object):
     in our framework.
     """
 
+    SEPARATOR = "."
+    MARKER = "@"
+
     @contract(initial="int|string")
     def __init__(self, initial="0"):
         if isinstance(initial, int):
             initial = str(initial)        
+        elif isinstance(initial, str):
+            initial_orig = initial
+            if initial.startswith(PC.MARKER):
+                initial = initial[1:]
+            if PC.MARKER in initial:
+                raise ValueError("The passed initial value can contain occurrence of the marker (%s) only as first character. Passed: %s" % (PC.MARKER, initial_orig))
 
-        self.__pc = initial.strip(".")
+        self.__pc = initial.strip(PC.SEPARATOR)
 
     @property
     def pc(self):
         return self.__pc
 
+    @property
+    def num_levels(self):
+        return self.__pc.count(PC.SEPARATOR)
+
     def __str__(self):
-        return "@%s" % self.__pc
+        return "%s%s" % (PC.MARKER, self.__pc)
 
     def __repr__(self):
-        return "@%s" % self.__pc
+        return "%s%s" % (PC.MARKER, self.__pc)
 
     def __add__(self, other):
         
@@ -46,11 +68,24 @@ class PC(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def __lt__(self, other):
+        return other and str(self) < str(other)
+
+    def __le__(self, other):
+        return self.__eq__(other) or self.__lt__(other)
+
+    def __gt__(self, other):
+        return other and str(self) > str(other)
+
+    def __ge__(self, other):
+        return self.__eq__(other) or self.__gt__(other)
+
+
     def __hash__(self):
         return hash(self.__pc)
 
     def is_prefix(self, other):
-        return other.pc.startswith("%s." % self.__pc)
+        return other.pc.startswith("%s%" % (self.__pc, PC.SEPARATOR))
 
     def inc(self, to_add=1):
         assert self.__pc != None
@@ -60,7 +95,7 @@ class PC(object):
         prefix = ""
         last = ""
     
-        parts = self.__pc.rsplit(".", 1)
+        parts = self.__pc.rsplit(PC.SEPARATOR, 1)
     
         if len(parts) == 1:
             last = parts[0]
@@ -69,20 +104,20 @@ class PC(object):
     
         res = str(int(last) + to_add)
         if len(prefix) > 0:
-            res = "%s.%s" % (prefix, res)
+            res = "%s%s%s" % (prefix, PC.SEPARATOR, res)
 
         self.__pc = res
     
     def push(self, new):
         assert self.__pc != None
         
-        self.__pc = "%s.%s" % (self.__pc, new)
+        self.__pc = "%s%s%s" % (self.__pc, PC.SEPARATOR, new)
         return self
     
     def pop(self):
         assert self.__pc != None
 
-        parts = self.__pc.rsplit(".", 1)
+        parts = self.__pc.rsplit(PC.SEPARATOR, 1)
     
         if len(parts) <= 1:
             raise ValueError("Cannot pop pc value: %s" % self.__pc)
@@ -99,8 +134,8 @@ def build_location_name(conf, pc):
     loc_name = "(%s)%s" % (conf_string, pc)
     return loc_name
 
-@contract(conf="is_configuration", pc="is_pc", loc_pred="tuple", returns="is_location")
-def build_location(conf, pc, loc_pred):
+@contract(conf="is_configuration", pc="is_pc", loc_pred="tuple", is_initial_conf="bool", returns="is_location")
+def build_location(conf, pc, loc_pred, is_initial_conf=False):
     """
     Create a Location starting from a configuration (conf) and a position in the code (pc). Attach
     to the location the passed extra data (loc_pred is a tuple of predicates over the program variables)
@@ -110,7 +145,7 @@ def build_location(conf, pc, loc_pred):
     # using ","
     loc_name = build_location_name(conf, pc)
 #    log.debug("conf: %s, loc name: %s" % (conf_string, loc_name))
-    loc = Location(loc_name, configuration=conf, predicate=loc_pred, pc=pc)
+    loc = Location(loc_name, is_initial=is_initial_conf, configuration=conf, predicate=loc_pred, pc=pc)
 
     return loc
 
@@ -118,18 +153,28 @@ def build_location(conf, pc, loc_pred):
 
 class ReachabilityInput(object):
 
-    def __init__(self, instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
+#    def __init__(self, instr, source, pc_source, visited_locations, pc_jump_stack, deadlines, state_space, project):
+    def __init__(self, instr, source_loc, visited_locations, pc_jump_stack, deadlines, state_space, project):
+
         self.instr = instr
-        self.source = source
-        self.pc_source = pc_source
-        source_pred = state_space.value(source)
-        self.source_loc = build_location(source, pc_source, source_pred)
-        self.source_pred = state_space.value(source)
+        self.source_loc = source_loc # build_location(source, pc_source, source_pred)
+#        self.source = source_loc.conf #source # moved to properties TODO delete this line
+#        self.pc_source = source_loc.pc #pc_source # ibidem
+        source_pred = state_space.value(self.source_conf)
+        self.source_pred = state_space.value(self.source_conf)
         self.visited_locations = visited_locations
         self.pc_jump_stack = pc_jump_stack
         self.deadlines = deadlines
         self.state_space = state_space
         self.project = project
+
+    @property
+    def source_conf(self):
+        return self.source_loc.configuration
+
+    @property
+    def pc_source(self):
+        return self.source_loc.pc
 
 class ReachabilityResult(object):
 
@@ -478,8 +523,9 @@ class KnowledgeBase(object):
     @staticmethod
     @contract(class_fqn="string", method_name="string", returns="set(string)")
     def get_absolute_timestamps(class_fqn, method_name):
-        res = set([])
         timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+
+        res = set([])
         for var, is_relative in timestamps.iteritems():
             if not is_relative:
                 res.add(var)
@@ -489,8 +535,9 @@ class KnowledgeBase(object):
     @staticmethod
     @contract(class_fqn="string", method_name="string", returns="set(string)")
     def get_relative_timestamps(class_fqn, method_name):
-        res = set([])
         timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+    
+        res = set([])
         for var, is_relative in timestamps.iteritems():
             if is_relative:
                 res.add(var)
@@ -506,23 +553,25 @@ class KnowledgeBase(object):
     @staticmethod
     @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
     def is_absolute_timestamp(class_fqn, method_name, var_name):
-        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
-        return var_name in timestamps and timestamps[var_name] == False
+#        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+#        return var_name in timestamps and timestamps[var_name] == False
+        return var_name in KnowledgeBase.get_absolute_timestamps(class_fqn, method_name)
 
  
     @staticmethod
     @contract(class_fqn="string", method_name="string", var_name="string", returns="bool")
     def is_relative_timestamp(class_fqn, method_name, var_name):
-        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
-        return var_name in timestamps and timestamps[var_name] == True
-
+#        timestamps = KnowledgeBase.get_timestamps(class_fqn, method_name)
+#        return var_name in timestamps and timestamps[var_name] == True
+        return var_name in KnowledgeBase.get_relative_timestamps(class_fqn, method_name)
 
 
     @staticmethod
     @contract(class_fqn="string", method_name="string", var_name="string")
     def add_now_timestamp(class_fqn, method_name, var_name):
         KnowledgeBase.add_timestamp(class_fqn, method_name, var_name, is_relative=False, is_now=True)
-        
+ 
+       
     @staticmethod
     @contract(class_fqn="string", method_name="string", returns="set(string)")
     def get_now_timestamps(class_fqn, method_name):

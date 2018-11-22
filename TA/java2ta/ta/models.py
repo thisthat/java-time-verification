@@ -58,16 +58,29 @@ class ClockType(Type):
 
 class Variable(object):
 
-    @contract(name="string", type="is_type")
-    def __init__(self, name, type):
+    @contract(name="string", type="string|is_type")
+    def __init__(self, name, type, value=None):
 
         self.name = name
+
+        if isinstance(type, str):
+            if type == "int":
+                type = Int()
+            elif type == "bool":
+                type = Bool()
+            else:
+                raise ValueError("At the moment I can only accept the following type names: int, bool. Support for bounded integer must be added. Passed: %s" % type)
+
         self.type = type
+        self.value = value
 
     def __repr__(self):
         var_repr = None
         try:
-            var_repr = "%s : %s" % (self.name, self.type)
+            value = ""
+            if self.value:
+                value = " = %s" % self.value
+            var_repr = "%s : %s%s" % (self.type, self.name, value)
         except Exception:
             # there could be an exception in case of broken contracts in constructor __init__:
             # in such case no attribute name or type exists
@@ -76,10 +89,20 @@ class Variable(object):
         return var_repr
 
     def __str__(self):
-        return "%s : %s" % (self.name, self.type)
+        value = ""
+        if self.value:
+            value = " = %s" % self.value
+ 
+        return "%s : %s%s" % (self.type, self.name, value)
 
     def __unicode__(self):
-        return u"%s : %s" % (self.name, self.type)
+        value = ""
+        if self.value:
+            value = u" = %s" % self.value
+ 
+        return u"%s : %s%s" % (self.type, self.name, value)
+
+ 
 
 new_contract_check_type("is_variable", Variable)
 
@@ -141,8 +164,8 @@ class Location(object):
         self._pc = pc
         self._ta_template = None
 
-        self.is_initial = is_initial
-        self.is_urgent = is_urgent
+        self._is_initial = is_initial
+        self._is_urgent = is_urgent
         self.is_committed = is_committed
 
     @property
@@ -219,15 +242,31 @@ class Location(object):
 
         self.invariant = cexp
 
-
-    def set_initial(self):
-
-        self.is_initial = True
-
+    def add_invariant(self, cexp):
+        if self.invariant is not None and len(self.invariant) > 0:
     
-    def set_urgent(self):
+            cexp = "(%s) and (%s)" % (self.invariant, cexp)
+
+        self.invariant = cexp
+
+
+    @property
+    def is_initial(self):
+        return self._is_initial
+
+    @contract(value="bool")
+    def set_initial(self, value=True):
+
+        self._is_initial = value
+
+    @property
+    def is_urgent(self):
+        return self._is_urgent
+
+    @contract(value="bool")
+    def set_urgent(self, value=True):
     
-        self.is_urgent = True
+        self._is_urgent = value
 
 
     def __str__(self):
@@ -290,6 +329,10 @@ class Edge(object):
         if self.label:
             label_parts.append(self.label)
 
+        for r in self.reset:
+            label_parts.append("%s := 0" % r)
+            
+
         label = ""
         if label_parts:
             label = "|".join(label_parts)
@@ -303,11 +346,22 @@ class Edge(object):
         """
         self.reset.add(name)
 
+    def add_constraint(self, condition):
+        guard = condition
+
+        if self.guard:
+            guard = "(%s) and (%s)" % (self.guard, condition)
+
+        self.guard = guard
+            
+
     def __str__(self):
         label = self.formatted_label
         if label:
             label = "[%s]" % label
         return "%s -%s-> %s" % (self.source, label, self.target)
+
+    __repr__ = __str__
 
     def __unicode__(self):
         label = self.formatted_label
@@ -315,12 +369,27 @@ class Edge(object):
             label = "[%s]" % label
         return "%s -%s-> %s" % (self.source, label, self.target)
 
+    def get_kwargs(self):
+        kwargs = {
+            "source": self.source, 
+            "target": self.target, 
+            "label": self.label, 
+            "guard": self.guard, 
+            "reset": self.reset, 
+            "clock_variables": self.clock_variables, 
+            "variables": self.variables,
+            "synchronization": self.synchronization
+        }
+
+        return kwargs
+
 
 new_contract_check_type("is_edge", Edge)
 
 class TimeEdge(Edge):
 
-    def __init__(self, source, target, label=None, *args, **kwargs):
+    def __init__(self, source, target, sleep_time, label=None, *args, **kwargs):
+        self.sleep_time = sleep_time
         super(TimeEdge, self).__init__(source, target, label=label)
 
     def __str__(self):
@@ -331,6 +400,28 @@ class TimeEdge(Edge):
 
 new_contract_check_type("is_time_edge", TimeEdge)
 
+
+class SleepEdge(Edge):
+
+    def __init__(self, source, target, sleep_time, label=None, *args, **kwargs):
+        self.sleep_time = sleep_time
+        super(SleepEdge, self).__init__(source, target, label=label)
+
+
+    def get_kwargs(self):
+        kwargs = super(SleepEdge, self).get_kwargs()
+        kwargs["sleep_time"] = self.sleep_time
+        return kwargs
+
+    def __str__(self):
+        label = self.formatted_label
+        if label:
+            label = "[%s]" % label
+        return "%s ~=%s=~> %s" % (self.source, label, self.target)
+
+new_contract_check_type("is_sleep_edge", SleepEdge)
+
+   
 
 class NotifyUpdateEdge(Edge):
 
@@ -449,6 +540,14 @@ class TATemplate(object):
 #            found = new_loc
             self.add_location(loc)
             found = loc
+        else:   
+            # TODO this is a bit hack-ish; should we consider the passed location (loc) an updated
+            # version of the existing one (and thus merge the new received information) or are they
+            # supposed to be identical? At the moment I only look at the 'is_initial' flag, and update
+            # it if the found location is not initial, but the passed loc is
+            if loc.is_initial and not found.is_initial:
+                found.set_initial()
+            
 
         assert isinstance(found, Location)
         return found
@@ -475,7 +574,11 @@ class TATemplate(object):
         if not found:
             # we create an instance of edge.__class__
             # in this way, we support creating copies of the same type as the argument edge
-            found = edge.__class__(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables, synchronization=edge.synchronization)
+            kwargs = edge.get_kwargs()
+            kwargs["source"] = source_loc
+            kwargs["target"] = target_loc
+#            found = edge.__class__(source_loc, target_loc, label=edge.label, guard=edge.guard, clock_variables=edge.clock_variables, variables=edge.variables, synchronization=edge.synchronization)
+            found = edge.__class__(**kwargs)
             self.add_edge(found)
 
         # in any case, update the edge label
@@ -489,16 +592,21 @@ class TATemplate(object):
         assert isinstance(loc, Location)
         assert isinstance(self.locations, set)
 
-        if loc.is_initial:
-            if self.initial_loc:
-                raise ValueError("You are adding a location tagged as initial to a TATemplate that already contains one initial location")
-            self.initial_loc = loc
+# TODO do not prevent TATemplate from having more than one initial location. If more then one initial
+# location is present, the TATemplate does not point to any of them
+        if loc.is_initial and self.initial_loc != loc:
+            self.initial_loc = None
+
+#        if loc.is_initial:
+#            if self.initial_loc:
+#                raise ValueError("You are adding a location tagged as initial to a TATemplate that already contains one initial location")
+#            self.initial_loc = loc
 
         if loc.name not in self._location_names:
             self.locations.add(loc)
             self._location_names[loc.name] = loc
  
-        loc.set_ta_template(self) #ta_template)
+        loc.set_ta_template(self)
 
     
     @contract(loc="is_location")
@@ -577,24 +685,40 @@ class TATemplate(object):
 
     def close(self):
         """
-        The operation of closing a TATemplate does the following:
-        1. call pseudo-initial a location that has no entering transition
-        2. add a location named "initial" and make it the initial location
-        3. create an edge from the initial location and every pseudo-initial location
+        An "open" TATemplate is a template where multiple locations are labeled as initial locations,
+        but none of them is referred to as the (unique) initial location of the template. To close
+        the template, one has to create a new location (called "initial"), labeled it as the unique
+        initial location, add edges towards the locations previously labeled as initial, and mark the
+        latter as no more initial.
+
+        One final constraint is that the unique initial location should be named "initial"
         """
 
         from java2ta.translator.models import PC
+ 
+        pseudo_initial = filter(lambda loc: loc.is_initial, self.locations)
 
-        if self.initial_loc != None:
+        log.debug("Pseudo initial locations: %s" % pseudo_initial)
+
+        # if there are one or more locations labeled as initial, the template should have no pointer
+        # to any initial location (since it's impossible to determine which one is the real initial loc)
+        assert len(pseudo_initial) == 0 or self.initial_loc is None
+        # if the initial location is set, then the list of pseudo-initial locations should contain 
+        # exactly that location
+        assert self.initial_loc is None or (len(pseudo_initial) == 1 and pseudo_initial[0] == self.initial_loc)
+
+        if self.initial_loc != None and self.initial_loc.name == "initial":
+            # the template is already "closed"
             return    
 
-        pseudo_initial = filter(lambda loc: len(loc.incoming) == 0, self.locations)
-
-        if len(pseudo_initial) == 0:
-            pseudo_initial =  filter(lambda l: l.pc == PC(0), self.locations)
-
+##        pseudo_initial = filter(lambda loc: len(loc.incoming) == 0, self.locations)
+##
+##        if len(pseudo_initial) == 0:
+##            pseudo_initial =  filter(lambda l: l.pc == PC(0), self.locations)
+##
         if len(pseudo_initial) == 0:
             raise ValueError("Cannot detect pseudo-initial locations")
+
 
         initial = Location("initial", is_initial=True, is_committed=True)
         self.add_location(initial)
@@ -701,3 +825,52 @@ class TraceState(object):
         return "%s : { %s }" % (self.id, ", ".join(proc_locations))
         
     
+
+@contract(tat="is_ta_template", returns="set(is_location)")
+def filter_locations_by_pc(tat, first_pc, last_pc):
+
+    locations = set([])
+    for curr in tat.locations:
+        if curr.pc >= first_pc and curr.pc <= last_pc:
+
+            locations.add(curr)
+
+    return locations
+
+
+@contract(locations="set(is_location)", returns="set(is_edge)")
+def get_incoming_edges(locations):
+    """
+    Return the list of edges that come from locations outside the current set of locations and targets
+    some state inside the passed set of locations
+    """
+    loc_names = map(lambda curr: curr.name, locations)
+   
+    edges = set([])
+    for loc in locations:
+ 
+        for e in loc.incoming:  
+            if e.source.name not in loc_names:
+                edges.add(e)
+
+    return edges
+
+@contract(locations="set(is_location)", returns="set(is_edge)")
+def get_outgoing_edges(locations):
+    """
+    Return the list of edges that come from locations within the current set of locations and targets
+    some state outside the passed set of locations
+    """
+    
+    loc_names = map(lambda curr: curr.name, locations)
+   
+    edges = set([])
+    for loc in locations:
+ 
+        for e in loc.outgoing:  
+            if e.target.name not in loc_names:
+                edges.add(e)
+
+    return edges
+
+   
