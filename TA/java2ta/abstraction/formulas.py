@@ -146,7 +146,7 @@ class Not(PathFormula):
     def __init__(self, arg):
         super(Not, self).__init__()
 
-        if not argv:
+        if not arg:
             raise ValueError("A Not formula should receive a non-null argument.")
 
         self.args.append(arg)

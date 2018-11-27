@@ -808,6 +808,8 @@ class SMTProb(SMTSolver):
                 smt_declarations.extend(rhs_smt_declarations)
                 
             smt_assertion = "(%s %s %s)" % (op, lhs_smt_assertion, rhs_smt_assertion)
+        elif node_type == "ASTUnary":
+            raise ValueError("Case not covered (ASTUnary)")
         elif node_type == "ASTIdentifier":
             assert "value" in node
 

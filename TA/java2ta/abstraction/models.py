@@ -110,8 +110,13 @@ class AbsString(DataType):
     def __init__(self):
         from java2ta.abstraction.shortcuts import smt_declare_rec_datatype
 
-        smt_declaration = smt_declare_rec_datatype("AbsString", {"size":"Int","value":"Int"}) 
-        super(AbsString, self).__init__("AbsString", smt_declaration=smt_declaration, smt_var_axioms=["(assert (>= (size {var}) 0))"])
+        smt_declaration = []
+        smt_declaration.append(smt_declare_rec_datatype("AbsString", {"size":"Int","value":"Int"}))
+        smt_declaration.append("(declare-const null AbsString)")
+        smt_declaration.append("(assert (= (size null) 0))")
+        smt_declaration.append("(assert (= (value null) 0))")
+
+        super(AbsString, self).__init__("AbsString", smt_declaration="\n".join(smt_declaration), smt_var_axioms=["(assert (>= (size {var}) 0))",])
 
     @contract(var="string", returns="string")
     def smt_var_axioms(self, var):
@@ -1529,6 +1534,7 @@ class FormulaParser(LeftLinearParser):
 
         for conf_multi_ss in conf_combinations:
 
+            declared_dt = set()
             curr_problem = []
 
             for ((curr_proc, curr_ss), ss_conf) in zip(self._ss_env.iteritems(), conf_multi_ss):
@@ -1561,12 +1567,14 @@ class FormulaParser(LeftLinearParser):
                         log.debug("Datatype: %s -> Declaration: %s" % (datatype, dt_declaration))
                         dt_var_axioms = datatype.smt_var_axioms(proc_var) #var)
                         log.debug("Var: %s:%s -> Axioms: %s" % (proc_var, datatype, dt_var_axioms)) # was: var
-    
-                        if len(dt_declaration) > 0:
+                        if len(dt_declaration) > 0 and datatype.name not in declared_dt:
+                            declared_dt.add(datatype.name)
                             curr_problem.append(dt_declaration)
+
+                        curr_problem.append("(declare-const %s %s)" % (proc_var, datatype)) # was: var
+
                         if len(dt_var_axioms) > 0:
                             curr_problem.append(dt_var_axioms)
-                        curr_problem.append("(declare-const %s %s)" % (proc_var, datatype)) # was: var
     
                     curr_smt_assert = curr_pred.smt_assert(**ctx)
                     log.debug("Instantiated predicate: %s. SMT assertion: %s" % (curr_pred, curr_smt_assert))
@@ -1583,7 +1591,7 @@ class FormulaParser(LeftLinearParser):
             solver.pop()
 
             if res not in ["sat", "unsat"]:
-                raise ValueError("Error computing the existential abstraction of the formula: %s" % res)
+                raise ValueError("Error computing the weakening of the formula: %s" % res)
         
             if res == "sat":
 #                conf_to_prop = lambda c: formulas.Proposition(c)
