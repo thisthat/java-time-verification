@@ -3,6 +3,11 @@ Default PORT: **9000**
 
 Default IP: **127.0.0.1**
 
+# Lazy Approach   
+If the server is lunched with the flag `-lazy`, the opening of a project 
+only generates the data structure required in the DB. When a /get* route is 
+requested, it lazily load the classes needed.
+
 # Debug Mode   
 If the server is lunched with the flag `-debug` it will print for each request it handles, a message of the selected route with its parameters.
 
