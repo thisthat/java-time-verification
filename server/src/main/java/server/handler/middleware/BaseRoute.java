@@ -26,7 +26,7 @@ public abstract class BaseRoute implements HttpHandler {
         handleConnection(he);
         if(Config.isDebug()){
             printLog();
-            System.out.println("======= " + Config.getRandomFace() + " ========");
+            System.out.println(Config.getDivLine());
         }
     }
 

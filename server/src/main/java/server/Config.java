@@ -53,4 +53,18 @@ public class Config {
         int i = new Random().nextInt(faces.length);
         return faces[i];
     }
+
+    public static String getDivLine(){
+        return "======= " + Config.getRandomFace() + " ========";
+    }
+
+    public static String print() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[Configuration Options]\n");
+        sb.append(String.format("Debug = %b\n", debug));
+        sb.append(String.format("Lazy Loading = %b\n", lazy_loading));
+        sb.append(getDivLine());
+        return sb.toString();
+    }
+
 }
