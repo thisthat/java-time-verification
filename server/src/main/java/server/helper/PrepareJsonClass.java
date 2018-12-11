@@ -75,7 +75,8 @@ public class PrepareJsonClass {
         @Override
         protected void analyzeASTRE(ASTRE r, Env env) {
             super.analyzeASTRE(r, env);
-            r.setEnv(env);
+            if(r != null)
+                r.setEnv(env);
         }
     }
 

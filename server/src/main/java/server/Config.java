@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Config {
     private static boolean debug = false;
+    private static boolean lazy_loading = true;
 
     public static void setDebug(boolean debug) {
         Config.debug = debug;
@@ -31,6 +32,22 @@ public class Config {
             "\\ (•◡•) /",
             "ಠ~ಠ"
     };
+
+    public static boolean isLazy() {
+        return lazy_loading;
+    }
+
+    public static void setLazy_loading(boolean lazy_loading) {
+        Config.lazy_loading = lazy_loading;
+    }
+
+    public static String[] getFaces() {
+        return faces;
+    }
+
+    public static void setFaces(String[] faces) {
+        Config.faces = faces;
+    }
 
     public static String getRandomFace(){
         int i = new Random().nextInt(faces.length);
