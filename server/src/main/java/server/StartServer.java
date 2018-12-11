@@ -32,6 +32,9 @@ public class StartServer {
 					debug = true;
 					Config.setDebug(true);
 					break;
+				case "-lazy":
+					Config.setLazy_loading(true);
+					break;
 			}
 		}
 

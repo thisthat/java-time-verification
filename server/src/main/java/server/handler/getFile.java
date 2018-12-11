@@ -83,7 +83,7 @@ public class getFile extends indexMW {
 			System.out.println("--Ignoring Cache--");
 		}
 
-		List<ASTClass> classes = JDTVisitor.parse(file, base_path, true);
+		List<ASTClass> classes = JDTVisitor.parse(file, base_path, false);
 		if(classes.size() == 0){
 			String response = "File not found!";
 			Status s = new Status("1", response);

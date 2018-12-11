@@ -5,6 +5,7 @@ import intermediateModel.structure.ASTClass;
 import intermediateModel.structure.ASTMethod;
 import intermediateModel.visitors.DefaultASTVisitor;
 import intermediateModel.visitors.creation.JDTVisitor;
+import server.Config;
 import server.helper.PrepareJsonClass;
 import server.helper.SHA1;
 
@@ -29,12 +30,13 @@ public class IndexProjectJson {
         //remove old preprocess
         db.setIndexStart();
         if(deleteOld) delete();
-        Iterator i = getJavaFiles(base_path);
-        int n_file = 0;
-        while (i.hasNext()) {
-            String filename = ((File)i.next()).getAbsolutePath();
-            List<ASTClass> result = JDTVisitor.parse(filename, base_path);
-            index(result, filename, base_path);
+        if(!Config.isLazy()) {
+            Iterator i = getJavaFiles(base_path);
+            while (i.hasNext()) {
+                String filename = ((File)i.next()).getAbsolutePath();
+                List<ASTClass> result = JDTVisitor.parse(filename, base_path);
+                index(result, filename, base_path);
+            }
         }
         //ensure indexes
         db.ensureIndexes();
