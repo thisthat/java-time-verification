@@ -7,6 +7,7 @@ import intermediateModelHelper.indexing.mongoConnector.MongoConnector;
 import intermediateModelHelper.indexing.structure.IndexData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import server.Config;
 import server.handler.middleware.ParsePars;
 import server.handler.middleware.indexMW;
 import server.handler.outputFormat.OutputData;
@@ -32,6 +33,13 @@ public class getThreads extends indexMW {
 	public void handle(HttpExchange he, Map<String, String> parameters, String name) throws IOException {
 		LOGGER.debug("Request getThread on {} parameters: [{}]", name, parameters);
 		if(!ParsePars.ParseIndexStatus(name,he)){
+			return;
+		}
+		if(Config.isLazy()){
+			Answer.SendMessage("{ \"err\" : \"Server loaded in lazy mode making this route unavailable.\"}",
+					he,
+					400
+			);
 			return;
 		}
 		MongoConnectorServer db = MongoConnectorServer.getInstance(name);
