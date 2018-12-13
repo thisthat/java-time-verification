@@ -55,13 +55,24 @@ public class TestCMD {
 		ArgumentParser ap = ArgumentParser.parse(args);
 		ap.call();
 		String data = new String(bo.toByteArray(), StandardCharsets.UTF_8);
-		assertTrue(data.startsWith("Incorrect format"));
+		assertTrue(data.contains("Incorrect format"));
 		d();
 	}
 
 	@Test
 	public void TestOpenProject() throws IOException {
 		String[] args = {"-name", "t", "-cmd", "openProject", "-path", "file://" + base_project};
+		ArgumentParser ap = ArgumentParser.parse(args);
+		ap.call();
+		String data = new String(bo.toByteArray(), StandardCharsets.UTF_8);
+		d(data);
+		assertFalse(data.startsWith("Incorrect format"));
+		d();
+	}
+
+	@Test
+	public void TestOpenProjectLazy() throws IOException {
+		String[] args = {"-lazy", "-name", "t", "-cmd", "openProject", "-path", "file://" + base_project};
 		ArgumentParser ap = ArgumentParser.parse(args);
 		ap.call();
 		String data = new String(bo.toByteArray(), StandardCharsets.UTF_8);

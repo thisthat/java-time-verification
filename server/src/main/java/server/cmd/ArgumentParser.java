@@ -46,6 +46,9 @@ public class ArgumentParser {
                 case "-debug": {
                     ret.setDebug(true);
                 } break;
+                case "-lazy": {
+                    ret.setLazy(true);
+                } break;
                 case "-name": {
                     i++;
                     ret.name = args[i];
@@ -69,6 +72,10 @@ public class ArgumentParser {
     private void setDebug(boolean b) {
         this.debug = b;
         Config.setDebug(b);
+    }
+
+    private void setLazy(boolean b) {
+        Config.setLazy_loading(b);
     }
 
     private void checks() {
