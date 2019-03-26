@@ -13,12 +13,17 @@
     <version>0.0.1</version>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>com.microsoft</groupId>-->
+            <!--<artifactId>z3</artifactId>-->
+            <!--<version>4.5.1</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/src/main/resources/lib/com.microsoft.z3.jar</systemPath>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.microsoft</groupId>
             <artifactId>z3</artifactId>
-            <version>4.5.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/com.microsoft.z3.jar</systemPath>
+            <version>4.8.3</version>
         </dependency>
         <dependency>
             <groupId>java-xal</groupId>

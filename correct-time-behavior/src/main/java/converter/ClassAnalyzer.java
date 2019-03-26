@@ -6,6 +6,7 @@ import slicing.SLOCCounter;
 import slicing.Slice;
 import slicing.model.Method;
 import smt.PathGenerator;
+import smt.TranslateReducedModel;
 import smt.exception.VariableNotCorrect;
 
 import java.util.ArrayList;
@@ -19,13 +20,13 @@ import java.util.List;
  */
 public class ClassAnalyzer {
 
-    //private final TranslateReducedModel translateReducedModel;
+    private final TranslateReducedModel translateReducedModel;
     HashMap<IASTMethod, Method> reducedModel = new HashMap<>();
     private boolean getModel = false;
 
     public ClassAnalyzer(ASTClass c) {
         reducedModel = Slice.slice(c);
-        //translateReducedModel = new TranslateReducedModel();
+        translateReducedModel = new TranslateReducedModel();
     }
 
     public long getSLOC(){
@@ -63,11 +64,11 @@ public class ClassAnalyzer {
             Statistic.incrementNMethod(1);
             Statistic.incrementNMethodPath(analyze.size());
         }
-        //translateReducedModel.saveModel(getModel);
+        translateReducedModel.saveModel(getModel);
         List<VariableNotCorrect> tmp;
         for(Method mm : analyze) {
-            //tmp = translateReducedModel.check(mm);
-            //out.addAll(tmp);
+            tmp = translateReducedModel.check(mm);
+            out.addAll(tmp);
         }
         return out;
     }

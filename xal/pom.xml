@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>XAL</name>
-    <groupId>java-xal</groupId>
     <artifactId>xal</artifactId>
     <version>0.3</version>
     <description>

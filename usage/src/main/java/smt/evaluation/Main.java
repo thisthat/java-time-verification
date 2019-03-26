@@ -6,6 +6,7 @@ import debugger.Debugger;
 import intermediateModel.interfaces.IASTMethod;
 import intermediateModel.structure.ASTClass;
 import intermediateModel.visitors.creation.JDTVisitor;
+import intermediateModel.visitors.creation.filter.ElseIf;
 import intermediateModelHelper.envirorment.temporal.TemporalInfo;
 import intermediateModelHelper.envirorment.temporal.structure.TimeTypes;
 import intermediateModelHelper.indexing.IndexingProject;
@@ -83,7 +84,7 @@ public class Main {
         Iterator<File> i = IndexingProject.getJavaFiles(root_path);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(output + name + ".csv"));
-        writer.write("class;method;line;variable\n");
+        writer.write("class;method;line;variable;path\n");
 
         //stats
         int nClass = 0;
@@ -105,7 +106,7 @@ public class Main {
             nFiles++;
             //each class
             sParse = System.currentTimeMillis();
-            List<ASTClass> result = JDTVisitor.parse(filename, root_path, false);
+            List<ASTClass> result = JDTVisitor.parse(filename, root_path, ElseIf.filter, false);
             eParse = System.currentTimeMillis();
             timeSpentParsing += (eParse - sParse);
             for(ASTClass c : result){
@@ -133,8 +134,8 @@ public class Main {
                     for(VariableNotCorrect v : vars) {
                         nError++;
                         String e = String.format(
-                                "%s;%s;%d;%s\n",
-                                c.fullName(), m.getName(), v.getWhere().getLine(), v.getVarName()
+                                "%s;%s;%d;%s;%s\n",
+                                c.fullName(), m.getName(), v.getWhere().getLine(), v.getVarName(), c.getPath()
                         );
                         if(!errors.contains(e)) {
                             errors.add(e);
